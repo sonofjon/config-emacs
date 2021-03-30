@@ -33,5 +33,14 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
+;; Use packages
+(use-package company
+  :config
+  ;; Provide instant autocompletion
+  ;(setq company-idle-delay 0.0)
+
+  ;; Use company mode everywhere
+  (global-company-mode t))
+
 ;; Highlight current line
 (global-hl-line-mode t)
