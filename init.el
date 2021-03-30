@@ -14,3 +14,6 @@
 ;; Add melpa to package-archives
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
+
+;; Highlight current line
+(global-hl-line-mode t)
