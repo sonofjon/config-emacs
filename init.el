@@ -64,7 +64,11 @@
   ;; Use the `spacemacs-dark` theme.
   (load-theme 'spacemacs-dark))
 
-;; Use "Command" as "Meta" in macOS
+(use-package ivy
+  :config
+  (ivy-mode 1))
+
+;; Use Command as Meta in macOS
 ;(setq mac-command-modifier 'meta)
 
 ;; Highlight current line
