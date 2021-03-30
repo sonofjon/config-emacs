@@ -34,6 +34,17 @@
 (setq use-package-always-ensure t)
 
 ;; Use packages
+
+;; auto-package-update
+;:   Fails: tries to delete packages in /usr/share/emacs/site-lisp/elpa
+;(use-package auto-package-update
+;  :ensure t
+;  :config
+;  (setq auto-package-update-delete-old-versions t)
+;  ;(setq auto-package-update-hide-results t)
+;  (auto-package-update-maybe))
+
+;; company
 (use-package company
   :config
   ;; Provide instant autocompletion
