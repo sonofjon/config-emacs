@@ -26,5 +26,12 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+;; Is this needed?
+(require 'use-package)
+
+;; Always install packages if not present
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
 ;; Highlight current line
 (global-hl-line-mode t)
