@@ -38,7 +38,6 @@
 ;; auto-package-update
 ;:   Fails: tries to delete packages in /usr/share/emacs/site-lisp/elpa
 ;(use-package auto-package-update
-;  :ensure t
 ;  :config
 ;  (setq auto-package-update-delete-old-versions t)
 ;  ;(setq auto-package-update-hide-results t)
@@ -52,6 +51,21 @@
 
   ;; Use company mode everywhere
   (global-company-mode t))
+
+;; Spacemacs theme (fails to load!)
+(use-package spacemacs-theme
+  :config
+  ;; Do not use a different background color for comments.
+  (setq spacemacs-theme-comment-bg nil)
+
+  ;; Comments should appear in italics.
+  (setq spacemacs-theme-comment-italic t)
+
+  ;; Use the `spacemacs-dark` theme.
+  (load-theme 'spacemacs-dark))
+
+;; Use "Command" as "Meta" in macOS
+;(setq mac-command-modifier 'meta)
 
 ;; Highlight current line
 (global-hl-line-mode t)
