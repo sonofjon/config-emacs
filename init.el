@@ -1,8 +1,17 @@
+;;
+;; INITIALIZATION
+;;
+
 ;; Use custom-file.el for custom-* code
 (setq custom-file "~/.emacs.d/custom-file.el")
 
 ;; Load custom file
 (load-file custom-file)
+
+
+;;
+;; PACKAGES
+;;
 
 ;; Initialize package sources
 (require 'package)
@@ -24,7 +33,7 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-;; Use packages
+;; Load/install packages:
 
 ;; auto-package-update
 ;:   Fails on brain5: tries to delete packages in /usr/share/emacs/site-lisp/elpa
@@ -60,6 +69,11 @@
   :config
   (ivy-mode 1))
 
+
+;;
+;; THEME
+;;
+
 ;; Load theme
 ;(load-theme 'dichromacy)
 ;(load-theme 'manoj-dark)
@@ -68,6 +82,11 @@
 (load-theme 'tsdh-dark)
 ;(load-theme 'wheatgrass)
 ;(load-theme 'wombat)
+
+
+;;
+;; CUSTOMIZATION
+;;
 
 ;; Use Command as Meta in macOS
 ;(setq mac-command-modifier 'meta)
