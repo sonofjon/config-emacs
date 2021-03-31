@@ -1,12 +1,3 @@
-;; Load theme
-;(load-theme 'dichromacy)
-;(load-theme 'manoj-dark)
-;(load-theme 'misterioso)
-;(load-theme 'tango-dark)
-(load-theme 'tsdh-dark)
-;(load-theme 'wheatgrass)
-;(load-theme 'wombat)
-
 ;; Use custom-file.el for custom-* code
 (setq custom-file "~/.emacs.d/custom-file.el")
 
@@ -68,6 +59,15 @@
 (use-package ivy
   :config
   (ivy-mode 1))
+
+;; Load theme
+;(load-theme 'dichromacy)
+;(load-theme 'manoj-dark)
+;(load-theme 'misterioso)
+;(load-theme 'tango-dark)
+(load-theme 'tsdh-dark)
+;(load-theme 'wheatgrass)
+;(load-theme 'wombat)
 
 ;; Use Command as Meta in macOS
 ;(setq mac-command-modifier 'meta)
