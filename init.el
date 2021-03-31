@@ -78,8 +78,10 @@
 
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
+  :hook ((prog-mode . rainbow-delimiters-mode)
+	 (emacs-lisp-mode . rainbow-delimiters-mode)))
 
+;; which-key (displays available keybindings)
 (use-package which-key
   :init (which-key-mode))
   ;:config
