@@ -46,7 +46,7 @@
 ;; company (in-buffer text completion)
 (use-package company
   :config
-  ;; Provide instant autocompletion
+  ;; Provide instant autocompletion (default is 0.5 s)
   ;(setq company-idle-delay 0.0)
 
   ;; Use company mode everywhere
@@ -81,10 +81,10 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package which-key
-  :init (which-key-mode)
-  :config
+  :init (which-key-mode))
+  ;:config
   ;; Delay (default is 1.0 s)
-  (setq which-key-idle-delay 1))
+  ;(setq which-key-idle-delay 0.5))
 
 
 ;;
