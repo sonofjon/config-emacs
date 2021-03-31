@@ -76,6 +76,11 @@
   :config
   (ivy-mode 1))
 
+;; councel (ivy-enhanced versions of common Emacs commands)
+(use-package counsel
+  :after ivy
+  :config (counsel-mode))
+
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
   :hook ((prog-mode . rainbow-delimiters-mode)
