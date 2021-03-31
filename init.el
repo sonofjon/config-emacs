@@ -73,8 +73,12 @@
 
 ;; ivy (generic completion mechanism)
 (use-package ivy
-  :config
-  (ivy-mode 1))
+  :config (ivy-mode 1))
+
+;; ivy-rich (add descriptions to ivy/counsel output)
+(use-package ivy-rich
+  :after ivy
+  :config (ivy-rich-mode 1))
 
 ;; councel (ivy-enhanced versions of common Emacs commands)
 (use-package counsel
