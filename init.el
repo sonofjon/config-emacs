@@ -53,14 +53,14 @@
   (setq spacemacs-theme-comment-italic t)
 
   ;; Use the `spacemacs-dark` theme.
-  (load-theme 'spacemacs-dark))
+  (load-theme 'spacemacs-dark) t)
 
 ;; doom-themes
 (use-package doom-themes
-;  :init (load-theme 'doom-one))
-;  :init (load-theme 'doom-vibrant))
-;  :init (load-theme 'doom-snazzy))
-  :init (load-theme 'doom-Iosvkem))
+;  :init (load-theme 'doom-one) t)
+;  :init (load-theme 'doom-vibrant) t)
+;  :init (load-theme 'doom-snazzy) t)
+  :init (load-theme 'doom-Iosvkem) t)
 
 ;; company (in-buffer text completion)
 (use-package company
