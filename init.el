@@ -43,7 +43,7 @@
 ;  ;(setq auto-package-update-hide-results t)
 ;  (auto-package-update-maybe))
 
-;; company
+;; company (in-buffer text completion)
 (use-package company
   :config
   ;; Provide instant autocompletion
@@ -52,7 +52,7 @@
   ;; Use company mode everywhere
   (global-company-mode t))
 
-;; Spacemacs theme (fails to load!)
+;; spacemacs-theme (fails to load!)
 (use-package spacemacs-theme
   :config
   ;; Do not use a different background color for comments.
@@ -64,6 +64,7 @@
   ;; Use the `spacemacs-dark` theme.
   (load-theme 'spacemacs-dark))
 
+;; ivy (generic completion mechanism)
 (use-package ivy
   :config
   (ivy-mode 1))
