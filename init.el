@@ -43,15 +43,6 @@
   ;(setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
-;; company (in-buffer text completion)
-(use-package company
-  :config
-  ;; Provide instant autocompletion (default is 0.5 s)
-  ;(setq company-idle-delay 0.0)
-
-  ;; Use company mode everywhere
-  (global-company-mode t))
-
 ;; spacemacs-theme (fails to load!)
 (use-package spacemacs-theme
   :config
@@ -70,6 +61,15 @@
 ;  :init (load-theme 'doom-vibrant))
 ;  :init (load-theme 'doom-snazzy))
   :init (load-theme 'doom-Iosvkem))
+
+;; company (in-buffer text completion)
+(use-package company
+  :config
+  ;; Provide instant autocompletion (default is 0.5 s)
+  ;(setq company-idle-delay 0.0)
+
+  ;; Use company mode everywhere
+  (global-company-mode t))
 
 ;; ivy (generic completion mechanism)
 (use-package ivy
