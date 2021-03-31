@@ -80,6 +80,12 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package which-key
+  :init (which-key-mode)
+  :config
+  ;; Delay (default is 1.0 s)
+  (setq which-key-idle-delay 1))
+
 
 ;;
 ;; THEME
