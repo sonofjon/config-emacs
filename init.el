@@ -36,12 +36,12 @@
 ;; Use packages
 
 ;; auto-package-update
-;:   Fails: tries to delete packages in /usr/share/emacs/site-lisp/elpa
-;(use-package auto-package-update
-;  :config
-;  (setq auto-package-update-delete-old-versions t)
-;  ;(setq auto-package-update-hide-results t)
-;  (auto-package-update-maybe))
+;:   Fails on brain5: tries to delete packages in /usr/share/emacs/site-lisp/elpa
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  ;(setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 
 ;; company (in-buffer text completion)
 (use-package company
