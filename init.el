@@ -85,6 +85,12 @@
   :after ivy
   :config (counsel-mode))
 
+;; swiper (ivy-enhanced isearch)
+(use-package swiper
+  :after ivy
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper)))
+
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
   :hook ((prog-mode . rainbow-delimiters-mode)
