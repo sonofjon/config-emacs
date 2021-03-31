@@ -66,7 +66,10 @@
 
 ;; doom-themes
 (use-package doom-themes
-  :init (load-theme 'doom-gruvbox))
+;  :init (load-theme 'doom-one))
+;  :init (load-theme 'doom-vibrant))
+;  :init (load-theme 'doom-snazzy))
+  :init (load-theme 'doom-Iosvkem))
 
 ;; ivy (generic completion mechanism)
 (use-package ivy
@@ -107,3 +110,4 @@
                 eshell-mode-hook
                 term-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
