@@ -64,6 +64,10 @@
   ;; Use the `spacemacs-dark` theme.
   (load-theme 'spacemacs-dark))
 
+;; doom-themes
+(use-package doom-themes
+  :init (load-theme 'doom-gruvbox))
+
 ;; ivy (generic completion mechanism)
 (use-package ivy
   :config
@@ -79,7 +83,7 @@
 ;(load-theme 'manoj-dark)
 ;(load-theme 'misterioso)
 ;(load-theme 'tango-dark)
-(load-theme 'tsdh-dark)
+;(load-theme 'tsdh-dark)
 ;(load-theme 'wheatgrass)
 ;(load-theme 'wombat)
 
