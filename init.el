@@ -76,6 +76,10 @@
   :config
   (ivy-mode 1))
 
+;; rainbow-delimiters (parentheses coloring)
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
 
 ;;
 ;; THEME
