@@ -93,3 +93,13 @@
 
 ;; Highlight current line
 (global-hl-line-mode t)
+
+;; Enable line numbers
+(global-display-line-numbers-mode t)
+
+;; Disable line numbers for some modes
+(dolist (mode '(org-mode-hook
+		shell-mode-hook
+                eshell-mode-hook
+                term-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
