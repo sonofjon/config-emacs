@@ -125,6 +125,9 @@
 ;; Use Command as Meta in macOS
 ;(setq mac-command-modifier 'meta)
 
+;; Hide buffer list at startup when loading multiple files
+(setq inhibit-startup-buffer-menu t)
+
 ;; Highlight current line
 (global-hl-line-mode t)
 
