@@ -145,3 +145,11 @@
                 term-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+
+;;
+;; MODES
+;;
+
+;; Use side-by-side view by default ediff 
+(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-merge-split-window-function 'split-window-horizontally)
