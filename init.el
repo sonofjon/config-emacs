@@ -44,20 +44,20 @@
   (auto-package-update-maybe))
 
 ;; spacemacs-theme
-(use-package spacemacs-theme
-  :defer t   ;; Fix loading warning
-  :config
-  ;; Do not use a different background color for comments
-  ;(setq spacemacs-theme-comment-bg nil)
+;; (use-package spacemacs-theme
+;;   :defer t   ;; Fix loading warning
+;;   :config
+;;   ;; Do not use a different background color for comments
+;;   ;(setq spacemacs-theme-comment-bg nil)
 
-  ;; Comments should appear in italics.
-  ;(setq spacemacs-theme-comment-italic t)
+;;   ;; Comments should appear in italics.
+;;   ;(setq spacemacs-theme-comment-italic t)
 
-  ;; Use the spacemacs-dark theme
-  ;(load-theme 'spacemacs-dark t))
+;;   ;; Use the spacemacs-dark theme
+;;   ;(load-theme 'spacemacs-dark t))
 
-  ;; Fix loading warning
-  :init (load-theme 'spacemacs-dark t))
+;;   ;; Fix loading warning
+;;   :init (load-theme 'spacemacs-dark t))
 
 ;; doom-themes
 (use-package doom-themes
