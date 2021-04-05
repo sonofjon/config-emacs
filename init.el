@@ -13,6 +13,10 @@
 ;; PACKAGES SETUP
 ;;
 
+;; Fix for Emacs bug on Chromebook
+;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 ;; Initialize package sources
 (require 'package)
 (package-initialize)
