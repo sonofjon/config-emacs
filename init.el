@@ -10,7 +10,7 @@
 
 
 ;;
-;; PACKAGES
+;; PACKAGES SETUP
 ;;
 
 ;; Initialize package sources
@@ -33,7 +33,10 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-;; Load/install packages:
+
+;;
+;; LOAD PACKAGES
+;;
 
 ;; auto-package-update
 ;:   Fails on brain5: tries to delete packages in /usr/share/emacs/site-lisp/elpa
@@ -150,6 +153,6 @@
 ;; MODES
 ;;
 
-;; Use side-by-side view by default ediff 
+;; Use side-by-side view by default with ediff 
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-merge-split-window-function 'split-window-horizontally)
