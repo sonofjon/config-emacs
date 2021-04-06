@@ -50,35 +50,31 @@
   ;(setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
-;; spacemacs-theme
+;; ;; spacemacs-theme
 ;; (use-package spacemacs-theme
 ;;   :defer t   ;; Fix loading warning
 ;;   :config
 ;;   ;; Do not use a different background color for comments
 ;;   ;(setq spacemacs-theme-comment-bg nil)
-
 ;;   ;; Comments should appear in italics.
 ;;   ;(setq spacemacs-theme-comment-italic t)
-
 ;;   ;; Use the spacemacs-dark theme
 ;;   ;(load-theme 'spacemacs-dark t))
-
 ;;   ;; Fix loading warning
 ;;   :init (load-theme 'spacemacs-dark t))
 
-;; doom-themes
-(use-package doom-themes
-;  :init (load-theme 'doom-one) t)
-;  :init (load-theme 'doom-vibrant) t)
-;  :init (load-theme 'doom-snazzy) t)
-  :init (load-theme 'doom-Iosvkem) t)
+;; ;; doom-themes
+;; (use-package doom-themes
+;; ;  :init (load-theme 'doom-one) t)
+;; ;  :init (load-theme 'doom-vibrant) t)
+;; ;  :init (load-theme 'doom-snazzy) t)
+;;   :init (load-theme 'doom-Iosvkem) t)
 
 ;; company (in-buffer text completion)
 (use-package company
   :config
   ;; Provide instant autocompletion (default is 0.5 s)
   ;(setq company-idle-delay 0.0)
-
   ;; Use company mode everywhere
   (global-company-mode t))
 
