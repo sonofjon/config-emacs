@@ -62,12 +62,12 @@
 ;;   ;; Fix loading warning
 ;;   :init (load-theme 'spacemacs-dark t))
 
-;; doom-themes
-(use-package doom-themes
-;  :init (load-theme 'doom-one) t)
-;  :init (load-theme 'doom-vibrant) t)
-;  :init (load-theme 'doom-snazzy) t)
-  :init (load-theme 'doom-Iosvkem) t)
+;; ;; doom-themes
+;; (use-package doom-themes
+;; ;  :init (load-theme 'doom-one) t)
+;; ;  :init (load-theme 'doom-vibrant) t)
+;; ;  :init (load-theme 'doom-snazzy) t)
+;;   :init (load-theme 'doom-Iosvkem) t)
 
 ;; company (in-buffer text completion)
 (use-package company
