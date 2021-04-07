@@ -84,7 +84,7 @@
 
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
-  :after ivy
+  :after (ivy councel)
   :config (ivy-rich-mode 1))
 
 ;; councel (ivy-enhanced versions of common Emacs commands)
