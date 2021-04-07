@@ -21,9 +21,16 @@
 (require 'package)
 (package-initialize)
 
-;; Add melpa to package-archives
+;; Add MELPA to package-archives
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+;	     '("melpa" . "http://melpa.org/packages/") t)
+	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
+;; Set package-archives priorities
+(setq package-archive-priorities
+      '(("GNU ELPA"     . 10)
+	("MELPA Stable" . 5)
+	("MELPA"        . 0)))
 
 ;; Add use-package macro
 (when (not (package-installed-p 'use-package))
@@ -84,7 +91,7 @@
 
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
-  :after ivy
+  :after (ivy councel)
   :config (ivy-rich-mode 1))
 
 ;; prescient (base package)
@@ -149,7 +156,7 @@
 ;(load-theme 'tango-dark)
 ;(load-theme 'tsdh-dark)
 ;(load-theme 'wheatgrass)
-;(load-theme 'wombat)
+(load-theme 'wombat)
 
 
 ;;
@@ -180,6 +187,16 @@
 ;; MODES
 ;;
 
-;; Use side-by-side view by default with ediff 
+;; ediff: Use side-by-side view by default
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-merge-split-window-function 'split-window-horizontally)
+
+;; ediff: When merging, use both variants A and B, one after the other
+(defun ediff-copy-both-to-C ()
+  (interactive)
+  (ediff-copy-diff ediff-current-difference nil 'C nil
+		   (concat
+		    (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+		    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+(defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
+(add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
