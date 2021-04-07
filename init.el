@@ -17,9 +17,16 @@
 (require 'package)
 (package-initialize)
 
-;; Add melpa to package-archives
+;; Add MELPA to package-archives
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+;	     '("melpa" . "http://melpa.org/packages/") t)
+	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
+;; Set package-archives priorities
+(setq package-archive-priorities
+      '(("GNU ELPA"     . 10)
+	("MELPA Stable" . 5)
+	("MELPA"        . 0)))
 
 ;; Add use-package macro
 (when (not (package-installed-p 'use-package))
@@ -145,7 +152,7 @@
 ;(load-theme 'tango-dark)
 ;(load-theme 'tsdh-dark)
 ;(load-theme 'wheatgrass)
-;(load-theme 'wombat)
+(load-theme 'wombat)
 
 
 ;;
