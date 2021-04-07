@@ -46,35 +46,31 @@
   ;(setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
-;; spacemacs-theme
+;; ;; spacemacs-theme
 ;; (use-package spacemacs-theme
 ;;   :defer t   ;; Fix loading warning
 ;;   :config
 ;;   ;; Do not use a different background color for comments
 ;;   ;(setq spacemacs-theme-comment-bg nil)
-
 ;;   ;; Comments should appear in italics.
 ;;   ;(setq spacemacs-theme-comment-italic t)
-
 ;;   ;; Use the spacemacs-dark theme
 ;;   ;(load-theme 'spacemacs-dark t))
-
 ;;   ;; Fix loading warning
 ;;   :init (load-theme 'spacemacs-dark t))
 
-;; doom-themes
-(use-package doom-themes
-;  :init (load-theme 'doom-one) t)
-;  :init (load-theme 'doom-vibrant) t)
-;  :init (load-theme 'doom-snazzy) t)
-  :init (load-theme 'doom-Iosvkem) t)
+;; ;; doom-themes
+;; (use-package doom-themes
+;; ;  :init (load-theme 'doom-one) t)
+;; ;  :init (load-theme 'doom-vibrant) t)
+;; ;  :init (load-theme 'doom-snazzy) t)
+;;   :init (load-theme 'doom-Iosvkem) t)
 
 ;; company (in-buffer text completion)
 (use-package company
   :config
   ;; Provide instant autocompletion (default is 0.5 s)
   ;(setq company-idle-delay 0.0)
-
   ;; Use company mode everywhere
   (global-company-mode t))
 
@@ -86,6 +82,33 @@
 (use-package ivy-rich
   :after (ivy councel)
   :config (ivy-rich-mode 1))
+
+;; prescient (base package)
+(use-package prescient
+  :after (ivy counsel)
+  :custom
+  ;; Disable sorting by length
+  (prescient-sort-length-enable nil)
+  :config
+  ;; Remember across sessions
+  (prescient-persist-mode 1))
+
+;; ivy-prescient (sort candidates by frequency and recency)
+(use-package ivy-prescient
+  :after (ivy prescient)
+  :custom
+  ;; Disable prescient filtering (use ivy filtering)
+  (ivy-prescient-enable-filtering nil)
+  ;; Disable sorting by length
+  (ivy-prescient-retain-classic-highlighting t)
+  ;; To do: add [counsel-]find-file to ivy-prescient-sort-commands?
+  :config
+  (ivy-prescient-mode 1))
+
+;; company-prescient (sort candidates by frequency and recency)
+(use-package company-prescient
+  :after (company prescient)
+  :config (company-prescient-mode 1))
 
 ;; councel (ivy-enhanced versions of common Emacs commands)
 (use-package counsel
