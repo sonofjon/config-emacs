@@ -226,3 +226,20 @@
 		    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
 (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
 (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
+
+
+;;
+;; KEY BINDINGS
+;;
+
+(global-set-key (kbd "C-c e") 'ediff-buffers) 
+(global-set-key (kbd "C-c r") 'ediff-regions-linewise)
+(global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
+;(global-set-key "\C-cs" 'ispell-region)   ;; probably not needed, use M-$ instead
+;(windmove-default-keybindings 'meta)   ;; does not work in Windows terminal
+;(global-set-key (kbd "M-<left>")  'windmove-left)
+;(global-set-key (kbd "M-<right>") 'windmove-right)
+;(global-set-key (kbd "M-<up>")    'windmove-up)
+;(global-set-key (kbd "M-<down>")  'windmove-down)
+(global-set-key (kbd "M-p") 'scroll-up-line)
+(global-set-key (kbd "M-n") 'scroll-down-line)
