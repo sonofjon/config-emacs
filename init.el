@@ -138,6 +138,20 @@
   :bind (("C-s" . swiper)
          ("C-r" . swiper)))
 
+;; helpful (alternative help)
+(use-package helpful
+  :after (ivy counsel)
+  :commands (helpful-callable helpful-variable helpful-command helpful-key)
+  :custom
+  ;; Use ivy with counsel
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
+
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
   :hook ((prog-mode . rainbow-delimiters-mode)
