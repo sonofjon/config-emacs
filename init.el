@@ -189,6 +189,9 @@
 ;; CUSTOMIZATION
 ;;
 
+;; Open up the debugger on error
+(setq debug-on-error t)
+
 ;; Use Command as Meta in macOS
 ;(setq mac-command-modifier 'meta)
 
