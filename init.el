@@ -164,6 +164,12 @@
   ;; Delay (default is 1.0 s)
   ;(setq which-key-idle-delay 0.5))
 
+;; magit (user interface to git)
+(use-package magit
+  ;; Don't show diffs in a separate window
+  ;; :custom (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1) 
+  :bind (("C-x g" . magit-status)
+	 ("C-x M-g" . magit-dispatch-popup)))
 
 ;;
 ;; THEME
