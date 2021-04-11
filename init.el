@@ -211,6 +211,8 @@
                 term-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+;; Disable menu bar
+(menu-bar-mode -1) 
 
 ;;
 ;; MODES
