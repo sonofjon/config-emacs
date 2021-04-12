@@ -171,6 +171,10 @@
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch-popup)))
 
+;; web-mode (major-mode for editing web templates) 
+(use-package web-mode
+  :mode (".html?$" ".php$"))
+  
 ;;
 ;; THEME
 ;;
