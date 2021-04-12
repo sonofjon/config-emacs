@@ -8,6 +8,16 @@
 ;; Load custom file
 (load-file custom-file)
 
+;;
+;; FIXES
+;;
+
+;; Suppress warnings about unnecessary package-initialize calls
+;;   Introduced when switching to Melpa Stable
+;;   Possible solution: use some packages from Melpa
+;;   Reference: https://github.com/cask/cask/issues/463
+(setq warning-suppress-log-types '((package reinitialization)))
+
 
 ;;
 ;; PACKAGES SETUP
@@ -28,9 +38,9 @@
 
 ;; Set package-archives priorities
 (setq package-archive-priorities
-      '(("GNU ELPA"     . 10)
-	("MELPA Stable" . 5)
-	("MELPA"        . 0)))
+      '(("gnu"          . 10)
+	("melpa-stable" . 5)
+	("melpa"        . 0)))
 
 ;; Add use-package macro
 (when (not (package-installed-p 'use-package))
@@ -121,7 +131,7 @@
   :after (company prescient)
   :config (company-prescient-mode 1))
 
-;; councel (ivy-enhanced versions of common Emacs commands)
+;; counsel (ivy-enhanced versions of common Emacs commands)
 (use-package counsel
   :after ivy
   :config (counsel-mode))
@@ -131,6 +141,20 @@
   :after ivy
   :bind (("C-s" . swiper)
          ("C-r" . swiper)))
+
+;; helpful (alternative help)
+(use-package helpful
+  :after (ivy counsel)
+  :commands (helpful-callable helpful-variable helpful-command helpful-key)
+  :custom
+  ;; Use ivy with counsel
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
 
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
@@ -144,7 +168,17 @@
   ;; Delay (default is 1.0 s)
   ;(setq which-key-idle-delay 0.5))
 
+;; magit (user interface to git)
+(use-package magit
+  ;; Don't show diffs in a separate window
+  ;; :custom (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1) 
+  :bind (("C-x g" . magit-status)
+	 ("C-x M-g" . magit-dispatch-popup)))
 
+;; web-mode (major-mode for editing web templates) 
+(use-package web-mode
+  :mode (".html?$" ".php$"))
+  
 ;;
 ;; THEME
 ;;
@@ -162,6 +196,9 @@
 ;;
 ;; CUSTOMIZATION
 ;;
+
+;; Open up the debugger on error
+(setq debug-on-error t)
 
 ;; Use Command as Meta in macOS
 ;(setq mac-command-modifier 'meta)
@@ -200,3 +237,35 @@
 		    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
 (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
 (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
+
+
+;;
+;; KEY BINDINGS
+;;
+
+(global-set-key (kbd "C-c e") 'ediff-buffers) 
+(global-set-key (kbd "C-c r") 'ediff-regions-linewise)
+(global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
+;(global-set-key "\C-cs" 'ispell-region)   ;; probably not needed, use M-$ instead
+;(windmove-default-keybindings 'meta)   ;; does not work in Windows terminal
+;(global-set-key (kbd "M-<left>")  'windmove-left)
+;(global-set-key (kbd "M-<right>") 'windmove-right)
+;(global-set-key (kbd "M-<up>")    'windmove-up)
+;(global-set-key (kbd "M-<down>")  'windmove-down)
+(global-set-key (kbd "M-p") 'scroll-up-line)
+(global-set-key (kbd "M-n") 'scroll-down-line)
+
+;; Mark line and enable to grow selection
+;;   (source: http://emacs.stackexchange.com/a/22166/93)
+;; ...but what I really want is C-S-<arrow> to grow selection
+;; including entire lines regardless of point positon on a line
+(defun my-mark-line ()
+  (interactive)
+  (beginning-of-line)
+  (setq this-command-keys-shift-translated t)
+  (call-interactively 'end-of-line)
+  (call-interactively 'forward-char))
+
+(global-set-key (kbd "C-c l") 'my-mark-line)
+
+; LocalWords:  swiper magit ediff ispell
