@@ -247,4 +247,17 @@
 (global-set-key (kbd "M-p") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-down-line)
 
+;; Mark line and enable to grow selection
+;;   (source: http://emacs.stackexchange.com/a/22166/93)
+;; ...but what I really want is C-S-<arrow> to grow selection
+;; including entire lines regardless of point positon on a line
+(defun my-mark-line ()
+  (interactive)
+  (beginning-of-line)
+  (setq this-command-keys-shift-translated t)
+  (call-interactively 'end-of-line)
+  (call-interactively 'forward-char))
+
+(global-set-key (kbd "C-c l") 'my-mark-line)
+
 ; LocalWords:  swiper magit ediff ispell
