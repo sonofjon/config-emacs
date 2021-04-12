@@ -13,7 +13,7 @@
 ;;
 
 ;; Suppress warnings about unnecessary package-initialize calls
-;;   Introduced when swithcing to Melpa Stable
+;;   Introduced when switching to Melpa Stable
 ;;   Possible solution: use some packages from Melpa
 ;;   Reference: https://github.com/cask/cask/issues/463
 (setq warning-suppress-log-types '((package reinitialization)))
@@ -127,7 +127,7 @@
   :after (company prescient)
   :config (company-prescient-mode 1))
 
-;; councel (ivy-enhanced versions of common Emacs commands)
+;; counsel (ivy-enhanced versions of common Emacs commands)
 (use-package counsel
   :after ivy
   :config (counsel-mode))
@@ -246,3 +246,5 @@
 ;(global-set-key (kbd "M-<down>")  'windmove-down)
 (global-set-key (kbd "M-p") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-down-line)
+
+; LocalWords:  swiper magit ediff ispell
