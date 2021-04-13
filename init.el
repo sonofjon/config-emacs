@@ -12,6 +12,12 @@
 ;; FIXES
 ;;
 
+;; Fix for Emacs bug on Chromebook
+;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
+(when (equal (system-name) "penguin")
+    (message "Fix for Chromebook")
+    (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
 ;; Suppress warnings about unnecessary package-initialize calls
 ;;   Introduced when switching to Melpa Stable
 ;;   Possible solution: use some packages from Melpa
@@ -52,7 +58,7 @@
 
 
 ;;
-;; LOAD PACKAGES
+;; PACKAGES
 ;;
 
 ;; auto-package-update
@@ -176,7 +182,7 @@
   :mode (".html?$" ".php$"))
   
 ;;
-;; THEME
+;; THEMES
 ;;
 
 ;; Load theme
@@ -215,12 +221,15 @@
                 term-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+;; Open new windows horizontally (side-by-side) by default
+(setq split-width-threshold 80
+      split-height-threshold 80)
 
 ;;
 ;; MODES
 ;;
 
-;; ediff: Use side-by-side view by default
+;; ediff: Use horizontal (side-by-side) view by default
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-merge-split-window-function 'split-window-horizontally)
 
@@ -243,7 +252,7 @@
 (global-set-key (kbd "C-c r") 'ediff-regions-linewise)
 (global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
 ;(global-set-key "\C-cs" 'ispell-region)   ;; probably not needed, use M-$ instead
-;(windmove-default-keybindings 'meta)   ;; does not work in Windows terminal
+(windmove-default-keybindings 'meta)   ;; does not work in Windows terminal
 ;(global-set-key (kbd "M-<left>")  'windmove-left)
 ;(global-set-key (kbd "M-<right>") 'windmove-right)
 ;(global-set-key (kbd "M-<up>")    'windmove-up)
@@ -263,5 +272,18 @@
   (call-interactively 'forward-char))
 
 (global-set-key (kbd "C-c l") 'my-mark-line)
+
+
+;;
+;; LOCAL 
+;;
+
+;; ;; Conditionally load host specific stuff
+;; (let ((host-specific-files (concat (make-load-path-base) system-name ".el")))
+;;   (if (file-exists-p host-specific-files)
+;;       (load host-specific-files)
+;;     (message (concat "No host specific customizations for " system-name))
+;;     ))
+
 
 ; LocalWords:  swiper magit ediff ispell
