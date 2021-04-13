@@ -56,7 +56,7 @@
 
 
 ;;
-;; LOAD PACKAGES
+;; PACKAGES
 ;;
 
 ;; auto-package-update
@@ -180,7 +180,7 @@
   :mode (".html?$" ".php$"))
   
 ;;
-;; THEME
+;; THEMES
 ;;
 
 ;; Load theme
