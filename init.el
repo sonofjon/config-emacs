@@ -250,7 +250,7 @@
 (global-set-key (kbd "C-c r") 'ediff-regions-linewise)
 (global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
 ;(global-set-key "\C-cs" 'ispell-region)   ;; probably not needed, use M-$ instead
-;(windmove-default-keybindings 'meta)   ;; does not work in Windows terminal
+(windmove-default-keybindings 'meta)   ;; does not work in Windows terminal
 ;(global-set-key (kbd "M-<left>")  'windmove-left)
 ;(global-set-key (kbd "M-<right>") 'windmove-right)
 ;(global-set-key (kbd "M-<up>")    'windmove-up)
