@@ -222,8 +222,8 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Open new windows horizontally (side-by-side) by default
-(setq split-width-threshold 0
-      split-height-threshold nil)
+(setq split-width-threshold 80
+      split-height-threshold 80)
 
 ;;
 ;; MODES
