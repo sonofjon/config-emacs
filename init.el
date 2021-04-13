@@ -12,6 +12,12 @@
 ;; FIXES
 ;;
 
+;; Fix for Emacs bug on Chromebook
+;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
+(when (equal (system-name) "penguin")
+    (message "Fix for Chromebook")
+    (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
 ;; Suppress warnings about unnecessary package-initialize calls
 ;;   Introduced when switching to Melpa Stable
 ;;   Possible solution: use some packages from Melpa
@@ -22,10 +28,6 @@
 ;;
 ;; PACKAGES SETUP
 ;;
-
-;; Fix for Emacs bug on Chromebook
-;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 ;; Initialize package sources
 (require 'package)
