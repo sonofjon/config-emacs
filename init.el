@@ -271,4 +271,17 @@
 
 (global-set-key (kbd "C-c l") 'my-mark-line)
 
+
+;;
+;; LOCAL 
+;;
+
+;; ;; Conditionally load host specific stuff
+;; (let ((host-specific-files (concat (make-load-path-base) system-name ".el")))
+;;   (if (file-exists-p host-specific-files)
+;;       (load host-specific-files)
+;;     (message (concat "No host specific customizations for " system-name))
+;;     ))
+
+
 ; LocalWords:  swiper magit ediff ispell
