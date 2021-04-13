@@ -219,12 +219,15 @@
                 term-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+;; Open new windows horizontally (side-by-side) by default
+(setq split-width-threshold 0
+      split-height-threshold nil)
 
 ;;
 ;; MODES
 ;;
 
-;; ediff: Use side-by-side view by default
+;; ediff: Use horizontal (side-by-side) view by default
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-merge-split-window-function 'split-window-horizontally)
 
