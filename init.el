@@ -12,8 +12,14 @@
 ;; FIXES
 ;;
 
+;; Fix for Emacs bug on Chromebook
+;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
+(when (equal (system-name) "penguin")
+    (message "Fix for Chromebook")
+    (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
 ;; Suppress warnings about unnecessary package-initialize calls
-;;   Introduced when swithcing to Melpa Stable
+;;   Introduced when switching to Melpa Stable
 ;;   Possible solution: use some packages from Melpa
 ;;   Reference: https://github.com/cask/cask/issues/463
 (setq warning-suppress-log-types '((package reinitialization)))
@@ -52,7 +58,7 @@
 
 
 ;;
-;; LOAD PACKAGES
+;; PACKAGES
 ;;
 
 ;; auto-package-update
@@ -127,7 +133,7 @@
   :after (company prescient)
   :config (company-prescient-mode 1))
 
-;; councel (ivy-enhanced versions of common Emacs commands)
+;; counsel (ivy-enhanced versions of common Emacs commands)
 (use-package counsel
   :after ivy
   :config (counsel-mode))
@@ -152,11 +158,6 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
-;; rainbow-delimiters (parentheses coloring)
-(use-package rainbow-delimiters
-  :hook ((prog-mode . rainbow-delimiters-mode)
-	 (emacs-lisp-mode . rainbow-delimiters-mode)))
-
 ;; which-key (displays available keybindings)
 (use-package which-key
   :init (which-key-mode))
@@ -171,8 +172,25 @@
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch-popup)))
 
+;; rainbow-delimiters (parentheses coloring)
+(use-package rainbow-delimiters
+  :hook ((prog-mode . rainbow-delimiters-mode)
+	 (emacs-lisp-mode . rainbow-delimiters-mode)))
+
+;; multiple-cursors
+(use-package multiple-cursors
+  :bind (("C-c SPC" . set-rectangular-region-anchor)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C->" . mc/mark-all-like-this)
+         ("C-c C-SPC" . mc/edit-lines)))
+
+;; web-mode (major-mode for editing web templates) 
+(use-package web-mode
+  :mode (".html?$" ".php$"))
+  
 ;;
-;; THEME
+;; THEMES
 ;;
 
 ;; Load theme
@@ -214,11 +232,19 @@
 ;; Disable menu bar
 (menu-bar-mode -1) 
 
+;; Use spaces, not tabs
+(setq-default indent-tabs-mode nil)
+
+;; Open new windows horizontally (side-by-side) by default
+(setq split-width-threshold 80
+      split-height-threshold 80)
+
+
 ;;
 ;; MODES
 ;;
 
-;; ediff: Use side-by-side view by default
+;; ediff: Use horizontal (side-by-side) view by default
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-merge-split-window-function 'split-window-horizontally)
 
@@ -241,10 +267,38 @@
 (global-set-key (kbd "C-c r") 'ediff-regions-linewise)
 (global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
 ;(global-set-key "\C-cs" 'ispell-region)   ;; probably not needed, use M-$ instead
-;(windmove-default-keybindings 'meta)   ;; does not work in Windows terminal
+(windmove-default-keybindings 'meta)   ;; does not work in Windows terminal
 ;(global-set-key (kbd "M-<left>")  'windmove-left)
 ;(global-set-key (kbd "M-<right>") 'windmove-right)
 ;(global-set-key (kbd "M-<up>")    'windmove-up)
 ;(global-set-key (kbd "M-<down>")  'windmove-down)
 (global-set-key (kbd "M-p") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-down-line)
+
+;; Mark line and enable to grow selection
+;;   (source: http://emacs.stackexchange.com/a/22166/93)
+;; ...but what I really want is C-S-<arrow> to grow selection
+;; including entire lines regardless of point positon on a line
+(defun my-mark-line ()
+  (interactive)
+  (beginning-of-line)
+  (setq this-command-keys-shift-translated t)
+  (call-interactively 'end-of-line)
+  (call-interactively 'forward-char))
+
+(global-set-key (kbd "C-c l") 'my-mark-line)
+
+
+;;
+;; LOCAL 
+;;
+
+;; ;; Conditionally load host specific stuff
+;; (let ((host-specific-files (concat (make-load-path-base) system-name ".el")))
+;;   (if (file-exists-p host-specific-files)
+;;       (load host-specific-files)
+;;     (message (concat "No host specific customizations for " system-name))
+;;     ))
+
+
+; LocalWords:  swiper magit ediff ispell
