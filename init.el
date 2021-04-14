@@ -221,6 +221,9 @@
                 term-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+;; Use spaces, not tabs
+(setq-default indent-tabs-mode nil)
+
 ;; Open new windows horizontally (side-by-side) by default
 (setq split-width-threshold 80
       split-height-threshold 80)
