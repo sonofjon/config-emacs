@@ -158,11 +158,6 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
-;; rainbow-delimiters (parentheses coloring)
-(use-package rainbow-delimiters
-  :hook ((prog-mode . rainbow-delimiters-mode)
-	 (emacs-lisp-mode . rainbow-delimiters-mode)))
-
 ;; which-key (displays available keybindings)
 (use-package which-key
   :init (which-key-mode))
@@ -176,6 +171,11 @@
   ;; :custom (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1) 
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch-popup)))
+
+;; rainbow-delimiters (parentheses coloring)
+(use-package rainbow-delimiters
+  :hook ((prog-mode . rainbow-delimiters-mode)
+	 (emacs-lisp-mode . rainbow-delimiters-mode)))
 
 ;; multiple-cursors
 (use-package multiple-cursors
