@@ -177,6 +177,14 @@
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch-popup)))
 
+;; multiple-cursors
+(use-package multiple-cursors
+  :bind (("C-c SPC" . set-rectangular-region-anchor)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C->" . mc/mark-all-like-this)
+         ("C-c C-SPC" . mc/edit-lines)))
+
 ;; web-mode (major-mode for editing web templates) 
 (use-package web-mode
   :mode (".html?$" ".php$"))
