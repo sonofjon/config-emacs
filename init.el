@@ -235,9 +235,12 @@
 ;; Use spaces, not tabs
 (setq-default indent-tabs-mode nil)
 
-;; Open new windows horizontally (side-by-side) by default
-(setq split-width-threshold 80
-      split-height-threshold 80)
+;; Prefer horizontally (side-by-side) window splitting
+;;   Note: the thresholds need to be twice as big as the smallest
+;;   window allowed, because the new windows each use half of former
+;;   window size
+(setq split-width-threshold 160
+      split-height-threshold nil)
 
 
 ;;
