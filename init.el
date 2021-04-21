@@ -278,6 +278,10 @@
 (global-set-key (kbd "M-p") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-down-line)
 
+;; Unbind keys:
+;; (global-set-key (kbd "C-x") nil)
+;; (global-unset-key (kbd "C-x"))   ; Alternative syntax
+
 
 ;;
 ;; FUNCTIONS 
