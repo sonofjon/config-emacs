@@ -105,6 +105,7 @@
 (use-package ivy-rich
   :after (ivy councel)
   :config (ivy-rich-mode 1))
+  ;; To do: Mode not enabled?
 
 ;; prescient (base package)
 (use-package prescient
