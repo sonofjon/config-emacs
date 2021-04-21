@@ -147,16 +147,18 @@
 ;; helpful (alternative help)
 (use-package helpful
   :after (ivy counsel)
-  :commands (helpful-callable helpful-variable helpful-command helpful-key)
+  :commands (helpful-key helpful-function helpful-symbol helpful-variable) 
   :custom
-  ;; Use ivy with counsel
-  (counsel-describe-function-function #'helpful-callable)
+  ;; Use helpful with counsel
+  (counsel-describe-function-function #'helpful-function)
+  (counsel-describe-symbol-function #'helpful-symbol)
   (counsel-describe-variable-function #'helpful-variable)
   :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
+  ([remap describe-key] . helpful-key)
+  ([remap describe-function] . helpful-function)
+  ([remap describe-symbol] . helpful-symbol)
+  ([remap describe-variable] . helpful-variable)
+  ("C-c C-d" . 'helpful-at-point))
 
 ;; which-key (displays available keybindings)
 (use-package which-key
