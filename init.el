@@ -95,7 +95,7 @@
   ;; Provide instant autocompletion (default is 0.5 s)
   ;(setq company-idle-delay 0.0)
   ;; Use company mode everywhere
-  (global-company-mode t))
+  (global-company-mode 1))
 
 ;; ivy (generic completion mechanism)
 (use-package ivy
