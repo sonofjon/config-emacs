@@ -137,7 +137,11 @@
 ;; counsel (ivy-enhanced versions of common Emacs commands)
 (use-package counsel
   :after ivy
-  :config (counsel-mode))
+  :config 
+  ;; Don't start searches with ^
+  (setq ivy-initial-inputs-alist nil)
+  ;; Enable mode
+  (counsel-mode 1))
 
 ;; swiper (ivy-enhanced isearch)
 (use-package swiper
