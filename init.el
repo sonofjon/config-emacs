@@ -269,14 +269,14 @@
 (global-set-key (kbd "C-c e") 'ediff-buffers) 
 (global-set-key (kbd "C-c r") 'ediff-regions-linewise)
 (global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
-;(global-set-key "\C-cs" 'ispell-region)   ;; probably not needed, use M-$ instead
-(windmove-default-keybindings 'meta)   ;; does not work in Windows terminal
+(windmove-default-keybindings 'meta)
 ;(global-set-key (kbd "M-<left>")  'windmove-left)
 ;(global-set-key (kbd "M-<right>") 'windmove-right)
 ;(global-set-key (kbd "M-<up>")    'windmove-up)
 ;(global-set-key (kbd "M-<down>")  'windmove-down)
 (global-set-key (kbd "M-p") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-down-line)
+(global-set-key (kbd "C-c l") 'my-mark-line)
 
 ;; Unbind keys:
 ;; (global-set-key (kbd "C-x") nil)
@@ -297,8 +297,6 @@
   (setq this-command-keys-shift-translated t)
   (call-interactively 'end-of-line)
   (call-interactively 'forward-char))
-
-(global-set-key (kbd "C-c l") 'my-mark-line)
 
 
 ;;
