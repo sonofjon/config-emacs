@@ -193,9 +193,11 @@
          ("C-c C->" . mc/mark-all-like-this)
          ("C-c C-SPC" . mc/edit-lines)))
 
-;; web-mode (major-mode for editing web templates) 
+;; web-mode (major-mode for editing web templates)
+;;   Use MELPA version to avoid compile warnings
 (use-package web-mode
-  :mode (".html?$" ".php$"))
+  :mode (".html?$" ".php$")
+  :pin melpa)
   
 ;;
 ;; THEMES
