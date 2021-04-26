@@ -183,7 +183,7 @@
   :hook ((prog-mode . rainbow-delimiters-mode)
 	 (emacs-lisp-mode . rainbow-delimiters-mode)))
 
-;; multiple-cursors
+;; multiple-cursors (edit at multiple points)
 (use-package multiple-cursors
   :bind (("C-c SPC" . set-rectangular-region-anchor)
          ("C->" . mc/mark-next-like-this)
