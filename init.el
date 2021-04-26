@@ -104,9 +104,8 @@
 
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
-  :after (ivy councel)
+  :after (ivy counsel)
   :config (ivy-rich-mode 1))
-  ;; To do: Mode not enabled?
 
 ;; prescient (base package)
 (use-package prescient
