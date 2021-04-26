@@ -57,6 +57,9 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
+;; Alternative option to prioritise archives
+;; (setq use-package-always-pin "melpa-stable")
+
 
 ;;
 ;; PACKAGES
