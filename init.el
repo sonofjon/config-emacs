@@ -273,6 +273,11 @@
 ;; dired: custom listing style
 (setq dired-listing-switches "-agho --group-directories-first")
 
+;; ispell: set aspell suggestion mode 
+(setq ispell-extra-args '("--sug-mode=ultra"))
+;(setq ispell-extra-args '("--sug-mode=fast"))
+;(setq ispell-extra-args '("--sug-mode=normal"))
+
 ;;
 ;; KEY BINDINGS
 ;;
