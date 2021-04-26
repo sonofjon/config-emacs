@@ -118,6 +118,7 @@
 
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
+  :pin melpa  
   :after (ivy counsel)
   :config (ivy-rich-mode 1))
 
