@@ -278,6 +278,11 @@
 ;(setq ispell-extra-args '("--sug-mode=fast"))
 ;(setq ispell-extra-args '("--sug-mode=normal"))
 
+;; flyspell: 
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+
 ;;
 ;; KEY BINDINGS
 ;;
