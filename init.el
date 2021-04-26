@@ -41,9 +41,9 @@
 
 ;; Set package-archives priorities
 (setq package-archive-priorities
-      '(("gnu"          . 10)
-	("melpa-stable" . 5)
-	("melpa"        . 0)))
+      '(("gnu"          . 3)
+	("melpa-stable" . 2)
+	("melpa"        . 1)))
 
 ;; Add use-package macro
 (when (not (package-installed-p 'use-package))
