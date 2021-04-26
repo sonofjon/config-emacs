@@ -165,7 +165,7 @@
   ([remap describe-variable] . helpful-variable)
   ("C-c C-d" . 'helpful-at-point))
 
-;; which-key (displays available keybindings)
+;; which-key (display available keybindings)
 (use-package which-key
   :init (which-key-mode))
   ;:config
@@ -197,7 +197,8 @@
 (use-package web-mode
   :mode (".html?$" ".php$")
   :pin melpa)
-  
+
+
 ;;
 ;; THEMES
 ;;
@@ -219,7 +220,7 @@
 ;; Open up the debugger on error
 (setq debug-on-error t)
 
-;; Use Command as Meta in macOS
+;; Use Command as Meta on macOS
 ;(setq mac-command-modifier 'meta)
 
 ;; Hide buffer list at startup when loading multiple files
@@ -244,7 +245,7 @@
 ;; Use spaces, not tabs
 (setq-default indent-tabs-mode nil)
 
-;; Prefer horizontally (side-by-side) window splitting
+;; Prefer horizontal (side-by-side) window splitting
 ;;   Note: the thresholds need to be twice as big as the smallest
 ;;   window allowed, because the new windows each use half of former
 ;;   window size
@@ -312,7 +313,7 @@
 ;; Mark line and enable to grow selection
 ;;   (source: http://emacs.stackexchange.com/a/22166/93)
 ;; ...but what I really want is C-S-<arrow> to grow selection
-;; including entire lines regardless of point positon on a line
+;; including entire lines regardless of point position on a line
 (defun my-mark-line ()
   (interactive)
   (beginning-of-line)
