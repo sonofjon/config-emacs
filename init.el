@@ -298,6 +298,7 @@
 (global-set-key (kbd "M-p") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-down-line)
 (global-set-key (kbd "C-c l") 'my-mark-line)
+;(global-set-key (kbd "C-c l") #'my/select-current-line-and-forward-line)
 
 ;; Unbind keys:
 ;; (global-set-key (kbd "C-x") nil)
@@ -318,6 +319,20 @@
   (setq this-command-keys-shift-translated t)
   (call-interactively 'end-of-line)
   (call-interactively 'forward-char))
+
+;; Another alternative
+;;   (source: https://emacs.stackexchange.com/questions/15033/how-to-mark-current-line-and-move-cursor-to-next-line
+(defun my/select-current-line-and-forward-line (arg)
+  "Select the current line and move the cursor by ARG lines IF
+no region is selected.
+
+If a region is already selected when calling this command, only move
+the cursor by ARG lines."
+  (interactive "p")
+  (when (not (use-region-p))
+    (forward-line 0)
+    (set-mark-command nil))
+  (forward-line arg))
 
 
 ;;
