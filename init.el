@@ -101,10 +101,41 @@
 (use-package ivy
   :config (ivy-mode 1))
 
+;; counsel (ivy-enhanced versions of common Emacs commands)
+(use-package counsel
+  :after ivy
+  :config 
+  ;; Don't start searches with ^
+  (setq ivy-initial-inputs-alist nil)
+  ;; Enable mode
+  (counsel-mode 1))
+
+;; swiper (ivy-enhanced isearch)
+(use-package swiper
+  :after ivy
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper)))
+
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
   :after (ivy counsel)
   :config (ivy-rich-mode 1))
+
+;; helpful (alternative help)
+(use-package helpful
+  :after (ivy counsel)
+  :commands (helpful-key helpful-function helpful-symbol helpful-variable) 
+  :custom
+  ;; Use helpful with counsel
+  (counsel-describe-function-function #'helpful-function)
+  (counsel-describe-symbol-function #'helpful-symbol)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-key] . helpful-key)
+  ([remap describe-function] . helpful-function)
+  ([remap describe-symbol] . helpful-symbol)
+  ([remap describe-variable] . helpful-variable)
+  ("C-c C-d" . 'helpful-at-point))
 
 ;; prescient (base package)
 (use-package prescient
@@ -132,37 +163,6 @@
 (use-package company-prescient
   :after (company prescient)
   :config (company-prescient-mode 1))
-
-;; counsel (ivy-enhanced versions of common Emacs commands)
-(use-package counsel
-  :after ivy
-  :config 
-  ;; Don't start searches with ^
-  (setq ivy-initial-inputs-alist nil)
-  ;; Enable mode
-  (counsel-mode 1))
-
-;; swiper (ivy-enhanced isearch)
-(use-package swiper
-  :after ivy
-  :bind (("C-s" . swiper)
-         ("C-r" . swiper)))
-
-;; helpful (alternative help)
-(use-package helpful
-  :after (ivy counsel)
-  :commands (helpful-key helpful-function helpful-symbol helpful-variable) 
-  :custom
-  ;; Use helpful with counsel
-  (counsel-describe-function-function #'helpful-function)
-  (counsel-describe-symbol-function #'helpful-symbol)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-key] . helpful-key)
-  ([remap describe-function] . helpful-function)
-  ([remap describe-symbol] . helpful-symbol)
-  ([remap describe-variable] . helpful-variable)
-  ("C-c C-d" . 'helpful-at-point))
 
 ;; which-key (display available keybindings)
 (use-package which-key
