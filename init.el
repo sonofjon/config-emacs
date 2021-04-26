@@ -195,8 +195,8 @@
 ;; web-mode (major-mode for editing web templates)
 ;;   Use MELPA version to avoid compile warnings
 (use-package web-mode
-  :mode (".html?$" ".php$")
-  :pin melpa)
+  :pin melpa
+  :mode (".html?$" ".php$"))
 
 
 ;;
