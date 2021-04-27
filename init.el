@@ -275,7 +275,8 @@
 (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
 
 ;; dired: custom listing style
-(setq dired-listing-switches "-agho --group-directories-first")
+;; (setq dired-listing-switches "-agho --group-directories-first")
+(setq dired-listing-switches "-agho")   ; macOS version
 
 ;; ispell: set aspell suggestion mode 
 (setq ispell-extra-args '("--sug-mode=ultra"))
