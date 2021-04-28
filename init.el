@@ -190,9 +190,9 @@
 ;; multiple-cursors (edit at multiple points)
 (use-package multiple-cursors
   :bind (("C-c SPC" . set-rectangular-region-anchor)
-         ("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)
-         ("C-c C->" . mc/mark-all-like-this)
+         ("C-c >" . mc/mark-next-like-this)
+         ("C-c <" . mc/mark-previous-like-this)
+         ("C-c ?" . mc/mark-all-like-this)
          ("C-c C-SPC" . mc/edit-lines)))
 
 ;; web-mode (major-mode for editing web templates)
@@ -302,6 +302,7 @@
 ;(global-set-key (kbd "M-<down>")  'windmove-down)
 (global-set-key (kbd "M-p") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-down-line)
+(global-set-key (kbd "C-c ;") 'comment-line)
 (global-set-key (kbd "C-c l") 'my-mark-line)
 ;(global-set-key (kbd "C-c l") #'my/select-current-line-and-forward-line)
 
