@@ -177,8 +177,8 @@
 
 ;; magit (user interface to git)
 (use-package magit
-  ;; Don't show diffs in a separate window
-  ;; :custom (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1) 
+  ;; Disable hl-line-mode
+  :hook (magit-mode . (lambda () (setq-local global-hl-line-mode nil)))
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch-popup)))
 
