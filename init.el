@@ -231,6 +231,10 @@
 
 ;; Highlight current line
 (global-hl-line-mode t)
+;; Deactivate highlight mode when selecting text
+(add-hook 'activate-mark-hook (lambda () (setq-local global-hl-line-mode nil)))
+(add-hook 'deactivate-mark-hook (lambda () (setq-local global-hl-line-mode t)))
+
 
 ;; Enable line numbers
 (global-display-line-numbers-mode t)
