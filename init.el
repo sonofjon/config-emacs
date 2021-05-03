@@ -235,7 +235,6 @@
 (add-hook 'activate-mark-hook (lambda () (setq-local global-hl-line-mode nil)))
 (add-hook 'deactivate-mark-hook (lambda () (setq-local global-hl-line-mode t)))
 
-
 ;; Enable line numbers
 (global-display-line-numbers-mode t)
 
@@ -251,6 +250,9 @@
 
 ;; Use spaces, not tabs
 (setq-default indent-tabs-mode nil)
+
+;; Use TAB for symbol completion (after indentation)
+(setq tab-always-indent 'complete)
 
 ;; Prefer horizontal (side-by-side) window splitting
 ;;   Note: the thresholds need to be twice as big as the smallest
