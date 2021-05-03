@@ -299,6 +299,7 @@
 (global-set-key (kbd "C-c e") 'ediff-buffers) 
 (global-set-key (kbd "C-c r") 'ediff-regions-linewise)
 (global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
+(global-set-key (kbd "C-x v -") 'vc-ediff) 
 (windmove-default-keybindings 'meta)
 ;(global-set-key (kbd "M-<left>")  'windmove-left)
 ;(global-set-key (kbd "M-<right>") 'windmove-right)
