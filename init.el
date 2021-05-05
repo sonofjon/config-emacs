@@ -230,10 +230,10 @@
 (setq inhibit-startup-buffer-menu t)
 
 ;; Highlight current line
-(global-hl-line-mode t)
+(global-hl-line-mode 1)
 ;; Deactivate highlight mode when selecting text
-(add-hook 'activate-mark-hook (lambda () (setq-local global-hl-line-mode nil)))
-(add-hook 'deactivate-mark-hook (lambda () (setq-local global-hl-line-mode t)))
+(add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
+(add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
 ;; Enable line numbers
 (global-display-line-numbers-mode t)
