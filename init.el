@@ -298,8 +298,11 @@
 ;; KEY BINDINGS
 ;;
 
-(define-key input-decode-map "\e[1;8A" [C-S-M-up]) ; is this syntax correct?
-(define-key input-decode-map "\e[1;8B" [C-S-M-down])
+(define-key input-decode-map "\e[1;6A" [C-S-up])
+(define-key input-decode-map "\e[1;6B" [C-S-down])
+;; (define-key input-decode-map "\e[1;8A" [C-S-M-up])
+;; (define-key input-decode-map "\e[1;8B" [C-S-M-down])
+
 (global-set-key (kbd "C-c e") 'ediff-buffers) 
 (global-set-key (kbd "C-c r") 'ediff-regions-linewise)
 (global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
