@@ -116,8 +116,7 @@
 ;; swiper (ivy-enhanced isearch)
 (use-package swiper
   :after ivy
-  :bind (("C-s" . swiper)
-         ("C-r" . swiper)))
+  :bind ("C-c s" . swiper-isearch))
 
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
