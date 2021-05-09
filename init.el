@@ -2,6 +2,10 @@
 ;; STARTUP
 ;;
 
+;; Reduce garbage collection during startup (and reset default value after)
+(setq gc-cons-threshold 100000000)
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000)))
+
 ;; Check startup time
 (defun efs/display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
