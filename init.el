@@ -159,12 +159,12 @@
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
   :pin melpa  
-  :after (ivy counsel)
+  :after ivy
   :config (ivy-rich-mode 1))
 
 ;; helpful (alternative help)
 (use-package helpful
-  :after (ivy counsel)
+  ;; :after (:all ivy counsel)
   :commands (helpful-key helpful-function helpful-symbol helpful-variable) 
   :custom
   ;; Use helpful with counsel
@@ -180,7 +180,7 @@
 
 ;; prescient (base package)
 (use-package prescient
-  :after (ivy counsel)
+  :after (:any ivy company)
   :custom
   ;; Disable sorting by length
   (prescient-sort-length-enable nil)
@@ -190,24 +190,24 @@
 
 ;; ivy-prescient (sort candidates by frequency and recency)
 (use-package ivy-prescient
-  :after (ivy prescient)
+  :after (:all ivy prescient)
   :custom
   ;; Disable prescient filtering (use ivy filtering)
   (ivy-prescient-enable-filtering nil)
   ;; Disable sorting by length
   (ivy-prescient-retain-classic-highlighting t)
   ;; To do: add [counsel-]find-file to ivy-prescient-sort-commands?
-  :config
-  (ivy-prescient-mode 1))
+  :config (ivy-prescient-mode 1))
 
 ;; company-prescient (sort candidates by frequency and recency)
 (use-package company-prescient
-  :after (company prescient)
+  :after (:all company prescient)
   :config (company-prescient-mode 1))
 
 ;; which-key (display available keybindings)
 (use-package which-key
   :diminish
+  ;; :defer
   :config
   ;; Delay (default is 1.0 s)
   ;(setq which-key-idle-delay 0.5))
