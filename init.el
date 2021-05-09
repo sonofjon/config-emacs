@@ -2,13 +2,6 @@
 ;; STARTUP
 ;;
 
-;; Reduce garbage collection during startup
-;;   (and reset default values after)
-(setq gc-cons-threshold 100000000
-      gc-cons-percentage 0.5)
-(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000
-                                            gc-cons-percentage 0.1)))
-
 ;; Check startup time
 (defun efs/display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
@@ -16,8 +9,14 @@
                    (float-time
                     (time-subtract after-init-time before-init-time)))
            gcs-done))
-
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
+
+;; Reduce garbage collection during startup
+;;   (and reset default values after)
+(setq gc-cons-threshold 100000000
+      gc-cons-percentage 0.5)
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000
+                                            gc-cons-percentage 0.1)))
 
 
 ;;
