@@ -2,9 +2,12 @@
 ;; STARTUP
 ;;
 
-;; Reduce garbage collection during startup (and reset default value after)
-(setq gc-cons-threshold 100000000)
-(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000)))
+;; Reduce garbage collection during startup
+;;   (and reset default values after)
+(setq gc-cons-threshold 100000000
+      gc-cons-percentage 0.5)
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000
+                                            gc-cons-percentage 0.1)))
 
 ;; Check startup time
 (defun efs/display-startup-time ()
