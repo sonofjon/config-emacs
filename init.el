@@ -207,11 +207,12 @@
 
 ;; which-key (display available keybindings)
 (use-package which-key
-  :init (which-key-mode))
-  ;:config
   :diminish
+  :config
   ;; Delay (default is 1.0 s)
   ;(setq which-key-idle-delay 0.5))
+  ;; Enable mode
+  (which-key-mode 1))
 
 ;; magit (user interface to git)
 (use-package magit
