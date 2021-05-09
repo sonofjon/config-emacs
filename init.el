@@ -125,6 +125,8 @@
 
 ;; company (in-buffer text completion)
 (use-package company
+  :hook ((prog-mode . company-mode)
+	 (emacs-lisp-mode . company-mode))
   :config
   ;; Provide instant autocompletion (default is 0.5 s)
   ;(setq company-idle-delay 0.0)
