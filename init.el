@@ -113,6 +113,15 @@
 ;; ;  :init (load-theme 'doom-vibrant) t)
 ;; ;  :init (load-theme 'doom-snazzy) t)
 ;;   :init (load-theme 'doom-Iosvkem) t)
+;; diminish (hide minor modes)
+(use-package diminish
+  :config
+  ;; (diminish 'company-mode)
+  ;; (diminish 'ivy-mode)
+  ;; (diminish 'counsel-mode)
+  ;; (diminish 'which-key-mode)
+  (diminish 'eldoc-mode))
+
 
 ;; company (in-buffer text completion)
 (use-package company
