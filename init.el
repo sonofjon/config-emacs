@@ -127,6 +127,7 @@
 
 ;; company (in-buffer text completion)
 (use-package company
+  :diminish
   :hook ((prog-mode . company-mode)
 	 (emacs-lisp-mode . company-mode))
   :config
@@ -137,10 +138,12 @@
 
 ;; ivy (generic completion mechanism)
 (use-package ivy
+  :diminish
   :config (ivy-mode 1))
 
 ;; counsel (ivy-enhanced versions of common Emacs commands)
 (use-package counsel
+  :diminish
   :after ivy
   :config 
   ;; Don't start searches with ^
@@ -206,6 +209,7 @@
 (use-package which-key
   :init (which-key-mode))
   ;:config
+  :diminish
   ;; Delay (default is 1.0 s)
   ;(setq which-key-idle-delay 0.5))
 
