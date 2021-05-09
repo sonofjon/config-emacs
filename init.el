@@ -72,6 +72,9 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
+;; For debugging startup
+(setq use-package-verbose t)
+
 ;; Alternative option to prioritise archives
 ;; (setq use-package-always-pin "melpa-stable")
 
