@@ -170,7 +170,7 @@
 (use-package swiper
   :after ivy
   :bind (("C-s" . swiper-isearch)
-         :map ivy-minibuffer-map
+         :map swiper-map
          ("C-r" . ivy-previous-line-or-history)))
 
 ;; ivy-rich (add descriptions to ivy/counsel output)
