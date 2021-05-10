@@ -156,7 +156,8 @@
 (use-package counsel
   :diminish
   :after ivy
-  ;; :bind (("M-y" . counsel-yank-pop)
+  :bind (("C-c C-SPC" . counsel-mark-ring))
+  ;;        ("M-y" . counsel-yank-pop)
   ;;        :map ivy-minibuffer-map
   ;;        ("M-y" . ivy-next-line-or-call))
   :config 
