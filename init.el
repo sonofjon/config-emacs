@@ -150,7 +150,7 @@
   ;; Maximum number of candidates
   ;; (setq company-tooltip-limit 10)
   ;; Use company mode everywhere
-  (global-company-mode 1))
+  (company-mode 1))
 
 ;; ivy (generic completion mechanism)
 (use-package ivy
