@@ -152,6 +152,15 @@
   ;; Use company mode everywhere
   (company-mode 1))
 
+(use-package company-web
+  :after (:all company web-mode)
+  :config (add-to-list 'company-backends 'company-web))
+
+(use-package company-php
+  ;; :after (:all company php-mode)
+  :after (:all company (:any php-mode web-mode))
+  :config (add-to-list 'company-backends 'company-php))
+
 ;; ivy (generic completion mechanism)
 (use-package ivy
   :diminish
