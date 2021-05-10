@@ -72,13 +72,14 @@
 	("melpa-stable" . 2)
 	("melpa"        . 1)))
 
-;; Add use-package macro
+;; Install use-package macro
 (when (not (package-installed-p 'use-package))
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; Is this needed?
-(require 'use-package)
+;; Load use-package macro
+(eval-when-compile
+  (require 'use-package))
 
 ;; Always install packages if not present
 (require 'use-package-ensure)
