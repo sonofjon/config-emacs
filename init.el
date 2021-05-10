@@ -144,7 +144,11 @@
   :bind ("TAB" . company-complete)
   :config
   ;; Provide instant autocompletion (default is 0.5 s)
-  ;(setq company-idle-delay 0.0)
+  ;; (setq company-idle-delay 0.0)
+  ;; Minimum prefix for completion
+  ;; (setq company-minimum-prefix-length 3)
+  ;; Maximum number of candidates
+  ;; (setq company-tooltip-limit 10)
   ;; Use company mode everywhere
   (global-company-mode 1))
 
