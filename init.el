@@ -156,7 +156,7 @@
 (use-package counsel
   :diminish
   :after ivy
-  :bind (("C-c C-SPC" . counsel-mark-ring))
+  :bind (("C-c SPC" . counsel-mark-ring))
   ;;        ("M-y" . counsel-yank-pop)
   ;;        :map ivy-minibuffer-map
   ;;        ("M-y" . ivy-next-line-or-call))
@@ -172,7 +172,7 @@
   :bind (("C-s" . swiper-isearch)
          ("C-r" . swiper-isearch-backward)
          ("C-c s" . swiper)
-         ("C-c C-s" . swiper-all)
+         ("C-c S" . swiper-all)
          :map swiper-isearch-map
          ("C-r" . ivy-previous-line-or-history)))
 
@@ -196,7 +196,7 @@
   ([remap describe-function] . helpful-function)
   ([remap describe-symbol] . helpful-symbol)
   ([remap describe-variable] . helpful-variable)
-  ("C-c C-d" . 'helpful-at-point))
+  ("C-c h" . 'helpful-at-point))
 
 ;; prescient (base package)
 (use-package prescient
@@ -252,7 +252,7 @@
          ("C-c >" . mc/mark-next-like-this)
          ("C-c <" . mc/mark-previous-like-this)
          ("C-c ?" . mc/mark-all-like-this)
-         ("C-c C-c" . mc/edit-lines)))
+         ("C-c C" . mc/edit-lines)))
 
 ;; web-mode (major-mode for editing web templates)
 ;;   Use MELPA version to avoid compile warnings
