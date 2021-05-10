@@ -57,7 +57,8 @@
 
 ;; Initialize package sources
 (require 'package)
-(package-initialize)
+(if (version< emacs-version "27")
+    (package-initialize))
 
 ;; Add MELPA to package-archives
 (add-to-list 'package-archives
