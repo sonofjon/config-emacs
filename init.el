@@ -11,6 +11,11 @@
            gcs-done))
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
+;; Benchmark (install manually first)
+(require 'benchmark-init)
+;; Disable collection of benchmark data after init
+(add-hook 'after-init-hook 'benchmark-init/deactivate)
+
 ;; Reduce garbage collection during startup
 ;;   (and reset default values after)
 (setq gc-cons-threshold 100000000
