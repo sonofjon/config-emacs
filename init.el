@@ -138,7 +138,7 @@
 
 ;; company (in-buffer text completion)
 (use-package company
-  :diminish
+  ;; :diminish
   :hook ((prog-mode . company-mode)
 	 (emacs-lisp-mode . company-mode))
   :config
