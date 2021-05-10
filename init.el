@@ -166,7 +166,7 @@
 ;; swiper (ivy-enhanced isearch)
 (use-package swiper
   :after ivy
-  :bind (("C-c s" . swiper-isearch)
+  :bind (("C-s" . swiper-isearch)
          :map ivy-minibuffer-map
          ("C-r" . ivy-previous-line-or-history)))
 
