@@ -147,6 +147,9 @@
 (use-package counsel
   :diminish
   :after ivy
+  ;; :bind (("M-y" . counsel-yank-pop)
+  ;;        :map ivy-minibuffer-map
+  ;;        ("M-y" . ivy-next-line-or-call))
   :config 
   ;; Don't start searches with ^
   (setq ivy-initial-inputs-alist nil)
@@ -156,7 +159,9 @@
 ;; swiper (ivy-enhanced isearch)
 (use-package swiper
   :after ivy
-  :bind ("C-c s" . swiper-isearch))
+  :bind (("C-c s" . swiper-isearch)
+         :map ivy-minibuffer-map
+         ("C-r" . ivy-previous-line-or-history)))
 
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
