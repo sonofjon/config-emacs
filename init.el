@@ -244,11 +244,11 @@
 
 ;; multiple-cursors (edit at multiple points)
 (use-package multiple-cursors
-  :bind (("C-c SPC" . set-rectangular-region-anchor)
+  :bind (("C-c c" . set-rectangular-region-anchor)
          ("C-c >" . mc/mark-next-like-this)
          ("C-c <" . mc/mark-previous-like-this)
          ("C-c ?" . mc/mark-all-like-this)
-         ("C-c C-SPC" . mc/edit-lines)))
+         ("C-c C-c" . mc/edit-lines)))
 
 ;; web-mode (major-mode for editing web templates)
 ;;   Use MELPA version to avoid compile warnings
