@@ -62,9 +62,9 @@
 
 ;; Add MELPA to package-archives
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives
 	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+	     '("melpa" . "https://melpa.org/packages/") t)
 
 ;; Set package-archives priorities
 (setq package-archive-priorities
