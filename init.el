@@ -388,6 +388,7 @@
 (define-key input-decode-map "\e[1;6B" [C-S-down])
 ;; (define-key input-decode-map "\e[1;8A" [C-S-M-up])
 ;; (define-key input-decode-map "\e[1;8B" [C-S-M-down])
+
 ;; (define-key input-decode-map "\e[127;2u" [S-backspace])
 (define-key input-decode-map "\e[127;5u" [C-backspace])
 (define-key input-decode-map "\e[127;6u" [C-S-backspace])
@@ -405,8 +406,8 @@
 (global-set-key (kbd "M-n") 'scroll-down-line)
 (global-set-key (kbd "C-c ;") 'comment-line)
 (global-set-key (kbd "C-c l") 'my-mark-line)
-(global-set-key (kbd "C-S-<down>") 'aj8/select-line)
-(global-set-key (kbd "C-S-<up>") 'aj8/select-line-up)
+(global-set-key (kbd "C-S-M-<down>") 'aj8/select-line)
+(global-set-key (kbd "C-S-M-<up>") 'aj8/select-line-up)
 (global-set-key (kbd "C-x 9") 'window-swap-states)
 (global-set-key (kbd "C-<backspace>") (lambda () (interactive) (kill-line 0)))
 (global-set-key (kbd "C-c k") (lambda () (interactive) (kill-line 0)))
