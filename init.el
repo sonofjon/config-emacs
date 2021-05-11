@@ -24,7 +24,7 @@
 ;;
 
 ;; Use custom-file.el for custom-* code
-(setq custom-file "~/.emacs.d/custom-file.el")
+(setq custom-file "~/.emacs.default/custom-file.el")
 
 ;; Load custom file
 (load-file custom-file)
