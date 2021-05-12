@@ -401,8 +401,8 @@
 (global-set-key (kbd "M-n") 'scroll-down-line)
 (global-set-key (kbd "C-c ;") 'comment-line)
 (global-set-key (kbd "C-c l") 'my-mark-line)
-(global-set-key (kbd "C-S-<down>") 'xah-select-line)
-(global-set-key (kbd "C-S-<up>") 'xah-select-line-up)
+(global-set-key (kbd "C-S-<down>") 'aj8/select-line)
+(global-set-key (kbd "C-S-<up>") 'aj8/select-line-up)
 (global-set-key (kbd "C-x 9") 'window-swap-states)
 (global-set-key (kbd "C-<backspace>") (lambda () (interactive) (kill-line 0)))
 (global-set-key (kbd "C-c k") (lambda () (interactive) (kill-line 0)))
@@ -417,7 +417,7 @@
 ;;
 
 ;; Mark line and enable to grow selection
-(defun xah-select-line ()
+(defun aj8/select-line ()
   "Select current line. If region is active, extend selection downward by line."
   (interactive)
   (if (region-active-p)
@@ -431,7 +431,7 @@
       )))
 
 ;; Mark line and enable to grow selection (up)
-(defun xah-select-line-up ()
+(defun aj8/select-line-up ()
   "Select current line. If region is active, extend selection upward by line."
   (interactive)
   (if (region-active-p)
