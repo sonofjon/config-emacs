@@ -381,6 +381,9 @@
 (define-key input-decode-map "\e[1;6B" [C-S-down])
 ;; (define-key input-decode-map "\e[1;8A" [C-S-M-up])
 ;; (define-key input-decode-map "\e[1;8B" [C-S-M-down])
+;; (define-key input-decode-map "\e[127;2u" [S-backspace])
+(define-key input-decode-map "\e[127;5u" [C-backspace])
+(define-key input-decode-map "\e[127;6u" [C-S-backspace])
 
 (global-set-key (kbd "C-c e") 'ediff-buffers) 
 (global-set-key (kbd "C-c r") 'ediff-regions-linewise)
