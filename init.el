@@ -293,14 +293,18 @@
 ;; CUSTOMIZATION
 ;;
 
+;; Disable menu bar
+(menu-bar-mode -1) 
+
+;; Hide buffer list at startup when loading multiple files
+(setq inhibit-startup-buffer-menu t)
+
 ;; Open up the debugger on error
 (setq debug-on-error t)
 
 ;; Use Command as Meta on macOS
 ;(setq mac-command-modifier 'meta)
 
-;; Hide buffer list at startup when loading multiple files
-(setq inhibit-startup-buffer-menu t)
 ;; Delete trailing newline character with 'kill-line
 (setq kill-whole-line t)
 
@@ -319,9 +323,6 @@
                 eshell-mode-hook
                 term-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-;; Disable menu bar
-(menu-bar-mode -1) 
 
 ;; Use spaces, not tabs
 (setq-default indent-tabs-mode nil)
