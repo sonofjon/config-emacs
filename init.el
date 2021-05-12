@@ -301,6 +301,8 @@
 
 ;; Hide buffer list at startup when loading multiple files
 (setq inhibit-startup-buffer-menu t)
+;; Delete trailing newline character with 'kill-line
+(setq kill-whole-line t)
 
 ;; Highlight current line
 (global-hl-line-mode 1)
