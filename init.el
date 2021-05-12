@@ -268,6 +268,10 @@
          ("C-c ?" . mc/mark-all-like-this)
          ("C-c C" . mc/edit-lines)))
 
+;; whole-line-or-region (apply current line if region is undefined)
+;; (use-package whole-line-or-region
+;;   :config (whole-line-or-region-global-mode 1))
+
 ;; web-mode (major-mode for editing web templates)
 ;;   Use MELPA version to avoid compile warnings
 (use-package web-mode
