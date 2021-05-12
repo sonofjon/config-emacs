@@ -327,6 +327,9 @@
 ;; Use TAB for symbol completion (after indentation)
 (setq tab-always-indent 'complete)
 
+;; Delete selection on edit
+(delete-selection-mode 1)
+
 ;; Prefer horizontal (side-by-side) window splitting
 ;;   Note: the thresholds need to be twice as big as the smallest
 ;;   window allowed, because the new windows each use half of former
