@@ -69,7 +69,8 @@
 
 ;; Refresh packages database (in background)
 ;;   async argument fails with Chemacs
-;; (package-refresh-contents t)
+;; (unless package-archive-contents
+;;   (package-refresh-contents t))
 
 ;; Refresh packages database (on first install)
 (defun my-package-install-refresh-contents (&rest args)
