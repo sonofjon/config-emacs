@@ -67,9 +67,19 @@
 ;; 	("melpa-stable" . 2)
 ;; 	("melpa"        . 1)))
 
-;; Install use-package macro
-(when (not (package-installed-p 'use-package))
+;; Refresh packages database (in background)
+;;   async argument fails with Chemacs
+;; (package-refresh-contents t)
+
+;; Refresh packages database (on first install)
+(defun my-package-install-refresh-contents (&rest args)
   (package-refresh-contents)
+  (advice-remove 'package-install 'my-package-install-refresh-contents))
+
+(advice-add 'package-install :before 'my-package-install-refresh-contents)
+
+;; Install use-package macro
+(if (not (package-installed-p 'use-package))
   (package-install 'use-package))
 
 ;; Load use-package macro
