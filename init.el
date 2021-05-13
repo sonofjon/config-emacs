@@ -424,6 +424,7 @@
 (global-set-key (kbd "C-x 9") 'window-swap-states)
 (global-set-key (kbd "C-<backspace>") (lambda () (interactive) (kill-line 0)))
 (global-set-key (kbd "C-c k") (lambda () (interactive) (kill-line 0)))
+(global-set-key (kbd "C-c f") 'find-file-at-point)
 
 ;; Unbind keys:
 ;; (global-set-key (kbd "C-x") nil)
