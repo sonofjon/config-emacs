@@ -93,6 +93,9 @@
 ;; For debugging startup
 (setq use-package-verbose t)
 
+;; Lower time threshold for package load time reporting
+(setq use-package-minimum-reported-time 0.001)
+
 ;; Alternative option to prioritise archives
 ;; (setq use-package-always-pin "melpa-stable")
 
