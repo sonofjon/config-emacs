@@ -133,10 +133,6 @@
   :disabled
   :defer   ; Fix loading warning
   :config
-  ;; Do not use a different background color for comments
-  ;(setq spacemacs-theme-comment-bg nil)
-  ;; Comments should appear in italics.
-  ;(setq spacemacs-theme-comment-italic t)
   ;; Use the spacemacs-dark theme
   ;(load-theme 'spacemacs-dark t))
   ;; Fix loading warning
