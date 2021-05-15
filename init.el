@@ -133,6 +133,31 @@
   ;; (diminish 'which-key-mode)
   (diminish 'eldoc-mode))
 
+;; base16-theme
+;;   Available options: https://belak.github.io/base16-emacs/
+(use-package base16-theme
+  :config
+  (setq base16-theme-256-color-source "base16-shell")
+  ;; (setq base16-theme-256-color-source "colors")
+  ;; (load-theme 'base16-default-dark t))
+  ;; (load-theme 'base16-default-light t))
+  ;; (load-theme 'base16-chalk t))
+  ;; (load-theme 'base16-default-dark t))
+  ;; (load-theme 'base16-default-light t))
+  ;; (load-theme 'base16-dracula t))
+  ;; (load-theme 'base16-flat t))
+  ;; (load-theme 'base16-google-dark t))
+  ;; (load-theme 'base16-google-light t))
+  (load-theme 'base16-materia t))
+  ;; (load-theme 'base16-nord t))
+  ;; (load-theme 'base16-onedark t))
+  ;; (load-theme 'base16-one-light t))
+  ;; (load-theme 'base16-solarized-dark t))
+  ;; (load-theme 'base16-solarized-light t))
+  ;; (load-theme 'base16-spacemacs t))
+  ;; (load-theme 'base16-summerfruit-dark t))
+  ;; (load-theme 'base16-summerfruit-light t))
+
 ;; spacemacs-theme
 (use-package spacemacs-theme
   :disabled
@@ -304,14 +329,13 @@
 ;; THEMES
 ;;
 
-;; Load theme
-;(load-theme 'dichromacy)
-;(load-theme 'manoj-dark)
-;(load-theme 'misterioso)
-;(load-theme 'tango-dark)
-;(load-theme 'tsdh-dark)
-;(load-theme 'wheatgrass)
-(load-theme 'wombat)
+;; (load-theme 'dichromacy)
+;; (load-theme 'manoj-dark)
+;; (load-theme 'misterioso)
+;; (load-theme 'tango-dark)
+;; (load-theme 'tsdh-dark)
+;; (load-theme 'wheatgrass)
+;; (load-theme 'wombat)
 
 
 ;;
