@@ -292,6 +292,12 @@
   :pin melpa
   :mode (".html?$" ".php$"))
 
+;; google-this (google search functions)
+(use-package google-this
+  :bind ("C-c g" . google-this-mode-submap)
+  :config
+  (google-this-mode 1))
+
 
 ;;
 ;; THEMES
