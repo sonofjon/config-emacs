@@ -115,8 +115,13 @@
 ;; auto-package-update
 (use-package auto-package-update
   :config
+  ;; Prompt before update
+  ;; (setq auto-package-update-prompt-before-update t)
+  ;; Delete old versions
   (setq auto-package-update-delete-old-versions t)
-  ;(setq auto-package-update-hide-results t)
+  ;; Don't show update results
+  ;; (setq auto-package-update-hide-results t)
+  ;; Enable mode
   (auto-package-update-maybe))
 
 ;; diminish (hide minor modes)
