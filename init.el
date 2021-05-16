@@ -139,24 +139,29 @@
   :config
   (setq base16-theme-256-color-source "base16-shell")
   ;; (setq base16-theme-256-color-source "colors")
+  ;; (load-theme 'base16-classic-dark t))
+  ;; (load-theme 'base16-classic-light t))
   ;; (load-theme 'base16-default-dark t))
   ;; (load-theme 'base16-default-light t))
-  ;; (load-theme 'base16-chalk t))
-  ;; (load-theme 'base16-default-dark t))
-  ;; (load-theme 'base16-default-light t))
-  ;; (load-theme 'base16-dracula t))
-  ;; (load-theme 'base16-flat t))
   ;; (load-theme 'base16-google-dark t))
   ;; (load-theme 'base16-google-light t))
-  (load-theme 'base16-materia t))
-  ;; (load-theme 'base16-nord t))
   ;; (load-theme 'base16-onedark t))
   ;; (load-theme 'base16-one-light t))
   ;; (load-theme 'base16-solarized-dark t))
   ;; (load-theme 'base16-solarized-light t))
-  ;; (load-theme 'base16-spacemacs t))
   ;; (load-theme 'base16-summerfruit-dark t))
   ;; (load-theme 'base16-summerfruit-light t))
+  ;; (load-theme 'base16-brewer t))
+  ;; (load-theme 'base16-chalk t))
+  ;; (load-theme 'base16-circus t))
+  ;; (load-theme 'base16-dracula t))
+  ;; (load-theme 'base16-eighties t))
+  (load-theme 'base16-flat t))
+  ;; (load-theme 'base16-materia t))
+  ;; (load-theme 'base16-nord t))
+  ;; (load-theme 'base16-snazzy t))
+  ;; (load-theme 'base16-spacemacs t))
+  ;; (load-theme 'base16-zenburn t))
 
 ;; spacemacs-theme
 (use-package spacemacs-theme
@@ -359,6 +364,7 @@
 
 ;; Highlight current line
 (global-hl-line-mode 1)
+
 ;; Deactivate highlight mode when selecting text
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
