@@ -444,11 +444,6 @@
 (define-key input-decode-map "\e[127;5u" [C-backspace])
 (define-key input-decode-map "\e[127;6u" [C-S-backspace])
 
-(global-set-key (kbd "C-c e") 'ediff-buffers) 
-(global-set-key (kbd "C-c r") 'ediff-regions-linewise)
-(global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
-(global-set-key (kbd "C-x v -") 'vc-ediff) 
-
 ;; Navigation
 
 (windmove-default-keybindings 'meta)
@@ -462,10 +457,7 @@
 (global-set-key (kbd "M-n") 'scroll-down-line)
 
 ;; Selection
-(define-key input-decode-map "\e[1;6A" [C-S-up])
-(define-key input-decode-map "\e[1;6B" [C-S-down])
-(define-key input-decode-map "\e[1;8A" [C-S-M-up])
-(define-key input-decode-map "\e[1;8B" [C-S-M-down])
+
 (global-set-key (kbd "C-c l") 'my-mark-line)
 
 (global-set-key (kbd "C-S-M-<down>") 'aj8/select-line)
@@ -480,15 +472,18 @@
 (global-set-key (kbd "C-c ;") 'comment-line)
 
 ;; Files
+
 (global-set-key (kbd "C-c f") 'find-file-at-point)
 
 ;; Version control
+
 (global-set-key (kbd "C-c e") 'ediff-buffers) 
 (global-set-key (kbd "C-c r") 'ediff-regions-linewise)
 (global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
 (global-set-key (kbd "C-x v -") 'vc-ediff) 
 
 ;; Unbind keys
+
 ;; (global-set-key (kbd "C-x") nil)
 ;; (global-unset-key (kbd "C-x"))   ; Alternative syntax
 
