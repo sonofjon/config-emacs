@@ -471,6 +471,9 @@
 
 (global-set-key (kbd "C-c ;") 'comment-line)
 
+(global-set-key (kbd "M-y") 'my/counsel-yank-pop-or-yank-pop)
+  ; won't be needed in Emacs 28
+
 ;; Files
 
 (global-set-key (kbd "C-c f") 'find-file-at-point)
@@ -542,6 +545,14 @@ the cursor by ARG lines."
     (forward-line 0)
     (set-mark-command nil))
   (forward-line arg))
+
+;; Custom counsel-yank-pop
+(defun my/counsel-yank-pop-or-yank-pop (&optional arg)
+  "Call `counsel-yank-pop'. If called after a yank, call `yank-pop' instead."
+  (interactive "*p")
+  (if (eq last-command 'yank)
+      (yank-pop arg)
+    (counsel-yank-pop)))
 
 
 ;;
