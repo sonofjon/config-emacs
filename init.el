@@ -20,15 +20,24 @@
 
 
 ;;
-;; INITIALIZATION
+;; LOCAL SETTINGS (EARLY)
 ;;
 
-;; Use custom-file.el for custom-* code
-(if (equal (system-name) "MacBook-Air.lan")
-    ;; Use Chemacs setup
-    (setq custom-file "~/.emacs.default/custom-file.el")
-  ;; Other systems
-  (setq custom-file "~/.emacs.d/custom-file.el"))
+(cond ((equal (system-name) "MacBook-Air.lan")
+       ;; Use custom-file.el for custom-* code (Chemacs setup)
+       (setq custom-file "~/.emacs.default/custom-file.el"))
+
+      ((equal (system-name) "penguin")
+       ;; Use custom-file.el for custom-* code
+       (setq custom-file "~/.emacs.d/custom-file.el")
+       ;; Fix for Emacs bug on Chromebook
+       ;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
+       (message "Fix for Chromebook")
+       (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
+      (t 
+       ;; Use custom-file.el for custom-* code
+       (setq custom-file "~/.emacs.d/custom-file.el")))
 
 ;; Load custom file
 (load-file custom-file)
@@ -37,12 +46,6 @@
 ;;
 ;; FIXES
 ;;
-
-;; Fix for Emacs bug on Chromebook
-;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
-(when (equal (system-name) "penguin")
-    (message "Fix for Chromebook")
-    (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 ;; Suppress warnings about unnecessary package-initialize calls
 ;;   Introduced when switching to Melpa Stable
