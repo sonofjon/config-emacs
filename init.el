@@ -29,6 +29,7 @@
 ;; Load custom file
 (load-file custom-file)
 
+
 ;;
 ;; FIXES
 ;;
@@ -460,8 +461,8 @@
 
 (global-set-key (kbd "C-c l") 'my-mark-line)
 
-(global-set-key (kbd "C-S-M-<down>") 'aj8/select-line)
-(global-set-key (kbd "C-S-M-<up>") 'aj8/select-line-up)
+(global-set-key (kbd "C-S-M-<down>") 'my/select-line)
+(global-set-key (kbd "C-S-M-<up>") 'my/select-line-up)
 (global-set-key (kbd "C-x 9") 'window-swap-states)
 
 ;; Editing
@@ -496,7 +497,7 @@
 ;;
 
 ;; Mark line and enable to grow selection
-(defun aj8/select-line ()
+(defun my/select-line ()
   "Select current line. If region is active, extend selection downward by line."
   (interactive)
   (if (region-active-p)
@@ -510,7 +511,7 @@
       )))
 
 ;; Mark line and enable to grow selection (up)
-(defun aj8/select-line-up ()
+(defun my/select-line-up ()
   "Select current line. If region is active, extend selection upward by line."
   (interactive)
   (if (region-active-p)
