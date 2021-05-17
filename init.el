@@ -143,9 +143,9 @@
 
 ;; base16-theme
 ;;   Available options: https://belak.github.io/base16-emacs/
-(use-package base16-theme
-  :config
-  (setq base16-theme-256-color-source "base16-shell")
+(use-package base16-theme)
+  ;; :config
+  ;; (setq base16-theme-256-color-source "base16-shell")
   ;; (setq base16-theme-256-color-source "colors")
   ;; (load-theme 'base16-classic-dark t))
   ;; (load-theme 'base16-classic-light t))
@@ -164,7 +164,7 @@
   ;; (load-theme 'base16-circus t))
   ;; (load-theme 'base16-dracula t))
   ;; (load-theme 'base16-eighties t))
-  (load-theme 'base16-flat t))
+  ;; (load-theme 'base16-flat t))
   ;; (load-theme 'base16-materia t))
   ;; (load-theme 'base16-nord t))
   ;; (load-theme 'base16-snazzy t))
@@ -564,10 +564,19 @@ the cursor by ARG lines."
 
 
 ;;
-;; LOCAL 
+;; LOCAL SETTINGS (LATE)
 ;;
 
-;; ;; Conditionally load host specific stuff
+(cond ((equal (system-name) "MacBook-Air.lan")
+       ;; Load theme
+       (setq base16-theme-256-color-source "base16-shell")
+       (load-theme 'base16-flat t))
+
+      (t 
+       ;; Load theme
+       (load-theme 'wombat)))
+
+;; Conditionally load host specific stuff
 ;; (let ((host-specific-files (concat (make-load-path-base) system-name ".el")))
 ;;   (if (file-exists-p host-specific-files)
 ;;       (load host-specific-files)
