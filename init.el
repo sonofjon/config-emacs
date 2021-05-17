@@ -24,7 +24,11 @@
 ;;
 
 ;; Use custom-file.el for custom-* code
-(setq custom-file "~/.emacs.default/custom-file.el")
+(if (equal (system-name) "MacBook-Air.lan")
+    ;; Use Chemacs setup
+    (setq custom-file "~/.emacs.default/custom-file.el")
+  ;; Other systems
+  (setq custom-file "~/.emacs.d/custom-file.el"))
 
 ;; Load custom file
 (load-file custom-file)
