@@ -535,7 +535,7 @@
         (beginning-of-line))
     (progn
       (beginning-of-line)
-      (set-mark (line-end-position)))))
+      (set-mark (line-beginning-position 2)))))
 
 ;; Mark line and enable to grow selection
 ;;   (source: http://emacs.stackexchange.com/a/22166/93)
