@@ -476,8 +476,10 @@
 
 (global-set-key (kbd "C-c l") 'my-mark-line)
 
-(global-set-key (kbd "C-S-M-<down>") 'my/select-line)
-(global-set-key (kbd "C-S-M-<up>") 'my/select-line-up)
+;; (global-set-key (kbd "C-S-M-<down>") 'my/select-line)
+;; (global-set-key (kbd "C-S-M-<up>") 'my/select-line-up)
+(global-set-key (kbd "C-S-M-<down>") 'my-mark-line)
+(global-set-key (kbd "C-S-M-<up>") 'my-mark-line-up)
 (global-set-key (kbd "C-x 9") 'window-swap-states)
 
 ;; Editing
@@ -522,8 +524,7 @@
     (progn
       (end-of-line)
       (set-mark (line-beginning-position))
-      (forward-char)
-      )))
+      (forward-char))))
 
 ;; Mark line and enable to grow selection (up)
 (defun my/select-line-up ()
@@ -537,16 +538,23 @@
       (beginning-of-line)
       (set-mark (line-beginning-position 2)))))
 
-;; Mark line and enable to grow selection
+;; Mark whole line (down)
 ;;   (source: http://emacs.stackexchange.com/a/22166/93)
-;; ...but what I really want is C-S-<arrow> to grow selection
-;; including entire lines regardless of point position on a line
 (defun my-mark-line ()
   (interactive)
-  (beginning-of-line)
+  (if (not (use-region-p))
+      (beginning-of-line)
   (setq this-command-keys-shift-translated t)
   (call-interactively 'end-of-line)
   (call-interactively 'forward-char))
+
+;; Mark whole line (up)
+(defun my-mark-line-up ()
+  (interactive)
+  (if (not (use-region-p))
+      (forward-line))
+  (setq this-command-keys-shift-translated t)
+  (call-interactively 'previous-line))
 
 ;; Another alternative
 ;;   (source: https://emacs.stackexchange.com/questions/15033/how-to-mark-current-line-and-move-cursor-to-next-line
