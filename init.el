@@ -453,6 +453,12 @@
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
+;; subword: camelCase
+(add-hook 'prog-mode-hook (lambda () (subword-mode 1)))
+
+;; superword: snake_case & kebab=case?
+(add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
+
 
 ;;
 ;; KEY BINDINGS
