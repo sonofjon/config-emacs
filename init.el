@@ -141,6 +141,14 @@
   ;; (diminish 'which-key-mode)
   (diminish 'eldoc-mode))
 
+;; paradox (improved package menu)
+(use-package paradox
+  :config
+  ;; Disable *Paradox Report* buffer
+  (remove-hook 'paradox--report-buffer-print 'paradox-after-execute-functions)
+  ;; Enable mode
+  (paradox-enable))
+
 ;; base16-theme
 ;;   Available options: https://belak.github.io/base16-emacs/
 (use-package base16-theme)
