@@ -543,7 +543,7 @@
 (defun my-mark-line ()
   (interactive)
   (if (not (use-region-p))
-      (beginning-of-line)
+      (beginning-of-line))
   (setq this-command-keys-shift-translated t)
   (call-interactively 'end-of-line)
   (call-interactively 'forward-char))
