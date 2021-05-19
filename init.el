@@ -321,6 +321,10 @@
   :hook ((prog-mode . rainbow-delimiters-mode)
 	 (emacs-lisp-mode . rainbow-delimiters-mode)))
 
+;; expand-region (grow selected region by semantic units)
+(use-package expand-region
+  :bind ("C-c =" . er/expand-region))
+
 ;; multiple-cursors (edit at multiple points)
 (use-package multiple-cursors
   :bind (("C-c c" . set-rectangular-region-anchor)
