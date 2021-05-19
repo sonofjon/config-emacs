@@ -485,6 +485,10 @@
 
 ;; Selection
 
+(global-set-key (kbd "C-c @") 'mark-word)
+(global-set-key (kbd "M-#") 'my-mark-word)
+(global-set-key (kbd "M-@") 'my-mark-word-backward)
+
 (global-set-key (kbd "C-c l") 'my-mark-line)
 
 ;; (global-set-key (kbd "C-S-M-<down>") 'my/select-line)
@@ -523,6 +527,28 @@
 ;;
 ;; FUNCTIONS 
 ;;
+
+;; Mark whole word (forward)
+(defun my-mark-word (N)
+  (interactive "p")
+  (when (and
+         (not (eq last-command this-command))
+         (not (eq last-command 'my-mark-word-backward)))
+    (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
+        (backward-word))
+    (set-mark (point)))
+  (forward-word N))
+
+;; Mark whole word (backward)
+(defun my-mark-word-backward (N)
+  (interactive "p")
+  (when (and
+         (not (eq last-command this-command))
+         (not (eq last-command 'my-mark-word)))
+    (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
+        (forward-word))
+    (set-mark (point)))
+  (backward-word N))
 
 ;; Mark line and enable to grow selection
 (defun my/select-line ()
