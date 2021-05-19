@@ -349,6 +349,13 @@
   :config
   (google-this-mode 1))
 
+;; diff-hl (highlight uncommitted changes)
+(use-package diff-hl
+  :disabled
+  :config
+  (global-diff-hl-mode 1)
+  (diff-hl-margin-mode))
+
 
 ;;
 ;; THEMES
