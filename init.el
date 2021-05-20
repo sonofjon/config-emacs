@@ -311,6 +311,8 @@
   ;; Disable hl-line-mode
   :hook (magit-mode . (lambda () (setq-local global-hl-line-mode nil)))
   :bind (("C-x g" . magit-status)
+         ;; ("C-x M-g" . magit-dispatch)   ; default binding
+	 ("C-c g" . magit-file-dispatch)))
 
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
@@ -340,7 +342,7 @@
 
 ;; google-this (google search functions)
 (use-package google-this
-  :bind ("C-c g" . google-this-mode-submap)
+  ;; :bind ("C-c g" . google-this-mode-submap)
   :config
   (google-this-mode 1))
 
