@@ -473,10 +473,17 @@
 (define-key input-decode-map "\e[127;5u" [C-backspace])
 (define-key input-decode-map "\e[127;6u" [C-S-backspace])
 
+;; Windows
+
+(global-set-key (kbd "C-x 9") 'window-swap-states)
+
 ;; Navigation
 
 (windmove-default-keybindings 'meta)
-(global-set-key (kbd "C-x 9") 'window-swap-states)
+;(global-set-key (kbd "M-<left>")  'windmove-left)
+;(global-set-key (kbd "M-<right>") 'windmove-right)
+;(global-set-key (kbd "M-<up>")    'windmove-up)
+;(global-set-key (kbd "M-<down>")  'windmove-down)
 
 (global-set-key (kbd "M-p") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-down-line)
@@ -493,7 +500,6 @@
 ;; (global-set-key (kbd "C-S-M-<up>") 'my/select-line-up)
 (global-set-key (kbd "C-S-M-<down>") 'my-mark-line)
 (global-set-key (kbd "C-S-M-<up>") 'my-mark-line-up)
-(global-set-key (kbd "C-x 9") 'window-swap-states)
 
 ;; Editing
 
