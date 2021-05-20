@@ -475,6 +475,7 @@
 
 ;; Windows
 
+(global-set-key (kbd "C-x M-9") 'toggle-window-split)
 (global-set-key (kbd "C-x 9") 'window-swap-states)
 
 ;; Navigation
@@ -531,6 +532,19 @@
 ;;
 ;; FUNCTIONS 
 ;;
+
+;; Toggle window split
+(defun toggle-window-split ()
+  "If the window is split vertically, split it horizontally or vice versa."
+  (interactive)
+  (unless (= (count-windows) 2)
+    (error "Can only toggle a window split in two"))
+  (let ((split-vertically-p (window-combined-p)))
+    (delete-window)   ; close current window
+    (if split-vertically-p
+        (split-window-horizontally)
+      (split-window-vertically))   ; makes a split with the other window twice
+    (switch-to-buffer nil)))   ; restore the original window in this part of the window
 
 ;; Mark whole word (forward)
 (defun my-mark-word (N)
