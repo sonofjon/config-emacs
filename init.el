@@ -311,7 +311,6 @@
   ;; Disable hl-line-mode
   :hook (magit-mode . (lambda () (setq-local global-hl-line-mode nil)))
   :bind (("C-x g" . magit-status)
-         ("C-x M-g" . magit-dispatch-popup)))
 
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
