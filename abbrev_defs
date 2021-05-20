@@ -5,6 +5,8 @@
 
 (define-abbrev-table 'Info-edit-mode-abbrev-table '())
 
+(define-abbrev-table 'array-mode-abbrev-table '())
+
 (define-abbrev-table 'benchmark-init/tabulated-mode-abbrev-table '())
 
 (define-abbrev-table 'change-log-mode-abbrev-table '())
@@ -114,7 +116,10 @@
 (define-abbrev-table 'text-mode-abbrev-table
   '(
     ("aup" "Add use-package: " nil 0)
+    ("bf" "Bug fix: " nil 0)
    ))
+
+(define-abbrev-table 'url-cookie-mode-abbrev-table '())
 
 (define-abbrev-table 'use-package-statistics-mode-abbrev-table '())
 
