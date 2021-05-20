@@ -81,7 +81,7 @@
 
 (define-abbrev-table 'magit-stashes-mode-abbrev-table '())
 
-(define-abbrev-table 'magit-status-mode-abbrev-table
+(define-abbrev-table 'magit-status-mode-abbrev-table '())
 
 (define-abbrev-table 'magit-submodule-list-mode-abbrev-table '())
 
