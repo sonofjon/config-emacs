@@ -232,9 +232,6 @@
   :diminish
   :after ivy
   :bind (("C-c SPC" . counsel-mark-ring))
-  ;;        ("M-y" . counsel-yank-pop)
-  ;;        :map ivy-minibuffer-map
-  ;;        ("M-y" . ivy-next-line-or-call))
   :config 
   ;; Don't start searches with ^
   (setq ivy-initial-inputs-alist nil)
