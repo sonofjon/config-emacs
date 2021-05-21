@@ -65,15 +65,15 @@
 
 ;; Add MELPA to package-archives
 (add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/") t)
+             '("melpa" . "https://melpa.org/packages/") t)
 ;; (add-to-list 'package-archives
-;; 	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;;              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 ;; Set package-archives priorities
 ;; (setq package-archive-priorities
 ;;       '(("gnu"          . 3)
-;; 	("melpa-stable" . 2)
-;; 	("melpa"        . 1)))
+;;         ("melpa-stable" . 2)
+;;         ("melpa"        . 1)))
 
 ;; Refresh packages database (in background)
 ;;   async argument fails with Chemacs
@@ -89,7 +89,7 @@
 
 ;; Install use-package macro
 (if (not (package-installed-p 'use-package))
-  (package-install 'use-package))
+    (package-install 'use-package))
 
 ;; Load use-package macro
 (eval-when-compile
@@ -185,23 +185,23 @@
   :defer   ; Fix loading warning
   :config
   ;; Use the spacemacs-dark theme
-  ;(load-theme 'spacemacs-dark t))
+  ;; (load-theme 'spacemacs-dark t))
   ;; Fix loading warning
   :init (load-theme 'spacemacs-dark t))
 
 ;; doom-themes
 (use-package doom-themes
   :disabled
-;  :init (load-theme 'doom-one) t)
-;  :init (load-theme 'doom-vibrant) t)
-;  :init (load-theme 'doom-snazzy) t)
+  ;; :init (load-theme 'doom-one) t)
+  ;; :init (load-theme 'doom-vibrant) t)
+  ;; :init (load-theme 'doom-snazzy) t)
   :init (load-theme 'doom-Iosvkem) t)
 
 ;; company (in-buffer text completion)
 (use-package company
   ;; :diminish
   :hook ((prog-mode . company-mode)
-	 (emacs-lisp-mode . company-mode))
+         (emacs-lisp-mode . company-mode))
   ;; :bind ("TAB" . company-complete)
   :config
   ;; Provide instant autocompletion (default is 0.5 s)
@@ -305,7 +305,7 @@
   ;; :defer
   :config
   ;; Delay (default is 1.0 s)
-  ;(setq which-key-idle-delay 0.5))
+  ;; (setq which-key-idle-delay 0.5))
   ;; Enable mode
   (which-key-mode 1))
 
@@ -314,12 +314,12 @@
   ;; Disable hl-line-mode
   :hook (magit-mode . (lambda () (setq-local global-hl-line-mode nil)))
   :bind (("C-x g" . magit-status)
-	 ("C-x M-g" . magit-dispatch-popup)))
+         ("C-x M-g" . magit-dispatch-popup)))
 
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
   :hook ((prog-mode . rainbow-delimiters-mode)
-	 (emacs-lisp-mode . rainbow-delimiters-mode)))
+         (emacs-lisp-mode . rainbow-delimiters-mode)))
 
 ;; expand-region (grow selected region by semantic units)
 (use-package expand-region
@@ -401,7 +401,7 @@
 
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
-		shell-mode-hook
+                shell-mode-hook
                 eshell-mode-hook
                 term-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
@@ -435,10 +435,10 @@
 (defun ediff-copy-both-to-C ()
   (interactive)
   (ediff-copy-diff ediff-current-difference nil 'C nil
-		   (concat
-		    (ediff-get-region-contents ediff-current-difference
+                   (concat
+                    (ediff-get-region-contents ediff-current-difference
                                                'A ediff-control-buffer)
-		    (ediff-get-region-contents ediff-current-difference
+                    (ediff-get-region-contents ediff-current-difference
                                                'B ediff-control-buffer))))
 (defun add-d-to-ediff-mode-map ()
   (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
