@@ -256,7 +256,7 @@
 
 ;; helpful (alternative help)
 (use-package helpful
-  ;; :after (:all ivy counsel)
+  :after counsel
   :commands (helpful-key helpful-function helpful-symbol helpful-variable) 
   :custom
   ;; Use helpful with counsel
