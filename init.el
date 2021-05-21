@@ -30,7 +30,7 @@
       ((equal (system-name) "penguin")
        ;; Use custom-file.el for custom-* code
        (setq custom-file "~/.emacs.d/custom-file.el")
-       ;; Fix for Emacs bug on Chromebook
+       ;; Fix for Emacs bug on Chromebook (Emacs < v26.3)
        ;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
        (message "Fix for Chromebook")
        (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
@@ -289,9 +289,9 @@
   :custom
   ;; Disable prescient filtering (use ivy filtering)
   (ivy-prescient-enable-filtering nil)
-  ;; Disable sorting by length
+  ;; Use ivy highlighting
   (ivy-prescient-retain-classic-highlighting t)
-  ;; To do: add [counsel-]find-file to ivy-prescient-sort-commands?
+  ;; Enable mode
   :config (ivy-prescient-mode 1))
 
 ;; company-prescient (sort candidates by frequency and recency)
@@ -333,12 +333,11 @@
          ("C-c ?" . mc/mark-all-like-this)
          ("C-c C" . mc/edit-lines)))
 
-;; whole-line-or-region (apply current line if region is undefined)
+;; whole-line-or-region (apply to current line if region is undefined)
 ;; (use-package whole-line-or-region
 ;;   :config (whole-line-or-region-global-mode 1))
 
 ;; web-mode (major-mode for editing web templates)
-;;   Use MELPA version to avoid compile warnings
 (use-package web-mode
   :pin melpa
   :mode (".html?$" ".php$"))
@@ -384,7 +383,7 @@
 (setq debug-on-error t)
 
 ;; Use Command as Meta on macOS
-;(setq mac-command-modifier 'meta)
+;; (setq mac-command-modifier 'meta)
 
 ;; Delete trailing newline character with 'kill-line
 (setq kill-whole-line t)
@@ -417,8 +416,8 @@
 
 ;; Prefer horizontal (side-by-side) window splitting
 ;;   Note: the thresholds need to be twice as big as the smallest
-;;   window allowed, because the new windows each use half of former
-;;   window size
+;;   window allowed, because the new windows each use half of the
+;;   former window size
 (setq split-width-threshold 160
       split-height-threshold nil)
 
@@ -450,8 +449,8 @@
 
 ;; ispell: set aspell suggestion mode 
 (setq ispell-extra-args '("--sug-mode=ultra"))
-;(setq ispell-extra-args '("--sug-mode=fast"))
-;(setq ispell-extra-args '("--sug-mode=normal"))
+;; (setq ispell-extra-args '("--sug-mode=fast"))
+;; (setq ispell-extra-args '("--sug-mode=normal"))
 
 ;; flyspell: 
 (add-hook 'text-mode-hook 'flyspell-mode)
@@ -474,10 +473,6 @@
 ;; Navigation
 
 (windmove-default-keybindings 'meta)
-;(global-set-key (kbd "M-<left>")  'windmove-left)
-;(global-set-key (kbd "M-<right>") 'windmove-right)
-;(global-set-key (kbd "M-<up>")    'windmove-up)
-;(global-set-key (kbd "M-<down>")  'windmove-down)
 (global-set-key (kbd "C-x 9") 'window-swap-states)
 
 (global-set-key (kbd "M-p") 'scroll-up-line)
