@@ -419,6 +419,9 @@
 (setq split-width-threshold 160
       split-height-threshold nil)
 
+;; Enable abbrev mode
+(abbrev-mode 1)
+
 
 ;;
 ;; MODES
