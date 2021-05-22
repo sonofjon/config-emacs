@@ -115,8 +115,8 @@
 
 (define-abbrev-table 'text-mode-abbrev-table
   '(
-    ("aup" "Add use-package: " nil 0)
-    ("bf" "Bug fix: " nil 0)
+    ("aup" "Add use-package:" nil 0)
+    ("bf" "Bug fix:" nil 0)
    ))
 
 (define-abbrev-table 'url-cookie-mode-abbrev-table '())
