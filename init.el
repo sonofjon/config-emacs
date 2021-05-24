@@ -633,6 +633,7 @@ the cursor by ARG lines."
     (forward-line 0)
     (set-mark-command nil))
   (forward-line arg))
+  (call-interactively 'beginning-of-line))
 
 ;; Custom counsel-yank-pop
 (defun my/counsel-yank-pop-or-yank-pop (&optional arg)
