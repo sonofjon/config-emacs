@@ -243,6 +243,7 @@
   :after ivy
   :bind (("C-s" . swiper-isearch)
          ("C-r" . swiper-isearch-backward)
+         ("C-c ." . swiper-isearch-thing-at-point)
          ("C-c s" . swiper)
          ("C-c S" . swiper-all)
          :map swiper-isearch-map
