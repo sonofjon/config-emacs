@@ -647,6 +647,15 @@ the cursor by ARG lines."
        (setq base16-theme-256-color-source "base16-shell")
        (load-theme 'base16-flat t))
 
+      ((equal (system-name) "NT175")
+       ;; Enable web browser on WSL
+       (setq
+        browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+        browse-url-generic-args     '("/c" "start")
+        browse-url-browser-function 'browse-url-generic)
+       ;; Load theme
+       (load-theme 'wombat))
+
       (t 
        ;; Load theme
        (load-theme 'wombat)))
