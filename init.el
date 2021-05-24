@@ -605,7 +605,7 @@
 (defun my-mark-line ()
   "Select current line. If region is active, extend selection downward by line."
   (interactive)
-  (if (not (use-region-p))
+  (if (not (region-active-p))
       (beginning-of-line))
   (setq this-command-keys-shift-translated t)
   (call-interactively 'end-of-line)
@@ -615,7 +615,7 @@
 (defun my-mark-line-up ()
   "Select current line. If region is active, extend selection upward by line."
   (interactive)
-  (if (not (use-region-p))
+  (if (not (region-active-p))
       (forward-line))
   (setq this-command-keys-shift-translated t)
   (call-interactively 'previous-line))
