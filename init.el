@@ -553,6 +553,7 @@
 
 ;; Mark whole word (forward)
 (defun my-mark-word (N)
+  "Like mark-word, but select entire word at point"
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
@@ -564,6 +565,7 @@
 
 ;; Mark whole word (backward)
 (defun my-mark-word-backward (N)
+  "Like mark-word, but select entire word at point. Repeat command to select additional words backwards"
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
@@ -601,6 +603,7 @@
 ;; Mark whole line (down)
 ;;   (source: http://emacs.stackexchange.com/a/22166/93)
 (defun my-mark-line ()
+  "Select current line. If region is active, extend selection downward by line."
   (interactive)
   (if (not (use-region-p))
       (beginning-of-line))
@@ -610,6 +613,7 @@
 
 ;; Mark whole line (up)
 (defun my-mark-line-up ()
+  "Select current line. If region is active, extend selection upward by line."
   (interactive)
   (if (not (use-region-p))
       (forward-line))
