@@ -649,10 +649,9 @@ the cursor by ARG lines."
        (load-theme 'base16-flat t))
 
       ((equal (system-name) "NT175")
-       ;; Enable web browser on WSL
+       ;; Enable (default) web browser on WSL
        (setq
-        browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
-        browse-url-generic-args     '("/c" "start")
+        browse-url-generic-program  "wslview"
         browse-url-browser-function 'browse-url-generic)
        ;; Load theme
        (load-theme 'wombat))
