@@ -575,31 +575,6 @@
     (set-mark (point)))
   (backward-word N))
 
-;; Mark line and enable to grow selection
-(defun my/select-line ()
-  "Select current line. If region is active, extend selection downward by line."
-  (interactive)
-  (if (region-active-p)
-      (progn
-        (end-of-line)
-        (forward-char))
-    (progn
-      (end-of-line)
-      (set-mark (line-beginning-position))
-      (forward-char))))
-
-;; Mark line and enable to grow selection (up)
-(defun my/select-line-up ()
-  "Select current line. If region is active, extend selection upward by line."
-  (interactive)
-  (if (region-active-p)
-      (progn
-        (forward-line -1)
-        (beginning-of-line))
-    (progn
-      (beginning-of-line)
-      (set-mark (line-beginning-position 2)))))
-
 ;; Mark whole line (down)
 ;;   (source: http://emacs.stackexchange.com/a/22166/93)
 (defun my-mark-line ()
@@ -618,21 +593,7 @@
   (if (not (region-active-p))
       (forward-line))
   (setq this-command-keys-shift-translated t)
-  (call-interactively 'previous-line))
-
-;; Another alternative
-;;   (source: https://emacs.stackexchange.com/questions/15033/how-to-mark-current-line-and-move-cursor-to-next-line
-(defun my/select-current-line-and-forward-line (arg)
-  "Select the current line and move the cursor by ARG lines IF
-no region is selected.
-
-If a region is already selected when calling this command, only move
-the cursor by ARG lines."
-  (interactive "p")
-  (when (not (use-region-p))
-    (forward-line 0)
-    (set-mark-command nil))
-  (forward-line arg))
+  (call-interactively 'previous-line)
   (call-interactively 'beginning-of-line))
 
 ;; Custom counsel-yank-pop
