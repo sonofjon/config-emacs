@@ -247,7 +247,8 @@
          ("C-c s" . swiper)
          ("C-c S" . swiper-all)
          :map swiper-isearch-map
-         ("C-r" . ivy-previous-line-or-history)))
+         ("C-r" . ivy-previous-line-or-history)   ; mimic standard isearch
+         ("M-n" . ivy-next-history-element)))   ; search history navigation
 
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
