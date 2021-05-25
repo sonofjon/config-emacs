@@ -335,6 +335,10 @@
 
 ;; whole-line-or-region (apply to current line if region is undefined)
 ;; (use-package whole-line-or-region
+;;   :diminish
+;;   ;; :bind
+;;   ;; (:map whole-line-or-region-local-mode-map
+;;   ;; ([remap ispell-region] . 'whole-line-or-region-ispell-region))
 ;;   :config (whole-line-or-region-global-mode 1))
 
 ;; web-mode (major-mode for editing web templates)
@@ -605,6 +609,12 @@
   (if (eq last-command 'yank)
       (yank-pop arg)
     (counsel-yank-pop)))
+
+;; ispell-region stub for whole-line-or-region package
+(defun whole-line-or-region-ispell-region (prefix)
+  "Call `ispell-region' on region or PREFIX whole lines."
+  (interactive "*p")
+  (whole-line-or-region-wrap-modified-region 'ispell-region prefix))
 
 
 ;;
