@@ -344,6 +344,7 @@
 
 ;; google-this (google search functions)
 (use-package google-this
+  :diminish
   ;; :bind ("C-c g" . google-this-mode-submap)
   :config
   (google-this-mode 1))
