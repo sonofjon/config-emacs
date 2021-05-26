@@ -4,11 +4,13 @@
 
 ;; Check startup time
 (defun efs/display-startup-time ()
+  "Display startup time."
   (message "Emacs loaded in %s with %d garbage collections."
            (format "%.2f seconds"
                    (float-time
                     (time-subtract after-init-time before-init-time)))
            gcs-done))
+
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
 ;; Reduce garbage collection during startup
@@ -82,6 +84,7 @@
 
 ;; Refresh packages database (on first install)
 (defun my-package-install-refresh-contents (&rest args)
+  "Refresh package database on first install."
   (package-refresh-contents)
   (advice-remove 'package-install #'my-package-install-refresh-contents))
 
@@ -438,6 +441,7 @@
 
 ;; ediff: When merging, use both variants A and B, one after the other
 (defun ediff-copy-both-to-C ()
+  "Add both variants to merge file."
   (interactive)
   (ediff-copy-diff ediff-current-difference nil 'C nil
                    (concat
@@ -446,7 +450,9 @@
                     (ediff-get-region-contents ediff-current-difference
                                                'B ediff-control-buffer))))
 (defun add-d-to-ediff-mode-map ()
+  "Define keybinding for `ediff-copy-both-to-C'."
   (define-key ediff-mode-map "d" #'ediff-copy-both-to-C))
+
 (add-hook 'ediff-keymap-setup-hook #'add-d-to-ediff-mode-map)
 
 ;; dired: custom listing style
@@ -565,7 +571,7 @@
 
 ;; Mark whole word (forward)
 (defun my-mark-word (N)
-  "Like mark-word, but select entire word at point"
+  "Like mark-word, but select entire word at point."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
@@ -577,7 +583,7 @@
 
 ;; Mark whole word (backward)
 (defun my-mark-word-backward (N)
-  "Like mark-word, but select entire word at point. Repeat command to select additional words backwards"
+  "Like mark-word, but select entire word at point. Repeat command to select additional words backwards."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
