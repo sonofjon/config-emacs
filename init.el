@@ -37,7 +37,7 @@
        (message "Fix for Chromebook")
        (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
-      (t 
+      (t
        ;; Use custom-file.el for custom-* code
        (setq custom-file "~/.emacs.d/custom-file.el")))
 
@@ -234,7 +234,7 @@
   :diminish
   :after ivy
   :bind (("C-c SPC" . counsel-mark-ring))
-  :config 
+  :config
   ;; Don't start searches with ^
   (setq ivy-initial-inputs-alist nil)
   ;; Enable mode
@@ -254,14 +254,14 @@
 
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
-  :pin melpa  
+  :pin melpa
   :after ivy
   :config (ivy-rich-mode 1))
 
 ;; helpful (alternative help)
 (use-package helpful
   :after counsel
-  :commands (helpful-key helpful-function helpful-symbol helpful-variable) 
+  :commands (helpful-key helpful-function helpful-symbol helpful-variable)
   :custom
   ;; Use helpful with counsel
   (counsel-describe-function-function #'helpful-function)
@@ -380,7 +380,7 @@
 ;;;
 
 ;; Disable menu bar
-(menu-bar-mode -1) 
+(menu-bar-mode -1)
 
 ;; Hide buffer list at startup when loading multiple files
 (setq inhibit-startup-buffer-menu t)
@@ -459,21 +459,21 @@
 ;; (setq dired-listing-switches "-agho --group-directories-first")
 (setq dired-listing-switches "-agho")   ; macOS version
 
-;; ispell: set aspell suggestion mode 
+;; ispell: set aspell suggestion mode
 (setq ispell-extra-args '("--sug-mode=ultra"))
 ;; (setq ispell-extra-args '("--sug-mode=fast"))
 ;; (setq ispell-extra-args '("--sug-mode=normal"))
 
-;; flyspell: 
+;; flyspell:
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 ;; subword: camelCase
-;;    Cannot be enabled at the same time as superword-mode 
+;;    Cannot be enabled at the same time as superword-mode
 ;; (add-hook 'prog-mode-hook (lambda () (subword-mode 1)))
 
 ;; superword: snake_case and kebab-case
-;;    Cannot be enabled at the same time as subword-mode 
+;;    Cannot be enabled at the same time as subword-mode
 (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
 
 ;;;
@@ -533,10 +533,10 @@
 
 ;; Version control
 
-(global-set-key (kbd "C-c e") #'ediff-buffers) 
+(global-set-key (kbd "C-c e") #'ediff-buffers)
 (global-set-key (kbd "C-c r") #'ediff-regions-linewise)
-(global-set-key (kbd "C-c w") #'ediff-regions-wordwise) 
-(global-set-key (kbd "C-x v -") #'vc-ediff) 
+(global-set-key (kbd "C-c w") #'ediff-regions-wordwise)
+(global-set-key (kbd "C-x v -") #'vc-ediff)
 
 ;; Unbind keys
 
@@ -646,7 +646,7 @@
        ;; Load theme
        (load-theme 'wombat))
 
-      (t 
+      (t
        ;; Load theme
        (load-theme 'wombat)))
 
