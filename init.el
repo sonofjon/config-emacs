@@ -1,6 +1,6 @@
-;;
-;; STARTUP
-;;
+;;;
+;;; STARTUP
+;;;
 
 ;; Check startup time
 (defun efs/display-startup-time ()
@@ -19,9 +19,9 @@
                                             gc-cons-percentage 0.1)))
 
 
-;;
-;; LOCAL SETTINGS (EARLY)
-;;
+;;;
+;;; LOCAL SETTINGS (EARLY)
+;;;
 
 (cond ((equal (system-name) "MacBook-Air.lan")
        ;; Use custom-file.el for custom-* code (Chemacs setup)
@@ -43,9 +43,9 @@
 (load-file custom-file)
 
 
-;;
-;; FIXES
-;;
+;;;
+;;; FIXES
+;;;
 
 ;; Suppress warnings about unnecessary package-initialize calls
 ;;   Introduced when switching to Melpa Stable
@@ -54,9 +54,9 @@
 ;; (setq warning-suppress-log-types '((package reinitialization)))
 
 
-;;
-;; PACKAGES SETUP
-;;
+;;;
+;;; PACKAGES SETUP
+;;;
 
 ;; Initialize package sources
 (require 'package)
@@ -109,9 +109,9 @@
 ;; (setq use-package-always-pin "melpa-stable")
 
 
-;;
-;; PACKAGES
-;;
+;;;
+;;; PACKAGES
+;;;
 
 ;; benchmark-init (startup profiler)
 (use-package benchmark-init
@@ -359,9 +359,9 @@
   (diff-hl-margin-mode))
 
 
-;;
-;; THEMES
-;;
+;;;
+;;; THEMES
+;;;
 
 ;; (load-theme 'dichromacy)
 ;; (load-theme 'manoj-dark)
@@ -372,9 +372,9 @@
 ;; (load-theme 'wombat)
 
 
-;;
-;; CUSTOMIZATION
-;;
+;;;
+;;; CUSTOMIZATION
+;;;
 
 ;; Disable menu bar
 (menu-bar-mode -1) 
@@ -428,9 +428,9 @@
 (abbrev-mode 1)
 
 
-;;
-;; MODES
-;;
+;;;
+;;; MODES
+;;;
 
 ;; ediff: Use horizontal (side-by-side) view by default
 (setq ediff-split-window-function #'split-window-horizontally)
@@ -470,9 +470,9 @@
 ;;    Cannot be enabled at the same time as subword-mode 
 (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
 
-;;
-;; KEY BINDINGS
-;;
+;;;
+;;; KEY BINDINGS
+;;;
 
 (define-key input-decode-map "\e[1;6A" [C-S-up])
 (define-key input-decode-map "\e[1;6B" [C-S-down])
@@ -538,9 +538,9 @@
 ;; (global-unset-key (kbd "C-x"))   ; Alternative syntax
 
 
-;;
-;; FUNCTIONS 
-;;
+;;;
+;;; FUNCTIONS
+;;;
 
 ;; Toggle window split
 (defun toggle-window-split ()
@@ -623,9 +623,9 @@
   (whole-line-or-region-wrap-modified-region #'ispell-region prefix))
 
 
-;;
-;; LOCAL SETTINGS (LATE)
-;;
+;;;
+;;; LOCAL SETTINGS (LATE)
+;;;
 
 (cond ((equal (system-name) "MacBook-Air.lan")
        ;; Load theme
