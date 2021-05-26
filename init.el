@@ -559,7 +559,7 @@
 (defun kill-buffer-other-window ()
   "If there are multiple windows, then kill the buffer in the next window."
   (interactive)
-  (when (not (one-window-p))
+  (unless (one-window-p)
     (other-window 1)
     (kill-buffer)))
 
