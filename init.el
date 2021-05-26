@@ -200,8 +200,7 @@
 ;; company (in-buffer text completion)
 (use-package company
   ;; :diminish
-  :hook ((prog-mode . company-mode)
-         (emacs-lisp-mode . company-mode))
+  :hook (prog-mode . company-mode)
   ;; :bind ("TAB" . company-complete)
   :config
   ;; Provide instant autocompletion (default is 0.5 s)
@@ -318,8 +317,7 @@
 
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
-  :hook ((prog-mode . rainbow-delimiters-mode)
-         (emacs-lisp-mode . rainbow-delimiters-mode)))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; expand-region (grow selected region by semantic units)
 (use-package expand-region
