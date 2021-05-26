@@ -83,9 +83,9 @@
 ;; Refresh packages database (on first install)
 (defun my-package-install-refresh-contents (&rest args)
   (package-refresh-contents)
-  (advice-remove 'package-install 'my-package-install-refresh-contents))
+  (advice-remove 'package-install #'my-package-install-refresh-contents))
 
-(advice-add 'package-install :before 'my-package-install-refresh-contents)
+(advice-add 'package-install :before #'my-package-install-refresh-contents)
 
 ;; Install use-package macro
 (if (not (package-installed-p 'use-package))
@@ -118,7 +118,7 @@
   ;; :disabled
   :config
   ;; Disable collection of benchmark data after init
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+  (add-hook 'after-init-hook #'benchmark-init/deactivate))
 
 ;; auto-package-update
 (use-package auto-package-update
@@ -336,7 +336,7 @@
 ;;   :diminish
 ;;   ;; :bind
 ;;   ;; (:map whole-line-or-region-local-mode-map
-;;   ;; ([remap ispell-region] . 'whole-line-or-region-ispell-region))
+;;   ;; ([remap ispell-region] . #'whole-line-or-region-ispell-region))
 ;;   :config (whole-line-or-region-global-mode 1))
 
 ;; web-mode (major-mode for editing web templates)
@@ -433,8 +433,8 @@
 ;;
 
 ;; ediff: Use horizontal (side-by-side) view by default
-(setq ediff-split-window-function 'split-window-horizontally)
-(setq ediff-merge-split-window-function 'split-window-horizontally)
+(setq ediff-split-window-function #'split-window-horizontally)
+(setq ediff-merge-split-window-function #'split-window-horizontally)
 
 ;; ediff: When merging, use both variants A and B, one after the other
 (defun ediff-copy-both-to-C ()
@@ -446,8 +446,8 @@
                     (ediff-get-region-contents ediff-current-difference
                                                'B ediff-control-buffer))))
 (defun add-d-to-ediff-mode-map ()
-  (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
-(add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
+  (define-key ediff-mode-map "d" #'ediff-copy-both-to-C))
+(add-hook 'ediff-keymap-setup-hook #'add-d-to-ediff-mode-map)
 
 ;; dired: custom listing style
 ;; (setq dired-listing-switches "-agho --group-directories-first")
@@ -485,56 +485,52 @@
 
 ;; Windows
 
-(global-set-key (kbd "C-x M-9") 'toggle-window-split)
-(global-set-key (kbd "C-x 9") 'window-swap-states)
+(global-set-key (kbd "C-x M-9") #'toggle-window-split)
+(global-set-key (kbd "C-x 9") #'window-swap-states)
 
 ;; Buffers
 
-(global-set-key (kbd "C-c k") 'kill-buffer-other-window)
+(global-set-key (kbd "C-c k") #'kill-buffer-other-window)
 
 ;; Navigation
 
 (windmove-default-keybindings 'meta)
-;(global-set-key (kbd "M-<left>")  'windmove-left)
-;(global-set-key (kbd "M-<right>") 'windmove-right)
-;(global-set-key (kbd "M-<up>")    'windmove-up)
-;(global-set-key (kbd "M-<down>")  'windmove-down)
 
 (global-set-key (kbd "M-p") 'scroll-up-line)
 (global-set-key (kbd "M-n") 'scroll-down-line)
 
 ;; Selection
 
-(global-set-key (kbd "C-c @") 'mark-word)
-(global-set-key (kbd "M-#") 'my-mark-word)
-(global-set-key (kbd "M-@") 'my-mark-word-backward)
+(global-set-key (kbd "C-c @") #'mark-word)
+(global-set-key (kbd "M-#") #'my-mark-word)
+(global-set-key (kbd "M-@") #'my-mark-word-backward)
 
-(global-set-key (kbd "C-c l") 'my-mark-line)
+(global-set-key (kbd "C-c l") #'my-mark-line)
 
-;; (global-set-key (kbd "C-S-M-<down>") 'my/select-line)
-;; (global-set-key (kbd "C-S-M-<up>") 'my/select-line-up)
-(global-set-key (kbd "C-S-M-<down>") 'my-mark-line)
-(global-set-key (kbd "C-S-M-<up>") 'my-mark-line-up)
+;; (global-set-key (kbd "C-S-M-<down>") #'my/select-line)
+;; (global-set-key (kbd "C-S-M-<up>") #'my/select-line-up)
+(global-set-key (kbd "C-S-M-<down>") #'my-mark-line)
+(global-set-key (kbd "C-S-M-<up>") #'my-mark-line-up)
 
 ;; Editing
 
 (global-set-key (kbd "C-<backspace>") (lambda () (interactive) (kill-line 0)))
 
-(global-set-key (kbd "C-c ;") 'comment-line)
+(global-set-key (kbd "C-c ;") #'comment-line)
 
-(global-set-key (kbd "M-y") 'my/counsel-yank-pop-or-yank-pop)
+(global-set-key (kbd "M-y") #'my/counsel-yank-pop-or-yank-pop)
   ; won't be needed in Emacs 28
 
 ;; Files
 
-(global-set-key (kbd "C-c f") 'find-file-at-point)
+(global-set-key (kbd "C-c f") #'find-file-at-point)
 
 ;; Version control
 
-(global-set-key (kbd "C-c e") 'ediff-buffers) 
-(global-set-key (kbd "C-c r") 'ediff-regions-linewise)
-(global-set-key (kbd "C-c w") 'ediff-regions-wordwise) 
-(global-set-key (kbd "C-x v -") 'vc-ediff) 
+(global-set-key (kbd "C-c e") #'ediff-buffers) 
+(global-set-key (kbd "C-c r") #'ediff-regions-linewise)
+(global-set-key (kbd "C-c w") #'ediff-regions-wordwise) 
+(global-set-key (kbd "C-x v -") #'vc-ediff) 
 
 ;; Unbind keys
 
@@ -573,7 +569,7 @@
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
-         (not (eq last-command 'my-mark-word-backward)))
+         (not (eq last-command #'my-mark-word-backward)))
     (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
         (backward-word))
     (set-mark (point)))
@@ -585,7 +581,7 @@
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
-         (not (eq last-command 'my-mark-word)))
+         (not (eq last-command #'my-mark-word)))
     (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
         (forward-word))
     (set-mark (point)))
@@ -599,8 +595,8 @@
   (if (not (region-active-p))
       (beginning-of-line))
   (setq this-command-keys-shift-translated t)
-  (call-interactively 'end-of-line)
-  (call-interactively 'forward-char))
+  (call-interactively #'end-of-line)
+  (call-interactively #'forward-char))
 
 ;; Mark whole line (up)
 (defun my-mark-line-up ()
@@ -609,14 +605,14 @@
   (if (not (region-active-p))
       (forward-line))
   (setq this-command-keys-shift-translated t)
-  (call-interactively 'previous-line)
-  (call-interactively 'beginning-of-line))
+  (call-interactively #'previous-line)
+  (call-interactively #'beginning-of-line))
 
 ;; Custom counsel-yank-pop
 (defun my/counsel-yank-pop-or-yank-pop (&optional arg)
   "Call `counsel-yank-pop'. If called after a yank, call `yank-pop' instead."
   (interactive "*p")
-  (if (eq last-command 'yank)
+  (if (eq last-command #'yank)
       (yank-pop arg)
     (counsel-yank-pop)))
 
@@ -624,7 +620,7 @@
 (defun whole-line-or-region-ispell-region (prefix)
   "Call `ispell-region' on region or PREFIX whole lines."
   (interactive "*p")
-  (whole-line-or-region-wrap-modified-region 'ispell-region prefix))
+  (whole-line-or-region-wrap-modified-region #'ispell-region prefix))
 
 
 ;;
@@ -640,7 +636,7 @@
        ;; Enable (default) web browser on WSL
        (setq
         browse-url-generic-program  "wslview"
-        browse-url-browser-function 'browse-url-generic)
+        browse-url-browser-function #'browse-url-generic)
        ;; Load theme
        (load-theme 'wombat))
 
