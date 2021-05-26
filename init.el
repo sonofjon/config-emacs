@@ -489,6 +489,10 @@
 (global-set-key (kbd "C-x M-9") 'toggle-window-split)
 (global-set-key (kbd "C-x 9") 'window-swap-states)
 
+;; Buffers
+
+(global-set-key (kbd "C-c k") 'kill-buffer-other-window)
+
 ;; Navigation
 
 (windmove-default-keybindings 'meta)
@@ -516,7 +520,6 @@
 ;; Editing
 
 (global-set-key (kbd "C-<backspace>") (lambda () (interactive) (kill-line 0)))
-(global-set-key (kbd "C-c k") (lambda () (interactive) (kill-line 0)))
 
 (global-set-key (kbd "C-c ;") 'comment-line)
 
@@ -556,6 +559,14 @@
         (split-window-horizontally)
       (split-window-vertically))   ; makes a split with the other window twice
     (switch-to-buffer nil)))   ; restore the original window in this part of the window
+
+;; Kill buffer in other window
+(defun kill-buffer-other-window ()
+  "If there are multiple windows, then kill the buffer in the next window."
+  (interactive)
+  (when (not (one-window-p))
+    (other-window 1)
+    (kill-buffer)))
 
 ;; Mark whole word (forward)
 (defun my-mark-word (N)
