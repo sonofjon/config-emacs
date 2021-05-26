@@ -465,11 +465,12 @@
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 ;; subword: camelCase
-(add-hook 'prog-mode-hook (lambda () (subword-mode 1)))
+;;    Cannot be enabled at the same time as superword-mode 
+;; (add-hook 'prog-mode-hook (lambda () (subword-mode 1)))
 
-;; superword: snake_case & kebab=case?
+;; superword: snake_case and kebab-case
+;;    Cannot be enabled at the same time as subword-mode 
 (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
-
 
 ;;
 ;; KEY BINDINGS
