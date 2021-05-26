@@ -83,12 +83,12 @@
 ;;   (package-refresh-contents t))
 
 ;; Refresh packages database (on first install)
-(defun my-package-install-refresh-contents (&rest args)
+(defun my/package-install-refresh-contents (&rest args)
   "Refresh package database on first install."
   (package-refresh-contents)
-  (advice-remove 'package-install #'my-package-install-refresh-contents))
+  (advice-remove 'package-install #'my/package-install-refresh-contents))
 
-(advice-add 'package-install :before #'my-package-install-refresh-contents)
+(advice-add 'package-install :before #'my/package-install-refresh-contents)
 
 ;; Install use-package macro
 (if (not (package-installed-p 'use-package))
@@ -491,12 +491,12 @@
 
 ;; Windows
 
-(global-set-key (kbd "C-x M-9") #'toggle-window-split)
+(global-set-key (kbd "C-x M-9") #'my/toggle-window-split)
 (global-set-key (kbd "C-x 9") #'window-swap-states)
 
 ;; Buffers
 
-(global-set-key (kbd "C-c k") #'kill-buffer-other-window)
+(global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
 ;; Navigation
 
@@ -508,15 +508,15 @@
 ;; Selection
 
 (global-set-key (kbd "C-c @") #'mark-word)
-(global-set-key (kbd "M-#") #'my-mark-word)
-(global-set-key (kbd "M-@") #'my-mark-word-backward)
+(global-set-key (kbd "M-#") #'my/mark-word)
+(global-set-key (kbd "M-@") #'my/mark-word-backward)
 
-(global-set-key (kbd "C-c l") #'my-mark-line)
+(global-set-key (kbd "C-c l") #'my/mark-line)
 
 ;; (global-set-key (kbd "C-S-M-<down>") #'my/select-line)
 ;; (global-set-key (kbd "C-S-M-<up>") #'my/select-line-up)
-(global-set-key (kbd "C-S-M-<down>") #'my-mark-line)
-(global-set-key (kbd "C-S-M-<up>") #'my-mark-line-up)
+(global-set-key (kbd "C-S-M-<down>") #'my/mark-line)
+(global-set-key (kbd "C-S-M-<up>") #'my/mark-line-up)
 
 ;; Editing
 
@@ -549,7 +549,7 @@
 ;;;
 
 ;; Toggle window split
-(defun toggle-window-split ()
+(defun my/toggle-window-split ()
   "If the window is split vertically, split it horizontally or vice versa."
   (interactive)
   (unless (= (count-windows) 2)
@@ -562,7 +562,7 @@
     (switch-to-buffer nil)))   ; restore the original window in this part of the window
 
 ;; Kill buffer in other window
-(defun kill-buffer-other-window ()
+(defun my/kill-buffer-other-window ()
   "If there are multiple windows, then kill the buffer in the next window."
   (interactive)
   (unless (one-window-p)
@@ -570,24 +570,24 @@
     (kill-buffer)))
 
 ;; Mark whole word (forward)
-(defun my-mark-word (N)
+(defun my/mark-word (N)
   "Like mark-word, but select entire word at point."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
-         (not (eq last-command #'my-mark-word-backward)))
+         (not (eq last-command #'my/mark-word-backward)))
     (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
         (backward-word))
     (set-mark (point)))
   (forward-word N))
 
 ;; Mark whole word (backward)
-(defun my-mark-word-backward (N)
+(defun my/mark-word-backward (N)
   "Like mark-word, but select entire word at point. Repeat command to select additional words backwards."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
-         (not (eq last-command #'my-mark-word)))
+         (not (eq last-command #'my/mark-word)))
     (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
         (forward-word))
     (set-mark (point)))
@@ -595,7 +595,7 @@
 
 ;; Mark whole line (down)
 ;;   (source: http://emacs.stackexchange.com/a/22166/93)
-(defun my-mark-line ()
+(defun my/mark-line ()
   "Select current line. If region is active, extend selection downward by line."
   (interactive)
   (if (not (region-active-p))
@@ -605,7 +605,7 @@
   (call-interactively #'forward-char))
 
 ;; Mark whole line (up)
-(defun my-mark-line-up ()
+(defun my/mark-line-up ()
   "Select current line. If region is active, extend selection upward by line."
   (interactive)
   (if (not (region-active-p))
