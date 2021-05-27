@@ -309,7 +309,7 @@
   ;; :defer
   :config
   ;; Delay (default is 1.0 s)
-  ;; (setq which-key-idle-delay 0.5))
+  (setq which-key-idle-delay 0.75)
   ;; Enable mode
   (which-key-mode 1))
 
