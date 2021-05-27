@@ -599,6 +599,7 @@
     (switch-to-buffer nil)))   ; restore the original window in this part of the window
 
 ;; Kill buffer in other window
+;;   TODO: return focus to original window
 (defun my/kill-buffer-other-window ()
   "If there are multiple windows, then kill the buffer in the next window."
   (interactive)
