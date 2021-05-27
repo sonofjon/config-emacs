@@ -90,6 +90,26 @@
 
 (advice-add 'package-install :before #'my/package-install-refresh-contents)
 
+;; Open helpful info manuals in the same window (alternative 1)
+;;   TODO: Choose one alternative
+;; (defun my/helpful--manual (helpful--manual &rest args)
+;;   "Open helpful info manuals in the same window."
+;;   (setq info-lookup-other-window-flag nil)
+;;   (apply helpful--manual args)
+;;   (setq info-lookup-other-window-flag t))
+
+;; (advice-add 'helpful--manual :around #'my/helpful--manual)
+
+;; Open helpful info manuals in the same window (alternative 2)
+;; (advice-add 'helpful--manual :before
+;;             (lambda (&rest args) (setq info-lookup-other-window-flag nil)))
+
+;; (advice-add 'helpful--manual :after
+;;             (lambda (&rest args) (setq info-lookup-other-window-flag t)))
+
+;; Open helpful info manuals in the same window (alternative 3: untested)
+;; (add-hook 'helpful-mode-hook (lambda () (setq info-lookup-other-window-flag nil)))
+
 ;; Install use-package macro
 (if (not (package-installed-p 'use-package))
     (package-install 'use-package))
@@ -433,6 +453,9 @@
 ;; Enable abbrev mode
 ;;   TODO: Only start in certain modes?
 (abbrev-mode 1)
+
+;; Open *info* buffers in same window
+;; (setq info-lookup-other-window-flag nil)
 
 
 ;;;
