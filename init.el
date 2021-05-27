@@ -479,6 +479,16 @@
 ;;    Cannot be enabled at the same time as subword-mode
 (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
 
+;; helpful: always open additional helpful buffers in the same window
+(defun my/helpful-switch-to-buffer (buffer-or-name)
+  "Switch to helpful BUFFER-OR-NAME. The logic is simple, if we are currently in the helpful buffer, reuse it's window, otherwise create new one."
+  (if (eq major-mode 'helpful-mode)
+      (switch-to-buffer buffer-or-name)
+    (pop-to-buffer buffer-or-name)))
+
+(setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
+
+
 ;;;
 ;;; KEY BINDINGS
 ;;;
