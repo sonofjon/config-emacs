@@ -272,7 +272,10 @@
   ([remap describe-function] . helpful-function)
   ([remap describe-symbol] . helpful-symbol)
   ([remap describe-variable] . helpful-variable)
-  ("C-c h" . 'helpful-at-point))
+  ("C-c h" . 'helpful-at-point)
+  :config
+  ;; Maximum number of *helpful* buffers
+  (setq helpful-max-buffers 2))
 
 ;; prescient (base package)
 (use-package prescient
