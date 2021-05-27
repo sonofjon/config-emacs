@@ -431,6 +431,7 @@
       split-height-threshold nil)
 
 ;; Enable abbrev mode
+;;   TODO: Only start in certain modes?
 (abbrev-mode 1)
 
 
