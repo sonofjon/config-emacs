@@ -439,11 +439,11 @@
 ;;; MODES
 ;;;
 
-;; ediff: Use horizontal (side-by-side) view by default
+;; ediff: use horizontal (side-by-side) view by default
 (setq ediff-split-window-function #'split-window-horizontally)
 (setq ediff-merge-split-window-function #'split-window-horizontally)
 
-;; ediff: When merging, use both variants A and B, one after the other
+;; ediff: when merging, use both variants A and B, one after the other
 (defun ediff-copy-both-to-C ()
   "Add both variants to merge file."
   (interactive)
