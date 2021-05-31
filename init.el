@@ -539,10 +539,6 @@
 (global-set-key (kbd "M-#") #'my/mark-word)
 (global-set-key (kbd "M-@") #'my/mark-word-backward)
 
-(global-set-key (kbd "C-c l") #'my/mark-line)
-
-;; (global-set-key (kbd "C-S-M-<down>") #'my/select-line)
-;; (global-set-key (kbd "C-S-M-<up>") #'my/select-line-up)
 (global-set-key (kbd "C-S-M-<down>") #'my/mark-line)
 (global-set-key (kbd "C-S-M-<up>") #'my/mark-line-up)
 
