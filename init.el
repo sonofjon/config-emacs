@@ -393,20 +393,13 @@
 ;;; CUSTOMIZATION
 ;;;
 
+;; Modes
+
 ;; Disable menu bar
 (menu-bar-mode -1)
 
-;; Hide buffer list at startup when loading multiple files
-(setq inhibit-startup-buffer-menu t)
-
-;; Open up the debugger on error
-(setq debug-on-error t)
-
-;; Use Command as Meta on macOS
-;; (setq mac-command-modifier 'meta)
-
-;; Delete trailing newline character with 'kill-line
-(setq kill-whole-line t)
+;; Delete selection on edit
+(delete-selection-mode 1)
 
 ;; Highlight current line
 (global-hl-line-mode 1)
@@ -425,14 +418,7 @@
                 term-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-;; Use spaces, not tabs
-(setq-default indent-tabs-mode nil)
-
-;; Use TAB for symbol completion (after indentation)
-(setq tab-always-indent 'complete)
-
-;; Delete selection on edit
-(delete-selection-mode 1)
+;; Variables
 
 ;; Prefer horizontal (side-by-side) window splitting
 ;;   Note: the thresholds need to be twice as big as the smallest
@@ -441,45 +427,55 @@
 (setq split-width-threshold 160
       split-height-threshold nil)
 
-;; Enable abbrev mode
-(add-hook 'text-mode-hook 'abbrev-mode)
+;; Use spaces, not tabs
+(setq-default indent-tabs-mode nil)
+
+;; Hide buffer list at startup when loading multiple files
+(setq inhibit-startup-buffer-menu t)
+
+;; Open up the debugger on error
+(setq debug-on-error t)
+
+;; Use Command as Meta on macOS
+;; (setq mac-command-modifier 'meta)
+
+;; Delete trailing newline character with 'kill-line
+(setq kill-whole-line t)
+
+;; Use TAB for symbol completion (after indentation)
+(setq tab-always-indent 'complete)
 
 ;; Open *info* buffers in same window
 ;; (setq info-lookup-other-window-flag nil)
 
-
-;;;
-;;; MODES
-;;;
-
-;; ediff: use horizontal (side-by-side) view by default
-(setq ediff-split-window-function #'split-window-horizontally)
-(setq ediff-merge-split-window-function #'split-window-horizontally)
-
-;; ediff: when merging, use both variants A and B, one after the other
-(defun ediff-copy-both-to-C ()
-  "Add both variants to merge file."
-  (interactive)
-  (ediff-copy-diff ediff-current-difference nil 'C nil
-                   (concat
-                    (ediff-get-region-contents ediff-current-difference
-                                               'A ediff-control-buffer)
-                    (ediff-get-region-contents ediff-current-difference
-                                               'B ediff-control-buffer))))
-(defun add-d-to-ediff-mode-map ()
-  "Define keybinding for `ediff-copy-both-to-C'."
-  (define-key ediff-mode-map "d" #'ediff-copy-both-to-C))
-
-(add-hook 'ediff-keymap-setup-hook #'add-d-to-ediff-mode-map)
+;; Mode variables
 
 ;; dired: custom listing style
 ;; (setq dired-listing-switches "-agho --group-directories-first")
 (setq dired-listing-switches "-agho")   ; macOS version
 
+;; ediff: use horizontal (side-by-side) view by default
+(setq ediff-split-window-function #'split-window-horizontally)
+(setq ediff-merge-split-window-function #'split-window-horizontally)
+
+;; helpful: always open additional helpful buffers in the same window
+(setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
+
 ;; ispell: set aspell suggestion mode
 (setq ispell-extra-args '("--sug-mode=ultra"))
 ;; (setq ispell-extra-args '("--sug-mode=fast"))
 ;; (setq ispell-extra-args '("--sug-mode=normal"))
+
+
+;;;
+;;; HOOKS
+;;;
+
+;; abbrev-mode
+(add-hook 'text-mode-hook 'abbrev-mode)
+
+;; Ediff
+(add-hook 'ediff-keymap-setup-hook #'add-d-to-ediff-mode-map)
 
 ;; flyspell:
 (add-hook 'text-mode-hook 'flyspell-mode)
@@ -492,15 +488,6 @@
 ;; superword: snake_case and kebab-case
 ;;    Cannot be enabled at the same time as subword-mode
 ;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
-
-;; helpful: always open additional helpful buffers in the same window
-(defun my/helpful-switch-to-buffer (buffer-or-name)
-  "Switch to helpful BUFFER-OR-NAME. The logic is simple, if we are currently in the helpful buffer, reuse it's window, otherwise create new one."
-  (if (eq major-mode 'helpful-mode)
-      (switch-to-buffer buffer-or-name)
-    (pop-to-buffer buffer-or-name)))
-
-(setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
 
 
 ;;;
@@ -651,6 +638,27 @@
   "Call `ispell-region' on region or PREFIX whole lines."
   (interactive "*p")
   (whole-line-or-region-wrap-modified-region #'ispell-region prefix))
+
+;; ediff: when merging, use both variants A and B, one after the other
+(defun ediff-copy-both-to-C ()
+  "Add both variants to merge file."
+  (interactive)
+  (ediff-copy-diff ediff-current-difference nil 'C nil
+                   (concat
+                    (ediff-get-region-contents ediff-current-difference
+                                               'A ediff-control-buffer)
+                    (ediff-get-region-contents ediff-current-difference
+                                               'B ediff-control-buffer))))
+(defun add-d-to-ediff-mode-map ()
+  "Define keybinding for `ediff-copy-both-to-C'."
+  (define-key ediff-mode-map "d" #'ediff-copy-both-to-C))
+
+;; helpful: always open additional helpful buffers in the same window
+(defun my/helpful-switch-to-buffer (buffer-or-name)
+  "Switch to helpful BUFFER-OR-NAME. The logic is simple, if we are currently in the helpful buffer, reuse it's window, otherwise create new one."
+  (if (eq major-mode 'helpful-mode)
+      (switch-to-buffer buffer-or-name)
+    (pop-to-buffer buffer-or-name)))
 
 
 ;;;
