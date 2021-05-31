@@ -366,6 +366,15 @@
   (global-diff-hl-mode 1)
   (diff-hl-margin-mode))
 
+;; syntax-subword (fine-grained navigation)
+(use-package syntax-subword
+  ;; :disabled
+  :config
+  ;; Don't stop on spaces
+  ;; (setq syntax-subword-skip-spaces t)
+  ;; Use syntax-subword-mode everywhere
+  (global-syntax-subword-mode 1))
+
 
 ;;;
 ;;; THEMES
@@ -483,7 +492,7 @@
 
 ;; superword: snake_case and kebab-case
 ;;    Cannot be enabled at the same time as subword-mode
-(add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
+;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
 
 ;; helpful: always open additional helpful buffers in the same window
 (defun my/helpful-switch-to-buffer (buffer-or-name)
