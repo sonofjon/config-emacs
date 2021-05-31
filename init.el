@@ -448,6 +448,9 @@
 ;; Open *info* buffers in same window
 ;; (setq info-lookup-other-window-flag nil)
 
+;; Always select the help window
+;; (setq help-window-select t)
+
 ;; Mode variables
 
 ;; dired: custom listing style
