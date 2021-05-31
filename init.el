@@ -442,8 +442,7 @@
       split-height-threshold nil)
 
 ;; Enable abbrev mode
-;;   TODO: Only start in certain modes?
-(abbrev-mode 1)
+(add-hook 'text-mode-hook 'abbrev-mode)
 
 ;; Open *info* buffers in same window
 ;; (setq info-lookup-other-window-flag nil)
