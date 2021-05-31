@@ -90,26 +90,6 @@
 
 (advice-add 'package-install :before #'my/package-install-refresh-contents)
 
-;; Open helpful info manuals in the same window (alternative 1)
-;;   TODO: Choose one alternative
-;; (defun my/helpful--manual (helpful--manual &rest args)
-;;   "Open helpful info manuals in the same window."
-;;   (setq info-lookup-other-window-flag nil)
-;;   (apply helpful--manual args)
-;;   (setq info-lookup-other-window-flag t))
-
-;; (advice-add 'helpful--manual :around #'my/helpful--manual)
-
-;; Open helpful info manuals in the same window (alternative 2)
-;; (advice-add 'helpful--manual :before
-;;             (lambda (&rest args) (setq info-lookup-other-window-flag nil)))
-
-;; (advice-add 'helpful--manual :after
-;;             (lambda (&rest args) (setq info-lookup-other-window-flag t)))
-
-;; Open helpful info manuals in the same window (alternative 3: untested)
-;; (add-hook 'helpful-mode-hook (lambda () (setq info-lookup-other-window-flag nil)))
-
 ;; Install use-package macro
 (if (not (package-installed-p 'use-package))
     (package-install 'use-package))
@@ -293,6 +273,8 @@
   ([remap describe-symbol] . helpful-symbol)
   ([remap describe-variable] . helpful-variable)
   ("C-c h" . 'helpful-at-point)
+  ;; Open helpful info manuals in the same window
+  :hook (helpful-mode . (lambda () (setq-local info-lookup-other-window-flag nil)))
   :config
   ;; Maximum number of *helpful* buffers
   (setq helpful-max-buffers 2))
