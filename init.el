@@ -213,7 +213,7 @@
   ;; Maximum number of candidates
   ;; (setq company-tooltip-limit 10)
   ;; Use company mode everywhere
-  (company-mode 1))
+  (global-company-mode 1))
 
 (use-package company-web
   :after (:all company web-mode)
