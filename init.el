@@ -600,7 +600,8 @@
 
 ;; Mark whole word (backward)
 (defun my/mark-word-backward (N)
-  "Like mark-word, but select entire word at point. Repeat command to select additional words backwards."
+  "Like mark-word, but select entire word at point. 
+Repeat command to select additional words backwards."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
@@ -613,7 +614,8 @@
 ;; Mark whole line (down)
 ;;   (source: http://emacs.stackexchange.com/a/22166/93)
 (defun my/mark-line ()
-  "Select current line. If region is active, extend selection downward by line."
+  "Select current line. 
+If region is active, extend selection downward by line."
   (interactive)
   (if (not (region-active-p))
       (beginning-of-line))
@@ -623,7 +625,8 @@
 
 ;; Mark whole line (up)
 (defun my/mark-line-up ()
-  "Select current line. If region is active, extend selection upward by line."
+  "Select current line. 
+If region is active, extend selection upward by line."
   (interactive)
   (if (not (region-active-p))
       (forward-line))
@@ -633,7 +636,8 @@
 
 ;; Custom counsel-yank-pop
 (defun my/counsel-yank-pop-or-yank-pop (&optional arg)
-  "Call `counsel-yank-pop'. If called after a yank, call `yank-pop' instead."
+  "Call `counsel-yank-pop'. 
+If called after a yank, call `yank-pop' instead."
   (interactive "*p")
   (if (eq last-command #'yank)
       (yank-pop arg)
@@ -661,7 +665,9 @@
 
 ;; helpful: always open additional helpful buffers in the same window
 (defun my/helpful-switch-to-buffer (buffer-or-name)
-  "Switch to helpful BUFFER-OR-NAME. The logic is simple, if we are currently in the helpful buffer, reuse it's window, otherwise create new one."
+  "Switch to helpful BUFFER-OR-NAME.  
+If we are currently in the helpful buffer, reuse it's window,
+otherwise create a new one."
   (if (eq major-mode 'helpful-mode)
       (switch-to-buffer buffer-or-name)
     (pop-to-buffer buffer-or-name)))
