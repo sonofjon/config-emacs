@@ -148,7 +148,8 @@
 (use-package paradox
   :config
   ;; Disable *Paradox Report* buffer
-  (remove-hook 'paradox--report-buffer-print 'paradox-after-execute-functions)
+  (remove-hook 'paradox--report-buffer-print
+               'paradox-after-execute-functions)
   ;; Enable mode
   (paradox-enable))
 
@@ -274,7 +275,8 @@
   ([remap describe-variable] . helpful-variable)
   ("C-c h" . 'helpful-at-point)
   ;; Open helpful info manuals in the same window
-  :hook (helpful-mode . (lambda () (setq-local info-lookup-other-window-flag nil)))
+  :hook (helpful-mode . (lambda ()
+                          (setq-local info-lookup-other-window-flag nil)))
   :config
   ;; Maximum number of *helpful* buffers
   (setq helpful-max-buffers 2))
@@ -572,7 +574,8 @@
     (if split-vertically-p
         (split-window-horizontally)
       (split-window-vertically))   ; makes a split with the other window twice
-    (switch-to-buffer nil)))   ; restore the original window in this part of the window
+    (switch-to-buffer nil)))   ; restore the original window
+                               ; in this part of the window
 
 ;; Kill buffer in other window
 (defun my/kill-buffer-other-window ()
