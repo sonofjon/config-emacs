@@ -542,6 +542,15 @@
 (global-set-key (kbd "M-y") #'my/counsel-yank-pop-or-yank-pop)
   ; won't be needed in Emacs 28
 
+;; Remap flyspell-mode-map keys
+(add-hook 'flyspell-mode-hook (lambda ()
+  ;; C-, : Go to previous error
+  (define-key flyspell-mode-map (kbd "C-,") #'flyspell-goto-previous-error)
+  ;; C-. : Go to next error
+  (define-key flyspell-mode-map (kbd "C-.") #'flyspell-goto-next-error)
+  ;; C-; : Auto correct current word
+  (define-key flyspell-mode-map (kbd "C-;") #'flyspell-auto-correct-word)))
+
 ;; Files
 
 (global-set-key (kbd "C-c f") #'find-file-at-point)
@@ -671,6 +680,66 @@ otherwise create a new one."
   (if (eq major-mode 'helpful-mode)
       (switch-to-buffer buffer-or-name)
     (pop-to-buffer buffer-or-name)))
+
+;; Goto previous flyspell error
+(defun flyspell-goto-previous-error (arg)
+  "Go to arg previous spelling error."
+  (interactive "p")
+  (while (not (= 0 arg))
+    (let ((pos (point))
+          (min (point-min)))
+      (if (and (eq (current-buffer) flyspell-old-buffer-error)
+               (eq pos flyspell-old-pos-error))
+          (progn
+            (if (= flyspell-old-pos-error min)
+                ;; goto end of buffer
+                (progn
+                  (message "Restarting from end of buffer")
+                  (goto-char (point-max)))
+              (backward-word 1))
+            (setq pos (point))))
+      ;; seek the previous error
+      (while (and (> pos min)
+                  (let ((ovs (overlays-at pos))
+                        (r '()))
+                    (while (and (not r) (consp ovs))
+                      (if (flyspell-overlay-p (car ovs))
+                          (setq r t)
+                        (setq ovs (cdr ovs))))
+                    (not r)))
+        (backward-word 1)
+        (setq pos (point)))
+      ;; save the current location for next invocation
+      (setq arg (1- arg))
+      (setq flyspell-old-pos-error pos)
+      (setq flyspell-old-buffer-error (current-buffer))
+      (goto-char pos)
+      (if (= pos min)
+          (progn
+            (message "No more miss-spelled word!")
+            (setq arg 0))))))
+
+
+;; (defun check-previous-spelling-error ()
+;;   "Jump to previous spelling error and correct it."
+;;   (interactive)
+;;   (push-mark-no-activate)
+;;   (flyspell-goto-previous-error 1)
+;;   (call-interactively 'helm-flyspell-correct))
+
+;; (defun check-next-spelling-error ()
+;;   "Jump to next spelling error and correct it."
+;;   (interactive)
+;;   (push-mark-no-activate)
+;;   (flyspell-goto-next-error)
+;;   (call-interactively 'helm-flyspell-correct))
+
+;; (defun push-mark-no-activate ()
+;;   "Push `point' to `mark-ring' and do not activate the region.
+;; Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled."
+;;   (interactive)
+;;   (push-mark (point) t nil)
+;;   (message "Pushed mark to ring"))
 
 
 ;;;
