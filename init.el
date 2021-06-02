@@ -203,6 +203,7 @@
 
 ;; company (in-buffer text completion)
 (use-package company
+  :disabled
   ;; :diminish
   :hook (prog-mode . company-mode)
   ;; :bind ("TAB" . company-complete)
@@ -217,21 +218,25 @@
   (global-company-mode 1))
 
 (use-package company-web
+  :disabled
   :after (:all company web-mode)
   :config (add-to-list 'company-backends 'company-web))
 
 (use-package company-php
+  :disabled
   ;; :after (:all company php-mode)
   :after (:all company (:any php-mode web-mode))
   :config (add-to-list 'company-backends 'company-php))
 
 ;; ivy (generic completion mechanism)
 (use-package ivy
+  :disabled
   :diminish
   :config (ivy-mode 1))
 
 ;; counsel (ivy-enhanced versions of common Emacs commands)
 (use-package counsel
+  :disabled
   :diminish
   :after ivy
   :bind (("C-c SPC" . counsel-mark-ring))
@@ -243,6 +248,7 @@
 
 ;; swiper (ivy-enhanced isearch)
 (use-package swiper
+  :disabled
   :after ivy
   :bind (("C-s" . swiper-isearch)
          ("C-r" . swiper-isearch-backward)
@@ -255,12 +261,14 @@
 
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
+  :disabled
   :pin melpa
   :after ivy
   :config (ivy-rich-mode 1))
 
 ;; helpful (alternative help)
 (use-package helpful
+  :disabled
   :after counsel
   :commands (helpful-key helpful-function helpful-symbol helpful-variable)
   :custom
@@ -283,6 +291,7 @@
 
 ;; prescient (base package)
 (use-package prescient
+  :disabled
   :after (:any ivy company)
   :custom
   ;; Disable sorting by length
@@ -293,6 +302,7 @@
 
 ;; ivy-prescient (sort candidates by frequency and recency)
 (use-package ivy-prescient
+  :disabled
   :after (:all ivy prescient)
   :custom
   ;; Disable prescient filtering (use ivy filtering)
@@ -304,6 +314,7 @@
 
 ;; company-prescient (sort candidates by frequency and recency)
 (use-package company-prescient
+  :disabled
   :after (:all company prescient)
   :config (company-prescient-mode 1))
 
@@ -464,7 +475,7 @@
 (setq ediff-merge-split-window-function #'split-window-horizontally)
 
 ;; helpful: always open additional helpful buffers in the same window
-(setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
+;; (setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
 
 ;; ispell: set aspell suggestion mode
 (setq ispell-extra-args '("--sug-mode=ultra"))
@@ -539,7 +550,7 @@
 
 (global-set-key (kbd "C-c ;") #'comment-line)
 
-(global-set-key (kbd "M-y") #'my/counsel-yank-pop-or-yank-pop)
+;; (global-set-key (kbd "M-y") #'my/counsel-yank-pop-or-yank-pop)
   ; won't be needed in Emacs 28
 
 ;; Remap flyspell-mode-map keys
@@ -644,13 +655,13 @@ If region is active, extend selection upward by line."
   (call-interactively #'beginning-of-line))
 
 ;; Custom counsel-yank-pop
-(defun my/counsel-yank-pop-or-yank-pop (&optional arg)
-  "Call `counsel-yank-pop'. 
-If called after a yank, call `yank-pop' instead."
-  (interactive "*p")
-  (if (eq last-command #'yank)
-      (yank-pop arg)
-    (counsel-yank-pop)))
+;; (defun my/counsel-yank-pop-or-yank-pop (&optional arg)
+;;   "Call `counsel-yank-pop'. 
+;; If called after a yank, call `yank-pop' instead."
+;;   (interactive "*p")
+;;   (if (eq last-command #'yank)
+;;       (yank-pop arg)
+;;     (counsel-yank-pop)))
 
 ;; ispell-region stub for whole-line-or-region package
 (defun whole-line-or-region-ispell-region (prefix)
@@ -673,13 +684,13 @@ If called after a yank, call `yank-pop' instead."
   (define-key ediff-mode-map "d" #'ediff-copy-both-to-C))
 
 ;; helpful: always open additional helpful buffers in the same window
-(defun my/helpful-switch-to-buffer (buffer-or-name)
-  "Switch to helpful BUFFER-OR-NAME.  
-If we are currently in the helpful buffer, reuse it's window,
-otherwise create a new one."
-  (if (eq major-mode 'helpful-mode)
-      (switch-to-buffer buffer-or-name)
-    (pop-to-buffer buffer-or-name)))
+;; (defun my/helpful-switch-to-buffer (buffer-or-name)
+;;   "Switch to helpful BUFFER-OR-NAME.  
+;; If we are currently in the helpful buffer, reuse it's window,
+;; otherwise create a new one."
+;;   (if (eq major-mode 'helpful-mode)
+;;       (switch-to-buffer buffer-or-name)
+;;     (pop-to-buffer buffer-or-name)))
 
 ;; Goto previous flyspell error
 (defun flyspell-goto-previous-error (arg)
@@ -718,7 +729,6 @@ otherwise create a new one."
           (progn
             (message "No more miss-spelled word!")
             (setq arg 0))))))
-
 
 ;; (defun check-previous-spelling-error ()
 ;;   "Jump to previous spelling error and correct it."
