@@ -318,6 +318,12 @@
   :after (:all company prescient)
   :config (company-prescient-mode 1))
 
+;; vertico (vertical completion UI)
+(use-package vertico
+  ;; :diminish
+  :custom (vertico-cycle t)
+  :init (vertico-mode 1))
+
 ;; which-key (display available keybindings)
 (use-package which-key
   :diminish
