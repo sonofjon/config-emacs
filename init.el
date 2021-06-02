@@ -279,7 +279,7 @@
                           (setq-local info-lookup-other-window-flag nil)))
   :config
   ;; Maximum number of *helpful* buffers
-  (setq helpful-max-buffers 2))
+  (setq helpful-max-buffers 3))
 
 ;; prescient (base package)
 (use-package prescient
