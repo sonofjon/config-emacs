@@ -268,8 +268,8 @@
 
 ;; helpful (alternative help)
 (use-package helpful
-  :disabled
-  :after counsel
+  ;; :disabled
+  ;; :after counsel
   :commands (helpful-key helpful-function helpful-symbol helpful-variable)
   :custom
   ;; Use helpful with counsel
@@ -690,13 +690,13 @@ If region is active, extend selection upward by line."
   (define-key ediff-mode-map "d" #'ediff-copy-both-to-C))
 
 ;; helpful: always open additional helpful buffers in the same window
-;; (defun my/helpful-switch-to-buffer (buffer-or-name)
-;;   "Switch to helpful BUFFER-OR-NAME.  
-;; If we are currently in the helpful buffer, reuse it's window,
-;; otherwise create a new one."
-;;   (if (eq major-mode 'helpful-mode)
-;;       (switch-to-buffer buffer-or-name)
-;;     (pop-to-buffer buffer-or-name)))
+(defun my/helpful-switch-to-buffer (buffer-or-name)
+  "Switch to helpful BUFFER-OR-NAME.  
+If we are currently in the helpful buffer, reuse it's window,
+otherwise create a new one."
+  (if (eq major-mode 'helpful-mode)
+      (switch-to-buffer buffer-or-name)
+    (pop-to-buffer buffer-or-name)))
 
 ;; Goto previous flyspell error
 (defun flyspell-goto-previous-error (arg)
