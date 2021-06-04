@@ -241,10 +241,10 @@
   :diminish
   :after ivy
   :bind (("C-c SPC" . counsel-mark-ring))
-  :config
+  :custom
   ;; Don't start searches with ^
-  (setq ivy-initial-inputs-alist nil)
-  ;; Enable mode
+  (ivy-initial-inputs-alist nil)
+  :config
   (counsel-mode 1))
 
 ;; swiper (ivy-enhanced isearch)
@@ -274,7 +274,10 @@
   ;; :after counsel
   :commands (helpful-key helpful-function helpful-symbol helpful-variable)
   :custom
+  ;; Maximum number of *helpful* buffers
+  (setq helpful-max-buffers 3)
   ;; Use helpful with counsel
+  ;;   TODO: Anything needed here?
   (counsel-describe-function-function #'helpful-function)
   (counsel-describe-symbol-function #'helpful-symbol)
   (counsel-describe-variable-function #'helpful-variable)
@@ -286,10 +289,7 @@
   ("C-c h" . 'helpful-at-point)
   ;; Open helpful info manuals in the same window
   :hook (helpful-mode . (lambda ()
-                          (setq-local info-lookup-other-window-flag nil)))
-  :config
-  ;; Maximum number of *helpful* buffers
-  (setq helpful-max-buffers 3))
+                          (setq-local info-lookup-other-window-flag nil))))
 
 ;; prescient (base package)
 (use-package prescient
@@ -324,17 +324,20 @@
 ;; vertico (vertical completion UI)
 (use-package vertico
   ;; :diminish
-  :custom (vertico-cycle t)
-  :init (vertico-mode 1))
+  :custom
+  ;; Enable cycling
+  (vertico-cycle t)
+  :config
+  (vertico-mode 1))
 
 ;; which-key (display available keybindings)
 (use-package which-key
   :diminish
   ;; :defer
-  :config
+  :custom
   ;; Delay (default is 1.0 s)
-  (setq which-key-idle-delay 0.75)
-  ;; Enable mode
+  (which-key-idle-delay 0.75)
+  :config
   (which-key-mode 1))
 
 ;; magit (user interface to git)
@@ -385,16 +388,18 @@
 ;; diff-hl (highlight uncommitted changes)
 (use-package diff-hl
   :disabled
+  :custom
+  (diff-hl-margin-mode t)
   :config
-  (global-diff-hl-mode 1)
-  (diff-hl-margin-mode))
+  (global-diff-hl-mode 1))
 
 ;; syntax-subword (fine-grained navigation)
 (use-package syntax-subword
-  ;; :disabled
-  :config
+  :disabled
+  :custom
   ;; Don't stop on spaces
-  ;; (setq syntax-subword-skip-spaces t)
+  (syntax-subword-skip-spaces t)
+  :config
   ;; Use syntax-subword-mode everywhere
   (global-syntax-subword-mode 1))
 
