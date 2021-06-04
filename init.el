@@ -485,7 +485,7 @@
 (setq ediff-merge-split-window-function #'split-window-horizontally)
 
 ;; helpful: always open additional helpful buffers in the same window
-;; (setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
+(setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
 
 ;; ispell: set aspell suggestion mode
 (setq ispell-extra-args '("--sug-mode=ultra"))
