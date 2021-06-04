@@ -232,7 +232,8 @@
 (use-package ivy
   :disabled
   :diminish
-  :config (ivy-mode 1))
+  :config
+  (ivy-mode 1))
 
 ;; counsel (ivy-enhanced versions of common Emacs commands)
 (use-package counsel
@@ -264,7 +265,8 @@
   :disabled
   :pin melpa
   :after ivy
-  :config (ivy-rich-mode 1))
+  :config
+  (ivy-rich-mode 1))
 
 ;; helpful (alternative help)
 (use-package helpful
@@ -309,14 +311,15 @@
   (ivy-prescient-enable-filtering nil)
   ;; Use ivy highlighting
   (ivy-prescient-retain-classic-highlighting t)
-  ;; Enable mode
-  :config (ivy-prescient-mode 1))
+  :config
+  (ivy-prescient-mode 1))
 
 ;; company-prescient (sort candidates by frequency and recency)
 (use-package company-prescient
   :disabled
   :after (:all company prescient)
-  :config (company-prescient-mode 1))
+  :config
+  (company-prescient-mode 1))
 
 ;; vertico (vertical completion UI)
 (use-package vertico
@@ -364,7 +367,8 @@
 ;;   ;; :bind
 ;;   ;; (:map whole-line-or-region-local-mode-map
 ;;   ;; ([remap ispell-region] . #'whole-line-or-region-ispell-region))
-;;   :config (whole-line-or-region-global-mode 1))
+;;   :config
+;;   (whole-line-or-region-global-mode 1))
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
