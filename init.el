@@ -486,6 +486,9 @@
 ;; Hide buffer list at startup when loading multiple files
 (setq inhibit-startup-buffer-menu t)
 
+;; Do not switch to buffers already shown
+(setq switch-to-prev-buffer-skip 'this)
+
 ;; Open up the debugger on error
 (setq debug-on-error t)
 
