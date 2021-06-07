@@ -350,6 +350,11 @@
    ;; Enable `partial-completion' for files to allow path expansion
    completion-category-overrides '((file (styles . (partial-completion))))))
 
+;; savehist (persistent minibuffer history)
+(use-package savehist
+  :config
+  (savehist-mode 1))
+
 ;; which-key (display available keybindings)
 (use-package which-key
   :diminish
