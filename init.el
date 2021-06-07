@@ -275,7 +275,6 @@
   :commands (helpful-key helpful-function helpful-symbol helpful-variable)
   :custom
   ;; Maximum number of *helpful* buffers
-  (setq helpful-max-buffers 3)
   ;; Use helpful with counsel
   ;;   TODO: Anything needed here?
   (counsel-describe-function-function #'helpful-function)
@@ -290,6 +289,7 @@
   ;; Open helpful info manuals in the same window
   :hook (helpful-mode . (lambda ()
                           (setq-local info-lookup-other-window-flag nil))))
+  (helpful-max-buffers 3)
 
 ;; prescient (base package)
 (use-package prescient
