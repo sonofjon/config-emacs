@@ -534,6 +534,14 @@
 ;; (setq ispell-extra-args '("--sug-mode=fast"))
 ;; (setq ispell-extra-args '("--sug-mode=normal"))
 
+;; erc 
+(setq erc-server "irc.libera.chat"
+      erc-nick "ajdev8"
+      ;; erc-user-full-name "Andreas Jonsson"
+      ;; erc-track-shorten-start 8
+      erc-autojoin-channels-alist '(("irc.libera.chat" "#systemcrafters" "#emacs"))
+      erc-kill-buffer-on-part t)
+
 
 ;;;
 ;;; HOOKS
