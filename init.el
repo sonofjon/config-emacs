@@ -526,6 +526,9 @@
 ;; helpful: always open additional helpful buffers in the same window
 (setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
 
+;; isearch: interpret spaces as wildcards (with M-s SPC)
+(setq search-whitespace-regexp ".*?")
+
 ;; ispell: set aspell suggestion mode
 (setq ispell-extra-args '("--sug-mode=ultra"))
 ;; (setq ispell-extra-args '("--sug-mode=fast"))
