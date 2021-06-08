@@ -520,6 +520,10 @@
 ;; Always select the help window
 ;; (setq help-window-select t)
 
+;; Remove "..?*" from 'all' alias in grep-files-aliases
+;;   TODO: Lisp error: (void-variable grep-files-aliases)
+;; (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*")
+
 ;; Mode variables
 
 ;; dired: custom listing style
