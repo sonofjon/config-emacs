@@ -592,8 +592,11 @@
 
 (windmove-default-keybindings 'meta)
 
-(global-set-key (kbd "M-p") 'scroll-up-line)
-(global-set-key (kbd "M-n") 'scroll-down-line)
+(global-set-key (kbd "M-p") #'scroll-up-line)
+(global-set-key (kbd "M-n") #'scroll-down-line)
+
+(global-set-key (kbd "C-c <down>") 'my/next-line)
+(global-set-key (kbd "C-c <up>") 'my/previous-line)
 
 ;; Selection
 
@@ -643,7 +646,38 @@
 ;;; FUNCTIONS
 ;;;
 
-;; Toggle window split
+(defun my/next-line ()
+  ;; TODO: Add functionality for empty lines
+  "Move to the next line that is not empty and not a comment."
+  (interactive)
+  (next-line)
+  ;; (save-excursion
+  ;;   (beginning-of-line)
+  ;; (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
+  (if (string-match-p "/(^[[:space:]]*\\s<" (thing-at-point 'line))
+  ;; (if (looking-at-p "^-*?\\s<")
+  ;; (if (looking-at "^[[:space:]]*;")
+  ;; (if (looking-at-p comment-start)
+      (my/next-line))
+  (if (nth 4 (syntax-ppss))
+           (my/next-line)))
+
+(defun my/previous-line ()
+  "Move to the previous line that is not empty and not a comment."
+  (interactive)
+  (previous-line)
+  ;; (save-excursion
+  ;;   (beginning-of-line)
+  ;; (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
+  (if (string-match-p "/(^[[:space:]]*\\s<" (thing-at-point 'line))
+  ;; (if (looking-at-p "^-*?\\s<")
+  ;; (if (looking-at "^[[:space:]]*;")
+  ;; (if (looking-at-p comment-start)
+      (my/previous-line))
+  (if (nth 4 (syntax-ppss))
+           (my/previous-line)))
+
+      ;; Toggle window split
 (defun my/toggle-window-split ()
   "If the window is split vertically, split it horizontally or vice versa."
   (interactive)
