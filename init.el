@@ -858,14 +858,18 @@ otherwise create a new one."
 ;;;
 
 (cond ((equal (system-name) "MacBook-Air.lan")
-       ;; Load theme
-       (setq base16-theme-256-color-source "base16-shell")
-       (load-theme 'base16-flat t))
+       (if (display-graphic-p)
+           ;; GUI settings
+           ;; Set default font
+           (add-to-list 'default-frame-alist '(font . "Hack-14"))
+         ;; Terminal settings
+         ;; Load theme
+         (setq base16-theme-256-color-source "base16-shell")
+         (load-theme 'base16-flat t)))
 
       ((equal (system-name) "NT175")
        ;; Enable (default) web browser on WSL
-       (setq
-        browse-url-generic-program  "wslview"
+       (setq browse-url-generic-program "wslview"
         browse-url-browser-function #'browse-url-generic)
        ;; Load theme
        (load-theme 'wombat))
