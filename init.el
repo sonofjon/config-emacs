@@ -451,6 +451,12 @@
 ;; Disable menu bar
 (menu-bar-mode -1)
 
+;; Disable toolbar (graphical Emacs)
+(tool-bar-mode -1)
+
+;; Disable scroll bar (graphical Emacs)
+(set-scroll-bar-mode nil)
+
 ;; Delete selection on edit
 (delete-selection-mode 1)
 
