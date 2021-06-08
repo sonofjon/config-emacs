@@ -27,7 +27,14 @@
 
 (cond ((equal (system-name) "MacBook-Air.lan")
        ;; Use custom-file.el for custom-* code (Chemacs setup)
-       (setq custom-file "~/.emacs.default/custom-file.el"))
+       (setq custom-file "~/.emacs.default/custom-file.el")
+       ;; GUI settings
+       (when (display-graphic-p)
+         ;; Add to exec-path
+         ;;   TODO: Use exec-path-from-shell package?
+         (dolist (dir '("/usr/local/bin"
+                        "/usr/local/opt/grep/libexec/gnubin"))
+           (add-to-list 'exec-path dir))))
 
       ((equal (system-name) "penguin")
        ;; Use custom-file.el for custom-* code
