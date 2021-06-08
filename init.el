@@ -208,6 +208,77 @@
   ;; :init (load-theme 'doom-snazzy) t)
   :init (load-theme 'doom-Iosvkem) t)
 
+(use-package modus-themes
+  :init
+  ;; Add all customizations prior to loading the themes
+  (setq
+   ;; Use more subtle style for line numbers
+   modus-themes-subtle-line-numbers nil
+   ;; Color-code 'success' or 'done' as blue instead of green
+   modus-themes-success-deuteranopia nil
+   ;; Control the style of spelling and code checkers/linters
+   ;;   Options for `modus-themes-lang-checkers': nil,
+   ;;   'straight-underline, 'subtle-foreground,
+   ;;   'subtle-foreground-straight-underline, 'intense-foreground,
+   ;;   'intense-foreground-straight-underline, 'colored-background
+   modus-themes-lang-checkers nil
+   ;; Adjust the overall style of the mode line
+   ;;   Options for `modus-themes-mode-line': nil, '3d, 'moody,
+   ;;   'borderless, 'borderless-3d, 'borderless-moody, 'accented,
+   ;;   'accented-3d, 'accented-moody, 'borderless-accented,
+   ;;   'borderless-accented-3d, 'borderless-accented-moody
+   ;; modus-themes-mode-line '3d
+   modus-themes-mode-line nil
+   ;; Control the overall style of code syntax highlighting
+   ;;   Options for `modus-themes-syntax': nil, 'faint,
+   ;;   'yellow-comments, 'green-strings,
+   ;;   'yellow-comments-green-strings, 'alt-syntax,
+   ;;   'alt-syntax-yellow-comments, 'faint-yellow-comments
+   modus-themes-syntax nil
+   ;; Control the current line highlight of HL-line mode
+   ;;   Options for `modus-themes-hl-line': nil, 'intense-background,
+   ;;   'accented-background, 'underline-neutral, 'underline-accented,
+   ;;   'underline-only-neutral, 'underline-only-accented
+   ;; modus-themes-hl-line 'underline-neutral
+   modus-themes-hl-line nil
+   ;; Choose the style of matching parentheses or delimiters
+   ;;   Options for `modus-themes-hl-line': nil, 'subtle-bold,
+   ;;   'intense, 'intense-bold}
+   ;; modus-themes-paren-match 'subtle-bold
+   modus-themes-paren-match nil
+   ;; Set the style of links
+   ;;   Options for `modus-themes-links': nil, 'faint,
+   ;;   'neutral-underline, 'faint-neutral-underline, 'no-underline,
+   ;;   'underline-only, 'neutral-underline-only
+   ;; modus-themes-links 'neutral-underline
+   modus-themes-links nil
+   ;; Set style for minibuffer and REPL prompts
+   ;;   Options for `modus-themes-prompts': nil, 'subtle-accented,
+   ;;   'intense-accented, 'subtle-gray, 'intense-gray
+   ;; modus-themes-prompts 'subtle-gray
+   modus-themes-prompts nil
+   ;; Control the style of the completion framework's interface
+   ;;   Options for `modus-themes-completions': nil, 'moderate,
+   ;;   'opinionated
+   ;; modus-themes-completions 'moderate
+   modus-themes-completions nil
+   ;; Change the appearance of the active region
+   ;;   Options for `modus-themes-region': nil, 'no-extend, 'bg-only,
+   ;;   'bg-only-no-extend, 'accent, 'accent-no-extend
+   modus-themes-region nil
+   ;; Adjust the style of diffs
+   ;;   Options for `modus-themes-diffs': nil, 'desaturated, 'bg-only,
+   ;;   'deuteranopia, 'fg-only-deuteranopia
+   ;; modus-themes-diffs 'fg-only-deuteranopia)
+   modus-themes-diffs nil)
+  ;; Load the theme files before enabling a theme
+  (modus-themes-load-themes)
+  :config
+  ;; Load the theme
+  ;; (modus-themes-load-operandi)
+  (modus-themes-load-vivendi)
+  :bind ("<f5>" . modus-themes-toggle))
+
 ;; company (in-buffer text completion)
 (use-package company
   :disabled
