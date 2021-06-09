@@ -362,12 +362,11 @@
                           (setq-local info-lookup-other-window-flag nil)))
   :custom
   ;; Maximum number of *helpful* buffers
-  (helpful-max-buffers 3)
+  (helpful-max-buffers 3))
   ;; Use helpful with counsel
-  ;;   TODO: Anything needed here?
-  (counsel-describe-function-function #'helpful-function)
-  (counsel-describe-symbol-function #'helpful-symbol)
-  (counsel-describe-variable-function #'helpful-variable))
+  ;; (counsel-describe-function-function #'helpful-function)
+  ;; (counsel-describe-symbol-function #'helpful-symbol)
+  ;; (counsel-describe-variable-function #'helpful-variable))
 
 ;; prescient (base package)
 (use-package prescient
