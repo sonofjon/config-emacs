@@ -401,11 +401,11 @@
 ;; vertico (vertical completion UI)
 (use-package vertico
   ;; :diminish
-  ;; TODO: Make this work
-  ;; :bind (:map vertico-map
-  ;;             ("?" . #'minibuffer-completion-help)
-  ;;             ((kbd "M-RET") . #'minibuffer-force-complete-and-exit)
-  ;;             ((kbd "M-TAB") . #'minibuffer-complete))
+  ;; TODO: Change shortcuts
+  :bind (:map vertico-map
+         ;; ("?" . minibuffer-completion-help)
+         ("M-RET" . minibuffer-force-complete-and-exit)
+         ("M-TAB" . minibuffer-complete))
   :custom
   ;; Enable cycling
   (vertico-cycle t)
