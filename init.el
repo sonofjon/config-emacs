@@ -545,6 +545,10 @@
 (setq scroll-down-aggressively nil)   ; default: nil
 ;; (setq scroll-margin 0)
 
+;; Preserve point position when scrolling
+;;   TODO: difference between 't' and "any value"?
+(setq scroll-preserve-screen-position t)
+
 ;; Delete selection on edit
 (delete-selection-mode 1)
 
