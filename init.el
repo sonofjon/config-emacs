@@ -535,6 +535,16 @@
 ;; Disable scroll bar (graphical Emacs)
 (set-scroll-bar-mode nil)
 
+;; Scrolling
+;;   The order of priority is: ‘scroll-conservatively’, then
+;;   ‘scroll-step’, and finally ‘scroll-up-aggressively’ /
+;;   ‘scroll-down-aggressively’.
+(setq scroll-conservatively 101)      ; default: 0
+(setq scroll-step 0)                  ; default: 0
+(setq scroll-up-aggressively nil)     ; default: nil
+(setq scroll-down-aggressively nil)   ; default: nil
+;; (setq scroll-margin 0)
+
 ;; Delete selection on edit
 (delete-selection-mode 1)
 
