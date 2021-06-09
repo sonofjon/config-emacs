@@ -471,6 +471,7 @@
 ;;   :diminish
 ;;   ;; :bind
 ;;   ;; (:map whole-line-or-region-local-mode-map
+;;   ;; TODO: function should not be quoted?
 ;;   ;; ([remap ispell-region] . #'whole-line-or-region-ispell-region))
 ;;   :config
 ;;   (whole-line-or-region-global-mode 1))
