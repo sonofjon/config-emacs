@@ -538,23 +538,6 @@
 ;; Disable toolbar (graphical Emacs)
 (tool-bar-mode -1)
 
-;; Disable scroll bar (graphical Emacs)
-(set-scroll-bar-mode nil)
-
-;; Scrolling
-;;   The order of priority is: ‘scroll-conservatively’, then
-;;   ‘scroll-step’, and finally ‘scroll-up-aggressively’ /
-;;   ‘scroll-down-aggressively’.
-(setq scroll-conservatively 101)      ; default: 0
-(setq scroll-step 0)                  ; default: 0
-(setq scroll-up-aggressively nil)     ; default: nil
-(setq scroll-down-aggressively nil)   ; default: nil
-;; (setq scroll-margin 0)
-
-;; Preserve point position when scrolling
-;;   TODO: difference between 't' and "any value"?
-(setq scroll-preserve-screen-position t)
-
 ;; Mouse scrolling
 ;;   TODO: shift-scrolling does not work
 ;; (setq mouse-wheel-progressive-speed nil)   ; don't accelerate scrolling
@@ -580,6 +563,23 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Variables
+
+;; Disable scroll bar (graphical Emacs)
+(setq scroll-bar-mode nil)
+
+;; Scrolling
+;;   The order of priority is: ‘scroll-conservatively’, then
+;;   ‘scroll-step’, and finally ‘scroll-up-aggressively’ /
+;;   ‘scroll-down-aggressively’.
+(setq scroll-conservatively 0)        ; default: 0
+(setq scroll-step 1)                  ; default: 0
+(setq scroll-up-aggressively nil)     ; default: nil
+(setq scroll-down-aggressively nil)   ; default: nil
+;; (setq scroll-margin 0)
+
+;; Preserve point position when scrolling
+;;   TODO: difference between 't' and "any value"?
+(setq scroll-preserve-screen-position t)
 
 ;; Prefer horizontal (side-by-side) window splitting
 ;;   Note: the thresholds need to be twice as big as the smallest
