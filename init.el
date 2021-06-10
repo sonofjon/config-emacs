@@ -507,12 +507,13 @@
   ;; Use syntax-subword-mode everywhere
   (global-syntax-subword-mode 1))
 
+;; buffer-move (move buffers around)
 (use-package buffer-move
   :bind (("C-c b" . buf-move)))
-         ;; ("C-S-M-<up>" . buf-move-up)
-         ;; ("C-S-M-<down>" . buf-move-down)
-         ;; ("C-S-M-<left>" . buf-move-left)
-         ;; ("C-S-M-<right>" . buf-move-right)))
+         ;; ("s-<up>" . buf-move-up)
+         ;; ("s-<down>" . buf-move-down)
+         ;; ("s-<left>" . buf-move-left)
+         ;; ("s-<right>" . buf-move-right)))
 
 
 ;;;
