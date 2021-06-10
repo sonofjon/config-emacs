@@ -569,6 +569,9 @@
 ;; Disable toolbar (graphical Emacs)
 (tool-bar-mode -1)
 
+;; Disable scroll bar (graphical Emacs)
+(set-scroll-bar-mode nil)
+
 ;; Mouse scrolling
 ;;   TODO: shift-scrolling does not work
 ;; (setq mouse-wheel-progressive-speed nil)   ; don't accelerate scrolling
@@ -594,9 +597,6 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Variables
-
-;; Disable scroll bar (graphical Emacs)
-(setq scroll-bar-mode nil)
 
 ;; Scrolling
 ;;   The order of priority is: ‘scroll-conservatively’, then
