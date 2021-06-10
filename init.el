@@ -587,14 +587,7 @@
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
 ;; Enable line numbers
-(global-display-line-numbers-mode t)
-
-;; Disable line numbers for some modes
-(dolist (mode '(org-mode-hook
-                shell-mode-hook
-                eshell-mode-hook
-                term-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+(add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 
 ;; Variables
 
