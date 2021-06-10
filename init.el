@@ -410,7 +410,7 @@
   :custom
   ;; Enable cycling
   (vertico-cycle t)
-  :config
+  :init
   (vertico-mode 1))
 
 ;; orderless (orderless completion style)
