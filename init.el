@@ -641,13 +641,25 @@
 ;; (setq ispell-extra-args '("--sug-mode=fast"))
 ;; (setq ispell-extra-args '("--sug-mode=normal"))
 
-;; erc 
+;; erc (server)
 (setq erc-server "irc.libera.chat"
       erc-nick "ajdev8"
       ;; erc-user-full-name "Andreas Jonsson"
-      ;; erc-track-shorten-start 8
-      erc-autojoin-channels-alist '(("irc.libera.chat" "#systemcrafters" "#emacs"))
+      erc-autojoin-channels-alist '(("irc.libera.chat"
+                                     "#systemcrafters"
+                                     "#emacs"))
       erc-kill-buffer-on-part t)
+
+;; erc (appearance)
+(setq erc-fill-function 'erc-fill-static
+      erc-fill-static-center 18
+      erc-hide-list '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
+
+;; erc (tracking)
+(setq erc-track-shorten-start 3
+      erc-track-exclude '("#emacs")
+      erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY")
+      erc-track-exclude-server-buffer t)
 
 
 ;;;
