@@ -149,7 +149,8 @@
   ;; (diminish 'ivy-mode)
   ;; (diminish 'counsel-mode)
   ;; (diminish 'which-key-mode)
-  (diminish 'eldoc-mode))
+  (diminish 'eldoc-mode)
+  (diminish 'auto-revert-mode))
 
 ;; paradox (improved package menu)
 (use-package paradox
