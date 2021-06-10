@@ -348,7 +348,7 @@
 
 ;; helpful (alternative help)
 (use-package helpful
-  ;; :disabled
+  ;; :demand
   ;; :after counsel
   :commands (helpful-key helpful-function helpful-symbol helpful-variable)
   :bind
@@ -400,6 +400,7 @@
 
 ;; vertico (vertical completion UI)
 (use-package vertico
+  :demand
   ;; :diminish
   ;; TODO: Change shortcuts
   :bind (:map vertico-map
