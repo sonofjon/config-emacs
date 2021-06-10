@@ -538,6 +538,12 @@
    ;; Other
    erc-kill-buffer-on-part t))
 
+(use-package erc-hl-nicks
+  :after erc
+  :config
+  (add-to-list 'erc-modules 'hl-nicks))
+
+
 ;;;
 ;;; THEMES
 ;;;
