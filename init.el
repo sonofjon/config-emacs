@@ -974,8 +974,11 @@ otherwise create a new one."
 (cond ((equal (system-name) "MacBook-Air.lan")
        (if (display-graphic-p)
            ;; GUI settings
-           ;; Set default font
-           (add-to-list 'default-frame-alist '(font . "Hack-14"))
+           (progn
+             ;; Set default font
+             (add-to-list 'default-frame-alist '(font . "Hack-14"))
+             ;; Increase line spacing
+             (setq-default line-spacing 2))
          ;; Terminal settings
          ;; Load theme
          (setq base16-theme-256-color-source "base16-shell")
