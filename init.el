@@ -775,16 +775,12 @@
 (global-set-key (kbd "C-c s") #'hydra-scroll-line/body)
 
 (defhydra hydra-next-line ()
-  "Move to the next line that is not empty and not a comment"
+  "Move to the next line or comment"
   ("<up>" my/previous-line)
-  ("<down>" my/next-line))
+  ("<down>" my/next-line)
+  ("C-<up>" my/previous-comment)
+  ("C-<down>" my/next-comment))
 (global-set-key (kbd "C-c l") #'hydra-next-line/body)
-
-(defhydra hydra-next-comment ()
-  "Move to the next new comment"
-  ("<up>" my/previous-comment)
-  ("<down>" my/next-comment))
-(global-set-key (kbd "C-c t") #'hydra-next-comment/body)
 
 (defhydra hydra-mark-line ()
   ;; TODO: Fix so one can grow shrink the selected region with other
