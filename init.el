@@ -404,9 +404,9 @@
   ;; :diminish
   ;; TODO: Change shortcuts
   :bind (:map vertico-map
-         ("M-RET" . minibuffer-force-complete-and-exit)
-         ("M-TAB" . minibuffer-complete))
          ("?" . minibuffer-completion-help))
+         ;; ("M-TAB" . minibuffer-complete))
+         ;; ("M-RET" . minibuffer-force-complete-and-exit))
   :custom
   ;; Enable cycling
   (vertico-cycle t)
