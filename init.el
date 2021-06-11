@@ -351,12 +351,11 @@
   ;; :demand
   ;; :after counsel
   :commands (helpful-key helpful-function helpful-symbol helpful-variable)
-  :bind
-  ([remap describe-key] . helpful-key)
-  ([remap describe-function] . helpful-function)
-  ([remap describe-symbol] . helpful-symbol)
-  ([remap describe-variable] . helpful-variable)
-  ("C-c h" . 'helpful-at-point)
+  :bind (([remap describe-key] . helpful-key)
+         ([remap describe-function] . helpful-function)
+         ([remap describe-symbol] . helpful-symbol)
+         ([remap describe-variable] . helpful-variable)
+         ("C-c h" . helpful-at-point))
   ;; Open helpful info manuals in the same window
   :hook (helpful-mode . (lambda ()
                           (setq-local info-lookup-other-window-flag nil)))
@@ -697,7 +696,7 @@
 
 
 ;;;
-;;; KEY BINDINGS
+;;; KEYBINDINGS
 ;;;
 
 ;; (define-key input-decode-map "\e[1;8A" [C-M-S-up])
