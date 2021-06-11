@@ -540,6 +540,10 @@
   ;; Other
   (erc-kill-buffer-on-part t)
   :config
+  ;; (add-to-list 'erc-modules 'notifications)
+  (add-to-list 'erc-modules 'spelling)
+  (erc-services-mode 1)
+  (erc-update-modules))
 
 (use-package erc-hl-nicks
   :after erc
