@@ -1016,9 +1016,9 @@ otherwise create a new one."
       ((equal (system-name) "NT175")
        ;; Enable (default) web browser on WSL
        (setq browse-url-generic-program "wslview"
-        browse-url-browser-function #'browse-url-generic)
+        browse-url-browser-function #'browse-url-generic))
        ;; Load theme
-       (load-theme 'wombat))
+       ;; (load-theme 'wombat))
 
       (t
        ;; Load theme
