@@ -443,6 +443,9 @@
   :config
   (which-key-mode 1))
 
+;; hydra (stateful keymaps)
+(use-package hydra)
+
 ;; magit (user interface to git)
 (use-package magit
   ;; Disable hl-line-mode
