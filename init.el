@@ -588,6 +588,7 @@
 
 ;; Enable line numbers
 (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
+
 ;; Set display-line-number-width automatically
 (setq display-line-numbers-width-start t)
 
@@ -597,6 +598,7 @@
 ;;   The order of priority is: ‘scroll-conservatively’, then
 ;;   ‘scroll-step’, and finally ‘scroll-up-aggressively’ /
 ;;   ‘scroll-down-aggressively’.
+;;   TODO: Configure
 (setq scroll-conservatively 0)        ; default: 0
 (setq scroll-step 1)                  ; default: 0
 (setq scroll-up-aggressively nil)     ; default: nil
