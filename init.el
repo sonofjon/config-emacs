@@ -572,9 +572,6 @@
 ;; Disable toolbar (graphical Emacs)
 (tool-bar-mode -1)
 
-;; Disable scroll bar (graphical Emacs)
-(set-scroll-bar-mode nil)
-
 ;; Mouse scrolling
 ;;   TODO: shift-scrolling does not work
 ;; (setq mouse-wheel-progressive-speed nil)   ; don't accelerate scrolling
@@ -1003,6 +1000,8 @@ otherwise create a new one."
        (if (display-graphic-p)
            ;; GUI settings
            (progn
+	     ;; Disable scroll bar
+	     (set-scroll-bar-mode nil)
              ;; Set default font
              (add-to-list 'default-frame-alist '(font . "Hack-14"))
              ;; Increase line spacing
