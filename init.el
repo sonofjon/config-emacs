@@ -414,19 +414,19 @@
   (vertico-mode 1))
 
 ;; orderless (orderless completion style)
-(use-package orderless
-  :config
-  (setq
-   ;; Use orderless for completion
-   ;; completion-styles '(orderless)
-   ;; Enable prefix completion
-   completion-styles '(substring orderless)
-   ;; More options (TODO)
-   ;; completion-styles '(basic substring partial-completion flex)
-   ;; Use orderless everywhere
-   completion-category-defaults nil
-   ;; Enable `partial-completion' for files to allow path expansion
-   completion-category-overrides '((file (styles . (partial-completion))))))
+;; (use-package orderless
+;;   :config
+;;   (setq
+;;    ;; Use orderless for completion
+;;    ;; completion-styles '(orderless)
+;;    ;; Enable prefix completion
+;;    completion-styles '(substring orderless)
+;;    ;; More options (TODO)
+;;    ;; completion-styles '(basic substring partial-completion flex)
+;;    ;; Use orderless everywhere
+;;    completion-category-defaults nil
+;;    ;; Enable `partial-completion' for files to allow path expansion
+;;    completion-category-overrides '((file (styles . (partial-completion))))))
 
 ;; savehist (persistent minibuffer history)
 (use-package savehist
