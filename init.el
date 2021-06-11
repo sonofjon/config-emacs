@@ -766,6 +766,34 @@
 ;; (global-set-key (kbd "C-x") nil)
 ;; (global-unset-key (kbd "C-x"))   ; Alternative syntax
 
+;; Hydras
+
+(defhydra hydra-scroll-line ()
+  "Scroll lines"
+  ("<up>" scroll-up-line)
+  ("<down>" scroll-down-line))
+(global-set-key (kbd "C-c s") #'hydra-scroll-line/body)
+
+(defhydra hydra-next-line ()
+  "Move to the next line that is not empty and not a comment"
+  ("<up>" my/previous-line)
+  ("<down>" my/next-line))
+(global-set-key (kbd "C-c l") #'hydra-next-line/body)
+
+(defhydra hydra-next-comment ()
+  "Move to the next new comment"
+  ("<up>" my/previous-comment)
+  ("<down>" my/next-comment))
+(global-set-key (kbd "C-c t") #'hydra-next-comment/body)
+
+(defhydra hydra-mark-line ()
+  ;; TODO: Fix so one can grow shrink the selected region with other
+  ;; movement commands
+  "Select current line"
+  ("<up>" my/mark-line-up)
+  ("<down>" my/mark-line))
+(global-set-key (kbd "C-c m") #'hydra-mark-line/body)
+
 
 ;;;
 ;;; FUNCTIONS
