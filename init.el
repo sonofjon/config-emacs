@@ -747,15 +747,6 @@
 ;; (global-set-key (kbd "M-y") #'my/counsel-yank-pop-or-yank-pop)
   ; won't be needed in Emacs 28
 
-;; Remap flyspell-mode-map keys
-(add-hook 'flyspell-mode-hook (lambda ()
-  ;; C-, : Go to previous error
-  (define-key flyspell-mode-map (kbd "C-,") #'flyspell-goto-previous-error)
-  ;; C-. : Go to next error
-  (define-key flyspell-mode-map (kbd "C-.") #'flyspell-goto-next-error)
-  ;; C-; : Auto correct current word
-  (define-key flyspell-mode-map (kbd "C-;") #'flyspell-auto-correct-word)))
-
 ;; Files
 
 (global-set-key (kbd "C-c f") #'find-file-at-point)
@@ -771,6 +762,22 @@
 
 ;; (global-set-key (kbd "C-x") nil)
 ;; (global-unset-key (kbd "C-x"))   ; Alternative syntax
+
+;;  Modes
+
+;; apropos-mode-map
+;;   TODO: doesn't work
+;; (add-hook 'apropos-mode-hook (lambda ()
+;;   (define-key apropos-mode-map (kbd "RET") #'helpful-at-point)))
+
+;; flyspell-mode-map
+(add-hook 'flyspell-mode-hook (lambda ()
+  ;; C-, : Go to previous error
+  (define-key flyspell-mode-map (kbd "C-,") #'flyspell-goto-previous-error)
+  ;; C-. : Go to next error
+  (define-key flyspell-mode-map (kbd "C-.") #'flyspell-goto-next-error)
+  ;; C-; : Auto correct current word
+  (define-key flyspell-mode-map (kbd "C-;") #'flyspell-auto-correct-word)))
 
 ;; Hydras
 
