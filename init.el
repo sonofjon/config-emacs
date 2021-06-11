@@ -522,24 +522,24 @@
 (use-package erc
   ;; TODO: bind up/down arrow keys to command history (M-p / M-n)
   :commands (erc erc-tls)
+  :custom
+  ;; Server settings
+  (erc-server "irc.libera.chat")
+  (erc-nick "ajdev8")
+  (erc-user-full-name "Andreas Jonsson")
+  (erc-autojoin-channels-alist '(("libera.chat" "#systemcrafters" "#emacs")))
+  ;; Appearance
+  (erc-fill-function 'erc-fill-static)
+  (erc-fill-static-center 18)
+  ;; (erc-hide-list '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
+  ;; Tracking
+  (erc-track-shorten-start 3)
+  (erc-track-exclude '("#emacs"))
+  (erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
+  (erc-track-exclude-server-buffer t)
+  ;; Other
+  (erc-kill-buffer-on-part t)
   :config
-  (setq
-   ;; Server settings
-   erc-server "irc.libera.chat"
-   erc-nick "ajdev8"
-   erc-user-full-name "Andreas Jonsson"
-   erc-autojoin-channels-alist '(("libera.chat" "#systemcrafters" "#emacs"))
-   ;; Appearance
-   erc-fill-function 'erc-fill-static
-   erc-fill-static-center 18
-   erc-hide-list '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY")
-   ;; Tracking
-   erc-track-shorten-start 3
-   erc-track-exclude '("#emacs")
-   erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY")
-   erc-track-exclude-server-buffer t
-   ;; Other
-   erc-kill-buffer-on-part t))
 
 (use-package erc-hl-nicks
   :after erc
