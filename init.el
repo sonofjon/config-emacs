@@ -588,6 +588,8 @@
 
 ;; Enable line numbers
 (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
+;; Set display-line-number-width automatically
+(setq display-line-numbers-width-start t)
 
 ;; Variables
 
