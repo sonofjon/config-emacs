@@ -714,13 +714,16 @@
 
 ;; Navigation
 
-(windmove-default-keybindings 'meta)
+(windmove-default-keybindings 'ctrl)
 
-(global-set-key (kbd "M-p") #'scroll-up-line)
-(global-set-key (kbd "M-n") #'scroll-down-line)
+(global-set-key (kbd "M-<up>") #'backward-paragraph)
+(global-set-key (kbd "M-<down>") #'forward-paragraph)
 
-(global-set-key (kbd "C-c <down>") 'my/next-line)
-(global-set-key (kbd "C-c <up>") 'my/previous-line)
+;; (global-set-key (kbd "M-p") #'scroll-up-line)
+;; (global-set-key (kbd "M-n") #'scroll-down-line)
+
+;; (global-set-key (kbd "C-c <down>") 'my/next-line)
+;; (global-set-key (kbd "C-c <up>") 'my/previous-line)
 
 ;; Selection
 
