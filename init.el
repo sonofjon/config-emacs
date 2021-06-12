@@ -138,7 +138,6 @@
   ;; Delete old versions
   (auto-package-update-delete-old-versions t)
   ;; Don't show update results
-  ;; Enable mode
   ;; (auto-package-update-hide-results t)
   :config
   (auto-package-update-maybe))
@@ -196,10 +195,6 @@
 (use-package spacemacs-theme
   :disabled
   :defer   ; Fix loading warning
-  :config
-  ;; Use the spacemacs-dark theme
-  ;; (load-theme 'spacemacs-dark t))
-  ;; Fix loading warning
   :init (load-theme 'spacemacs-dark t))
 
 ;; doom-themes
@@ -210,6 +205,7 @@
   ;; :init (load-theme 'doom-snazzy) t)
   :init (load-theme 'doom-Iosvkem) t)
 
+;; modus-themes
 (use-package modus-themes
   ;; Add all customizations prior to loading the themes
   :init
@@ -478,6 +474,7 @@
 ;;   ;; TODO: function should not be quoted?
 ;;   ;; ([remap ispell-region] . #'whole-line-or-region-ispell-region))
 ;;   :config
+;;   ;; Use whole-line-or-region-mode everywhere
 ;;   (whole-line-or-region-global-mode 1))
 
 ;; web-mode (major-mode for editing web templates)
@@ -498,6 +495,7 @@
   :custom
   (diff-hl-margin-mode t)
   :config
+  ;; Use diff-hl-mode everywhere
   (global-diff-hl-mode 1))
 
 ;; syntax-subword (fine-grained navigation)
@@ -841,10 +839,10 @@
 
       ;; Toggle window split
 (defun my/toggle-window-split ()
-  "If the window is split vertically, split it horizontally or vice versa."
+  "If the window is split vertically, split it horizontally, and vice versa."
   (interactive)
   (unless (= (count-windows) 2)
-    (error "Can only toggle a window split in two"))
+    (error "Can only toggle a window split in two!"))
   (let ((split-vertically-p (window-combined-p)))
     (delete-window)   ; close current window
     (if split-vertically-p
