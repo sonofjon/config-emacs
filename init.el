@@ -545,7 +545,8 @@
 (use-package erc-hl-nicks
   :after erc
   :config
-  (add-to-list 'erc-modules 'hl-nicks))
+  (add-to-list 'erc-modules 'hl-nicks)
+  (erc-update-modules))
 
 
 ;;;
