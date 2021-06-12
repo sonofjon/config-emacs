@@ -132,14 +132,15 @@
 
 ;; auto-package-update
 (use-package auto-package-update
-  :config
+  :custom
   ;; Prompt before update
-  ;; (setq auto-package-update-prompt-before-update t)
+  ;; (auto-package-update-prompt-before-update t)
   ;; Delete old versions
-  (setq auto-package-update-delete-old-versions t)
+  (auto-package-update-delete-old-versions t)
   ;; Don't show update results
-  ;; (setq auto-package-update-hide-results t)
   ;; Enable mode
+  ;; (auto-package-update-hide-results t)
+  :config
   (auto-package-update-maybe))
 
 ;; diminish (hide minor modes)
@@ -285,13 +286,13 @@
   ;; :diminish
   :hook (prog-mode . company-mode)
   ;; :bind ("TAB" . company-complete)
-  :config
+  :custom
   ;; Provide instant autocompletion (default is 0.5 s)
-  ;; (setq company-idle-delay 0.0)
+  ;; (company-idle-delay 0.0)
   ;; Minimum prefix for completion
-  ;; (setq company-minimum-prefix-length 3)
+  ;; (company-minimum-prefix-length 3)
   ;; Maximum number of candidates
-  ;; (setq company-tooltip-limit 10)
+  ;; (company-tooltip-limit 10)
   ;; Use company mode everywhere
   (global-company-mode 1))
 
