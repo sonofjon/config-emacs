@@ -518,7 +518,6 @@
 
 ;; erc (IRC client)
 (use-package erc
-  ;; TODO: bind up/down arrow keys to command history (M-p / M-n)
   :commands (erc erc-tls)
   :custom
   ;; Server settings
@@ -645,8 +644,8 @@
 ;; Always select the help window
 ;; (setq help-window-select t)
 
-;; Remove "..?*" from 'all' alias in grep-files-aliases
-;;   TODO: Lisp error: (void-variable grep-files-aliases)
+;; Remove "..?*" from alias 'all' in grep-files-aliases
+;;   TODO: Lisp error: (void-variable grep-files-aliases) (needs hook?)
 ;; (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*")
 
 ;; Mode variables
@@ -663,6 +662,7 @@
 (setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
 
 ;; isearch: interpret spaces as wildcards (with M-s SPC)
+;;   TODO: Remove when adding a replacement for swiper?
 (setq search-whitespace-regexp ".*?")
 
 ;; ispell: set aspell suggestion mode
@@ -789,6 +789,7 @@
   "Move to the next line or comment"
   ("<up>" my/previous-line)
   ("<down>" my/next-line)
+  ;; TODO: write these functions
   ("C-<up>" my/previous-comment)
   ("C-<down>" my/next-comment))
 (global-set-key (kbd "C-c l") #'hydra-next-line/body)
