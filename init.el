@@ -819,6 +819,8 @@
 ;;; FUNCTIONS
 ;;;
 
+;; Buffers
+
 (defvar killed-file-list nil
   "List of recently killed files.")
 
@@ -848,6 +850,8 @@ Emacs session."
           (find-file file)))
     (error "No recently-killed files to reopen")))
 
+;; Navigation
+
 ;; Scroll up one paragraph
 (defun scroll-up-paragraph ()
   ;; TODO: Why is the scroll-up-line at the end needed?
@@ -874,11 +878,12 @@ Emacs session."
              (not (looking-at "^$"))))))
     ;; (scroll-up-line)))
 
+;; Move down a line, skipping comments and empty lines
 (defun my/next-line ()
   ;; TODO: Add functionality for empty lines
   "Move to the next line that is not empty and not a comment."
   (interactive)
-  (next-line)
+  (next-line) ; use forward-line?
   ;; (save-excursion
   ;;   (beginning-of-line)
   ;; (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
@@ -890,6 +895,7 @@ Emacs session."
   (if (nth 4 (syntax-ppss))
            (my/next-line)))
 
+;; Move up a line, skipping comments and empty lines
 (defun my/previous-line ()
   "Move to the previous line that is not empty and not a comment."
   (interactive)
@@ -905,7 +911,9 @@ Emacs session."
   (if (nth 4 (syntax-ppss))
            (my/previous-line)))
 
-      ;; Toggle window split
+;; Windows
+
+;; Toggle window split
 (defun my/toggle-window-split ()
   "If the window is split vertically, split it horizontally, and vice versa."
   (interactive)
@@ -927,6 +935,8 @@ Emacs session."
     (other-window 1)
     (kill-buffer)
     (other-window -1)))
+
+;; Edit
 
 ;; Mark whole word (forward)
 (defun my/mark-word (N)
@@ -985,11 +995,15 @@ If region is active, extend selection upward by line."
 ;;       (yank-pop arg)
 ;;     (counsel-yank-pop)))
 
+;; Spelling
+
 ;; ispell-region stub for whole-line-or-region package
 (defun whole-line-or-region-ispell-region (prefix)
   "Call `ispell-region' on region or PREFIX whole lines."
   (interactive "*p")
   (whole-line-or-region-wrap-modified-region #'ispell-region prefix))
+
+;; Version control
 
 ;; ediff: when merging, use both variants A and B, one after the other
 (defun ediff-copy-both-to-C ()
