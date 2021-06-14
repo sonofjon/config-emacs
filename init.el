@@ -785,11 +785,13 @@
 
 ;; Hydras
 
-(defhydra hydra-scroll-line ()
-  "Scroll lines"
-  ("<up>" scroll-up-line)
-  ("<down>" scroll-down-line))
-(global-set-key (kbd "C-c s") #'hydra-scroll-line/body)
+(defhydra hydra-scroll ()
+  "Scrolling functions"
+  ("<up>" scroll-down-line)
+  ("<down>" scroll-up-line)
+  ("<left>" scroll-down-paragraph)
+  ("<right>" scroll-up-paragraph))
+(global-set-key (kbd "C-c s") #'hydra-scroll/body)
 
 (defhydra hydra-next-line ()
   "Move to the next line or comment"
@@ -812,6 +814,32 @@
 ;;;
 ;;; FUNCTIONS
 ;;;
+
+;; Scroll up one paragraph
+(defun scroll-up-paragraph ()
+  ;; TODO: Why is the scroll-up-line at the end needed?
+  "Scroll text of selected window upward one paragraph."
+  (interactive)
+  (save-excursion
+    (goto-char (window-end))
+    (while (progn
+             (scroll-up-line)
+             (forward-line)
+             (not (looking-at "^$"))))
+    (scroll-up-line)))
+
+;; Scroll down one paragraph
+(defun scroll-down-paragraph ()
+  ;; TODO: Handle sections of multiple empty lines
+  "Scroll text of selected window downward one paragraph."
+  (interactive)
+  (save-excursion
+    (goto-char (window-start))
+    (while (progn
+             (scroll-down-line)
+             (forward-line -1)
+             (not (looking-at "^$"))))))
+    ;; (scroll-up-line)))
 
 (defun my/next-line ()
   ;; TODO: Add functionality for empty lines
