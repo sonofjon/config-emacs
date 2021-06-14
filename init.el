@@ -912,8 +912,9 @@ Emacs session."
   (previous-line)
   ;; (save-excursion
   ;;   (beginning-of-line)
-  ;; (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
-  (if (string-match-p "/(^[[:space:]]*\\s<" (thing-at-point 'line))
+  ;; (if (string-match-p "^[[:space:]]*$" (thing-at-point 'line))
+  ;;     (my/previous-line))
+  (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
   ;; (if (looking-at-p "^-*?\\s<")
   ;; (if (looking-at "^[[:space:]]*;")
   ;; (if (looking-at-p comment-start)
@@ -929,8 +930,7 @@ Emacs session."
   (next-line) ; use forward-line?
   ;; (save-excursion
   ;;   (beginning-of-line)
-  ;; (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
-  (if (string-match-p "/(^[[:space:]]*\\s<" (thing-at-point 'line))
+  (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
   ;; (if (looking-at-p "^-*?\\s<")
   ;; (if (looking-at "^[[:space:]]*;")
   ;; (if (looking-at-p comment-start)
