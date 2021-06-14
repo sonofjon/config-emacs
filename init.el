@@ -718,6 +718,7 @@
 
 ;; Buffers
 
+(global-set-key (kbd "C-x k") #'kill-this-buffer)
 (global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
 ;; Navigation
