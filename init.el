@@ -525,6 +525,9 @@
   (erc-nick "ajdev8")
   (erc-user-full-name "Andreas Jonsson")
   (erc-autojoin-channels-alist '(("libera.chat" "#systemcrafters" "#emacs")))
+  ;; Buffers
+  (erc-join-buffer 'bury)
+  (erc-kill-buffer-on-part t)
   ;; Appearance
   (erc-fill-function 'erc-fill-static)
   (erc-fill-static-center 18)
@@ -534,8 +537,6 @@
   (erc-track-exclude '("#emacs"))
   (erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
   (erc-track-exclude-server-buffer t)
-  ;; Other
-  (erc-kill-buffer-on-part t)
   :config
   ;; (add-to-list 'erc-modules 'notifications)
   (add-to-list 'erc-modules 'spelling)
