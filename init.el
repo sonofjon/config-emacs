@@ -406,8 +406,12 @@
   :custom
   ;; Enable cycling
   (vertico-cycle t)
+  :config
+  ;; (setq completion-styles '(basic substring partial-completion initials))
+  (setq completion-styles '(basic partial-completion initials))
   :init
   (vertico-mode 1))
+
 
 ;; orderless (orderless completion style)
 ;; (use-package orderless
@@ -418,10 +422,10 @@
 ;;    ;; Enable prefix completion
 ;;    completion-styles '(substring orderless)
 ;;    ;; More options (TODO)
-;;    ;; completion-styles '(basic substring partial-completion flex)
+;;    ;; completion-styles '(basic substring partial-completion initials)
 ;;    ;; Use orderless everywhere
 ;;    completion-category-defaults nil
-;;    ;; Enable `partial-completion' for files to allow path expansion
+;;    ;; Use `partial-completion' for files to allow path expansion
 ;;    completion-category-overrides '((file (styles . (partial-completion))))))
 
 ;; savehist (persistent minibuffer history)
