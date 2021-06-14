@@ -465,8 +465,8 @@
 ;; multiple-cursors (edit at multiple points)
 (use-package multiple-cursors
   :bind (("C-c c" . set-rectangular-region-anchor)
-         ("C-c >" . mc/mark-next-like-this)
          ("C-c <" . mc/mark-previous-like-this)
+         ("C-c >" . mc/mark-next-like-this)
          ("C-c ?" . mc/mark-all-like-this)
          ("C-c C" . mc/edit-lines)))
 
@@ -734,8 +734,8 @@
 ;; (global-set-key (kbd "M-p") #'scroll-up-line)
 ;; (global-set-key (kbd "M-n") #'scroll-down-line)
 
-;; (global-set-key (kbd "C-c <down>") 'my/next-line)
 ;; (global-set-key (kbd "C-c <up>") 'my/previous-line)
+;; (global-set-key (kbd "C-c <down>") 'my/next-line)
 
 ;; Selection
 
@@ -743,8 +743,8 @@
 (global-set-key (kbd "M-#") #'my/mark-word)
 (global-set-key (kbd "M-@") #'my/mark-word-backward)
 
-;; (global-set-key (kbd "C-M-S<down>") #'my/mark-line)
 ;; (global-set-key (kbd "C-M-S<up>") #'my/mark-line-up)
+;; (global-set-key (kbd "C-M-S<down>") #'my/mark-line)
 
 ;; Editing
 
@@ -905,6 +905,22 @@ Emacs session."
              (not (looking-at "^$"))))))
     ;; (scroll-up-line)))
 
+;; Move up a line, skipping comments and empty lines
+(defun my/previous-line ()
+  "Move to the previous line that is not empty and not a comment."
+  (interactive)
+  (previous-line)
+  ;; (save-excursion
+  ;;   (beginning-of-line)
+  ;; (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
+  (if (string-match-p "/(^[[:space:]]*\\s<" (thing-at-point 'line))
+  ;; (if (looking-at-p "^-*?\\s<")
+  ;; (if (looking-at "^[[:space:]]*;")
+  ;; (if (looking-at-p comment-start)
+      (my/previous-line))
+  (if (nth 4 (syntax-ppss))
+           (my/previous-line)))
+
 ;; Move down a line, skipping comments and empty lines
 (defun my/next-line ()
   ;; TODO: Add functionality for empty lines
@@ -921,22 +937,6 @@ Emacs session."
       (my/next-line))
   (if (nth 4 (syntax-ppss))
            (my/next-line)))
-
-;; Move up a line, skipping comments and empty lines
-(defun my/previous-line ()
-  "Move to the previous line that is not empty and not a comment."
-  (interactive)
-  (previous-line)
-  ;; (save-excursion
-  ;;   (beginning-of-line)
-  ;; (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
-  (if (string-match-p "/(^[[:space:]]*\\s<" (thing-at-point 'line))
-  ;; (if (looking-at-p "^-*?\\s<")
-  ;; (if (looking-at "^[[:space:]]*;")
-  ;; (if (looking-at-p comment-start)
-      (my/previous-line))
-  (if (nth 4 (syntax-ppss))
-           (my/previous-line)))
 
 ;; Selection
 
@@ -965,6 +965,17 @@ Repeat command to select additional words backwards."
     (set-mark (point)))
   (backward-word N))
 
+;; Mark whole line (up)
+(defun my/mark-line-up ()
+  "Select current line. 
+If region is active, extend selection upward by line."
+  (interactive)
+  (if (not (region-active-p))
+      (forward-line))
+  (setq this-command-keys-shift-translated t)
+  (call-interactively #'previous-line)
+  (call-interactively #'beginning-of-line))
+
 ;; Mark whole line (down)
 ;;   (source: http://emacs.stackexchange.com/a/22166/93)
 (defun my/mark-line ()
@@ -976,17 +987,6 @@ If region is active, extend selection downward by line."
   (setq this-command-keys-shift-translated t)
   (call-interactively #'end-of-line)
   (call-interactively #'forward-char))
-
-;; Mark whole line (up)
-(defun my/mark-line-up ()
-  "Select current line. 
-If region is active, extend selection upward by line."
-  (interactive)
-  (if (not (region-active-p))
-      (forward-line))
-  (setq this-command-keys-shift-translated t)
-  (call-interactively #'previous-line)
-  (call-interactively #'beginning-of-line))
 
 ;; Editing
 
