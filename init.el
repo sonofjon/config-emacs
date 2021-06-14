@@ -755,6 +755,8 @@
 ;; (global-set-key (kbd "M-y") #'my/counsel-yank-pop-or-yank-pop)
   ; won't be needed in Emacs 28
 
+;; Spelling
+
 ;; Files
 
 (global-set-key (kbd "C-c f") #'find-file-at-point)
@@ -818,6 +820,31 @@
 ;;;
 ;;; FUNCTIONS
 ;;;
+
+;; Windows
+
+;; Toggle window split
+(defun my/toggle-window-split ()
+  "If the window is split vertically, split it horizontally, and vice versa."
+  (interactive)
+  (unless (= (count-windows) 2)
+    (error "Can only toggle a window split in two!"))
+  (let ((split-vertically-p (window-combined-p)))
+    (delete-window)   ; close current window
+    (if split-vertically-p
+        (split-window-horizontally)
+      (split-window-vertically))   ; makes a split with the other window twice
+    (switch-to-buffer nil)))   ; restore the original window
+                               ; in this part of the window
+
+;; Kill buffer in other window
+(defun my/kill-buffer-other-window ()
+  "If there are multiple windows, then kill the buffer in the next window."
+  (interactive)
+  (unless (one-window-p)
+    (other-window 1)
+    (kill-buffer)
+    (other-window -1)))
 
 ;; Buffers
 
@@ -911,32 +938,7 @@ Emacs session."
   (if (nth 4 (syntax-ppss))
            (my/previous-line)))
 
-;; Windows
-
-;; Toggle window split
-(defun my/toggle-window-split ()
-  "If the window is split vertically, split it horizontally, and vice versa."
-  (interactive)
-  (unless (= (count-windows) 2)
-    (error "Can only toggle a window split in two!"))
-  (let ((split-vertically-p (window-combined-p)))
-    (delete-window)   ; close current window
-    (if split-vertically-p
-        (split-window-horizontally)
-      (split-window-vertically))   ; makes a split with the other window twice
-    (switch-to-buffer nil)))   ; restore the original window
-                               ; in this part of the window
-
-;; Kill buffer in other window
-(defun my/kill-buffer-other-window ()
-  "If there are multiple windows, then kill the buffer in the next window."
-  (interactive)
-  (unless (one-window-p)
-    (other-window 1)
-    (kill-buffer)
-    (other-window -1)))
-
-;; Edit
+;; Selection
 
 ;; Mark whole word (forward)
 (defun my/mark-word (N)
@@ -986,6 +988,8 @@ If region is active, extend selection upward by line."
   (call-interactively #'previous-line)
   (call-interactively #'beginning-of-line))
 
+;; Editing
+
 ;; Custom counsel-yank-pop
 ;; (defun my/counsel-yank-pop-or-yank-pop (&optional arg)
 ;;   "Call `counsel-yank-pop'. 
@@ -1002,31 +1006,6 @@ If region is active, extend selection upward by line."
   "Call `ispell-region' on region or PREFIX whole lines."
   (interactive "*p")
   (whole-line-or-region-wrap-modified-region #'ispell-region prefix))
-
-;; Version control
-
-;; ediff: when merging, use both variants A and B, one after the other
-(defun ediff-copy-both-to-C ()
-  "Add both variants to merge file."
-  (interactive)
-  (ediff-copy-diff ediff-current-difference nil 'C nil
-                   (concat
-                    (ediff-get-region-contents ediff-current-difference
-                                               'A ediff-control-buffer)
-                    (ediff-get-region-contents ediff-current-difference
-                                               'B ediff-control-buffer))))
-(defun add-d-to-ediff-mode-map ()
-  "Define keybinding for `ediff-copy-both-to-C'."
-  (define-key ediff-mode-map "d" #'ediff-copy-both-to-C))
-
-;; helpful: always open additional helpful buffers in the same window
-(defun my/helpful-switch-to-buffer (buffer-or-name)
-  "Switch to helpful BUFFER-OR-NAME.  
-If we are currently in the helpful buffer, reuse it's window,
-otherwise create a new one."
-  (if (eq major-mode 'helpful-mode)
-      (switch-to-buffer buffer-or-name)
-    (pop-to-buffer buffer-or-name)))
 
 ;; Goto previous flyspell error
 (defun flyspell-goto-previous-error (arg)
@@ -1086,6 +1065,33 @@ otherwise create a new one."
 ;;   (interactive)
 ;;   (push-mark (point) t nil)
 ;;   (message "Pushed mark to ring"))
+
+;; Files
+
+;; Version control
+
+;; ediff: when merging, use both variants A and B, one after the other
+(defun ediff-copy-both-to-C ()
+  "Add both variants to merge file."
+  (interactive)
+  (ediff-copy-diff ediff-current-difference nil 'C nil
+                   (concat
+                    (ediff-get-region-contents ediff-current-difference
+                                               'A ediff-control-buffer)
+                    (ediff-get-region-contents ediff-current-difference
+                                               'B ediff-control-buffer))))
+(defun add-d-to-ediff-mode-map ()
+  "Define keybinding for `ediff-copy-both-to-C'."
+  (define-key ediff-mode-map "d" #'ediff-copy-both-to-C))
+
+;; helpful: always open additional helpful buffers in the same window
+(defun my/helpful-switch-to-buffer (buffer-or-name)
+  "Switch to helpful BUFFER-OR-NAME.  
+If we are currently in the helpful buffer, reuse it's window,
+otherwise create a new one."
+  (if (eq major-mode 'helpful-mode)
+      (switch-to-buffer buffer-or-name)
+    (pop-to-buffer buffer-or-name)))
 
 
 ;;;
