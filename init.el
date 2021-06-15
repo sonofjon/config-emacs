@@ -154,6 +154,7 @@
 
 ;; paradox (improved package menu)
 (use-package paradox
+  :defer
   :config
   ;; Disable *Paradox Report* buffer
   (remove-hook 'paradox--report-buffer-print
@@ -443,7 +444,8 @@
   (which-key-mode 1))
 
 ;; hydra (stateful keymaps)
-(use-package hydra)
+(use-package hydra
+  :defer)
 
 ;; magit (user interface to git)
 (use-package magit
@@ -488,7 +490,7 @@
 ;; google-this (google search functions)
 (use-package google-this
   :diminish
-  ;; :bind ("C-c g" . google-this-mode-submap)
+  :bind-keymap ("C-c /" . google-this-mode-submap)
   :config
   (google-this-mode 1))
 
