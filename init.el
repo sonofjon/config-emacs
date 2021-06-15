@@ -528,7 +528,7 @@
   (erc-server "irc.libera.chat")
   (erc-nick "ajdev8")
   (erc-user-full-name "Andreas Jonsson")
-  (erc-autojoin-channels-alist '(("libera.chat" "#systemcrafters" "#emacs")))
+  (erc-autojoin-channels-alist '(("libera.chat" "#systemcrafters")))
   ;; Buffers
   (erc-join-buffer 'bury)
   (erc-kill-buffer-on-part t)
