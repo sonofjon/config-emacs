@@ -910,33 +910,32 @@ Emacs session."
   "Move to the previous line that is not empty and not a comment."
   (interactive)
   (previous-line)
-  ;; (save-excursion
-  ;;   (beginning-of-line)
-  ;; (if (string-match-p "^[[:space:]]*$" (thing-at-point 'line))
-  ;;     (my/previous-line))
-  (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
-  ;; (if (looking-at-p "^-*?\\s<")
-  ;; (if (looking-at "^[[:space:]]*;")
-  ;; (if (looking-at-p comment-start)
+  ;; Skip empty lines
+  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
+                                        (line-beginning-position)
+                                        (line-end-position)))
       (my/previous-line))
-  (if (nth 4 (syntax-ppss))
-           (my/previous-line)))
+  ;; Skip comment lines
+  (if (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
+                                           (line-beginning-position)
+                                           (line-end-position)))
+      (my/previous-line)))
 
 ;; Move down a line, skipping comments and empty lines
 (defun my/next-line ()
-  ;; TODO: Add functionality for empty lines
   "Move to the next line that is not empty and not a comment."
   (interactive)
   (next-line) ; use forward-line?
-  ;; (save-excursion
-  ;;   (beginning-of-line)
-  (if (string-match-p "^[[:space:]]*\\s<" (thing-at-point 'line))
-  ;; (if (looking-at-p "^-*?\\s<")
-  ;; (if (looking-at "^[[:space:]]*;")
-  ;; (if (looking-at-p comment-start)
+  ;; Skip empty lines
+  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
+                                        (line-beginning-position)
+                                        (line-end-position)))
       (my/next-line))
-  (if (nth 4 (syntax-ppss))
-           (my/next-line)))
+  ;; Skip comment lines
+  (if (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
+                                           (line-beginning-position)
+                                           (line-end-position)))
+      (my/next-line)))
 
 ;; Selection
 
