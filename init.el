@@ -412,7 +412,6 @@
   :init
   (vertico-mode 1))
 
-
 ;; orderless (orderless completion style)
 ;; (use-package orderless
 ;;   :config
@@ -589,15 +588,23 @@
 ;; Highlight current line
 (global-hl-line-mode 1)
 
-;; Deactivate highlight mode when selecting text
-(add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
-(add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
-
 ;; Enable line numbers
 (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 
-;; Set display-line-number-width automatically
-(setq display-line-numbers-width-start t)
+;; Expand abbreviations
+(add-hook 'text-mode-hook 'abbrev-mode)
+
+;; On-the-fly spell checking
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+;; Subword movement and editing: camelCase
+;;    Cannot be enabled at the same time as superword-mode
+;; (add-hook 'prog-mode-hook (lambda () (subword-mode 1)))
+
+;; Superword movement and editing: snake_case and kebab-case
+;;    Cannot be enabled at the same time as subword-mode
+;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
 
 ;; Variables
 
@@ -613,7 +620,6 @@
 ;; (setq scroll-margin 0)
 
 ;; Preserve point position when scrolling
-;;   TODO: difference between 't' and "any value"?
 (setq scroll-preserve-screen-position t)
 
 ;; Prefer horizontal (side-by-side) window splitting
@@ -622,6 +628,9 @@
 ;;   former window size
 (setq split-width-threshold 160
       split-height-threshold nil)
+
+;; Set display-line-number-width automatically
+(setq display-line-numbers-width-start t)
 
 ;; Use spaces, not tabs
 (setq-default indent-tabs-mode nil)
@@ -650,10 +659,6 @@
 ;; Always select the help window
 ;; (setq help-window-select t)
 
-;; Remove "..?*" from alias 'all' in grep-files-aliases
-;;   TODO: Lisp error: (void-variable grep-files-aliases) (needs hook?)
-;; (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*")
-
 ;; Mode variables
 
 ;; dired: custom listing style
@@ -681,26 +686,21 @@
 ;;; HOOKS
 ;;;
 
-;; abbrev-mode
-(add-hook 'text-mode-hook 'abbrev-mode)
+;; Deactivate highlight mode when selecting text
+(add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
+(add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
-;; Ediff
+;; Enable concatenation with Ediff
 (add-hook 'ediff-keymap-setup-hook #'add-d-to-ediff-mode-map)
 
 ;; Collect list of killed buffers
 (add-hook 'kill-buffer-hook #'add-file-to-killed-file-list)
 
-;; flyspell:
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
-
-;; subword: camelCase
-;;    Cannot be enabled at the same time as superword-mode
-;; (add-hook 'prog-mode-hook (lambda () (subword-mode 1)))
-
-;; superword: snake_case and kebab-case
-;;    Cannot be enabled at the same time as subword-mode
-;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
+;; Remove "..?*" from alias 'all' in grep-files-aliases
+;;   TODO: Lisp error: (void-variable grep-files-aliases) (needs hook?)
+(add-hook 'grep-mode-hook
+          (lambda () (setf (alist-get "all" grep-files-aliases nil nil #'equal)
+                           "* .[!.]*")))
 
 
 ;;;
