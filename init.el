@@ -890,12 +890,15 @@ Emacs session."
     (while (progn
              (scroll-up-line)
              (forward-line)
+             (looking-at "^$")))        ; scroll past all empty lines
+    (while (progn
+             (scroll-up-line)
+             (forward-line)
              (not (looking-at "^$"))))
     (scroll-up-line)))
 
 ;; Scroll down one paragraph
 (defun scroll-down-paragraph ()
-  ;; TODO: Handle sections of multiple empty lines
   "Scroll text of selected window downward one paragraph."
   (interactive)
   (save-excursion
@@ -903,8 +906,12 @@ Emacs session."
     (while (progn
              (scroll-down-line)
              (forward-line -1)
+             (looking-at "^$")))        ; scroll past all empty lines
+    (while (progn
+             (scroll-down-line)
+             (forward-line -1)
              (not (looking-at "^$"))))))
-    ;; (scroll-up-line)))
+    ;; (scroll-down-line)))
 
 ;; Move up a line, skipping comments and empty lines
 (defun my/previous-line ()
