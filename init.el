@@ -803,9 +803,8 @@
   "Move to the next line or comment"
   ("<up>" my/previous-line)
   ("<down>" my/next-line)
-  ;; TODO: write these functions
-  ("C-<up>" my/previous-comment)
-  ("C-<down>" my/next-comment))
+  ("<left>" my/previous-comment)
+  ("<right>" my/next-comment))
 (global-set-key (kbd "C-c l") #'hydra-next-line/body)
 
 (defhydra hydra-mark-line ()
@@ -936,6 +935,38 @@ Emacs session."
                                            (line-beginning-position)
                                            (line-end-position)))
       (my/next-line)))
+
+;; Move to previous comment
+(defun my/previous-comment ()
+  "Move to the previous comment line."
+  (interactive)
+  (previous-line)
+  ;; Skip empty lines
+  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
+                                        (line-beginning-position)
+                                        (line-end-position)))
+      (my/previous-comment))
+  ;; Skip lines that are not comments
+  (if (not (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
+                                                (line-beginning-position)
+                                                (line-end-position))))
+      (my/previous-comment)))
+
+;; Move to next comment
+(defun my/next-comment ()
+  "Move to the next comment line."
+  (interactive)
+  (next-line) ; use forward-line?
+  ;; Skip empty lines
+  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
+                                        (line-beginning-position)
+                                        (line-end-position)))
+      (my/next-comment))
+  ;; Skip lines that are not comments
+  (if (not (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
+                                                (line-beginning-position)
+                                                (line-end-position))))
+      (my/next-comment)))
 
 ;; Selection
 
