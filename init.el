@@ -745,9 +745,6 @@
 (global-set-key (kbd "M-#") #'my/mark-word-forward)
 (global-set-key (kbd "M-@") #'my/mark-word-backward)
 
-;; (global-set-key (kbd "C-M-S<up>") #'my/mark-line-up)
-;; (global-set-key (kbd "C-M-S<down>") #'my/mark-line-down)
-
 ;; Editing
 
 (global-set-key (kbd "C-<backspace>") (lambda () (interactive) (kill-line 0)))
@@ -808,14 +805,6 @@
   ("<left>" my/previous-comment)
   ("<right>" my/next-comment))
 (global-set-key (kbd "C-c l") #'hydra-next-line/body)
-
-(defhydra hydra-mark-line ()
-  ;; TODO: Fix so one can grow shrink the selected region with other
-  ;; movement commands
-  "Select current line"
-  ("<up>" my/mark-line-up)
-  ("<down>" my/mark-line-down))
-(global-set-key (kbd "C-c m") #'hydra-mark-line/body)
 
 
 ;;;
@@ -1003,29 +992,6 @@ Repeat command to select additional words backwards."
         (forward-word))
     (set-mark (point)))
   (backward-word N))
-
-;; Mark whole line (up)
-(defun my/mark-line-up ()
-  "Select current line. 
-If region is active, extend selection upward by line."
-  (interactive)
-  (if (not (region-active-p))
-      (forward-line))
-  (setq this-command-keys-shift-translated t)
-  (call-interactively #'previous-line)
-  (call-interactively #'beginning-of-line))
-
-;; Mark whole line (down)
-;;   (source: http://emacs.stackexchange.com/a/22166/93)
-(defun my/mark-line-down ()
-  "Select current line. 
-If region is active, extend selection downward by line."
-  (interactive)
-  (if (not (region-active-p))
-      (beginning-of-line))
-  (setq this-command-keys-shift-translated t)
-  (call-interactively #'end-of-line)
-  (call-interactively #'forward-char))
 
 ;; Editing
 
