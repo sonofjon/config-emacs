@@ -754,6 +754,10 @@
 ;; (global-set-key (kbd "M-y") #'my/counsel-yank-pop-or-yank-pop)
   ; won't be needed in Emacs 28
 
+(global-set-key (kbd "M-u") 'upcase-dwim)
+(global-set-key (kbd "M-l") 'downcase-dwim)
+(global-set-key (kbd "M-c") 'capitalize-dwim)
+
 ;; Spelling
 
 ;; Files
