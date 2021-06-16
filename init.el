@@ -395,23 +395,42 @@
   :config
   (company-prescient-mode 1))
 
-;; vertico (vertical completion UI)
-(use-package vertico
+;; icomplete-vertical (show icomplete candidates vertically)
+(use-package icomplete-vertical
   :demand
-  ;; :diminish
-  ;; TODO: Change shortcuts
-  :bind (:map vertico-map
-         ("?" . minibuffer-completion-help))
-         ;; ("M-TAB" . minibuffer-complete))
-         ;; ("M-RET" . minibuffer-force-complete-and-exit))
-  :custom
-  ;; Enable cycling
-  (vertico-cycle t)
+  :bind (:map icomplete-minibuffer-map
+              ("<up>" . icomplete-backward-completions)
+              ("<down>" . icomplete-forward-completions)
+              ;; ("RET" . icomplete-force-complete)
+              ("RET" . icomplete-force-complete-and-exit)
+              ("C-v" . icomplete-vertical-toggle))
   :config
+  ;; Completion styles
   (setq completion-styles '(basic partial-completion initials))
+  ;; Completion styles for files
   (setq completion-category-overrides '((file (styles . (basic substring)))))
-  :init
-  (vertico-mode 1))
+  ;; Disable *Completions* buffer (TODO: doesn't work)
+  (setq completion-show-help nil)
+  (icomplete-mode)
+  (icomplete-vertical-mode))
+
+;; vertico (vertical completion UI)
+;; (use-package vertico
+;;   :demand
+;;   ;; :diminish
+;;   ;; TODO: Change shortcuts
+;;   :bind (:map vertico-map
+;;          ("?" . minibuffer-completion-help))
+;;          ;; ("M-TAB" . minibuffer-complete))
+;;          ;; ("M-RET" . minibuffer-force-complete-and-exit))
+;;   :custom
+;;   ;; Enable cycling
+;;   (vertico-cycle t)
+;;   :config
+;;   (setq completion-styles '(basic partial-completion initials))
+;;   (setq completion-category-overrides '((file (styles . (basic substring)))))
+;;   :init
+;;   (vertico-mode 1))
 
 ;; orderless (orderless completion style)
 ;; (use-package orderless
@@ -863,6 +882,7 @@
 
 ;; Undo for killed buffers
 (defun reopen-killed-file ()
+  ;; TODO: make it work for all buffers, not just files
   "Reopen the most recently killed file, if one exists."
   (interactive)
   (when killed-file-list
