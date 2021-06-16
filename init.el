@@ -655,6 +655,9 @@
 ;; Use TAB for symbol completion (after indentation)
 (setq tab-always-indent 'complete)
 
+;; Allow minibuffer commands while in the minibuffer
+(setq enable-recursive-minibuffers t)
+
 ;; Open *info* buffers in same window
 ;; (setq info-lookup-other-window-flag nil)
 
