@@ -408,8 +408,8 @@
   ;; Enable cycling
   (vertico-cycle t)
   :config
-  ;; (setq completion-styles '(basic substring partial-completion initials))
   (setq completion-styles '(basic partial-completion initials))
+  (setq completion-category-overrides '((file (styles . (basic substring)))))
   :init
   (vertico-mode 1))
 
@@ -425,8 +425,7 @@
 ;;    ;; completion-styles '(basic substring partial-completion initials)
 ;;    ;; Use orderless everywhere
 ;;    completion-category-defaults nil
-;;    ;; Use `partial-completion' for files to allow path expansion
-;;    completion-category-overrides '((file (styles . (partial-completion))))))
+;;    completion-category-overrides '((file (styles . (basic substring)))))
 
 ;; savehist (persistent minibuffer history)
 (use-package savehist
