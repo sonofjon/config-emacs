@@ -739,6 +739,8 @@
 ;; (global-set-key (kbd "C-c <up>") 'my/previous-line)
 ;; (global-set-key (kbd "C-c <down>") 'my/next-line)
 
+(local-set-key (kbd "C-c l") #'scroll-lock-mode)
+
 ;; Selection
 
 (global-set-key (kbd "C-c @") #'mark-word)
@@ -808,7 +810,7 @@
   ("<down>" my/next-line)
   ("<left>" my/previous-comment)
   ("<right>" my/next-comment))
-(global-set-key (kbd "C-c l") #'hydra-next-line/body)
+(global-set-key (kbd "C-c n") #'hydra-next-line/body)
 
 
 ;;;
