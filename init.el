@@ -742,11 +742,11 @@
 ;; Selection
 
 (global-set-key (kbd "C-c @") #'mark-word)
-(global-set-key (kbd "M-#") #'my/mark-word)
+(global-set-key (kbd "M-#") #'my/mark-word-forward)
 (global-set-key (kbd "M-@") #'my/mark-word-backward)
 
 ;; (global-set-key (kbd "C-M-S<up>") #'my/mark-line-up)
-;; (global-set-key (kbd "C-M-S<down>") #'my/mark-line)
+;; (global-set-key (kbd "C-M-S<down>") #'my/mark-line-down)
 
 ;; Editing
 
@@ -814,7 +814,7 @@
   ;; movement commands
   "Select current line"
   ("<up>" my/mark-line-up)
-  ("<down>" my/mark-line))
+  ("<down>" my/mark-line-down))
 (global-set-key (kbd "C-c m") #'hydra-mark-line/body)
 
 
@@ -980,7 +980,7 @@ Emacs session."
 ;; Selection
 
 ;; Mark whole word (forward)
-(defun my/mark-word (N)
+(defun my/mark-word-forward (N)
   "Like mark-word, but select entire word at point."
   (interactive "p")
   (when (and
@@ -998,7 +998,7 @@ Repeat command to select additional words backwards."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
-         (not (eq last-command #'my/mark-word)))
+         (not (eq last-command #'my/mark-word-forward)))
     (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
         (forward-word))
     (set-mark (point)))
@@ -1017,7 +1017,7 @@ If region is active, extend selection upward by line."
 
 ;; Mark whole line (down)
 ;;   (source: http://emacs.stackexchange.com/a/22166/93)
-(defun my/mark-line ()
+(defun my/mark-line-down ()
   "Select current line. 
 If region is active, extend selection downward by line."
   (interactive)
