@@ -590,6 +590,9 @@
 ;; Highlight current line
 (global-hl-line-mode 1)
 
+;; Show recursion depth in the minibuffer prompt
+(minibuffer-depth-indicate-mode 1)
+
 ;; Enable line numbers
 (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 
