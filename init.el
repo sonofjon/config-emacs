@@ -382,8 +382,8 @@
 
 ;; icomplete-vertical (show icomplete candidates vertically)
 (use-package icomplete-vertical
-  ;; :demand
-  :defer 1   ; load after my/completion-styles is defined
+  ;; Load after startup (when my/completion-styles is defined)
+  :hook (emacs-startup . (lambda () (icomplete-mode) (icomplete-vertical-mode)))
   :bind (:map icomplete-minibuffer-map
               ("<up>" . icomplete-backward-completions)
               ("<down>" . icomplete-forward-completions)
@@ -397,8 +397,8 @@
 
 ;; vertico (vertical completion UI)
 ;; (use-package vertico
-;;   ;; :demand
-;;   :defer 1   ; load after my/completion-styles is defined
+;;   ;; Load after startup (when my/completion-styles is defined)
+;;   :hook (emacs-startup . vertico-mode)
 ;;   ;; TODO: Change shortcuts
 ;;   :bind (:map vertico-map
 ;;          ("?" . minibuffer-completion-help))
