@@ -750,7 +750,7 @@
 (setq switch-to-prev-buffer-skip 'this)
 
 ;; Open up the debugger on error
-(setq debug-on-error t)
+;; (setq debug-on-error t)
 
 ;; Use Command as Meta on macOS
 ;; (setq mac-command-modifier 'meta)
