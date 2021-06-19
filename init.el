@@ -36,13 +36,7 @@
                         "/usr/local/opt/grep/libexec/gnubin"))
            (add-to-list 'exec-path dir))))
 
-      ((equal (system-name) "penguin")
-       ;; Use custom-file.el for custom-* code
-       (setq custom-file "~/.emacs.d/custom-file.el")
-       ;; Fix for Emacs bug on Chromebook (Emacs < v26.3)
-       ;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/
-       (message "Fix for Chromebook")
-       (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+      ;; ((equal (system-name) "penguin")
 
       (t
        ;; Use custom-file.el for custom-* code
