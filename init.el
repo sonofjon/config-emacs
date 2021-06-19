@@ -334,14 +334,14 @@
   ;; :demand
   ;; :after counsel
   :commands (helpful-key helpful-function helpful-symbol helpful-variable)
+  ;; Open helpful info manuals in the same window
+  :hook (helpful-mode . (lambda ()
+                          (setq-local info-lookup-other-window-flag nil)))
   :bind (([remap describe-key] . helpful-key)
          ([remap describe-function] . helpful-function)
          ([remap describe-symbol] . helpful-symbol)
          ([remap describe-variable] . helpful-variable)
          ("C-c h" . helpful-at-point))
-  ;; Open helpful info manuals in the same window
-  :hook (helpful-mode . (lambda ()
-                          (setq-local info-lookup-other-window-flag nil)))
   :custom
   ;; Maximum number of *helpful* buffers
   (helpful-max-buffers 3))
