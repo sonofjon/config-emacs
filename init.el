@@ -390,12 +390,7 @@
               ("RET" . icomplete-force-complete-and-exit)
               ("C-v" . icomplete-vertical-toggle))
   :config
-  ;; Completion styles
-  (setq completion-styles '(basic partial-completion initials))
-  ;; Completion styles for files
-  (setq completion-category-overrides '((file (styles . (basic substring)))))
-  ;; Disable *Completions* buffer (TODO: doesn't work)
-  (setq completion-show-help nil)
+  (my/completion-styles)
   (icomplete-mode)
   (icomplete-vertical-mode))
 
@@ -412,9 +407,7 @@
 ;;   ;; Enable cycling
 ;;   (vertico-cycle t)
 ;;   :config
-;;   (setq completion-styles '(basic partial-completion initials))
-;;   (setq completion-category-overrides '((file (styles . (basic substring)))))
-;;   :init
+;;   (my/completion-styles)
 ;;   (vertico-mode 1))
 
 ;; orderless (orderless completion style)
@@ -1246,6 +1239,18 @@ Repeat command to select additional words backwards."
 ;;   (if (eq last-command #'yank)
 ;;       (yank-pop arg)
 ;;     (counsel-yank-pop)))
+
+;;;; Completion
+
+(defun my/completion-styles ()
+  ;; Completion styles
+  (setq completion-styles '(basic partial-completion initials))
+  ;; Completion styles for files (TODO: do the same for buffers?)
+  (setq completion-category-overrides '((file (styles . (basic substring))))))
+  ;; Disable *Completions* buffer (TODO: doesn't work)
+  ;; (setq completion-show-help nil))
+  ;; Cycle completions
+  ;; (setq completion-cycle-threshold t)
 
 ;;;; Spelling
 
