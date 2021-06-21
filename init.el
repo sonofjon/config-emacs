@@ -740,7 +740,7 @@
 ;; Windows
 
 (global-set-key (kbd "C-x M-9") #'my/toggle-window-split)
-(global-set-key (kbd "C-x 9") #'window-swap-states)
+;; (global-set-key (kbd "C-x 9") #'window-swap-states)
 
 ;; Buffers
 
@@ -750,6 +750,9 @@
 ;; Navigation
 
 (windmove-default-keybindings 'ctrl)
+(windmove-swap-states-default-keybindings '(ctrl shift))
+;; (windmove-display-default-keybindings '())
+;; (windmove-delete-default-keybindings '())
 
 (global-set-key (kbd "M-<up>") #'backward-paragraph)
 (global-set-key (kbd "M-<down>") #'forward-paragraph)
