@@ -875,6 +875,8 @@
 (global-set-key (kbd "M-l") 'downcase-dwim)
 (global-set-key (kbd "M-c") 'capitalize-dwim)
 
+(global-set-key (kbd "C-c q") 'fill-individual-paragraphs)
+
 ;;;; Spelling
 
 ;;;; Files
