@@ -765,6 +765,8 @@
 
 (local-set-key (kbd "C-c l") #'scroll-lock-mode)
 
+(global-set-key (kbd "C-c m") #'imenu)
+
 ;; Selection
 
 (global-set-key (kbd "C-c @") #'mark-word)
