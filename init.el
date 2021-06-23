@@ -440,6 +440,84 @@
 ;;    completion-category-defaults nil
 ;;    completion-category-overrides '((file (styles . (basic substring)))))
 
+;; consult (practical commands based on Emacs completion)
+(use-package consult
+  :bind (
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+  ;;        ;; Other custom bindings
+  ;;        ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+  ;;        ("<help> a" . consult-apropos)            ;; orig. apropos-command
+  ;;        ;; M-g bindings (goto-map)
+
+  ;;        ("M-g g" . consult-goto-line)             ;; orig. goto-line
+  ;;        ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+  ;;        ("M-g m" . consult-mark)
+  ;;        ("M-g k" . consult-global-mark)
+  ;;        ("M-g i" . consult-imenu)
+  ;;        ("M-g I" . consult-project-imenu)
+
+  ;;        ;; M-s bindings (search-map)
+  ;;        ("M-s f" . consult-find)
+  ;;        ("M-s L" . consult-locate)
+  ;;        ("M-s g" . consult-grep)
+  ;;        ("M-s G" . consult-git-grep)
+  ;;        ("M-s r" . consult-ripgrep)
+  ;;        ("M-s l" . consult-line)
+  ;;        ("M-s m" . consult-multi-occur)
+  ;;        ("M-s k" . consult-keep-lines)
+  ;;        ("M-s u" . consult-focus-lines)
+  ;;        ;; Isearch integration
+  ;;        ("M-s e" . consult-isearch)
+
+  ;;        :map isearch-mode-map
+  ;;        ("M-e" . consult-isearch)                 ;; orig. isearch-edit-string
+  ;;        ("M-s e" . consult-isearch)               ;; orig. isearch-edit-string
+  ;;        ("M-s l" . consult-line))                 ;; needed by consult-line to detect isearch
+         )
+
+  ;; Enable automatic preview at point in the *Completions* buffer
+  ;;   This is relevant when you use the default completion UI,
+  ;;   and not necessary for Selectrum, Vertico etc.
+  ;; :hook (completion-list-mode . consult-preview-at-point-mode)
+
+  :config
+  ;; Live preview (auto)
+  ;; (setq consult-preview-key 'any)   ; auto (default)
+  ;; (setq consult-preview-key (kbd "M-."))   ; manual
+  ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+  ;; Live preview (manual)
+  ;; (consult-customize
+  ;;  consult-theme
+  ;;  :preview-key '(:debounce 0.2 any)
+  ;;  consult-ripgrep consult-git-grep consult-grep
+  ;;  consult-bookmark consult-recent-file consult-xref
+  ;;  consult--source-file consult--source-project-file consult--source-bookmark
+  ;;  :preview-key (kbd "M-."))
+
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  ;; (setq consult-narrow-key "<") ;; (kbd "C-+")
+
+  ;; Optionally make narrowing help available in the minibuffer.
+  ;; You may want to use `embark-prefix-help-command' or which-key instead.
+  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+
+  ;; Optionally configure a function which returns the project root directory.
+  ;; There are multiple reasonable alternatives to chose from.
+  ;;;; 1. project.el (project-roots)
+  ;; (setq consult-project-root-function
+  ;;       (lambda ()
+  ;;         (when-let (project (project-current))
+  ;;           (car (project-roots project)))))
+  ;; ;;;; 2. projectile.el (projectile-project-root)
+  ;; (autoload 'projectile-project-root "projectile")
+  ;; (setq consult-project-root-function #'projectile-project-root)
+  ;;;; 3. vc.el (vc-root-dir)
+  ;; (setq consult-project-root-function #'vc-root-dir)
+  ;;;; 4. locate-dominating-file
+  ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))
+  )
+
 ;; marginalia (add marginalia to minibuffer completions)
 (use-package marginalia
   ;; Either bind `marginalia-cycle` globally or only in the minibuffer
