@@ -751,8 +751,11 @@
 
 (windmove-default-keybindings 'ctrl)
 (windmove-swap-states-default-keybindings '(ctrl shift))
-;; (windmove-display-default-keybindings '())
-;; (windmove-delete-default-keybindings '())
+(global-set-key (kbd "C-c d <up>") #'windmove-display-up)
+(global-set-key (kbd "C-c d <down>") #'windmove-display-down)
+(global-set-key (kbd "C-c d <left>") #'windmove-display-left)
+(global-set-key (kbd "C-c d <right>") #'windmove-display-right)
+(global-set-key (kbd "C-c d 0") #'windmove-display-same-window)
 
 (global-set-key (kbd "M-<up>") #'backward-paragraph)
 (global-set-key (kbd "M-<down>") #'forward-paragraph)
