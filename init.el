@@ -440,6 +440,17 @@
 ;;    completion-category-defaults nil
 ;;    completion-category-overrides '((file (styles . (basic substring)))))
 
+;; marginalia (add marginalia to minibuffer completions)
+(use-package marginalia
+  ;; Either bind `marginalia-cycle` globally or only in the minibuffer
+  :after (:any icomplete-vertical vertico)
+  :bind (:map minibuffer-local-map
+              ("M-m" . marginalia-cycle))
+  :config
+  ;; Must be in the :init section of use-package such that the mode gets
+  ;; enabled right away. 
+  (marginalia-mode))
+
 ;; savehist (persistent minibuffer history)
 (use-package savehist
   :config
