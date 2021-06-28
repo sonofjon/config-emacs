@@ -837,6 +837,9 @@
 (global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
 ;;;; Outline
+
+;; (setq outline-minor-mode-prefix ...)
+
 ;;;; Navigation
 
 (windmove-default-keybindings 'ctrl)
@@ -912,6 +915,10 @@
   (define-key flyspell-mode-map (kbd "C-.") #'flyspell-goto-next-error)
   ;; C-; : Auto correct current word
   (define-key flyspell-mode-map (kbd "C-;") #'flyspell-auto-correct-word)))
+
+;; outline-minor-mode
+(add-hook 'outline-minor-mode-hook
+          (lambda () (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)))
 
 ;;;; Hydras
 
