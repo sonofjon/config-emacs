@@ -904,8 +904,9 @@
 
 ;; apropos-mode-map
 ;;   TODO: doesn't work
-;; (add-hook 'apropos-mode-hook (lambda ()
-;;   (define-key apropos-mode-map (kbd "RET") #'helpful-at-point)))
+;; (add-hook 'apropos-mode-hook
+;;           (lambda () (define-key apropos-mode-map
+;;                        (kbd "RET") #'helpful-at-point)))
 
 ;; flyspell-mode-map
 (add-hook 'flyspell-mode-hook (lambda ()
@@ -918,7 +919,10 @@
 
 ;; outline-minor-mode
 (add-hook 'outline-minor-mode-hook
-          (lambda () (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)))
+          (lambda ()
+	    (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
+	    (define-key outline-minor-mode-map '[left] 'outline-do-close)
+	    (define-key outline-minor-mode-map '[right] 'outline-do-open)))
 
 ;;;; Hydras
 
@@ -999,6 +1003,60 @@ Emacs session."
           (setq killed-file-list (cl-delete file killed-file-list :test #'equal))
           (find-file file)))
     (error "No recently-killed files to reopen")))
+
+;;;; Outline
+
+;; TODO: Add headers and doc strings
+(defun body-p ()
+  (save-excursion
+    (outline-back-to-heading)
+    (outline-end-of-heading)
+    (and (not (eobp))
+	 (progn (forward-char 1)
+		(not (outline-on-heading-p))))))
+
+(defun body-visible-p ()
+  (save-excursion
+    (outline-back-to-heading)
+    (outline-end-of-heading)
+    (outline-visible)))
+
+(defun subheadings-p ()
+  (save-excursion
+    (outline-back-to-heading)
+    (let ((level (funcall outline-level)))
+      (outline-next-heading)
+      (and (not (eobp))
+	   (< level (funcall outline-level))))))
+
+(defun subheadings-visible-p ()
+  (interactive)
+  (save-excursion
+    (outline-next-heading)
+    (outline-visible)))
+
+(defun outline-do-close ()
+  (interactive)
+  (if (outline-on-heading-p)
+      (cond ((and (body-p) (body-visible-p))
+	     (hide-entry))
+	    ((and (subheadings-p)
+		  (subheadings-visible-p))
+	     (hide-subtree))
+	    (t (outline-previous-visible-heading 1)))
+    (outline-back-to-heading t)))
+
+(defun outline-do-open ()
+  (interactive)
+  (if (outline-on-heading-p)
+      (cond ((and (subheadings-p)
+		  (not (subheadings-visible-p)))
+	     (show-children))
+	    ((and (body-p)
+		  (not (body-visible-p)))
+	     (show-entry))
+	    (t (show-entry)))
+    (outline-next-visible-heading 1)))
 
 ;;;; Navigation
 
