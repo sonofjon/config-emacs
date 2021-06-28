@@ -676,7 +676,7 @@
 ;;; CUSTOMIZATION
 ;;;
 
-;; Modes
+;;;; Modes
 
 ;; Disable menu bar
 (menu-bar-mode -1)
@@ -715,7 +715,7 @@
 ;;    Cannot be enabled at the same time as subword-mode
 ;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
 
-;; Variables
+;;;; Variables
 
 ;; Scrolling
 ;;   The order of priority is: ‘scroll-conservatively’, then
@@ -771,7 +771,7 @@
 ;; Always select the help window
 ;; (setq help-window-select t)
 
-;; Mode variables
+;;;; Mode variables
 
 ;; dired: custom listing style
 ;; (setq dired-listing-switches "-agho --group-directories-first")
@@ -826,17 +826,18 @@
 (define-key input-decode-map "\e[127;5u" [C-backspace])
 (define-key input-decode-map "\e[127;6u" [C-S-backspace])
 
-;; Windows
+;;;; Windows
 
 (global-set-key (kbd "C-x M-9") #'my/toggle-window-split)
 ;; (global-set-key (kbd "C-x 9") #'window-swap-states)
 
-;; Buffers
+;;;; Buffers
 
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
 (global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
-;; Navigation
+;;;; Outline
+;;;; Navigation
 
 (windmove-default-keybindings 'ctrl)
 (windmove-swap-states-default-keybindings '(ctrl shift))
@@ -859,13 +860,13 @@
 
 (global-set-key (kbd "C-c m") #'imenu)
 
-;; Selection
+;;;; Selection
 
 (global-set-key (kbd "C-c @") #'mark-word)
 (global-set-key (kbd "M-#") #'my/mark-word-forward)
 (global-set-key (kbd "M-@") #'my/mark-word-backward)
 
-;; Editing
+;;;; Editing
 
 (global-set-key (kbd "C-<backspace>") (lambda () (interactive) (kill-line 0)))
 
@@ -878,25 +879,25 @@
 (global-set-key (kbd "M-l") 'downcase-dwim)
 (global-set-key (kbd "M-c") 'capitalize-dwim)
 
-;; Spelling
+;;;; Spelling
 
-;; Files
+;;;; Files
 
 (global-set-key (kbd "C-c f") #'find-file-at-point)
 
-;; Version control
+;;;; Version control
 
 (global-set-key (kbd "C-c e") #'ediff-buffers)
 (global-set-key (kbd "C-c r") #'ediff-regions-linewise)
 (global-set-key (kbd "C-c w") #'ediff-regions-wordwise)
 (global-set-key (kbd "C-x v -") #'vc-ediff)
 
-;; Unbind keys
+;;;; Unbind keys
 
 ;; (global-set-key (kbd "C-x") nil)
 ;; (global-unset-key (kbd "C-x"))   ; Alternative syntax
 
-;;  Modes
+;;;;  Modes
 
 ;; apropos-mode-map
 ;;   TODO: doesn't work
@@ -912,7 +913,7 @@
   ;; C-; : Auto correct current word
   (define-key flyspell-mode-map (kbd "C-;") #'flyspell-auto-correct-word)))
 
-;; Hydras
+;;;; Hydras
 
 (defhydra hydra-scroll ()
   "Scrolling functions"
@@ -935,7 +936,7 @@
 ;;; FUNCTIONS
 ;;;
 
-;; Windows
+;;;; Windows
 
 ;; Toggle window split
 (defun my/toggle-window-split ()
@@ -960,7 +961,7 @@
     (kill-buffer)
     (other-window -1)))
 
-;; Buffers
+;;;; Buffers
 
 (defvar killed-file-list nil
   "List of recently killed files.")
@@ -992,7 +993,7 @@ Emacs session."
           (find-file file)))
     (error "No recently-killed files to reopen")))
 
-;; Navigation
+;;;; Navigation
 
 ;; Scroll up one paragraph
 (defun scroll-up-paragraph ()
@@ -1091,7 +1092,7 @@ Emacs session."
                                                 (line-end-position))))
       (my/next-comment)))
 
-;; Selection
+;;;; Selection
 
 ;; Mark whole word (forward)
 (defun my/mark-word-forward (N)
@@ -1118,7 +1119,7 @@ Repeat command to select additional words backwards."
     (set-mark (point)))
   (backward-word N))
 
-;; Editing
+;;;; Editing
 
 ;; Custom counsel-yank-pop
 ;; (defun my/counsel-yank-pop-or-yank-pop (&optional arg)
@@ -1129,7 +1130,7 @@ Repeat command to select additional words backwards."
 ;;       (yank-pop arg)
 ;;     (counsel-yank-pop)))
 
-;; Spelling
+;;;; Spelling
 
 ;; ispell-region stub for whole-line-or-region package
 (defun whole-line-or-region-ispell-region (prefix)
@@ -1196,9 +1197,9 @@ Repeat command to select additional words backwards."
 ;;   (push-mark (point) t nil)
 ;;   (message "Pushed mark to ring"))
 
-;; Files
+;;;; Files
 
-;; Version control
+;;;; Version control
 
 ;; ediff: when merging, use both variants A and B, one after the other
 (defun ediff-copy-both-to-C ()
