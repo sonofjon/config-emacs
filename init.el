@@ -831,6 +831,7 @@
   (define-key map (kbd "C-c <right>") 'outline-show-more)
   (define-key map (kbd "C-c <up>") 'outline-previous-visible-heading)
   (define-key map (kbd "C-c <down>") 'outline-next-visible-heading))
+(global-set-key (kbd "C-c o") #'outline-minor-mode)
 
 ;;;; Navigation
 
