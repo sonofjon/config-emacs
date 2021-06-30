@@ -128,7 +128,7 @@
 (use-package auto-package-update
   :custom
   ;; Prompt before update
-  ;; (auto-package-update-prompt-before-update t)
+  (auto-package-update-prompt-before-update t)
   ;; Delete old versions
   (auto-package-update-delete-old-versions t)
   ;; Don't show update results
