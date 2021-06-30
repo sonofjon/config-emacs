@@ -625,6 +625,12 @@
          ;; ("s-<left>" . buf-move-left)
          ;; ("s-<right>" . buf-move-right)))
 
+;; outline-magic (extension for outline-minor-mode)
+(use-package outline-magic)
+  ;; :custom
+  ;; Tab emulation
+  ;; (outline-cycle-emulate-tab t))
+
 ;; erc (IRC client)
 (use-package erc
   :commands (erc erc-tls)
@@ -918,7 +924,8 @@
 ;; outline-minor-mode
 (add-hook 'outline-minor-mode-hook
           (lambda ()
-	    (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)))
+	    (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
+            (define-key outline-minor-mode-map [(f10)] #'outline-cycle)))
 
 ;;;; Hydras
 
