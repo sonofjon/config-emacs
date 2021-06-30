@@ -1,6 +1,4 @@
-;;;
 ;;; STARTUP
-;;;
 
 ;; Check startup time
 (defun efs/display-startup-time ()
@@ -21,9 +19,7 @@
                                             gc-cons-percentage 0.1)))
 
 
-;;;
 ;;; LOCAL SETTINGS (EARLY)
-;;;
 
 (cond ((equal (system-name) "MacBook-Air.lan")
        ;; Use custom-file.el for custom-* code (Chemacs setup)
@@ -46,9 +42,7 @@
 (load-file custom-file)
 
 
-;;;
 ;;; FIXES
-;;;
 
 ;; Suppress warnings about unnecessary package-initialize calls
 ;;   Introduced when switching to Melpa Stable
@@ -57,9 +51,7 @@
 ;; (setq warning-suppress-log-types '((package reinitialization)))
 
 
-;;;
 ;;; PACKAGES SETUP
-;;;
 
 ;; Initialize package sources
 (require 'package)
@@ -113,9 +105,7 @@
 ;; (setq use-package-always-pin "melpa-stable")
 
 
-;;;
 ;;; PACKAGES
-;;;
 
 ;; benchmark-init (startup profiler)
 (use-package benchmark-init
@@ -665,9 +655,7 @@
   (erc-update-modules))
 
 
-;;;
 ;;; THEMES
-;;;
 
 ;; (load-theme 'dichromacy)
 ;; (load-theme 'manoj-dark)
@@ -678,9 +666,7 @@
 ;; (load-theme 'wombat)
 
 
-;;;
 ;;; CUSTOMIZATION
-;;;
 
 ;;;; Modes
 
@@ -800,9 +786,7 @@
 ;; (setq ispell-extra-args '("--sug-mode=normal"))
 
 
-;;;
 ;;; HOOKS
-;;;
 
 ;; Deactivate highlight mode when selecting text
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
@@ -821,9 +805,7 @@
                            "* .[!.]*")))
 
 
-;;;
 ;;; KEYBINDINGS
-;;;
 
 ;; (define-key input-decode-map "\e[1;8A" [C-M-S-up])
 ;; (define-key input-decode-map "\e[1;8B" [C-M-S-down])
@@ -990,9 +972,7 @@ _d_: subtree
 (global-set-key (kbd "C-c #") 'hydra-outline/body)
 
 
-;;;
 ;;; FUNCTIONS
-;;;
 
 ;;;; Windows
 
@@ -1338,9 +1318,7 @@ otherwise create a new one."
     (pop-to-buffer buffer-or-name)))
 
 
-;;;
 ;;; LOCAL SETTINGS (LATE)
-;;;
 
 (cond ((equal (system-name) "MacBook-Air.lan")
        (if (display-graphic-p)
