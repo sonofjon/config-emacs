@@ -921,8 +921,10 @@
 (add-hook 'outline-minor-mode-hook
           (lambda ()
 	    (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
-	    (define-key outline-minor-mode-map '[left] 'outline-do-close)
-	    (define-key outline-minor-mode-map '[right] 'outline-do-open)))
+	    (define-key outline-minor-mode-map
+              (kbd "C-c C-c <left>") #'outline-do-close)
+	    (define-key outline-minor-mode-map
+              (kbd "C-c C-c <right>") #'outline-do-open)))
 
 ;;;; Hydras
 
