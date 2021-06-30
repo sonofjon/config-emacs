@@ -826,11 +826,6 @@
 
 ;;;; Outline
 
-(let ((map outline-minor-mode-map)) 
-  (define-key map (kbd "C-c <left>") 'outline-hide-more)
-  (define-key map (kbd "C-c <right>") 'outline-show-more)
-  (define-key map (kbd "C-c <up>") 'outline-previous-visible-heading)
-  (define-key map (kbd "C-c <down>") 'outline-next-visible-heading))
 (global-set-key (kbd "C-c o") #'outline-minor-mode)
 
 ;;;; Navigation
@@ -913,8 +908,18 @@
 ;; outline-minor-mode
 (add-hook 'outline-minor-mode-hook
           (lambda ()
-	    (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
-            (define-key outline-minor-mode-map [(f10)] #'outline-cycle)))
+	    ;; (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
+            (setq outline-minor-mode-prefix "\C-c \C-c") ; TODO: doesn't work
+            (let ((map outline-minor-mode-map)) 
+              (define-key map (kbd "C-c <left>") 'outline-hide-more)
+              (define-key map (kbd "C-c <right>") 'outline-show-more)
+              (define-key map (kbd "C-c C-<left>") 'outline-hide-body) ; TODO: hide-all?
+              (define-key map (kbd "C-c C-<right>") 'outline-show-all)
+              (define-key map (kbd "C-c <up>") 'outline-previous-visible-heading) ; TODO: Swap bindings?
+              (define-key map (kbd "C-c <down>") 'outline-next-visible-heading)
+              (define-key map (kbd "C-c C-<up>") 'outline-backward-same-level)
+              (define-key map (kbd "C-c C-<down>") 'outline-forward-same-level)
+              (define-key outline-minor-mode-map [(f10)] #'outline-cycle))))
 
 ;;;; Hydras
 
