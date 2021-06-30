@@ -542,12 +542,12 @@
 (use-package magit
   ;; Disable hl-line-mode
   :hook (magit-mode . (lambda () (setq-local global-hl-line-mode nil)))
-  :custom
-  ;; Show refined diffs for current hunk
-  (magit-diff-refine-hunk t)
   :bind (("C-x g" . magit-status)
          ;; ("C-x M-g" . magit-dispatch)   ; default binding
-	 ("C-c g" . magit-file-dispatch)))
+	 ("C-c g" . magit-file-dispatch))
+  :custom
+  ;; Show refined diffs for current hunk
+  (magit-diff-refine-hunk t))
 
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
