@@ -776,6 +776,17 @@
 ;; (setq dired-listing-switches "-agho --group-directories-first")
 (setq dired-listing-switches "-agho")   ; macOS version
 
+;; outline: custom heading format
+(add-hook 'emacs-lisp-mode-hook
+          (lambda () 
+            (setq-local outline-regexp "\\(;;;+ \\|;; [a-z]+\\)")
+            (setq-local outline-heading-alist
+                        '((";;; " . 1)
+                          (";;;; " . 2)
+                          (";;;;; " . 3)
+                          (";;;;;; " . 4)
+                          (";; [a-z]+" . 5)))))
+
 ;; ediff: use horizontal (side-by-side) view by default
 (setq ediff-split-window-function #'split-window-horizontally)
 (setq ediff-merge-split-window-function #'split-window-horizontally)
