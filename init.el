@@ -112,6 +112,7 @@
   ;; :disabled
   :config
   ;; Disable collection of benchmark data after init
+  ;;   TODO: does this hook overwrite the earlier after-init-hook?
   (add-hook 'after-init-hook #'benchmark-init/deactivate))
 
 ;; auto-package-update
@@ -696,10 +697,12 @@
 (add-hook 'text-mode-hook 'abbrev-mode)
 
 ;; On-the-fly spell checking
+;;   TODO: do these hooks overwrite the earlier versions of these hooks?
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 ;; Subword movement and editing: camelCase
+;;   TODO: do these hooks overwrite the earlier versions of these hooks?
 ;;    Cannot be enabled at the same time as superword-mode
 ;; (add-hook 'prog-mode-hook (lambda () (subword-mode 1)))
 
