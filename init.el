@@ -859,8 +859,8 @@
 ;; (global-set-key (kbd "M-p") #'scroll-up-line)
 ;; (global-set-key (kbd "M-n") #'scroll-down-line)
 
-;; (global-set-key (kbd "C-c <up>") 'my/previous-line)
-;; (global-set-key (kbd "C-c <down>") 'my/next-line)
+;; (global-set-key (kbd "C-c <up>") 'aj8/previous-line)
+;; (global-set-key (kbd "C-c <down>") 'aj8/next-line)
 
 (local-set-key (kbd "C-c l") #'scroll-lock-mode)
 
@@ -869,8 +869,8 @@
 ;;;; Selection
 
 (global-set-key (kbd "C-c @") #'mark-word)
-(global-set-key (kbd "M-#") #'my/mark-word-forward)
-(global-set-key (kbd "M-@") #'my/mark-word-backward)
+(global-set-key (kbd "M-#") #'aj8/mark-word-forward)
+(global-set-key (kbd "M-@") #'aj8/mark-word-backward)
 
 ;;;; Editing
 
@@ -945,17 +945,17 @@
   "Scrolling functions"
   ("<up>" scroll-down-line)
   ("<down>" scroll-up-line)
-  ("<left>" scroll-down-paragraph)
-  ("<right>" scroll-up-paragraph))
+  ("<left>" aj8/scroll-down-paragraph)
+  ("<right>" aj8/scroll-up-paragraph))
 (global-set-key (kbd "C-c s") #'hydra-scroll/body)
 
 ;;;;; Line navigation
 (defhydra hydra-next-line ()
   "Move to the next line or comment"
-  ("<up>" my/previous-line)
-  ("<down>" my/next-line)
-  ("<left>" my/previous-comment)
-  ("<right>" my/next-comment))
+  ("<up>" aj8/previous-line)
+  ("<down>" aj8/next-line)
+  ("<left>" aj8/previous-comment)
+  ("<right>" aj8/next-comment))
 (global-set-key (kbd "C-c n") #'hydra-next-line/body)
 
 ;;;;; Outline 
@@ -1112,7 +1112,7 @@ Emacs session."
 ;;;; Navigation
 
 ;; Scroll up one paragraph
-(defun scroll-up-paragraph ()
+(defun aj8/scroll-up-paragraph ()
   ;; TODO: Why is the scroll-up-line at the end needed?
   "Scroll text of selected window upward one paragraph."
   (interactive)
@@ -1129,7 +1129,7 @@ Emacs session."
     (scroll-up-line)))
 
 ;; Scroll down one paragraph
-(defun scroll-down-paragraph ()
+(defun aj8/scroll-down-paragraph ()
   "Scroll text of selected window downward one paragraph."
   (interactive)
   (save-excursion
@@ -1145,7 +1145,7 @@ Emacs session."
     ;; (scroll-down-line)))
 
 ;; Move up a line, skipping comments and empty lines
-(defun my/previous-line ()
+(defun aj8/previous-line ()
   "Move to the previous line that is not empty and not a comment."
   (interactive)
   (previous-line)
@@ -1153,15 +1153,15 @@ Emacs session."
   (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
                                         (line-beginning-position)
                                         (line-end-position)))
-      (my/previous-line))
+      (aj8/previous-line))
   ;; Skip comment lines
   (if (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
                                            (line-beginning-position)
                                            (line-end-position)))
-      (my/previous-line)))
+      (aj8/previous-line)))
 
 ;; Move down a line, skipping comments and empty lines
-(defun my/next-line ()
+(defun aj8/next-line ()
   "Move to the next line that is not empty and not a comment."
   (interactive)
   (next-line) ; use forward-line?
@@ -1169,15 +1169,15 @@ Emacs session."
   (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
                                         (line-beginning-position)
                                         (line-end-position)))
-      (my/next-line))
+      (aj8/next-line))
   ;; Skip comment lines
   (if (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
                                            (line-beginning-position)
                                            (line-end-position)))
-      (my/next-line)))
+      (aj8/next-line)))
 
 ;; Move to previous comment
-(defun my/previous-comment ()
+(defun aj8/previous-comment ()
   "Move to the previous comment line."
   (interactive)
   (previous-line)
@@ -1185,15 +1185,15 @@ Emacs session."
   (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
                                         (line-beginning-position)
                                         (line-end-position)))
-      (my/previous-comment))
+      (aj8/previous-comment))
   ;; Skip lines that are not comments
   (if (not (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
                                                 (line-beginning-position)
                                                 (line-end-position))))
-      (my/previous-comment)))
+      (aj8/previous-comment)))
 
 ;; Move to next comment
-(defun my/next-comment ()
+(defun aj8/next-comment ()
   "Move to the next comment line."
   (interactive)
   (next-line) ; use forward-line?
@@ -1201,35 +1201,35 @@ Emacs session."
   (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
                                         (line-beginning-position)
                                         (line-end-position)))
-      (my/next-comment))
+      (aj8/next-comment))
   ;; Skip lines that are not comments
   (if (not (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
                                                 (line-beginning-position)
                                                 (line-end-position))))
-      (my/next-comment)))
+      (aj8/next-comment)))
 
 ;;;; Selection
 
 ;; Mark whole word (forward)
-(defun my/mark-word-forward (N)
+(defun aj8/mark-word-forward (N)
   "Like mark-word, but select entire word at point."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
-         (not (eq last-command #'my/mark-word-backward)))
+         (not (eq last-command #'aj8/mark-word-backward)))
     (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
         (backward-word))
     (set-mark (point)))
   (forward-word N))
 
 ;; Mark whole word (backward)
-(defun my/mark-word-backward (N)
+(defun aj8/mark-word-backward (N)
   "Like mark-word, but select entire word at point. 
 Repeat command to select additional words backwards."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
-         (not (eq last-command #'my/mark-word-forward)))
+         (not (eq last-command #'aj8/mark-word-forward)))
     (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
         (forward-word))
     (set-mark (point)))
