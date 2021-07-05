@@ -416,7 +416,16 @@
    ;; (setq completion-styles '(basic substring partial-completion initials))
    ;; Use orderless everywhere (TODO)
    (setq completion-category-defaults nil)
-   (setq completion-category-overrides '((file (styles . (basic substring))))))
+   (setq completion-category-overrides '((file (styles . (basic substring)))))
+   ;; Matching styles
+   ;;   Options: nil, orderless-regexp, orderless-literal,
+   ;;   orderless-initialism, orderless-strict-initialism,
+   ;;   orderless-strict-leading-initialism,
+   ;;   orderless-strict-full-initialism, orderless-prefixes,
+   ;;   orderless-flex
+   (setq orderless-matching-styles '(orderless-literal orderless-regexp))) ; default
+   ;; (setq orderless-matching-styles '(orderless-initialism)))
+   ;; (setq orderless-matching-styles '(orderless-literal)))
 
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
