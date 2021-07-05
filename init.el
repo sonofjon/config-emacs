@@ -814,8 +814,8 @@
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
 ;; Remove "..?*" from alias 'all' in grep-files-aliases
-;;   TODO: Lisp error: (void-variable grep-files-aliases) (needs hook?)
 ;;   TODO: Hook does not take effect
+;;   TODO: grep-files-aliases is not correct on first run?
 (add-hook 'grep-mode-hook
           (lambda () (setf (alist-get "all" grep-files-aliases nil nil #'equal)
                            "* .[!.]*")))
