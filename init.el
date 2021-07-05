@@ -807,7 +807,7 @@
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
 ;; Enable concatenation with Ediff
-(add-hook 'ediff-keymap-setup-hook #'add-d-to-ediff-mode-map)
+(add-hook 'ediff-keymap-setup-hook #'my/add-d-to-ediff-mode-map)
 
 ;; Collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
@@ -923,7 +923,7 @@
 ;; flyspell-mode-map
 (add-hook 'flyspell-mode-hook (lambda ()
   ;; C-, : Go to previous error
-  (define-key flyspell-mode-map (kbd "C-,") #'flyspell-goto-previous-error)
+  (define-key flyspell-mode-map (kbd "C-,") #'my/flyspell-goto-previous-error)
   ;; C-. : Go to next error
   (define-key flyspell-mode-map (kbd "C-.") #'flyspell-goto-next-error)
   ;; C-; : Auto correct current word
@@ -935,8 +935,8 @@
 	    ;; (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
             (setq outline-minor-mode-prefix "\C-c \C-c") ; TODO: doesn't work
             (let ((map outline-minor-mode-map))
-              (define-key map (kbd "C-c <left>") #'outline-hide-more)
-              (define-key map (kbd "C-c <right>") #'outline-show-more)
+              (define-key map (kbd "C-c <left>") #'my/outline-hide-more)
+              (define-key map (kbd "C-c <right>") #'my/outline-show-more)
               (define-key map (kbd "C-c C-<left>") #'outline-hide-body) ; TODO: hide-all?
               (define-key map (kbd "C-c C-<right>") #'outline-show-all)
               (define-key map (kbd "C-c <up>") #'outline-previous-visible-heading) ; TODO: Swap bindings?
@@ -1041,7 +1041,7 @@ _d_: subtree
     (push buffer-file-name killed-file-list)))
 
 ;; Undo for killed buffers
-(defun reopen-killed-file ()
+(defun my/reopen-killed-file ()
   ;; TODO: make it work for all buffers, not just files
   "Reopen the most recently killed file, if one exists."
   (interactive)
@@ -1049,7 +1049,7 @@ _d_: subtree
     (find-file (pop killed-file-list))))
 
 ;; Fancy undo for killed buffers
-(defun reopen-killed-file-fancy ()
+(defun my/reopen-killed-file-fancy ()
   "Pick a file to revisit from a list of files killed during this
 Emacs session."
   (interactive)
@@ -1091,7 +1091,7 @@ Emacs session."
     (outline-next-heading)
     (not (outline-invisible-p))))
 
-(defun outline-hide-more ()
+(defun my/outline-hide-more ()
   (interactive)
   (when (outline-on-heading-p)
     (cond ((and (outline--body-p)
@@ -1101,7 +1101,7 @@ Emacs session."
           (t
            (outline-hide-subtree)))))
 
-(defun outline-show-more ()
+(defun my/outline-show-more ()
   (interactive)
   (when (outline-on-heading-p)
     (cond ((and (outline--subheadings-p)
@@ -1274,7 +1274,7 @@ Repeat command to select additional words backwards."
   (whole-line-or-region-wrap-modified-region #'ispell-region prefix))
 
 ;; Goto previous flyspell error
-(defun flyspell-goto-previous-error (arg)
+(defun my/flyspell-goto-previous-error (arg)
   "Go to arg previous spelling error."
   (interactive "p")
   (while (not (= 0 arg))
@@ -1311,14 +1311,14 @@ Repeat command to select additional words backwards."
             (message "No more miss-spelled word!")
             (setq arg 0))))))
 
-;; (defun check-previous-spelling-error ()
+;; (defun my/flyspell-check-previous-error ()
 ;;   "Jump to previous spelling error and correct it."
 ;;   (interactive)
-;;   (flyspell-goto-previous-error 1)
 ;;   (flyspell--push-mark-no-activate)
+;;   (my/flyspell-goto-previous-error 1)
 ;;   (call-interactively 'helm-flyspell-correct))
 
-;; (defun check-next-spelling-error ()
+;; (defun my/flyspell-check-next-error ()
 ;;   "Jump to next spelling error and correct it."
 ;;   (interactive)
 ;;   (flyspell--push-mark-no-activate)
@@ -1337,7 +1337,7 @@ Repeat command to select additional words backwards."
 ;;;; Version control
 
 ;; ediff: when merging, use both variants A and B, one after the other
-(defun ediff-copy-both-to-C ()
+(defun my/ediff-copy-both-to-C ()
   "Add both variants to merge file."
   (interactive)
   (ediff-copy-diff ediff-current-difference nil 'C nil
@@ -1346,9 +1346,10 @@ Repeat command to select additional words backwards."
                                                'A ediff-control-buffer)
                     (ediff-get-region-contents ediff-current-difference
                                                'B ediff-control-buffer))))
+
 (defun add-d-to-ediff-mode-map ()
-  "Define keybinding for `ediff-copy-both-to-C'."
-  (define-key ediff-mode-map "d" #'ediff-copy-both-to-C))
+  "Define keybinding for `my/ediff-copy-both-to-C'."
+  (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C))
 
 ;; helpful: always open additional helpful buffers in the same window
 (defun my/helpful-switch-to-buffer (buffer-or-name)
