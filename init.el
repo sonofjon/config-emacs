@@ -1087,27 +1087,27 @@ Emacs session."
 (defun outline-hide-more ()
   (interactive)
   (when (outline-on-heading-p)
-           (hide-entry)
-           (hide-leaves))
     (cond ((and (outline--body-p)
                 (outline--body-visible-p))
+           (outline-hide-entry)
+           (outline-hide-leaves))
           (t
-           (hide-subtree)))))
+           (outline-hide-subtree)))))
 
 (defun outline-show-more ()
   (interactive)
   (when (outline-on-heading-p)
-           (show-children))
-           (show-subtree))
-           (show-entry))
     (cond ((and (outline--subheadings-p)
                 (not (outline--subheadings-visible-p)))
+           (outline-show-children))
           ((and (not (outline--subheadings-p))
                 (not (outline--body-visible-p)))
+           (outline-show-subtree))
           ((and (outline--body-p)
                 (not (outline--body-visible-p)))
+           (outline-show-entry))
           (t
-           (show-subtree)))))
+           (outline-show-subtree)))))
 
 ;;;; Navigation
 
