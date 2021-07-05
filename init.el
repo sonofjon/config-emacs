@@ -374,6 +374,7 @@
 
 ;; icomplete-vertical (show icomplete candidates vertically)
 (use-package icomplete-vertical
+  :disabled
   ;; Load after startup (when my/completion-styles is defined)
   :hook (emacs-startup . (lambda () (icomplete-mode) (icomplete-vertical-mode)))
   :bind (:map icomplete-minibuffer-map
@@ -388,20 +389,20 @@
   (icomplete-vertical-mode))
 
 ;; vertico (vertical completion UI)
-;; (use-package vertico
-;;   ;; Load after startup (when my/completion-styles is defined)
-;;   :hook (emacs-startup . vertico-mode)
-;;   ;; TODO: Change shortcuts
-;;   :bind (:map vertico-map
-;;          ("?" . minibuffer-completion-help))
-;;          ;; ("M-TAB" . minibuffer-complete))
-;;          ;; ("M-RET" . minibuffer-force-complete-and-exit))
-;;   :custom
-;;   ;; Enable cycling
-;;   (vertico-cycle t)
-;;   :config
-;;   (my/completion-styles)
-;;   (vertico-mode 1))
+(use-package vertico
+  ;; Load after startup (when my/completion-styles is defined)
+  :hook (emacs-startup . vertico-mode)
+  ;; TODO: Change shortcuts
+  :bind (:map vertico-map
+              ("?" . minibuffer-completion-help)
+              ("TAB" . minibuffer-complete)
+              ("RET" . minibuffer-force-complete-and-exit))
+  :custom
+  ;; Enable cycling
+  (vertico-cycle t)
+  :config
+  (my/completion-styles)
+  (vertico-mode 1))
 
 ;; orderless (orderless completion style)
 ;; (use-package orderless
