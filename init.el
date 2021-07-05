@@ -615,7 +615,7 @@
 ;; outline-magic (extension for outline-minor-mode)
 (use-package outline-magic)
   ;; :custom
-  ;; Tab emulation
+  ;; Tab emulation (TODO)
   ;; (outline-cycle-emulate-tab t))
 
 ;; outshine (extension for outline-minor-mode)
@@ -822,6 +822,8 @@
 
 ;;; KEYBINDINGS
 
+;;;; Escape codes
+
 ;; (define-key input-decode-map "\e[1;8A" [C-M-S-up])
 ;; (define-key input-decode-map "\e[1;8B" [C-M-S-down])
 
@@ -905,7 +907,7 @@
 ;; (global-set-key (kbd "C-x") nil)
 ;; (global-unset-key (kbd "C-x"))   ; Alternative syntax
 
-;;;;  Modes
+;;;; Modes
 
 ;; apropos-mode-map
 ;;   TODO: doesn't work
@@ -927,15 +929,15 @@
           (lambda ()
 	    ;; (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
             (setq outline-minor-mode-prefix "\C-c \C-c") ; TODO: doesn't work
-            (let ((map outline-minor-mode-map)) 
-              (define-key map (kbd "C-c <left>") 'outline-hide-more)
-              (define-key map (kbd "C-c <right>") 'outline-show-more)
-              (define-key map (kbd "C-c C-<left>") 'outline-hide-body) ; TODO: hide-all?
-              (define-key map (kbd "C-c C-<right>") 'outline-show-all)
-              (define-key map (kbd "C-c <up>") 'outline-previous-visible-heading) ; TODO: Swap bindings?
-              (define-key map (kbd "C-c <down>") 'outline-next-visible-heading)
-              (define-key map (kbd "C-c C-<up>") 'outline-backward-same-level)
-              (define-key map (kbd "C-c C-<down>") 'outline-forward-same-level)
+            (let ((map outline-minor-mode-map))
+              (define-key map (kbd "C-c <left>") #'outline-hide-more)
+              (define-key map (kbd "C-c <right>") #'outline-show-more)
+              (define-key map (kbd "C-c C-<left>") #'outline-hide-body) ; TODO: hide-all?
+              (define-key map (kbd "C-c C-<right>") #'outline-show-all)
+              (define-key map (kbd "C-c <up>") #'outline-previous-visible-heading) ; TODO: Swap bindings?
+              (define-key map (kbd "C-c <down>") #'outline-next-visible-heading)
+              (define-key map (kbd "C-c C-<up>") #'outline-backward-same-level)
+              (define-key map (kbd "C-c C-<down>") #'outline-forward-same-level)
               (define-key outline-minor-mode-map [(f10)] #'outline-cycle))))
 
 ;;;; Hydras
@@ -992,7 +994,7 @@ _d_: subtree
   ("b" outline-backward-same-level)       ; Backward - same level
   ("z" nil "leave"))
 
-(global-set-key (kbd "C-c #") 'hydra-outline/body)
+(global-set-key (kbd "C-c #") #'hydra-outline/body)
 
 
 ;;; FUNCTIONS
