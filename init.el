@@ -807,7 +807,8 @@
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
 ;; Enable concatenation with Ediff
-(add-hook 'ediff-keymap-setup-hook #'my/add-d-to-ediff-mode-map)
+(add-hook 'ediff-keymap-setup-hook
+          (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
 
 ;; Collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
@@ -1346,10 +1347,6 @@ Repeat command to select additional words backwards."
                                                'A ediff-control-buffer)
                     (ediff-get-region-contents ediff-current-difference
                                                'B ediff-control-buffer))))
-
-(defun add-d-to-ediff-mode-map ()
-  "Define keybinding for `my/ediff-copy-both-to-C'."
-  (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C))
 
 ;; helpful: always open additional helpful buffers in the same window
 (defun my/helpful-switch-to-buffer (buffer-or-name)
