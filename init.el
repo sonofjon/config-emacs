@@ -810,7 +810,7 @@
 (add-hook 'ediff-keymap-setup-hook #'add-d-to-ediff-mode-map)
 
 ;; Collect list of killed buffers
-(add-hook 'kill-buffer-hook #'add-file-to-killed-file-list)
+(add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
 ;; Remove "..?*" from alias 'all' in grep-files-aliases
 ;;   TODO: Lisp error: (void-variable grep-files-aliases) (needs hook?)
@@ -1027,7 +1027,7 @@ _d_: subtree
 (defvar killed-file-list nil
   "List of recently killed files.")
 
-(defun add-file-to-killed-file-list ()
+(defun reopen-killed-file--add-to-list ()
   "If buffer is associated with a file name, add that file to the
 `killed-file-list' when killing the buffer."
   (when buffer-file-name
@@ -1056,7 +1056,7 @@ Emacs session."
 
 ;;;; Outline
 
-(defun outline-body-p ()
+(defun outline--body-p ()
   (save-excursion
     (outline-back-to-heading)
     (outline-end-of-heading)
@@ -1064,13 +1064,13 @@ Emacs session."
          (progn (forward-char 1)
                 (not (outline-on-heading-p))))))
 
-(defun outline-body-visible-p ()
+(defun outline--body-visible-p ()
   (save-excursion
     (outline-back-to-heading)
     (outline-end-of-heading)
     (not (outline-invisible-p))))
 
-(defun outline-subheadings-p ()
+(defun outline--subheadings-p ()
   (save-excursion
     (outline-back-to-heading)
     (let ((level (funcall outline-level)))
@@ -1078,7 +1078,7 @@ Emacs session."
       (and (not (eobp))
            (< level (funcall outline-level))))))
 
-(defun outline-subheadings-visible-p ()
+(defun outline--subheadings-visible-p ()
   (interactive)
   (save-excursion
     (outline-next-heading)
@@ -1087,25 +1087,25 @@ Emacs session."
 (defun outline-hide-more ()
   (interactive)
   (when (outline-on-heading-p)
-    (cond ((and (outline-body-p)
-                (outline-body-visible-p))
            (hide-entry)
            (hide-leaves))
+    (cond ((and (outline--body-p)
+                (outline--body-visible-p))
           (t
            (hide-subtree)))))
 
 (defun outline-show-more ()
   (interactive)
   (when (outline-on-heading-p)
-    (cond ((and (outline-subheadings-p)
-                (not (outline-subheadings-visible-p)))
            (show-children))
-          ((and (not (outline-subheadings-p))
-                (not (outline-body-visible-p)))
            (show-subtree))
-          ((and (outline-body-p)
-                (not (outline-body-visible-p)))
            (show-entry))
+    (cond ((and (outline--subheadings-p)
+                (not (outline--subheadings-visible-p)))
+          ((and (not (outline--subheadings-p))
+                (not (outline--body-visible-p)))
+          ((and (outline--body-p)
+                (not (outline--body-visible-p)))
           (t
            (show-subtree)))))
 
@@ -1307,18 +1307,18 @@ Repeat command to select additional words backwards."
 ;; (defun check-previous-spelling-error ()
 ;;   "Jump to previous spelling error and correct it."
 ;;   (interactive)
-;;   (push-mark-no-activate)
 ;;   (flyspell-goto-previous-error 1)
+;;   (flyspell--push-mark-no-activate)
 ;;   (call-interactively 'helm-flyspell-correct))
 
 ;; (defun check-next-spelling-error ()
 ;;   "Jump to next spelling error and correct it."
 ;;   (interactive)
-;;   (push-mark-no-activate)
+;;   (flyspell--push-mark-no-activate)
 ;;   (flyspell-goto-next-error)
 ;;   (call-interactively 'helm-flyspell-correct))
 
-;; (defun push-mark-no-activate ()
+;; (defun flyspell--push-mark-no-activate ()
 ;;   "Push `point' to `mark-ring' and do not activate the region.
 ;; Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled."
 ;;   (interactive)
