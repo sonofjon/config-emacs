@@ -945,6 +945,8 @@
               (define-key map (kbd "C-c C-<up>") #'outline-backward-same-level)
               (define-key map (kbd "C-c C-<down>") #'outline-forward-same-level)
               (define-key outline-minor-mode-map [(f10)] #'outline-cycle))))
+              ;; (define-key map (kbd "S-TAB") #'outline-cycle))))
+              ;; (define-key map [(tab)] #'outline-cycle))))
 
 ;;;; Hydras
 
