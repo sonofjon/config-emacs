@@ -1,3 +1,23 @@
+;;; LOCAL SETTINGS (EARLY)
+
+(cond ((equal (system-name) "MacBook-Air.lan")
+       ;; Use custom-file.el for custom-* code (Chemacs setup)
+       (setq custom-file "~/.emacs.default/custom-file.el")
+       ;; GUI settings
+       (when (display-graphic-p)
+         ;; Add to exec-path
+         ;;   TODO: Use exec-path-from-shell package?
+         (dolist (dir '("/usr/local/bin"
+                        "/usr/local/opt/grep/libexec/gnubin"))
+           (add-to-list 'exec-path dir))))
+
+      ;; ((equal (system-name) "penguin")
+
+      (t
+       ;; Use custom-file.el for custom-* code
+       (setq custom-file "~/.emacs.d/custom-file.el")))
+
+
 ;;; STARTUP
 
 ;; Check startup time
@@ -17,26 +37,6 @@
       gc-cons-percentage 0.5)
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000
                                             gc-cons-percentage 0.1)))
-
-
-;;; LOCAL SETTINGS (EARLY)
-
-(cond ((equal (system-name) "MacBook-Air.lan")
-       ;; Use custom-file.el for custom-* code (Chemacs setup)
-       (setq custom-file "~/.emacs.default/custom-file.el")
-       ;; GUI settings
-       (when (display-graphic-p)
-         ;; Add to exec-path
-         ;;   TODO: Use exec-path-from-shell package?
-         (dolist (dir '("/usr/local/bin"
-                        "/usr/local/opt/grep/libexec/gnubin"))
-           (add-to-list 'exec-path dir))))
-
-      ;; ((equal (system-name) "penguin")
-
-      (t
-       ;; Use custom-file.el for custom-* code
-       (setq custom-file "~/.emacs.d/custom-file.el")))
 
 ;; Load custom file
 (load-file custom-file)
