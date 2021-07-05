@@ -405,18 +405,18 @@
   (vertico-mode 1))
 
 ;; orderless (orderless completion style)
-;; (use-package orderless
-;;   :config
-;;   (setq
-;;    ;; Use orderless for completion
-;;    ;; completion-styles '(orderless)
-;;    ;; Enable prefix completion
-;;    completion-styles '(substring orderless)
-;;    ;; More options (TODO)
-;;    ;; completion-styles '(basic substring partial-completion initials)
-;;    ;; Use orderless everywhere
-;;    completion-category-defaults nil
-;;    completion-category-overrides '((file (styles . (basic substring)))))
+(use-package orderless
+  :after (:any icomplete-vertical vertico)
+  :config
+   ;; Use orderless for completion
+  (setq completion-styles '(orderless))
+   ;; Enable prefix completion
+   ;; (setq completion-styles '(substring orderless))
+   ;; More options (TODO)
+   ;; (setq completion-styles '(basic substring partial-completion initials))
+   ;; Use orderless everywhere (TODO)
+   (setq completion-category-defaults nil)
+   (setq completion-category-overrides '((file (styles . (basic substring))))))
 
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
