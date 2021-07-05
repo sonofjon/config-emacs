@@ -831,6 +831,11 @@
 (define-key input-decode-map "\e[127;5u" [C-backspace])
 (define-key input-decode-map "\e[127;6u" [C-S-backspace])
 
+;;;; Translations
+
+(define-key key-translation-map (kbd "M-<up>") (kbd "M-p"))
+(define-key key-translation-map (kbd "M-<down>") (kbd "M-n"))
+
 ;;;; Windows
 
 (global-set-key (kbd "C-x M-9") #'my/toggle-window-split)
@@ -855,8 +860,8 @@
 (global-set-key (kbd "C-c d <right>") #'windmove-display-right)
 (global-set-key (kbd "C-c d 0") #'windmove-display-same-window)
 
-(global-set-key (kbd "M-<up>") #'backward-paragraph)
-(global-set-key (kbd "M-<down>") #'forward-paragraph)
+(global-set-key (kbd "M-p") #'backward-paragraph)
+(global-set-key (kbd "M-n") #'forward-paragraph)
 
 ;; (global-set-key (kbd "M-p") #'scroll-up-line)
 ;; (global-set-key (kbd "M-n") #'scroll-down-line)
