@@ -804,6 +804,7 @@
 ;; (define-key input-decode-map "\e[127;2u" [S-backspace])
 (define-key input-decode-map "\e[127;5u" [C-backspace])
 (define-key input-decode-map "\e[127;6u" [C-S-backspace])
+(define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))
 
 ;;;; Translations
 
@@ -852,7 +853,7 @@
 
 ;;;; Editing
 
-(global-set-key (kbd "C-<backspace>") (lambda () (interactive) (kill-line 0)))
+(global-set-key (kbd "C-S-k") (lambda () (interactive) (kill-line 0)))
 
 (global-set-key (kbd "C-c ;") #'comment-line)
 
