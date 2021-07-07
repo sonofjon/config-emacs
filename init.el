@@ -1283,27 +1283,6 @@ Repeat command to select additional words backwards."
             (message "No more miss-spelled word!")
             (setq arg 0))))))
 
-;; (defun my/flyspell-check-previous-error ()
-;;   "Jump to previous spelling error and correct it."
-;;   (interactive)
-;;   (flyspell--push-mark-no-activate)
-;;   (my/flyspell-goto-previous-error 1)
-;;   (call-interactively 'helm-flyspell-correct))
-
-;; (defun my/flyspell-check-next-error ()
-;;   "Jump to next spelling error and correct it."
-;;   (interactive)
-;;   (flyspell--push-mark-no-activate)
-;;   (flyspell-goto-next-error)
-;;   (call-interactively 'helm-flyspell-correct))
-
-;; (defun flyspell--push-mark-no-activate ()
-;;   "Push `point' to `mark-ring' and do not activate the region.
-;; Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled."
-;;   (interactive)
-;;   (push-mark (point) t nil)
-;;   (message "Pushed mark to ring"))
-
 ;;;; Files
 
 ;;;; Version control
