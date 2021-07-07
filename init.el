@@ -813,8 +813,7 @@
 
 ;;;; Windows
 
-(global-set-key (kbd "C-x M-9") #'my/toggle-window-split)
-;; (global-set-key (kbd "C-x 9") #'window-swap-states)
+(global-set-key (kbd "C-x 9") #'my/toggle-window-split)
 
 ;;;; Buffers
 
