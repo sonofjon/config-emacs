@@ -783,10 +783,6 @@
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
-;; Enable concatenation with Ediff
-(add-hook 'ediff-keymap-setup-hook
-          (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
-
 ;; Collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
@@ -897,6 +893,10 @@
 ;; (add-hook 'apropos-mode-hook
 ;;           (lambda () (define-key apropos-mode-map
 ;;                        (kbd "RET") #'helpful-at-point)))
+
+;; define-key ediff-mode-map
+(add-hook 'ediff-keymap-setup-hook
+          (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
 
 ;; flyspell-mode-map
 (add-hook 'flyspell-mode-hook (lambda ()
