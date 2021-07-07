@@ -55,6 +55,8 @@
 ;; Add MELPA to package-archives
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
+
+;; Add MELPA-STABLE to package-archives
 ;; (add-to-list 'package-archives
 ;;              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
@@ -309,7 +311,6 @@
 ;; ivy-rich (add descriptions to ivy/counsel output)
 (use-package ivy-rich
   :disabled
-  :pin melpa
   :after ivy
   :config
   (ivy-rich-mode 1))
@@ -317,7 +318,6 @@
 ;; helpful (alternative help)
 (use-package helpful
   ;; :demand
-  ;; :after counsel
   :commands (helpful-key helpful-function helpful-symbol helpful-variable)
   ;; Open helpful info manuals in the same window
   :hook (helpful-mode . (lambda ()
@@ -505,7 +505,6 @@
 ;; which-key (display available keybindings)
 (use-package which-key
   :diminish
-  ;; :defer
   :custom
   ;; Delay (default is 1.0 s)
   (which-key-idle-delay 0.75)
@@ -556,7 +555,6 @@
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
-  :pin melpa
   :mode (".html?$" ".php$"))
 
 ;; google-this (google search functions)
@@ -886,12 +884,6 @@
 
 ;;;; Modes
 
-;; apropos-mode-map
-;;   TODO: doesn't work
-;; (add-hook 'apropos-mode-hook
-;;           (lambda () (define-key apropos-mode-map
-;;                        (kbd "RET") #'helpful-at-point)))
-
 ;; define-key ediff-mode-map
 ;;   TODO: check functionality
 (add-hook 'ediff-keymap-setup-hook
@@ -1107,7 +1099,7 @@ Emacs session."
     (while (progn
              (scroll-up-line)
              (forward-line)
-             (looking-at "^$")))        ; scroll past all empty lines
+             (looking-at "^$")))   ; scroll past all empty lines
     (while (progn
              (scroll-up-line)
              (forward-line)
@@ -1123,7 +1115,7 @@ Emacs session."
     (while (progn
              (scroll-down-line)
              (forward-line -1)
-             (looking-at "^$")))        ; scroll past all empty lines
+             (looking-at "^$")))   ; scroll past all empty lines
     (while (progn
              (scroll-down-line)
              (forward-line -1)
@@ -1240,7 +1232,7 @@ Repeat command to select additional words backwards."
   (setq completion-styles '(basic partial-completion initials))
   ;; Completion styles for files
   (setq completion-category-overrides '((file (styles . (basic substring))))))
-  ;; Disable *Completions* buffer (TODO: doesn't work)
+  ;; Disable *Completions* buffer
   ;; (setq completion-show-help nil))
   ;; Cycle completions
   ;; (setq completion-cycle-threshold t)
@@ -1316,7 +1308,8 @@ Repeat command to select additional words backwards."
 
 ;;;; Version control
 
-;; ediff: when merging, use both variants A and B, one after the other
+;; ediff: enable concatenation
+;;   (when merging, use both variants A and B, one after the other)
 (defun my/ediff-copy-both-to-C ()
   "Add both variants to merge file."
   (interactive)
@@ -1373,4 +1366,4 @@ otherwise create a new one."
 ;;     ))
 
 
-; LocalWords:  swiper magit ediff ispell
+; LocalWords:  swiper magit ediff ispell flyspell
