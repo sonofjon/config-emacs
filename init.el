@@ -383,11 +383,9 @@
 (use-package vertico
   ;; Load after startup (when my/completion-styles is defined)
   :hook (emacs-startup . vertico-mode)
-  ;; TODO: Change shortcuts
   :bind (:map vertico-map
               ("?" . minibuffer-completion-help)
-              ("TAB" . minibuffer-complete)
-              ("RET" . minibuffer-force-complete-and-exit))
+              ("TAB" . minibuffer-complete))
   :custom
   ;; Enable cycling
   (vertico-cycle t)
