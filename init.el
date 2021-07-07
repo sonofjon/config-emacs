@@ -396,24 +396,18 @@
 (use-package orderless
   :after (:any icomplete-vertical vertico)
   :config
-   ;; Use orderless for completion
+  ;; Use orderless for completion
+  ;;   (disables styles set for icomplete-vertical and vertico)
   (setq completion-styles '(orderless))
-   ;; Enable prefix completion
-   ;; (setq completion-styles '(substring orderless))
-   ;; More options (TODO)
-   ;; (setq completion-styles '(basic substring partial-completion initials))
-   ;; Use orderless everywhere (TODO)
-   (setq completion-category-overrides '((file (styles . (basic substring)))))
-   ;; Matching styles
-   ;;   Options: nil, orderless-regexp, orderless-literal,
-   ;;   orderless-initialism, orderless-strict-initialism,
-   ;;   orderless-strict-leading-initialism,
-   ;;   orderless-strict-full-initialism, orderless-prefixes,
-   ;;   orderless-flex
-   (setq orderless-matching-styles '(orderless-literal orderless-regexp))) ; default
-   ;; (setq orderless-matching-styles '(orderless-initialism)))
-   ;; (setq orderless-matching-styles '(orderless-literal)))
+  ;; Use orderless everywhere
   ;; (setq completion-category-defaults nil)
+  (setq completion-category-overrides '((file (styles . (basic substring)))))
+  ;; Matching styles
+  (setq orderless-matching-styles
+        ;; '(orderless-literal orderless-regexp))) ; default
+        '(orderless-literal
+          orderless-regexp
+          orderless-strict-full-initialism)))
 
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
