@@ -843,7 +843,7 @@
 ;; (global-set-key (kbd "C-c <up>") 'aj8/previous-line)
 ;; (global-set-key (kbd "C-c <down>") 'aj8/next-line)
 
-(local-set-key (kbd "C-c l") #'scroll-lock-mode)
+(global-set-key (kbd "C-c l") #'scroll-lock-mode)
 
 (global-set-key (kbd "C-c m") #'imenu)
 
