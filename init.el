@@ -568,8 +568,6 @@
 ;; diff-hl (highlight uncommitted changes)
 (use-package diff-hl
   :disabled
-  :custom
-  (diff-hl-margin-mode t)
   :config
   ;; Use diff-hl-mode everywhere
   (global-diff-hl-mode 1))
