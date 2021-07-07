@@ -44,12 +44,6 @@
 
 ;;; FIXES
 
-;; Suppress warnings about unnecessary package-initialize calls
-;;   Introduced when switching to Melpa Stable
-;;   Possible solution: use some packages from Melpa
-;;   Reference: https://github.com/cask/cask/issues/463
-;; (setq warning-suppress-log-types '((package reinitialization)))
-
 
 ;;; PACKAGES SETUP
 
