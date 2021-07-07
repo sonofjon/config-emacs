@@ -65,7 +65,7 @@
 ;;         ("melpa"        . 1)))
 
 ;; Refresh packages database (in background)
-;;   async argument fails with Chemacs
+;;   TODO: async argument fails with Chemacs
 ;; (unless package-archive-contents
 ;;   (package-refresh-contents t))
 
@@ -411,6 +411,7 @@
 
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
+  ;; TODO: configure
   :bind (
          ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
   ;;        ;; Other custom bindings
@@ -892,6 +893,7 @@
 ;;                        (kbd "RET") #'helpful-at-point)))
 
 ;; define-key ediff-mode-map
+;;   TODO: check functionality
 (add-hook 'ediff-keymap-setup-hook
           (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
 
@@ -1196,6 +1198,7 @@ Emacs session."
 
 ;; Mark whole word (forward)
 (defun aj8/mark-word-forward (N)
+  ;; TODO: disable mark on any other key press (as with shift selection)
   "Like mark-word, but select entire word at point."
   (interactive "p")
   (when (and
