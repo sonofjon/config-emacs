@@ -1190,7 +1190,6 @@ Emacs session."
 
 ;; Mark whole word (forward)
 (defun aj8/mark-word-forward (N)
-  ;; TODO: disable mark on any other key press (as with shift selection)
   "Like mark-word, but select entire word at point."
   (interactive "p")
   (when (and
