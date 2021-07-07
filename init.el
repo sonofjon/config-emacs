@@ -326,10 +326,10 @@
          ([remap describe-function] . helpful-function)
          ([remap describe-symbol] . helpful-symbol)
          ([remap describe-variable] . helpful-variable)
-         ("C-c h" . helpful-at-point))
-  :custom
+         ("C-c h" . helpful-at-point)))
+  ;; :custom
   ;; Maximum number of *helpful* buffers
-  (helpful-max-buffers 3))
+  ;; (helpful-max-buffers 3))
   ;; Use helpful with counsel
   ;; (counsel-describe-function-function #'helpful-function)
   ;; (counsel-describe-symbol-function #'helpful-symbol)
