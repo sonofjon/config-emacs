@@ -586,6 +586,7 @@
 
 ;; buffer-move (move buffers around)
 (use-package buffer-move
+  :disabled
   :bind (("C-c b" . buf-move)))
          ;; ("s-<up>" . buf-move-up)
          ;; ("s-<down>" . buf-move-down)
