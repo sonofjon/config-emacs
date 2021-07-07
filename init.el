@@ -377,9 +377,7 @@
               ("RET" . icomplete-force-complete-and-exit)
               ("C-v" . icomplete-vertical-toggle))
   :config
-  (my/completion-styles)
-  (icomplete-mode)
-  (icomplete-vertical-mode))
+  (my/completion-styles))
 
 ;; vertico (vertical completion UI)
 (use-package vertico
@@ -394,8 +392,7 @@
   ;; Enable cycling
   (vertico-cycle t)
   :config
-  (my/completion-styles)
-  (vertico-mode 1))
+  (my/completion-styles))
 
 ;; orderless (orderless completion style)
 (use-package orderless
