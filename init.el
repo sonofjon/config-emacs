@@ -1247,7 +1247,7 @@ Repeat command to select additional words backwards."
 (defun my/completion-styles ()
   ;; Completion styles
   (setq completion-styles '(basic partial-completion initials))
-  ;; Completion styles for files (TODO: do the same for buffers?)
+  ;; Completion styles for files
   (setq completion-category-overrides '((file (styles . (basic substring))))))
   ;; Disable *Completions* buffer (TODO: doesn't work)
   ;; (setq completion-show-help nil))
