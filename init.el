@@ -387,11 +387,15 @@
   :hook (emacs-startup . vertico-mode)
   :bind (:map vertico-map
               ("?" . minibuffer-completion-help)
+              ;; ("C-c ?" . aj8/kill-completions-buffer)
+              ("C-c ?" . minibuffer-hide-completions)
               ("TAB" . minibuffer-complete))
   :custom
   ;; Enable cycling
   (vertico-cycle t)
   :config
+  ;; Enable M-x minibuffer-hide-completions (make function interactive)
+  (put 'minibuffer-hide-completions 'interactive-form '(interactive))
   (my/completion-styles))
 
 ;; orderless (orderless completion style)
@@ -1005,6 +1009,13 @@ _d_: subtree
     (other-window -1)))
 
 ;;;; Buffers
+
+;; (defun aj8/kill-completions-buffer ()
+;;   "Get rid of *Completions* buffer."
+;;   (interactive)
+;;   (let ((buffer "*Completions*"))
+;;     (and (get-buffer buffer)
+;;          (kill-buffer buffer))))
 
 (defvar killed-file-list nil
   "List of recently killed files.")
