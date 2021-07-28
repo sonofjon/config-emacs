@@ -865,7 +865,8 @@
 (global-set-key (kbd "M-l") 'downcase-dwim)
 (global-set-key (kbd "M-c") 'capitalize-dwim)
 
-(global-set-key (kbd "C-c q") 'fill-individual-paragraphs)
+(global-set-key (kbd "C-c q") 'fill-individual-paragraphs) ; use with `C-x .'
+                                                           ; for comments
 
 ;;;; Spelling
 
