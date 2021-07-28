@@ -788,7 +788,7 @@
 ;; Collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
-;; Remove "..?*" from alias 'all' in grep-files-aliases
+;; Remove "..?*" from alias `all' in grep-files-aliases
 ;;   TODO: Hook does not take effect
 ;;   TODO: grep-files-aliases is not correct on first run?
 (add-hook 'grep-mode-hook
