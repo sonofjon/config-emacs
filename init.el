@@ -190,57 +190,59 @@
 (use-package modus-themes
   ;; Add all customizations prior to loading the themes
   :init
+  ;; Use italic font forms in more code constructs
+  (setq modus-themes-italic-constructs nil)
+  ;; Use bold text in more code constructs
+  (setq modus-themes-bold-constructs nil)
   ;; Use more subtle style for line numbers
   (setq modus-themes-subtle-line-numbers nil)
-  ;; Color-code 'success' or 'done' as blue instead of green
-  (setq modus-themes-success-deuteranopia nil)
+  ;; Define the visibility of fringes
+  ;;   Options: `nil',`subtle', `intense'
+  (setq modus-themes-fringes nil)
   ;; Control the style of spelling and code checkers/linters
-  ;;   Options: nil, 'straight-underline, 'subtle-foreground,
-  ;;   'subtle-foreground-straight-underline, 'intense-foreground,
-  ;;   'intense-foreground-straight-underline, 'colored-background
+  ;;   Options: `straight-underline', `text-also', `background',
+  ;;            `intense'
   (setq modus-themes-lang-checkers nil)
-  ;; Adjust the overall style of the mode line
-  ;;   Options: nil, '3d, 'moody, 'borderless, 'borderless-3d,
-  ;;   'borderless-moody, 'accented, 'accented-3d, 'accented-moody,
-  ;;   'borderless-accented, 'borderless-accented-3d,
-  ;;   'borderless-accented-moody modus-themes-mode-line '3d
+  ;; Control the style of the mode line
+  ;;   Options: `3d' OR `moody', `borderless', `accented', `padded'
   (setq modus-themes-mode-line nil)
-  ;; Control the overall style of code syntax highlighting
-  ;;   Options: nil, 'faint, 'yellow-comments, 'green-strings,
-  ;;   'yellow-comments-green-strings, 'alt-syntax,
-  ;;   'alt-syntax-yellow-comments, 'faint-yellow-comments
+  ;; Control the style of code syntax highlighting
+  ;;   Options: `faint', `yellow-comments', `green-strings',
+  ;;            `alt-syntax'
   (setq modus-themes-syntax nil)
   ;; Control the current line highlight of HL-line mode
-  ;; Options: nil, 'intense-background, 'accented-background,
-  ;;'underline-neutral, 'underline-accented, 'underline-only-neutral,
-  ;;'underline-only-accented modus-themes-hl-line 'underline-neutral
+  ;;   Options: `accented', `underline', `intense'
+  ;; (setq modus-themes-paren-match 'subtle-bold)
   (setq modus-themes-hl-line nil)
-  ;; Choose the style of matching parentheses or delimiters
-  ;;   Options: nil, 'subtle-bold, 'intense, 'intense-bold}
-  ;;   modus-themes-paren-match 'subtle-bold
+  ;; Control the style of matching parentheses or delimiters
+  ;;   Options: `bold', `intense', `underline'
   (setq modus-themes-paren-match nil)
   ;; Set the style of links
-  ;;   Options: nil, 'faint, 'neutral-underline,
-  ;;   'faint-neutral-underline, 'no-underline, 'underline-only,
-  ;;   'neutral-underline-only modus-themes-links 'neutral-underline
+  ;;   Options: `neutral-underline' OR `no-underline', `faint' OR
+  ;;            `no-color', `bold', `italic', `background'
   (setq modus-themes-links nil)
-  ;; Set style for minibuffer and REPL prompts
-  ;;   Options: nil, 'subtle-accented, 'intense-accented,
-  ;;   'subtle-gray, 'intense-gray modus-themes-prompts 'subtle-gray
+  ;; Set the style for minibuffer and REPL prompts
+  ;;   Options: `background', `bold', `gray', `intense', `italic'
   (setq modus-themes-prompts nil)
   ;; Control the style of the completion framework's interface
-  ;;   Options: nil, 'moderate, 'opinionated modus-themes-completions
-  ;;   'moderate
+  ;;   Options: `moderate',`opinionated'
+  ;; (setq modus-themes-completions 'moderate)
   (setq modus-themes-completions nil)
-  ;; Change the appearance of the active region
-  ;;   Options: nil, 'no-extend, 'bg-only, 'bg-only-no-extend,
-  ;;   'accent, 'accent-no-extend
+  ;; Control the style of the active region
+  ;;   Options: `no-extend', `bg-only', `accented'
   (setq modus-themes-region nil)
   ;; Adjust the style of diffs
-  ;;   Options: nil, 'desaturated, 'bg-only, 'deuteranopia,
-  ;;   'fg-only-deuteranopia
-  ;; modus-themes-diffs 'fg-only-deuteranopia)
+  ;;   Options: `desaturated', `bg-only', `deuteranopia',
+  ;;            `fg-only-deuteranopia'
+  ;; (setq modus-themes-diffs 'fg-only-deuteranopia)
   (setq modus-themes-diffs nil)
+  ;; Heading styles
+  ;;   Options: `rainbow', `overline', `background', `no-bold',
+  ;;            `monochrome'
+  ;; (setq modus-themes-headings
+  ;;       '((1 . (overline background))
+  ;;         (2 . (rainbow overline))
+  ;;         (t . (no-bold))))
   ;; Load the theme files before enabling a theme
   (modus-themes-load-themes)
   :config
