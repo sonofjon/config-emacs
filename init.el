@@ -387,6 +387,7 @@
   :hook (emacs-startup . vertico-mode)
   :bind (:map vertico-map
               ("?" . minibuffer-completion-help)
+              ("C-c ?" . aj8/kill-completions-buffer)
               ("TAB" . minibuffer-complete))
   :custom
   ;; Enable cycling
@@ -1017,6 +1018,13 @@ _d_: subtree
     (other-window -1)))
 
 ;;;; Buffers
+
+(defun aj8/kill-completions-buffer ()
+  "Get rid of *Completions* buffer."
+  (interactive)
+  (let ((buffer "*Completions*"))
+    (and (get-buffer buffer)
+         (kill-buffer buffer))))
 
 (defvar killed-file-list nil
   "List of recently killed files.")
