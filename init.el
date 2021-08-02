@@ -751,6 +751,7 @@
 
 ;; outline: custom heading format
 (add-hook 'emacs-lisp-mode-hook
+          ;; TODO: make this work
           (lambda () 
             (setq-local outline-regexp "\\(;;;+ \\|;; [[:alpha:]]+\\)")
             (setq-local outline-heading-alist
@@ -758,6 +759,11 @@
                           (";;;; " . 2)
                           (";;; " . 3)
                           (";; [[:alpha:]]+" . 4)))))
+;; (set (make-local-variable 'outline-level)
+            ;;      '(lambda ()
+            ;;         (save-excursion
+            ;;           (re-search-forward ";;+ ")
+            ;;           (string-to-number (match-string 0)))))))
 
 ;; ediff: use horizontal (side-by-side) view by default
 (setq ediff-split-window-function #'split-window-horizontally)
