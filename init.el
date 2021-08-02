@@ -892,7 +892,12 @@
 
 ;;;; Modes
 
-;; define-key ediff-mode-map
+;; Info-mode-map
+(add-hook 'Info-mode-hook
+          ;; Disable M-n
+          (lambda () (define-key Info-mode-map (kbd "M-n") nil)))
+
+;; ediff-mode-map
 ;;   TODO: check functionality
 (add-hook 'ediff-keymap-setup-hook
           (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
