@@ -1,4 +1,4 @@
-;;; LOCAL SETTINGS (EARLY)
+;;;;; LOCAL SETTINGS (EARLY)
 
 (cond ((equal (system-name) "MacBook-Air.lan")
        ;; Use custom-file.el for custom-* code (Chemacs setup)
@@ -18,7 +18,7 @@
        (setq custom-file "~/.emacs.d/custom-file.el")))
 
 
-;;; STARTUP
+;;;;; STARTUP
 
 ;; Check startup time
 (defun efs/display-startup-time ()
@@ -42,10 +42,10 @@
 (load-file custom-file)
 
 
-;;; FIXES
+;;;;; FIXES
 
 
-;;; PACKAGES SETUP
+;;;;; PACKAGES SETUP
 
 ;; Initialize package sources
 (require 'package)
@@ -101,7 +101,7 @@
 ;; (setq use-package-always-pin "melpa-stable")
 
 
-;;; PACKAGES
+;;;;; PACKAGES
 
 ;; benchmark-init (startup profiler)
 (use-package benchmark-init
@@ -637,7 +637,7 @@
   (erc-update-modules))
 
 
-;;; THEMES
+;;;;; THEMES
 
 ;; (load-theme 'dichromacy)
 ;; (load-theme 'manoj-dark)
@@ -648,7 +648,7 @@
 ;; (load-theme 'wombat)
 
 
-;;; CUSTOMIZATION
+;;;;; CUSTOMIZATION
 
 ;;;; Modes
 
@@ -756,11 +756,10 @@
           (lambda () 
             (setq-local outline-regexp "\\(;;;+ \\|;; [a-z]+\\)")
             (setq-local outline-heading-alist
-                        '((";;; " . 1)
+                        '((";;;;; " . 1)
                           (";;;; " . 2)
-                          (";;;;; " . 3)
-                          (";;;;;; " . 4)
-                          (";; [a-z]+" . 5)))))
+                          (";;; " . 3)
+                          (";; [a-z]+" . 4)))))
 
 ;; ediff: use horizontal (side-by-side) view by default
 (setq ediff-split-window-function #'split-window-horizontally)
@@ -779,7 +778,7 @@
 ;; (setq ispell-extra-args '("--sug-mode=normal"))
 
 
-;;; HOOKS
+;;;;; HOOKS
 
 ;; Deactivate highlight mode when selecting text
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
@@ -796,7 +795,7 @@
                            "* .[!.]*")))
 
 
-;;; KEYBINDINGS
+;;;;; KEYBINDINGS
 
 ;;;; Escape codes
 
@@ -922,7 +921,7 @@
 
 ;;;; Hydras
 
-;;;;; Scrolling
+;;; Scrolling
 (defhydra hydra-scroll ()
   "Scrolling functions"
   ("<up>" scroll-down-line)
@@ -931,7 +930,7 @@
   ("<right>" aj8/scroll-up-paragraph))
 (global-set-key (kbd "C-c s") #'hydra-scroll/body)
 
-;;;;; Line navigation
+;;; Line navigation
 (defhydra hydra-next-line ()
   "Move to the next line or comment"
   ("<up>" aj8/previous-line)
@@ -940,7 +939,7 @@
   ("<right>" aj8/next-comment))
 (global-set-key (kbd "C-c n") #'hydra-next-line/body)
 
-;;;;; Outline 
+;;; Outline
 (defhydra hydra-outline (:color pink :hint nil)
   "
 ^Hide^             ^Show^           ^Move
@@ -977,7 +976,7 @@ _d_: subtree
 (global-set-key (kbd "C-c #") #'hydra-outline/body)
 
 
-;;; FUNCTIONS
+;;;;; FUNCTIONS
 
 ;;;; Windows
 
@@ -1312,7 +1311,7 @@ otherwise create a new one."
     (pop-to-buffer buffer-or-name)))
 
 
-;;; LOCAL SETTINGS (LATE)
+;;;;; LOCAL SETTINGS (LATE)
 
 (cond ((equal (system-name) "MacBook-Air.lan")
        (if (display-graphic-p)
