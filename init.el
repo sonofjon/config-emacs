@@ -958,18 +958,18 @@ _d_: subtree
 
 "
   ;; Hide
-  ("q" hide-sublevels)    ; Hide everything but the top-level headings
-  ("t" hide-body)         ; Hide everything but headings (all body lines)
-  ("o" hide-other)        ; Hide other branches
-  ("c" hide-entry)        ; Hide this entry's body
-  ("l" hide-leaves)       ; Hide body lines in this entry and sub-entries
-  ("d" hide-subtree)      ; Hide everything in this entry and sub-entries
+  ("q" outline-hide-sublevels)   ; Hide everything but the top-level headings
+  ("t" outline-hide-body)        ; Hide everything but headings (all body lines)
+  ("o" outline-hide-other)       ; Hide other branches
+  ("c" outline-hide-entry)       ; Hide this entry's body
+  ("l" outline-hide-leaves)      ; Hide body lines in this entry and sub-entries
+  ("d" outline-hide-subtree)     ; Hide everything in this entry and sub-entries
   ;; Show
-  ("a" show-all)          ; Show (expand) everything
-  ("e" show-entry)        ; Show this heading's body
-  ("i" show-children)     ; Show this heading's immediate child sub-headings
-  ("k" show-branches)     ; Show all sub-headings under this heading
-  ("s" show-subtree)      ; Show (expand) everything in this heading & below
+  ("a" outline-show-all)         ; Show (expand) everything
+  ("e" outline-show-entry)       ; Show this heading's body
+  ("i" outline-show-children)    ; Show this heading's immediate child sub-headings
+  ("k" outline-show-branches)    ; Show all sub-headings under this heading
+  ("s" outline-show-subtree)     ; Show (expand) everything in this heading & below
   ;; Move
   ("u" outline-up-heading)                ; Up
   ("n" outline-next-visible-heading)      ; Next
