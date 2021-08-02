@@ -593,6 +593,7 @@
 
 ;; outline-magic (extension for outline-minor-mode)
 (use-package outline-magic)
+  ;; :disabled)
   ;; :custom
   ;; Tab emulation (TODO)
   ;; (outline-cycle-emulate-tab t))
