@@ -596,8 +596,8 @@
          ;; ("s-<right>" . buf-move-right)))
 
 ;; outline-magic (extension for outline-minor-mode)
-(use-package outline-magic)
-  ;; :disabled)
+(use-package outline-magic
+  :disabled)
   ;; :custom
   ;; Tab emulation (TODO)
   ;; (outline-cycle-emulate-tab t))
