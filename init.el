@@ -526,13 +526,13 @@
 (use-package magit
   ;; Disable hl-line-mode
   :hook (magit-mode . (lambda () (setq-local global-hl-line-mode nil)))
-  :bind (("C-c g" . magit-file-dispatch)
+  :bind ("C-c g" . magit-file-dispatch)
          ;; Open files in other window
          ;; :map magit-file-section-map
          ;; ("RET" . magit-diff-visit-file-other-window)
          ;; Open hunks in other window
-         :map magit-hunk-section-map
-         ("RET" . magit-diff-visit-file-other-window))
+         ;; :map magit-hunk-section-map
+         ;; ("RET" . magit-diff-visit-file-other-window))
   :custom
   ;; Show refined diffs for current hunk
   (magit-diff-refine-hunk t))
