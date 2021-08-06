@@ -1022,6 +1022,7 @@ _d_: subtree
 
 ;;;; Buffers
 
+;; Kill *Completions* buffer
 ;; (defun aj8/kill-completions-buffer ()
 ;;   "Get rid of *Completions* buffer."
 ;;   (interactive)
@@ -1089,6 +1090,7 @@ Emacs session."
     (outline-next-heading)
     (not (outline-invisible-p))))
 
+;; Hide more heading levels
 (defun my/outline-hide-more ()
   (interactive)
   (when (outline-on-heading-p)
@@ -1099,6 +1101,7 @@ Emacs session."
           (t
            (outline-hide-subtree)))))
 
+;; Show more heading levels
 (defun my/outline-show-more ()
   (interactive)
   (when (outline-on-heading-p)
@@ -1114,6 +1117,7 @@ Emacs session."
           (t
            (outline-show-subtree)))))
 
+;; Return outline heading level
 (defun aj8/outline-level ()
   "Return the depth to which a statement is nested in the outline.
 Point must be at the beginning of a header line.  This is the
@@ -1122,6 +1126,7 @@ number of characters matched by `outline-regexp'."
   ;; (outline-back-to-heading)
   (cdr (assoc (match-string 1) outline-heading-alist)))
 
+;; Print outline level
 (defun aj8/outline-level-message ()
   "Print outline level to echo area."
   (interactive)
@@ -1269,7 +1274,9 @@ Repeat command to select additional words backwards."
 
 ;;;; Completion
 
+;; Set custom completion styles
 (defun my/completion-styles ()
+  "Set custom completion styles."
   ;; Completion styles
   (setq completion-styles '(basic partial-completion initials))
   ;; Completion styles for files
