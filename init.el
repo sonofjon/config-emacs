@@ -762,19 +762,15 @@
 
 ;; outline: custom heading format
 (add-hook 'emacs-lisp-mode-hook
-          ;; TODO: make this work
           (lambda () 
-            (setq-local outline-regexp "\\(;;;+ \\|;; [[:alpha:]]+\\)")
+            (setq-local outline-regexp "\\(;;+ \\)\\([^( ]\\)")
             (setq-local outline-heading-alist
                         '((";;;;; " . 1)
                           (";;;; " . 2)
                           (";;; " . 3)
-                          (";; [[:alpha:]]+" . 4)))))
-;; (set (make-local-variable 'outline-level)
-            ;;      '(lambda ()
-            ;;         (save-excursion
-            ;;           (re-search-forward ";;+ ")
-            ;;           (string-to-number (match-string 0)))))))
+                          (";; " . 4)))
+          ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
+          (setq-local outline-level 'aj8/outline-level)))
 
 ;; ediff: use horizontal (side-by-side) view by default
 (setq ediff-split-window-function #'split-window-horizontally)
@@ -1117,6 +1113,14 @@ Emacs session."
            (outline-show-entry))
           (t
            (outline-show-subtree)))))
+
+(defun aj8/outline-level ()
+  "Return the depth to which a statement is nested in the outline.
+Point must be at the beginning of a header line.  This is the
+level specified in `outline-heading-alist' and not based on the
+number of characters matched by `outline-regexp'."
+  ;; (outline-back-to-heading)
+  (cdr (assoc (match-string 1) outline-heading-alist)))
 
 (defun aj8/outline-level-message ()
   "Print outline level to echo area."
