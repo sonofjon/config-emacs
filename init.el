@@ -700,6 +700,39 @@
 
 ;;;; Variables
 
+;;; Windows
+
+;; Prefer horizontal (side-by-side) window splitting
+;;   Note: the thresholds need to be twice as big as the smallest
+;;   window allowed, because the new windows each use half of the
+;;   former window size
+(setq split-width-threshold 160
+      split-height-threshold nil)
+
+;; Set display-line-number-width automatically
+(setq display-line-numbers-width-start t)
+
+;;; Buffers
+
+;; Hide buffer list at startup when loading multiple files
+(setq inhibit-startup-buffer-menu t)
+
+;; Do not switch to buffers already shown
+;; (setq switch-to-prev-buffer-skip 'this)
+
+;; Allow minibuffer commands while in the minibuffer
+(setq enable-recursive-minibuffers t)
+
+;; Open *info* buffers in same window
+;; (setq info-lookup-other-window-flag nil)
+
+;; Reuse existing help window
+;; (setq help-window-select t)
+
+;;; Outline
+
+;;; Navigation
+
 ;; Scrolling
 ;;   The order of priority is: ‘scroll-conservatively’, then
 ;;   ‘scroll-step’, and finally ‘scroll-up-aggressively’ /
@@ -714,45 +747,34 @@
 ;; Preserve point position when scrolling
 (setq scroll-preserve-screen-position t)
 
-;; Prefer horizontal (side-by-side) window splitting
-;;   Note: the thresholds need to be twice as big as the smallest
-;;   window allowed, because the new windows each use half of the
-;;   former window size
-(setq split-width-threshold 160
-      split-height-threshold nil)
+;;; Selection
 
-;; Set display-line-number-width automatically
-(setq display-line-numbers-width-start t)
+;;; Editing
 
 ;; Use spaces, not tabs
 (setq-default indent-tabs-mode nil)
 
-;; Hide buffer list at startup when loading multiple files
-(setq inhibit-startup-buffer-menu t)
+;; Delete trailing newline character with 'kill-line
+(setq kill-whole-line t)
 
-;; Do not switch to buffers already shown
-(setq switch-to-prev-buffer-skip 'this)
+;;; Completion
+
+;; Use TAB for symbol completion (after indentation)
+(setq tab-always-indent 'complete)
+
+;;; Spelling
+
+;;; Files
+
+;;; Version control
+
+;;; Other
 
 ;; Open up the debugger on error
 ;; (setq debug-on-error t)
 
 ;; Use Command as Meta on macOS
 ;; (setq mac-command-modifier 'meta)
-
-;; Delete trailing newline character with 'kill-line
-(setq kill-whole-line t)
-
-;; Use TAB for symbol completion (after indentation)
-(setq tab-always-indent 'complete)
-
-;; Allow minibuffer commands while in the minibuffer
-(setq enable-recursive-minibuffers t)
-
-;; Open *info* buffers in same window
-;; (setq info-lookup-other-window-flag nil)
-
-;; Always select the help window
-;; (setq help-window-select t)
 
 ;;;; Mode variables
 
