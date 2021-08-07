@@ -1088,6 +1088,7 @@ Emacs session."
 
 ;;;; Outline
 
+;; Check if there is a body?
 (defun outline--body-p ()
   (save-excursion
     (outline-back-to-heading)
@@ -1096,12 +1097,14 @@ Emacs session."
          (progn (forward-char 1)
                 (not (outline-on-heading-p))))))
 
+;; Check if there is a visible body
 (defun outline--body-visible-p ()
   (save-excursion
     (outline-back-to-heading)
     (outline-end-of-heading)
     (not (outline-invisible-p))))
 
+;; Check if there is a sub-heading
 (defun outline--subheadings-p ()
   (save-excursion
     (outline-back-to-heading)
@@ -1110,8 +1113,9 @@ Emacs session."
       (and (not (eobp))
            (< level (funcall outline-level))))))
 
+;; Check if there is a visible sub-heading
 (defun outline--subheadings-visible-p ()
-  (interactive)
+  (interactive)                         ; TODO: why interactive?
   (save-excursion
     (outline-next-heading)
     (not (outline-invisible-p))))
