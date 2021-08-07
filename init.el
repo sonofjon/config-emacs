@@ -900,6 +900,8 @@
 (global-set-key (kbd "C-c q") 'fill-individual-paragraphs) ; use with `C-x .'
                                                            ; for comments
 
+;;;; Completion
+
 ;;;; Spelling
 
 ;;;; Files
@@ -912,6 +914,8 @@
 (global-set-key (kbd "C-c r") #'ediff-regions-linewise)
 (global-set-key (kbd "C-c w") #'ediff-regions-wordwise)
 (global-set-key (kbd "C-x v -") #'vc-ediff)
+
+;;;; Other
 
 ;;;; Unbind keys
 
@@ -1378,6 +1382,8 @@ otherwise create a new one."
   (if (eq major-mode 'helpful-mode)
       (switch-to-buffer buffer-or-name)
     (pop-to-buffer buffer-or-name)))
+
+;;;; Other
 
 
 ;;;;; LOCAL SETTINGS (LATE)
