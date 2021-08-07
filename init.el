@@ -949,7 +949,6 @@
 	    ;; (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
             (setq outline-minor-mode-prefix "\C-c \C-c") ; TODO: doesn't work
             (let ((map outline-minor-mode-map))
-              (define-key map (kbd "C-c C-l") #'aj8/outline-level-message)
               (define-key map (kbd "C-c <left>") #'my/outline-hide-more)
               (define-key map (kbd "C-c <right>") #'my/outline-show-more)
               (define-key map (kbd "C-c C-<left>") #'outline-hide-body) ; TODO: hide-all?
