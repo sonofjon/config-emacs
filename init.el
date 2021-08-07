@@ -1165,6 +1165,22 @@ number of characters matched by `outline-regexp'."
     (let ((level (funcall outline-level)))
       (message "Level: %d" level))))
 
+;; Copy visible region
+;;   Imported from org-mode
+(defun my/org-copy-visible (beg end)
+  "Copy the visible parts of the region."
+  (interactive "r")
+  (let ((result ""))
+    (while (/= beg end)
+      (when (get-char-property beg 'invisible)
+	(setq beg (next-single-char-property-change beg 'invisible nil end)))
+      (let ((next (next-single-char-property-change beg 'invisible nil end)))
+	(setq result (concat result (buffer-substring beg next)))
+	(setq beg next)))
+    (setq deactivate-mark t)
+    (kill-new result)
+    (message "Visible strings have been copied to the kill ring.")))
+
 ;;;; Navigation
 
 ;; Scroll up one paragraph
