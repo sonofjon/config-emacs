@@ -792,8 +792,8 @@
 
 
 
-;; outline: custom heading format
-(add-hook 'emacs-lisp-mode-hook
+;; outline-minor-mode-hook: set custom outline heading format
+(add-hook 'outline-minor-mode-hook
           (lambda () 
             (setq-local outline-regexp "\\(;;+ \\)\\([^( ]\\)")
             (setq-local outline-heading-alist
