@@ -804,11 +804,6 @@
           ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
           (setq-local outline-level 'aj8/outline-level)))
 
-;; isearch: interpret spaces as wildcards (with M-s SPC)
-;;   TODO: Remove when adding a replacement for swiper?
-(setq search-whitespace-regexp ".*?")
-
-
 ;;;;; HOOKS
 
 ;; Deactivate highlight mode when selecting text
@@ -819,6 +814,15 @@
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
 ;; Remove "..?*" from alias `all' in grep-files-aliases
+;; isearch-mode-hook: customizations for isearch
+(add-hook 'isearch-mode-hook (lambda ()
+                               ;; Don't search invisible text by default
+                               (isearch-toggle-invisible)
+                               ;; Interpret spaces as wildcards (with M-s SPC)
+                               ;;   TODO: Remove when adding a replacement for swiper?
+                               (setq search-whitespace-regexp ".*?")))
+
+
 ;;   TODO: Hook does not take effect
 ;;   TODO: grep-files-aliases is not correct on first run?
 (add-hook 'grep-mode-hook
