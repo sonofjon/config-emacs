@@ -762,9 +762,22 @@
 
 ;;; Spelling
 
+;; Set aspell suggestion mode
+(setq ispell-extra-args '("--sug-mode=ultra"))
+;; (setq ispell-extra-args '("--sug-mode=fast"))
+;; (setq ispell-extra-args '("--sug-mode=normal"))
+
 ;;; Files
 
+;; Custom listing style in dired
+;; (setq dired-listing-switches "-agho --group-directories-first")
+(setq dired-listing-switches "-agho")   ; macOS version
+
 ;;; Version control
+
+;; Use horizontal (side-by-side) view by default in ediff
+(setq ediff-split-window-function #'split-window-horizontally)
+(setq ediff-merge-split-window-function #'split-window-horizontally)
 
 ;;; Other
 
@@ -774,11 +787,10 @@
 ;; Use Command as Meta on macOS
 ;; (setq mac-command-modifier 'meta)
 
-;;;; Mode variables
+;; helpful: always open additional helpful buffers in the same window
+(setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
 
-;; dired: custom listing style
-;; (setq dired-listing-switches "-agho --group-directories-first")
-(setq dired-listing-switches "-agho")   ; macOS version
+
 
 ;; outline: custom heading format
 (add-hook 'emacs-lisp-mode-hook
@@ -792,21 +804,9 @@
           ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
           (setq-local outline-level 'aj8/outline-level)))
 
-;; ediff: use horizontal (side-by-side) view by default
-(setq ediff-split-window-function #'split-window-horizontally)
-(setq ediff-merge-split-window-function #'split-window-horizontally)
-
-;; helpful: always open additional helpful buffers in the same window
-(setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
-
 ;; isearch: interpret spaces as wildcards (with M-s SPC)
 ;;   TODO: Remove when adding a replacement for swiper?
 (setq search-whitespace-regexp ".*?")
-
-;; ispell: set aspell suggestion mode
-(setq ispell-extra-args '("--sug-mode=ultra"))
-;; (setq ispell-extra-args '("--sug-mode=fast"))
-;; (setq ispell-extra-args '("--sug-mode=normal"))
 
 
 ;;;;; HOOKS
