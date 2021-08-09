@@ -791,6 +791,7 @@
 (setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
 
 
+;;;;; HOOKS
 
 ;; outline-minor-mode-hook: set custom outline heading format
 (add-hook 'outline-minor-mode-hook
@@ -801,19 +802,16 @@
                           (";;;; " . 2)
                           (";;; " . 3)
                           (";; " . 4)))
-          ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
-          (setq-local outline-level 'aj8/outline-level)))
+            ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
+            (setq-local outline-level 'aj8/outline-level)))
 
-;;;;; HOOKS
-
-;; Deactivate highlight mode when selecting text
+;; activate-mark-hook: deactivate highlight mode when selecting text
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
-;; Collect list of killed buffers
+;; kill-buffer-hook: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
-;; Remove "..?*" from alias `all' in grep-files-aliases
 ;; isearch-mode-hook: customizations for isearch
 (add-hook 'isearch-mode-hook (lambda ()
                                ;; Don't search invisible text by default
@@ -823,6 +821,7 @@
                                (setq search-whitespace-regexp ".*?")))
 
 
+;; grep-mode-hook: remove "..?*" from alias `all' in grep-files-aliases
 ;;   TODO: Hook does not take effect
 ;;   TODO: grep-files-aliases is not correct on first run?
 (add-hook 'grep-mode-hook
@@ -955,13 +954,16 @@
             (let ((map outline-minor-mode-map))
               (define-key map (kbd "C-c <left>") #'my/outline-hide-more)
               (define-key map (kbd "C-c <right>") #'my/outline-show-more)
-              (define-key map (kbd "C-c C-<left>") #'outline-hide-body) ; TODO: hide-all?
+              (define-key map (kbd "C-c C-<left>") #'outline-hide-body)
+                                        ; TODO: hide-all?
               (define-key map (kbd "C-c C-<right>") #'outline-show-all)
-              (define-key map (kbd "C-c <up>") #'outline-previous-visible-heading) ; TODO: Swap bindings?
+              (define-key map (kbd "C-c <up>") #'outline-previous-visible-heading)
+                                        ; TODO: Swap bindings?
               (define-key map (kbd "C-c <down>") #'outline-next-visible-heading)
               (define-key map (kbd "C-c C-<up>") #'outline-backward-same-level)
               (define-key map (kbd "C-c C-<down>") #'outline-forward-same-level)
               (define-key outline-minor-mode-map [(f10)] #'outline-cycle))))
+                                        ; with outline-magic
               ;; (define-key map (kbd "S-TAB") #'outline-cycle))))
               ;; (define-key map [(tab)] #'outline-cycle))))
 
