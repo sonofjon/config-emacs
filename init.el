@@ -966,6 +966,7 @@
               (define-key map (kbd "C-c <down>") #'outline-next-visible-heading)
               (define-key map (kbd "C-c C-<up>") #'outline-backward-same-level)
               (define-key map (kbd "C-c C-<down>") #'outline-forward-same-level)
+              (define-key map (kbd "C-c M-p") #'outline-up-heading)
               (define-key outline-minor-mode-map [(f10)] #'outline-cycle))))
                                         ; with outline-magic
               ;; (define-key map (kbd "S-TAB") #'outline-cycle))))
