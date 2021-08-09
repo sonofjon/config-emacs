@@ -727,6 +727,10 @@
 
 ;;; Outline
 
+;; Outline minor mode prefix
+;;   (must be changed before outline-minor-mode is loaded)
+(defvar outline-minor-mode-prefix "\C-c \C-c")
+
 ;;; Navigation
 
 ;; Scrolling
@@ -950,7 +954,7 @@
 (add-hook 'outline-minor-mode-hook
           (lambda ()
 	    ;; (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
-            (setq outline-minor-mode-prefix "\C-c \C-c") ; TODO: doesn't work
+            ;; (setq outline-minor-mode-prefix "\C-c \C-c") ; TODO: doesn't work
             (let ((map outline-minor-mode-map))
               (define-key map (kbd "C-c <left>") #'my/outline-hide-more)
               (define-key map (kbd "C-c <right>") #'my/outline-show-more)
