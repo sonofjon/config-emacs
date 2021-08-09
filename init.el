@@ -608,10 +608,6 @@
   ;; Tab emulation (TODO)
   ;; (outline-cycle-emulate-tab t))
 
-;; outshine (extension for outline-minor-mode)
-(use-package outshine
-  :disabled)
-
 ;; erc (IRC client)
 (use-package erc
   :commands (erc erc-tls)
