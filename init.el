@@ -1441,4 +1441,4 @@ otherwise create a new one."
 ;;     ))
 
 
-; LocalWords:  swiper magit ediff ispell flyspell
+; LocalWords:  ediff flyspell isearch ispell magit minibuffer modus
