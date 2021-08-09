@@ -747,6 +747,8 @@
 ;; Preserve point position when scrolling
 (setq scroll-preserve-screen-position t)
 
+;;; Search
+
 ;;; Selection
 
 ;;; Editing
@@ -877,6 +879,8 @@
 (global-set-key (kbd "C-c l") #'scroll-lock-mode)
 
 (global-set-key (kbd "C-c m") #'imenu)
+
+;;;; Search
 
 ;;;; Selection
 
@@ -1278,6 +1282,8 @@ number of characters matched by `outline-regexp'."
                                                 (line-beginning-position)
                                                 (line-end-position))))
       (aj8/next-comment)))
+
+;;;; Search
 
 ;;;; Selection
 
