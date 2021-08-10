@@ -828,6 +828,8 @@
 (add-hook 'isearch-mode-hook (lambda ()
                                ;; Don't search invisible text by default
                                (isearch-toggle-invisible)
+                               ;; Disable lax-whitespace searching by default
+                               (isearch-toggle-lax-whitespace)
                                ;; Interpret spaces as wildcards (with M-s SPC)
                                ;;   TODO: Remove when adding a replacement for swiper?
                                (setq search-whitespace-regexp ".*?")))
