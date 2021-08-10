@@ -802,8 +802,8 @@
 ;; emacs-startup-hooks: delay evaluation until functions are defined
 ;;
 ;; More convenient "jump to mark" command (swap prefix argument)
-(add-hook 'emacs-startup-hook
-          (lambda () (my/toggle-prefix-arg #'set-mark-command)))
+;; (add-hook 'emacs-startup-hook
+;;           (lambda () (my/toggle-prefix-arg #'set-mark-command)))
 
 
 ;; outline-minor-mode-hook: set custom outline heading format
