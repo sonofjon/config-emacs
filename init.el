@@ -328,8 +328,10 @@
          ([remap describe-function] . helpful-function)
          ([remap describe-symbol] . helpful-symbol)
          ([remap describe-variable] . helpful-variable)
-         ("C-c h" . helpful-at-point)))
+         ("C-c h" . helpful-at-point)
+         :map helpful-mode-map
   ;; :custom
+         ("q" . aj8/quit-window))
   ;; Maximum number of *helpful* buffers
   ;; (helpful-max-buffers 3))
   ;; Use helpful with counsel
@@ -1055,6 +1057,13 @@ _d_: subtree
     (other-window 1)
     (kill-buffer)
     (other-window -1)))
+
+(defun aj8/quit-window (&optional bury)
+  "Quit WINDOW and kill its buffer.
+With prefix argument BURY non-nil, bury the buffer instead of
+killing it."
+  (interactive "P")
+  (quit-window (if bury nil 1)))
 
 ;;;; Buffers
 
