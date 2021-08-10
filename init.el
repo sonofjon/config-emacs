@@ -1343,6 +1343,16 @@ Repeat command to select additional words backwards."
 ;;       (yank-pop arg)
 ;;     (counsel-yank-pop)))
 
+;; Swap universal prefix argument for set-mark-command
+(defun aj8/set-mark-command ()
+  "Jump to the mark.
+With a prefix argument, set the mark instead (this is the inverse
+of the default behavior of the standard `set-mark-command'
+function)."
+  (interactive)
+  (my/swap-args #'set-mark-command)
+  (set-mark-command))
+
 ;;;; Completion
 
 ;; Set custom completion styles
