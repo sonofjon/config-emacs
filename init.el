@@ -330,10 +330,12 @@
          ([remap describe-variable] . helpful-variable)
          ("C-c h" . helpful-at-point)
          :map helpful-mode-map
-  ;; :custom
          ("q" . aj8/quit-window))
+  :custom
   ;; Maximum number of *helpful* buffers
-  ;; (helpful-max-buffers 3))
+  ;; (helpful-max-buffers 3)
+  ;; Always open additional helpful buffers in the same window
+  (helpful-switch-buffer-function #'my/helpful-switch-to-buffer))
   ;; Use helpful with counsel
   ;; (counsel-describe-function-function #'helpful-function)
   ;; (counsel-describe-symbol-function #'helpful-symbol)
@@ -792,9 +794,6 @@
 
 ;; Use Command as Meta on macOS
 ;; (setq mac-command-modifier 'meta)
-
-;; helpful: always open additional helpful buffers in the same window
-(setq helpful-switch-buffer-function #'my/helpful-switch-to-buffer)
 
 
 ;;;;; HOOKS
