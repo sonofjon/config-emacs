@@ -1058,12 +1058,16 @@ _d_: subtree
     (kill-buffer)
     (other-window -1)))
 
-(defun aj8/quit-window (&optional bury)
+;; Quit window and kill its buffer
+(defun aj8/quit-window ()
   "Quit WINDOW and kill its buffer.
-With prefix argument BURY non-nil, bury the buffer instead of
-killing it."
-  (interactive "P")
-  (quit-window (if bury nil 1)))
+With a prefix argument, bury the buffer instead (this is the
+inverse of the default behavior of the standard `quit-windows'
+function)."
+  (interactive)
+  (if current-prefix-arg   ; C-u
+      (quit-window)        ; bury
+    (quit-window 1)))      ; kill
 
 ;;;; Buffers
 
