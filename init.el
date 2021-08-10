@@ -1430,6 +1430,21 @@ otherwise create a new one."
 
 ;;;; Other
 
+;; Swap universal prefix argument for functions
+(defun my/swap-args (fun)
+  "Swap universal prefix argument for FUNCTION fun.
+If called with a prefix argument, the prefix argument will be
+removed. If called without a prefix argument, a prefix argument
+will be applied. This only works for interactive \"P\"
+functions."
+  (if (not (equal (interactive-form fun) '(interactive "P")))
+      (error "Unexpected: must be interactive \"P\" function")
+    (advice-add fun :around (lambda (x &rest args)
+                              "Swap universal prefix argument for FUNCTION fun."
+                              (if (called-interactively-p 'any)
+                                  (apply x (cons (not (car args)) (cdr args)))
+                                (apply x args))))))
+
 
 ;;;;; LOCAL SETTINGS (LATE)
 
