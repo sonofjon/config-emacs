@@ -799,6 +799,12 @@
 
 ;;;;; HOOKS
 
+;; emacs-startup-hooks: delay evaluation until functions are defined
+;;
+;; More convenient "jump to mark" command (swap prefix argument)
+(add-hook 'emacs-startup-hook (lambda () (my/swap-args #'set-mark-command)))
+
+
 ;; outline-minor-mode-hook: set custom outline heading format
 (add-hook 'outline-minor-mode-hook
           (lambda () 
@@ -1342,16 +1348,6 @@ Repeat command to select additional words backwards."
 ;;   (if (eq last-command #'yank)
 ;;       (yank-pop arg)
 ;;     (counsel-yank-pop)))
-
-;; Swap universal prefix argument for set-mark-command
-(defun aj8/set-mark-command ()
-  "Jump to the mark.
-With a prefix argument, set the mark instead (this is the inverse
-of the default behavior of the standard `set-mark-command'
-function)."
-  (interactive)
-  (my/swap-args #'set-mark-command)
-  (set-mark-command))
 
 ;;;; Completion
 
