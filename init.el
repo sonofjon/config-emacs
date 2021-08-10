@@ -802,7 +802,8 @@
 ;; emacs-startup-hooks: delay evaluation until functions are defined
 ;;
 ;; More convenient "jump to mark" command (swap prefix argument)
-(add-hook 'emacs-startup-hook (lambda () (my/swap-args #'set-mark-command)))
+(add-hook 'emacs-startup-hook
+          (lambda () (my/toggle-prefix-arg #'set-mark-command)))
 
 
 ;; outline-minor-mode-hook: set custom outline heading format
@@ -1437,8 +1438,8 @@ otherwise create a new one."
 ;;;; Other
 
 ;; Swap universal prefix argument for functions
-(defun my/swap-args (fun)
-  "Swap universal prefix argument for FUNCTION fun.
+(defun my/toggle-prefix-arg (fun)
+  "Toggle universal prefix argument for FUNCTION fun.
 If called with a prefix argument, the prefix argument will be
 removed. If called without a prefix argument, a prefix argument
 will be applied. This only works for interactive \"P\"
