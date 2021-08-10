@@ -753,6 +753,18 @@
 
 ;;; Search
 
+;; Don't search invisible text by default
+(setq isearch-invisible nil)
+
+;; Disable lax-whitespace searching by default
+;;   TODO: resets to open
+(setq isearch-lax-whitespace nil)
+
+;; Interpret spaces as wildcards (with M-s SPC)
+;;   TODO: Remove when adding a replacement for swiper?
+(setq search-whitespace-regexp ".*?")
+
+
 ;;; Selection
 
 ;;; Editing
@@ -823,17 +835,6 @@
 
 ;; kill-buffer-hook: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
-
-;; isearch-mode-hook: customizations for isearch
-(add-hook 'isearch-mode-hook (lambda ()
-                               ;; Don't search invisible text by default
-                               (setq isearch-invisible nil)
-                               ;; Disable lax-whitespace searching by default
-                               (setq isearch-lax-whitespace nil)
-                               ;; Interpret spaces as wildcards (with M-s SPC)
-                               ;;   TODO: Remove when adding a replacement for swiper?
-                               (setq search-whitespace-regexp ".*?")))
-
 
 ;; grep-mode-hook: remove "..?*" from alias `all' in grep-files-aliases
 ;;   TODO: Hook does not take effect
