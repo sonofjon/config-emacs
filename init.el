@@ -843,6 +843,9 @@
           (lambda () (setf (alist-get "all" grep-files-aliases nil nil #'equal)
                            "* .[!.]*")))
 
+;; Activate speed keys in org-mode
+(add-hook 'org-mode-hook (lambda () (setq org-use-speed-commands t)))
+
 
 ;;;;; KEYBINDINGS
 
