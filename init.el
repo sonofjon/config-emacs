@@ -964,27 +964,13 @@
   ;; C-; : Auto correct current word
   (define-key flyspell-mode-map (kbd "C-;") #'flyspell-auto-correct-word)))
 
+;; outline-mode
+(add-hook 'outline-mode-hook
+          (lambda () (aj8/outline-mode-keys outline-mode-map)))
+
 ;; outline-minor-mode
 (add-hook 'outline-minor-mode-hook
-          (lambda ()
-	    ;; (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
-            ;; (setq outline-minor-mode-prefix "\C-c \C-c") ; TODO: doesn't work
-            (let ((map outline-minor-mode-map))
-              (define-key map (kbd "C-c <left>") #'my/outline-hide-more)
-              (define-key map (kbd "C-c <right>") #'my/outline-show-more)
-              (define-key map (kbd "C-c C-<left>") #'outline-hide-body)
-                                        ; TODO: hide-all?
-              (define-key map (kbd "C-c C-<right>") #'outline-show-all)
-              (define-key map (kbd "C-c <up>") #'outline-previous-visible-heading)
-                                        ; TODO: Swap bindings?
-              (define-key map (kbd "C-c <down>") #'outline-next-visible-heading)
-              (define-key map (kbd "C-c C-<up>") #'outline-backward-same-level)
-              (define-key map (kbd "C-c C-<down>") #'outline-forward-same-level)
-              (define-key map (kbd "C-c M-p") #'outline-up-heading)
-              (define-key outline-minor-mode-map [(f10)] #'outline-cycle))))
-                                        ; with outline-magic
-              ;; (define-key map (kbd "S-TAB") #'outline-cycle))))
-              ;; (define-key map [(tab)] #'outline-cycle))))
+          (lambda () (aj8/outline-mode-keys outline-minor-mode-map)))
 
 ;;;; Hydras
 
@@ -1122,6 +1108,29 @@ Emacs session."
     (error "No recently-killed files to reopen")))
 
 ;;;; Outline
+
+;; Set keybindings for outline-(minor-)mode
+(defun aj8/outline-mode-keys (map)
+  "Set keybindings for outline-mode or outline-minor-mode.
+MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
+  ;; (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
+  ;; (setq outline-minor-mode-prefix "\C-c \C-c") ; TODO: doesn't work
+  (let ((m map))
+    (define-key m (kbd "C-c <left>") #'my/outline-hide-more)
+    (define-key m (kbd "C-c <right>") #'my/outline-show-more)
+    (define-key m (kbd "C-c C-<left>") #'outline-hide-body)
+                                        ; TODO: hide-all?
+    (define-key m (kbd "C-c C-<right>") #'outline-show-all)
+    (define-key m (kbd "C-c <up>") #'outline-previous-visible-heading)
+                                        ; TODO: Swap bindings?
+    (define-key m (kbd "C-c <down>") #'outline-next-visible-heading)
+    (define-key m (kbd "C-c C-<up>") #'outline-backward-same-level)
+    (define-key m (kbd "C-c C-<down>") #'outline-forward-same-level)
+    (define-key m (kbd "C-c M-p") #'outline-up-heading)
+    (define-key outline-minor-mode-map [(f10)] #'outline-cycle)))
+                                        ; with outline-magic
+    ;; (define-key m (kbd "S-TAB") #'outline-cycle))))
+    ;; (define-key m [(tab)] #'outline-cycle))))
 
 ;; Check if there is a body?
 (defun outline--body-p ()
