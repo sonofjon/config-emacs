@@ -817,8 +817,8 @@
 ;;           (lambda () (my/toggle-prefix-arg #'set-mark-command)))
 
 
-;; outline-minor-mode-hook: set custom outline heading format
-(add-hook 'outline-minor-mode-hook
+;; emacs-lisp-mode-hook: set custom outline heading format
+(add-hook 'emacs-lisp-mode-hook
           (lambda () 
             (setq-local outline-regexp "\\(;;+ \\)\\([^( ]\\)")
             (setq-local outline-heading-alist
