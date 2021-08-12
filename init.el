@@ -909,9 +909,6 @@
 
 (global-set-key (kbd "C-c ;") #'comment-line)
 
-;; (global-set-key (kbd "M-y") #'my/counsel-yank-pop-or-yank-pop)
-  ; won't be needed in Emacs 28
-
 (global-set-key (kbd "M-u") 'upcase-dwim)
 (global-set-key (kbd "M-l") 'downcase-dwim)
 (global-set-key (kbd "M-c") 'capitalize-dwim)
@@ -1356,15 +1353,6 @@ Repeat command to select additional words backwards."
   (backward-word N))
 
 ;;;; Editing
-
-;; Custom counsel-yank-pop
-;; (defun my/counsel-yank-pop-or-yank-pop (&optional arg)
-;;   "Call `counsel-yank-pop'. 
-;; If called after a yank, call `yank-pop' instead."
-;;   (interactive "*p")
-;;   (if (eq last-command #'yank)
-;;       (yank-pop arg)
-;;     (counsel-yank-pop)))
 
 ;;;; Completion
 
