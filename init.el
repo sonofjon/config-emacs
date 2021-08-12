@@ -817,6 +817,11 @@
 ;;           (lambda () (my/toggle-prefix-arg #'set-mark-command)))
 
 
+;; outline-mode-hook: remove form-feed character (^L) from regexp
+(add-hook 'outline-mode-hook
+          (lambda ()
+            (setq-local outline-regexp "[*]+")))
+
 ;; emacs-lisp-mode-hook: set custom outline heading format
 (add-hook 'emacs-lisp-mode-hook
           (lambda () 
