@@ -605,13 +605,6 @@
          ;; ("s-<left>" . buf-move-left)
          ;; ("s-<right>" . buf-move-right)))
 
-;; outline-magic (extension for outline-minor-mode)
-(use-package outline-magic
-  :disabled)
-  ;; :custom
-  ;; Tab emulation (TODO)
-  ;; (outline-cycle-emulate-tab t))
-
 ;; erc (IRC client)
 (use-package erc
   :commands (erc erc-tls)
@@ -975,7 +968,15 @@
 
 ;; outline-minor-mode
 (add-hook 'outline-minor-mode-hook
-          (lambda () (aj8/outline-mode-keys outline-minor-mode-map)))
+          (lambda ()
+            ;; Use TAB and S-TAB for cycling
+            (setq-local outline-minor-mode-cycle t)
+                                        ; TODO: fix for terminal mode
+            ;; Highlight headings
+            (setq-local outline-minor-mode-highlight t)
+                                        ; TODO: test other settings
+            ;; Define custom keybindings
+            (aj8/outline-mode-keys outline-minor-mode-map)))
 
 ;;;; Hydras
 
@@ -1131,11 +1132,7 @@ MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
     (define-key m (kbd "C-c <down>") #'outline-next-visible-heading)
     (define-key m (kbd "C-c C-<up>") #'outline-backward-same-level)
     (define-key m (kbd "C-c C-<down>") #'outline-forward-same-level)
-    (define-key m (kbd "C-c M-p") #'outline-up-heading)
-    (define-key outline-minor-mode-map [(f10)] #'outline-cycle)))
-                                        ; with outline-magic
-    ;; (define-key m (kbd "S-TAB") #'outline-cycle))))
-    ;; (define-key m [(tab)] #'outline-cycle))))
+    (define-key m (kbd "C-c M-p") #'outline-up-heading)))
 
 ;; Check if there is a body?
 (defun outline--body-p ()
