@@ -104,11 +104,12 @@
 ;;;;; PACKAGES
 
 ;; benchmark-init (startup profiler)
-(use-package benchmark-init
-  ;; :disabled
-  :config
-  ;; Disable collection of benchmark data after init
-  (add-hook 'after-init-hook #'benchmark-init/deactivate))
+;;   TODO: Fix bug in Emacs 28
+;; (use-package benchmark-init
+;;   ;; :disabled
+;;   :config
+;;   ;; Disable collection of benchmark data after init
+;;   (add-hook 'after-init-hook #'benchmark-init/deactivate))
 
 ;; auto-package-update
 (use-package auto-package-update
@@ -372,6 +373,7 @@
   (company-prescient-mode 1))
 
 ;; icomplete-vertical (show icomplete candidates vertically)
+;;   TODO: Move from use-package section with Emacs 28
 (use-package icomplete-vertical
   :disabled
   ;; Load after startup (when my/completion-styles is defined)
