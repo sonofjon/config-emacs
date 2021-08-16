@@ -532,7 +532,10 @@
 (use-package magit
   ;; Disable hl-line-mode
   :hook (magit-mode . (lambda () (setq-local global-hl-line-mode nil)))
-  :bind ("C-c g" . magit-file-dispatch)
+  :bind (("C-c g" . magit-file-dispatch)
+         ;; Kill, not bury, magit buffers
+         :map magit-mode-map
+         ("q" . aj8/magit-mode-bury-buffer))
          ;; Open files in other window
          ;; :map magit-file-section-map
          ;; ("RET" . magit-diff-visit-file-other-window)
@@ -1071,6 +1074,18 @@ function)."
   (if current-prefix-arg   ; C-u
       (quit-window)        ; bury
     (quit-window 1)))      ; kill
+
+;; Quit magit window and kill its buffer
+(defun aj8/magit-mode-bury-buffer ()
+  "Quit WINDOW and kill its buffer.
+With a prefix argument, bury the buffer instead (this is the
+inverse of the default behavior of the standard
+`magit-mode-quit-window' function)."
+  ;; TODO: this fails!
+  (interactive)
+  (if current-prefix-arg             ; C-u
+      (magit-mode-bury-buffer nil)   ; bury
+    (magit-mode-bury-buffer 1)))     ; kill
 
 ;;;; Buffers
 
