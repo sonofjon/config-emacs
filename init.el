@@ -889,7 +889,7 @@
 
 (global-set-key (kbd "C-c l") #'scroll-lock-mode)
 
-(global-set-key (kbd "C-c m") #'imenu)
+(global-set-key (kbd "C-c i") #'imenu)
 
 ;;;; Search
 
