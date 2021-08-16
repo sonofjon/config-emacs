@@ -914,6 +914,8 @@
 (global-set-key (kbd "C-c q") 'fill-individual-paragraphs) ; use with `C-x .'
                                                            ; for comments
 
+(global-set-key (kbd "C-c w") 'my/copy-symbol-at-point)
+
 ;;;; Completion
 
 ;;;; Spelling
@@ -1365,6 +1367,13 @@ Repeat command to select additional words backwards."
   (backward-word N))
 
 ;;;; Editing
+
+(defun my/copy-symbol-at-point ()
+  ;; TODO: make keybinding disappear after exectution
+  "Make symbol at point the latest kill in the kill ring."
+  (interactive)
+  (let ((symbol (thing-at-point 'symbol)))
+    (when symbol (kill-new symbol))))
 
 ;;;; Completion
 
