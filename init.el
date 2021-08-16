@@ -556,11 +556,13 @@
 
 ;; multiple-cursors (edit at multiple points)
 (use-package multiple-cursors
-  :bind (("C-c c" . set-rectangular-region-anchor)
-         ("C-c <" . mc/mark-previous-like-this)
-         ("C-c >" . mc/mark-next-like-this)
-         ("C-c ?" . mc/mark-all-like-this)
-         ("C-c C" . mc/edit-lines)))
+  :bind (:prefix-map multiple-cursors
+                     :prefix "C-c c"
+                     ("c" . set-rectangular-region-anchor)
+                     ("<" . mc/mark-previous-like-this)
+                     (">" . mc/mark-next-like-this)
+                     ("?" . mc/mark-all-like-this)
+                     ("e" . mc/edit-lines)))
 
 ;; whole-line-or-region (apply to current line if region is undefined)
 ;; (use-package whole-line-or-region
