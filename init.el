@@ -945,6 +945,8 @@
 
 ;;;; Modes
 
+;; TODO: Use with-eval-after-load instead: https://emacs.stackexchange.com/questions/12592/how-to-bind-your-keys-to-keymaps-that-arent-loaded-yet
+
 ;; Info-mode-map
 (add-hook 'Info-mode-hook
           ;; Disable M-n
