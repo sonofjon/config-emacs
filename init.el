@@ -836,11 +836,8 @@
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
 ;; grep-mode-hook: remove "..?*" from alias `all' in grep-files-aliases
-;;   TODO: Hook does not take effect
-;;   TODO: grep-files-aliases is not correct on first run?
-(add-hook 'grep-mode-hook
-          (lambda () (setf (alist-get "all" grep-files-aliases nil nil #'equal)
-                           "* .[!.]*")))
+(with-eval-after-load "grep"
+  (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*"))
 
 ;; Activate speed keys in org-mode
 (add-hook 'org-mode-hook (lambda () (setq org-use-speed-commands t)))
