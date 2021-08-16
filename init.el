@@ -373,7 +373,6 @@
   (company-prescient-mode 1))
 
 ;; icomplete-vertical (show icomplete candidates vertically)
-;;   TODO: Move from use-package section with Emacs 28
 (use-package icomplete-vertical
   :disabled
   ;; Load after startup (when my/completion-styles is defined)
@@ -751,7 +750,6 @@
 (setq isearch-invisible nil)
 
 ;; Disable lax-whitespace searching by default
-;;   TODO: resets to open
 (setq isearch-lax-whitespace nil)
 
 ;; Interpret spaces as wildcards (with M-s SPC)
