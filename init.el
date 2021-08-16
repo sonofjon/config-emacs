@@ -665,10 +665,6 @@
 ;; Disable toolbar (graphical Emacs)
 (tool-bar-mode -1)
 
-;; Mouse scrolling
-;;   TODO: shift-scrolling does not work
-;; (setq mouse-wheel-progressive-speed nil)   ; don't accelerate scrolling
-
 ;; Delete selection on edit
 (delete-selection-mode 1)
 
