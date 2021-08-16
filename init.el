@@ -551,7 +551,8 @@
 
 ;; expand-region (grow selected region by semantic units)
 (use-package expand-region
-  :bind ("C-c =" . er/expand-region))
+  :bind (("C-c =" . er/expand-region)
+         ("C-c -" . er/contract-region)))
 
 ;; multiple-cursors (edit at multiple points)
 (use-package multiple-cursors
