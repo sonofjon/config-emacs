@@ -986,8 +986,15 @@
 (which-key-add-key-based-replacements "C-c y" "hydra")
 
 ;;; Scrolling
-(defhydra hydra-scroll ()
-  "Scrolling functions"
+(defhydra hydra-scroll (:hint nil)
+  "
+^Line^            ^Paragraph^
+^^^^---------------------------
+_↑_: previous     _←_: previous
+_↓_: next         _→_: next
+
+Scroll by line or paragraph.
+"
   ("<up>" scroll-down-line)
   ("<down>" scroll-up-line)
   ("<left>" aj8/scroll-down-paragraph)
@@ -995,8 +1002,15 @@
 (global-set-key (kbd "C-c y s") #'hydra-scroll/body)
 
 ;;; Line navigation
-  "Move to the next line or comment"
-(defhydra hydra-navigation ()
+(defhydra hydra-navigation (:hint nil)
+  "
+^Line^            ^Comment^
+^^^^---------------------------
+_↑_: previous     _←_: previous
+_↓_: next         _→_: next
+
+Move to the next line or comment.
+"
   ("<up>" aj8/previous-line)
   ("<down>" aj8/next-line)
   ("<left>" aj8/previous-comment)
