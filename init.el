@@ -521,6 +521,8 @@
   :custom
   ;; Delay (default is 1.0 s)
   (which-key-idle-delay 0.75)
+  ;; Secondary delay (default is nil)
+  (which-key-idle-secondary-delay 0.05)
   :config
   (which-key-mode 1))
 
