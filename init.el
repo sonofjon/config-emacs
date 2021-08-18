@@ -557,8 +557,9 @@
 ;; multiple-cursors (edit at multiple points)
 (use-package multiple-cursors
   :bind (:prefix-map multiple-cursors
-                     :prefix "C-c c"
-                     ("c" . set-rectangular-region-anchor)
+                     :prefix "C-c m"
+                     :prefix-docstring "Multiple Cursors related"
+                     ("SPC" . set-rectangular-region-anchor)
                      ("<" . mc/mark-previous-like-this)
                      (">" . mc/mark-next-like-this)
                      ("?" . mc/mark-all-like-this)
@@ -582,8 +583,9 @@
 ;; google-this (google search functions)
 (use-package google-this
   :diminish
-  :bind-keymap ("C-c /" . google-this-mode-submap)
+  :after which-key
   :config
+  (which-key-add-key-based-replacements "C-c /" "google-this")
   (google-this-mode 1))
 
 ;; diff-hl (highlight uncommitted changes)
@@ -878,11 +880,12 @@
 
 (windmove-default-keybindings 'ctrl)
 (windmove-swap-states-default-keybindings '(ctrl shift))
-(global-set-key (kbd "C-c d <up>") #'windmove-display-up)
-(global-set-key (kbd "C-c d <down>") #'windmove-display-down)
-(global-set-key (kbd "C-c d <left>") #'windmove-display-left)
-(global-set-key (kbd "C-c d <right>") #'windmove-display-right)
-(global-set-key (kbd "C-c d 0") #'windmove-display-same-window)
+(global-set-key (kbd "C-c w <up>") #'windmove-display-up)
+(global-set-key (kbd "C-c w <down>") #'windmove-display-down)
+(global-set-key (kbd "C-c w <left>") #'windmove-display-left)
+(global-set-key (kbd "C-c w <right>") #'windmove-display-right)
+(global-set-key (kbd "C-c w 0") #'windmove-display-same-window)
+(which-key-add-key-based-replacements "C-c w" "windmove")
 
 (global-set-key (kbd "M-p") #'backward-paragraph)
 (global-set-key (kbd "M-n") #'forward-paragraph)
@@ -898,7 +901,6 @@
 
 ;;;; Selection
 
-(global-set-key (kbd "C-c @") #'mark-word)
 (global-set-key (kbd "M-#") #'aj8/mark-word-forward)
 (global-set-key (kbd "M-@") #'aj8/mark-word-backward)
 
@@ -915,7 +917,7 @@
 (global-set-key (kbd "C-c q") 'fill-individual-paragraphs) ; use with `C-x .'
                                                            ; for comments
 
-(global-set-key (kbd "C-c w") 'my/copy-symbol-at-point)
+(global-set-key (kbd "C-c c") 'my/copy-symbol-at-point)
 
 ;;;; Completion
 
@@ -927,10 +929,11 @@
 
 ;;;; Version control
 
-(global-set-key (kbd "C-c e e") #'ediff-buffers)
-(global-set-key (kbd "C-c e r") #'ediff-regions-linewise)
+(global-set-key (kbd "C-c e b") #'ediff-buffers)
+(global-set-key (kbd "C-c e l") #'ediff-regions-linewise)
 (global-set-key (kbd "C-c e w") #'ediff-regions-wordwise)
 (global-set-key (kbd "C-x v -") #'vc-ediff)
+(which-key-add-key-based-replacements "C-c e" "ediff")
 
 ;;;; Other
 
@@ -980,6 +983,8 @@
 
 ;;;; Hydras
 
+(which-key-add-key-based-replacements "C-c y" "hydra")
+
 ;;; Scrolling
 (defhydra hydra-scroll ()
   "Scrolling functions"
@@ -987,16 +992,16 @@
   ("<down>" scroll-up-line)
   ("<left>" aj8/scroll-down-paragraph)
   ("<right>" aj8/scroll-up-paragraph))
-(global-set-key (kbd "C-c s") #'hydra-scroll/body)
+(global-set-key (kbd "C-c y s") #'hydra-scroll/body)
 
 ;;; Line navigation
-(defhydra hydra-next-line ()
   "Move to the next line or comment"
+(defhydra hydra-navigation ()
   ("<up>" aj8/previous-line)
   ("<down>" aj8/next-line)
   ("<left>" aj8/previous-comment)
   ("<right>" aj8/next-comment))
-(global-set-key (kbd "C-c n") #'hydra-next-line/body)
+(global-set-key (kbd "C-c y n") #'hydra-navigation/body)
 
 ;;; Outline
 (defhydra hydra-outline (:color pink :hint nil)
@@ -1032,7 +1037,7 @@ _d_: subtree
   ("b" outline-backward-same-level)       ; Backward - same level
   ("z" nil "leave"))
 
-(global-set-key (kbd "C-c #") #'hydra-outline/body)
+(global-set-key (kbd "C-c y o") #'hydra-outline/body)
 
 
 ;;;;; FUNCTIONS
