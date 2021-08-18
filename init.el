@@ -394,7 +394,8 @@
               ("?" . minibuffer-completion-help)
               ;; ("C-c ?" . aj8/kill-completions-buffer)
               ("C-c ?" . minibuffer-hide-completions)
-              ("M-c" . minibuffer-complete))
+              ("M-c" . minibuffer-complete)
+              ("M-f" . minibuffer-force-complete))
   :custom
   ;; Enable cycling
   (vertico-cycle t)
