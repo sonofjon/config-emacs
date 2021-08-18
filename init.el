@@ -519,7 +519,10 @@
 (use-package which-key
   :diminish
   :custom
+  ;; Show which-key buffer on C-h
+  ;; (which-key-show-early-on-C-h t)
   ;; Delay (default is 1.0 s)
+  ;; (which-key-idle-delay 10000)
   (which-key-idle-delay 0.75)
   ;; Secondary delay (default is nil)
   (which-key-idle-secondary-delay 0.05)
