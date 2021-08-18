@@ -1395,11 +1395,14 @@ Repeat command to select additional words backwards."
 ;;;; Editing
 
 (defun my/copy-symbol-at-point ()
-  ;; TODO: make keybinding disappear after exectution
+  ;; TODO: make pulse visible with global-hl-line-mode
   "Make symbol at point the latest kill in the kill ring."
   (interactive)
-  (let ((symbol (thing-at-point 'symbol)))
-    (when symbol (kill-new symbol))))
+  (let ((symbol (thing-at-point 'symbol))
+        (bounds (bounds-of-thing-at-point 'symbol)))
+    (when symbol
+      (kill-new symbol)
+      (pulse-momentary-highlight-region (car bounds) (cdr bounds)))))
 
 ;;;; Completion
 
