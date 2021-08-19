@@ -818,6 +818,10 @@
 ;; Use speed keys in org-mode
 (setq org-use-speed-commands t)
 
+;; Remove "..?*" from alias `all' in grep-files-aliases
+(with-eval-after-load "grep"
+  (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*"))
+
 
 ;;;;; HOOKS
 
@@ -852,10 +856,6 @@
 
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
-
-;; grep-mode: remove "..?*" from alias `all' in grep-files-aliases
-(with-eval-after-load "grep"
-  (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*"))
 
 
 ;;;;; KEYBINDINGS
