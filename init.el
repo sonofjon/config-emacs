@@ -737,6 +737,7 @@
 
 ;; Outline minor mode prefix
 ;;   (must be changed before outline-minor-mode is loaded)
+;;   TODO: Fix
 (defvar outline-minor-mode-prefix "\C-c \C-c")
 
 ;;; Navigation
@@ -766,7 +767,6 @@
 ;; Interpret spaces as wildcards (with M-s SPC)
 ;;   TODO: Remove when adding a replacement for swiper?
 (setq search-whitespace-regexp ".*?")
-
 
 ;;; Selection
 
@@ -813,14 +813,14 @@
 
 ;;;;; HOOKS
 
-;; emacs-startup-hooks: delay evaluation until functions are defined
+;; emacs-startup: delay evaluation until functions are defined
 ;;
 ;; More convenient "jump to mark" command (swap prefix argument)
 ;; (add-hook 'emacs-startup-hook
 ;;           (lambda () (my/toggle-prefix-arg #'set-mark-command)))
 
 
-;; outline-mode-hook: remove form-feed character (^L) from regexp
+;; outline-mode: remove form-feed character (^L) from regexp
 (add-hook 'outline-mode-hook
           (lambda ()
             (setq-local outline-regexp "[*]+")))
@@ -837,19 +837,19 @@
             ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
             (setq-local outline-level 'aj8/outline-level)))
 
-;; activate-mark-hook: deactivate highlight mode when selecting text
+;; activate-mark: deactivate highlight mode when selecting text
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
-;; kill-buffer-hook: collect list of killed buffers
+;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
-;; grep-mode-hook: remove "..?*" from alias `all' in grep-files-aliases
+;; org-mode: activate speed keys in org-mode
+(add-hook 'org-mode-hook (lambda () (setq org-use-speed-commands t)))
+
+;; grep-mode: remove "..?*" from alias `all' in grep-files-aliases
 (with-eval-after-load "grep"
   (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*"))
-
-;; Activate speed keys in org-mode
-(add-hook 'org-mode-hook (lambda () (setq org-use-speed-commands t)))
 
 
 ;;;;; KEYBINDINGS
