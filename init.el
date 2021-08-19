@@ -737,8 +737,8 @@
 
 ;; Outline minor mode prefix
 ;;   (must be changed before outline-minor-mode is loaded)
-;;   TODO: Fix
-(defvar outline-minor-mode-prefix "\C-c \C-c")
+(defvar outline-minor-mode-prefix "\C-c\C-c")
+(which-key-add-key-based-replacements "C-c C-c" "outline")
 
 ;;; Navigation
 
