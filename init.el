@@ -825,9 +825,20 @@
           (lambda ()
             (setq outline-regexp "[*]+")))
 
-;; emacs-lisp-mode-hook: set custom outline heading format
+;; outline-minor-mode:
+(add-hook 'outline-minor-mode-hook
+          (lambda ()
+            ;; Use TAB and S-TAB for cycling
+            (setq-local outline-minor-mode-cycle t)
+                                        ; TODO: fix for terminal mode
+            ;; Highlight headings
+            (setq-local outline-minor-mode-highlight t)))
+                                        ; TODO: test other settings
+
+;; emacs-lisp-mode:
 (add-hook 'emacs-lisp-mode-hook
-          (lambda () 
+          (lambda ()
+            ;; Set custom outline heading format
             (setq-local outline-regexp "\\(;;+ \\)\\([^( ]\\)")
             (setq-local outline-heading-alist
                         '((";;;;; " . 1)
@@ -973,19 +984,13 @@
 
 ;; outline-mode
 (add-hook 'outline-mode-hook
+          ;; Define custom keybindings
           (lambda () (aj8/outline-mode-keys outline-mode-map)))
 
 ;; outline-minor-mode
 (add-hook 'outline-minor-mode-hook
-          (lambda ()
-            ;; Use TAB and S-TAB for cycling
-            (setq-local outline-minor-mode-cycle t)
-                                        ; TODO: fix for terminal mode
-            ;; Highlight headings
-            (setq-local outline-minor-mode-highlight t)
-                                        ; TODO: test other settings
-            ;; Define custom keybindings
-            (aj8/outline-mode-keys outline-minor-mode-map)))
+          ;; Define custom keybindings
+          (lambda () (aj8/outline-mode-keys outline-minor-mode-map)))
 
 ;;;; Hydras
 
