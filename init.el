@@ -815,6 +815,9 @@
 ;; Use Command as Meta on macOS
 ;; (setq mac-command-modifier 'meta)
 
+;; Use speed keys in org-mode
+(setq org-use-speed-commands t)
+
 
 ;;;;; HOOKS
 
@@ -849,9 +852,6 @@
 
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
-
-;; org-mode: activate speed keys in org-mode
-(add-hook 'org-mode-hook (lambda () (setq org-use-speed-commands t)))
 
 ;; grep-mode: remove "..?*" from alias `all' in grep-files-aliases
 (with-eval-after-load "grep"
