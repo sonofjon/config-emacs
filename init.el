@@ -736,9 +736,14 @@
 ;;; Outline
 
 ;; Outline minor mode prefix
-;;   (must be changed before outline-minor-mode is loaded)
-(defvar outline-minor-mode-prefix "\C-c\C-c")
+(setq outline-minor-mode-prefix "\C-c\C-c")
 (which-key-add-key-based-replacements "C-c C-c" "outline")
+
+;; Use TAB and S-TAB for cycling
+(setq outline-minor-mode-cycle t)
+
+;; Highlight headings
+(setq outline-minor-mode-highlight t)
 
 ;;; Navigation
 
@@ -824,16 +829,6 @@
 (add-hook 'outline-mode-hook
           (lambda ()
             (setq outline-regexp "[*]+")))
-
-;; outline-minor-mode:
-(add-hook 'outline-minor-mode-hook
-          (lambda ()
-            ;; Use TAB and S-TAB for cycling
-            (setq-local outline-minor-mode-cycle t)
-                                        ; TODO: fix for terminal mode
-            ;; Highlight headings
-            (setq-local outline-minor-mode-highlight t)))
-                                        ; TODO: test other settings
 
 ;; emacs-lisp-mode:
 (add-hook 'emacs-lisp-mode-hook
