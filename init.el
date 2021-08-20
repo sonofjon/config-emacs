@@ -104,12 +104,11 @@
 ;;;;; PACKAGES
 
 ;; benchmark-init (startup profiler)
-;;   TODO: Fix bug in Emacs 28
-;; (use-package benchmark-init
-;;   ;; :disabled
-;;   :config
-;;   ;; Disable collection of benchmark data after init
-;;   (add-hook 'after-init-hook #'benchmark-init/deactivate))
+(use-package benchmark-init
+  ;; :disabled
+  :config
+  ;; Disable collection of benchmark data after init
+  (add-hook 'after-init-hook #'benchmark-init/deactivate))
 
 ;; auto-package-update
 (use-package auto-package-update
