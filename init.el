@@ -418,7 +418,7 @@
   (setq orderless-matching-styles
         ;; '(orderless-literal orderless-regexp))) ; default
         '(orderless-literal
-          ;; orderless-regexp
+          orderless-regexp
           orderless-prefixes
           orderless-strict-full-initialism)))
 
