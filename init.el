@@ -251,6 +251,29 @@
   (modus-themes-load-vivendi)
   :bind ("<f5>" . modus-themes-toggle))
 
+;; auto-dim-other-buffers (dim inactive windows)
+(use-package auto-dim-other-buffers
+  :disabled
+  :custom
+  ;; Don't dim on switch to minibuffer
+  (auto-dim-other-buffers-dim-on-switch-to-minibuffer nil)   ; TODO: doesn't work
+  :config
+  ;; Define attributes for dimmed windows
+  (set-face-attribute 'auto-dim-other-buffers-face nil :background "color-233")
+  (set-face-attribute 'auto-dim-other-buffers-face nil :foreground "color-245")
+  (auto-dim-other-buffers-mode 1))
+
+;; dimmer (dim inactive windows)
+(use-package dimmer
+  ;; :disabled
+  :custom
+  ;; What to dim
+  ;; (dimmer-adjustment-mode ':both)
+  ;; Adjust dimming amount
+  (dimmer-fraction 0.25)                ; default is 0.20
+  :config
+  (dimmer-mode 1))
+
 ;; company (in-buffer text completion)
 (use-package company
   :disabled
