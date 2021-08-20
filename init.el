@@ -857,6 +857,9 @@
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
+;; help-mode: kill buffers on quit
+(define-key help-mode-map [remap quit-window] 'aj8/quit-window)
+
 
 ;;;;; KEYBINDINGS
 
