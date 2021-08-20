@@ -510,11 +510,6 @@
   :config
   (marginalia-mode 1))
 
-;; savehist (persistent minibuffer history)
-(use-package savehist
-  :config
-  (savehist-mode 1))
-
 ;; which-key (display available keybindings)
 (use-package which-key
   :diminish
@@ -674,6 +669,9 @@
 
 ;; Disable toolbar (graphical Emacs)
 (tool-bar-mode -1)
+
+;; Persistent minibuffer history
+(savehist-mode 1)
 
 ;; Delete selection on edit
 (delete-selection-mode 1)
