@@ -963,8 +963,6 @@
 
 ;;;; Modes
 
-;; TODO: Use with-eval-after-load instead: https://emacs.stackexchange.com/questions/12592/how-to-bind-your-keys-to-keymaps-that-arent-loaded-yet
-
 ;; Info-mode-map
 (add-hook 'Info-mode-hook
           ;; Disable M-n
@@ -1111,7 +1109,6 @@ function)."
 With a prefix argument, bury the buffer instead (this is the
 inverse of the default behavior of the standard
 `magit-mode-quit-window' function)."
-  ;; TODO: this fails!
   (interactive)
   (if current-prefix-arg             ; C-u
       (magit-mode-bury-buffer nil)   ; bury
@@ -1163,8 +1160,6 @@ Emacs session."
 (defun aj8/outline-mode-keys (map)
   "Set keybindings for outline-mode or outline-minor-mode.
 MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
-  ;; (local-set-key (kbd "C-c C-c") outline-mode-prefix-map)
-  ;; (setq outline-minor-mode-prefix "\C-c \C-c") ; TODO: doesn't work
   (let ((m map))
     (define-key m (kbd "C-c <left>") #'my/outline-hide-more)
     (define-key m (kbd "C-c <right>") #'my/outline-show-more)
@@ -1402,7 +1397,6 @@ Repeat command to select additional words backwards."
 ;;;; Editing
 
 (defun my/copy-symbol-at-point ()
-  ;; TODO: make pulse visible with global-hl-line-mode
   "Make symbol at point the latest kill in the kill ring."
   (interactive)
   (let ((symbol (thing-at-point 'symbol))
