@@ -816,6 +816,9 @@
 ;; Use Command as Meta on macOS
 ;; (setq mac-command-modifier 'meta)
 
+;; Use longer pulse
+(setq pulse-delay 0.05)   ; default is 0.03
+
 ;; Use speed keys in org-mode
 (setq org-use-speed-commands t)
 
