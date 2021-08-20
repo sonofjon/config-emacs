@@ -331,7 +331,8 @@
          ([remap describe-variable] . helpful-variable)
          ("C-c h" . helpful-at-point)
          :map helpful-mode-map
-         ("q" . aj8/quit-window))
+         ;; Kill buffers on quit
+         ([remap quit-window] . aj8/quit-window))
   :custom
   ;; Maximum number of *helpful* buffers
   ;; (helpful-max-buffers 3)
