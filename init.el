@@ -693,6 +693,9 @@
 ;; Disable toolbar (graphical Emacs)
 (tool-bar-mode -1)
 
+;; Disable scroll bar
+(scroll-bar-mode -1)
+
 ;; Persistent minibuffer history
 (savehist-mode 1)
 
@@ -1534,8 +1537,6 @@ functions."
        (if (display-graphic-p)
            ;; GUI settings
            (progn
-	     ;; Disable scroll bar
-	     (set-scroll-bar-mode nil)
              ;; Set default font
              (add-to-list 'default-frame-alist '(font . "Hack-14"))
              ;; Increase line spacing
