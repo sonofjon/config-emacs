@@ -13,6 +13,8 @@
 
       ;; ((equal (system-name) "penguin")
 
+      ;; ((equal (system-name) "NT175")
+
       (t
        ;; Use custom-file.el for custom-* code
        (setq custom-file "~/.emacs.d/custom-file.el")))
@@ -1534,28 +1536,19 @@ functions."
 ;;;;; LOCAL SETTINGS (LATE)
 
 (cond ((equal (system-name) "MacBook-Air.lan")
-       (if (display-graphic-p)
-           ;; GUI settings
-           (progn
-             ;; Set default font
-             (add-to-list 'default-frame-alist '(font . "Hack-14"))
-             ;; Increase line spacing
-             (setq-default line-spacing 1))
-         ;; Terminal settings
-         ;; Load theme
-         (setq base16-theme-256-color-source "base16-shell")
-         (load-theme 'base16-flat t)))
+       ;; GUI settings
+       (when (display-graphic-p)
+         ;; Set default font
+         (add-to-list 'default-frame-alist '(font . "Hack-14"))
+         ;; Increase line spacing
+         (setq-default line-spacing 1)))
+
+      ;; ((equal (system-name) "penguin")
 
       ((equal (system-name) "NT175")
        ;; Enable (default) web browser on WSL
        (setq browse-url-generic-program "wslview"
-        browse-url-browser-function #'browse-url-generic))
-       ;; Load theme
-       ;; (load-theme 'wombat))
-
-      (t
-       ;; Load theme
-       (load-theme 'wombat)))
+        browse-url-browser-function #'browse-url-generic)))
 
 ;; Conditionally load host specific stuff
 ;; (let ((host-specific-files (concat (make-load-path-base) system-name ".el")))
