@@ -99,7 +99,7 @@
 ;; Lower time threshold for package load time reporting
 (setq use-package-minimum-reported-time 0.001)
 
-;; Alternative option to prioritise archives
+;; Alternative option to prioritize archives
 ;; (setq use-package-always-pin "melpa-stable")
 
 
@@ -258,7 +258,8 @@
   :disabled
   :custom
   ;; Don't dim on switch to minibuffer
-  (auto-dim-other-buffers-dim-on-switch-to-minibuffer nil)   ; TODO: doesn't work
+  (auto-dim-other-buffers-dim-on-switch-to-minibuffer nil)
+                                        ; TODO: doesn't work
   :config
   ;; Define attributes for dimmed windows
   (set-face-attribute 'auto-dim-other-buffers-face nil :background "color-233")
@@ -1188,11 +1189,10 @@ MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
   (let ((m map))
     (define-key m (kbd "C-c <left>") #'my/outline-hide-more)
     (define-key m (kbd "C-c <right>") #'my/outline-show-more)
-    (define-key m (kbd "C-c C-<left>") #'outline-hide-body)
-                                        ; TODO: hide-all?
+    (define-key m (kbd "C-c C-<left>") #'outline-hide-sublevels)
+    (define-key m (kbd "C-c M-<left>") #'outline-hide-body)
     (define-key m (kbd "C-c C-<right>") #'outline-show-all)
     (define-key m (kbd "C-c <up>") #'outline-previous-visible-heading)
-                                        ; TODO: Swap bindings?
     (define-key m (kbd "C-c <down>") #'outline-next-visible-heading)
     (define-key m (kbd "C-c C-<up>") #'outline-backward-same-level)
     (define-key m (kbd "C-c C-<down>") #'outline-forward-same-level)
