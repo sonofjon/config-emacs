@@ -193,32 +193,31 @@
   ;; Add all customizations prior to loading the themes
   :init
   ;; Use italic font forms in more code constructs
-  (setq modus-themes-italic-constructs nil)
+  (setq modus-themes-italic-constructs t)
   ;; Use bold text in more code constructs
   (setq modus-themes-bold-constructs nil)
   ;; Use more subtle style for line numbers
-  (setq modus-themes-subtle-line-numbers nil)
+  (setq modus-themes-subtle-line-numbers t)
   ;; Define the visibility of fringes
   ;;   Options: `nil',`subtle', `intense'
   (setq modus-themes-fringes nil)
   ;; Control the style of spelling and code checkers/linters
   ;;   Options: `straight-underline', `text-also', `background',
   ;;            `intense'
-  (setq modus-themes-lang-checkers nil)
+  (setq modus-themes-lang-checkers '(straight-underline text-also))
   ;; Control the style of the mode line
   ;;   Options: `3d' OR `moody', `borderless', `accented', `padded'
-  (setq modus-themes-mode-line nil)
+  (setq modus-themes-mode-line 'borderless)
   ;; Control the style of code syntax highlighting
   ;;   Options: `faint', `yellow-comments', `green-strings',
   ;;            `alt-syntax'
-  (setq modus-themes-syntax nil)
+  (setq modus-themes-syntax '(faint green-strings alt-syntax))
   ;; Control the current line highlight of HL-line mode
   ;;   Options: `accented', `underline', `intense'
-  ;; (setq modus-themes-paren-match 'subtle-bold)
   (setq modus-themes-hl-line nil)
   ;; Control the style of matching parentheses or delimiters
   ;;   Options: `bold', `intense', `underline'
-  (setq modus-themes-paren-match nil)
+  (setq modus-themes-paren-match 'intense)
   ;; Set the style of links
   ;;   Options: `neutral-underline' OR `no-underline', `faint' OR
   ;;            `no-color', `bold', `italic', `background'
@@ -242,9 +241,13 @@
   ;;   Options: `rainbow', `overline', `background', `no-bold',
   ;;            `monochrome'
   ;; (setq modus-themes-headings
-  ;;       '((1 . (overline background))
-  ;;         (2 . (rainbow overline))
-  ;;         (t . (no-bold))))
+  ;;       '((1 . (background monochrome))
+  ;;         (t . (monochrome))))
+  (setq modus-themes-headings
+        '((1 . (background rainbow))
+          (2 . (background))
+          (3 . (background monochrome))
+          (t . (monochrome))))
   ;; Load the theme files before enabling a theme
   (modus-themes-load-themes)
   :config
