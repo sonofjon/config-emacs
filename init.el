@@ -649,6 +649,13 @@
          ;; ("s-<left>" . buf-move-left)
          ;; ("s-<right>" . buf-move-right)))
 
+;; outline-minor-faces (use faces from outline-mode)
+;;   TODO: Fix
+(use-package outline-minor-faces
+  :after outline
+  :config (add-hook 'outline-minor-mode-hook
+                    'outline-minor-faces-add-font-lock-keywords))
+
 ;; erc (IRC client)
 (use-package erc
   :commands (erc erc-tls)
