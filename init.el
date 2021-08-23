@@ -700,7 +700,8 @@
 (tool-bar-mode -1)
 
 ;; Disable scroll bar
-(scroll-bar-mode -1)
+(with-eval-after-load "scroll-bar"   ; avoid error on some systems
+  (scroll-bar-mode -1))
 
 ;; Persistent minibuffer history
 (savehist-mode 1)
