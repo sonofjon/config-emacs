@@ -907,6 +907,8 @@
 
 (define-key key-translation-map (kbd "M-<up>") (kbd "M-p"))
 (define-key key-translation-map (kbd "M-<down>") (kbd "M-n"))
+(define-key key-translation-map (kbd "C-M-<up>") (kbd "C-M-p"))
+(define-key key-translation-map (kbd "C-M-<down>") (kbd "C-M-n"))
 
 ;;;; Windows
 
