@@ -607,6 +607,10 @@
 ;;   ;; Use whole-line-or-region-mode everywhere
 ;;   (whole-line-or-region-global-mode 1))
 
+;; php-mode (major-mode for editing PHP files)
+;; (use-package php-mode
+;;   :mode ".php$")
+
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
   :mode (".html?$" ".php$"))
