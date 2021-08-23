@@ -145,7 +145,7 @@
   (paradox-enable))
 
 ;; base16-theme
-;;   Available options: https://belak.github.io/base16-emacs/
+;;   Available options: <https://belak.github.io/base16-emacs/>
 (use-package base16-theme)
   ;; :config
   ;; (setq base16-theme-256-color-source "base16-shell")
