@@ -63,10 +63,11 @@
 ;;              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 ;; Set package-archives priorities
-;; (setq package-archive-priorities
-;;       '(("gnu"          . 3)
-;;         ("melpa-stable" . 2)
-;;         ("melpa"        . 1)))
+(setq package-archive-priorities
+      '(("gnu"          . 1)
+        ("nongnu"       . 2)
+        ;; ("melpa-stable" . 2)
+        ("melpa"        . 3)))
 
 ;; Refresh packages database (in background)
 ;;   TODO: async argument fails with Chemacs
