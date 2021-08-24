@@ -652,6 +652,18 @@
               ("TAB" . bicycle-cycle)
               ("<backtab>" . bicycle-cycle-global)))
 
+;; keyfreq (command stats)
+(use-package keyfreq
+  :init
+  (setq keyfreq-excluded-commands '(self-insert-command
+                                    right-char
+                                    left-char
+                                    previous-line
+                                    next-line))
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
+
 ;; erc (IRC client)
 (use-package erc
   :commands (erc erc-tls)
@@ -685,17 +697,14 @@
   (add-to-list 'erc-modules 'hl-nicks)
   (erc-update-modules))
 
-;; keyfreq (command stats)
-(use-package keyfreq
-  :init
-  (setq keyfreq-excluded-commands '(self-insert-command
-                                    right-char
-                                    left-char
-                                    previous-line
-                                    next-line))
-  :config
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1))
+;; elfeed (web feed reader)
+(use-package elfeed
+  :commands elfeed
+  :custom
+  (elfeed-feeds '("https://www.reddit.com/r/emacs/.rss"
+                  "https://sachachua.com/blog/category/emacs-news/feed/")))
+  ;;:config
+  ;; TODO: configure
 
 ;;;;; THEMES
 
