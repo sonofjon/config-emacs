@@ -650,11 +650,17 @@
          ;; ("s-<right>" . buf-move-right)))
 
 ;; outline-minor-faces (use faces from outline-mode)
-;;   TODO: Fix
 (use-package outline-minor-faces
   :after outline
   :config (add-hook 'outline-minor-mode-hook
                     'outline-minor-faces-add-font-lock-keywords))
+
+;; bicycle (cycling of outline sections and code blocks)
+(use-package bicycle
+  :after outline
+  :bind (:map outline-minor-mode-map
+              ("TAB" . bicycle-cycle)
+              ("<backtab>" . bicycle-cycle-global)))
 
 ;; erc (IRC client)
 (use-package erc
@@ -783,7 +789,7 @@
 (which-key-add-key-based-replacements "C-c C-c" "outline")
 
 ;; Use TAB and S-TAB for cycling
-(setq outline-minor-mode-cycle t)
+;; (setq outline-minor-mode-cycle t)
 
 ;; Highlight headings
 (setq outline-minor-mode-highlight t)
