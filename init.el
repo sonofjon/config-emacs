@@ -194,6 +194,7 @@
 
 ;; modus-themes
 (use-package modus-themes
+  :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
   ;; Use italic font forms in more code constructs
@@ -257,8 +258,7 @@
   :config
   ;; Load the theme
   ;; (modus-themes-load-operandi)
-  (modus-themes-load-vivendi)
-  :bind ("<f5>" . modus-themes-toggle))
+  (modus-themes-load-vivendi))
 
 ;; auto-dim-other-buffers (dim inactive windows)
 (use-package auto-dim-other-buffers
