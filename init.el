@@ -853,6 +853,9 @@
 
 ;;; Spelling
 
+;; Set language
+(setq ispell-dictionary "en")
+
 ;; Set aspell suggestion mode
 (setq ispell-extra-args '("--sug-mode=ultra"))
 ;; (setq ispell-extra-args '("--sug-mode=fast"))
@@ -1596,4 +1599,4 @@ functions."
 ;;     ))
 
 
-; LocalWords:  ediff flyspell isearch ispell magit minibuffer modus
+; LocalWords:  ediff flyspell isearch ispell magit minibuffer modus TODO
