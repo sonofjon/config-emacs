@@ -748,7 +748,7 @@
 (minibuffer-depth-indicate-mode 1)
 
 ;; Enable line numbers
-(add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
+;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 
 ;; Expand abbreviations
 (add-hook 'text-mode-hook 'abbrev-mode)
