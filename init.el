@@ -698,6 +698,17 @@
   (add-to-list 'erc-modules 'hl-nicks)
   (erc-update-modules))
 
+;; keyfreq (command stats)
+(use-package keyfreq
+  :init
+  (setq keyfreq-excluded-commands '(self-insert-command
+                                    right-char
+                                    left-char
+                                    previous-line
+                                    next-line))
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
 
 ;;;;; THEMES
 
