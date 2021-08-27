@@ -490,34 +490,12 @@
          ("M-s e" . consult-isearch)               ;; orig. isearch-edit-string
          ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
          ("M-s L" . consult-line-multi))           ;; needed by consult-line to detect isearch
-
-  ;; Enable automatic preview at point in the *Completions* buffer.
-  ;; This is relevant when you use the default completion UI,
-  ;; and not necessary for Vertico, Selectrum, etc.
-  :hook (completion-list-mode . consult-preview-at-point-mode)
-
-  ;; The :init configuration is always executed (Not lazy)
-  :init
-
-  ;; Optionally configure the register formatting. This improves the register
-  ;; preview for `consult-register', `consult-register-load',
-  ;; `consult-register-store' and the Emacs built-ins.
-  (setq register-preview-delay 0
-        register-preview-function #'consult-register-format)
-
-  ;; Optionally tweak the register preview window.
-  ;; This adds thin lines, sorting and hides the mode line of the window.
-  (advice-add #'register-preview :override #'consult-register-window)
-
-  ;; Optionally replace `completing-read-multiple' with an enhanced version.
-  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-
+  ;; :init
+  ;; Enhance `completing-read-multiple'
+  ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-
-  ;; Configure other variables and modes in the :config section,
-  ;; after lazily loading the package.
+  ;; (setq xref-show-xrefs-function #'consult-xref
+  ;;       xref-show-definitions-function #'consult-xref)
   :config
 
   ;; Optionally configure preview. The default value
