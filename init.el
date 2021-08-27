@@ -453,7 +453,7 @@
         '(orderless-literal
           orderless-regexp
           orderless-prefixes
-          orderless-strict-full-initialism)))
+          orderless-strict-leading-initialism)))
 
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
