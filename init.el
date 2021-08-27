@@ -456,8 +456,8 @@
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
   :bind (;; C-c bindings (mode-specific-map)
-         ("C-c h" . consult-history)
-         ("C-c m" . consult-mode-command)
+         ("C-c c h" . consult-history)
+         ("C-c c m" . consult-mode-command)
          ;; C-x bindings (ctl-x-map)
          ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
          ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
@@ -557,6 +557,7 @@
   ;; (setq consult-project-root-function #'vc-root-dir)
   ;;;; 4. locate-dominating-file
   ;; (setq consult-project-root-function (lambda () (locate-dominating-file "." ".git")))
+  (which-key-add-key-based-replacements "C-c c" "consult")
   )
 
 ;; marginalia (add marginalia to minibuffer completions)
@@ -1028,7 +1029,7 @@
 (global-set-key (kbd "C-c q") 'fill-individual-paragraphs) ; use with `C-x .'
                                                            ; for comments
 
-(global-set-key (kbd "C-c c") 'my/copy-symbol-at-point)
+(global-set-key (kbd "C-c s") 'my/copy-symbol-at-point)
 
 ;;;; Completion
 
