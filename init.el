@@ -448,11 +448,9 @@
   ;; (setq completion-category-defaults nil)
   (setq completion-category-overrides '((file (styles . (basic substring)))))
   ;; Matching styles
+  ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))   ; default
   (setq orderless-matching-styles
-        ;; '(orderless-literal orderless-regexp))) ; default
-        '(orderless-literal
-          orderless-regexp
-          orderless-prefixes
+        '(orderless-prefixes
           orderless-strict-leading-initialism)))
 
 ;; consult (practical commands based on Emacs completion)
