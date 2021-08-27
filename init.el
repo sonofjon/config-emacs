@@ -497,12 +497,8 @@
   ;; (setq xref-show-xrefs-function #'consult-xref
   ;;       xref-show-definitions-function #'consult-xref)
   :config
-
-  ;; Optionally configure preview. The default value
-  ;; is 'any, such that any key triggers the preview.
-  ;; (setq consult-preview-key 'any)
-  ;; (setq consult-preview-key (kbd "M-."))
-  ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
+  ;; Configure preview
+  ;; (setq consult-preview-key (kbd "M-."))   ; default is 'any (TODO: does not work)
   ;; For some commands and buffer sources it is useful to configure the
   ;; :preview-key on a per-command basis using the `consult-customize' macro.
   (consult-customize
