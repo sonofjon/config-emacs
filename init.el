@@ -128,12 +128,15 @@
 ;; diminish (hide minor modes)
 (use-package diminish
   :config
+  ;; Pre-loaded modes
+  (diminish 'eldoc-mode)
+  ;; Not pre-loaded modes
   ;; (diminish 'company-mode)
   ;; (diminish 'ivy-mode)
   ;; (diminish 'counsel-mode)
   ;; (diminish 'which-key-mode)
-  (diminish 'eldoc-mode)
-  (diminish 'auto-revert-mode))
+  (with-eval-after-load "auto-revert-mode" (diminish 'auto-revert-mode)))
+                                        ; TODO: doesn't work
 
 ;; paradox (improved package menu)
 (use-package paradox
