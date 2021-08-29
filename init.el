@@ -919,6 +919,9 @@
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
+;; Info-mode: allow multiple Info buffers
+(add-hook 'Info-mode-hook #'rename-uniquely)
+
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
