@@ -928,6 +928,10 @@
 ;; help-mode: kill buffers on quit
 (define-key help-mode-map [remap quit-window] 'aj8/quit-window)
 
+;; Info-mode: kill buffers on quit
+(with-eval-after-load "info"
+  (define-key Info-mode-map [remap quit-window] 'aj8/quit-window))
+
 
 ;;;;; KEYBINDINGS
 
