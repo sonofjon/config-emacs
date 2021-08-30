@@ -1,8 +1,6 @@
 ;;;;; LOCAL SETTINGS (EARLY)
 
 (cond ((equal (system-name) "MacBook-Air.lan")
-       ;; Use custom-file.el for custom-* code (Chemacs setup)
-       (setq custom-file "~/.emacs.default/custom-file.el")
        ;; GUI settings
        (when (display-graphic-p)
          ;; Add to exec-path
@@ -15,9 +13,7 @@
 
       ;; ((equal (system-name) "NT175")
 
-      (t
-       ;; Use custom-file.el for custom-* code
-       (setq custom-file "~/.emacs.d/custom-file.el")))
+      (t))
 
 
 ;;;;; STARTUP
@@ -39,6 +35,9 @@
       gc-cons-percentage 0.5)
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000
                                             gc-cons-percentage 0.1)))
+
+;; Use custom-file.el for custom-* code
+(setq custom-file (expand-file-name "custom-file.el" user-emacs-directory))
 
 ;; Load custom file
 (load-file custom-file)
