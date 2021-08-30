@@ -458,18 +458,18 @@
          ;; ("C-c c h" . consult-history)
          ("C-c c m" . consult-mode-command)
          ;; C-x bindings (ctl-x-map)
-         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x M-:" . consult-complex-command)   ; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)              ; orig. switch-to-buffer
          ;; Other custom bindings
-         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ("<help> a" . consult-apropos)            ;; orig. apropos-command
+         ("M-y" . consult-yank-pop)              ; orig. yank-pop
+         ("<help> a" . consult-apropos)          ; orig. apropos-command
          ;; M-g bindings (goto-map)
-         ("M-g g" . consult-goto-line)             ;; orig. goto-line
-         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g g" . consult-goto-line)           ; orig. goto-line
+         ("M-g M-g" . consult-goto-line)         ; orig. goto-line
+         ("M-g o" . consult-outline)             ; Alternative: consult-org-heading
          ("M-g m" . consult-mark)
          ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)
+         ("M-g i" . consult-imenu)      ; TODO: configure
          ("M-g I" . consult-imenu-multi)
          ;; M-s bindings (search-map)
          ("M-s f" . consult-find)
@@ -485,10 +485,10 @@
          ;; Isearch integration
          ("M-s e" . consult-isearch)
          :map isearch-mode-map
-         ("M-e" . consult-isearch)                 ;; orig. isearch-edit-string
-         ("M-s e" . consult-isearch)               ;; orig. isearch-edit-string
-         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-         ("M-s L" . consult-line-multi))           ;; needed by consult-line to detect isearch
+         ("M-e" . consult-isearch)         ; orig. isearch-edit-string
+         ("M-s e" . consult-isearch)       ; orig. isearch-edit-string
+         ("M-s l" . consult-line)          ; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi))   ; needed by consult-line to detect isearch
   ;; :init
   ;; Enhance `completing-read-multiple'
   ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
