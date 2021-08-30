@@ -499,27 +499,22 @@
   :config
   ;; Configure preview
   ;; (setq consult-preview-key (kbd "M-."))   ; default is 'any (TODO: does not work)
-  ;; For some commands and buffer sources it is useful to configure the
-  ;; :preview-key on a per-command basis using the `consult-customize' macro.
+  ;; Configure preview (on a per-command basis)
   (consult-customize
    consult-theme
    :preview-key '(:debounce 0.2 any)
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-file consult--source-project-file consult--source-bookmark
+   consult-ripgrep consult-git-grep consult-grep consult-bookmark
+   consult-recent-file consult-xref consult--source-file
+   consult--source-project-file consult--source-bookmark
    :preview-key (kbd "M-."))
-
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
-
-  ;; Optionally make narrowing help available in the minibuffer.
-  ;; You may want to use `embark-prefix-help-command' or which-key instead.
+  ;; Narrowing key
+  (setq consult-narrow-key "<")
+  ;; Enable narrowing help in the minibuffer
+  ;;   (you may want to use `embark-prefix-help-command' or which-key instead)
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   ;; Function that returns project root directory
   (setq consult-project-root-function #'vc-root-dir)
-  (which-key-add-key-based-replacements "C-c c" "consult")
-  )
+  (which-key-add-key-based-replacements "C-c c" "consult"))
 
 ;; marginalia (add marginalia to minibuffer completions)
 (use-package marginalia
