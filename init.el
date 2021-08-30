@@ -700,11 +700,18 @@
 ;; elfeed (web feed reader)
 (use-package elfeed
   :commands elfeed
+  :bind (:map elfeed-search-mode-map
+              ("g" . #'elfeed-search-fetch)
+              ("G" . #'elfeed-search-update--force))
   :custom
   (elfeed-feeds '("https://www.reddit.com/r/emacs/.rss"
-                  "https://sachachua.com/blog/category/emacs-news/feed/")))
-  ;;:config
-  ;; TODO: configure
+                  "https://sachachua.com/blog/category/emacs-news/feed/"))
+  (setq elfeed-enclosure-default-dir "~/Downloads/")
+  ;; (setq elfeed-search-filter "@6-months-ago +unread")
+  ;; (setq elfeed-sort-order 'descending)
+  (setq elfeed-show-unique-buffers t))
+
+
 
 ;;;;; THEMES
 
