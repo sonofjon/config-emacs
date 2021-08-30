@@ -456,7 +456,7 @@
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
   :bind (;; C-c bindings (mode-specific-map)
-         ("C-c c h" . consult-history)
+         ;; ("C-c c h" . consult-history)
          ("C-c c m" . consult-mode-command)
          ;; C-x bindings (ctl-x-map)
          ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
