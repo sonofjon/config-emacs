@@ -482,7 +482,7 @@
          ("M-s l" . consult-line)
          ("M-s L" . consult-line-multi)
          ("M-s m" . consult-multi-occur)
-         ;; ("M-s u" . consult-focus-lines)
+         ("M-s u" . consult-focus-lines)   ; call with C-u prefix argument to reset
          ;; Isearch integration
          ("M-s e" . consult-isearch)
          :map isearch-mode-map
