@@ -514,6 +514,10 @@
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   ;; Function that returns project root directory
   (setq consult-project-root-function #'vc-root-dir)
+  ;; Use consult for completion in region
+  ;;   Note, this does not work with LSP-mode or eglot (use corfu instead)
+  ;; (setq completion-in-region-function #'consult-completion-in-region
+  ;;   TODO: enable completion-in-region to start with!
   (which-key-add-key-based-replacements "C-c c" "consult"))
 
 ;; marginalia (add marginalia to minibuffer completions)
