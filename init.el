@@ -597,6 +597,15 @@
 ;;   ;; Use whole-line-or-region-mode everywhere
 ;;   (whole-line-or-region-global-mode 1))
 
+;; undo-fu (linear undo with redo)
+;;   Note that undo-in-region is disabled by default
+(use-package undo-fu
+  :bind (("C-z" . undo-fu-only-undo)
+         ("M-z" . undo-fu-only-redo)
+         ("C-c z" . undo-fu-disable-checkpoint))
+  :custom
+  (undo-fu-ignore-keyboard-quit t))
+
 ;; php-mode (major-mode for editing PHP files)
 ;; (use-package php-mode
 ;;   :mode ".php$")
