@@ -861,6 +861,9 @@
 ;; Delete trailing newline character with 'kill-line
 (setq kill-whole-line t)
 
+;; Don't use the mark when region is inactive
+(setq mark-even-if-inactive nil)
+
 ;;; Completion
 
 ;; Use TAB for symbol completion (after indentation)
