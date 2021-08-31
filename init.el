@@ -724,6 +724,10 @@
   ;; (elfeed-sort-order 'descending)
   ;; Use unique buffer names
   (elfeed-show-unique-buffers t)
+  ;; Layout
+  (elfeed-search-title-max-width 50)   ; default is 70
+  (elfeed-search-title-min-width 16)    ; default is 16
+  (elfeed-search-trailing-width 30))    ; default is 30
 
 
 
