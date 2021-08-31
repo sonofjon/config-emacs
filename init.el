@@ -791,6 +791,9 @@
 ;; Set display-line-number-width automatically
 (setq display-line-numbers-width-start t)
 
+;; Do not display continuation lines
+(setq-default truncate-lines t)
+
 ;;; Buffers
 
 ;; Hide buffer list at startup when loading multiple files
