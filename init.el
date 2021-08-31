@@ -356,7 +356,7 @@
   :commands (helpful-key helpful-function helpful-symbol helpful-variable)
   ;; Open helpful info manuals in the same window
   :hook (helpful-mode . (lambda ()
-                          (setq-local info-lookup-other-window-flag nil)))
+                          (setq info-lookup-other-window-flag nil)))
   :bind (([remap describe-key] . helpful-key)
          ([remap describe-function] . helpful-function)
          ([remap describe-symbol] . helpful-symbol)
@@ -914,11 +914,11 @@
           (lambda ()
             ;; Set custom outline heading format
             (setq-local outline-regexp "\\(;;+ \\)\\([^( ]\\)")
-            (setq-local outline-heading-alist
-                        '((";;;;; " . 1)
-                          (";;;; " . 2)
-                          (";;; " . 3)
-                          (";; " . 4)))
+            (setq outline-heading-alist
+                  '((";;;;; " . 1)
+                    (";;;; " . 2)
+                    (";;; " . 3)
+                    (";; " . 4)))
             ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
             (setq-local outline-level 'aj8/outline-level)))
 
