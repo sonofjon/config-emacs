@@ -713,12 +713,17 @@
               ("g" . #'elfeed-search-fetch)
               ("G" . #'elfeed-search-update--force))
   :custom
+  ;; Subscriptions
   (elfeed-feeds '("https://www.reddit.com/r/emacs/.rss"
                   "https://sachachua.com/blog/category/emacs-news/feed/"))
-  (setq elfeed-enclosure-default-dir "~/Downloads/")
-  ;; (setq elfeed-search-filter "@6-months-ago +unread")
-  ;; (setq elfeed-sort-order 'descending)
-  (setq elfeed-show-unique-buffers t))
+  ;; Download folder
+  (elfeed-enclosure-default-dir "~/Downloads/")
+  ;; Default filter
+  ;; (elfeed-search-filter "@6-months-ago +unread")
+  ;; Sort order
+  ;; (elfeed-sort-order 'descending)
+  ;; Use unique buffer names
+  (elfeed-show-unique-buffers t)
 
 
 
