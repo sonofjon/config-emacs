@@ -899,8 +899,11 @@
 ;; Open up the debugger on error
 ;; (setq debug-on-error t)
 
-;; Use Command as Meta on macOS
-;; (setq mac-command-modifier 'meta)
+;; Use left Option as Meta on macOS
+;; (setq mac-option-modifier 'meta)
+
+;; Use left Command as Super on macOS
+;; (setq mac-command-modifier 'super)
 
 ;; Use longer pulse
 (setq pulse-delay 0.05)   ; default is 0.03
