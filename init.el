@@ -864,6 +864,9 @@
 ;; Don't use the mark when region is inactive
 (setq mark-even-if-inactive nil)
 
+;; Save clipboard text into kill ring before kill
+;; (setq save-interprogram-paste-before-kill t)
+
 ;;; Completion
 
 ;; Use TAB for symbol completion (after indentation)
