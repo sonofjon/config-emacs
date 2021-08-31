@@ -280,6 +280,7 @@
   ;; (dimmer-adjustment-mode ':both)
   ;; Adjust dimming amount
   (dimmer-fraction 0.25)                ; default is 0.20
+  (dimmer-use-colorspace :rgb)          ; for use with modus themes
   :config
   (dimmer-mode 1))
 
