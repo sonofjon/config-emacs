@@ -1062,6 +1062,17 @@
 
 (global-set-key (kbd "C-c i") #'imenu)
 
+;; (global-unset-key (kbd "C-M-<up>"))
+;; (global-unset-key (kbd "C-M-<down>"))
+;; (global-unset-key (kbd "C-M-<left>"))
+;; (global-unset-key (kbd "C-M-<right>"))
+;; (global-set-key (kbd "C-M-<left>") #'backward-up-list) ; overwrites default 'backward-sexp
+;; (global-set-key (kbd "C-M-<right>") #'down-list) ; overwrites default 'backward-sexp
+(global-set-key (kbd "C-M-<left>") #'backward-list) ; overwrites default 'backward-sexp
+(global-set-key (kbd "C-M-<right>") #'forward-list) ; overwrites default 'backward-sexp
+(global-set-key (kbd "C-M-p") #'backward-up-list)   ; overwrites default 'backward-list
+(global-set-key (kbd "C-M-n") #'down-list)          ; overwrites default 'forward-list
+
 ;;;; Search
 
 ;;;; Selection
