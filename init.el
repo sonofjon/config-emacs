@@ -1676,13 +1676,9 @@ To be used by `eww-after-render-hook'."
 ;; Get current URL in eww
 (defun prot-eww--get-current-url ()
   "Return the current-page's URL."
-  (cond ((eq major-mode 'elpher-mode)
-         (elpher-address-to-url
-          (elpher-page-address elpher-current-page)))
-        ((eq major-mode 'eww-mode)
+  (cond ((eq major-mode 'eww-mode)
          (plist-get eww-data :url))
-        ;; (t (user-error "Not a eww or elpher buffer"))
-        ))
+        (t (user-error "Not a eww or elpher buffer"))))
 
 ;; Add completion to eww
 (defun prot-eww-browse-dwim (url &optional arg)
