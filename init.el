@@ -475,7 +475,7 @@
          ("M-g I" . consult-imenu-multi)
          ;; M-s bindings (search-map)
          ("M-s f" . consult-find)
-         ;; ("M-s R" . consult-recent-file)
+         ("M-s R" . consult-recent-file)
          ("M-s F" . consult-locate)
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
@@ -758,6 +758,9 @@
 
 ;; Persistent minibuffer history
 (savehist-mode 1)
+
+;; Track recent files
+(recentf-mode 1)
 
 ;; Delete selection on edit
 (delete-selection-mode 1)
