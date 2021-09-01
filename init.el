@@ -937,6 +937,25 @@
         ;; ("sachachua\\.com" . browse-url-default-browser)
         ("." . eww-browse-url)))
 
+;; Default search engine
+(setq eww-search-prefix "https://google.com/search?q=")   ; default is duckduckgo
+;; Restore eww buffers
+(setq eww-restore-desktop t)
+;; Don't remove duplicates in browing history
+;; (setq eww-desktop-remove-duplicates nil)
+;; Download folder
+(setq eww-download-directory (expand-file-name "~/Downloads"))
+;; Max history items
+(setq eww-history-limit 100)
+;; Don't shadow default eww keybindings
+(with-eval-after-load "shr"
+  (define-key shr-map (kbd "u") nil)
+  (define-key shr-map (kbd "v") nil)
+  (define-key shr-map (kbd "w") nil))
+
+;; Are these needed?
+;; (setq shr-use-colors nil)             ; t is bad for accessibility
+;; (setq shr-use-fonts nil)
 
 ;;;;; HOOKS
 
