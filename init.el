@@ -924,6 +924,19 @@
 (with-eval-after-load "grep"
   (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*"))
 
+;; URL browser settings
+;;   TODO: There is also browse-url-default-windows|macosx-browser
+(setq browse-url-browser-function 'eww-browse-url)
+(setq browse-url-secondary-browser-function 'browse-url-default-browser)
+(setq browse-url-chrome-program "com.google.Chrome") ; TODO: doesn't exist
+(setq browse-url-handlers
+      '(("reddit\\.com" . browse-url-chrome)
+        ;; ("google\\.com" . browse-url-default-browser)
+        ("stackexchange\\.com" . browse-url-default-browser)
+        ("stackoverflow\\.com" . browse-url-default-browser)
+        ;; ("sachachua\\.com" . browse-url-default-browser)
+        ("." . eww-browse-url)))
+
 
 ;;;;; HOOKS
 
