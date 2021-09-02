@@ -1,23 +1,3 @@
-;;;;; LOCAL SETTINGS (EARLY)
-
-(cond ((equal (system-name) "MacBook-Air.lan")
-       ;; GUI settings
-       (when (display-graphic-p)
-         ;; Add to exec-path
-         ;;   TODO: Use exec-path-from-shell package?
-         (dolist (dir '("/usr/local/bin"
-                        "/usr/local/opt/grep/libexec/gnubin"))
-           (add-to-list 'exec-path dir))))
-
-      ;; ((equal (system-name) "brain5")
-
-      ;; ((equal (system-name) "penguin")
-
-      ;; ((equal (system-name) "NT175")
-
-      (t))
-
-
 ;;;;; STARTUP
 
 ;; Check startup time
@@ -42,6 +22,27 @@
 ;; (add-to-list 'load-path "~/local/share/emacs/site-lisp/")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+
+;;;;; EARLY SETTINGS
+
+;; System dependent settings
+(cond ((equal (system-name) "MacBook-Air.lan")
+       ;; GUI settings
+       (when (display-graphic-p)
+         ;; Add to exec-path
+         ;;   TODO: Use exec-path-from-shell package?
+         (dolist (dir '("/usr/local/bin"
+                        "/usr/local/opt/grep/libexec/gnubin"))
+           (add-to-list 'exec-path dir))))
+
+      ;; ((equal (system-name) "brain5")
+
+      ;; ((equal (system-name) "penguin")
+
+      ;; ((equal (system-name) "NT175")
+
+      (t))
+
 ;; Use custom-file.el for custom-* code
 (setq custom-file (expand-file-name "custom-file.el" user-emacs-directory))
 
@@ -51,7 +52,9 @@
 ;;;;; FIXES
 
 
-;;;;; PACKAGES SETUP
+;;;;; PACKAGES
+
+;;;; Setup
 
 ;; Initialize package sources
 (require 'package)
@@ -108,7 +111,8 @@
 ;; (setq use-package-always-pin "melpa-stable")
 
 
-;;;;; PACKAGES
+;;;; Packages
+;;; Early packages 
 
 ;; benchmark-init (startup profiler)
 (use-package benchmark-init
@@ -116,6 +120,8 @@
   :config
   ;; Disable collection of benchmark data after init
   (add-hook 'after-init-hook #'benchmark-init/deactivate))
+
+;;; Package management
 
 ;; auto-package-update
 (use-package auto-package-update
@@ -129,19 +135,6 @@
   :config
   (auto-package-update-maybe))
 
-;; diminish (hide minor modes)
-(use-package diminish
-  :config
-  ;; Pre-loaded modes
-  (diminish 'eldoc-mode)
-  ;; Not pre-loaded modes
-  ;; (diminish 'company-mode)
-  ;; (diminish 'ivy-mode)
-  ;; (diminish 'counsel-mode)
-  ;; (diminish 'which-key-mode)
-  (with-eval-after-load "auto-revert-mode" (diminish 'auto-revert-mode)))
-                                        ; TODO: doesn't work
-
 ;; paradox (improved package menu)
 (use-package paradox
   :defer
@@ -151,6 +144,8 @@
                'paradox-after-execute-functions)
   ;; Enable mode
   (paradox-enable))
+
+;;; Theme
 
 ;; base16-theme
 ;;   Available options: <https://belak.github.io/base16-emacs/>
@@ -264,6 +259,11 @@
   ;; (modus-themes-load-operandi)
   (modus-themes-load-vivendi))
 
+
+;;; Windows
+
+;;; Buffers
+
 ;; auto-dim-other-buffers (dim inactive windows)
 (use-package auto-dim-other-buffers
   :disabled
@@ -288,6 +288,91 @@
   (dimmer-use-colorspace :rgb)          ; for use with modus themes
   :config
   (dimmer-mode 1))
+
+;; buffer-move (move buffers around)
+(use-package buffer-move
+  :disabled
+  :bind (("C-c b" . buf-move)))
+         ;; ("s-<up>" . buf-move-up)
+         ;; ("s-<down>" . buf-move-down)
+         ;; ("s-<left>" . buf-move-left)
+         ;; ("s-<right>" . buf-move-right)))
+
+;;; Outline
+
+;; outline-minor-faces (use faces from outline-mode)
+(use-package outline-minor-faces
+  :after outline
+  :config (add-hook 'outline-minor-mode-hook
+                    'outline-minor-faces-add-font-lock-keywords))
+
+;; bicycle (cycling of outline sections and code blocks)
+(use-package bicycle
+  :disabled
+  :after outline
+  :bind (:map outline-minor-mode-map
+              ("C-TAB" . bicycle-cycle)
+              ("<backtab>" . bicycle-cycle-global)))
+
+;;; Navigation
+
+;; syntax-subword (fine-grained navigation)
+(use-package syntax-subword
+  :disabled
+  :custom
+  ;; Don't stop on spaces
+  (syntax-subword-skip-spaces t)
+  :config
+  ;; Use syntax-subword-mode everywhere
+  (global-syntax-subword-mode 1))
+
+;;; Search
+
+;;; Selection
+
+;; expand-region (grow selected region by semantic units)
+(use-package expand-region
+  :bind (("C-c =" . er/expand-region)
+         ("C-c -" . er/contract-region)))
+
+;;; Editing
+
+;; rainbow-delimiters (parentheses coloring)
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+;; multiple-cursors (edit at multiple points)
+(use-package multiple-cursors
+  :bind (:prefix-map multiple-cursors
+                     :prefix "C-c m"
+                     :prefix-docstring "Multiple Cursors related"
+                     ("SPC" . set-rectangular-region-anchor)
+                     ("<" . mc/mark-previous-like-this)
+                     (">" . mc/mark-next-like-this)
+                     ("?" . mc/mark-all-like-this)
+                     ("e" . mc/edit-lines)))
+
+;; whole-line-or-region (apply to current line if region is undefined)
+;; (use-package whole-line-or-region
+;;   :diminish
+;;   ;; :bind
+;;   ;; (:map whole-line-or-region-local-mode-map
+;;   ;; TODO: function should not be quoted?
+;;   ;; ([remap ispell-region] . #'whole-line-or-region-ispell-region))
+;;   :config
+;;   ;; Use whole-line-or-region-mode everywhere
+;;   (whole-line-or-region-global-mode 1))
+
+;; undo-fu (linear undo with redo)
+;;   Note that undo-in-region is disabled by default
+(use-package undo-fu
+  :bind (("C-z" . undo-fu-only-undo)
+         ("M-z" . undo-fu-only-redo)
+         ("C-c z" . undo-fu-disable-checkpoint))
+  :custom
+  (undo-fu-ignore-keyboard-quit t))
+
+;;; Completion
 
 ;; company (in-buffer text completion)
 (use-package company
@@ -354,31 +439,6 @@
   :after ivy
   :config
   (ivy-rich-mode 1))
-
-;; helpful (alternative help)
-(use-package helpful
-  ;; :demand
-  :commands (helpful-key helpful-function helpful-symbol helpful-variable)
-  ;; Open helpful info manuals in the same window
-  :hook (helpful-mode . (lambda ()
-                          (setq info-lookup-other-window-flag nil)))
-  :bind (([remap describe-key] . helpful-key)
-         ([remap describe-function] . helpful-function)
-         ([remap describe-symbol] . helpful-symbol)
-         ([remap describe-variable] . helpful-variable)
-         ("C-c h" . helpful-at-point)
-         :map helpful-mode-map
-         ;; Kill buffers on quit
-         ([remap quit-window] . aj8/quit-window))
-  :custom
-  ;; Maximum number of *helpful* buffers
-  ;; (helpful-max-buffers 3)
-  ;; Always open additional helpful buffers in the same window
-  (helpful-switch-buffer-function #'my/helpful-switch-to-buffer))
-  ;; Use helpful with counsel
-  ;; (counsel-describe-function-function #'helpful-function)
-  ;; (counsel-describe-symbol-function #'helpful-symbol)
-  ;; (counsel-describe-variable-function #'helpful-variable))
 
 ;; prescient (base package)
 (use-package prescient
@@ -526,6 +586,39 @@
   ;;   TODO: enable completion-in-region to start with!
   (which-key-add-key-based-replacements "C-c c" "consult"))
 
+;;; Spelling
+
+;;; Files
+
+;;; Version control
+
+;; magit (user interface to git)
+(use-package magit
+  ;; Disable hl-line-mode
+  :hook (magit-mode . (lambda () (setq-local global-hl-line-mode nil)))
+  :bind (("C-c g" . magit-file-dispatch)
+         ;; Kill, not bury, magit buffers
+         :map magit-mode-map
+         ([remap magit-mode-bury-buffer] . aj8/magit-mode-bury-buffer))
+         ;; Open files in other window
+         ;; :map magit-file-section-map
+         ;; ("RET" . magit-diff-visit-file-other-window)
+         ;; Open hunks in other window
+         ;; :map magit-hunk-section-map
+         ;; ("RET" . magit-diff-visit-file-other-window))
+  :custom
+  ;; Show refined diffs for current hunk
+  (magit-diff-refine-hunk t))
+
+;; diff-hl (highlight uncommitted changes)
+(use-package diff-hl
+  :disabled
+  :config
+  ;; Use diff-hl-mode everywhere
+  (global-diff-hl-mode 1))
+
+;;; Help
+
 ;; marginalia (add marginalia to minibuffer completions)
 (use-package marginalia
   :demand
@@ -549,76 +642,32 @@
   :config
   (which-key-mode 1))
 
-;; hydra (stateful keymaps)
-(use-package hydra
-  :defer)
-
-;; magit (user interface to git)
-(use-package magit
-  ;; Disable hl-line-mode
-  :hook (magit-mode . (lambda () (setq-local global-hl-line-mode nil)))
-  :bind (("C-c g" . magit-file-dispatch)
-         ;; Kill, not bury, magit buffers
-         :map magit-mode-map
-         ([remap magit-mode-bury-buffer] . aj8/magit-mode-bury-buffer))
-         ;; Open files in other window
-         ;; :map magit-file-section-map
-         ;; ("RET" . magit-diff-visit-file-other-window)
-         ;; Open hunks in other window
-         ;; :map magit-hunk-section-map
-         ;; ("RET" . magit-diff-visit-file-other-window))
+;; helpful (alternative help)
+(use-package helpful
+  ;; :demand
+  :commands (helpful-key helpful-function helpful-symbol helpful-variable)
+  ;; Open helpful info manuals in the same window
+  :hook (helpful-mode . (lambda ()
+                          (setq info-lookup-other-window-flag nil)))
+  :bind (([remap describe-key] . helpful-key)
+         ([remap describe-function] . helpful-function)
+         ([remap describe-symbol] . helpful-symbol)
+         ([remap describe-variable] . helpful-variable)
+         ("C-c h" . helpful-at-point)
+         :map helpful-mode-map
+         ;; Kill buffers on quit
+         ([remap quit-window] . aj8/quit-window))
   :custom
-  ;; Show refined diffs for current hunk
-  (magit-diff-refine-hunk t))
+  ;; Maximum number of *helpful* buffers
+  ;; (helpful-max-buffers 3)
+  ;; Always open additional helpful buffers in the same window
+  (helpful-switch-buffer-function #'my/helpful-switch-to-buffer))
+  ;; Use helpful with counsel
+  ;; (counsel-describe-function-function #'helpful-function)
+  ;; (counsel-describe-symbol-function #'helpful-symbol)
+  ;; (counsel-describe-variable-function #'helpful-variable))
 
-;; rainbow-delimiters (parentheses coloring)
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-;; expand-region (grow selected region by semantic units)
-(use-package expand-region
-  :bind (("C-c =" . er/expand-region)
-         ("C-c -" . er/contract-region)))
-
-;; multiple-cursors (edit at multiple points)
-(use-package multiple-cursors
-  :bind (:prefix-map multiple-cursors
-                     :prefix "C-c m"
-                     :prefix-docstring "Multiple Cursors related"
-                     ("SPC" . set-rectangular-region-anchor)
-                     ("<" . mc/mark-previous-like-this)
-                     (">" . mc/mark-next-like-this)
-                     ("?" . mc/mark-all-like-this)
-                     ("e" . mc/edit-lines)))
-
-;; whole-line-or-region (apply to current line if region is undefined)
-;; (use-package whole-line-or-region
-;;   :diminish
-;;   ;; :bind
-;;   ;; (:map whole-line-or-region-local-mode-map
-;;   ;; TODO: function should not be quoted?
-;;   ;; ([remap ispell-region] . #'whole-line-or-region-ispell-region))
-;;   :config
-;;   ;; Use whole-line-or-region-mode everywhere
-;;   (whole-line-or-region-global-mode 1))
-
-;; undo-fu (linear undo with redo)
-;;   Note that undo-in-region is disabled by default
-(use-package undo-fu
-  ;; TODO Find better keys, C-z interferes with bg
-  :bind (("C-z" . undo-fu-only-undo)
-         ("M-z" . undo-fu-only-redo)
-         ("C-c z" . undo-fu-disable-checkpoint))
-  :custom
-  (undo-fu-ignore-keyboard-quit t))
-
-;; php-mode (major-mode for editing PHP files)
-;; (use-package php-mode
-;;   :mode ".php$")
-
-;; web-mode (major-mode for editing web templates)
-(use-package web-mode
-  :mode (".html?$" ".php$"))
+;;; Web
 
 ;; google-this (google search functions)
 (use-package google-this
@@ -627,58 +676,6 @@
   :config
   (which-key-add-key-based-replacements "C-c /" "google-this")
   (google-this-mode 1))
-
-;; diff-hl (highlight uncommitted changes)
-(use-package diff-hl
-  :disabled
-  :config
-  ;; Use diff-hl-mode everywhere
-  (global-diff-hl-mode 1))
-
-;; syntax-subword (fine-grained navigation)
-(use-package syntax-subword
-  :disabled
-  :custom
-  ;; Don't stop on spaces
-  (syntax-subword-skip-spaces t)
-  :config
-  ;; Use syntax-subword-mode everywhere
-  (global-syntax-subword-mode 1))
-
-;; buffer-move (move buffers around)
-(use-package buffer-move
-  :disabled
-  :bind (("C-c b" . buf-move)))
-         ;; ("s-<up>" . buf-move-up)
-         ;; ("s-<down>" . buf-move-down)
-         ;; ("s-<left>" . buf-move-left)
-         ;; ("s-<right>" . buf-move-right)))
-
-;; outline-minor-faces (use faces from outline-mode)
-(use-package outline-minor-faces
-  :after outline
-  :config (add-hook 'outline-minor-mode-hook
-                    'outline-minor-faces-add-font-lock-keywords))
-
-;; bicycle (cycling of outline sections and code blocks)
-(use-package bicycle
-  ;; :disabled
-  :after outline
-  :bind (:map outline-minor-mode-map
-              ("C-TAB" . bicycle-cycle)
-              ("<backtab>" . bicycle-cycle-global)))
-
-;; keyfreq (command stats)
-(use-package keyfreq
-  :init
-  (setq keyfreq-excluded-commands '(self-insert-command
-                                    right-char
-                                    left-char
-                                    previous-line
-                                    next-line))
-  :config
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1))
 
 ;; erc (IRC client)
 (use-package erc
@@ -736,7 +733,46 @@
   (elfeed-search-title-min-width 16)    ; default is 16
   (elfeed-search-trailing-width 30))    ; default is 30
 
+;;; Modes
 
+;; php-mode (major-mode for editing PHP files)
+;; (use-package php-mode
+;;   :mode ".php$")
+
+;; web-mode (major-mode for editing web templates)
+(use-package web-mode
+  :mode (".html?$" ".php$"))
+
+;;; Other
+
+;; diminish (hide minor modes)
+(use-package diminish
+  :config
+  ;; Pre-loaded modes
+  (diminish 'eldoc-mode)
+  ;; Not pre-loaded modes
+  ;; (diminish 'company-mode)
+  ;; (diminish 'ivy-mode)
+  ;; (diminish 'counsel-mode)
+  ;; (diminish 'which-key-mode)
+  (with-eval-after-load "auto-revert-mode" (diminish 'auto-revert-mode)))
+                                        ; TODO: doesn't work
+
+;; hydra (stateful keymaps)
+(use-package hydra
+  :defer)
+
+;; keyfreq (command stats)
+(use-package keyfreq
+  :init
+  (setq keyfreq-excluded-commands '(self-insert-command
+                                    right-char
+                                    left-char
+                                    previous-line
+                                    next-line))
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
 
 ;;;;; THEMES
 
@@ -797,6 +833,10 @@
 ;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
 
 ;;;; Variables
+
+;;; Package management
+
+;;; Theme
 
 ;;; Windows
 
@@ -915,26 +955,9 @@
 (setq ediff-split-window-function #'split-window-horizontally)
 (setq ediff-merge-split-window-function #'split-window-horizontally)
 
-;;; Other
+;;; Help
 
-;; Open up the debugger on error
-;; (setq debug-on-error t)
-
-;; Use left Option as Meta on macOS
-;; (setq mac-option-modifier 'meta)
-
-;; Use left Command as Super on macOS
-;; (setq mac-command-modifier 'super)
-
-;; Use longer pulse
-(setq pulse-delay 0.05)   ; default is 0.03
-
-;; Use speed keys in org-mode
-(setq org-use-speed-commands t)
-
-;; Remove "..?*" from alias `all' in grep-files-aliases
-(with-eval-after-load "grep"
-  (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*"))
+;;; Web
 
 ;; URL browser settings
 ;;   TODO: There is also browse-url-default-windows|macosx-browser
@@ -970,6 +993,27 @@
 ;; Are these needed?
 ;; (setq shr-use-colors nil)             ; t is bad for accessibility
 ;; (setq shr-use-fonts nil)
+
+;;; Other
+
+;; Open up the debugger on error
+;; (setq debug-on-error t)
+
+;; Use left Option as Meta on macOS
+;; (setq mac-option-modifier 'meta)
+
+;; Use left Command as Super on macOS
+;; (setq mac-command-modifier 'super)
+
+;; Use longer pulse
+(setq pulse-delay 0.05)   ; default is 0.03
+
+;; Use speed keys in org-mode
+(setq org-use-speed-commands t)
+
+;; Remove "..?*" from alias `all' in grep-files-aliases
+(with-eval-after-load "grep"
+  (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*"))
 
 ;;;;; HOOKS
 
@@ -1039,20 +1083,25 @@
 (define-key key-translation-map (kbd "C-M-<up>") (kbd "C-M-p"))
 (define-key key-translation-map (kbd "C-M-<down>") (kbd "C-M-n"))
 
-;;;; Windows
+;;;; Global
+;;; Package management
+
+;;; Theme
+
+;;; Windows
 
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
 
-;;;; Buffers
+;;; Buffers
 
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
 (global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
-;;;; Outline
+;;; Outline
 
 (global-set-key (kbd "C-c o") #'outline-minor-mode)
 
-;;;; Navigation
+;;; Navigation
 
 (windmove-default-keybindings 'ctrl)
 (windmove-swap-states-default-keybindings '(ctrl shift))
@@ -1084,14 +1133,14 @@
 (global-set-key (kbd "C-M-p") #'backward-up-list)   ; overwrites default 'backward-list
 (global-set-key (kbd "C-M-n") #'down-list)          ; overwrites default 'forward-list
 
-;;;; Search
+;;; Search
 
-;;;; Selection
+;;; Selection
 
 (global-set-key (kbd "M-#") #'aj8/mark-word-forward)
 (global-set-key (kbd "M-@") #'aj8/mark-word-backward)
 
-;;;; Editing
+;;; Editing
 
 (global-set-key (kbd "C-S-k") (lambda () (interactive) (kill-line 0)))
 
@@ -1106,15 +1155,15 @@
 
 (global-set-key (kbd "C-c s") 'my/copy-symbol-at-point)
 
-;;;; Completion
+;;; Completion
 
-;;;; Spelling
+;;; Spelling
 
-;;;; Files
+;;; Files
 
 (global-set-key (kbd "C-c f") #'find-file-at-point)
 
-;;;; Version control
+;;; Version control
 
 (global-set-key (kbd "C-c e b") #'ediff-buffers)
 (global-set-key (kbd "C-c e l") #'ediff-regions-linewise)
@@ -1122,7 +1171,11 @@
 (global-set-key (kbd "C-x v -") #'vc-ediff)
 (which-key-add-key-based-replacements "C-c e" "ediff")
 
-;;;; Other
+;;; Help
+
+;;; Web
+
+;;; Other
 
 ;; Mac-like bindings
 ;; (global-set-key (kbd "s-q") 'save-buffers-kill-terminal)
@@ -1135,12 +1188,12 @@
 ;; (global-set-key (kbd "s-c") 'kill-ring-save)
 ;; (global-set-key (kbd "s-v") 'yank)
 
-;;;; Unbind keys
+;;; Unbind keys
 
 ;; (global-set-key (kbd "C-x") nil)
 ;; (global-unset-key (kbd "C-x"))   ; Alternative syntax
 
-;;;; Modes
+;;;; Local
 
 ;; Info-mode-map
 (add-hook 'Info-mode-hook
@@ -1245,6 +1298,10 @@ _d_: subtree
 
 
 ;;;;; FUNCTIONS
+
+;;;; Package management
+
+;;;; Theme
 
 ;;;; Windows
 
@@ -1666,6 +1723,8 @@ Repeat command to select additional words backwards."
                     (ediff-get-region-contents ediff-current-difference
                                                'B ediff-control-buffer))))
 
+;;;; Help
+
 ;; helpful: always open additional helpful buffers in the same window
 (defun my/helpful-switch-to-buffer (buffer-or-name)
   "Switch to helpful BUFFER-OR-NAME.  
@@ -1675,22 +1734,7 @@ otherwise create a new one."
       (switch-to-buffer buffer-or-name)
     (pop-to-buffer buffer-or-name)))
 
-;;;; Other
-
-;; Swap universal prefix argument for functions
-(defun my/toggle-prefix-arg (fun)
-  "Toggle universal prefix argument for FUNCTION fun.
-If called with a prefix argument, the prefix argument will be
-removed. If called without a prefix argument, a prefix argument
-will be applied. This only works for interactive \"P\"
-functions."
-  (if (not (equal (interactive-form fun) '(interactive "P")))
-      (error "Unexpected: must be interactive \"P\" function")
-    (advice-add fun :around (lambda (x &rest args)
-                              "Swap universal prefix argument for FUNCTION fun."
-                              (if (called-interactively-p 'any)
-                                  (apply x (cons (not (car args)) (cdr args)))
-                                (apply x args))))))
+;;;; Web
 
 ;; More useful buffer names in eww
 (defun prot-eww--rename-buffer ()
@@ -1733,8 +1777,27 @@ When called from an eww buffer, provide the current link as
       (prefix-numeric-value current-prefix-arg))))
   (prot-eww url arg))
 
-;;;;; LOCAL SETTINGS (LATE)
+;;;; Other
 
+;; Swap universal prefix argument for functions
+(defun my/toggle-prefix-arg (fun)
+  "Toggle universal prefix argument for FUNCTION fun.
+If called with a prefix argument, the prefix argument will be
+removed. If called without a prefix argument, a prefix argument
+will be applied. This only works for interactive \"P\"
+functions."
+  (if (not (equal (interactive-form fun) '(interactive "P")))
+      (error "Unexpected: must be interactive \"P\" function")
+    (advice-add fun :around (lambda (x &rest args)
+                              "Swap universal prefix argument for FUNCTION fun."
+                              (if (called-interactively-p 'any)
+                                  (apply x (cons (not (car args)) (cdr args)))
+                                (apply x args))))))
+
+
+;;;;; LATE SETTINGS
+
+;; System dependent settings
 (cond ((equal (system-name) "MacBook-Air.lan")
        ;; GUI settings
        (when (display-graphic-p)
