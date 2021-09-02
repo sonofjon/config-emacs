@@ -182,14 +182,13 @@
   :disabled
   :defer   ; Fix loading warning
   :init (load-theme 'spacemacs-dark t))
+  ;; :init (load-theme 'spacemacs-light t))
 
 ;; doom-themes
 (use-package doom-themes
   :disabled
-  ;; :init (load-theme 'doom-one) t)
-  ;; :init (load-theme 'doom-vibrant) t)
-  ;; :init (load-theme 'doom-snazzy) t)
-  :init (load-theme 'doom-Iosvkem) t)
+  :init (load-theme 'doom-one) t)
+  ;; :init (load-theme 'doom-one-light) t)
 
 ;; modus-themes
 (use-package modus-themes
