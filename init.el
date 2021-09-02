@@ -9,6 +9,8 @@
                         "/usr/local/opt/grep/libexec/gnubin"))
            (add-to-list 'exec-path dir))))
 
+      ;; ((equal (system-name) "brain5")
+
       ;; ((equal (system-name) "penguin")
 
       ;; ((equal (system-name) "NT175")
@@ -21,8 +23,8 @@
 ;; Check startup time
 (defun efs/display-startup-time ()
   "Display startup time."
-  (message "Emacs loaded in %s with %d garbage collections."
-           (format "%.2f seconds"
+  (message "Emacs loaded in %s seconds with %d garbage collections."
+           (format "%.2f"
                    (float-time
                     (time-subtract after-init-time before-init-time)))
            gcs-done))
@@ -43,7 +45,6 @@
 ;; Use custom-file.el for custom-* code
 (setq custom-file (expand-file-name "custom-file.el" user-emacs-directory))
 
-;; Load custom file
 (load-file custom-file)
 
 
@@ -111,7 +112,7 @@
 
 ;; benchmark-init (startup profiler)
 (use-package benchmark-init
-  ;; :disabled
+  :disabled
   :config
   ;; Disable collection of benchmark data after init
   (add-hook 'after-init-hook #'benchmark-init/deactivate))
@@ -837,7 +838,7 @@
 
 ;; Use TAB and S-TAB for cycling
 ;;   See also bicycle
-;; (setq outline-minor-mode-cycle t)
+(setq outline-minor-mode-cycle t)
 
 ;; Highlight headings
 (setq outline-minor-mode-highlight t)
@@ -937,8 +938,8 @@
 
 ;; URL browser settings
 ;;   TODO: There is also browse-url-default-windows|macosx-browser
-(setq browse-url-browser-function 'eww-browse-url)
-(setq browse-url-secondary-browser-function 'browse-url-default-browser)
+(setq browse-url-browser-function #'eww-browse-url)
+(setq browse-url-secondary-browser-function #'browse-url-default-browser)
 (setq browse-url-chrome-program "com.google.Chrome") ; TODO: doesn't exist
 (setq browse-url-handlers
       '(("reddit\\.com" . browse-url-chrome)
@@ -1741,6 +1742,8 @@ When called from an eww buffer, provide the current link as
          (add-to-list 'default-frame-alist '(font . "Hack-14"))
          ;; Increase line spacing
          (setq-default line-spacing 1)))
+
+      ;; ((equal (system-name) "brain5")
 
       ;; ((equal (system-name) "penguin")
 
