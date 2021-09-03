@@ -471,7 +471,7 @@
          ("M-g o" . consult-outline)             ; Alternative: consult-org-heading
          ("M-g m" . consult-mark)
          ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)      ; TODO: configure
+         ("M-g i" . consult-imenu)      ; TODO: narrowing to packages
          ("M-g I" . consult-imenu-multi)
          ;; M-s bindings (search-map)
          ("M-s f" . consult-find)
@@ -600,6 +600,7 @@
 ;; undo-fu (linear undo with redo)
 ;;   Note that undo-in-region is disabled by default
 (use-package undo-fu
+  ;; TODO Find better keys, C-z interferes with bg
   :bind (("C-z" . undo-fu-only-undo)
          ("M-z" . undo-fu-only-redo)
          ("C-c z" . undo-fu-disable-checkpoint))
