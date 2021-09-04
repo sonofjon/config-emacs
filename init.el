@@ -888,6 +888,14 @@
   (define-key shr-map (kbd "u") nil)
   (define-key shr-map (kbd "v") nil)
   (define-key shr-map (kbd "w") nil))
+;; Open new eww buffers in a new window (M-RET)
+(with-eval-after-load "eww"
+  (define-key eww-mode-map
+    [remap eww-open-in-new-buffer] 'aj8/eww-open-in-new-buffer))
+;; Open new eww buffers in a new window (C-u RET)
+(with-eval-after-load "eww"
+  (define-key eww-mode-map
+    [remap eww-follow-link] 'aj8/eww-follow-link))
 
 ;; Are these needed?
 ;; (setq shr-use-colors nil)             ; t is bad for accessibility
@@ -1638,6 +1646,32 @@ otherwise create a new one."
     (pop-to-buffer buffer-or-name)))
 
 ;;;; Web
+
+;; Open new eww buffers in a new window
+;;   M-RET
+(defun aj8/eww-open-in-new-buffer ()
+  "Fetch link at point in a new EWW window."
+  (interactive)
+  (other-window-prefix)
+  (eww-open-in-new-buffer))
+
+;; Open new eww buffers in a new window
+;;   C-u RET
+(defun aj8/eww-follow-link (&optional external mouse-event)
+  "Browse the URL under point.
+Swaps the functionality of single and double prefix arguments,
+see `eww-follow-link' for details."
+  (interactive)
+  (cond
+   ((equal current-prefix-arg nil) ; no C-u
+    (eww-follow-link))
+   ((equal current-prefix-arg '(4)) ; C-u
+    (other-window-prefix)
+    (eww-follow-link '(16)))
+   ((equal current-prefix-arg '(16)) ; C-u C-u
+    (eww-follow-link '(4)))
+   (t ; all other cases, prompt
+    (error "Unexpected input arguments"))))
 
 ;; More useful buffer names in eww
 (defun prot-eww--rename-buffer ()
