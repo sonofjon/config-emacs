@@ -565,10 +565,6 @@
   ;; (helpful-max-buffers 3)
   ;; Always open additional helpful buffers in the same window
   (helpful-switch-buffer-function #'my/helpful-switch-to-buffer))
-  ;; Use helpful with counsel
-  ;; (counsel-describe-function-function #'helpful-function)
-  ;; (counsel-describe-symbol-function #'helpful-symbol)
-  ;; (counsel-describe-variable-function #'helpful-variable))
 
 ;;; Web
 
