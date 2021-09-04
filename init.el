@@ -958,6 +958,10 @@
 (with-eval-after-load "info"
   (define-key Info-mode-map [remap quit-window] 'aj8/quit-window))
 
+;; dired-mode: kill buffers on quit
+(with-eval-after-load "dired"
+  (define-key dired-mode-map [remap quit-window] 'aj8/quit-window))
+
 ;; eww-mode: kill buffers on quit
 (with-eval-after-load "eww"
   (define-key eww-mode-map [remap quit-window] 'aj8/quit-window))
