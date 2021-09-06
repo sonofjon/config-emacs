@@ -938,6 +938,8 @@
 (setq browse-url-handlers
       '(("reddit\\.com" . browse-url-chrome)
         ;; ("google\\.com" . browse-url-default-browser)
+        ;; ("github\\.com" . browse-url-default-browser)
+        ("gitlab\\.com" . browse-url-default-browser)
         ("stackexchange\\.com" . browse-url-default-browser)
         ("stackoverflow\\.com" . browse-url-default-browser)
         ;; ("sachachua\\.com" . browse-url-default-browser)
@@ -1732,8 +1734,9 @@ When called from an eww buffer, provide the current link as
 
       ((equal (system-name) "NT175")
        ;; Enable (default) web browser on WSL
-       (setq browse-url-generic-program "wslview"
-        browse-url-browser-function #'browse-url-generic)))
+       (setq browse-url-generic-program "wslview")
+       (setq browse-url-secondary-browser-function #'browse-url-generic)
+       (advice-add #'browse-url-default-browser :override #'browse-url-generic)))
 
 ;; Conditionally load host specific stuff
 ;; (let ((host-specific-files (concat (make-load-path-base) system-name ".el")))
