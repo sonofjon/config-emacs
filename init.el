@@ -881,7 +881,8 @@
 (setq kill-whole-line t)
 
 ;; Don't use the mark when region is inactive
-(setq mark-even-if-inactive nil)
+;;   Note: messes with ediff
+;; (setq mark-even-if-inactive nil)
 
 ;; Save clipboard text into kill ring before kill
 ;; (setq save-interprogram-paste-before-kill t)
