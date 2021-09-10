@@ -1332,6 +1332,13 @@ Emacs session."
           (find-file file)))
     (error "No recently-killed files to reopen")))
 
+;; Make a *scratch* buffer
+(defun create-scratch-buffer nil
+       "Create a scratch buffer."
+       (interactive)
+       (switch-to-buffer (get-buffer-create "*scratch*"))
+       (lisp-interaction-mode))
+
 ;;;; Outline
 
 ;; Set keybindings for outline-(minor-)mode
