@@ -36,6 +36,10 @@
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000
                                             gc-cons-percentage 0.1)))
 
+;; Add path to local files
+;; (add-to-list 'load-path "~/local/share/emacs/site-lisp/")
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
 ;; Use custom-file.el for custom-* code
 (setq custom-file (expand-file-name "custom-file.el" user-emacs-directory))
 
