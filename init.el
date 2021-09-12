@@ -561,7 +561,7 @@
   ;; Maximum number of *helpful* buffers
   ;; (helpful-max-buffers 3)
   ;; Always open additional helpful buffers in the same window
-  (helpful-switch-buffer-function #'my/helpful-switch-to-buffer))
+  (helpful-switch-buffer-function #'aj8/helpful-switch-to-buffer))
 
 ;;; Web
 
@@ -1634,12 +1634,21 @@ Repeat command to select additional words backwards."
 ;;;; Help
 
 ;; helpful: always open additional helpful buffers in the same window
-(defun my/helpful-switch-to-buffer (buffer-or-name)
-  "Switch to helpful BUFFER-OR-NAME.  
+(defun aj8/helpful-switch-to-buffer (buffer-or-name)
+  "Switch to helpful BUFFER-OR-NAME.
 If we are currently in the helpful buffer, reuse it's window,
-otherwise create a new one."
+otherwise create a new one.  With a prefix argument open the
+buffer in a new window instead."
+  (interactive)
   (if (eq major-mode 'helpful-mode)
+    (cond
+     ((equal current-prefix-arg nil) ; no C-u
       (switch-to-buffer buffer-or-name)
+      (pop-to-buffer buffer-or-name))
+     ((equal current-prefix-arg '(4)) ; C-u
+      (pop-to-buffer buffer-or-name))
+     (t
+      (error "Unexpected input arguments")))
     (pop-to-buffer buffer-or-name)))
 
 ;;;; Web
