@@ -549,9 +549,6 @@
 (use-package helpful
   ;; :demand
   :commands (helpful-key helpful-function helpful-symbol helpful-variable)
-  ;; Open helpful info manuals in the same window
-  :hook (helpful-mode . (lambda ()
-                          (setq info-lookup-other-window-flag nil)))
   :bind (([remap describe-key] . helpful-key)
          ([remap describe-function] . helpful-function)
          ([remap describe-symbol] . helpful-symbol)
@@ -764,7 +761,7 @@
 (setq enable-recursive-minibuffers t)
 
 ;; Open *info* buffers in same window
-;; (setq info-lookup-other-window-flag nil)
+(setq info-lookup-other-window-flag nil)
 
 ;; Reuse existing help window
 ;; (setq help-window-select t)
