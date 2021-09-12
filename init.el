@@ -41,7 +41,7 @@
 
       ;; ((equal (system-name) "NT175")
 
-      (t))
+      (t (user-error "Unexpected system-name")))
 
 ;; Use custom-file.el for custom-* code
 (setq custom-file (expand-file-name "custom-file.el" user-emacs-directory))
@@ -1751,7 +1751,9 @@ functions."
        ;; Enable (default) web browser on WSL
        (setq browse-url-generic-program "wslview")
        (setq browse-url-secondary-browser-function #'browse-url-generic)
-       (advice-add #'browse-url-default-browser :override #'browse-url-generic)))
+       (advice-add #'browse-url-default-browser :override #'browse-url-generic))
+
+      (t (user-error "Unexpected system-name")))
 
 ;; Conditionally load host specific stuff
 ;; (let ((host-specific-files (concat (make-load-path-base) system-name ".el")))
