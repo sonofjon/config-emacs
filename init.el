@@ -867,7 +867,7 @@
 (setq browse-url-handlers
       '(("reddit\\.com" . browse-url-chrome)
         ;; ("google\\.com" . browse-url-default-browser)
-        ;; ("github\\.com" . browse-url-default-browser)
+        ("github\\.com" . browse-url-default-browser)
         ("gitlab\\.com" . browse-url-default-browser)
         ("stackexchange\\.com" . browse-url-default-browser)
         ("stackoverflow\\.com" . browse-url-default-browser)
