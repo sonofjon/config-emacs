@@ -669,7 +669,11 @@
                                     right-char
                                     left-char
                                     previous-line
-                                    next-line))
+                                    next-line
+                                    magit-previous-line
+                                    magit-next-line
+                                    vertico-previous
+                                    vertico-next))
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
