@@ -259,8 +259,8 @@
   (modus-themes-load-themes)
   :config
   ;; Load the theme
-  ;; (modus-themes-load-operandi)
-  (modus-themes-load-vivendi))
+  (modus-themes-load-operandi))
+  ;; (modus-themes-load-vivendi))
 
 
 ;;; Windows
