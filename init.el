@@ -369,9 +369,9 @@
 ;; undo-fu (linear undo with redo)
 ;;   Note that undo-in-region is disabled by default
 (use-package undo-fu
-  :bind (("C-z" . undo-fu-only-undo)
-         ("M-z" . undo-fu-only-redo)
-         ("C-c z" . undo-fu-disable-checkpoint))
+  :bind (("C-c z u" . undo-fu-only-undo)
+         ("C-c z r" . undo-fu-only-redo)
+         ("C-c z d" . undo-fu-disable-checkpoint))
   :custom
   (undo-fu-ignore-keyboard-quit t))
 
