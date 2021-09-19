@@ -42,7 +42,7 @@
       ((equal (system-name) "penguin")
        (message "Early settings ChromeOS"))
 
-      ((equal (system-name) "NT175")
+      ((or (equal (system-name) "brain5-windows") (equal (system-name) "NT175"))
        (message "Early settings WSL"))
 
       (t (user-error "Unexpected system-name")))
@@ -1764,7 +1764,7 @@ functions."
       ((equal (system-name) "penguin")
        (message "Late settings ChromeOS"))
 
-      ((equal (system-name) "NT175")
+      ((or (equal (system-name) "brain5-windows") (equal (system-name) "NT175"))
        ;; Enable (default) web browser on WSL
        (setq browse-url-generic-program "wslview")
        (setq browse-url-secondary-browser-function #'browse-url-generic)
