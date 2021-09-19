@@ -372,6 +372,8 @@
   :bind (("C-c z u" . undo-fu-only-undo)
          ("C-c z r" . undo-fu-only-redo)
          ("C-c z d" . undo-fu-disable-checkpoint))
+  :init
+  (which-key-add-key-based-replacements "C-c z" "undo-fu")
   :custom
   (undo-fu-ignore-keyboard-quit t))
 
@@ -463,12 +465,13 @@
          ("M-s e" . consult-isearch)       ; orig. isearch-edit-string
          ("M-s l" . consult-line)          ; needed by consult-line to detect isearch
          ("M-s L" . consult-line-multi))   ; needed by consult-line to detect isearch
-  ;; :init
+  :init
   ;; Enhance `completing-read-multiple'
   ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   ;; Use Consult to select xref locations with preview
   ;; (setq xref-show-xrefs-function #'consult-xref
   ;;       xref-show-definitions-function #'consult-xref)
+  (which-key-add-key-based-replacements "C-c c" "consult")
   :config
   ;; Configure preview
   ;; (setq consult-preview-key (kbd "M-."))   ; default is 'any (TODO: does not work)
@@ -486,12 +489,11 @@
   ;;   (you may want to use `embark-prefix-help-command' or which-key instead)
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   ;; Function that returns project root directory
-  (setq consult-project-root-function #'vc-root-dir)
+  (setq consult-project-root-function #'vc-root-dir))
   ;; Use consult for completion in region
   ;;   Note, this does not work with LSP-mode or eglot (use corfu instead)
   ;; (setq completion-in-region-function #'consult-completion-in-region
   ;;   TODO: enable completion-in-region to start with!
-  (which-key-add-key-based-replacements "C-c c" "consult"))
 
 ;;; Spelling
 
