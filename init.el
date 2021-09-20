@@ -497,6 +497,18 @@
 
 ;;; Spelling
 
+;; flyspell-correct (wrapper for flyspell with completion)
+(use-package flyspell-correct
+  ;; TODO: configure
+  :after flyspell
+  :bind (:map flyspell-mode-map
+              ;; ("C-;" . flyspell-auto-correct-word)
+              ("C-;" . flyspell-correct-wrapper)
+              ("C-c ," . #'my/flyspell-goto-previous-error)
+              ("C-," . #'flyspell-correct-previous)
+              ("C-c ." . #'flyspell-goto-next-error)
+              ("C-." . #'flyspell-correct-next)))
+
 ;;; Files
 
 ;;; Version control
@@ -1122,15 +1134,6 @@
 ;;   TODO: check functionality
 (add-hook 'ediff-keymap-setup-hook
           (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
-
-;; flyspell-mode-map
-(add-hook 'flyspell-mode-hook (lambda ()
-  ;; C-, : Go to previous error
-  (define-key flyspell-mode-map (kbd "C-,") #'my/flyspell-goto-previous-error)
-  ;; C-. : Go to next error
-  (define-key flyspell-mode-map (kbd "C-.") #'flyspell-goto-next-error)
-  ;; C-; : Auto correct current word
-  (define-key flyspell-mode-map (kbd "C-;") #'flyspell-auto-correct-word)))
 
 ;; outline-mode
 (add-hook 'outline-mode-hook
