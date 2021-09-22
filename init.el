@@ -45,7 +45,7 @@
       ((or (equal (system-name) "brain5-windows") (equal (system-name) "NT175"))
        (message "Early settings WSL"))
 
-      (t (user-error "Unexpected system-name")))
+      (t (user-error "Unexpected system-name: %s" system-name)))
 
 ;; Use custom-file.el for custom-* code
 (setq custom-file (expand-file-name "custom-file.el" user-emacs-directory))
@@ -1776,7 +1776,7 @@ functions."
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
        (message "Late settings WSL"))
 
-      (t (user-error "Unexpected system-name")))
+      (t (user-error "Unexpected system-name: %s" system-name)))
 
 ;; Conditionally load host specific stuff
 ;; (let ((host-specific-files (concat (make-load-path-base) system-name ".el")))
