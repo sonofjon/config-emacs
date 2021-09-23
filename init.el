@@ -860,6 +860,9 @@
 ;; (setq ispell-extra-args '("--sug-mode=fast"))
 ;; (setq ispell-extra-args '("--sug-mode=normal"))
 
+;; Enable flyspell in web-mode
+(put 'web-mode 'flyspell-mode-predicate #'my/web-mode-flyspell-verify)
+
 ;;; Files
 
 ;; Custom listing style in dired
@@ -1626,6 +1629,52 @@ Repeat command to select additional words backwards."
           (progn
             (message "No more miss-spelled word!")
             (setq arg 0))))))
+
+;; flyspell setup for web-mode
+(defun my-web-mode-flyspell-verify ()
+  "Fly Spell predicate of `web-mode`."
+  (let* ((font-face-at-point (get-text-property (- (point) 1) 'face))
+         rlt)
+    ;; If rlt is t, the word at point is POSSIBLY a typo, continue checking.
+    (setq rlt t)
+    ;; if rlt is nil, the word at point is definitely NOT a typo.
+    ;; (setq rlt nil)
+    rlt))
+
+;; flyspell setup for web-mode (with blacklist)
+;; (defun my/web-mode-flyspell-verify ()
+;;   "Fly Spell predicate of `web-mode`."
+;;   (let* ((f (get-text-property (- (point) 1) 'face))
+;;          rlt)
+;;     (cond
+;;      ;; Check the words with these font faces, possibly.
+;;      ;; this *blacklist* will be tweaked in next condition
+;;      ((not (memq f '(web-mode-html-attr-value-face
+;;                      web-mode-html-tag-face
+;;                      web-mode-html-attr-name-face
+;;                      web-mode-constant-face
+;;                      web-mode-doctype-face
+;;                      web-mode-keyword-face
+;;                      web-mode-comment-face ;; focus on get html label right
+;;                      web-mode-function-name-face
+;;                      web-mode-variable-name-face
+;;                      web-mode-css-property-name-face
+;;                      web-mode-css-selector-face
+;;                      web-mode-css-color-face
+;;                      web-mode-type-face
+;;                      web-mode-block-control-face)))
+;;       (setq rlt t))
+;;      ;; check attribute value under certain conditions
+;;      ((memq f '(web-mode-html-attr-value-face))
+;;       (save-excursion
+;;         (search-backward-regexp "=['\"]" (line-beginning-position) t)
+;;         (backward-char)
+;;         (setq rlt (string-match "^\\(value\\|class\\|ng[A-Za-z0-9-]*\\)$"
+;;                                 (thing-at-point 'symbol)))))
+;;      ;; finalize the blacklist
+;;      (t
+;;       (setq rlt nil)))
+;;     rlt))
 
 ;;;; Files
 
