@@ -235,7 +235,6 @@
   (setq modus-themes-prompts nil)
   ;; Control the style of the completion framework's interface
   ;;   Options: `moderate',`opinionated'
-  ;; (setq modus-themes-completions 'moderate)
   (setq modus-themes-completions nil)
   ;; Control the style of the active region
   ;;   Options: `no-extend', `bg-only', `accented'
@@ -243,7 +242,6 @@
   ;; Adjust the style of diffs
   ;;   Options: `desaturated', `bg-only', `deuteranopia',
   ;;            `fg-only-deuteranopia'
-  ;; (setq modus-themes-diffs 'fg-only-deuteranopia)
   (setq modus-themes-diffs nil)
   ;; Heading styles
   ;;   Options: `rainbow', `overline', `background', `no-bold',
