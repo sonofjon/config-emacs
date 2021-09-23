@@ -654,7 +654,20 @@
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
-  :mode (".html?$" ".php$"))
+    :mode (".html?$" ".php$")
+    :custom
+    ;; Enable auto-functionality in the terminal
+    ;;   Note: this can be bad when pasting text
+    (web-mode-enable-auto-expanding t)
+    (web-mode-enable-auto-closing t)
+    (web-mode-enable-auto-indentation t)
+    (web-mode-enable-auto-opening t)
+    (web-mode-enable-auto-pairing t)
+    (web-mode-enable-auto-quoting t)
+    :config
+    ;; Use continuation lines
+    (setq truncate-lines nil))
+
 
 ;;; Other
 
