@@ -708,7 +708,7 @@
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
-    :mode (".html?$" ".php$")
+    :mode (".html?$" ".css$" ".js?$" ".php$")
     :custom
     ;; Enable auto-functionality in the terminal
     ;;   Note: this can be bad when pasting text
