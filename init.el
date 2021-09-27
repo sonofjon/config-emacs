@@ -94,11 +94,13 @@
 
 (advice-add 'package-install :before #'my/package-install-refresh-contents)
 
-;; Install use-package macro
+;;; use-package
+
+;; Install use-package
 (if (not (package-installed-p 'use-package))
     (package-install 'use-package))
 
-;; Load use-package macro
+;; Load use-package
 (eval-when-compile
   (require 'use-package))
 
