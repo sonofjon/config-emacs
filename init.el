@@ -117,6 +117,33 @@
 ;; Alternative option to prioritize archives
 ;; (setq use-package-always-pin "melpa-stable")
 
+;;; Quelpa
+
+;; Install quelpa
+;;   TODO: Fix "Buffer consult-projectile-20210804.2201.el modified; kill anyway?" warning
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
+    (eval-buffer)
+    (quelpa-self-upgrade)))
+
+;; Don't update local clone of the MELPA git repo
+;;   TODO: where should I put this?
+(setq quelpa-checkout-melpa-p nil)
+;; Set upgrade interval
+;;   TODO: where should I put this?
+(setq quelpa-upgrade-interval 7)
+(add-hook #'after-init-hook #'quelpa-upgrade-all-maybe)
+
+;; Install quelpa-use-package
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+
+;; Load quelpa-use-package
+;;   TODO: configure
+(require 'quelpa-use-package)
 
 ;;;; Packages
 ;;; Early packages 
