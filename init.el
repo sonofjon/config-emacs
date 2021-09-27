@@ -731,9 +731,6 @@
   ;; Pre-loaded modes
   (diminish 'eldoc-mode)
   ;; Not pre-loaded modes
-  ;; (diminish 'company-mode)
-  ;; (diminish 'ivy-mode)
-  ;; (diminish 'counsel-mode)
   ;; (diminish 'which-key-mode)
   (with-eval-after-load "auto-revert-mode" (diminish 'auto-revert-mode)))
                                         ; TODO: doesn't work
