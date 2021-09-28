@@ -520,7 +520,7 @@
   (setq consult-project-root-function #'vc-root-dir))
   ;; Use consult for completion in region
   ;;   Note, this does not work with LSP-mode or eglot (use corfu instead)
-  ;; (setq completion-in-region-function #'consult-completion-in-region
+  (setq completion-in-region-function #'consult-completion-in-region)
   ;;   TODO: enable completion-in-region to start with!
 
 ;;; Spelling
