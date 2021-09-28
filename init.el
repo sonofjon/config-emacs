@@ -564,6 +564,28 @@
            :fetcher gitlab
            :repo "OlMon/consult-projectile"))
 
+;;; Coding
+
+;; php-mode (major-mode for editing PHP files)
+(use-package php-mode
+  :mode ".php$")
+
+;; web-mode (major-mode for editing web templates)
+(use-package web-mode
+    :mode (".html?$")
+    :custom
+    ;; Enable auto-functionality in the terminal
+    ;;   Note: this can be bad when pasting text
+    (web-mode-enable-auto-expanding t)
+    (web-mode-enable-auto-closing t)
+    (web-mode-enable-auto-indentation t)
+    (web-mode-enable-auto-opening t)
+    (web-mode-enable-auto-pairing t)
+    (web-mode-enable-auto-quoting t)
+    :config
+    ;; Use continuation lines
+    (setq truncate-lines nil))
+
 ;;; Version control
 
 ;; magit (user interface to git)
@@ -699,29 +721,6 @@
   (elfeed-search-title-max-width 50)   ; default is 70
   (elfeed-search-title-min-width 16)    ; default is 16
   (elfeed-search-trailing-width 30))    ; default is 30
-
-;;; Modes
-
-;; php-mode (major-mode for editing PHP files)
-;; (use-package php-mode
-;;   :mode ".php$")
-
-;; web-mode (major-mode for editing web templates)
-(use-package web-mode
-    :mode (".html?$" ".css$" ".js?$" ".php$")
-    :custom
-    ;; Enable auto-functionality in the terminal
-    ;;   Note: this can be bad when pasting text
-    (web-mode-enable-auto-expanding t)
-    (web-mode-enable-auto-closing t)
-    (web-mode-enable-auto-indentation t)
-    (web-mode-enable-auto-opening t)
-    (web-mode-enable-auto-pairing t)
-    (web-mode-enable-auto-quoting t)
-    :config
-    ;; Use continuation lines
-    (setq truncate-lines nil))
-
 
 ;;; Other
 
@@ -932,6 +931,8 @@
 ;; Custom listing style in dired
 ;; (setq dired-listing-switches "-agho --group-directories-first")
 (setq dired-listing-switches "-agho")   ; macOS version
+
+;;; Coding
 
 ;;; Version control
 
@@ -1158,6 +1159,8 @@
 ;;; Files
 
 (global-set-key (kbd "C-c f") #'find-file-at-point)
+
+;;; Coding
 
 ;;; Version control
 
@@ -1741,6 +1744,8 @@ Repeat command to select additional words backwards."
 ;;     rlt))
 
 ;;;; Files
+
+;;;; Coding
 
 ;;;; Version control
 
