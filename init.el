@@ -520,7 +520,7 @@
   (setq consult-project-root-function #'vc-root-dir))
   ;; Use consult for completion in region
   ;;   Note, this does not work with LSP-mode or eglot (use corfu instead)
-  (setq completion-in-region-function #'consult-completion-in-region)
+  ;; (setq completion-in-region-function #'consult-completion-in-region)
   ;;   TODO: enable completion-in-region to start with!
 
 ;;; Spelling
@@ -585,6 +585,31 @@
     :config
     ;; Use continuation lines
     (setq truncate-lines nil))
+
+;; lsp-mode (language server protocol)
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook ((sh-mode . lsp)   ; or lsp-deferred
+         (html-mode . lsp)
+         (css-mode . lsp)
+         (js-mode . lsp)
+         (html-mode . lsp)
+         ;; which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :init
+  ;; Prefix for lsp-command-keymap
+  (setq lsp-keymap-prefix "C-c l"))
+
+  ;; TODO: Add this
+  ;; (which-key-add-key-based-replacements "C-c l" "LSP")
+
+;; lsp-ui-mode (higher level UI modules for LSP)
+;; (use-package lsp-ui
+;;   :commands lsp-ui-mode)
+
+;; lsp-treemacs: (treemacs integration)
+;; (use-package lsp-treemacs
+;;   :commands lsp-treemacs-errors-list)
 
 ;;; Version control
 
@@ -1115,7 +1140,8 @@
 ;; (global-set-key (kbd "C-c <up>") 'aj8/previous-line)
 ;; (global-set-key (kbd "C-c <down>") 'aj8/next-line)
 
-(global-set-key (kbd "C-c l") #'scroll-lock-mode)
+(global-set-key (kbd "C-c x l") #'scroll-lock-mode)
+(which-key-add-key-based-replacements "C-c x" "misc")
 
 (global-set-key (kbd "C-c i") #'imenu)
 
