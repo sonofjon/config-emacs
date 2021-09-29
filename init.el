@@ -439,6 +439,26 @@
   (put 'minibuffer-hide-completions 'interactive-form '(interactive))
   (my/completion-styles))
 
+;; corfu (completion overlay)
+(use-package corfu
+  ;; TODO: configure
+  :hook (prog-mode . corfu-mode)
+  ;; :custom
+  ;; (corfu-count 10)               ; Maximal number of candidates to show
+  ;; (corfu-min-width 15)           ; Popup minimum width in characters
+  ;; (corfu-max-width 100)          ; Popup maximum width in characters."
+  ;; (corfu-cycle t)                ; Enable cycling for `corfu-next/previous'
+  ;; (corfu-auto t)                 ; Enable auto completion
+  ;; (corfu-commit-predicate nil)   ; Do not commit selected candidates on next input
+  ;; (corfu-quit-at-boundary t)     ; Automatically quit at word boundary
+  ;; (corfu-quit-no-match t)        ; Automatically quit if there is no match
+  ;; (corfu-echo-documentation nil) ; Do not show documentation in the echo area
+  ;; (corfu-auto-prefix 3)          ; Minimum length of prefix for auto completion."
+  :init
+  ;; Enable Corfu globally
+  ;;   (this is recommended since dabbrev can be used globally)
+  (corfu-global-mode))
+
 ;; orderless (orderless completion style)
 (use-package orderless
   :after (:any icomplete-vertical vertico)
