@@ -26,8 +26,7 @@
 ;;;;; EARLY SETTINGS
 
 ;; System dependent settings
-(cond ((or (equal (system-name) "MacBook-Air.local")
-	   (equal (system-name) "MacBook-Air.lan"))
+(cond ((string-match-p "MacBook-Air" (system-name))
        ;; GUI settings
        (when (display-graphic-p)
          ;; Add to exec-path
@@ -1917,8 +1916,7 @@ functions."
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
-(cond ((or (equal (system-name) "MacBook-Air.local")
-	   (equal (system-name) "MacBook-Air.lan"))
+(cond ((string-match-p "MacBook-Air" (system-name))
        ;; GUI settings
        (when (display-graphic-p)
          ;; Set default font
