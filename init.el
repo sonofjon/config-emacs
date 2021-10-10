@@ -558,31 +558,6 @@
 
 ;;; Files
 
-(use-package projectile
-  ;; TODO: configure
-  ;; :diminish projectile-mode
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  ;; :custom
-  ;; (projectile-switch-project-action #'projectile-dired))
-  :config
-  ;; Project folders
-  (if (file-directory-p "~/git")
-    (add-to-list 'projectile-project-search-path '("~/git")))
-  (if (file-directory-p "~/dotfiles")
-    (add-to-list 'projectile-project-search-path '("~/dotfiles")))
-  (if (file-directory-p "~/Projects")
-    (add-to-list 'projectile-project-search-path '("~/Projects")))
-  (if (file-directory-p "~/projects")
-    (add-to-list 'projectile-project-search-path '("~/projects")))
-  ;; Enable mode
-  (projectile-mode 1))
-
-(use-package consult-projectile
-  :quelpa (consult-projectile
-           :fetcher gitlab
-           :repo "OlMon/consult-projectile"))
-
 ;;; Coding
 
 ;; php-mode (major-mode for editing PHP files)
