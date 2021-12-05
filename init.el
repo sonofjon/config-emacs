@@ -39,6 +39,9 @@
       ((equal (system-name) "brain5")
        (message "Early settings Linux"))
 
+      ((equal (system-name) "brain9")
+       (message "Early settings Linux"))
+
       ((equal (system-name) "penguin")
        (message "Early settings ChromeOS"))
 
@@ -1901,6 +1904,9 @@ functions."
        (message "Late settings MacOS"))
 
       ((equal (system-name) "brain5")
+       (message "Late settings Linux"))
+
+      ((equal (system-name) "brain9")
        (message "Late settings Linux"))
 
       ((equal (system-name) "penguin")
