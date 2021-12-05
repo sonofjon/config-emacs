@@ -399,6 +399,7 @@
 ;; undo-fu (linear undo with redo)
 ;;   Note that undo-in-region is disabled by default
 (use-package undo-fu
+  :after which-key
   :bind (("C-c z u" . undo-fu-only-undo)
          ("C-c z r" . undo-fu-only-redo)
          ("C-c z d" . undo-fu-disable-checkpoint))
@@ -479,6 +480,7 @@
 
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
+  :after which-key
   :bind (;; C-c bindings (mode-specific-map)
          ;; ("C-c c h" . consult-history)
          ("C-c c m" . consult-mode-command)
