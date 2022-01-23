@@ -246,7 +246,8 @@
   (setq modus-themes-lang-checkers '(straight-underline text-also))
   ;; Control the style of the mode line
   ;;   Options: `3d' OR `moody', `borderless', `accented', `padded'
-  (setq modus-themes-mode-line 'borderless)
+  ;; (setq modus-themes-mode-line 'borderless)   ; TODO: cannot set to option
+  (setq modus-themes-mode-line nil)
   ;; Control the style of code syntax highlighting
   ;;   Options: `faint', `yellow-comments', `green-strings',
   ;;            `alt-syntax'
