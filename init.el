@@ -476,7 +476,7 @@
   ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))   ; default
   (setq orderless-matching-styles
         '(orderless-prefixes
-          orderless-strict-leading-initialism)))
+          orderless-initialism)))
 
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
