@@ -37,7 +37,9 @@
        (message "Early settings for MacOS"))
 
       ((or (equal (system-name) "brain5")
-	   (equal (system-name) "brain9"))
+	   (equal (system-name) "brain9")
+	   (equal (system-name) "endeavour-lxde")
+	   (equal (system-name) "manjaro-xfce"))
        (message "Early settings Linux"))
 
       ((equal (system-name) "penguin")
@@ -1909,7 +1911,9 @@ functions."
        (message "Late settings MacOS"))
 
       ((or (equal (system-name) "brain5")
-	   (equal (system-name) "brain9"))
+	   (equal (system-name) "brain9")
+	   (equal (system-name) "endeavour-lxde")
+	   (equal (system-name) "manjaro-xfce"))
        (message "Late settings Linux"))
 
       ((equal (system-name) "penguin")
