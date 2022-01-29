@@ -53,7 +53,8 @@
 ;; Use custom-file.el for custom-* code
 (setq custom-file (expand-file-name "custom-file.el" user-emacs-directory))
 
-(load-file custom-file)
+(if (file-exists-p custom-file)
+    (load-file custom-file))
 
 
 ;;;;; FIXES
