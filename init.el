@@ -36,16 +36,16 @@
            (add-to-list 'exec-path dir)))
        (message "Early settings for MacOS"))
 
-      ((equal (system-name) "brain5")
-       (message "Early settings Linux"))
-
-      ((equal (system-name) "brain9")
+      ((or (equal (system-name) "brain5")
+	   (equal (system-name) "brain9"))
        (message "Early settings Linux"))
 
       ((equal (system-name) "penguin")
        (message "Early settings ChromeOS"))
 
-      ((or (equal (system-name) "brain5-windows") (equal (system-name) "NT175"))
+      ((or (equal (system-name) "brain5-windows")
+	   (equal (system-name) "brain8-windows")
+	   (equal (system-name) "NT175"))
        (message "Early settings WSL"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
@@ -1907,16 +1907,16 @@ functions."
          (setq-default line-spacing 1))
        (message "Late settings MacOS"))
 
-      ((equal (system-name) "brain5")
-       (message "Late settings Linux"))
-
-      ((equal (system-name) "brain9")
+      ((or (equal (system-name) "brain5")
+	   (equal (system-name) "brain9"))
        (message "Late settings Linux"))
 
       ((equal (system-name) "penguin")
        (message "Late settings ChromeOS"))
 
-      ((or (equal (system-name) "brain5-windows") (equal (system-name) "NT175"))
+      ((or (equal (system-name) "brain5-windows")
+	   (equal (system-name) "brain8-windows")
+	   (equal (system-name) "NT175"))
        ;; Enable (default) web browser on WSL
        (setq browse-url-generic-program "wslview")
        (setq browse-url-secondary-browser-function #'browse-url-generic)
