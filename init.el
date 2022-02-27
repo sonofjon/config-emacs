@@ -246,7 +246,7 @@
   (setq modus-themes-fringes nil)
   ;; Control the style of spelling and code checkers/linters
   ;;   Options: `straight-underline', `text-also', `background',
-  ;;            `intense'
+  ;;            `intense', `faint'
   (setq modus-themes-lang-checkers '(straight-underline text-also))
   ;; Control the style of the mode line
   ;;   Options: `3d' OR `moody', `borderless', `accented'
@@ -288,8 +288,7 @@
   ;;   Options: `no-extend', `bg-only', `accented'
   (setq modus-themes-region nil)
   ;; Adjust the style of diffs
-  ;;   Options: `desaturated', `bg-only', `deuteranopia',
-  ;;            `fg-only-deuteranopia'
+  ;;   Options: `desaturated', `bg-only'
   (setq modus-themes-diffs nil)
   ;; Set the style of Org code blocks, quotes, and the like
   ;;   Options: `gray-background', `tinted-background'
@@ -304,8 +303,7 @@
   ;;         (habit . traffic-light)))
   (setq modus-themes-org-agenda nil)
   ;; Heading styles
-  ;;   Options: `rainbow', `overline', `background', `no-bold',
-  ;;            `monochrome'
+  ;;   Options: `rainbow', `overline', `background', `monochrome'
   ;; (setq modus-themes-headings
   ;;       '((1 . (background monochrome))
   ;;         (t . (monochrome))))
