@@ -279,8 +279,11 @@
   ;;   Options: `background', `bold', `gray', `intense', `italic'
   (setq modus-themes-prompts nil)
   ;; Control the style of the completion framework's interface
-  ;;   Options: `moderate',`opinionated'
-  (setq modus-themes-completions nil)
+  ;;   Options: see manual
+  (setq modus-themes-completions '((matches . (extrabold))
+                                   (selection . (semibold accented))
+                                   (popup . (accented intense))))
+  ;; (setq modus-themes-completions nil)
   ;; Control the style of the active region
   ;;   Options: `no-extend', `bg-only', `accented'
   (setq modus-themes-region nil)
