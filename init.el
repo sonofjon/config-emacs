@@ -256,6 +256,10 @@
   ;;   Options: `faint', `yellow-comments', `green-strings',
   ;;            `alt-syntax'
   (setq modus-themes-syntax '(faint green-strings alt-syntax))
+  ;; Style markup in Org, markdown, and others
+  ;;   Options: `bold', `italic', `background', `intense'
+  ;; (setq modus-themes-markup '(background italic))
+  (setq modus-themes-markup nil)
   ;; Control the current line highlight of HL-line mode
   ;;   Options: `accented', `underline', `intense'
   (setq modus-themes-hl-line nil)
@@ -266,6 +270,11 @@
   ;;   Options: `neutral-underline' OR `no-underline', `faint' OR
   ;;            `no-color', `bold', `italic', `background'
   (setq modus-themes-links nil)
+  ;; Control the style of buttons in the Custom UI and related
+  ;;   Options: `flat', `accented', `faint', `variable-pitch',
+  ;;            `underline'
+  ;; (setq modus-themes-box-buttons '(variable-pitch flat faint 0.9))
+  (setq modus-themes-box-buttons nil)
   ;; Set the style for minibuffer and REPL prompts
   ;;   Options: `background', `bold', `gray', `intense', `italic'
   (setq modus-themes-prompts nil)
@@ -279,6 +288,18 @@
   ;;   Options: `desaturated', `bg-only', `deuteranopia',
   ;;            `fg-only-deuteranopia'
   (setq modus-themes-diffs nil)
+  ;; Set the style of Org code blocks, quotes, and the like
+  ;;   Options: `gray-background', `tinted-background'
+  (setq modus-themes-org-blocks 'gray-background)
+  ;; Org styles
+  ;;   Options: see manual
+  ;; (setq modus-themes-org-agenda
+  ;;       '((header-block . (variable-pitch 1.3))
+  ;;         (mail-header-parse-date . (grayscale workaholic bold-today 1.1))
+  ;;         (event . (accented varied))
+  ;;         (scheduled . uniform)
+  ;;         (habit . traffic-light)))
+  (setq modus-themes-org-agenda nil)
   ;; Heading styles
   ;;   Options: `rainbow', `overline', `background', `no-bold',
   ;;            `monochrome'
