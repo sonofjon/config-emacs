@@ -249,9 +249,9 @@
   ;;            `intense'
   (setq modus-themes-lang-checkers '(straight-underline text-also))
   ;; Control the style of the mode line
-  ;;   Options: `3d' OR `moody', `borderless', `accented', `padded'
-  ;; (setq modus-themes-mode-line 'borderless)   ; TODO: cannot set to option
-  (setq modus-themes-mode-line nil)
+  ;;   Options: `3d' OR `moody', `borderless', `accented'
+  (setq modus-themes-mode-line '(borderless))
+  ;(setq modus-themes-mode-line nil)
   ;; Control the style of code syntax highlighting
   ;;   Options: `faint', `yellow-comments', `green-strings',
   ;;            `alt-syntax'
@@ -265,7 +265,7 @@
   (setq modus-themes-hl-line nil)
   ;; Control the style of matching parentheses or delimiters
   ;;   Options: `bold', `intense', `underline'
-  (setq modus-themes-paren-match 'intense)
+  (setq modus-themes-paren-match '(intense))
   ;; Set the style of links
   ;;   Options: `neutral-underline' OR `no-underline', `faint' OR
   ;;            `no-color', `bold', `italic', `background'
