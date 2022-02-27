@@ -188,7 +188,8 @@
 
 ;; base16-theme
 ;;   Available options: <https://belak.github.io/base16-emacs/>
-(use-package base16-theme)
+(use-package base16-theme
+  :disabled)
   ;; :config
   ;; (setq base16-theme-256-color-source "base16-shell")
   ;; (setq base16-theme-256-color-source "colors")
