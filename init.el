@@ -313,11 +313,24 @@
           (3 . (background monochrome))
           (t . (monochrome))))
   ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes)
-  :config
+  (modus-themes-load-themes))
+  ;; :config
   ;; Load the theme
-  (modus-themes-load-operandi))
+  ;; (modus-themes-load-operandi))
   ;; (modus-themes-load-vivendi))
+
+;; circadian (theme-switching based on daytime)
+(use-package circadian
+  :after modus-themes
+  :custom
+  ;; (circadian-themes '(("8:00" . modus-operandi)
+  ;;                     ("18:00"  . modus-vivendi)))
+  (circadian-themes '((:sunrise . modus-operandi)
+                      (:sunset  . modus-vivendi)))
+  :config
+  (setq calendar-latitude 59.33
+        calendar-longitude 18.07)
+  (circadian-setup))
 
 
 ;;; Windows
