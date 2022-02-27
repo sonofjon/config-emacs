@@ -1054,6 +1054,9 @@
 
 ;;; Other
 
+;; Disable welcome buffer
+(setq inhibit-startup-screen t)
+
 ;; Open up the debugger on error
 ;; (setq debug-on-error t)
 
