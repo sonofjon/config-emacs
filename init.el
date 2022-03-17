@@ -39,6 +39,7 @@
       ((or (equal (system-name) "brain5")
 	   (equal (system-name) "brain9")
 	   (equal (system-name) "endeavour-lxde")
+	   (equal (system-name) "kde-neon")
 	   (equal (system-name) "manjaro-xfce"))
        (message "Early settings Linux"))
 
@@ -1952,6 +1953,7 @@ functions."
       ((or (equal (system-name) "brain5")
 	   (equal (system-name) "brain9")
 	   (equal (system-name) "endeavour-lxde")
+	   (equal (system-name) "kde-neon")
 	   (equal (system-name) "manjaro-xfce"))
        (message "Late settings Linux"))
 
