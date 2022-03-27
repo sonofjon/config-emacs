@@ -38,6 +38,7 @@
 
       ((or (equal (system-name) "brain5")
 	   (equal (system-name) "brain9")
+	   (equal (system-name) "brain10")
 	   (equal (system-name) "endeavour-lxde")
 	   (equal (system-name) "kde-neon")
 	   (equal (system-name) "manjaro-xfce"))
@@ -1952,6 +1953,7 @@ functions."
 
       ((or (equal (system-name) "brain5")
 	   (equal (system-name) "brain9")
+	   (equal (system-name) "brain10")
 	   (equal (system-name) "endeavour-lxde")
 	   (equal (system-name) "kde-neon")
 	   (equal (system-name) "manjaro-xfce"))
