@@ -127,7 +127,6 @@
 ;;; Quelpa
 
 ;; Install quelpa
-;;   TODO: Fix "Buffer consult-projectile-20210804.2201.el modified; kill anyway?" warning
 (unless (package-installed-p 'quelpa)
   (with-temp-buffer
     (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
@@ -153,6 +152,7 @@
 (require 'quelpa-use-package)
 
 ;;;; Packages
+
 ;;; Early packages 
 
 ;; benchmark-init (startup profiler)
