@@ -656,6 +656,9 @@
 ;; i3wm-config-mode (syntax highlighting for i3 config files)
 (use-package i3wm-config-mode)
 
+;; rainbow-mode (syntax highlighting for color codes)
+(use-package rainbow-mode)
+
 ;;; Version control
 
 ;; magit (user interface to git)
