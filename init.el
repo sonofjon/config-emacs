@@ -653,6 +653,9 @@
 ;; (use-package lsp-treemacs
 ;;   :commands lsp-treemacs-errors-list)
 
+;; i3wm-config-mode (syntax highlighting for i3 config files)
+(use-package i3wm-config-mode)
+
 ;;; Version control
 
 ;; magit (user interface to git)
