@@ -593,6 +593,10 @@
   ;; (setq completion-in-region-function #'consult-completion-in-region)
   ;;   TODO: enable completion-in-region to start with!
 
+;; consult-project-extra (project extension for consult)
+;; (use-package consult-project-extra
+;;   :after consult)
+
 ;;; Spelling
 
 ;; flyspell-correct (wrapper for flyspell with completion)
