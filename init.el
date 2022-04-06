@@ -63,6 +63,10 @@
 
 ;;;;; FIXES
 
+;; Suppress warnings
+;;   Fix numerous byte-comp warnings
+;; (setq warning-minimum-level :error)   ; only show errors
+(setq warning-suppress-types :error)        ; log but do not show warnings
 
 ;;;;; PACKAGES
 
