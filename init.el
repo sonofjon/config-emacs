@@ -555,20 +555,22 @@
          ("M-s l" . consult-line)
          ("M-s L" . consult-line-multi)
          ("M-s m" . consult-multi-occur)
-         ("M-s u" . consult-focus-lines)   ; call with C-u prefix argument to reset
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
          ;; Isearch integration
-         ("M-s e" . consult-isearch)
+         ("M-s e" . consult-isearch-history)
          :map isearch-mode-map
-         ("M-e" . consult-isearch)         ; orig. isearch-edit-string
-         ("M-s e" . consult-isearch)       ; orig. isearch-edit-string
-         ("M-s l" . consult-line)          ; needed by consult-line to detect isearch
-         ("M-s L" . consult-line-multi))   ; needed by consult-line to detect isearch
+         ("M-e" . consult-isearch-history)       ; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history)     ; orig. isearch-edit-string
+         ("M-s l" . consult-line)                ; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi)          ; needed by consult-line to detect isearch
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)               ; orig. next-matching-history-element
+         ("M-r" . consult-history))              ; orig. previous-matching-history-element
   :init
   ;; Enhance `completing-read-multiple'
   ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-  ;; Use Consult to select xref locations with preview
-  ;; (setq xref-show-xrefs-function #'consult-xref
-  ;;       xref-show-definitions-function #'consult-xref)
   (which-key-add-key-based-replacements "C-c c" "consult")
   :config
   ;; Configure preview
@@ -578,16 +580,14 @@
    consult-theme
    :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep consult-bookmark
-   consult-recent-file consult-xref consult--source-file
-   consult--source-project-file consult--source-bookmark
+   consult-recent-file consult-xref consult--source-bookmark
+   consult--source-recent-file consult--source-project-recent-file
    :preview-key (kbd "M-."))
   ;; Narrowing key
-  (setq consult-narrow-key "<")
+  (setq consult-narrow-key "<"))
   ;; Enable narrowing help in the minibuffer
   ;;   (you may want to use `embark-prefix-help-command' or which-key instead)
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-  ;; Function that returns project root directory
-  (setq consult-project-root-function #'vc-root-dir))
   ;; Use consult for completion in region
   ;;   Note, this does not work with LSP-mode or eglot (use corfu instead)
   ;; (setq completion-in-region-function #'consult-completion-in-region)
