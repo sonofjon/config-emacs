@@ -1115,6 +1115,19 @@
             ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
             (setq-local outline-level 'aj8/outline-level)))
 
+;; conf-xdefaults-mode:
+(add-hook 'conf-xdefaults-mode-hook
+          (lambda ()
+            ;; Set custom outline heading format
+            (setq-local outline-regexp "\\(!!+ \\)\\([^( ]\\)")
+            (setq outline-heading-alist
+                  '(("!!!!! " . 1)
+                    ("!!!! " . 2)
+                    ("!!! " . 3)
+                    ("!! " . 4)))
+            ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
+            (setq-local outline-level 'aj8/outline-level)))
+
 ;; activate-mark: deactivate highlight mode when selecting text
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
