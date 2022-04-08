@@ -943,6 +943,10 @@
 
 ;;;; Modes
 
+;;; Package management...
+
+;;; Theme...
+
 ;; Disable menu bar
 (menu-bar-mode -1)
 
@@ -953,30 +957,22 @@
 (with-eval-after-load "scroll-bar"   ; avoid error on some systems
   (scroll-bar-mode -1))
 
+;; Enable line numbers
+;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
+
+;;; Windows...
+
+;;; Buffers...
+
 ;; Persistent minibuffer history
 (savehist-mode 1)
-
-;; Track recent files
-(recentf-mode 1)
-
-;; Delete selection on edit
-(delete-selection-mode 1)
-
-;; Highlight current line
-(global-hl-line-mode 1)
 
 ;; Show recursion depth in the minibuffer prompt
 (minibuffer-depth-indicate-mode 1)
 
-;; Enable line numbers
-;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
+;;; Outline...
 
-;; Expand abbreviations
-(add-hook 'text-mode-hook 'abbrev-mode)
-
-;; On-the-fly spell checking
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+;;; Navigation...
 
 ;; Subword movement and editing: camelCase
 ;;    Cannot be enabled at the same time as superword-mode
@@ -985,6 +981,44 @@
 ;; Superword movement and editing: snake_case and kebab-case
 ;;    Cannot be enabled at the same time as subword-mode
 ;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
+
+;;; Search...
+
+;;; Selection...
+
+;; Delete selection on edit
+(delete-selection-mode 1)
+
+;;; Editing...
+
+;; Highlight current line
+(global-hl-line-mode 1)
+
+;;; Completion...
+
+;;; Spelling...
+
+;; On-the-fly spell checking
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+;;; Files...
+
+;; Track recent files
+(recentf-mode 1)
+
+;;; Coding...
+
+;;; Version control...
+
+;;; Help...
+
+;;; Web...
+
+;;; Other...
+
+;; Expand abbreviations
+(add-hook 'text-mode-hook 'abbrev-mode)
 
 ;;;; Variables
 
