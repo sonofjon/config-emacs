@@ -835,6 +835,7 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
+
 ;;;;; THEMES
 
 ;; (load-theme 'dichromacy)
@@ -1091,6 +1092,7 @@
 ;; Remove "..?*" from alias `all' in grep-files-aliases
 (with-eval-after-load "grep"
   (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*"))
+
 
 ;;;;; HOOKS
 
@@ -1978,6 +1980,35 @@ functions."
                                   (apply x (cons (not (car args)) (cdr args)))
                                 (apply x args))))))
 
+;; Helper function for rxvt-input-decode-map
+(defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
+  "Add mappings for a given list of escape sequences and list of
+keys."
+  (while suffix-alist
+    (let ((escape-suffix (car (car suffix-alist)))
+          (key-suffix (cdr (car suffix-alist))))
+      (define-key input-decode-map (concat escape-prefix escape-suffix)
+        (read-kbd-macro (concat key-prefix key-suffix))))
+    (setq suffix-alist (cdr suffix-alist))))
+
+;; Add xterm key sequence mappings
+;;   See also https://github.com/CyberShadow/term-keys for a more
+;;   complete solution.
+(defun rxvt-input-decode-map ()
+  "Map each combination of modifier and up, down, left and right
+keys to the the respective xterm key sequence."
+  (setq nav-key-pair-alist
+        '(("A" . "<up>") ("B" . "<down>") ("C" . "<right>") ("D" . "<left>")
+          ("H" . "<home>") ("F" . "<end>")))
+
+  (rxvt--add-escape-key-mapping-alist "\e[1;2" "S-" nav-key-pair-alist)
+  (rxvt--add-escape-key-mapping-alist "\e[1;3" "M-" nav-key-pair-alist)
+  (rxvt--add-escape-key-mapping-alist "\e[1;4" "M-S-" nav-key-pair-alist)
+  (rxvt--add-escape-key-mapping-alist "\e[1;5" "C-" nav-key-pair-alist)
+  (rxvt--add-escape-key-mapping-alist "\e[1;6" "C-S-" nav-key-pair-alist)
+  (rxvt--add-escape-key-mapping-alist "\e[1;7" "M-C-" nav-key-pair-alist)
+  (rxvt--add-escape-key-mapping-alist "\e[1;8" "M-C-S-" nav-key-pair-alist))
+
 
 ;;;;; LATE SETTINGS
 
@@ -2019,6 +2050,11 @@ functions."
 ;;       (load host-specific-files)
 ;;     (message (concat "No host specific customizations for " system-name))
 ;;     ))
+
+;; Special settings for URxvt
+(when (equal "rxvt-unicode-256color"
+             (getenv-internal "TERM" initial-environment))
+  (rxvt-input-decode-map))
 
 
 ; LocalWords:  ediff flyspell isearch ispell magit minibuffer modus TODO
