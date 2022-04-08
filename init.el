@@ -962,6 +962,10 @@
 
 ;;; Windows...
 
+;; Enable winner mode
+(setq winner-dont-bind-my-keys t)
+(winner-mode 1)
+
 ;;; Buffers...
 
 ;; Persistent minibuffer history
@@ -1326,6 +1330,9 @@
 ;;; Windows
 
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
+
+(define-key winner-mode-map (kbd "C-c <") #'winner-undo)
+(define-key winner-mode-map (kbd "C-c >") #'winner-redo)
 
 ;;; Buffers
 
