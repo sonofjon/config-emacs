@@ -418,6 +418,18 @@
 
 ;;; Editing
 
+;; dot-mode (repeat command vim-style)
+(use-package dot-mode
+  :hook ((prog-mode . dot-mode-on)
+         (text-mode . dot-mode-on))
+  :bind (:map dot-mode-map ("C-c d" . dot-mode-execute))
+  :custom
+  (dot-mode-verbose t)
+  :config
+  (unbind-key "C-." dot-mode-map)
+  (unbind-key "C-c ." dot-mode-map)
+  (unbind-key "C-M-." dot-mode-map))
+
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
