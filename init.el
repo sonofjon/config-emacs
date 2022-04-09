@@ -384,8 +384,7 @@
 ;; outline-minor-faces (use faces from outline-mode)
 (use-package outline-minor-faces
   :after outline
-  :config (add-hook 'outline-minor-mode-hook
-                    'outline-minor-faces-add-font-lock-keywords))
+  :hook (outline-minor-mode . outline-minor-faces-add-font-lock-keywords))
 
 ;; bicycle (cycling of outline sections and code blocks)
 (use-package bicycle
