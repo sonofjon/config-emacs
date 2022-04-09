@@ -1464,6 +1464,51 @@
 
 (which-key-add-key-based-replacements "C-c y" "hydra")
 
+;; Windows
+(defhydra hydra-window (:hint nil)
+  "
+                                                                   ╭─────────┐
+  Select  Move   Resize    Split           Do                      │ Windows │
+╭──────────────────────────────────────────────────────────────────┴─────────┴─┐
+  ^ ^ _↑_ ^ ^   ^ ^ _↑_ ^ ^   ^ ^ _↑_ ^ ^   ╭─┬─┐ ^ ^           ╭─┬─┐ ^ ^
+  _←_ ^ ^ _→_   _←_ ^C^ _→_   _←_ ^M^ _→_   │ │ │[_v_]ertical   ├─┼─┤[_b_]alance  ↺ [_u_] undo layout 
+  ^ ^ _↓_ ^ ^   ^ ^ _↓_ ^ ^   ^ ^ _↓_ ^ ^   ╰─┴─╯ ^ ^           ╰─┴─╯ ^ ^         ↻ [_r_] reset layout
+  ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ╭───┐ ^ ^           ╭───┐ ^ ^         ✗ [_d_] close window
+  ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ├───┤[_h_]orizontal │   │[_z_]oom     ⇋ [_w_] cycle window
+  ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ╰───╯ ^ ^           ╰───╯ ^ ^
+╰──────────────────────────────────────────────────────────────────────────────╯
+"
+  ;; ("<tab>" hydra-master/body "back")
+  ("q" nil "quit")
+  ("<left>" windmove-left)
+  ("<right>" windmove-right)
+  ("<up>" windmove-up)
+  ("<down>" windmove-down)
+  ("C-<left>" windmove-swap-states-left)
+  ("C-<right>" windmove-swap-states-right)
+  ("C-<up>" windmove-swap-states-up)
+  ("C-<down>" windmove-swap-states-down)
+  ;; ("S-<left>" shrink-window-horizontally)
+  ;; ("S-<right>" enlarge-window-horizontally)
+  ;; ("S-<up>" shrink-window)
+  ;; ("S-<down>" enlarge-window)
+  ("M-<left>" hydra-move-splitter-left)
+  ("M-<right>" hydra-move-splitter-right)
+  ;; ("M-<up>" hydra-move-splitter-up)
+  ("M-p" hydra-move-splitter-up)
+  ;; ("M-<down>" hydra-move-splitter-down)
+  ("M-n" hydra-move-splitter-down)
+  ("v" split-window-vertically)
+  ("h" split-window-horizontally)
+  ("b" balance-windows)
+  ("z" delete-other-windows)
+  ("u" winner-undo)
+  ("r" winner-redo)
+  ("d" delete-window)
+  ("w" other-window))
+
+(global-set-key (kbd "C-c y w") #'hydra-window/body)
+
 ;;; Scrolling
 (defhydra hydra-scroll (:hint nil)
   "
@@ -1478,6 +1523,7 @@ Scroll by line or paragraph.
   ("<down>" scroll-up-line)
   ("<left>" aj8/scroll-down-paragraph)
   ("<right>" aj8/scroll-up-paragraph))
+
 (global-set-key (kbd "C-c y s") #'hydra-scroll/body)
 
 ;;; Line navigation
@@ -1494,6 +1540,7 @@ Move to the next line or comment.
   ("<down>" aj8/next-line)
   ("<left>" aj8/previous-comment)
   ("<right>" aj8/next-comment))
+
 (global-set-key (kbd "C-c y n") #'hydra-navigation/body)
 
 ;;; Outline
@@ -1585,6 +1632,42 @@ inverse of the default behavior of the standard
   (if current-prefix-arg             ; C-u
       (magit-mode-bury-buffer nil)   ; bury
     (magit-mode-bury-buffer 1)))     ; kill
+
+;; Wrapper for shrink-window-horizontally
+(defun hydra-move-splitter-left (arg)
+  "Move window splitter left."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'right))
+      (shrink-window-horizontally arg)
+    (enlarge-window-horizontally arg)))
+
+;; Wrapper for enlarge-window-horizontally
+(defun hydra-move-splitter-right (arg)
+  "Move window splitter right."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'right))
+      (enlarge-window-horizontally arg)
+    (shrink-window-horizontally arg)))
+
+;; Wrapper for enlarge-window
+(defun hydra-move-splitter-up (arg)
+  "Move window splitter up."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'up))
+      (enlarge-window arg)
+    (shrink-window arg)))
+
+;; Wrapper for shrink-window
+(defun hydra-move-splitter-down (arg)
+  "Move window splitter down."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'up))
+      (shrink-window arg)
+    (enlarge-window arg)))
 
 ;;;; Buffers
 
