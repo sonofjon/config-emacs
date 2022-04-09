@@ -66,7 +66,9 @@
 ;; Suppress warnings
 ;;   Fix numerous byte-comp warnings
 ;; (setq warning-minimum-level :error)   ; only show errors
-(setq warning-suppress-types :error)        ; log but do not show warnings
+;; (setq warning-suppress-types :error)        ; log but do not show warnings
+;; (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
+
 
 ;;;;; PACKAGES
 
