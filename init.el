@@ -827,12 +827,14 @@
 ;; helpful (alternative help)
 (use-package helpful
   ;; :demand
-  :commands (helpful-key helpful-function helpful-symbol helpful-variable)
+  :commands (helpful-key helpful-function helpful-symbol
+             helpful-variable helpful-command)
   :bind (([remap describe-key] . helpful-key)
          ([remap describe-function] . helpful-function)
          ([remap describe-symbol] . helpful-symbol)
          ([remap describe-variable] . helpful-variable)
          ("C-c h" . helpful-at-point)
+         ([remap describe-command] . helpful-command)
          :map helpful-mode-map
          ;; Kill buffers on quit
          ([remap quit-window] . aj8/quit-window))
