@@ -833,8 +833,8 @@
          ([remap describe-function] . helpful-function)
          ([remap describe-symbol] . helpful-symbol)
          ([remap describe-variable] . helpful-variable)
-         ("C-c h" . helpful-at-point)
          ([remap describe-command] . helpful-command)
+         ("C-c h" . helpful-at-point)
          :map helpful-mode-map
          ;; Kill buffers on quit
          ([remap quit-window] . aj8/quit-window))
@@ -1432,6 +1432,10 @@
 (which-key-add-key-based-replacements "C-c e" "ediff")
 
 ;;; Help
+
+(which-key-add-key-based-replacements "C-c H" "help")
+(global-set-key (kbd "C-c H k") #'describe-keymap)
+(global-set-key (kbd "C-c H d") #'shortdoc-display-group)
 
 ;;; Web
 
