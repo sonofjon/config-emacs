@@ -1045,6 +1045,9 @@
 
 ;;; Theme
 
+;; Disable welcome buffer
+(setq inhibit-startup-screen t)
+
 ;;; Windows
 
 ;; Prefer horizontal (side-by-side) window splitting
@@ -1216,8 +1219,6 @@
 
 ;;; Other
 
-;; Disable welcome buffer
-(setq inhibit-startup-screen t)
 
 ;; Open up the debugger on error
 ;; (setq debug-on-error t)
