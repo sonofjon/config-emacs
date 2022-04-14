@@ -1439,6 +1439,8 @@
 
 ;;; Web
 
+(global-set-key (kbd "C-c b") #'browse-url)
+
 ;;; Other
 
 ;; Mac-like bindings
