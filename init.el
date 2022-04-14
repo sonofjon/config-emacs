@@ -1443,6 +1443,8 @@
 
 ;;; Other
 
+(global-set-key (kbd "C-c r") #'reload-init-file)
+
 ;; Mac-like bindings
 ;; (global-set-key (kbd "s-q") 'save-buffers-kill-terminal)
 ;; (global-set-key (kbd "s-m") 'iconify-frame)
@@ -2245,6 +2247,11 @@ keys to the the respective xterm key sequence."
   (rxvt--add-escape-key-mapping-alist "\e[1;6" "C-S-" nav-key-pair-alist)
   (rxvt--add-escape-key-mapping-alist "\e[1;7" "M-C-" nav-key-pair-alist)
   (rxvt--add-escape-key-mapping-alist "\e[1;8" "M-C-S-" nav-key-pair-alist))
+
+;; Reload init-file
+(defun reload-init-file ()
+  (interactive)
+  (load-file user-init-file))
 
 
 ;;;;; LATE SETTINGS
