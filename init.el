@@ -1219,6 +1219,8 @@
 
 ;;; Other
 
+;; Use 'y' or 'n' questions always
+;; (setq use-short-answers t)
 
 ;; Open up the debugger on error
 ;; (setq debug-on-error t)
