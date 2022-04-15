@@ -1225,6 +1225,9 @@
 (with-eval-after-load "grep"
   (setf (alist-get "all" grep-files-aliases nil nil #'equal) "* .[!.]*"))
 
+;; Show mode headers in describe-bindings buffer
+(setq describe-bindings-outline t)
+
 
 ;;;;; HOOKS
 
