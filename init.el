@@ -580,8 +580,8 @@
   ;;   TODO: enable completion-in-region to start with!
 
 ;; consult-project-extra (project extension for consult)
-;; (use-package consult-project-extra
-;;   :after consult)
+(use-package consult-project-extra
+  :bind ("C-c p" . consult-project-extra-find))
 
 ;;; Spelling
 
