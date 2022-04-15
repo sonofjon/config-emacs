@@ -587,8 +587,10 @@
 ;;; Spelling
 
 ;; flyspell-correct (wrapper for flyspell with completion)
+;;   TODO: replace with consult-flyspell?
 (use-package flyspell-correct
   ;; TODO: configure
+  ;; TODO: Fix inconsistent us of # and ' (globally)
   :after flyspell
   :bind (:map flyspell-mode-map
               ;; ("C-;" . flyspell-auto-correct-word)
@@ -1160,6 +1162,7 @@
 
 ;; URL browser settings
 ;;   TODO: There is also browse-url-default-windows|macosx-browser
+;;   TODO: New options in Emacs 28
 (setq browse-url-browser-function #'eww-browse-url)
 (setq browse-url-secondary-browser-function #'browse-url-default-browser)
 (setq browse-url-chrome-program "com.google.Chrome") ; TODO: doesn't exist
@@ -2176,6 +2179,7 @@ To be used by `eww-after-render-hook'."
         (t (user-error "Not a eww or elpher buffer"))))
 
 ;; Add completion to eww
+;;   TODO: Fix
 (defun prot-eww-browse-dwim (url &optional arg)
   "Visit a URL, maybe from `eww-prompt-history', with completion.
 
