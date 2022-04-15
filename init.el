@@ -1016,6 +1016,9 @@
 
 ;;; Package management
 
+;; Natively compile packages during installation
+;; (setq package-native-compile t)
+
 ;;; Theme
 
 ;; Disable welcome buffer
