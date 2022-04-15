@@ -182,16 +182,6 @@
   :config
   (auto-package-update-maybe))
 
-;; paradox (improved package menu)
-(use-package paradox
-  :defer
-  :config
-  ;; Disable *Paradox Report* buffer
-  (remove-hook 'paradox--report-buffer-print
-               'paradox-after-execute-functions)
-  ;; Enable mode
-  (paradox-enable))
-
 ;;; Theme
 
 ;; base16-theme
@@ -370,29 +360,12 @@
   :config
   (dimmer-mode 1))
 
-;; buffer-move (move buffers around)
-(use-package buffer-move
-  :disabled
-  :bind (("C-c b" . buf-move)))
-         ;; ("s-<up>" . buf-move-up)
-         ;; ("s-<down>" . buf-move-down)
-         ;; ("s-<left>" . buf-move-left)
-         ;; ("s-<right>" . buf-move-right)))
-
 ;;; Outline
 
 ;; outline-minor-faces (use faces from outline-mode)
 (use-package outline-minor-faces
   :after outline
   :hook (outline-minor-mode . outline-minor-faces-add-font-lock-keywords))
-
-;; bicycle (cycling of outline sections and code blocks)
-(use-package bicycle
-  :disabled
-  :after outline
-  :bind (:map outline-minor-mode-map
-              ("C-TAB" . bicycle-cycle)
-              ("<backtab>" . bicycle-cycle-global)))
 
 ;;; Navigation
 
@@ -1087,7 +1060,6 @@
 (which-key-add-key-based-replacements "C-c C-c" "outline")
 
 ;; Use TAB and S-TAB for cycling
-;;   See also bicycle
 (setq outline-minor-mode-cycle t)
 
 ;; Highlight headings
