@@ -363,6 +363,7 @@
 ;;; Outline
 
 ;; outline-minor-faces (use faces from outline-mode)
+;;   See also outline-minor-mode-highlight.
 (use-package outline-minor-faces
   :after outline
   :hook (outline-minor-mode . outline-minor-faces-add-font-lock-keywords))
@@ -1066,7 +1067,8 @@
 (setq outline-minor-mode-cycle t)
 
 ;; Highlight headings
-(setq outline-minor-mode-highlight t)
+;;   See also outline-minor-faces.
+;; (setq outline-minor-mode-highlight t)   ; alternatives: override and append
 
 ;;; Navigation
 
