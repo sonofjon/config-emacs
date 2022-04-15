@@ -1093,6 +1093,10 @@
 ;;   TODO: Remove when adding a replacement for swiper?
 (setq search-whitespace-regexp ".*?")
 
+;; Allow movement between isearch matches by cursor motion commands
+(setq isearch-allow-motion t)
+(setq isearch-motion-changes-direction t)
+
 ;;; Selection
 
 ;;; Editing
