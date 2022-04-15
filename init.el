@@ -1342,6 +1342,10 @@
 (global-set-key (kbd "C-c w <left>") #'windmove-display-left)
 (global-set-key (kbd "C-c w <right>") #'windmove-display-right)
 (global-set-key (kbd "C-c w 0") #'windmove-display-same-window)
+(global-set-key (kbd "C-c w C-<up>") #'windmove-delete-up)
+(global-set-key (kbd "C-c w C-<down>") #'windmove-delete-down)
+(global-set-key (kbd "C-c w C-<left>") #'windmove-delete-left)
+(global-set-key (kbd "C-c w C-<right>") #'windmove-delete-right)
 (which-key-add-key-based-replacements "C-c w" "windmove")
 
 (global-set-key (kbd "M-p") #'backward-paragraph)
