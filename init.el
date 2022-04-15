@@ -604,7 +604,7 @@
 
 ;; treemacs (a tree layout file explorer)
 (use-package treemacs
-  ;; :after which-key
+  :after which-key
   :defer t
   :init
   (which-key-add-key-based-replacements "C-c t" "treemacs")
@@ -676,15 +676,14 @@
       (`(t . _)
        (treemacs-git-mode 'simple))))
 
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-c t 1"   . treemacs-delete-other-windows)
-        ("C-c t t"   . treemacs)
-        ("C-c t d"   . treemacs-select-directory)
-        ("C-c t B"   . treemacs-bookmark)
-        ("C-c t C-t" . treemacs-find-file)
-        ("C-c t M-t" . treemacs-find-tag)))
+  :bind (:map global-map
+              ("M-0"       . treemacs-select-window)
+              ("C-c t 1"   . treemacs-delete-other-windows)
+              ("C-c t t"   . treemacs)
+              ("C-c t d"   . treemacs-select-directory)
+              ("C-c t B"   . treemacs-bookmark)
+              ("C-c t C-t" . treemacs-find-file)
+              ("C-c t M-t" . treemacs-find-tag)))
 
 ;; (use-package treemacs-icons-dired
 ;;   :hook (dired-mode . treemacs-icons-dired-enable-once)
