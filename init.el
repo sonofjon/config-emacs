@@ -1115,6 +1115,9 @@
 ;; Use TAB for symbol completion (after indentation)
 (setq tab-always-indent 'complete)
 
+;; Show more details for completions
+(setq completions-detailed t)
+
 ;;; Spelling
 
 ;; Set language
