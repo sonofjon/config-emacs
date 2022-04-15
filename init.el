@@ -1245,7 +1245,7 @@
           (lambda ()
             (setq outline-regexp "[*]+")))
 
-;; emacs-lisp-mode:
+;; emacs-lisp-mode: outline settings
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             ;; Set custom outline heading format
@@ -1258,7 +1258,7 @@
             ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
             (setq-local outline-level 'aj8/outline-level)))
 
-;; conf-xdefaults-mode:
+;; conf-xdefaults-mode: outline settings
 (add-hook 'conf-xdefaults-mode-hook
           (lambda ()
             ;; Set custom outline heading format
@@ -1271,7 +1271,7 @@
             ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
             (setq-local outline-level 'aj8/outline-level)))
 
-;; i3wm-config-mode:
+;; i3wm-config-mode: outline settings
 (add-hook 'i3wm-config-mode-hook
           (lambda ()
             ;; Set custom outline heading format
