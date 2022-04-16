@@ -1230,15 +1230,18 @@
 ;; Show mode headers in describe-bindings buffer
 (setq describe-bindings-outline t)
 
+;;;; Other
 
-;;;;; HOOKS
-
-;; emacs-startup: delay evaluation until functions are defined
-;;
 ;; More convenient "jump to mark" command (swap prefix argument)
 ;; (add-hook 'emacs-startup-hook
 ;;           (lambda () (my/toggle-prefix-arg #'set-mark-command)))
 
+
+;;;;; MODES
+
+;; Use sh-mode for non-standard bash config files
+(add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . sh-mode))
 
 ;; outline-mode: remove form-feed character (^L) from regexp
 (add-hook 'outline-mode-hook
