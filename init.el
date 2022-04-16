@@ -1245,47 +1245,23 @@
 
 ;; outline-mode: remove form-feed character (^L) from regexp
 (add-hook 'outline-mode-hook
-          (lambda ()
-            (setq outline-regexp "[*]+")))
+          (lambda () (setq outline-regexp "[*]+")))
 
 ;; emacs-lisp-mode: outline settings
 (add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            ;; Set custom outline heading format
-            (setq-local outline-regexp "\\(;;+ \\)\\([^( ]\\)")
-            (setq outline-heading-alist
-                  '((";;;;; " . 1)
-                    (";;;; " . 2)
-                    (";;; " . 3)
-                    (";; " . 4)))
-            ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
-            (setq-local outline-level 'aj8/outline-level)))
+          'outline-headers-for-semicolon-buffers)
 
 ;; conf-xdefaults-mode: outline settings
 (add-hook 'conf-xdefaults-mode-hook
-          (lambda ()
-            ;; Set custom outline heading format
-            (setq-local outline-regexp "\\(!!+ \\)\\([^( ]\\)")
-            (setq outline-heading-alist
-                  '(("!!!!! " . 1)
-                    ("!!!! " . 2)
-                    ("!!! " . 3)
-                    ("!! " . 4)))
-            ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
-            (setq-local outline-level 'aj8/outline-level)))
+          'outline-headers-for-exclamation-mark-buffers)
+
+;; shell-scrip-mode: outline settings
+(add-hook 'sh-mode-hook
+          'outline-headers-for-hash-mark-buffers)
 
 ;; i3wm-config-mode: outline settings
 (add-hook 'i3wm-config-mode-hook
-          (lambda ()
-            ;; Set custom outline heading format
-            (setq-local outline-regexp "\\(##+ \\)\\([^( ]\\)")
-            (setq outline-heading-alist
-                  '(("##### " . 1)
-                    ("#### " . 2)
-                    ("### " . 3)
-                    ("## " . 4)))
-            ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
-            (setq-local outline-level 'aj8/outline-level)))
+          'outline-headers-for-hash-mark-buffers)
 
 ;; activate-mark: deactivate highlight mode when selecting text
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
@@ -1747,6 +1723,44 @@ Emacs session."
        (lisp-interaction-mode))
 
 ;;;; Outline
+
+;; Set outline header format for Elisp files
+(defun outline-headers-for-semicolon-buffers ()
+  "Set outline header format for buffers using semicolon (\";\")
+for comments."
+  ;; Set custom outline heading format
+  (setq-local outline-regexp "\\(;;+ \\)\\([^( ]\\)")
+  (setq-local outline-heading-alist
+              '((";;;;; " . 1)
+                (";;;; " . 2)
+                (";;; " . 3)
+                (";; " . 4)))
+  ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
+  (setq-local outline-level 'aj8/outline-level))
+
+;; Set outline header format for shell-script files
+(defun outline-headers-for-hash-mark-buffers ()
+  "Set outline header format for buffers using hash mark (\"#\")
+for comments."
+  ;; Set custom outline heading format
+  (setq-local outline-regexp "\\(##+ \\)\\([^( ]\\)")
+  (setq-local outline-heading-alist
+              '(("##### " . 1)
+                ("#### " . 2)
+                ("### " . 3)
+                ("## " . 4))))
+
+;; Set outline header format for Xresources files
+(defun outline-headers-for-exclamation-mark-buffers ()
+  "Set outline header format for buffers using exclamation
+mark (\"!\") for comments."
+  ;; Set custom outline heading format
+  (setq-local outline-regexp "\\(!!+ \\)\\([^( ]\\)")
+  (setq-local outline-heading-alist
+              '(("!!!!! " . 1)
+                ("!!!! " . 2)
+                ("!!! " . 3)
+                ("!! " . 4))))
 
 ;; Set keybindings for outline-(minor-)mode
 (defun aj8/outline-mode-keys (map)
