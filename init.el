@@ -1789,7 +1789,9 @@ for comments."
               '(("##### " . 1)
                 ("#### " . 2)
                 ("### " . 3)
-                ("## " . 4))))
+                ("## " . 4)))
+  ;; Use custom 'outline-level' for sh-mode
+  (setq-local outline-level 'aj8/outline-level))
 
 ;; Set outline header format for Xresources files
 (defun outline-headers-for-exclamation-mark-buffers ()
@@ -1801,7 +1803,9 @@ mark (\"!\") for comments."
               '(("!!!!! " . 1)
                 ("!!!! " . 2)
                 ("!!! " . 3)
-                ("!! " . 4))))
+                ("!! " . 4)))
+  ;; Don't use 'conf-outline-level (doesn't use outline-heading-alist)
+  (setq-local outline-level 'aj8/outline-level))
 
 ;; Set keybindings for outline-(minor-)mode
 (defun aj8/outline-mode-keys (map)
