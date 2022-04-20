@@ -441,6 +441,16 @@
   :custom
   (undo-fu-ignore-keyboard-quit t))
 
+;; vundo (visual undo)
+(use-package vundo
+  :commands (vundo)
+  :bind ("C-c v" . vundo)
+  :custom
+  ;; Use compact layout
+  (vundo-compact-display t)
+  ;; Use pretty Unicode characters
+  (vundo-glyph-alist vundo-unicode-symbols))
+
 ;;; Completion
 
 ;; icomplete-vertical (show icomplete candidates vertically)
