@@ -631,9 +631,7 @@
 ;;; Spelling
 
 ;; flyspell-correct (wrapper for flyspell with completion)
-;;   TODO: replace with consult-flyspell?
 (use-package flyspell-correct
-  ;; TODO: configure
   ;; TODO: Fix inconsistent us of # and ' (globally)
   :after flyspell
   :bind (:map flyspell-mode-map
@@ -1140,7 +1138,6 @@
 (setq isearch-lax-whitespace nil)
 
 ;; Interpret spaces as wildcards (with M-s SPC)
-;;   TODO: Remove when adding a replacement for swiper?
 (setq search-whitespace-regexp ".*?")
 
 ;; Allow movement between isearch matches by cursor motion commands
