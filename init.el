@@ -477,7 +477,8 @@
 
 ;; corfu (completion overlay)
 (use-package corfu
-  ;; TODO: configure
+  ;; TODO: enable corfu-history-mode and corfu-info-mode?
+  ;; TODO: corfu-popup enables corfu in terminal
   :hook (prog-mode . corfu-mode)
   ;; :custom
   ;; (corfu-count 10)               ; Maximal number of candidates to show
@@ -485,15 +486,58 @@
   ;; (corfu-max-width 100)          ; Popup maximum width in characters."
   ;; (corfu-cycle t)                ; Enable cycling for `corfu-next/previous'
   ;; (corfu-auto t)                 ; Enable auto completion
-  ;; (corfu-commit-predicate nil)   ; Do not commit selected candidates on next input
+  ;; (corfu-auto-prefix 3)          ; Minimum length of prefix for auto completion."
+  ;; (corfu-separator ?\s)          ; Orderless field separator
   ;; (corfu-quit-at-boundary t)     ; Automatically quit at word boundary
   ;; (corfu-quit-no-match t)        ; Automatically quit if there is no match
+  ;; (corfu-preview-current nil)    ; Disable current candidate preview
+  ;; (corfu-preselect-first nil)    ; Disable candidate preselection
+  ;; (corfu-on-exact-match nil)     ; Configure handling of exact matches
   ;; (corfu-echo-documentation nil) ; Do not show documentation in the echo area
-  ;; (corfu-auto-prefix 3)          ; Minimum length of prefix for auto completion."
+  ;; (corfu-scroll-margin 5)        ; Use scroll margin
   :init
   ;; Enable Corfu globally
   ;;   (this is recommended since dabbrev can be used globally)
   (corfu-global-mode))
+
+;; corfu-doc (documentation popup for corfu)
+(use-package corfu-doc
+  :hook (corfu-mode . corfu-doc-mode)
+  :bind (:map corfu-map
+              ("M-p" . #'corfu-doc-scroll-down)   ; corfu-next
+              ("M-n" . #'corfu-doc-scroll-up)     ; corfu-previous
+              ("M-d" . #'corfu-doc-toggle))
+  :custom
+  ;; (corfu-doc-delay 0)
+  ;; (corfu-doc-hide-threshold 0)
+  ;; Enable manually
+  (corfu-doc-auto nil))
+
+;; cape (completion at point extensions for corfu)
+(use-package cape
+  :after which-key
+  ;; Bind dedicated completion commands
+  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+  :bind (("C-c u p" . completion-at-point) ;; capf
+         ("C-c u a" . cape-abbrev)
+         ("C-c u d" . cape-dabbrev)
+         ("C-c u w" . cape-dict)
+         ("C-c u f" . cape-file)
+         ("C-c u i" . cape-ispell)
+         ("C-c u k" . cape-keyword)
+         ("C-c u l" . cape-line)
+         ("C-c u s" . cape-symbol))
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-dict)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-ispell)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  (add-to-list 'completion-at-point-functions #'cape-line)
+  (add-to-list 'completion-at-point-functions #'cape-symbol)
+  (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
 
 ;; orderless (orderless completion style)
 (use-package orderless
