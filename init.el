@@ -113,6 +113,9 @@
 (if (not (package-installed-p 'use-package))
     (package-install 'use-package))
 
+;; Add use-package to imenu
+(setq use-package-enable-imenu-support t)
+
 ;; Load use-package
 (eval-when-compile
   (require 'use-package))
@@ -584,7 +587,6 @@
          ("M-g o" . consult-outline)             ; Alternative: consult-org-heading
          ("M-g m" . consult-mark)
          ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)      ; TODO: narrowing to packages
          ("M-g I" . consult-imenu-multi)
          ;; M-s bindings (search-map)
          ("M-s f" . consult-find)
