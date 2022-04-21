@@ -493,7 +493,7 @@
 (use-package corfu
   ;; TODO: enable corfu-history-mode and corfu-info-mode?
   ;; TODO: corfu-popup enables corfu in terminal
-  :hook (prog-mode . corfu-mode)
+  ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
   ;; :custom
   ;; (corfu-count 10)               ; maximal number of candidates to show
   ;; (corfu-min-width 15)           ; popup minimum width in characters
@@ -511,8 +511,9 @@
   ;; (corfu-scroll-margin 5)        ; use scroll margin
   :init
   ;; Enable Corfu globally
-  ;;   (this is recommended since dabbrev can be used globally)
-  (corfu-global-mode))
+  ;;   (this is useful since dabbrev can be used in all buffers)
+  (when (display-graphic-p)   ; only enable if using GUI
+    (corfu-global-mode)))
 
 ;; corfu-doc (documentation popup for corfu)
 (use-package corfu-doc
@@ -616,6 +617,10 @@
   :init
   ;; Enhance `completing-read-multiple'
   ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+  ;; Use consult for completion in region
+  ;;   Note, this does not work with LSP or eglot
+  (when (not (display-graphic-p))   ; only enable if using terminal
+    (setq completion-in-region-function #'consult-completion-in-region))
   (which-key-add-key-based-replacements "C-c c" "consult")
   :config
   ;; Configure preview
@@ -633,10 +638,6 @@
   ;; Enable narrowing help in the minibuffer
   ;;   (you may want to use `embark-prefix-help-command' or which-key instead)
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-  ;; Use consult for completion in region
-  ;;   Note, this does not work with LSP-mode or eglot (use corfu instead)
-  ;; (setq completion-in-region-function #'consult-completion-in-region)
-  ;;   TODO: enable completion-in-region to start with!
 
 ;; consult-project-extra (project extension for consult)
 (use-package consult-project-extra
