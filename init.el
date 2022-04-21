@@ -396,6 +396,7 @@
 
 ;; dot-mode (repeat command vim-style)
 (use-package dot-mode
+  :diminish
   :hook ((prog-mode . dot-mode-on)
          (text-mode . dot-mode-on))
   :bind (:map dot-mode-map ("C-c d" . dot-mode-execute))
