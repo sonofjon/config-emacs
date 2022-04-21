@@ -880,8 +880,9 @@
 (use-package google-this
   :diminish
   :after which-key
-  :config
+  :init
   (which-key-add-key-based-replacements "C-c /" "google-this")
+  :config
   (google-this-mode 1))
 
 ;; erc (IRC client)
