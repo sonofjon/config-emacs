@@ -754,6 +754,16 @@
 
 ;;; Coding
 
+;; json-mode (major-mode for editing JSON files)
+(use-package json-mode
+  :mode ".json"
+  :bind (:map json-mode-map
+              ("C-c C-b" . json-mode-beautify)
+              ("C-c C-s" . json-snatcher))
+  :config
+  (unbind-key "C-c C-f" json-mode-map)
+  (unbind-key "C-c P" json-mode-map))
+
 ;; php-mode (major-mode for editing PHP files)
 (use-package php-mode
   :mode ".php$")
