@@ -581,7 +581,7 @@
          ("C-x M-:" . consult-complex-command)   ; consult: repeat-complex-command
          ("C-x b" . consult-buffer)              ; consult: switch-to-buffer
          ;; Other custom bindings
-         ("M-y" . consult-yank-pop)              ; consult: yank-pop
+         ;; ("M-y" . consult-yank-pop)              ; consult: yank-pop
          ("<help> a" . consult-apropos)          ; consult: apropos-command
          ;; M-g bindings (goto-map)
          ("M-g g" . consult-goto-line)           ; consult: goto-line
