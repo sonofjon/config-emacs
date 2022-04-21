@@ -624,7 +624,8 @@
   (which-key-add-key-based-replacements "C-c c" "consult")
   :config
   ;; Configure preview
-  ;; (setq consult-preview-key (kbd "M-."))   ; default is 'any (TODO: does not work)
+  ;; (setq consult-preview-key (kbd "M-."))         ; default is 'any
+  ;; (setq consult-preview-key (list (kbd "<down>") (kbd "<up>")))
   ;; Configure preview (on a per-command basis)
   (consult-customize
    consult-theme
@@ -632,7 +633,8 @@
    consult-ripgrep consult-git-grep consult-grep consult-bookmark
    consult-recent-file consult-xref consult--source-bookmark
    consult--source-recent-file consult--source-project-recent-file
-   :preview-key (kbd "M-."))
+   :preview-key (kbd "M-.")))
+   ;; :preview-key (list (kbd "<down>") (kbd "<up>"))))
   ;; Narrowing key
   ;; (setq consult-narrow-key "<")
   ;; Enable narrowing help in the minibuffer
