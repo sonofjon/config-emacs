@@ -849,6 +849,7 @@
 ;; json-mode (major-mode for editing JSON files)
 (use-package json-mode
   :mode ".json"
+  :hook (json-mode . (lambda () (setq-local js-indent-level 2)))
   :bind (:map json-mode-map
               ("C-c C-b" . json-mode-beautify)
               ("C-c C-s" . json-snatcher))
