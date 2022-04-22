@@ -1465,6 +1465,8 @@
 
 (global-set-key (kbd "C-c f") #'find-file-at-point)
 
+(global-set-key (kbd "C-x p t") #'project-forget-project)
+
 ;;; Coding
 
 ;;; Version control
