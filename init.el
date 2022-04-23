@@ -1194,7 +1194,7 @@
 ;;   Note: the thresholds need to be twice as big as the smallest
 ;;   window allowed, because the new windows each use half of the
 ;;   former window size
-(setq split-width-threshold 160
+(setq split-width-threshold 140
       split-height-threshold nil)
 
 ;; Set display-line-number-width automatically
