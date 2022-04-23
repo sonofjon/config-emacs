@@ -652,10 +652,10 @@
   :config
   ;; Use orderless for completion
   ;;   (disables styles set for icomplete-vertical and vertico)
-  (setq completion-styles '(orderless))
+  (setq completion-styles '(orderless basic))
   ;; Use orderless everywhere
-  ;; (setq completion-category-defaults nil)
-  (setq completion-category-overrides '((file (styles . (basic substring)))))
+  (setq completion-category-defaults nil)
+  (setq completion-category-overrides '((file (styles basic partial-completion))))
   ;; Matching styles
   ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))   ; default
   (setq orderless-matching-styles
