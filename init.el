@@ -1551,6 +1551,7 @@
                                                            ; for comments
 
 (global-set-key (kbd "C-c s") 'my/copy-symbol-at-point)
+(global-set-key (kbd "C-c l") 'my/copy-line)
 
 ;;; Completion
 
@@ -2171,14 +2172,22 @@ Repeat command to select additional words backwards."
 
 ;;;; Editing
 
+;; Copy symbol at point
 (defun my/copy-symbol-at-point ()
-  "Make symbol at point the latest kill in the kill ring."
+  "Add the symbol at point to the kill ring."
   (interactive)
   (let ((symbol (thing-at-point 'symbol))
         (bounds (bounds-of-thing-at-point 'symbol)))
     (when symbol
       (kill-new symbol)
       (pulse-momentary-highlight-region (car bounds) (cdr bounds)))))
+
+;; Copy current line
+(defun my/copy-line ()
+  "Add the current line to the kill ring."
+  (interactive)
+  (kill-ring-save (point-at-bol) (point-at-eol))
+  (pulse-momentary-highlight-region (point-at-bol) (point-at-eol)))
 
 ;;;; Completion
 
