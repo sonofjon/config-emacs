@@ -2265,7 +2265,7 @@ Repeat command to select additional words backwards."
             (setq arg 0))))))
 
 ;; flyspell setup for web-mode
-(defun my-web-mode-flyspell-verify ()
+(defun my/web-mode-flyspell-verify ()
   "Fly Spell predicate of `web-mode`."
   (let* ((font-face-at-point (get-text-property (- (point) 1) 'face))
          rlt)
