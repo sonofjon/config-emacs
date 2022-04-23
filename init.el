@@ -660,7 +660,10 @@
   ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))   ; default
   (setq orderless-matching-styles
         '(orderless-prefixes
-          orderless-initialism)))
+          orderless-initialism)
+        orderless-style-dispatchers '(my/flex-if-twiddle
+                                      my/with-if-equal
+                                      my/without-if-bang)))
 
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
@@ -2190,6 +2193,21 @@ Repeat command to select additional words backwards."
   ;; (setq completion-show-help nil))
   ;; Cycle completions
   ;; (setq completion-cycle-threshold t)
+
+;; Orderless style dispacher: flex
+(defun my/flex-if-twiddle (pattern _index _total)
+  (when (string-suffix-p "~" pattern)
+    `(orderless-flex . ,(substring pattern 0 -1))))
+
+;; Orderless style dispacher: exclude literal
+(defun my/without-if-bang (pattern _index _total)
+  (when (string-prefix-p "!" pattern)
+    `(orderless-without-literal . ,(substring pattern 1))))
+
+;; Orderless style dispacher: include literal
+(defun my/with-if-equal (pattern _index _total)
+   (when (string-prefix-p "=" pattern)
+    `(orderless-literal . ,(substring pattern 1))))
 
 ;;;; Spelling
 
