@@ -1226,15 +1226,14 @@
 ;;; Outline
 
 ;; Outline minor mode prefix
-(setq outline-minor-mode-prefix "\C-c\C-c")
-(which-key-add-key-based-replacements "C-c C-c" "outline")
+(which-key-add-key-based-replacements "C-c @" "outline")
 
 ;; Use TAB and S-TAB for cycling
 (setq outline-minor-mode-cycle t)
 
 ;; Highlight headings
 ;;   See also outline-minor-faces.
-;; (setq outline-minor-mode-highlight t)   ; alternatives: override and append
+;; (setq outline-minor-mode-highlight t)   ; alternatives: 'override and 'append
 
 ;;; Navigation
 
