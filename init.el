@@ -425,6 +425,13 @@
 
 ;;; Windows
 
+;; rotate (rotate window position and layout)
+(use-package rotate
+  :disabled)
+
+;; transpose-frame (transpose window arrangement)
+(use-package transpose-frame)
+
 ;;; Buffers
 
 ;; auto-dim-other-buffers (dim inactive windows)
@@ -1636,17 +1643,20 @@
 
 ;; Windows
 (defhydra hydra-window (:hint nil)
+  ;; TODO: Improve layout
   "
                                                                    ╭─────────┐
-  Select  Move   Resize    Split           Do                      │ Windows │
+  Select   Move   Resize    Split             Do                   │ Windows │
 ╭──────────────────────────────────────────────────────────────────┴─────────┴─┐
   ^ ^ _↑_ ^ ^   ^ ^ _↑_ ^ ^   ^ ^ _↑_ ^ ^   ╭─┬─┐ ^ ^           ╭─┬─┐ ^ ^
-  _←_ ^ ^ _→_   _←_ ^C^ _→_   _←_ ^M^ _→_   │ │ │[_v_]ertical   ├─┼─┤[_b_]alance  ↺ [_u_] undo layout 
-  ^ ^ _↓_ ^ ^   ^ ^ _↓_ ^ ^   ^ ^ _↓_ ^ ^   ╰─┴─╯ ^ ^           ╰─┴─╯ ^ ^         ↻ [_r_] reset layout
-  ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ╭───┐ ^ ^           ╭───┐ ^ ^         ✗ [_d_] close window
-  ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ├───┤[_h_]orizontal │   │[_z_]oom     ⇋ [_w_] cycle window
+  _←_ ^ ^ _→_   _←_ ^C^ _→_   _←_ ^M^ _→_   │ │ │[_v_]ertical   ├─┼─┤[_b_]alance  [_t_]ranspose
+  ^ ^ _↓_ ^ ^   ^ ^ _↓_ ^ ^   ^ ^ _↓_ ^ ^   ╰─┴─╯ ^ ^           ╰─┴─╯ ^ ^         fl[_i_]p (vertical)
+  ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ╭───┐ ^ ^           ╭───┐ ^ ^         fl[_o_]p (horizontal)
+  ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ├───┤[_h_]orizontal │   │[_z_]oom     [_r_]otate
   ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^   ╰───╯ ^ ^           ╰───╯ ^ ^
 ╰──────────────────────────────────────────────────────────────────────────────╯
+↺ [_u_]ndo layout | ↻ re[_s_]set layout
+⇋ [_n_]ext window | ✗ [_c_]lose window
 "
   ;; ("<tab>" hydra-master/body "back")
   ("q" nil "quit")
@@ -1673,9 +1683,13 @@
   ("b" balance-windows)
   ("z" delete-other-windows)
   ("u" winner-undo)
-  ("r" winner-redo)
-  ("d" delete-window)
-  ("w" other-window))
+  ("s" winner-redo)
+  ("c" delete-window)
+  ("n" other-window)
+  ("t" transpose-frame)
+  ("i" flip-frame)
+  ("o" flop-frame)
+  ("r" rotate-frame-clockwise))
 
 (global-set-key (kbd "C-c y w") #'hydra-window/body)
 
