@@ -66,6 +66,9 @@
 ;; (setq warning-suppress-types :error)        ; log but do not show warnings
 ;; (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
 
+;; Fix for Chemacs with native comp
+;; (add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
+
 
 ;;;;; PACKAGES
 
@@ -1081,8 +1084,13 @@
                                     next-line
                                     magit-previous-line
                                     magit-next-line
+                                    dired-previous-line
+                                    dired-next-line
                                     vertico-previous
-                                    vertico-next))
+                                    vertico-next
+                                    isearch-printing-char
+                                    backward-delete-char-untabify
+                                    mwheel-scroll))
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
