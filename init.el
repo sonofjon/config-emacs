@@ -813,11 +813,11 @@
     ;;       treemacs-user-mode-line-format           nil
     ;;       treemacs-user-header-line-format         nil
     ;;       treemacs-wide-toggle-width               70
-    ;;       treemacs-width                           35
+          treemacs-width                           30
     ;;       treemacs-width-increment                 1
     ;;       treemacs-width-is-initially-locked       t
     ;;       treemacs-workspace-switch-cleanup        nil)
-
+          )
     ;; The default width and height of the icons is 22 pixels. If you are
     ;; using a Hi-DPI display, uncomment this to double the icon size.
     ;;(treemacs-resize-icons 44)
