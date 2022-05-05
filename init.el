@@ -576,7 +576,6 @@
   :hook (emacs-startup . vertico-mode)
   :bind (:map vertico-map
               ("?" . minibuffer-completion-help)
-              ;; ("C-c ?" . aj8/kill-completions-buffer)
               ("C-c ?" . minibuffer-hide-completions)
               ("M-c" . minibuffer-complete)
               ("M-f" . minibuffer-force-complete))
@@ -1863,13 +1862,6 @@ inverse of the default behavior of the standard
 
 ;;;; Buffers
 
-;; Kill *Completions* buffer
-;; (defun aj8/kill-completions-buffer ()
-;;   "Get rid of *Completions* buffer."
-;;   (interactive)
-;;   (let ((buffer "*Completions*"))
-;;     (and (get-buffer buffer)
-;;          (kill-buffer buffer))))
 
 (defvar killed-file-list nil
   "List of recently killed files.")
