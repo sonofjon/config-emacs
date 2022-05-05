@@ -519,6 +519,10 @@
                      ("<" . mc/mark-previous-like-this)
                      (">" . mc/mark-next-like-this)
                      ("?" . mc/mark-all-like-this)
+                     ("," . mc/mark-previous-like-this-symbol)
+                     ("." . mc/mark-next-like-this-symbol)
+                     ("/" . mc/mark-all-like-this-dwim)
+                     ;; ("" . mc/mark-all-dwim)
                      ("e" . mc/edit-lines)))
 
 ;; whole-line-or-region (apply to current line if region is undefined)
