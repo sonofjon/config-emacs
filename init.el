@@ -931,7 +931,9 @@
   :bind (("C-c g" . magit-file-dispatch)
          ;; Kill, not bury, magit buffers
          :map magit-mode-map
-         ([remap magit-mode-bury-buffer] . aj8/magit-mode-bury-buffer))
+         ([remap magit-mode-bury-buffer] . aj8/magit-mode-bury-buffer)
+         ("TAB" . magit-section-cycle)
+         ("<backtab>" . magit-section-cycle-global))
          ;; Open files in other window
          ;; :map magit-file-section-map
          ;; ("RET" . magit-diff-visit-file-other-window)
