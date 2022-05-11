@@ -46,7 +46,7 @@
        (message "Early settings ChromeOS"))
 
       ((or (string-match-p "^brain[0-9]+-windows$" (system-name))
-	   (equal (system-name) "NT175"))
+           (string-match-p "^NT[0-9]\\{3\\}$" (system-name)))
        (message "Early settings WSL"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
@@ -2488,7 +2488,7 @@ keys to the the respective xterm key sequence."
        (message "Late settings ChromeOS"))
 
       ((or (string-match-p "^brain[0-9]+-windows$" (system-name))
-     	   (equal (system-name) "NT175"))
+           (string-match-p "^NT[0-9]\\{3\\}$" (system-name)))
        ;; Enable (default) web browser on WSL
        (setq browse-url-generic-program "wslview")
        (setq browse-url-secondary-browser-function #'browse-url-generic)
