@@ -870,6 +870,12 @@
   (unbind-key "C-c C-f" json-mode-map)
   (unbind-key "C-c P" json-mode-map))
 
+;; markdown-mode (major mode for editing Markdown files)
+;;   TODO: configure
+(use-package markdown-mode
+  :mode (".md" . gfm-mode))
+  ;; :init (setq markdown-command "multimarkdown"))
+
 ;; php-mode (major-mode for editing PHP files)
 (use-package php-mode
   :mode ".php$")
@@ -889,6 +895,12 @@
     :config
     ;; Use continuation lines
     (setq truncate-lines nil))
+
+;; yaml-mode (major-mode for editing YAML files)
+(use-package yaml-mode
+  :mode ".yml"
+  :bind (:map yaml-mode-map))
+              ;; ("C-m" . newline-and-indent)))
 
 ;; lsp-mode (language server protocol)
 (use-package lsp-mode
@@ -950,6 +962,11 @@
   :config
   ;; Use diff-hl-mode everywhere
   (global-diff-hl-mode 1))
+
+;; ztree (directory-diff tool)
+(use-package ztree
+  :custom
+  (ztree-draw-unicode-lines t))
 
 ;;; Help
 
