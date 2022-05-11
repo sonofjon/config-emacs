@@ -36,9 +36,7 @@
            (add-to-list 'exec-path dir)))
        (message "Early settings for MacOS"))
 
-      ((or (equal (system-name) "brain5")
-	   (equal (system-name) "brain9")
-	   (equal (system-name) "brain10")
+      ((or (string-match-p "^brain[0-9]+$" (system-name))
 	   (equal (system-name) "endeavour-lxde")
 	   (equal (system-name) "kde-neon")
 	   (equal (system-name) "manjaro-xfce"))
@@ -47,8 +45,7 @@
       ((equal (system-name) "penguin")
        (message "Early settings ChromeOS"))
 
-      ((or (equal (system-name) "brain5-windows")
-	   (equal (system-name) "brain8-windows")
+      ((or (string-match-p "^brain[0-9]+-windows$" (system-name))
 	   (equal (system-name) "NT175"))
        (message "Early settings WSL"))
 
@@ -2481,9 +2478,7 @@ keys to the the respective xterm key sequence."
          (setq-default line-spacing 1))
        (message "Late settings MacOS"))
 
-      ((or (equal (system-name) "brain5")
-	   (equal (system-name) "brain9")
-	   (equal (system-name) "brain10")
+      ((or (string-match-p "^brain[0-9]+$" (system-name))
 	   (equal (system-name) "endeavour-lxde")
 	   (equal (system-name) "kde-neon")
 	   (equal (system-name) "manjaro-xfce"))
@@ -2492,9 +2487,8 @@ keys to the the respective xterm key sequence."
       ((equal (system-name) "penguin")
        (message "Late settings ChromeOS"))
 
-      ((or (equal (system-name) "brain5-windows")
-	   (equal (system-name) "brain8-windows")
-	   (equal (system-name) "NT175"))
+      ((or (string-match-p "^brain[0-9]+-windows$" (system-name))
+     	   (equal (system-name) "NT175"))
        ;; Enable (default) web browser on WSL
        (setq browse-url-generic-program "wslview")
        (setq browse-url-secondary-browser-function #'browse-url-generic)
