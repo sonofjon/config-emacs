@@ -774,7 +774,8 @@
   (which-key-add-key-based-replacements "C-c t" "treemacs")
   :config
   (progn
-    ;; (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
+    (setq
+    ;;       treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
     ;;       treemacs-deferred-git-apply-delay        0.5
     ;;       treemacs-directory-name-transformer      #'identity
     ;;       treemacs-display-in-side-window          t
