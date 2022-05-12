@@ -1524,6 +1524,9 @@
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
 (global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
+(global-set-key [remap next-buffer] 'my/next-buffer)
+(global-set-key [remap previous-buffer] 'my/previous-buffer)
+
 ;;; Outline
 
 (global-set-key (kbd "C-c o") #'outline-minor-mode)
@@ -1914,6 +1917,42 @@ Emacs session."
           (setq killed-file-list (cl-delete file killed-file-list :test #'equal))
           (find-file file)))
     (error "No recently-killed files to reopen")))
+
+;;; Skip unimportant buffers when switching
+
+(defcustom my/skippable-buffer-regexp
+  (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Help*" "*Messages*"
+		  "*scratch*" "*Warnings*" "*Async-native-compile-log*")
+              (seq "magit-process" (zero-or-more anything))
+              (seq "magit-revision" (zero-or-more anything)))
+              eos)
+  "Matching buffer names are ignored by `my/next-buffer'
+and `my/previous-buffer'."
+  :type 'regexp)
+
+(defun my/change-buffer (change-buffer)
+  "Call CHANGE-BUFFER until `my/skippable-buffer-regexp' doesn't match."
+  (let ((initial (current-buffer)))
+    (funcall change-buffer)
+    (let ((first-change (current-buffer)))
+      (catch 'loop
+        (while (string-match-p my/skippable-buffer-regexp (buffer-name))
+          (funcall change-buffer)
+          (when (eq (current-buffer) first-change)
+            (switch-to-buffer initial)
+            (throw 'loop t)))))))
+
+;; Custom next-buffer
+(defun my/next-buffer ()
+  "Variant of `next-buffer' that skips `my/skippable-buffer-regexp'."
+  (interactive)
+  (my/change-buffer 'next-buffer))
+
+;; Custom previous-buffer
+(defun my/previous-buffer ()
+  "Variant of `previous-buffer' that skips `my/skippable-buffer-regexp'."
+  (interactive)
+  (my/change-buffer 'previous-buffer))
 
 ;;; Misc
 
