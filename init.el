@@ -1803,28 +1803,7 @@ _d_: subtree
 
 ;;;; Windows
 
-;; Toggle window split
-(defun my/toggle-window-split ()
-  "If the window is split vertically, split it horizontally, and vice versa."
-  (interactive)
-  (unless (= (count-windows) 2)
-    (error "Can only toggle a window split in two!"))
-  (let ((split-vertically-p (window-combined-p)))
-    (delete-window)   ; close current window
-    (if split-vertically-p
-        (split-window-horizontally)
-      (split-window-vertically))   ; makes a split with the other window twice
-    (switch-to-buffer nil)))   ; restore the original window
-                               ; in this part of the window
-
-;; Kill buffer in other window
-(defun my/kill-buffer-other-window ()
-  "If there are multiple windows, then kill the buffer in the next window."
-  (interactive)
-  (unless (one-window-p)
-    (other-window 1)
-    (kill-buffer)
-    (other-window -1)))
+;;; Kill windows
 
 ;; Quit window and kill its buffer
 (defun aj8/quit-window ()
@@ -1847,6 +1826,8 @@ inverse of the default behavior of the standard
   (if current-prefix-arg             ; C-u
       (magit-mode-bury-buffer nil)   ; bury
     (magit-mode-bury-buffer 1)))     ; kill
+
+;;; Better shrink/enlarge window functions
 
 ;; Wrapper for shrink-window-horizontally
 (defun hydra-move-splitter-left (arg)
@@ -1884,8 +1865,25 @@ inverse of the default behavior of the standard
       (shrink-window arg)
     (enlarge-window arg)))
 
+;;; Misc
+
+;; Toggle window split
+(defun my/toggle-window-split ()
+  "If the window is split vertically, split it horizontally, and vice versa."
+  (interactive)
+  (unless (= (count-windows) 2)
+    (error "Can only toggle a window split in two!"))
+  (let ((split-vertically-p (window-combined-p)))
+    (delete-window)   ; close current window
+    (if split-vertically-p
+        (split-window-horizontally)
+      (split-window-vertically))   ; makes a split with the other window twice
+    (switch-to-buffer nil)))   ; restore the original window
+                               ; in this part of the window
+
 ;;;; Buffers
 
+;;; Undo for killed buffers
 
 (defvar killed-file-list nil
   "List of recently killed files.")
@@ -1917,6 +1915,17 @@ Emacs session."
           (find-file file)))
     (error "No recently-killed files to reopen")))
 
+;;; Misc
+
+;; Kill buffer in other window
+(defun my/kill-buffer-other-window ()
+  "If there are multiple windows, then kill the buffer in the next window."
+  (interactive)
+  (unless (one-window-p)
+    (other-window 1)
+    (kill-buffer)
+    (other-window -1)))
+
 ;; Make a *scratch* buffer
 (defun create-scratch-buffer nil
        "Create a scratch buffer."
@@ -1926,7 +1935,9 @@ Emacs session."
 
 ;;;; Outline
 
-;; Set outline header format for Elisp files
+;;; Set outline header format
+
+;; Elisp files
 (defun outline-headers-for-semicolon-buffers ()
   "Set outline header format for buffers using semicolon (\";\")
 for comments."
@@ -1940,7 +1951,7 @@ for comments."
   ;; Don't use 'lisp-outline-level (doesn't use outline-heading-alist)
   (setq-local outline-level 'aj8/outline-level))
 
-;; Set outline header format for shell-script files
+;; Shell-script files
 (defun outline-headers-for-hash-mark-buffers ()
   "Set outline header format for buffers using hash mark (\"#\")
 for comments."
@@ -1954,7 +1965,7 @@ for comments."
   ;; Use custom 'outline-level' for sh-mode
   (setq-local outline-level 'aj8/outline-level))
 
-;; Set outline header format for Xresources files
+;; Xresources files
 (defun outline-headers-for-exclamation-mark-buffers ()
   "Set outline header format for buffers using exclamation
 mark (\"!\") for comments."
@@ -1968,7 +1979,27 @@ mark (\"!\") for comments."
   ;; Don't use 'conf-outline-level (doesn't use outline-heading-alist)
   (setq-local outline-level 'aj8/outline-level))
 
-;; Set keybindings for outline-(minor-)mode
+;; Return outline heading level
+(defun aj8/outline-level ()
+  "Return the depth to which a statement is nested in the outline.
+Point must be at the beginning of a header line.  This is the
+level specified in `outline-heading-alist' and not based on the
+number of characters matched by `outline-regexp'."
+  ;; (outline-back-to-heading)
+  (cdr (assoc (match-string 1) outline-heading-alist)))
+
+;; Print outline level
+(defun aj8/outline-level-message ()
+  "Print outline level to echo area."
+  (interactive)
+  (save-excursion
+    (outline-back-to-heading)
+    (let ((level (funcall outline-level)))
+      (message "Level: %d" level))))
+
+;;; Keybindings for outline-(minor-)mode
+
+;; Set keybindings
 (defun aj8/outline-mode-keys (map)
   "Set keybindings for outline-mode or outline-minor-mode.
 MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
@@ -1984,8 +2015,8 @@ MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
     (define-key m (kbd "C-c C-<down>") #'outline-forward-same-level)
     (define-key m (kbd "C-c M-p") #'outline-up-heading)))
 
-;; Check if there is a body?
 (defun outline--body-p ()
+  "Check if there is a body."
   (save-excursion
     (outline-back-to-heading)
     (outline-end-of-heading)
@@ -1993,15 +2024,15 @@ MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
          (progn (forward-char 1)
                 (not (outline-on-heading-p))))))
 
-;; Check if there is a visible body
 (defun outline--body-visible-p ()
+  "Check if there is a visble body."
   (save-excursion
     (outline-back-to-heading)
     (outline-end-of-heading)
     (not (outline-invisible-p))))
 
-;; Check if there is a sub-heading
 (defun outline--subheadings-p ()
+  "Check if there is a sub-heading."
   (save-excursion
     (outline-back-to-heading)
     (let ((level (funcall outline-level)))
@@ -2009,8 +2040,8 @@ MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
       (and (not (eobp))
            (< level (funcall outline-level))))))
 
-;; Check if there is a visible sub-heading
 (defun outline--subheadings-visible-p ()
+  "Check if there is a visible sub-heading."
   (interactive)                         ; TODO: why interactive?
   (save-excursion
     (outline-next-heading)
@@ -2043,23 +2074,7 @@ MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
           (t
            (outline-show-subtree)))))
 
-;; Return outline heading level
-(defun aj8/outline-level ()
-  "Return the depth to which a statement is nested in the outline.
-Point must be at the beginning of a header line.  This is the
-level specified in `outline-heading-alist' and not based on the
-number of characters matched by `outline-regexp'."
-  ;; (outline-back-to-heading)
-  (cdr (assoc (match-string 1) outline-heading-alist)))
-
-;; Print outline level
-(defun aj8/outline-level-message ()
-  "Print outline level to echo area."
-  (interactive)
-  (save-excursion
-    (outline-back-to-heading)
-    (let ((level (funcall outline-level)))
-      (message "Level: %d" level))))
+;;; Misc
 
 ;; Copy visible region
 ;;   Imported from org-mode
@@ -2078,6 +2093,8 @@ number of characters matched by `outline-regexp'."
     (message "Visible strings have been copied to the kill ring.")))
 
 ;;;; Navigation
+
+;;; Scrolling
 
 ;; Scroll up one paragraph
 (defun aj8/scroll-up-paragraph ()
@@ -2111,6 +2128,8 @@ number of characters matched by `outline-regexp'."
              (forward-line -1)
              (not (looking-at "^$"))))))
     ;; (scroll-down-line)))
+
+;;; Movement by lines or comments
 
 ;; Move up a line, skipping comments and empty lines
 (defun aj8/previous-line ()
@@ -2180,6 +2199,8 @@ number of characters matched by `outline-regexp'."
 
 ;;;; Selection
 
+;;; Better mark-word
+
 ;; Mark whole word (forward)
 (defun aj8/mark-word-forward (N)
   "Like mark-word, but select entire word at point."
@@ -2207,6 +2228,8 @@ Repeat command to select additional words backwards."
 
 ;;;; Editing
 
+;;; Misc
+
 ;; Copy symbol at point
 (defun my/copy-symbol-at-point ()
   "Add the symbol at point to the kill ring."
@@ -2226,6 +2249,25 @@ Repeat command to select additional words backwards."
 
 ;;;; Completion
 
+;;; Orderless style dispachers
+
+;; Flex
+(defun my/flex-if-twiddle (pattern _index _total)
+  (when (string-suffix-p "~" pattern)
+    `(orderless-flex . ,(substring pattern 0 -1))))
+
+;; Exclude literal
+(defun my/without-if-bang (pattern _index _total)
+  (when (string-prefix-p "!" pattern)
+    `(orderless-without-literal . ,(substring pattern 1))))
+
+;; Include literal
+(defun my/with-if-equal (pattern _index _total)
+   (when (string-prefix-p "=" pattern)
+    `(orderless-literal . ,(substring pattern 1))))
+
+;;; Misc
+
 ;; Set custom completion styles
 (defun my/completion-styles ()
   "Set custom completion styles."
@@ -2238,22 +2280,57 @@ Repeat command to select additional words backwards."
   ;; Cycle completions
   ;; (setq completion-cycle-threshold t)
 
-;; Orderless style dispacher: flex
-(defun my/flex-if-twiddle (pattern _index _total)
-  (when (string-suffix-p "~" pattern)
-    `(orderless-flex . ,(substring pattern 0 -1))))
-
-;; Orderless style dispacher: exclude literal
-(defun my/without-if-bang (pattern _index _total)
-  (when (string-prefix-p "!" pattern)
-    `(orderless-without-literal . ,(substring pattern 1))))
-
-;; Orderless style dispacher: include literal
-(defun my/with-if-equal (pattern _index _total)
-   (when (string-prefix-p "=" pattern)
-    `(orderless-literal . ,(substring pattern 1))))
-
 ;;;; Spelling
+
+;;; Flyspell
+
+;; Setup for web-mode
+(defun my/web-mode-flyspell-verify ()
+  "Fly Spell predicate of `web-mode`."
+  (let* ((font-face-at-point (get-text-property (- (point) 1) 'face))
+         rlt)
+    ;; If rlt is t, the word at point is POSSIBLY a typo, continue checking.
+    (setq rlt t)
+    ;; if rlt is nil, the word at point is definitely NOT a typo.
+    ;; (setq rlt nil)
+    rlt))
+
+;; Setup for web-mode (with blacklist)
+;; (defun my/web-mode-flyspell-verify ()
+;;   "Fly Spell predicate of `web-mode`."
+;;   (let* ((f (get-text-property (- (point) 1) 'face))
+;;          rlt)
+;;     (cond
+;;      ;; Check the words with these font faces, possibly.
+;;      ;; this *blacklist* will be tweaked in next condition
+;;      ((not (memq f '(web-mode-html-attr-value-face
+;;                      web-mode-html-tag-face
+;;                      web-mode-html-attr-name-face
+;;                      web-mode-constant-face
+;;                      web-mode-doctype-face
+;;                      web-mode-keyword-face
+;;                      web-mode-comment-face ;; focus on get html label right
+;;                      web-mode-function-name-face
+;;                      web-mode-variable-name-face
+;;                      web-mode-css-property-name-face
+;;                      web-mode-css-selector-face
+;;                      web-mode-css-color-face
+;;                      web-mode-type-face
+;;                      web-mode-block-control-face)))
+;;       (setq rlt t))
+;;      ;; check attribute value under certain conditions
+;;      ((memq f '(web-mode-html-attr-value-face))
+;;       (save-excursion
+;;         (search-backward-regexp "=['\"]" (line-beginning-position) t)
+;;         (backward-char)
+;;         (setq rlt (string-match "^\\(value\\|class\\|ng[A-Za-z0-9-]*\\)$"
+;;                                 (thing-at-point 'symbol)))))
+;;      ;; finalize the blacklist
+;;      (t
+;;       (setq rlt nil)))
+;;     rlt))
+
+;;; Misc
 
 ;; ispell-region stub for whole-line-or-region package
 (defun whole-line-or-region-ispell-region (prefix)
@@ -2299,59 +2376,15 @@ Repeat command to select additional words backwards."
             (message "No more miss-spelled word!")
             (setq arg 0))))))
 
-;; flyspell setup for web-mode
-(defun my/web-mode-flyspell-verify ()
-  "Fly Spell predicate of `web-mode`."
-  (let* ((font-face-at-point (get-text-property (- (point) 1) 'face))
-         rlt)
-    ;; If rlt is t, the word at point is POSSIBLY a typo, continue checking.
-    (setq rlt t)
-    ;; if rlt is nil, the word at point is definitely NOT a typo.
-    ;; (setq rlt nil)
-    rlt))
-
-;; flyspell setup for web-mode (with blacklist)
-;; (defun my/web-mode-flyspell-verify ()
-;;   "Fly Spell predicate of `web-mode`."
-;;   (let* ((f (get-text-property (- (point) 1) 'face))
-;;          rlt)
-;;     (cond
-;;      ;; Check the words with these font faces, possibly.
-;;      ;; this *blacklist* will be tweaked in next condition
-;;      ((not (memq f '(web-mode-html-attr-value-face
-;;                      web-mode-html-tag-face
-;;                      web-mode-html-attr-name-face
-;;                      web-mode-constant-face
-;;                      web-mode-doctype-face
-;;                      web-mode-keyword-face
-;;                      web-mode-comment-face ;; focus on get html label right
-;;                      web-mode-function-name-face
-;;                      web-mode-variable-name-face
-;;                      web-mode-css-property-name-face
-;;                      web-mode-css-selector-face
-;;                      web-mode-css-color-face
-;;                      web-mode-type-face
-;;                      web-mode-block-control-face)))
-;;       (setq rlt t))
-;;      ;; check attribute value under certain conditions
-;;      ((memq f '(web-mode-html-attr-value-face))
-;;       (save-excursion
-;;         (search-backward-regexp "=['\"]" (line-beginning-position) t)
-;;         (backward-char)
-;;         (setq rlt (string-match "^\\(value\\|class\\|ng[A-Za-z0-9-]*\\)$"
-;;                                 (thing-at-point 'symbol)))))
-;;      ;; finalize the blacklist
-;;      (t
-;;       (setq rlt nil)))
-;;     rlt))
-
 ;;;; Files
 
 ;;;; Coding
 
 ;;;; Version control
 
-;; ediff: enable concatenation
+;;; Misc
+
+;; Enable concatenation in ediff
 ;;   (when merging, use both variants A and B, one after the other)
 (defun my/ediff-copy-both-to-C ()
   "Add both variants to merge file."
@@ -2365,7 +2398,9 @@ Repeat command to select additional words backwards."
 
 ;;;; Help
 
-;; helpful: always open additional helpful buffers in the same window
+;;; Misc
+
+;; Always open additional helpful buffers in the same window
 (defun aj8/helpful-switch-to-buffer (buffer-or-name)
   "Switch to helpful BUFFER-OR-NAME.
 If we are currently in the helpful buffer, reuse it's window,
@@ -2384,6 +2419,8 @@ buffer in a new window instead."
     (pop-to-buffer buffer-or-name)))
 
 ;;;; Web
+
+;;; eww
 
 ;; Open new eww buffers in a new window
 ;;   M-RET
@@ -2424,7 +2461,6 @@ To be used by `eww-after-render-hook'."
 (advice-add 'eww-back-url :after #'prot-eww--rename-buffer)
 (advice-add 'eww-forward-url :after #'prot-eww--rename-buffer)
 
-;; Get current URL in eww
 (defun prot-eww--get-current-url ()
   "Return the current-page's URL."
   (cond ((eq major-mode 'eww-mode)
@@ -2455,22 +2491,8 @@ When called from an eww buffer, provide the current link as
 
 ;;;; Other
 
-;; Swap universal prefix argument for functions
-(defun my/toggle-prefix-arg (fun)
-  "Toggle universal prefix argument for FUNCTION fun.
-If called with a prefix argument, the prefix argument will be
-removed. If called without a prefix argument, a prefix argument
-will be applied. This only works for interactive \"P\"
-functions."
-  (if (not (equal (interactive-form fun) '(interactive "P")))
-      (error "Unexpected: must be interactive \"P\" function")
-    (advice-add fun :around (lambda (x &rest args)
-                              "Swap universal prefix argument for FUNCTION fun."
-                              (if (called-interactively-p 'any)
-                                  (apply x (cons (not (car args)) (cdr args)))
-                                (apply x args))))))
+;;; xterm key sequence mappings for rxvt
 
-;; Helper function for rxvt-input-decode-map
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
   "Add mappings for a given list of escape sequences and list of
 keys."
@@ -2498,6 +2520,23 @@ keys to the the respective xterm key sequence."
   (rxvt--add-escape-key-mapping-alist "\e[1;6" "C-S-" nav-key-pair-alist)
   (rxvt--add-escape-key-mapping-alist "\e[1;7" "M-C-" nav-key-pair-alist)
   (rxvt--add-escape-key-mapping-alist "\e[1;8" "M-C-S-" nav-key-pair-alist))
+
+;;; Misc
+
+;; Swap universal prefix argument for functions
+(defun my/toggle-prefix-arg (fun)
+  "Toggle universal prefix argument for FUNCTION fun.
+If called with a prefix argument, the prefix argument will be
+removed. If called without a prefix argument, a prefix argument
+will be applied. This only works for interactive \"P\"
+functions."
+  (if (not (equal (interactive-form fun) '(interactive "P")))
+      (error "Unexpected: must be interactive \"P\" function")
+    (advice-add fun :around (lambda (x &rest args)
+                              "Swap universal prefix argument for FUNCTION fun."
+                              (if (called-interactively-p 'any)
+                                  (apply x (cons (not (car args)) (cdr args)))
+                                (apply x args))))))
 
 ;; Reload init-file
 (defun reload-init-file ()
