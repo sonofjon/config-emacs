@@ -167,9 +167,24 @@
 ;; benchmark-init (startup profiler)
 (use-package benchmark-init
   :disabled
-  ;; :disabled
   ;; Disable collection of benchmark data after init
   :hook (after-init-hook . #'benchmark-init/deactivate)
+  :init
+  ;; Start benchmark
+  (benchmark-init/activate)
+  :config
+  ;; Configure list format
+  (setq benchmark-init/list-format
+   (quote [("Module" 50 t)
+    ("Type" 7 t)
+    ("ms" 7 (lambda (a b) (< (string-to-number (aref (cadr a) 2))
+                             (string-to-number (aref (cadr b) 2))))
+     :right-align t)
+    ("total" 7 (lambda (a b) (< (string-to-number (aref (cadr a) 3))
+                                (string-to-number (aref (cadr b) 3))))
+     :right-align t)]))
+  ;; Set sort key
+  (setq benchmark-init/list-sort-key  '("ms" . t)))
 
 ;;; Package management
 
