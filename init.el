@@ -662,6 +662,7 @@
 
 ;; orderless (orderless completion style)
 (use-package orderless
+  ;; :disabled
   :after (:any icomplete-vertical vertico)
   :config
   ;; Use orderless for completion
@@ -736,6 +737,10 @@
   ;; (setq consult-preview-key (kbd "M-."))         ; default is 'any
   ;; (setq consult-preview-key (list (kbd "<down>") (kbd "<up>")))
   ;; Configure preview (on a per-command basis)
+  (consult-customize
+   consult-completion-in-region
+   :completion-styles '(basic))   ; disable orderless
+   ;; :require-match t)
   (consult-customize
    consult-theme
    :preview-key '(:debounce 0.2 any)
