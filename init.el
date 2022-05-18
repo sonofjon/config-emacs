@@ -167,9 +167,9 @@
 ;; benchmark-init (startup profiler)
 (use-package benchmark-init
   :disabled
-  :config
+  ;; :disabled
   ;; Disable collection of benchmark data after init
-  (add-hook 'after-init-hook #'benchmark-init/deactivate))
+  :hook (after-init-hook . #'benchmark-init/deactivate)
 
 ;;; Package management
 
