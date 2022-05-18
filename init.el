@@ -581,12 +581,16 @@
   :bind (:map vertico-map
               ("?" . minibuffer-completion-help)
               ("C-c ?" . minibuffer-hide-completions)
-              ("M-c" . minibuffer-complete)
-              ("M-f" . minibuffer-force-complete))
+              ;; ("TAB" . vertico-insert)   ; default
+              ("<backtab>" . vertico-insert)
+              ("TAB" . minibuffer-complete))
+              ;; ("<backtab>" . minibuffer-force-complete))
   :custom
   ;; Enable cycling
   (vertico-cycle t)
   :config
+  ;; Unbind default TAB binding
+  (unbind-key "TAB" vertico-map)
   ;; Enable M-x minibuffer-hide-completions (make function interactive)
   (put 'minibuffer-hide-completions 'interactive-form '(interactive))
   (my/completion-styles))
