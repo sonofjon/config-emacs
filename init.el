@@ -991,7 +991,10 @@
 ;; ztree (directory-diff tool)
 (use-package ztree
   :custom
+  ;; Use pretty Unicode art
   (ztree-draw-unicode-lines t))
+  ;; Customize file filter (default is all dot-files) 
+  ;; (setq-default ztree-diff-filter-list (cons \"^.*\\.pyc\" ztree-diff-filter-list)))
 
 ;;; Help
 
