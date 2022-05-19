@@ -1431,7 +1431,7 @@
 (setq eww-search-prefix "https://google.com/search?q=")   ; default is duckduckgo
 ;; Restore eww buffers
 (setq eww-restore-desktop t)
-;; Don't remove duplicates in browing history
+;; Don't remove duplicates in browsing history
 ;; (setq eww-desktop-remove-duplicates nil)
 ;; Download folder
 (setq eww-download-directory (expand-file-name "~/Downloads"))
@@ -2117,7 +2117,7 @@ MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
                 (not (outline-on-heading-p))))))
 
 (defun outline--body-visible-p ()
-  "Check if there is a visble body."
+  "Check if there is a visible body."
   (save-excursion
     (outline-back-to-heading)
     (outline-end-of-heading)
@@ -2341,7 +2341,7 @@ Repeat command to select additional words backwards."
 
 ;;;; Completion
 
-;;; Orderless style dispachers
+;;; Orderless style dispatchers
 
 ;; Flex
 (defun my/flex-if-twiddle (pattern _index _total)
