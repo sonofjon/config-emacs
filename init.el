@@ -2400,6 +2400,13 @@ versa."
    (t
     (error "`ispell-program` must be either `aspell` or `hunspell`"))))
 
+
+;; ispell-region stub for whole-line-or-region package
+(defun whole-line-or-region-ispell-region (prefix)
+  "Call `ispell-region' on region or PREFIX whole lines."
+  (interactive "*p")
+  (whole-line-or-region-wrap-modified-region #'ispell-region prefix))
+
 ;;; Flyspell
 
 ;; Setup for web-mode
@@ -2447,14 +2454,6 @@ versa."
 ;;      (t
 ;;       (setq rlt nil)))
 ;;     rlt))
-
-;;; Misc
-
-;; ispell-region stub for whole-line-or-region package
-(defun whole-line-or-region-ispell-region (prefix)
-  "Call `ispell-region' on region or PREFIX whole lines."
-  (interactive "*p")
-  (whole-line-or-region-wrap-modified-region #'ispell-region prefix))
 
 ;; Goto previous flyspell error
 (defun my/flyspell-goto-previous-error (arg)
