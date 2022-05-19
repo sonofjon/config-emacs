@@ -2374,6 +2374,32 @@ Repeat command to select additional words backwards."
 
 ;;;; Spelling
 
+;;; ispell
+
+;; Toggle ispell program
+(defun aj8/toggle-ispell-program ()
+  "Toggle `ispell` program.
+If current program is `aspell`, switch to `hunspell`, and vice
+versa."
+  (interactive)
+  (cond
+   ((string-match-p "hunspell" ispell-program-name)   ; switch to aspell
+    (setq ispell-program-name "aspell")
+    (setq ispell-dictionary "en_US")
+    (setq ispell-extra-args '("--sug-mode=ultra"))
+    (setq ispell-personal-dictionary nil))
+   ((string-match-p "aspell" ispell-program-name)   ; switch to hunspell
+    (setq ispell-program-name "hunspell")
+    (setq ispell-dictionary "en_US,sv_SE")
+    (with-eval-after-load "ispell"
+      (ispell-set-spellchecker-params)
+      (ispell-hunspell-add-multi-dic "en_US,sv_SE"))
+    (setq ispell-personal-dictionary "~/.hunspell_personal")
+    (unless (file-exists-p ispell-personal-dictionary)
+      (with-temp-buffer (write-file ispell-personal-dictionary))))
+   (t
+    (error "`ispell-program` must be either `aspell` or `hunspell`"))))
+
 ;;; Flyspell
 
 ;; Setup for web-mode
