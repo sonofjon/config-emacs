@@ -1356,13 +1356,39 @@
 
 ;;; Spelling
 
+;; Configure language environment
+;; (setenv "LANG" "en_US.UTF-8")
+
+;; Use aspell
+(setq ispell-program-name "aspell")
+
 ;; Set language
-(setq ispell-dictionary "en")
+(setq ispell-dictionary "en_US")
 
 ;; Set aspell suggestion mode
 (setq ispell-extra-args '("--sug-mode=ultra"))
 ;; (setq ispell-extra-args '("--sug-mode=fast"))
 ;; (setq ispell-extra-args '("--sug-mode=normal"))
+
+;; Use hunspell
+;;   Can handle multiple languages simultaneously
+;; (setq ispell-program-name "hunspell")
+
+;; hunspell setup
+(when (string-match-p "hunspell" ispell-program-name)
+  ;; Set language(s)
+  (setq ispell-dictionary "en_US,sv_SE")
+  (with-eval-after-load "ispell"
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic "en_US,sv_SE"))
+
+  ;; Don't overwrite default personal dictionaries
+  (setq ispell-personal-dictionary "~/.hunspell_personal")
+
+  ;; Make sure personal dictionary file exists
+  ;;   (otherwise hunspell will silently not use it)
+  (unless (file-exists-p ispell-personal-dictionary)
+    (with-temp-buffer (write-file ispell-personal-dictionary))))
 
 ;; Enable flyspell in web-mode
 (put 'web-mode 'flyspell-mode-predicate #'my/web-mode-flyspell-verify)
