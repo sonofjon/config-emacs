@@ -911,6 +911,7 @@
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
     :mode (".html?$")
+    :hook (web-mode . (lambda () (setq truncate-lines nil)))
     :custom
     ;; Enable auto-functionality in the terminal
     ;;   Note: this can be bad when pasting text
@@ -919,10 +920,7 @@
     (web-mode-enable-auto-indentation t)
     (web-mode-enable-auto-opening t)
     (web-mode-enable-auto-pairing t)
-    (web-mode-enable-auto-quoting t)
-    :config
-    ;; Use continuation lines
-    (setq truncate-lines nil))
+    (web-mode-enable-auto-quoting t))
 
 ;; yaml-mode (major-mode for editing YAML files)
 (use-package yaml-mode
