@@ -521,6 +521,9 @@
   (unbind-key "C-c ." dot-mode-map)
   (unbind-key "C-M-." dot-mode-map))
 
+;; lorem-ipsum (lorem ipsum text filler)
+(use-package lorem-ipsum)
+
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
