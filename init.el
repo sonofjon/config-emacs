@@ -912,7 +912,16 @@
 (use-package web-mode
     :mode (".html?$")
     :hook (web-mode . (lambda () (setq truncate-lines nil)))
+    :init
+    ;; Engines
+    (setq web-mode-engines-alist '(("django" . "\\.html\\'")
+                                   ("blade" . "\\.blade\\.")))
     :custom
+    ;; Indentation
+    ;; (web-mode-markup-indent-offset 2)
+    ;; (web-mode-code-indent-offset 2)
+    ;; Padding
+    ;; (web-mode-block-padding 1)
     ;; Enable auto-functionality in the terminal
     ;;   Note: this can be bad when pasting text
     (web-mode-enable-auto-expanding t)
