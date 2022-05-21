@@ -637,7 +637,7 @@
   ;; Enable Corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
   (when (display-graphic-p)   ; only enable if using GUI
-    (corfu-global-mode)))
+    (global-corfu-mode)))
 
 ;; corfu-doc (documentation popup for corfu)
 (use-package corfu-doc
