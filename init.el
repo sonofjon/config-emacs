@@ -636,11 +636,11 @@
   :init
   ;; Enable Corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
-  (when (display-graphic-p)   ; only enable if using GUI
-    (global-corfu-mode)))
+  (global-corfu-mode))
 
 ;; corfu-doc (documentation popup for corfu)
 (use-package corfu-doc
+  :after corfu
   :hook (corfu-mode . corfu-doc-mode)
   :bind (:map corfu-map
               ("M-p" . #'corfu-doc-scroll-down)   ; corfu-next
