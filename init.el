@@ -652,6 +652,20 @@
   ;; Enable manually
   (corfu-doc-auto nil))
 
+;; corfu-terminal (corfu popup on terminal)
+;;   TODO: check again when package more mature
+;; (unless (display-graphic-p)
+;;   (use-package corfu-terminal
+;;     :disabled
+;;     :after corfu
+;;     :config
+;;     (corfu-terminal-mode 1)))
+
+;; (use-package corfu-terminal
+;;   :quelpa (corfu-terminal
+;;            :fetcher github
+;;            :url "https://codeberg.org/akib/emacs-corfu-terminal.git"))
+
 ;; cape (completion at point extensions for corfu)
 (use-package cape
   :after which-key
