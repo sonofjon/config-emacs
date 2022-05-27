@@ -767,7 +767,7 @@
   (which-key-add-key-based-replacements "C-c c" "consult")
   :config
   ;; Configure preview
-  ;; (setq consult-preview-key (kbd "M-."))         ; default is 'any
+  ;; (setq consult-preview-key (kbd "M-`"))         ; default is 'any
   ;; (setq consult-preview-key (list (kbd "<down>") (kbd "<up>")))
   ;; Configure preview (on a per-command basis)
   (consult-customize
@@ -780,7 +780,7 @@
    consult-ripgrep consult-git-grep consult-grep consult-bookmark
    consult-recent-file consult-xref consult--source-bookmark
    consult--source-recent-file consult--source-project-recent-file
-   :preview-key (kbd "M-.")))
+   :preview-key (kbd "M-`")))
    ;; :preview-key (list (kbd "<down>") (kbd "<up>"))))
   ;; Narrowing key
   ;; (setq consult-narrow-key "<")
@@ -791,6 +791,30 @@
 ;; consult-project-extra (project extension for consult)
 (use-package consult-project-extra
   :bind ("C-c p" . consult-project-extra-find))
+
+;; embark (context aware actions)
+(use-package embark
+  :bind (("M-." . embark-act)
+         ("M-," . embark-dwim)
+         ("C-h B" . embark-bindings)) ; alternative for `describe-bindings'
+  ;; :init
+  ;; Optionally replace the key help with a completing-read interface
+  ;; (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; embark-consult (integration between embark and consult)
+(use-package embark-consult
+  :after (embark consult)
+  :demand t ; only necessary if you have the hook below
+  ;; if you want to have consult previews as you move around an
+  ;; auto-updating embark collect buffer
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 ;;; Spelling
 
