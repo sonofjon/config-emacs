@@ -920,7 +920,8 @@
          ;; ("M-<down>" . treemacs-next-neighbour)   ; not needed
          ;; ("M-<up>" . treemacs-previous-neighbour)   ; not needed
          ("C-c C-p <down>" . treemacs-move-project-down)   ; TODO update transient help with these new bindings
-         ("C-c C-p <up>" . treemacs-move-project-up)))
+         ("C-c C-p <up>" . treemacs-move-project-up)
+         ("o l" . treemacs-visit-node-in-least-recently-used-window)))
 
 ;; (use-package treemacs-icons-dired
 ;;   :hook (dired-mode . treemacs-icons-dired-enable-once)
@@ -1990,6 +1991,22 @@ inverse of the default behavior of the standard
       (split-window-vertically))   ; makes a split with the other window twice
     (switch-to-buffer nil)))   ; restore the original window
                                ; in this part of the window
+
+;; Visit oldest window with treemacs
+(defun treemacs-visit-node-in-least-recently-used-window (&optional arg)
+  "Open current file or tag in window selected by `get-lru-window'.
+Stay in the current window with a single prefix argument ARG, or close the
+treemacs window with a double prefix argument."
+  (interactive "P")
+  (treemacs--execute-button-action
+   :window (get-lru-window (selected-frame) nil :not-selected)
+   :file-action (find-file (treemacs-safe-button-get btn :path))
+   :dir-action (dired (treemacs-safe-button-get btn :path))
+   :tag-section-action (treemacs--visit-or-expand/collapse-tag-node btn arg nil)
+   :tag-action (treemacs--goto-tag btn)
+   :window-arg arg
+   :ensure-window-split t
+   :no-match-explanation "Node is neither a file, a directory or a tag - nothing to do here."))
 
 ;;;; Buffers
 
