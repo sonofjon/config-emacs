@@ -908,14 +908,11 @@
       (`(t . _)
        (treemacs-git-mode 'simple))))
 
-  :bind (:map global-map
-              ("M-0"       . treemacs-select-window)
-              ("C-c t 1"   . treemacs-delete-other-windows)
-              ("C-c t t"   . treemacs)
-              ("C-c t d"   . treemacs-select-directory)
-              ("C-c t B"   . treemacs-bookmark)
-              ("C-c t C-t" . treemacs-find-file)
-              ("C-c t M-t" . treemacs-find-tag)))
+  :bind (("M-0" . treemacs-select-window)   ; TODO: this conflicts with C-u 0
+         ("C-c t 1" . treemacs-delete-other-windows)
+         ("C-c t t" . treemacs)
+         ("C-c t d" . treemacs-select-directory)
+         ("C-c t f" . treemacs-find-file)
 
 ;; (use-package treemacs-icons-dired
 ;;   :hook (dired-mode . treemacs-icons-dired-enable-once)
