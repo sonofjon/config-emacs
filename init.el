@@ -840,6 +840,8 @@
   :defer t
   :init
   (which-key-add-key-based-replacements "C-c t" "treemacs")
+  (which-key-add-key-based-replacements "C-c C-p" "treemacs")
+  (which-key-add-key-based-replacements "C-c C-w" "treemacs")
   :config
   (progn
     (setq
