@@ -540,6 +540,7 @@
                      ("," . mc/mark-previous-like-this-symbol)
                      ("." . mc/mark-next-like-this-symbol)
                      ("/" . mc/mark-all-like-this-dwim)
+                     ("m" . mc/mark-more-like-this-extended)
                      ;; ("" . mc/mark-all-dwim)
                      ("e" . mc/edit-lines)))
 
