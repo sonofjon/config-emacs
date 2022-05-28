@@ -668,6 +668,7 @@
 ;;            :url "https://codeberg.org/akib/emacs-corfu-terminal.git"))
 
 ;; cape (completion at point extensions for corfu)
+;;   TODO: Fix completion in terminal
 (unless (display-graphic-p)
   (use-package cape
     :after (corfu which-key)
@@ -928,6 +929,7 @@
 ;;   :ensure t)
 
 ;; (use-package treemacs-magit
+;;   TODO!
 ;;   :after (treemacs magit)
 ;;   :ensure t)
 
@@ -2083,6 +2085,7 @@ and `my/previous-buffer'."
 ;;; Misc
 
 ;; Kill buffer in other window
+;;   TODO: don't kill treemacs window
 (defun my/kill-buffer-other-window ()
   "If there are multiple windows, then kill the buffer in the next window."
   (interactive)
