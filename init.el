@@ -1624,6 +1624,8 @@
 
 ;;; Theme
 
+(global-set-key (kbd "C-c n") 'column-number-mode)
+
 ;;; Windows
 
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
