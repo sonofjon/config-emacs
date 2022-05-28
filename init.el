@@ -913,6 +913,14 @@
          ("C-c t t" . treemacs)
          ("C-c t d" . treemacs-select-directory)
          ("C-c t f" . treemacs-find-file)
+         :map treemacs-mode-map
+         ;; Custom navigation
+         ("<down>" . treemacs-next-line)
+         ("<up>" . treemacs-previous-line)
+         ;; ("M-<down>" . treemacs-next-neighbour)   ; not needed
+         ;; ("M-<up>" . treemacs-previous-neighbour)   ; not needed
+         ("C-c C-p <down>" . treemacs-move-project-down)   ; TODO update transient help with these new bindings
+         ("C-c C-p <up>" . treemacs-move-project-up)))
 
 ;; (use-package treemacs-icons-dired
 ;;   :hook (dired-mode . treemacs-icons-dired-enable-once)
