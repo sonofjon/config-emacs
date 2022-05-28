@@ -2024,8 +2024,9 @@ Emacs session."
 ;;; Skip unimportant buffers when switching
 
 (defcustom my/skippable-buffer-regexp
-  (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Help*" "*Messages*"
-                  "*package*" "*scratch*" "*Warnings*" "*Async-native-compile-log*")
+  (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Completions*" "*Help*"
+                  "*Messages*" "*package*" "*scratch*" "*Warnings*"
+                  "*Async-native-compile-log*")
               (seq "magit-diff" (zero-or-more anything))
               (seq "magit-process" (zero-or-more anything))
               (seq "magit-revision" (zero-or-more anything)))
