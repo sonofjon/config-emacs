@@ -927,10 +927,9 @@
 ;;   :hook (dired-mode . treemacs-icons-dired-enable-once)
 ;;   :ensure t)
 
-;; (use-package treemacs-magit
-;;   TODO!
-;;   :after (treemacs magit)
-;;   :ensure t)
+;; treemacs-magit (make treemacs aware of magit operations)
+(use-package treemacs-magit
+  :after (treemacs magit))
 
 ;;; Coding
 
