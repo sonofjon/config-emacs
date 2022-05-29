@@ -644,9 +644,9 @@
   :after corfu
   :hook (corfu-mode . corfu-doc-mode)
   :bind (:map corfu-map
-              ("M-p" . #'corfu-doc-scroll-down)   ; corfu-next
-              ("M-n" . #'corfu-doc-scroll-up)     ; corfu-previous
-              ("M-d" . #'corfu-doc-toggle))
+              ("M-p" . corfu-doc-scroll-down)   ; corfu-next
+              ("M-n" . corfu-doc-scroll-up)     ; corfu-previous
+              ("M-d" . corfu-doc-toggle))
   :custom
   ;; (corfu-doc-delay 0)
   ;; (corfu-doc-hide-threshold 0)
@@ -823,15 +823,14 @@
 
 ;; flyspell-correct (wrapper for flyspell with completion)
 (use-package flyspell-correct
-  ;; TODO: Fix inconsistent us of # and ' (globally)
   :after flyspell
   :bind (:map flyspell-mode-map
               ;; ("C-;" . flyspell-auto-correct-word)
               ("C-;" . flyspell-correct-wrapper)
-              ("C-c ," . #'my/flyspell-goto-previous-error)
-              ("C-," . #'flyspell-correct-previous)
-              ("C-c ." . #'flyspell-goto-next-error)
-              ("C-." . #'flyspell-correct-next)))
+              ("C-c ," . my/flyspell-goto-previous-error)
+              ("C-," . flyspell-correct-previous)
+              ("C-c ." . flyspell-goto-next-error)
+              ("C-." . flyspell-correct-next)))
 
 ;;; Files
 
@@ -1149,8 +1148,8 @@
 (use-package elfeed
   :commands elfeed
   :bind (:map elfeed-search-mode-map
-              ("g" . #'elfeed-search-fetch)
-              ("G" . #'elfeed-search-update--force))
+              ("g" . elfeed-search-fetch)
+              ("G" . elfeed-search-update--force))
   :custom
   ;; Subscriptions
   (elfeed-feeds '("https://www.reddit.com/r/emacs/.rss"
@@ -1281,8 +1280,8 @@
 ;;; Spelling...
 
 ;; On-the-fly spell checking
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'prog-mode-hook #'flyspell-prog-mode)
 
 ;;; Files...
 
@@ -1300,7 +1299,7 @@
 ;;; Other...
 
 ;; Expand abbreviations
-(add-hook 'text-mode-hook 'abbrev-mode)
+(add-hook 'text-mode-hook #'abbrev-mode)
 
 ;;;; Variables
 
@@ -1396,7 +1395,7 @@
 ;; Use spaces, not tabs
 (setq-default indent-tabs-mode nil)
 
-;; Delete trailing newline character with 'kill-line
+;; Delete trailing newline character with kill-line
 (setq kill-whole-line t)
 
 ;; Don't use the mark when region is inactive
@@ -1505,11 +1504,11 @@
 ;; Open new eww buffers in a new window (M-RET)
 (with-eval-after-load "eww"
   (define-key eww-mode-map
-    [remap eww-open-in-new-buffer] 'aj8/eww-open-in-new-buffer))
+    [remap eww-open-in-new-buffer] #'aj8/eww-open-in-new-buffer))
 ;; Open new eww buffers in a new window (C-u RET)
 (with-eval-after-load "eww"
   (define-key eww-mode-map
-    [remap eww-follow-link] 'aj8/eww-follow-link))
+    [remap eww-follow-link] #'aj8/eww-follow-link))
 
 ;; Are these needed?
 ;; (setq shr-use-colors nil)             ; t is bad for accessibility
@@ -1561,19 +1560,19 @@
 
 ;; emacs-lisp-mode: outline settings
 (add-hook 'emacs-lisp-mode-hook
-          'outline-headers-for-semicolon-buffers)
+          #'outline-headers-for-semicolon-buffers)
 
 ;; conf-xdefaults-mode: outline settings
 (add-hook 'conf-xdefaults-mode-hook
-          'outline-headers-for-exclamation-mark-buffers)
+          #'outline-headers-for-exclamation-mark-buffers)
 
 ;; shell-scrip-mode: outline settings
 (add-hook 'sh-mode-hook
-          'outline-headers-for-hash-mark-buffers)
+          #'outline-headers-for-hash-mark-buffers)
 
 ;; i3wm-config-mode: outline settings
 (add-hook 'i3wm-config-mode-hook
-          'outline-headers-for-hash-mark-buffers)
+          #'outline-headers-for-hash-mark-buffers)
 
 ;; activate-mark: deactivate highlight mode when selecting text
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
@@ -1586,19 +1585,19 @@
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
 ;; help-mode: kill buffers on quit
-(define-key help-mode-map [remap quit-window] 'aj8/quit-window)
+(define-key help-mode-map [remap quit-window] #'aj8/quit-window)
 
 ;; Info-mode: kill buffers on quit
 (with-eval-after-load "info"
-  (define-key Info-mode-map [remap quit-window] 'aj8/quit-window))
+  (define-key Info-mode-map [remap quit-window] #'aj8/quit-window))
 
 ;; dired-mode: kill buffers on quit
 (with-eval-after-load "dired"
-  (define-key dired-mode-map [remap quit-window] 'aj8/quit-window))
+  (define-key dired-mode-map [remap quit-window] #'aj8/quit-window))
 
 ;; eww-mode: kill buffers on quit
 (with-eval-after-load "eww"
-  (define-key eww-mode-map [remap quit-window] 'aj8/quit-window))
+  (define-key eww-mode-map [remap quit-window] #'aj8/quit-window))
 
 
 ;;;;; KEYBINDINGS
@@ -1625,7 +1624,7 @@
 
 ;;; Theme
 
-(global-set-key (kbd "C-c n") 'column-number-mode)
+(global-set-key (kbd "C-c n") #'column-number-mode)
 
 ;;; Windows
 
@@ -1639,8 +1638,8 @@
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
 (global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
-(global-set-key [remap next-buffer] 'my/next-buffer)
-(global-set-key [remap previous-buffer] 'my/previous-buffer)
+(global-set-key [remap next-buffer] #'my/next-buffer)
+(global-set-key [remap previous-buffer] #'my/previous-buffer)
 
 ;;; Outline
 
@@ -1664,8 +1663,8 @@
 (global-set-key (kbd "M-p") #'backward-paragraph)
 (global-set-key (kbd "M-n") #'forward-paragraph)
 
-;; (global-set-key (kbd "C-c <up>") 'aj8/previous-line)
-;; (global-set-key (kbd "C-c <down>") 'aj8/next-line)
+;; (global-set-key (kbd "C-c <up>") #'aj8/previous-line)
+;; (global-set-key (kbd "C-c <down>") #'aj8/next-line)
 
 (global-set-key (kbd "C-c x l") #'scroll-lock-mode)
 (which-key-add-key-based-replacements "C-c x" "misc")
@@ -1676,12 +1675,12 @@
 ;; (global-unset-key (kbd "C-M-<down>"))
 ;; (global-unset-key (kbd "C-M-<left>"))
 ;; (global-unset-key (kbd "C-M-<right>"))
-;; (global-set-key (kbd "C-M-<left>") #'backward-up-list) ; overwrites default 'backward-sexp
-;; (global-set-key (kbd "C-M-<right>") #'down-list) ; overwrites default 'backward-sexp
-(global-set-key (kbd "C-M-<left>") #'backward-list) ; overwrites default 'backward-sexp
-(global-set-key (kbd "C-M-<right>") #'forward-list) ; overwrites default 'backward-sexp
-(global-set-key (kbd "C-M-p") #'backward-up-list)   ; overwrites default 'backward-list
-(global-set-key (kbd "C-M-n") #'down-list)          ; overwrites default 'forward-list
+;; (global-set-key (kbd "C-M-<left>") #'backward-up-list) ; overwrites default backward-sexp
+;; (global-set-key (kbd "C-M-<right>") #'down-list) ; overwrites default backward-sexp
+(global-set-key (kbd "C-M-<left>") #'backward-list) ; overwrites default backward-sexp
+(global-set-key (kbd "C-M-<right>") #'forward-list) ; overwrites default backward-sexp
+(global-set-key (kbd "C-M-p") #'backward-up-list)   ; overwrites default backward-list
+(global-set-key (kbd "C-M-n") #'down-list)          ; overwrites default forward-list
 
 ;;; Search
 
@@ -1696,15 +1695,15 @@
 
 (global-set-key (kbd "C-c ;") #'comment-line)
 
-(global-set-key (kbd "M-u") 'upcase-dwim)
-(global-set-key (kbd "M-l") 'downcase-dwim)
-(global-set-key (kbd "M-c") 'capitalize-dwim)
+(global-set-key (kbd "M-u") #'upcase-dwim)
+(global-set-key (kbd "M-l") #'downcase-dwim)
+(global-set-key (kbd "M-c") #'capitalize-dwim)
 
-(global-set-key (kbd "C-c q") 'fill-individual-paragraphs) ; use with `C-x .'
+(global-set-key (kbd "C-c q") #'fill-individual-paragraphs) ; use with `C-x .'
                                                            ; for comments
 
-(global-set-key (kbd "C-c s") 'my/copy-symbol-at-point)
-(global-set-key (kbd "C-c l") 'my/copy-line)
+(global-set-key (kbd "C-c s") #'my/copy-symbol-at-point)
+(global-set-key (kbd "C-c l") #'my/copy-line)
 
 ;;; Completion
 
@@ -1741,15 +1740,15 @@
 (global-set-key (kbd "C-c r") #'reload-init-file)
 
 ;; Mac-like bindings
-;; (global-set-key (kbd "s-q") 'save-buffers-kill-terminal)
-;; (global-set-key (kbd "s-m") 'iconify-frame)
-;; (global-set-key (kbd "s-n") 'make-frame-command)
-;; (global-set-key (kbd "s-s") 'save-buffer)
-;; (global-set-key (kbd "s-a") 'mark-whole-buffer)
-;; (global-set-key (kbd "s-z") 'undo)
-;; (global-set-key (kbd "s-x") 'kill-region)
-;; (global-set-key (kbd "s-c") 'kill-ring-save)
-;; (global-set-key (kbd "s-v") 'yank)
+;; (global-set-key (kbd "s-q") #'save-buffers-kill-terminal)
+;; (global-set-key (kbd "s-m") #'iconify-frame)
+;; (global-set-key (kbd "s-n") #'make-frame-command)
+;; (global-set-key (kbd "s-s") #'save-buffer)
+;; (global-set-key (kbd "s-a") #'mark-whole-buffer)
+;; (global-set-key (kbd "s-z") #'undo)
+;; (global-set-key (kbd "s-x") #'kill-region)
+;; (global-set-key (kbd "s-c") #'kill-ring-save)
+;; (global-set-key (kbd "s-v") #'yank)
 
 ;;; Unbind keys
 
