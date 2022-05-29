@@ -95,9 +95,8 @@
         ("melpa"        . 3)))
 
 ;; Refresh packages database (in background)
-;;   TODO: async argument fails with Chemacs
-;; (unless package-archive-contents
-;;   (package-refresh-contents t))
+(unless package-archive-contents
+  (package-refresh-contents t))
 
 ;; Refresh packages database (on first install)
 (defun my/package-install-refresh-contents (&rest args)
