@@ -768,16 +768,11 @@
     (setq completion-in-region-function #'consult-completion-in-region))
   (which-key-add-key-based-replacements "C-c c" "consult")
   :config
-  ;; Configure preview
-  ;; (setq consult-preview-key (kbd "M-`"))         ; default is 'any
   ;; Preview key
   ;;   TODO: does not work in terminal
+  (setq consult-preview-key (kbd "M-`"))         ; default is 'any
   ;; (setq consult-preview-key (list (kbd "<down>") (kbd "<up>")))
-  ;; Configure preview (on a per-command basis)
-  (consult-customize
-   consult-completion-in-region
-   :completion-styles '(basic))   ; disable orderless
-   ;; :require-match t)
+  ;; Configure preview on a per-command basis
   (consult-customize
    consult-theme
    :preview-key '(:debounce 0.2 any)
@@ -790,6 +785,11 @@
   ;; Enable narrowing help in the minibuffer
   ;;   (you may want to use `embark-prefix-help-command' or which-key instead)
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+  ;; Completion
+  (consult-customize
+   consult-completion-in-region
+   :completion-styles '(basic)))   ; disable orderless
+   ;; :require-match t)
 
 ;; consult-project-extra (project extension for consult)
 (use-package consult-project-extra
