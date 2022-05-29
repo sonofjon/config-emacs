@@ -1169,9 +1169,7 @@
   ;; Pre-loaded modes
   (diminish 'eldoc-mode)
   ;; Not pre-loaded modes
-  ;; (diminish 'which-key-mode)
-  (with-eval-after-load "auto-revert-mode" (diminish 'auto-revert-mode)))
-                                        ; TODO: doesn't work
+  (add-hook 'auto-revert-mode-hook (lambda () (diminish 'auto-revert-mode))))
 
 ;; hydra (stateful keymaps)
 (use-package hydra
