@@ -134,20 +134,19 @@
 
 ;;; Quelpa
 
+;; Don't update local clone of the MELPA git repo
+(setq quelpa-checkout-melpa-p nil)
+
+;; Set upgrade interval
+(setq quelpa-upgrade-interval 7)
+(add-hook 'after-init-hook #'quelpa-upgrade-all-maybe)
+
 ;; Install quelpa
 (unless (package-installed-p 'quelpa)
   (with-temp-buffer
     (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
     (eval-buffer)
     (quelpa-self-upgrade)))
-
-;; Don't update local clone of the MELPA git repo
-;;   TODO: where should I put this?
-(setq quelpa-checkout-melpa-p nil)
-;; Set upgrade interval
-;;   TODO: where should I put this?
-(setq quelpa-upgrade-interval 7)
-(add-hook #'after-init-hook #'quelpa-upgrade-all-maybe)
 
 ;; Install quelpa-use-package
 (quelpa
@@ -156,7 +155,6 @@
    :url "https://github.com/quelpa/quelpa-use-package.git"))
 
 ;; Load quelpa-use-package
-;;   TODO: configure
 (require 'quelpa-use-package)
 
 ;;;; Packages
