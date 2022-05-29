@@ -637,7 +637,7 @@
   :init
   ;; Enable Corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
-  (global-corfu-mode))
+  (global-corfu-mode))   ; TODO note that if this is enabled in terminal mode consult-completions wont be active
 
 ;; corfu-doc (documentation popup for corfu)
 (use-package corfu-doc
@@ -770,6 +770,8 @@
   :config
   ;; Configure preview
   ;; (setq consult-preview-key (kbd "M-`"))         ; default is 'any
+  ;; Preview key
+  ;;   TODO: does not work in terminal
   ;; (setq consult-preview-key (list (kbd "<down>") (kbd "<up>")))
   ;; Configure preview (on a per-command basis)
   (consult-customize
