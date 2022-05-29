@@ -995,11 +995,9 @@
          ;; which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :init
+  (which-key-add-key-based-replacements "C-c l" "LSP")
   ;; Prefix for lsp-command-keymap
   (setq lsp-keymap-prefix "C-c l"))
-
-  ;; TODO: Add this
-  ;; (which-key-add-key-based-replacements "C-c l" "LSP")
 
 ;; lsp-ui-mode (higher level UI modules for LSP)
 ;; (use-package lsp-ui
