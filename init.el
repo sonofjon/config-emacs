@@ -2089,14 +2089,16 @@ and `my/previous-buffer'."
 ;;; Misc
 
 ;; Kill buffer in other window
-;;   TODO: don't kill treemacs window
 (defun my/kill-buffer-other-window ()
   "If there are multiple windows, then kill the buffer in the next window."
   (interactive)
   (unless (one-window-p)
+    (setq win (selected-window))   ; TODO: is setq the correct syntax?
     (other-window 1)
+    (when (window-parameter (selected-window) 'window-side)   ; skip side windows
+      (other-window 1))
     (kill-buffer)
-    (other-window -1)))
+    (select-window win)))
 
 ;; Make a *scratch* buffer
 (defun create-scratch-buffer nil
