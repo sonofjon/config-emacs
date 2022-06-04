@@ -1655,6 +1655,8 @@
 (global-set-key (kbd "M-p") #'backward-paragraph)
 (global-set-key (kbd "M-n") #'forward-paragraph)
 
+(global-set-key (kbd "M-a") #'back-to-indentation)
+
 ;; (global-set-key (kbd "C-c <up>") #'aj8/previous-line)
 ;; (global-set-key (kbd "C-c <down>") #'aj8/next-line)
 
