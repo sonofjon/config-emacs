@@ -1594,6 +1594,10 @@
 
 ;;;;; KEYBINDINGS
 
+;;   TODO: Unbind rebound keys, e.g. M-a for back-to-indentation
+;;
+;;         Use minor-mode for keybindings? (https://stackoverflow.com/a/683575/1610035)
+
 ;;;; Escape codes
 
 ;; (define-key input-decode-map "\e[1;8A" [C-M-S-up])
