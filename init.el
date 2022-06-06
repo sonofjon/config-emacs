@@ -47,6 +47,8 @@
 
       ((or (string-match-p "^brain[0-9]+-windows$" (system-name))
            (string-match-p "^NT[0-9]\\{3\\}$" (system-name)))
+       ;; Fix cursor color in terminal on WSL
+       (add-hook 'modus-themes-after-load-theme-hook #'aj8/modus-themes-custom-settings)
        (message "Early settings WSL"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
@@ -1915,6 +1917,18 @@ _d_: subtree
 ;;;; Package management
 
 ;;;; Theme
+
+;; Custom settings for modus-themes
+(defun aj8/modus-themes-custom-settings ()
+  "If in terminal, change cursor color on theme switch."
+  (when (not (display-graphic-p))   ; if using terminal
+    (cond
+     ((string-match-p "modus-operandi" (symbol-name (modus-themes--current-theme)))
+      (send-string-to-terminal "\033]12;black\007"))
+     ((string-match-p "modus-vivendi" (symbol-name (modus-themes--current-theme)))
+      (send-string-to-terminal "\033]12;white\007"))
+     (t
+      (error "Unknown modus-theme name")))))
 
 ;;;; Windows
 
