@@ -1035,7 +1035,16 @@
          ;; ("RET" . magit-diff-visit-file-other-window))
   :custom
   ;; Show refined diffs for current hunk
-  (magit-diff-refine-hunk t))
+  (magit-diff-refine-hunk t)
+  ;; Set path to known git repositories
+  (magit-repository-directories
+   '(("~/dotfiles"                . 1)
+     ("~/projects"                . 1)
+     ("~/git"                     . 1)))
+  :config
+  ;; Add status flag to repository list
+  (add-to-list 'magit-repolist-columns
+               '("Flag" 4 magit-repolist-column-flag (:right-align t))))
 
 ;; diff-hl (highlight uncommitted changes)
 (use-package diff-hl
