@@ -1700,10 +1700,12 @@
 (global-set-key (kbd "M-c") #'capitalize-dwim)
 
 (global-set-key (kbd "C-c q") #'fill-individual-paragraphs) ; use with `C-x .'
-                                                           ; for comments
+                                                            ; for comments
 
 (global-set-key (kbd "C-c s") #'my/copy-symbol-at-point)
 (global-set-key (kbd "C-c l") #'my/copy-line)
+
+(global-set-key (kbd "C-c TAB") #'indent-relative)
 
 ;;; Completion
 
