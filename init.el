@@ -1207,6 +1207,16 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
+;; ssh-agency (manage ssh-agent)
+(use-package ssh-agency
+  :if (display-graphic-p))
+
+;; keychain-environment (manage ssh-agent and gpg-agent)
+(use-package keychain-environment
+  :disabled
+  :if (display-graphic-p)
+  :config
+  (keychain-refresh-environment))
 
 ;;;;; THEMES
 
