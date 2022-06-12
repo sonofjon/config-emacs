@@ -1621,13 +1621,14 @@
 
 ;;;; Escape codes
 
-;; (define-key input-decode-map "\e[1;8A" [C-M-S-up])
-;; (define-key input-decode-map "\e[1;8B" [C-M-S-down])
+(when (not (display-graphic-p))   ; if using terminal
+  ;; (define-key input-decode-map "\e[1;8A" [C-M-S-up])
+  ;; (define-key input-decode-map "\e[1;8B" [C-M-S-down])
 
-;; (define-key input-decode-map "\e[127;2u" [S-backspace])
-(define-key input-decode-map "\e[127;5u" [C-backspace])
-(define-key input-decode-map "\e[127;6u" [C-S-backspace])
-(define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))
+  ;; (define-key input-decode-map "\e[127;2u" [S-backspace])
+  (define-key input-decode-map "\e[127;5u" [C-backspace])
+  (define-key input-decode-map "\e[127;6u" [C-S-backspace])
+  (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))
 
 ;;;; Translations
 
