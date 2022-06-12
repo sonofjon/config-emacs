@@ -1630,6 +1630,8 @@
   (define-key input-decode-map "\e[127;6u" [C-S-backspace])
   (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))
 
+  (define-key input-decode-map "\e[118;8u" (kbd "C-M-S-v")))
+
 ;;;; Translations
 
 (define-key key-translation-map (kbd "M-<up>") (kbd "M-p"))
