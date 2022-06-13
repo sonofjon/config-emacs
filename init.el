@@ -640,6 +640,7 @@
 
 ;; corfu-doc (documentation popup for corfu)
 (use-package corfu-doc
+  :if (display-graphic-p)
   :after corfu
   :hook (corfu-mode . corfu-doc-mode)
   :bind (:map corfu-map
