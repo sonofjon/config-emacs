@@ -46,7 +46,8 @@
        (message "Early settings ChromeOS"))
 
       ((or (string-match-p "^brain[0-9]+-windows$" (system-name))
-           (string-match-p "^NT[0-9]\\{3\\}$" (system-name)))
+           (string-match-p "^NT[0-9]\\{3\\}$" (system-name))
+	   (string-match-p "^TP[0-9]\\{3\\}$" (system-name)))
        ;; Fix cursor color in terminal on WSL
        (add-hook 'modus-themes-after-load-theme-hook #'aj8/modus-themes-custom-settings)
        (message "Early settings WSL"))
@@ -2802,7 +2803,8 @@ functions."
        (message "Late settings ChromeOS"))
 
       ((or (string-match-p "^brain[0-9]+-windows$" (system-name))
-           (string-match-p "^NT[0-9]\\{3\\}$" (system-name)))
+           (string-match-p "^NT[0-9]\\{3\\}$" (system-name))
+           (string-match-p "^TP[0-9]\\{3\\}$" (system-name)))
        ;; Enable (default) web browser on WSL
        (setq browse-url-generic-program "wslview")
        (setq browse-url-secondary-browser-function #'browse-url-generic)
