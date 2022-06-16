@@ -1014,6 +1014,9 @@
 ;; i3wm-config-mode (syntax highlighting for i3 config files)
 (use-package i3wm-config-mode)
 
+;; powershell (major mode for editing and running PowerShell files)
+(use-package powershell)
+
 ;; rainbow-mode (syntax highlighting for color codes)
 (use-package rainbow-mode)
 
@@ -1587,6 +1590,10 @@
 
 ;; i3wm-config-mode: outline settings
 (add-hook 'i3wm-config-mode-hook
+          #'outline-headers-for-hash-mark-buffers)
+
+;; powershell: outline settings
+(add-hook 'powershell-mode-hook
           #'outline-headers-for-hash-mark-buffers)
 
 ;; activate-mark: deactivate highlight mode when selecting text
