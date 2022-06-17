@@ -528,6 +528,13 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+;; move-dup (minor mode for moving and duplicating lines or rectangles)
+(use-package move-dup
+  :bind (("C-c <up>" . move-dup-move-lines-up)
+         ("C-c C-<up>" . move-dup-duplicate-up)
+         ("C-c <down>" . move-dup-move-lines-down)
+         ("C-c C-<down>" . move-dup-duplicate-down)))
+
 ;; multiple-cursors (edit at multiple points)
 (use-package multiple-cursors
   :bind (:prefix-map multiple-cursors
