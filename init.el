@@ -2409,6 +2409,16 @@ MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
                                                 (line-end-position))))
       (aj8/next-comment)))
 
+;;; Movement by whitespace
+
+;; Backward movement by whitespace
+;;   (complements the built-in forward-whitespace)
+(defun my/backward-whitespace (arg)
+  "Move point to the beginning of the current sequence of whitespace characters."
+  (interactive "^p")
+  (forward-whitespace (- arg)))
+
+
 ;;;; Search
 
 ;;;; Selection
