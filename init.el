@@ -1815,16 +1815,6 @@
 (add-hook 'ediff-keymap-setup-hook
           (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
 
-;; outline-mode
-(add-hook 'outline-mode-hook
-          ;; Define custom keybindings
-          (lambda () (aj8/outline-mode-keys outline-mode-map)))
-
-;; outline-minor-mode
-(add-hook 'outline-minor-mode-hook
-          ;; Define custom keybindings
-          (lambda () (aj8/outline-mode-keys outline-minor-mode-map)))
-
 ;;;; Hydras
 
 (which-key-add-key-based-replacements "C-c y" "hydra")
@@ -2219,22 +2209,6 @@ number of characters matched by `outline-regexp'."
       (message "Level: %d" level))))
 
 ;;; Keybindings for outline-(minor-)mode
-
-;; Set keybindings
-(defun aj8/outline-mode-keys (map)
-  "Set keybindings for outline-mode or outline-minor-mode.
-MAP should either be `outline-mode-map' or `outline-minor-mode-map'."
-  (let ((m map))
-    (define-key m (kbd "C-c <left>") #'my/outline-hide-more)
-    (define-key m (kbd "C-c <right>") #'my/outline-show-more)
-    (define-key m (kbd "C-c C-<left>") #'outline-hide-sublevels)
-    (define-key m (kbd "C-c M-<left>") #'outline-hide-body)
-    (define-key m (kbd "C-c C-<right>") #'outline-show-all)
-    (define-key m (kbd "C-c <up>") #'outline-previous-visible-heading)
-    (define-key m (kbd "C-c <down>") #'outline-next-visible-heading)
-    (define-key m (kbd "C-c C-<up>") #'outline-backward-same-level)
-    (define-key m (kbd "C-c C-<down>") #'outline-forward-same-level)
-    (define-key m (kbd "C-c M-p") #'outline-up-heading)))
 
 (defun outline--body-p ()
   "Check if there is a body."
