@@ -1884,6 +1884,7 @@ _↓_: next         _→_: next
 
 Scroll by line or paragraph.
 "
+  ("q" nil "quit")
   ("<up>" scroll-down-line)
   ("<down>" scroll-up-line)
   ("<left>" aj8/scroll-down-paragraph)
@@ -1901,6 +1902,7 @@ _↓_: next         _→_: next
 
 Move to the next line or comment.
 "
+  ("q" nil "quit")
   ("<up>" aj8/previous-line)
   ("<down>" aj8/next-line)
   ("<left>" aj8/previous-comment)
