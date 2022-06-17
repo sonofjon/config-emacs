@@ -1913,36 +1913,29 @@ Move to the next line or comment.
 ;;; Outline
 (defhydra hydra-outline (:color pink :hint nil)
   "
-^Hide^             ^Show^           ^Move
-^^^^^^------------------------------------------------------
-_q_: sublevels     _a_: all         _u_: up
-_t_: body          _e_: entry       _n_: next visible
-_o_: other         _i_: children    _p_: previous visible
-_c_: entry         _k_: branches    _f_: forward same level
-_l_: leaves        _s_: subtree     _b_: backward same level
-_d_: subtree
+Hide & Show         ^^Move
+------------------------------------------------------
+  _←_ hide               _↑_ previous visible
+  _→_ show               _↓_ next visible
+C-_←_ hide (global)    C-_↑_ backward same level
+C-_→_ show (global)    C-_↓_ forward same level
+  ^ ^                  M-_↑_ up
 
+Hide, show and navigate outlines.
 "
-  ;; Hide
-  ("q" outline-hide-sublevels)   ; Hide everything but the top-level headings
-  ("t" outline-hide-body)        ; Hide everything but headings (all body lines)
-  ("o" outline-hide-other)       ; Hide other branches
-  ("c" outline-hide-entry)       ; Hide this entry's body
-  ("l" outline-hide-leaves)      ; Hide body lines in this entry and sub-entries
-  ("d" outline-hide-subtree)     ; Hide everything in this entry and sub-entries
-  ;; Show
-  ("a" outline-show-all)         ; Show (expand) everything
-  ("e" outline-show-entry)       ; Show this heading's body
-  ("i" outline-show-children)    ; Show this heading's immediate child sub-headings
-  ("k" outline-show-branches)    ; Show all sub-headings under this heading
-  ("s" outline-show-subtree)     ; Show (expand) everything in this heading & below
+  ;; Hide and show
+  ("<left>" my/outline-hide-more)
+  ("<right>" my/outline-show-more)
+  ("C-<left>" outline-hide-sublevels)
+  ("C-<right>" outline-show-all)
   ;; Move
-  ("u" outline-up-heading)                ; Up
-  ("n" outline-next-visible-heading)      ; Next
-  ("p" outline-previous-visible-heading)  ; Previous
-  ("f" outline-forward-same-level)        ; Forward - same level
-  ("b" outline-backward-same-level)       ; Backward - same level
-  ("z" nil "leave"))
+  ("<up>" outline-previous-visible-heading)
+  ("<down>" outline-next-visible-heading)
+  ("C-<up>" outline-backward-same-level)
+  ("C-<down>" outline-forward-same-level)
+  ("M-p" outline-up-heading)
+  ;; Quit
+  ("q" nil "quit"))
 
 (global-set-key (kbd "C-c y o") #'hydra-outline/body)
 
