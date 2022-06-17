@@ -1822,7 +1822,7 @@
 
 (which-key-add-key-based-replacements "C-c y" "hydra")
 
-;; Windows
+;;; Windows
 (defhydra hydra-window (:hint nil)
   ;; TODO: Improve layout
   "
