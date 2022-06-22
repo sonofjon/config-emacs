@@ -552,15 +552,14 @@
                      ("e" . mc/edit-lines)))
 
 ;; whole-line-or-region (apply to current line if region is undefined)
-;; (use-package whole-line-or-region
-;;   :diminish
-;;   ;; :bind
-;;   ;; (:map whole-line-or-region-local-mode-map
-;;   ;; TODO: function should not be quoted?
-;;   ;; ([remap ispell-region] . #'whole-line-or-region-ispell-region))
-;;   :config
-;;   ;; Use whole-line-or-region-mode everywhere
-;;   (whole-line-or-region-global-mode 1))
+(use-package whole-line-or-region
+  :diminish
+  ;; :bind
+  ;; (:map whole-line-or-region-local-mode-map
+  ;; ([remap ispell-region] . whole-line-or-region-ispell-region))
+  :config
+  ;; Use whole-line-or-region-mode everywhere
+  (whole-line-or-region-global-mode 1))
 
 ;; undo-fu (linear undo with redo)
 ;;   Note that undo-in-region is disabled by default
@@ -1741,7 +1740,6 @@
                                                             ; for comments
 
 (global-set-key (kbd "C-c s") #'my/copy-symbol-at-point)
-(global-set-key (kbd "C-c l") #'my/copy-line)
 
 (global-set-key (kbd "C-c TAB") #'indent-relative)
 
@@ -2444,13 +2442,6 @@ Repeat command to select additional words backwards."
     (when symbol
       (kill-new symbol)
       (pulse-momentary-highlight-region (car bounds) (cdr bounds)))))
-
-;; Copy current line
-(defun my/copy-line ()
-  "Add the current line to the kill ring."
-  (interactive)
-  (kill-ring-save (point-at-bol) (point-at-eol))
-  (pulse-momentary-highlight-region (point-at-bol) (point-at-eol)))
 
 ;;;; Completion
 
