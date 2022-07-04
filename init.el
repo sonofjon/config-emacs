@@ -955,10 +955,13 @@
   (unbind-key "C-c P" json-mode-map))
 
 ;; markdown-mode (major mode for editing Markdown files)
-;;   TODO: configure
 (use-package markdown-mode
-  :mode (".md" . gfm-mode))
-  ;; :init (setq markdown-command "multimarkdown"))
+  :mode (".md" . markdown-mode)
+  ;; :mode (".md" . markdown-view-mode)
+  :config
+  ;;TODO: Fix diminish
+  (add-hook 'markdown-mode-hook (lambda () (diminish 'markdown-mode)))
+  (add-hook 'markdown-view-mode-hook (lambda () (diminish 'markdown-view-mode))))
 
 ;; php-mode (major-mode for editing PHP files)
 (use-package php-mode
