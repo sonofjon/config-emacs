@@ -1194,7 +1194,9 @@
   ;; Pre-loaded modes
   (diminish 'eldoc-mode)
   ;; Not pre-loaded modes
-  (add-hook 'auto-revert-mode-hook (lambda () (diminish 'auto-revert-mode))))
+  (add-hook 'auto-revert-mode-hook (lambda () (diminish 'auto-revert-mode)))
+  (add-hook 'abbrev-mode-hook (lambda () (diminish 'abbrev-mode)))
+  (add-hook 'visual-line-mode-hook (lambda () (diminish 'visual-line-mode))))
 
 ;; hydra (stateful keymaps)
 (use-package hydra
