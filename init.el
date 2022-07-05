@@ -2092,7 +2092,8 @@ Emacs session."
 
 (defcustom my/skippable-buffer-regexp
   (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Completions*" "*Help*"
-                  "*Messages*" "*package*" "*scratch*" "*Warnings*"
+                  "*Messages*" "*package*" "*Quail Completions*"
+                  "*quelpa-build-checkout*" "*scratch*" "*Warnings*"
                   "*Async-native-compile-log*")
               (seq "magit-diff" (zero-or-more anything))
               (seq "magit-process" (zero-or-more anything))
