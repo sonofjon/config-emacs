@@ -731,7 +731,8 @@
          ("C-c c M" . consult-minor-mode-menu)   ; enable or disable minor mode
          ;; C-x bindings (ctl-x-map)
          ("C-x M-:" . consult-complex-command)   ; consult: repeat-complex-command
-         ("C-x b" . consult-buffer)              ; consult: switch-to-buffer
+         ("C-x b" . consult-project-buffer)              ; consult: switch-to-buffer
+         ("C-x B" . consult-buffer)              ; consult: switch-to-buffer
          ;; Other custom bindings
          ;; ("M-y" . consult-yank-pop)              ; consult: yank-pop
          ("<help> a" . consult-apropos)          ; consult: apropos-command
