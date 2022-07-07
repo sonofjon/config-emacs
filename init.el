@@ -26,7 +26,7 @@
 ;;;;; EARLY SETTINGS
 
 ;; System dependent settings
-(cond ((string-match-p "MacBook-Air" (system-name))
+(cond ((featurep 'ns)
        ;; GUI settings
        (when (display-graphic-p)
          ;; Add to exec-path
@@ -34,7 +34,7 @@
          (dolist (dir '("/usr/local/bin"
                         "/usr/local/opt/grep/libexec/gnubin"))
            (add-to-list 'exec-path dir)))
-       (message "Early settings for MacOS"))
+       (message "Early settings for macOS"))
 
       ((or (string-match-p "^brain[0-9]+$" (system-name))
 	   (equal (system-name) "endeavour-lxde")
@@ -2791,7 +2791,7 @@ functions."
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
-(cond ((string-match-p "MacBook-Air" (system-name))
+(cond ((featurep 'ns)
        ;; Use left Option as Meta on macOS
        ;; (setq mac-option-modifier 'meta)
        ;; Use left Command as Super on macOS
@@ -2802,7 +2802,7 @@ functions."
          (add-to-list 'default-frame-alist '(font . "Hack-14"))
          ;; Increase line spacing
          (setq-default line-spacing 1))
-       (message "Late settings MacOS"))
+       (message "Late settings macOS"))
 
       ((or (string-match-p "^brain[0-9]+$" (system-name))
 	   (equal (system-name) "endeavour-lxde")
