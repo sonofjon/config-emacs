@@ -33,7 +33,7 @@
 (load-theme 'deeper-blue t)
 
 ;; Make the initial buffer load faster by setting its mode to fundamental-mode
-(customize-set-variable 'initial-major-mode 'fundamental-mode)
+;; (customize-set-variable 'initial-major-mode 'fundamental-mode)
 ;; Initialize package sources
 (require 'package)
 (if (version< emacs-version "27")
