@@ -86,15 +86,13 @@
 
 
 
-(defvar rational-load-custom-file t
-  "When non-nil, load `custom.el' after `config.el'.
+;; Use custom-file.el for custom-* code
+(setq custom-file (expand-file-name "custom-file.el" user-emacs-directory))
 
-The custom file is found in the `rational-config-path'. It
-contains customizations of variables and faces that are made by
-the user through the Customization UI, as well as any
-customizations made by packages.")
+(if (file-exists-p custom-file)
+    (load-file custom-file))
 
 ;; Load the early config file if it exists
-(let ((early-config-path (expand-file-name "early-config.el" rational-config-path)))
-  (when (file-exists-p early-config-path)
-    (load early-config-path nil 'nomessage)))
+;; (let ((early-config-path (expand-file-name "early-config.el" rational-config-path)))
+;;   (when (file-exists-p early-config-path)
+;;     (load early-config-path nil 'nomessage)))
