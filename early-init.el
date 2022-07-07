@@ -10,13 +10,6 @@
                                             gc-cons-percentage 0.1)))
 
 
-;;; PATH
-
-;; Add path to local files
-;; (add-to-list 'load-path "~/local/share/emacs/site-lisp/")
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-
-
 ;;; GUI
 
 ;; Remove unneeded UI elements
@@ -34,11 +27,16 @@
 ;; Loads a nice blue theme, avoids the white screen flash on startup.
 (load-theme 'deeper-blue t)
 
-;; Make the initial buffer load faster by setting its mode to fundamental-mode
+;; Set initial major mode to fundamental-mode
+;;   (make the initial buffer load faster)
 ;; (customize-set-variable 'initial-major-mode 'fundamental-mode)
 
 
 ;;; PACKAGES
+
+;; Add path to local files
+;; (add-to-list 'load-path "~/local/share/emacs/site-lisp/")
+(add-to-list 'load-path "~/.emacs.d/lisp/")
 
 ;; Initialize package sources
 (require 'package)
@@ -61,9 +59,8 @@
                           ("gnu"    . 1))) ; lastly, use GNU
 
 ;; Refresh packages database (in background)
-;;   TODO: is this needed
-(unless package-archive-contents
-  (package-refresh-contents t))
+;; (unless package-archive-contents
+;;   (package-refresh-contents t))
 
 ;; Refresh packages database (on first install)
 ;;   TODO: is this needed
@@ -76,7 +73,7 @@
 
 ;; Native compilation
 (when (featurep 'native-compile)
-  ;; Silence compiler warnings as they can be pretty disruptive
+  ;; Silence compiler warnings
   ;; (setq native-comp-async-report-warnings-errors nil)
   ;; Set directory to store native compilation cache
   (when (fboundp 'startup-redirect-eln-cache)
@@ -91,15 +88,10 @@
                (expand-file-name "eln-cache/" user-emacs-directory)))
 
 
-;;; CUSTOM
+;;; CUSTOMIZATION
 
 ;; Use custom-file.el for custom-* code
 (setq custom-file (expand-file-name "custom-file.el" user-emacs-directory))
 
 (if (file-exists-p custom-file)
     (load-file custom-file))
-
-;; Load the early config file if it exists
-;; (let ((early-config-path (expand-file-name "early-config.el" rational-config-path)))
-;;   (when (file-exists-p early-config-path)
-;;     (load early-config-path nil 'nomessage)))
