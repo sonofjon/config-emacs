@@ -856,9 +856,9 @@
    ;; treemacs-show-hidden-files               t
    ;; treemacs-sorting                         'alphabetic-asc
    treemacs-width                           30)
-  ;; Follow current buffer file in Treemacs window (on by default)
+  ;; Follow current buffer file in treemacs window (on by default)
   ;; (treemacs-follow-mode 1)
-  ;; Only display current project in Treemacs window
+  ;; Only display current project in treemacs window
   (treemacs-project-follow-mode 1)
   ;; Show visual indicator in the fringe for highlighted file
   (treemacs-fringe-indicator-mode 'always)
@@ -1148,7 +1148,7 @@
   ;; Use unique buffer names
   (elfeed-show-unique-buffers t)
   ;; Layout
-  (elfeed-search-title-max-width 50)   ; default is 70
+  (elfeed-search-title-max-width 50)    ; default is 70
   (elfeed-search-title-min-width 16)    ; default is 16
   (elfeed-search-trailing-width 30))    ; default is 30
 
@@ -1620,6 +1620,7 @@
 (define-key key-translation-map (kbd "C-M-<down>") (kbd "C-M-n"))
 
 ;;;; Global
+
 ;;; Package management
 
 ;;; Theme
@@ -2644,8 +2645,7 @@ see `eww-follow-link' for details."
     (eww-follow-link '(16)))
    ((equal current-prefix-arg '(16)) ; C-u C-u
     (eww-follow-link '(4)))
-   (t ; all other cases, prompt
-    (error "Unexpected input arguments"))))
+   (t (error "Unexpected input arguments"))))
 
 ;; More useful buffer names in eww
 (defun prot-eww--rename-buffer ()
