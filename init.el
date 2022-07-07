@@ -1,3 +1,5 @@
+;;; init.el -*- lexical-binding: t; -*-
+
 ;;;;; STARTUP
 
 ;; Check startup time
