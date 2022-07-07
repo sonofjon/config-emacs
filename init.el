@@ -202,6 +202,35 @@
 
 ;;; Theme
 
+;; Display a dashboard at startup
+(use-package dashboard
+  :custom
+  ;; Set the title
+  (dashboard-banner-logo-title "Welcome to the The Department of Productivity")
+  ;; Disable init info
+  ;; (dashboard-set-init-info nil)
+  ;; Disable footer
+  ;; (dashboard-set-footer nil)
+  ;; Display heading icons
+  ;; (dashboard-set-heading-icons t)
+  ;; Display file icons
+  (dashboard-set-file-icons t)
+  ;; Center content
+  (dashboard-center-content t)
+  ;; Set project backend
+  (dashboard-projects-backend 'project-el)
+  ;; Configure layout
+  (dashboard-items '((recents  . 5)
+                     (projects . 5)))
+  :config
+  ;; Set the banner
+  (if (display-graphic-p)
+      (setq dashboard-startup-banner 'logo)
+    (setq dashboard-startup-banner
+          (expand-file-name "dashboard-banner.txt" user-emacs-directory)))
+  ;; Add startup hook
+  (dashboard-setup-startup-hook))
+
 ;; Icon support
 (use-package all-the-icons
   :if (display-graphic-p))
