@@ -44,16 +44,6 @@
       (t (user-error "Unexpected system-name: %s" system-name)))
 
 
-;;;;; FIXES
-
-;; Suppress warnings
-;;   Fix numerous byte-comp warnings
-;; (setq warning-minimum-level :error)   ; only show errors
-;; (setq warning-suppress-types :error)        ; log but do not show warnings
-;; (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
-
-;; Fix for Chemacs with native comp
-;; (add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
 
 
 ;;;;; PACKAGES
