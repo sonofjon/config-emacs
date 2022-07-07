@@ -10,12 +10,14 @@
                                             gc-cons-percentage 0.1)))
 
 
+;;; PATH
 
 ;; Add path to local files
 ;; (add-to-list 'load-path "~/local/share/emacs/site-lisp/")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 
+;;; GUI
 
 ;; Remove unneeded UI elements
 (push '(tool-bar-lines . 0) default-frame-alist)   ; disable tool bar
@@ -34,6 +36,10 @@
 
 ;; Make the initial buffer load faster by setting its mode to fundamental-mode
 ;; (customize-set-variable 'initial-major-mode 'fundamental-mode)
+
+
+;;; PACKAGES
+
 ;; Initialize package sources
 (require 'package)
 (if (version< emacs-version "27")
@@ -85,6 +91,7 @@
                (expand-file-name "eln-cache/" user-emacs-directory)))
 
 
+;;; CUSTOM
 
 ;; Use custom-file.el for custom-* code
 (setq custom-file (expand-file-name "custom-file.el" user-emacs-directory))
