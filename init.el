@@ -146,6 +146,11 @@
   :config
   (auto-package-update-maybe))
 
+;; esup (benchmark utility)
+;;   TODO: Full of bugs and inactive maintainer
+(use-package esup
+  :disabled)
+
 ;;; Theme
 
 ;; dashboard (display a dashboard at startup)
