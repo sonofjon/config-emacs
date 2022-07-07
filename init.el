@@ -147,6 +147,7 @@
 
 ;; Display a dashboard at startup
 (use-package dashboard
+  ;; :disabled
   :custom
   ;; Set the title
   (dashboard-banner-logo-title "Welcome to the The Department of Productivity")
@@ -1091,7 +1092,7 @@
 
 ;; erc (IRC client)
 (use-package erc
-  :defer
+  :disabled
   :commands (erc erc-tls)
   :custom
   ;; Server settings
@@ -1118,6 +1119,7 @@
   (erc-update-modules))
 
 (use-package erc-hl-nicks
+  :disabled
   :defer
   :after erc
   :config
