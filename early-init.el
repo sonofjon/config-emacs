@@ -1,9 +1,13 @@
 ;;; early-init.el -*- lexical-binding: t; -*-
 
-;; Increase the GC threshold for faster startup
-;; The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 50 1000 1000))
+;;; STARTUP
 
+;; Reduce garbage collection during startup
+;;   (and reset default values after)
+(setq gc-cons-threshold (* 50 1000 1000)
+      gc-cons-percentage 0.5)
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000
+                                            gc-cons-percentage 0.1)))
 
 ;;; package configuration
 (require 'package)
