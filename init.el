@@ -850,6 +850,10 @@
   (which-key-add-key-based-replacements "C-c t" "treemacs")
   (which-key-add-key-based-replacements "C-c C-p" "treemacs")
   (which-key-add-key-based-replacements "C-c C-w" "treemacs")
+  :init
+  ;; No delay when switching projects
+  (add-hook 'treemacs-project-follow-mode-hook
+            (lambda () (setq treemacs--project-follow-delay 0)))
   :config
   (setq
    treemacs-find-workspace-method           'find-for-file-or-manually-select
