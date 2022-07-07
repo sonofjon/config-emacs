@@ -74,6 +74,10 @@
 ;; Alternative option to prioritize archives
 ;; (setq use-package-always-pin "melpa-stable")
 
+;; Gather package statistics
+;;   (use with use-package-report)
+(setq use-package-compute-statistics t)
+
 ;;; Quelpa
 
 ;; Don't update local clone of the MELPA git repo
