@@ -273,7 +273,7 @@
 
 ;; doom-themes
 (use-package doom-themes
-  ;; :disabled
+  :disabled
   :custom
   ;; Enable bold and italic
   (setq doom-themes-enable-bold t)
@@ -287,7 +287,7 @@
 
 ;; dracula-theme
 (use-package dracula-theme
-  ;; :disabled
+  :disabled
   :custom
   ;; Don't change the font size for some headings and titles
   (setq dracula-enlarge-headings nil))
@@ -306,11 +306,11 @@
   ;; (load-theme 'dracula t))
 
 ;; gruvbox-theme
-(use-package gruvbox-theme)
-  ;; :disabled
-  ;; :config
-  ;; ;; (load-theme 'gruvbox-light-medium t)
-  ;; (load-theme 'gruvbox-dark-medium t))
+(use-package gruvbox-theme
+  :disabled
+  :config
+  ;; (load-theme 'gruvbox-light-medium t)
+  (load-theme 'gruvbox-dark-medium t))
 
 ;; modus-themes
 (use-package modus-themes
@@ -403,22 +403,22 @@
   ;; (modus-themes-load-vivendi))
 
 ;; sanityinc-solarized
-(use-package color-theme-sanityinc-solarized)
-  ;; :disabled
-  ;; :config
-  ;; ;; (load-theme 'sanityinc-solarized-light t)
-  ;; (load-theme 'sanityinc-solarized-dark t))
+(use-package color-theme-sanityinc-solarized
+  :disabled
+  :config
+  ;; (load-theme 'sanityinc-solarized-light t)
+  (load-theme 'sanityinc-solarized-dark t))
 
 ;; sanityinc-tomorrow
-(use-package color-theme-sanityinc-tomorrow)
-  ;; :disabled
-  ;; :config
-  ;; ;; (load-theme 'sanityinc-tomorrow-day t)
-  ;; (load-theme 'sanityinc-tomorrow-night t))
+(use-package color-theme-sanityinc-tomorrow
+  :disabled
+  :config
+  ;; (load-theme 'sanityinc-tomorrow-day t)
+  (load-theme 'sanityinc-tomorrow-night t))
 
 ;; solarized-theme
 (use-package solarized-theme
-  ;; :disabled
+  :disabled
   :init
   ;; Make the fringe stand out from the background
   ;; (setq solarized-distinct-fringe-background t)
@@ -447,7 +447,7 @@
 
 ;; spacemacs-theme
 (use-package spacemacs-theme
-  ;; :disabled
+  :disabled
   :defer   ; Fix loading warning
   :init
   ;; Toggle italics for comments (and also apply a lighter color)
@@ -460,10 +460,10 @@
   ;; :config (load-theme 'spacemacs-light t))
 
 ;; zenburn-theme
-(use-package zenburn-theme)
-  ;; :disabled
-  ;; :config
-  ;; (load-theme 'zenburn t))
+(use-package zenburn-theme
+  :disabled
+  :config
+  (load-theme 'zenburn t))
 
 ;; circadian (theme-switching based on daytime)
 (use-package circadian
