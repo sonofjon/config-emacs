@@ -1564,6 +1564,19 @@
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
+;; TODO: loop over maps for quit-windows
+;; (defun define-key-quit-windows (map)
+;;   (define-key map [remap quit-window] 'aj8/quit-window))
+
+;; (dolist (map '(help-mode-map Info-mode-map dired-mode-map eww-mode-map))
+;;   (with-eval-after-load map
+;;     (define-key (symbol-value map) [remap quit-window] 'aj8/quit-window)))
+
+;; (dolist (str (list "help" "Info" "dired" "eww"))
+;;   (with-eval-after-load str
+;;     (let ((kmap (symbol-value (intern (concat str "-mode-map")))))
+;;       (define-key kmap [remap quit-window] 'aj8/quit-window))))
+
 ;; help-mode: kill buffers on quit
 (define-key help-mode-map [remap quit-window] #'aj8/quit-window)
 
