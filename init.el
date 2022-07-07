@@ -1306,7 +1306,11 @@
 ;;; Theme
 
 ;; Disable welcome buffer
-(setq inhibit-startup-screen t)
+;; (setq inhibit-startup-screen t)
+
+;; Display *Messages* buffer at startup
+(setq initial-buffer-choice (lambda () (get-buffer "*Messages*")))
+
 
 ;;; Windows
 
