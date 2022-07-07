@@ -202,6 +202,15 @@
 
 ;;; Theme
 
+;; Icon support
+(use-package all-the-icons
+  :if (display-graphic-p))
+
+;; Icon support
+(use-package all-the-icons-dired
+  :if (display-graphic-p)
+  :hook (dired-mode . all-the-icons-dired-mode))
+
 ;; base16-theme
 ;;   Available options: <https://belak.github.io/base16-emacs/>
 (use-package base16-theme
@@ -899,9 +908,12 @@
          ("C-c C-p <up>" . treemacs-move-project-up)
          ("o l" . treemacs-visit-node-in-least-recently-used-window)))
 
+;; All the icons for Treemacs
+(use-package treemacs-all-the-icons
+  :if (display-graphic-p))
+
 ;; (use-package treemacs-icons-dired
-;;   :hook (dired-mode . treemacs-icons-dired-enable-once)
-;;   :ensure t)
+;;   :hook (dired-mode . treemacs-icons-dired-enable-once))
 
 ;; treemacs-magit (make treemacs aware of magit operations)
 (use-package treemacs-magit
