@@ -89,7 +89,7 @@
 (setq quelpa-upgrade-interval 7)
 (add-hook 'after-init-hook #'quelpa-upgrade-all-maybe)
 
-;; Install quelpa
+;; Install Quelpa
 (unless (package-installed-p 'quelpa)
   (with-temp-buffer
     (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
@@ -230,7 +230,7 @@
   ;; Enable bold and italic
   (setq doom-themes-enable-bold t)
   (setq doom-themes-enable-italic t))
-  ;; Enable custom treemacs theme (all-the-icons must be installed!)
+  ;; Enable custom Treemacs theme (all-the-icons must be installed!)
   ;; (setq doom-themes-treemacs-theme "doom-atom")
   ;; :config
   ;; (load-theme 'doom-one t)
@@ -634,7 +634,7 @@
   ;; (corfu-echo-documentation nil) ; do not show documentation in the echo area
   ;; (corfu-scroll-margin 5)        ; use scroll margin
   :init
-  ;; Enable Corfu globally
+  ;; Enable corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
   (global-corfu-mode))   ; TODO note that if this is enabled in terminal mode consult-completions wont be active
 
@@ -805,7 +805,7 @@
   ;; Optionally replace the key help with a completing-read interface
   ;; (setq prefix-help-command #'embark-prefix-help-command)
   :config
-  ;; Hide the mode line of the Embark live/completions buffers
+  ;; Hide the mode line of the embark live/completions buffers
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
@@ -861,9 +861,9 @@
    ;; treemacs-show-hidden-files               t
    ;; treemacs-sorting                         'alphabetic-asc
    treemacs-width                           30)
-  ;; Follow current buffer file in treemacs window (on by default)
+  ;; Follow current buffer file in Treemacs window (on by default)
   ;; (treemacs-follow-mode 1)
-  ;; Only display current project in treemacs window
+  ;; Only display current project in Treemacs window
   (treemacs-project-follow-mode 1)
   ;; Show visual indicator in the fringe for highlighted file
   (treemacs-fringe-indicator-mode 'always)
@@ -892,7 +892,7 @@
          ("C-c C-p <up>" . treemacs-move-project-up)
          ("o l" . treemacs-visit-node-in-least-recently-used-window)))
 
-;; treemacs-all-the-icons (All-the-icons for treemacs)
+;; treemacs-all-the-icons (all-the-icons for Treemacs)
 (use-package treemacs-all-the-icons
   :if (display-graphic-p)
   :defer)
@@ -901,7 +901,7 @@
 ;; (use-package treemacs-icons-dired
 ;;   :hook (dired-mode . treemacs-icons-dired-enable-once))
 
-;; treemacs-magit (make treemacs aware of magit operations)
+;; treemacs-magit (make Treemacs aware of Magit operations)
 (use-package treemacs-magit
   :defer
   :after (treemacs magit))
@@ -981,7 +981,7 @@
 ;; (use-package lsp-ui
 ;;   :commands lsp-ui-mode)
 
-;; lsp-treemacs: (treemacs integration)
+;; lsp-treemacs: (Treemacs integration)
 ;; (use-package lsp-treemacs
 ;;   :commands lsp-treemacs-errors-list)
 
@@ -1372,7 +1372,7 @@
 ;; Interpret spaces as wildcards (with M-s SPC)
 (setq search-whitespace-regexp ".*?")
 
-;; Allow movement between isearch matches by cursor motion commands
+;; Allow movement between Isearch matches by cursor motion commands
 (setq isearch-allow-motion t)
 (setq isearch-motion-changes-direction t)
 
@@ -1763,7 +1763,7 @@
 ;;; Unbind keys
 
 ;; (global-set-key (kbd "C-x") nil)
-;; (global-unset-key (kbd "C-x"))   ; Alternative syntax
+;; (global-unset-key (kbd "C-x"))   ; alternative syntax
 
 ;;;; Local
 
@@ -2017,11 +2017,11 @@ inverse of the default behavior of the standard
     (switch-to-buffer nil)))   ; restore the original window
                                ; in this part of the window
 
-;; Visit oldest window with treemacs
+;; Visit oldest window with Treemacs
 (defun treemacs-visit-node-in-least-recently-used-window (&optional arg)
   "Open current file or tag in window selected by `get-lru-window'.
 Stay in the current window with a single prefix argument ARG, or close the
-treemacs window with a double prefix argument."
+Treemacs window with a double prefix argument."
   (interactive "P")
   (treemacs--execute-button-action
    :window (get-lru-window (selected-frame) nil :not-selected)
