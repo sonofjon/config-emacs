@@ -11,10 +11,6 @@
 
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
-;; Add path to local files
-;; (add-to-list 'load-path "~/local/share/emacs/site-lisp/")
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-
 
 ;;;;; EARLY SETTINGS
 
