@@ -11,23 +11,12 @@
 
 
 
-;; Native compilation settings
-(when (featurep 'native-compile)
-  ;; Silence compiler warnings as they can be pretty disruptive
-  (setq native-comp-async-report-warnings-errors nil)
 ;; Add path to local files
 ;; (add-to-list 'load-path "~/local/share/emacs/site-lisp/")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 
-  ;; Set the right directory to store the native compilation cache
-  ;; NOTE the method for setting the eln-cache directory depends on the emacs version
-  (when (fboundp 'startup-redirect-eln-cache)
-    (if (version< emacs-version "29")
-        (add-to-list 'native-comp-eln-load-path (convert-standard-filename (expand-file-name "var/eln-cache/" user-emacs-directory)))
-      (startup-redirect-eln-cache (convert-standard-filename (expand-file-name "var/eln-cache/" user-emacs-directory)))))
 
-  (add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory)))
 
 ;; Remove some unneeded UI elements (the user can turn back on anything they wish)
 (setq inhibit-startup-message t)
@@ -74,6 +63,21 @@
 
 (advice-add 'package-install :before #'my/package-install-refresh-contents)
 
+;; Native compilation
+(when (featurep 'native-compile)
+  ;; Silence compiler warnings as they can be pretty disruptive
+  ;; (setq native-comp-async-report-warnings-errors nil)
+  ;; Set directory to store native compilation cache
+  (when (fboundp 'startup-redirect-eln-cache)
+    (if (version< emacs-version "29")
+        (add-to-list 'native-comp-eln-load-path
+                     (convert-standard-filename
+                      (expand-file-name "var/eln-cache/" user-emacs-directory)))
+      (startup-redirect-eln-cache
+       (convert-standard-filename
+        (expand-file-name "var/eln-cache/" user-emacs-directory)))))
+  (add-to-list 'native-comp-eln-load-path
+               (expand-file-name "eln-cache/" user-emacs-directory)))
 
 
 
