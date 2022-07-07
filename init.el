@@ -70,26 +70,6 @@
 
 ;;;; Setup
 
-;; Initialize package sources
-(require 'package)
-(if (version< emacs-version "27")
-    (package-initialize))
-
-;; Add MELPA to package-archives
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-
-;; Add MELPA-STABLE to package-archives
-;; (add-to-list 'package-archives
-;;              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-
-;; Set package-archives priorities
-(setq package-archive-priorities
-      '(("gnu"          . 1)
-        ("nongnu"       . 2)
-        ;; ("melpa-stable" . 2)
-        ("melpa"        . 3)))
-
 ;; Refresh packages database (in background)
 (unless package-archive-contents
   (package-refresh-contents t))
