@@ -90,6 +90,20 @@
                           ("nongnu" . 2)   ; otherwise, prefer non-GNU packages
                           ("gnu"    . 1))) ; lastly, use GNU
 
+;; Refresh packages database (in background)
+;;   TODO: is this needed
+(unless package-archive-contents
+  (package-refresh-contents t))
+
+;; Refresh packages database (on first install)
+;;   TODO: is this needed
+(defun my/package-install-refresh-contents (&rest args)
+  "Refresh package database on first install."
+  (package-refresh-contents)
+  (advice-remove 'package-install #'my/package-install-refresh-contents))
+
+(advice-add 'package-install :before #'my/package-install-refresh-contents)
+
 
 
 

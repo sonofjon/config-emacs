@@ -70,18 +70,6 @@
 
 ;;;; Setup
 
-;; Refresh packages database (in background)
-(unless package-archive-contents
-  (package-refresh-contents t))
-
-;; Refresh packages database (on first install)
-(defun my/package-install-refresh-contents (&rest args)
-  "Refresh package database on first install."
-  (package-refresh-contents)
-  (advice-remove 'package-install #'my/package-install-refresh-contents))
-
-(advice-add 'package-install :before #'my/package-install-refresh-contents)
-
 ;;; use-package
 
 ;; Install use-package
