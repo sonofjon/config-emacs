@@ -17,12 +17,17 @@
 
 
 
+;; Remove unneeded UI elements
+(push '(tool-bar-lines . 0) default-frame-alist)   ; disable tool bar
+(push '(menu-bar-lines . 0) default-frame-alist)   ; disable menu bar
+(push '(vertical-scroll-bars . nil) default-frame-alist)   ; disable scroll bar
 
-;; Remove some unneeded UI elements (the user can turn back on anything they wish)
-(setq inhibit-startup-message t)
-(push '(tool-bar-lines . 0) default-frame-alist)
-(push '(menu-bar-lines . 0) default-frame-alist)
-(push '(vertical-scroll-bars) default-frame-alist)
+;; Disable welcome buffer
+;; (setq inhibit-startup-screen t)
+
+;; Display *Messages* buffer at startup
+;;   TODO: this does not exist at this point?
+(setq initial-buffer-choice (lambda () (get-buffer "*Messages*")))
 
 ;; Loads a nice blue theme, avoids the white screen flash on startup.
 (load-theme 'deeper-blue t)

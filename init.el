@@ -1228,16 +1228,6 @@
 
 ;;; Theme...
 
-;; Disable menu bar
-(menu-bar-mode -1)
-
-;; Disable toolbar (graphical Emacs)
-(tool-bar-mode -1)
-
-;; Disable scroll bar
-(with-eval-after-load "scroll-bar"   ; avoid error on some systems
-  (scroll-bar-mode -1))
-
 ;; Enable line numbers
 ;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 
@@ -1313,13 +1303,6 @@
 ;; (setq package-native-compile t)
 
 ;;; Theme
-
-;; Disable welcome buffer
-;; (setq inhibit-startup-screen t)
-
-;; Display *Messages* buffer at startup
-(setq initial-buffer-choice (lambda () (get-buffer "*Messages*")))
-
 
 ;;; Windows
 
