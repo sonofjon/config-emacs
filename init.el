@@ -486,7 +486,8 @@
   :disabled)
 
 ;; transpose-frame (transpose window arrangement)
-(use-package transpose-frame)
+(use-package transpose-frame
+  :defer)
 
 ;;; Buffers
 
@@ -520,6 +521,7 @@
 ;; outline-minor-faces (use faces from outline-mode)
 ;;   See also outline-minor-mode-highlight.
 (use-package outline-minor-faces
+  :defer
   :after outline
   :hook (outline-minor-mode . outline-minor-faces-add-font-lock-keywords))
 
@@ -560,7 +562,8 @@
   (unbind-key "C-M-." dot-mode-map))
 
 ;; lorem-ipsum (lorem ipsum text filler)
-(use-package lorem-ipsum)
+(use-package lorem-ipsum
+  :defer)
 
 ;; rainbow-delimiters (parentheses coloring)
 (use-package rainbow-delimiters
@@ -858,8 +861,8 @@
 
 ;; embark-consult (integration between embark and consult)
 (use-package embark-consult
-  :after (embark consult)
   :demand t ; only necessary if you have the hook below
+  :after (embark consult)
   ;; if you want to have consult previews as you move around an
   ;; auto-updating embark collect buffer
   :hook
@@ -882,8 +885,8 @@
 
 ;; treemacs (a tree layout file explorer)
 (use-package treemacs
+  :defer
   :after which-key
-  :defer t
   :init
   (which-key-add-key-based-replacements "C-c t" "treemacs")
   (which-key-add-key-based-replacements "C-c C-p" "treemacs")
@@ -939,13 +942,15 @@
 
 ;; All the icons for Treemacs
 (use-package treemacs-all-the-icons
-  :if (display-graphic-p))
+  :if (display-graphic-p)
+  :defer)
 
 ;; (use-package treemacs-icons-dired
 ;;   :hook (dired-mode . treemacs-icons-dired-enable-once))
 
 ;; treemacs-magit (make treemacs aware of magit operations)
 (use-package treemacs-magit
+  :defer
   :after (treemacs magit))
 
 ;;; Coding
@@ -1028,10 +1033,12 @@
 ;;   :commands lsp-treemacs-errors-list)
 
 ;; i3wm-config-mode (syntax highlighting for i3 config files)
-(use-package i3wm-config-mode)
+(use-package i3wm-config-mode
+  :defer)
 
 ;; powershell (major mode for editing and running PowerShell files)
-(use-package powershell)
+(use-package powershell
+  :defer)
 
 ;; rainbow-mode (syntax highlighting for color codes)
 (use-package rainbow-mode)
@@ -1076,6 +1083,7 @@
 
 ;; ztree (directory-diff tool)
 (use-package ztree
+  :defer
   :custom
   ;; Use pretty Unicode art
   (ztree-draw-unicode-lines t))
@@ -1130,8 +1138,9 @@
 
 ;; google-this (google search functions)
 (use-package google-this
-  :diminish
+  :defer
   :after which-key
+  :diminish
   :init
   (which-key-add-key-based-replacements "C-c /" "google-this")
   :config
@@ -1139,6 +1148,7 @@
 
 ;; erc (IRC client)
 (use-package erc
+  :defer
   :commands (erc erc-tls)
   :custom
   ;; Server settings
@@ -1165,6 +1175,7 @@
   (erc-update-modules))
 
 (use-package erc-hl-nicks
+  :defer
   :after erc
   :config
   (add-to-list 'erc-modules 'hl-nicks)
