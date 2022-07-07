@@ -133,6 +133,7 @@
 
 ;; auto-package-update
 (use-package auto-package-update
+  :defer 60
   :custom
   ;; Prompt before update
   (auto-package-update-prompt-before-update t)
