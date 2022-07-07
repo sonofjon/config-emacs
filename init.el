@@ -1562,12 +1562,6 @@
 ;; Open up the debugger on error
 ;; (setq debug-on-error t)
 
-;; Use left Option as Meta on macOS
-;; (setq mac-option-modifier 'meta)
-
-;; Use left Command as Super on macOS
-;; (setq mac-command-modifier 'super)
-
 ;; Use longer pulse
 (setq pulse-delay 0.05)   ; default is 0.03
 
@@ -2798,6 +2792,10 @@ functions."
 
 ;; System dependent settings
 (cond ((string-match-p "MacBook-Air" (system-name))
+       ;; Use left Option as Meta on macOS
+       ;; (setq mac-option-modifier 'meta)
+       ;; Use left Command as Super on macOS
+       ;; (setq mac-command-modifier 'super)
        ;; GUI settings
        (when (display-graphic-p)
          ;; Set default font
