@@ -133,7 +133,7 @@
 
 ;;; Package management
 
-;; auto-package-update
+;; auto-package-update (automatic package updates)
 (use-package auto-package-update
   :defer 60
   :custom
@@ -148,7 +148,7 @@
 
 ;;; Theme
 
-;; Display a dashboard at startup
+;; dashboard (display a dashboard at startup)
 (use-package dashboard
   ;; :disabled
   :custom
@@ -178,11 +178,11 @@
   ;; Add startup hook
   (dashboard-setup-startup-hook))
 
-;; Icon support
+;; all-the-icons (icon support)
 (use-package all-the-icons
   :if (display-graphic-p))
 
-;; Icon support
+;; all-the-icons-dired (icon support for dired)
 (use-package all-the-icons-dired
   :if (display-graphic-p)
   :hook (dired-mode . all-the-icons-dired-mode))
@@ -887,11 +887,12 @@
          ("C-c C-p <up>" . treemacs-move-project-up)
          ("o l" . treemacs-visit-node-in-least-recently-used-window)))
 
-;; All the icons for Treemacs
+;; treemacs-all-the-icons (All-the-icons for treemacs)
 (use-package treemacs-all-the-icons
   :if (display-graphic-p)
   :defer)
 
+;; treemacs-icons-dired (icons for dired)
 ;; (use-package treemacs-icons-dired
 ;;   :hook (dired-mode . treemacs-icons-dired-enable-once))
 
