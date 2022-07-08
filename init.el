@@ -1462,6 +1462,9 @@
 
 ;;; Help
 
+;; More extensive apropos commands
+(setq apropos-do-all t)
+
 ;;; Web
 
 ;; URL browser settings
