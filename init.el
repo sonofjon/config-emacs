@@ -1726,6 +1726,8 @@
 
 ;;; Completion
 
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
+
 ;;; Spelling
 
 ;;; Files
