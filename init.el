@@ -1361,6 +1361,9 @@
 ;; Preserve point position when scrolling
 (setq scroll-preserve-screen-position t)
 
+;; Save place in each file
+(setq save-place-mode t)
+
 ;;; Search
 
 ;; Don't search invisible text by default
