@@ -1396,6 +1396,9 @@
 ;; Save clipboard text into kill ring before kill
 ;; (setq save-interprogram-paste-before-kill t)
 
+;; Yank at point, not at pointer
+(setq mouse-yank-at-point t)
+
 ;;; Completion
 
 ;; Use TAB for symbol completion (after indentation)
