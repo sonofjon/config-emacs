@@ -1460,6 +1460,10 @@
 (setq ediff-split-window-function #'split-window-horizontally)
 (setq ediff-merge-split-window-function #'split-window-horizontally)
 
+;; Use existng frame in GUI
+(when (display-graphic-p)
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain))
+
 ;;; Help
 
 ;; More extensive apropos commands
