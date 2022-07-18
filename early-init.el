@@ -24,11 +24,11 @@
 ;;   TODO: this does not exist at this point?
 (setq initial-buffer-choice (lambda () (get-buffer "*Messages*")))
 
-;; Loads a nice blue theme, avoids the white screen flash on startup.
-(load-theme 'deeper-blue t)
+;; Loads a nice blue theme, avoids the white screen flash on startup
+;; (load-theme 'deeper-blue t)
 
 ;; Set initial major mode to fundamental-mode
-;;   (make the initial buffer load faster)
+;;   (makes the initial buffer load faster)
 ;; (customize-set-variable 'initial-major-mode 'fundamental-mode)
 
 
@@ -37,6 +37,9 @@
 ;; Add path to local files
 ;; (add-to-list 'load-path "~/local/share/emacs/site-lisp/")
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+
+;; Prevent stale elisp bytecode from shadowing more up-to-date source files
+(setq load-prefer-newer t)
 
 ;; Initialize package sources
 (require 'package)
