@@ -1352,10 +1352,10 @@
 ;;   ‘scroll-step’, and finally ‘scroll-up-aggressively’ /
 ;;   ‘scroll-down-aggressively’.
 ;;   TODO: Configure
-(setq scroll-conservatively 0)        ; default: 0
-(setq scroll-step 1)                  ; default: 0
-(setq scroll-up-aggressively nil)     ; default: nil
-(setq scroll-down-aggressively nil)   ; default: nil
+(setq scroll-conservatively 1000)        ; default: 0
+;; (setq scroll-step 1)                  ; default: 0
+(setq scroll-up-aggressively 0.01)     ; default: nil
+(setq scroll-down-aggressively 0.01)   ; default: nil
 ;; (setq scroll-margin 0)
 
 ;; Preserve point position when scrolling
