@@ -828,11 +828,10 @@
   :bind (:map flyspell-mode-map
               ;; ("C-;" . flyspell-auto-correct-word)
               ("C-;" . flyspell-correct-wrapper)
-              ([remap flyspell-correct-wrapper] . aj8/flyspell-correct-wrapper)
+              ("C-," . (lambda () (interactive) (aj8/call-interactively-wih-prefix-toggle #'flyspell-correct-previous)))
+              ("C-." . (lambda () (interactive) (aj8/call-interactively-wih-prefix-toggle #'flyspell-correct-next)))
               ("C-c ," . my/flyspell-goto-previous-error)
-              ("C-," . flyspell-correct-previous)
-              ("C-c ." . flyspell-goto-next-error)
-              ("C-." . flyspell-correct-next)))
+              ("C-c ." . flyspell-goto-next-error)))
 
 ;;; Files
 
@@ -2599,19 +2598,6 @@ versa."
           (progn
             (message "No more miss-spelled word!")
             (setq arg 0))))))
-
-;; Custom arguments for flyspell-correct-wrapper
-(defun aj8/flyspell-correct-wrapper ()
-  "Correct the previous spelling error.  With a prefix argument correct
-the next error instead.  In either case rapid mode is enabled."
-  (interactive)
-  (cond
-   ((equal current-prefix-arg nil) ; no C-u
-    (flyspell-correct-move (point) nil t))
-   ((equal current-prefix-arg '(4)) ; C-u
-    (flyspell-correct-move (point) t t))
-   (t
-    (error "Unexpected input arguments"))))
 
 ;;;; Files
 
