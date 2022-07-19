@@ -1091,7 +1091,6 @@
 
 ;; google-this (google search functions)
 (use-package google-this
-  :defer
   :after which-key
   :diminish
   :init
