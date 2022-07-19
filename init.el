@@ -2507,12 +2507,6 @@ versa."
     (error "`ispell-program` must be either `aspell` or `hunspell`"))))
 
 
-;; ispell-region stub for whole-line-or-region package
-(defun whole-line-or-region-ispell-region (prefix)
-  "Call `ispell-region' on region or PREFIX whole lines."
-  (interactive "*p")
-  (whole-line-or-region-wrap-modified-region #'ispell-region prefix))
-
 ;;; Flyspell
 
 ;; Setup for web-mode
