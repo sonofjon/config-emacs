@@ -827,7 +827,8 @@
   :after flyspell
   :bind (:map flyspell-mode-map
               ;; ("C-;" . flyspell-auto-correct-word)
-              ("C-;" . flyspell-correct-wrapper)
+              ;; ("C-;" . (lambda () (interactive) (flyspell-correct-move (point) nil t)))
+              ("C-;" . (lambda () (interactive) (aj8/call-interactively-wih-prefix-toggle 'flyspell-correct-wrapper)))
               ("C-c ," . my/flyspell-goto-previous-error)
               ("C-," . flyspell-correct-previous)
               ("C-c ." . flyspell-goto-next-error)
