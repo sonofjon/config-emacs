@@ -2746,6 +2746,7 @@ keys to the the respective xterm key sequence."
 ;;; Misc
 
 ;; Swap universal prefix argument for functions
+;;   (using advice)
 (defun my/toggle-prefix-arg (fun)
   "Toggle universal prefix argument for FUNCTION fun.
 If called with a prefix argument, the prefix argument will be
@@ -2759,6 +2760,21 @@ functions."
                               (if (called-interactively-p 'any)
                                   (apply x (cons (not (car args)) (cdr args)))
                                 (apply x args))))))
+
+;; Swap universal prefix argument for functions
+;;   (during function call)
+(defun aj8/call-interactively-wih-prefix-toggle (fun)
+  "Call FUNCTION fun and toggle its universal prefix argument.
+If called with a prefix argument, the prefix argument will be
+removed. If called without a prefix argument, a prefix argument
+will be applied."
+  (if (equal current-prefix-arg nil) ; no C-u
+       ;; then
+       (let ((current-prefix-arg '(4)))
+         (call-interactively fun))
+     ;; else
+     (let ((current-prefix-arg nil))
+       (call-interactively fun))))
 
 ;; Reload init-file
 (defun reload-init-file ()
