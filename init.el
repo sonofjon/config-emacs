@@ -1407,7 +1407,8 @@
 (setq completions-detailed t)
 
 ;; Let hippie-expand search for line expansions in all buffers
-(add-to-list 'hippie-expand-try-functions-list 'try-expand-line-all-buffers t)
+;; (add-to-list 'hippie-expand-try-functions-list 'try-expand-line-all-buffers t)
+(setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
 
 ;;; Spelling
 
