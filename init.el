@@ -158,6 +158,7 @@
 ;;; Theme
 
 ;; dashboard (display a dashboard at startup)
+;;   TODO: make it work in Terminal
 (use-package dashboard
   ;; :disabled
   :custom
@@ -1358,7 +1359,6 @@
 ;;   The order of priority is: ‘scroll-conservatively’, then
 ;;   ‘scroll-step’, and finally ‘scroll-up-aggressively’ /
 ;;   ‘scroll-down-aggressively’.
-;;   TODO: Configure
 (setq scroll-conservatively 0)        ; default: 0
 (setq scroll-step 1)                  ; default: 0
 (setq scroll-up-aggressively nil)     ; default: nil
