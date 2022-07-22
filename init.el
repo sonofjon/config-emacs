@@ -585,23 +585,21 @@
 ;; icomplete-vertical (show icomplete candidates vertically)
 (use-package icomplete-vertical
   :disabled
-  ;; Load after startup (when my/completion-styles is defined)
-  ;;   TODO: use the :defines and :functions keywords!
-  :hook (emacs-startup . (lambda () (icomplete-mode) (icomplete-vertical-mode)))
   :bind (:map icomplete-minibuffer-map
               ("<up>" . icomplete-backward-completions)
               ("<down>" . icomplete-forward-completions)
               ;; ("RET" . icomplete-force-complete)
               ("RET" . icomplete-force-complete-and-exit)
               ("C-v" . icomplete-vertical-toggle))
+  :init
+  (icomplete-mode)
+  (icomplete-vertical-mode)
   :config
+  ;; Configure completion styles
   (my/completion-styles))
 
 ;; vertico (vertical completion UI)
 (use-package vertico
-  ;; Load after startup (when my/completion-styles is defined)
-  :hook (emacs-startup . vertico-mode)   ; TODO: you can use :no-require
-                                         ; keyword to delay loading!
   :bind (:map vertico-map
               ("?" . minibuffer-completion-help)
               ("C-c ?" . minibuffer-hide-completions)
@@ -609,6 +607,8 @@
               ("<backtab>" . vertico-insert)
               ("TAB" . minibuffer-complete))
               ;; ("<backtab>" . minibuffer-force-complete))
+  :init
+  (vertico-mode)
   :custom
   ;; Enable cycling
   (vertico-cycle t)
@@ -617,6 +617,7 @@
   (unbind-key "TAB" vertico-map)
   ;; Enable M-x minibuffer-hide-completions (make function interactive)
   (put 'minibuffer-hide-completions 'interactive-form '(interactive))
+  ;; Configure completion styles
   (my/completion-styles))
 
 ;; corfu (completion overlay)
