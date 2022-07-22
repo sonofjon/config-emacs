@@ -1371,6 +1371,9 @@
 ;; Save place in each file
 (setq save-place-mode t)
 
+;; Use "repeat-mode" for "pop-mark"
+(setq set-mark-command-repeat-pop t)
+
 ;;; Search
 
 ;; Don't search invisible text by default
@@ -1548,10 +1551,6 @@
 (setq describe-bindings-outline t)
 
 ;;;; Other
-
-;; More convenient "jump to mark" command (swap prefix argument)
-;; (add-hook 'emacs-startup-hook
-;;           (lambda () (my/toggle-prefix-arg #'set-mark-command)))
 
 
 ;;;;; MODES
