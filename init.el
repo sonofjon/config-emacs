@@ -463,8 +463,8 @@
   ;; What to dim
   ;; (dimmer-adjustment-mode ':both)
   ;; Adjust dimming amount
-  (dimmer-fraction 0.25)                ; default is 0.20
-  (dimmer-use-colorspace :rgb)          ; for use with modus themes
+  (dimmer-fraction 0.25)         ; default is 0.20
+  (dimmer-use-colorspace :rgb)   ; for use with modus themes
   :config
   (dimmer-mode 1))
 
@@ -637,7 +637,8 @@
   :init
   ;; Enable corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
-  (global-corfu-mode))   ; TODO note that if this is enabled in terminal mode consult-completions wont be active
+  (global-corfu-mode))   ; TODO: note that if this is enabled in terminal mode
+                         ; consult-completions wont be active
 
 ;; corfu-doc (documentation popup for corfu)
 (use-package corfu-doc
@@ -890,7 +891,8 @@
          ("<up>" . treemacs-previous-line)
          ;; ("M-<down>" . treemacs-next-neighbour)   ; not needed
          ;; ("M-<up>" . treemacs-previous-neighbour)   ; not needed
-         ("C-c C-p <down>" . treemacs-move-project-down)   ; TODO update transient help with these new bindings
+         ("C-c C-p <down>" . treemacs-move-project-down)
+            ; TODO: update transient help with these new bindings
          ("C-c C-p <up>" . treemacs-move-project-up)
          ("o l" . treemacs-visit-node-in-least-recently-used-window)))
 
