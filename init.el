@@ -582,6 +582,7 @@
 (use-package icomplete-vertical
   :disabled
   ;; Load after startup (when my/completion-styles is defined)
+  ;;   TODO: use the :defines and :functions keywords!
   :hook (emacs-startup . (lambda () (icomplete-mode) (icomplete-vertical-mode)))
   :bind (:map icomplete-minibuffer-map
               ("<up>" . icomplete-backward-completions)
@@ -595,7 +596,8 @@
 ;; vertico (vertical completion UI)
 (use-package vertico
   ;; Load after startup (when my/completion-styles is defined)
-  :hook (emacs-startup . vertico-mode)
+  :hook (emacs-startup . vertico-mode)   ; TODO: you can use :no-require
+                                         ; keyword to delay loading!
   :bind (:map vertico-map
               ("?" . minibuffer-completion-help)
               ("C-c ?" . minibuffer-hide-completions)
@@ -616,7 +618,6 @@
 ;; corfu (completion overlay)
 (use-package corfu
   ;; TODO: enable corfu-history-mode and corfu-info-mode?
-  ;; TODO: corfu-popup enables corfu in terminal
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
   ;; :custom
   ;; (corfu-count 10)               ; maximal number of candidates to show
@@ -670,6 +671,7 @@
 ;; cape (completion at point extensions for corfu)
 ;;   TODO: Fix completion in terminal
 (unless (display-graphic-p)
+  ; TODO: use conditional loading instead: e.g. :if window-system
   (use-package cape
     :after (corfu which-key)
     ;; Bind dedicated completion commands
