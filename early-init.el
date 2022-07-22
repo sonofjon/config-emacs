@@ -22,7 +22,7 @@
 
 ;; Display *Messages* buffer at startup
 ;;   TODO: this does not exist at this point?
-(setq initial-buffer-choice (lambda () (get-buffer "*Messages*")))
+;; (setq initial-buffer-choice (lambda () (get-buffer "*Messages*")))
 
 ;; Loads a nice blue theme, avoids the white screen flash on startup
 ;; (load-theme 'deeper-blue t)
