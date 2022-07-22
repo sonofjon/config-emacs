@@ -657,12 +657,12 @@
 
 ;; corfu-terminal (corfu popup on terminal)
 ;;   TODO: check again when package more mature
-;; (unless (display-graphic-p)
-;;   (use-package corfu-terminal
-;;     :disabled
-;;     :after corfu
-;;     :config
-;;     (corfu-terminal-mode 1)))
+;; (use-package corfu-terminal
+;;   :if (not (display-graphic-p))
+;;   :disabled
+;;   :after corfu
+;;   :config
+;;   (corfu-terminal-mode 1)))
 
 ;; (use-package corfu-terminal
 ;;   :quelpa (corfu-terminal
@@ -671,32 +671,31 @@
 
 ;; cape (completion at point extensions for corfu)
 ;;   TODO: Fix completion in terminal
-(unless (display-graphic-p)
-  ; TODO: use conditional loading instead: e.g. :if window-system
-  (use-package cape
-    :after (corfu which-key)
-    ;; Bind dedicated completion commands
-    ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-    :bind (("C-c u p" . completion-at-point) ;; capf
-           ("C-c u a" . cape-abbrev)
-           ("C-c u d" . cape-dabbrev)
-           ("C-c u w" . cape-dict)
-           ("C-c u f" . cape-file)
-           ("C-c u i" . cape-ispell)
-           ("C-c u k" . cape-keyword)
-           ("C-c u l" . cape-line)
-           ("C-c u s" . cape-symbol))
-    :init
-    ;; Add `completion-at-point-functions', used by `completion-at-point'.
-    (add-to-list 'completion-at-point-functions #'cape-abbrev)
-    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-    (add-to-list 'completion-at-point-functions #'cape-dict)
-    (add-to-list 'completion-at-point-functions #'cape-file)
-    (add-to-list 'completion-at-point-functions #'cape-ispell)
-    (add-to-list 'completion-at-point-functions #'cape-keyword)
-    (add-to-list 'completion-at-point-functions #'cape-line)
-    (add-to-list 'completion-at-point-functions #'cape-symbol)
-    (which-key-add-key-based-replacements "C-c u" "corfu/cape")))
+(use-package cape
+  :if (not (display-graphic-p))
+  :after (corfu which-key)
+  ;; Bind dedicated completion commands
+  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+  :bind (("C-c u p" . completion-at-point) ;; capf
+         ("C-c u a" . cape-abbrev)
+         ("C-c u d" . cape-dabbrev)
+         ("C-c u w" . cape-dict)
+         ("C-c u f" . cape-file)
+         ("C-c u i" . cape-ispell)
+         ("C-c u k" . cape-keyword)
+         ("C-c u l" . cape-line)
+         ("C-c u s" . cape-symbol))
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-dict)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-ispell)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  (add-to-list 'completion-at-point-functions #'cape-line)
+  (add-to-list 'completion-at-point-functions #'cape-symbol)
+  (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
 
 ;; orderless (orderless completion style)
 (use-package orderless
