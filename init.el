@@ -116,12 +116,12 @@
 ;; benchmark-init (startup profiler)
 (use-package benchmark-init
   :disabled
-  ;; Disable collection of benchmark data after init
-  :hook (after-init-hook . #'benchmark-init/deactivate)
   :init
   ;; Start benchmark
   (benchmark-init/activate)
   :config
+  ;; Disable collection of benchmark data after init
+  (add-hook 'after-init-hook #'benchmark-init/deactivate)
   ;; Configure list format
   (setq benchmark-init/list-format
    (quote [("Module" 50 t)
@@ -920,11 +920,11 @@
 ;; json-mode (major-mode for editing JSON files)
 (use-package json-mode
   :mode ".json"
-  :hook (json-mode . (lambda () (setq-local js-indent-level 2)))
   :bind (:map json-mode-map
               ("C-c C-b" . json-mode-beautify)
               ("C-c C-s" . json-snatcher))
   :config
+  (add-hook 'json-mode-hook (lambda () (setq-local js-indent-level 2)))
   (unbind-key "C-c C-f" json-mode-map)
   (unbind-key "C-c P" json-mode-map))
 
@@ -944,7 +944,6 @@
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
     :mode (".html?$")
-    :hook (web-mode . (lambda () (setq truncate-lines nil)))
     :init
     ;; Engines
     (setq web-mode-engines-alist '(("django" . "\\.html\\'")
@@ -962,7 +961,9 @@
     (web-mode-enable-auto-indentation t)
     (web-mode-enable-auto-opening t)
     (web-mode-enable-auto-pairing t)
-    (web-mode-enable-auto-quoting t))
+    (web-mode-enable-auto-quoting t)
+    :config
+    (add-hook 'web-mode-hook (lambda () (setq truncate-lines nil))))
 
 ;; yaml-mode (major-mode for editing YAML files)
 (use-package yaml-mode
@@ -1009,8 +1010,6 @@
 
 ;; magit (user interface to git)
 (use-package magit
-  ;; Disable hl-line-mode
-  :hook (magit-mode . (lambda () (setq-local global-hl-line-mode nil)))
   :bind (("C-c g" . magit-file-dispatch)
          ;; Kill, not bury, magit buffers
          :map magit-mode-map
@@ -1032,6 +1031,8 @@
      ("~/projects"                . 1)
      ("~/git"                     . 1)))
   :config
+  ;; Disable hl-line-mode
+  (add-hook 'magit-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
   ;; Add status flag to repository list
   (add-to-list 'magit-repolist-columns
                '("Flag" 4 magit-repolist-column-flag (:right-align t))))
