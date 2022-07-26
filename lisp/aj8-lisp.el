@@ -146,7 +146,7 @@ Emacs session."
           (find-file file)))
     (error "No recently-killed files to reopen")))
 
-;;; Skip unimportant buffers when switching
+;;; Buffer switching
 
 (defcustom aj8/buffer-skip-regexp
   (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Completions*" "*Help*"
@@ -162,9 +162,45 @@ Emacs session."
 and `previous-buffer'."
   :type 'regexp)
 
-  (interactive)
+(defun aj8/buffer-skip-p (window buffer bury-or-kill)
+  "Return t if BUFFER name matches `aj8/buffer-skip-regexp'."
+  (string-match-p aj8/buffer-skip-regexp (buffer-name buffer)))
 
+;;; Project buffer switching
+;;;   (imported from projectile and adapted for project.el)
+
+;; Find next/previous projct buffer
+(defun my/project--repeat-until-project-buffer (orig-fun &rest args)
+  "Repeat ORIG-FUN with ARGS until the current buffer is a project buffer."
+  (if (project-current)
+      (let* ((other-project-buffers (make-hash-table :test 'eq))
+             (project-buffers (project-buffers (project-current)))
+             (max-iterations (length (buffer-list)))
+             (counter 0))
+        (dolist (buffer project-buffers)
+          (unless (eq buffer (current-buffer))
+            (puthash buffer t other-project-buffers)))
+        (when (cdr-safe project-buffers)
+          (while (and (< counter max-iterations)
+                      (not (gethash (current-buffer) other-project-buffers)))
+            (apply orig-fun args)
+            (cl-incf counter))))
+    (apply orig-fun args)))
+
+;; Switch to next project buffer
+(defun my/project-next-buffer ()
+  "In selected window switch to the next project buffer.
+If the current buffer does not belong to a project, call `next-buffer'."
   (interactive)
+  (my/project--repeat-until-project-buffer #'next-buffer))
+
+;; Switch to previous project buffer
+(defun my/project-previous-buffer ()
+  "In selected window switch to the previous project buffer.
+If the current buffer does not belong to a project, call `previous-buffer'."
+  (interactive)
+  (my/project--repeat-until-project-buffer #'previous-buffer))
+
 
 ;;; Misc
 

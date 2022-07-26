@@ -1672,8 +1672,8 @@
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
 (global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
-(global-set-key [remap next-buffer] #'my/next-buffer)
-(global-set-key [remap previous-buffer] #'my/previous-buffer)
+(global-set-key [remap next-buffer] #'my/project-next-buffer)
+(global-set-key [remap previous-buffer] #'my/project-previous-buffer)
 
 ;;; Outline
 
