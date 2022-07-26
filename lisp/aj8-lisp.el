@@ -155,7 +155,8 @@ Emacs session."
                   "*Async-native-compile-log*")
               (seq "magit-diff" (zero-or-more anything))
               (seq "magit-process" (zero-or-more anything))
-              (seq "magit-revision" (zero-or-more anything)))
+              (seq "magit-revision" (zero-or-more anything))
+              (seq "magit-stash" (zero-or-more anything)))
               eos)
   "Matching buffer names are ignored by `my/next-buffer'
 and `my/previous-buffer'."
