@@ -148,7 +148,7 @@ Emacs session."
 
 ;;; Skip unimportant buffers when switching
 
-(defcustom my/skippable-buffer-regexp
+(defcustom aj8/buffer-skip-regexp
   (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Completions*" "*Help*"
                   "*Messages*" "*package*" "*Quail Completions*"
                   "*quelpa-build-checkout*" "*scratch*" "*Warnings*"
@@ -158,33 +158,13 @@ Emacs session."
               (seq "magit-revision" (zero-or-more anything))
               (seq "magit-stash" (zero-or-more anything)))
               eos)
-  "Matching buffer names are ignored by `my/next-buffer'
-and `my/previous-buffer'."
+  "Regular expression matching buffers ignored by `next-buffer'
+and `previous-buffer'."
   :type 'regexp)
 
-(defun my/change-buffer (change-buffer)
-  "Call CHANGE-BUFFER until `my/skippable-buffer-regexp' doesn't match."
-  (let ((initial (current-buffer)))
-    (funcall change-buffer)
-    (let ((first-change (current-buffer)))
-      (catch 'loop
-        (while (string-match-p my/skippable-buffer-regexp (buffer-name))
-          (funcall change-buffer)
-          (when (eq (current-buffer) first-change)
-            (switch-to-buffer initial)
-            (throw 'loop t)))))))
-
-;; Custom next-buffer
-(defun my/next-buffer ()
-  "Variant of `next-buffer' that skips `my/skippable-buffer-regexp'."
   (interactive)
-  (my/change-buffer 'next-buffer))
 
-;; Custom previous-buffer
-(defun my/previous-buffer ()
-  "Variant of `previous-buffer' that skips `my/skippable-buffer-regexp'."
   (interactive)
-  (my/change-buffer 'previous-buffer))
 
 ;;; Misc
 

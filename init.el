@@ -1342,6 +1342,9 @@
 ;; Reuse existing help window
 ;; (setq help-window-select t)
 
+;; Skip some buffers when switching buffers
+(setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
+
 ;;; Outline
 
 ;; Outline minor mode prefix
