@@ -622,16 +622,16 @@
   (my/completion-styles))
 
 ;; corfu (completion overlay)
+;;   TODO: enable corfu-history-mode and corfu-info-mode?
 (use-package corfu
-  ;; TODO: enable corfu-history-mode and corfu-info-mode?
   :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
-  ;; :custom
+  :custom
   ;; (corfu-count 10)               ; maximal number of candidates to show
   ;; (corfu-min-width 15)           ; popup minimum width in characters
   ;; (corfu-max-width 100)          ; popup maximum width in characters."
   ;; (corfu-cycle t)                ; enable cycling for `corfu-next/previous'
-  ;; (corfu-auto t)                 ; enable auto completion
+  (corfu-auto t)                 ; enable auto completion
   ;; (corfu-auto-prefix 3)          ; minimum length of prefix for auto completion."
   ;; (corfu-separator ?\s)          ; orderless field separator
   ;; (corfu-quit-at-boundary t)     ; automatically quit at word boundary
@@ -640,7 +640,7 @@
   ;; (corfu-preselect-first nil)    ; disable candidate preselection
   ;; (corfu-on-exact-match nil)     ; configure handling of exact matches
   ;; (corfu-echo-documentation nil) ; do not show documentation in the echo area
-  ;; (corfu-scroll-margin 5)        ; use scroll margin
+  (corfu-scroll-margin 1)        ; use scroll margin
   :init
   ;; Enable corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
