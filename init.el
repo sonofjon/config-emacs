@@ -624,6 +624,7 @@
 ;; corfu (completion overlay)
 (use-package corfu
   ;; TODO: enable corfu-history-mode and corfu-info-mode?
+  :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
   ;; :custom
   ;; (corfu-count 10)               ; maximal number of candidates to show
@@ -648,7 +649,6 @@
 
 ;; corfu-doc (documentation popup for corfu)
 (use-package corfu-doc
-  :if (display-graphic-p)
   :after corfu
   :hook (corfu-mode . corfu-doc-mode)
   :bind (:map corfu-map
