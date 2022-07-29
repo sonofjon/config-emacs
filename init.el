@@ -682,9 +682,10 @@
   :after (corfu which-key)
   ;; Bind dedicated completion commands
   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-  :bind (("C-c u p" . completion-at-point) ;; capf
+  :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
-         ("C-c u d" . cape-dabbrev)
+         ("C-c u d" . cape-dabbrev)          ; or dabbrev-completion
+         ("C-c u h" . cape-history)
          ("C-c u w" . cape-dict)
          ("C-c u f" . cape-file)
          ("C-c u i" . cape-ispell)
