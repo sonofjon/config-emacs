@@ -576,9 +576,8 @@ versa."
    ((string-match-p "aspell" ispell-program-name)   ; switch to hunspell
     (setq ispell-program-name "hunspell")
     (setq ispell-dictionary "en_US,sv_SE")
-    (with-eval-after-load "ispell"
-      (ispell-set-spellchecker-params)
-      (ispell-hunspell-add-multi-dic "en_US,sv_SE"))
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic "en_US,sv_SE")
     (setq ispell-personal-dictionary "~/.hunspell_personal")
     (unless (file-exists-p ispell-personal-dictionary)
       (with-temp-buffer (write-file ispell-personal-dictionary))))
