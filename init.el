@@ -1734,9 +1734,6 @@
 
 ;;; Selection
 
-(global-set-key (kbd "M-#") #'aj8/mark-word-forward)
-(global-set-key (kbd "M-@") #'aj8/mark-word-backward)
-
 ;;; Editing
 
 (global-set-key (kbd "C-S-k") (lambda () (interactive) (kill-line 0)))
