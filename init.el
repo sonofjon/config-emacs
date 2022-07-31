@@ -736,6 +736,11 @@
          ("C-x M-:" . consult-complex-command)   ; orig. repeat-complex-command
          ("C-x b" . consult-project-buffer)      ; orig. switch-to-buffer
          ("C-x B" . consult-buffer)
+         ("C-x r b" . consult-bookmark)          ; orig. bookmark-jump
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)        ; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
          ;; Other custom bindings
          ;; ("M-y" . consult-yank-pop)           ; orig. yank-pop
          ("<help> a" . consult-apropos)          ; orig. apropos-command
