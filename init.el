@@ -778,16 +778,34 @@
   :init
   ;; Enhance `completing-read-multiple'
   ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+
   ;; Use consult for completion in region
   ;;   Note, this does not work with LSP or eglot
   (when (not (display-graphic-p))   ; only enable if using terminal
     (setq completion-in-region-function #'consult-completion-in-region))
   (which-key-add-key-based-replacements "C-c c" "consult")
+
+  ;; Configure the register formatting
+  ;;   This improves the register preview for `consult-register',
+  ;;   `consult-register-load', `consult-register-store' and the Emacs
+  ;;   built-ins.
+  (setq register-preview-delay 0.5
+        register-preview-function #'consult-register-format)
+
+  ;; Tweak the register preview window
+  ;;   This adds thin lines, sorting and hides the mode line of the window.
+  (advice-add #'register-preview :override #'consult-register-window)
+
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+
   :config
   ;; Preview key
   ;;   TODO: does not work in terminal
   (setq consult-preview-key (kbd "M-`"))         ; default is 'any
   ;; (setq consult-preview-key (list (kbd "<down>") (kbd "<up>")))
+
   ;; Configure preview on a per-command basis
   (consult-customize
    consult-theme
@@ -796,11 +814,13 @@
    consult-recent-file consult-xref consult--source-bookmark
    consult--source-recent-file consult--source-project-recent-file
    :preview-key (list (kbd "<down>") (kbd "<up>")))
+
   ;; Narrowing key
   ;; (setq consult-narrow-key "<")
   ;; Enable narrowing help in the minibuffer
   ;;   (you may want to use `embark-prefix-help-command' or which-key instead)
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+
   ;; Completion
   (consult-customize
    consult-completion-in-region
