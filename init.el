@@ -1671,8 +1671,8 @@
 
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
 
-(define-key winner-mode-map (kbd "C-c <") #'winner-undo)
-(define-key winner-mode-map (kbd "C-c >") #'winner-redo)
+(define-key winner-mode-map (kbd "C-c w <") #'winner-undo)
+(define-key winner-mode-map (kbd "C-c w >") #'winner-redo)
 
 ;;; Buffers
 
@@ -1726,6 +1726,9 @@
 (global-set-key (kbd "C-M-<right>") #'forward-list) ; overwrites default backward-sexp
 (global-set-key (kbd "C-M-p") #'backward-up-list)   ; overwrites default backward-list
 (global-set-key (kbd "C-M-n") #'down-list)          ; overwrites default forward-list
+
+(global-set-key (kbd "C-c >") #'xref-find-definitions)  ; default M-.
+(global-set-key (kbd "C-c <") #'xref-pop-marker-stack)  ; default M-,
 
 ;;; Search
 
