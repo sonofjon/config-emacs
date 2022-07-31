@@ -729,9 +729,9 @@
 (use-package consult
   :after which-key
   :bind (;; C-c bindings (mode-specific-map)
-         ;; ("C-c c h" . consult-history)
          ("C-c c m" . consult-mode-command)      ; run a command from current modes
          ("C-c c M" . consult-minor-mode-menu)   ; enable or disable minor mode
+         ("C-c c h" . consult-history)
          ;; C-x bindings (ctl-x-map)
          ("C-x M-:" . consult-complex-command)   ; consult: repeat-complex-command
          ("C-x b" . consult-project-buffer)              ; consult: switch-to-buffer
