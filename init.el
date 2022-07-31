@@ -729,47 +729,47 @@
 (use-package consult
   :after which-key
   :bind (;; C-c bindings (mode-specific-map)
-         ("C-c c m" . consult-mode-command)      ; run a command from current modes
-         ("C-c c M" . consult-minor-mode-menu)   ; enable or disable minor mode
          ("C-c c h" . consult-history)
+         ("C-c c m" . consult-mode-command)
+         ("C-c c M" . consult-minor-mode-menu)
          ;; C-x bindings (ctl-x-map)
-         ("C-x M-:" . consult-complex-command)   ; consult: repeat-complex-command
-         ("C-x b" . consult-project-buffer)              ; consult: switch-to-buffer
-         ("C-x B" . consult-buffer)              ; consult: switch-to-buffer
+         ("C-x M-:" . consult-complex-command)   ; orig. repeat-complex-command
+         ("C-x b" . consult-project-buffer)      ; orig. switch-to-buffer
+         ("C-x B" . consult-buffer)
          ;; Other custom bindings
-         ;; ("M-y" . consult-yank-pop)              ; consult: yank-pop
-         ("<help> a" . consult-apropos)          ; consult: apropos-command
+         ;; ("M-y" . consult-yank-pop)           ; orig. yank-pop
+         ("<help> a" . consult-apropos)          ; orig. apropos-command
          ;; M-g bindings (goto-map)
-         ("M-g g" . consult-goto-line)           ; consult: goto-line
-         ("M-g M-g" . consult-goto-line)         ; consult: goto-line
-         ("M-g o" . consult-outline)             ; jump to an outline heading
-         ("M-g m" . consult-mark)                ; jump to mark
-         ("M-g k" . consult-global-mark)         ; jump to mark (global)
-         ("M-g i" . consult-imenu)               ; select item from imenu
-         ("M-g I" . consult-imenu-multi)         ; select item from imenu (project)
+         ("M-g g" . consult-goto-line)           ; orig. goto-line
+         ("M-g M-g" . consult-goto-line)         ; orig. goto-line
+         ("M-g o" . consult-outline)             ; Alternative: consult-org-heading
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
          ;; M-s bindings (search-map)
-         ("M-s f" . consult-find)                ; search for regexp with find
-         ("M-s R" . consult-recent-file)         ; find recent file
-         ("M-s F" . consult-locate)              ; search for regexp with locate
-         ("M-s g" . consult-grep)                ; search for regexp with grep
-         ("M-s G" . consult-git-grep)            ; search for regexp with grep (git)
-         ("M-s r" . consult-ripgrep)             ; search for regexp with rg
-         ("M-s l" . consult-line)                ; search for a matching line
-         ("M-s L" . consult-line-multi)          ; search for a matching line (global)
-         ("M-s m" . consult-multi-occur)         ; consult: multi-occur
+         ("M-s d" . consult-find)
+         ("M-s R" . consult-recent-file)
+         ("M-s D" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s m" . consult-multi-occur)
          ;; ("M-s k" . consult-keep-lines)
          ;; ("M-s u" . consult-focus-lines)
          ;; Isearch integration
-         ("M-s e" . consult-isearch-history)     ; read a search string from Isearch history
+         ("M-s e" . consult-isearch-history)
          :map isearch-mode-map
-         ("M-e" . consult-isearch-history)       ; consult: isearch-edit-string
-         ("M-s e" . consult-isearch-history)     ; consult: isearch-edit-string
-         ("M-s l" . consult-line)                ; needed by consult-line to detect Isearch
+         ("M-e" . consult-isearch-history)       ; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history)     ; orig. isearch-edit-string
+         ("M-s l" . consult-line)                ; needed by consult-line to detect isearch
          ("M-s L" . consult-line-multi)          ; needed by consult-line to detect Isearch
          ;; Minibuffer history
          :map minibuffer-local-map
-         ("M-s" . consult-history)               ; consult: next-matching-history-element
-         ("M-r" . consult-history))              ; consult: previous-matching-history-element
+         ("M-s" . consult-history)               ; orig. next-matching-history-element
+         ("M-r" . consult-history))              ; orig. previous-matching-history-element
   :init
   ;; Enhance `completing-read-multiple'
   ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
