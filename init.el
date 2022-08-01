@@ -1009,11 +1009,19 @@
          (web-mode . lsp)
          (js-mode . lsp)
          ;; which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
+         (lsp-mode . lsp-enable-which-key-integration)
+         ;; corfu integration
+         (lsp-completion-mode . my/lsp-mode-setup-completion))
   :init
-  (which-key-add-key-based-replacements "C-c l" "LSP")
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(flex)))   ; use flex
   ;; Prefix for lsp-command-keymap
-  (setq lsp-keymap-prefix "C-c l"))
+  (setq lsp-keymap-prefix "C-c l")
+  (which-key-add-key-based-replacements "C-c l" "LSP")
+  :custom
+  ;; Use custom completion backend (Corfu)
+  (lsp-completion-provider :none))
 
 ;; lsp-ui-mode (UI modules for LSP)
 (use-package lsp-ui
