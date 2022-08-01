@@ -956,7 +956,7 @@
   (unbind-key "C-c C-f" json-mode-map)
   (unbind-key "C-c P" json-mode-map))
 
-;; markdown-mode (major mode for editing Markdown files)
+;; markdown-mode (major-mode for editing Markdown files)
 (use-package markdown-mode
   :mode (".md" . markdown-mode)
   ;; :mode (".md" . markdown-view-mode)
@@ -999,6 +999,17 @@
   :bind (:map yaml-mode-map))
               ;; ("C-m" . newline-and-indent)))
 
+;; powershell (major-mode for editing and running PowerShell files)
+(use-package powershell
+  :defer)
+
+;; i3wm-config-mode (major-mode for editing i3 config files)
+(use-package i3wm-config-mode
+  :defer)
+
+;; rainbow-mode (syntax highlighting for color codes)
+(use-package rainbow-mode)
+
 ;; lsp-mode (language server protocol)
 (use-package lsp-mode
   ;; :disabled
@@ -1040,16 +1051,6 @@
                          (require 'lsp-pyright)
                          (lsp))))  ; or lsp-deferred
 
-;; i3wm-config-mode (syntax highlighting for i3 config files)
-(use-package i3wm-config-mode
-  :defer)
-
-;; powershell (major mode for editing and running PowerShell files)
-(use-package powershell
-  :defer)
-
-;; rainbow-mode (syntax highlighting for color codes)
-(use-package rainbow-mode)
 
 ;;; Version control
 
