@@ -1051,6 +1051,10 @@
                          (require 'lsp-pyright)
                          (lsp))))  ; or lsp-deferred
 
+;; flymake-shellcheck (Flymake handler for bash/sh scripts)
+(use-package flymake-shellcheck
+  :commands flymake-shellcheck-load
+  :hook (sh-mode . flymake-shellcheck-load))
 
 ;;; Version control
 
