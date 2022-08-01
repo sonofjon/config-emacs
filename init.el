@@ -1004,10 +1004,10 @@
   ;; :disabled
   :commands (lsp lsp-deferred)
   :hook ((sh-mode . lsp)   ; or lsp-deferred
-         (html-mode . lsp)
-         (css-mode . lsp)
+         ;; (html-mode . lsp)
+         ;; (css-mode . lsp)
+         (web-mode . lsp)
          (js-mode . lsp)
-         (html-mode . lsp)
          ;; which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :init
