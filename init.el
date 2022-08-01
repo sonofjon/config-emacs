@@ -22,9 +22,7 @@
        (when (display-graphic-p)
          ;; Add to exec-path
          ;;   TODO: Use exec-path-from-shell package?
-         (dolist (dir '("/usr/local/bin"
-                        "/usr/local/opt/grep/libexec/gnubin"))
-           (add-to-list 'exec-path dir)))
+         (exec-path-from-shell-initialize))
        (message "Early settings for macOS"))
 
       ((or (string-match-p "^brain[0-9]+$" (system-name))
@@ -134,6 +132,9 @@
      :right-align t)]))
   ;; Set sort key
   (setq benchmark-init/list-sort-key  '("ms" . t)))
+
+(use-package exec-path-from-shell
+  :if (equal window-system 'ns))
 
 ;;; Package management
 
