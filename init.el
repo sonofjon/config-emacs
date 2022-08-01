@@ -1001,7 +1001,7 @@
 
 ;; lsp-mode (language server protocol)
 (use-package lsp-mode
-  :disabled
+  ;; :disabled
   :commands (lsp lsp-deferred)
   :hook ((sh-mode . lsp)   ; or lsp-deferred
          (html-mode . lsp)
