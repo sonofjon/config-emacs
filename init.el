@@ -1015,13 +1015,15 @@
   ;; Prefix for lsp-command-keymap
   (setq lsp-keymap-prefix "C-c l"))
 
-;; lsp-ui-mode (higher level UI modules for LSP)
-;; (use-package lsp-ui
-;;   :commands lsp-ui-mode)
+;; lsp-ui-mode (UI modules for LSP)
+(use-package lsp-ui
+  :after lsp-mode
+  :commands lsp-ui-mode)
 
-;; lsp-treemacs: (Treemacs integration)
-;; (use-package lsp-treemacs
-;;   :commands lsp-treemacs-errors-list)
+;; lsp-treemacs (Treemacs integration for LSP)
+(use-package lsp-treemacs
+  :after lsp-mode
+  :commands lsp-treemacs-errors-list)
 
 ;; i3wm-config-mode (syntax highlighting for i3 config files)
 (use-package i3wm-config-mode
