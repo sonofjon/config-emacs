@@ -1033,6 +1033,13 @@
   :after lsp-mode
   :commands lsp-treemacs-errors-list)
 
+;; lsp-pyright (lsp-mode client for Pyright language server)
+(use-package lsp-pyright
+  :after lsp-mode
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp))))  ; or lsp-deferred
+
 ;; i3wm-config-mode (syntax highlighting for i3 config files)
 (use-package i3wm-config-mode
   :defer)
