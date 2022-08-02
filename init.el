@@ -296,9 +296,9 @@
   ;;                     ("18:00"  . modus-vivendi)))
   (circadian-themes '((:sunrise . modus-operandi)
                       (:sunset  . modus-vivendi)))
+  (calendar-latitude 59.33)
+  (calendar-longitude 18.07)
   :config
-  (setq calendar-latitude 59.33
-        calendar-longitude 18.07)
   (circadian-setup))
 
 ;;; Windows
