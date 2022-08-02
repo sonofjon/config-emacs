@@ -937,6 +937,26 @@
 
 ;;; Help
 
+;; helpful (alternative help)
+(use-package helpful
+  ;; :demand
+  :commands (helpful-key helpful-function helpful-symbol
+             helpful-variable helpful-command)
+  :bind (([remap describe-key] . helpful-key)
+         ([remap describe-function] . helpful-function)
+         ([remap describe-symbol] . helpful-symbol)
+         ([remap describe-variable] . helpful-variable)
+         ([remap describe-command] . helpful-command)
+         ("C-c h" . helpful-at-point)
+         :map helpful-mode-map
+         ;; Kill buffers on quit
+         ([remap quit-window] . aj8/quit-window))
+  :custom
+  ;; Maximum number of *helpful* buffers
+  ;; (helpful-max-buffers 3)
+  ;; Always open additional helpful buffers in the same window
+  (helpful-switch-buffer-function #'aj8/helpful-switch-to-buffer))
+
 ;; marginalia (add marginalia to minibuffer completions)
 (use-package marginalia
   :demand
@@ -958,26 +978,6 @@
   (which-key-idle-secondary-delay 0.05)
   :config
   (which-key-mode 1))
-
-;; helpful (alternative help)
-(use-package helpful
-  ;; :demand
-  :commands (helpful-key helpful-function helpful-symbol
-             helpful-variable helpful-command)
-  :bind (([remap describe-key] . helpful-key)
-         ([remap describe-function] . helpful-function)
-         ([remap describe-symbol] . helpful-symbol)
-         ([remap describe-variable] . helpful-variable)
-         ([remap describe-command] . helpful-command)
-         ("C-c h" . helpful-at-point)
-         :map helpful-mode-map
-         ;; Kill buffers on quit
-         ([remap quit-window] . aj8/quit-window))
-  :custom
-  ;; Maximum number of *helpful* buffers
-  ;; (helpful-max-buffers 3)
-  ;; Always open additional helpful buffers in the same window
-  (helpful-switch-buffer-function #'aj8/helpful-switch-to-buffer))
 
 ;;; Web
 
