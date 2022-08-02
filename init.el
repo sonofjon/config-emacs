@@ -447,22 +447,6 @@
 
 ;;; Completion
 
-;; icomplete-vertical (show icomplete candidates vertically)
-(use-package icomplete-vertical
-  :disabled
-  :bind (:map icomplete-minibuffer-map
-              ("<up>" . icomplete-backward-completions)
-              ("<down>" . icomplete-forward-completions)
-              ;; ("RET" . icomplete-force-complete)
-              ("RET" . icomplete-force-complete-and-exit)
-              ("C-v" . icomplete-vertical-toggle))
-  :init
-  (icomplete-mode)
-  (icomplete-vertical-mode)
-  :config
-  ;; Configure completion styles
-  (my/completion-styles))
-
 ;; vertico (vertical completion UI)
 (use-package vertico
   :bind (:map vertico-map
