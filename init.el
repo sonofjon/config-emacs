@@ -1855,6 +1855,3 @@ Hide, show and navigate outlines.
 (when (equal "rxvt-unicode-256color"
              (getenv-internal "TERM" initial-environment))
   (rxvt-input-decode-map))
-
-
-; LocalWords:  ediff flyspell isearch ispell magit minibuffer modus TODO
