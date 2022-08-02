@@ -198,78 +198,6 @@
   :if (display-graphic-p)
   :hook (dired-mode . all-the-icons-dired-mode))
 
-;; base16-theme
-;;   Available options: <https://belak.github.io/base16-emacs/>
-(use-package base16-theme
-  :disabled)
-  ;; :config
-  ;; (setq base16-theme-256-color-source "base16-shell")
-  ;; (setq base16-theme-256-color-source "colors")
-  ;; (load-theme 'base16-classic-dark t))
-  ;; (load-theme 'base16-classic-light t))
-  ;; (load-theme 'base16-default-dark t))
-  ;; (load-theme 'base16-default-light t))
-  ;; (load-theme 'base16-google-dark t))
-  ;; (load-theme 'base16-google-light t))
-  ;; (load-theme 'base16-onedark t))
-  ;; (load-theme 'base16-one-light t))
-  ;; (load-theme 'base16-solarized-dark t))
-  ;; (load-theme 'base16-solarized-light t))
-  ;; (load-theme 'base16-summerfruit-dark t))
-  ;; (load-theme 'base16-summerfruit-light t))
-  ;; (load-theme 'base16-brewer t))
-  ;; (load-theme 'base16-chalk t))
-  ;; (load-theme 'base16-circus t))
-  ;; (load-theme 'base16-dracula t))
-  ;; (load-theme 'base16-eighties t))
-  ;; (load-theme 'base16-flat t))
-  ;; (load-theme 'base16-materia t))
-  ;; (load-theme 'base16-nord t))
-  ;; (load-theme 'base16-snazzy t))
-  ;; (load-theme 'base16-spacemacs t))
-  ;; (load-theme 'base16-zenburn t))
-
-;; doom-themes
-(use-package doom-themes
-  :disabled
-  :custom
-  ;; Enable bold and italic
-  (setq doom-themes-enable-bold t)
-  (setq doom-themes-enable-italic t))
-  ;; Enable custom Treemacs theme (all-the-icons must be installed!)
-  ;; (setq doom-themes-treemacs-theme "doom-atom")
-  ;; :config
-  ;; (load-theme 'doom-one t)
-  ;; (load-theme 'doom-one-light t)
-  ;; (doom-themes-treemacs-config))
-
-;; dracula-theme
-(use-package dracula-theme
-  :disabled
-  :custom
-  ;; Don't change the font size for some headings and titles
-  (setq dracula-enlarge-headings nil))
-  ;; Adjust font size of titles level 1 (default 1.3)
-  ;; (setq dracula-height-title-1 1.25)
-  ;; Adjust font size of titles level 2 (default 1.1)
-  ;; (setq dracula-height-title-1 1.15)
-  ;; Adjust font size of titles level 3 (default 1.0)
-  ;; (setq dracula-height-title-1 1.05)
-  ;; Adjust font size of document titles (default 1.44)
-  ;; (setq dracula-height-doc-title 1.4)
-  ;; Use less pink and bold on the mode-line and minibuffer (default nil)
-  ;; (setq dracula-alternate-mode-line-and-minibuffer t)
-  ;; :config
-  ;; ;; (load-theme 'dracula-dark-medium t)
-  ;; (load-theme 'dracula t))
-
-;; gruvbox-theme
-(use-package gruvbox-theme
-  :disabled
-  :config
-  ;; (load-theme 'gruvbox-light-medium t)
-  (load-theme 'gruvbox-dark-medium t))
-
 ;; modus-themes
 (use-package modus-themes
   ;; :disabled
@@ -360,69 +288,6 @@
   ;; (modus-themes-load-operandi))
   ;; (modus-themes-load-vivendi))
 
-;; sanityinc-solarized
-(use-package color-theme-sanityinc-solarized
-  :disabled
-  :config
-  ;; (load-theme 'sanityinc-solarized-light t)
-  (load-theme 'sanityinc-solarized-dark t))
-
-;; sanityinc-tomorrow
-(use-package color-theme-sanityinc-tomorrow
-  :disabled
-  :config
-  ;; (load-theme 'sanityinc-tomorrow-day t)
-  (load-theme 'sanityinc-tomorrow-night t))
-
-;; solarized-theme
-(use-package solarized-theme
-  :disabled
-  :init
-  ;; Make the fringe stand out from the background
-  ;; (setq solarized-distinct-fringe-background t)
-  ;; Don't change the font for some headings and titles
-  (setq solarized-use-variable-pitch nil)
-  ;; Make the modeline high contrast
-  ;; (setq solarized-high-contrast-mode-line t)
-  ;; Use less bolding
-  (setq solarized-use-less-bold t)
-  ;; Use more italics
-  (setq solarized-use-more-italic t)
-  ;; Use less colors for indicators such as git:gutter, flycheck and similar
-  ;; (setq solarized-emphasize-indicators nil)
-  ;; Don't change size of org-mode headlines (but keep other size-changes)
-  ;; (setq solarized-scale-org-headlines nil)
-  ;; Change the size of markdown-mode headlines (off by default)
-  ;; (setq solarized-scale-markdown-headlines t)
-  ;; Avoid all font-size changes
-  (setq solarized-height-minus-1 1.0)
-  (setq solarized-height-plus-1 1.0)
-  (setq solarized-height-plus-2 1.0)
-  (setq solarized-height-plus-3 1.0)
-  (setq solarized-height-plus-4 1.0))
-  ;; :config (load-theme 'solarized-dark t))
-  ;; :config (load-theme 'solarized-light t))
-
-;; spacemacs-theme
-(use-package spacemacs-theme
-  :disabled
-  :defer   ; Fix loading warning
-  :init
-  ;; Toggle italics for comments (and also apply a lighter color)
-  (setq spacemacs-theme-comment-italic t)
-  ;; Toggle italics for keywords
-  (setq spacemacs-theme-keyword-italic t)
-  ;; Toggle the underline of matching parens
-  (setq spacemacs-theme-underline-parens t))
-  ;; :config (load-theme 'spacemacs-dark t))
-  ;; :config (load-theme 'spacemacs-light t))
-
-;; zenburn-theme
-(use-package zenburn-theme
-  :disabled
-  :config
-  (load-theme 'zenburn t))
-
 ;; circadian (theme-switching based on daytime)
 (use-package circadian
   :after modus-themes
@@ -435,7 +300,6 @@
   (setq calendar-latitude 59.33
         calendar-longitude 18.07)
   (circadian-setup))
-
 
 ;;; Windows
 
