@@ -313,19 +313,6 @@
 
 ;;; Buffers
 
-;; auto-dim-other-buffers (dim inactive windows)
-(use-package auto-dim-other-buffers
-  :disabled
-  :custom
-  ;; Don't dim on switch to minibuffer
-  (auto-dim-other-buffers-dim-on-switch-to-minibuffer nil)
-                                        ; TODO: doesn't work
-  :config
-  ;; Define attributes for dimmed windows
-  (set-face-attribute 'auto-dim-other-buffers-face nil :background "color-233")
-  (set-face-attribute 'auto-dim-other-buffers-face nil :foreground "color-245")
-  (auto-dim-other-buffers-mode 1))
-
 ;; dimmer (dim inactive windows)
 (use-package dimmer
   ;; :disabled
@@ -385,10 +372,6 @@
 ;; lorem-ipsum (lorem ipsum text filler)
 (use-package lorem-ipsum
   :defer)
-
-;; rainbow-delimiters (parentheses coloring)
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; move-dup (minor mode for moving and duplicating lines or rectangles)
 (use-package move-dup
