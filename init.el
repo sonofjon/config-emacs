@@ -776,6 +776,10 @@
 
 ;;; Coding
 
+;; i3wm-config-mode (major-mode for editing i3 config files)
+(use-package i3wm-config-mode
+  :defer)
+
 ;; json-mode (major-mode for editing JSON files)
 (use-package json-mode
   :mode ".json"
@@ -799,6 +803,10 @@
 ;; php-mode (major-mode for editing PHP files)
 (use-package php-mode
   :mode ".php$")
+
+;; powershell (major-mode for editing and running PowerShell files)
+(use-package powershell
+  :defer)
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
@@ -829,14 +837,6 @@
   :mode ".yml"
   :bind (:map yaml-mode-map))
               ;; ("C-m" . newline-and-indent)))
-
-;; powershell (major-mode for editing and running PowerShell files)
-(use-package powershell
-  :defer)
-
-;; i3wm-config-mode (major-mode for editing i3 config files)
-(use-package i3wm-config-mode
-  :defer)
 
 ;; rainbow-mode (syntax highlighting for color codes)
 (use-package rainbow-mode)
