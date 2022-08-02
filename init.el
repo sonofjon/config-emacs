@@ -923,6 +923,9 @@
 (use-package diff-hl
   ;; :disabled
   :config
+  ;; Integration with Magit
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   ;; Use diff-hl-mode everywhere
   (global-diff-hl-mode 1))
 
