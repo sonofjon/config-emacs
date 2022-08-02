@@ -981,14 +981,28 @@
 
 ;;; Web
 
-;; google-this (google search functions)
-(use-package google-this
-  :after which-key
-  :diminish
-  :init
-  (which-key-add-key-based-replacements "C-c /" "google-this")
-  :config
-  (google-this-mode 1))
+;; elfeed (web feed reader)
+(use-package elfeed
+  :commands elfeed
+  :bind (:map elfeed-search-mode-map
+              ("g" . elfeed-search-fetch)
+              ("G" . elfeed-search-update--force))
+  :custom
+  ;; Subscriptions
+  (elfeed-feeds '("https://www.reddit.com/r/emacs/.rss"
+                  "https://sachachua.com/blog/category/emacs-news/feed/"))
+  ;; Download folder
+  (elfeed-enclosure-default-dir "~/Downloads/")
+  ;; Default filter
+  ;; (elfeed-search-filter "@6-months-ago +unread")
+  ;; Sort order
+  ;; (elfeed-sort-order 'descending)
+  ;; Use unique buffer names
+  (elfeed-show-unique-buffers t)
+  ;; Layout
+  (elfeed-search-title-max-width 50)    ; default is 70
+  (elfeed-search-title-min-width 16)    ; default is 16
+  (elfeed-search-trailing-width 30))    ; default is 30
 
 ;; erc (IRC client)
 (use-package erc
@@ -1026,28 +1040,14 @@
   (add-to-list 'erc-modules 'hl-nicks)
   (erc-update-modules))
 
-;; elfeed (web feed reader)
-(use-package elfeed
-  :commands elfeed
-  :bind (:map elfeed-search-mode-map
-              ("g" . elfeed-search-fetch)
-              ("G" . elfeed-search-update--force))
-  :custom
-  ;; Subscriptions
-  (elfeed-feeds '("https://www.reddit.com/r/emacs/.rss"
-                  "https://sachachua.com/blog/category/emacs-news/feed/"))
-  ;; Download folder
-  (elfeed-enclosure-default-dir "~/Downloads/")
-  ;; Default filter
-  ;; (elfeed-search-filter "@6-months-ago +unread")
-  ;; Sort order
-  ;; (elfeed-sort-order 'descending)
-  ;; Use unique buffer names
-  (elfeed-show-unique-buffers t)
-  ;; Layout
-  (elfeed-search-title-max-width 50)    ; default is 70
-  (elfeed-search-title-min-width 16)    ; default is 16
-  (elfeed-search-trailing-width 30))    ; default is 30
+;; google-this (google search functions)
+(use-package google-this
+  :after which-key
+  :diminish
+  :init
+  (which-key-add-key-based-replacements "C-c /" "google-this")
+  :config
+  (google-this-mode 1))
 
 ;;; Other
 
