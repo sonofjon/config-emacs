@@ -1019,6 +1019,7 @@
          ;; (css-mode . lsp)
          (web-mode . lsp)
          (js-mode . lsp)
+         (json-mode . lsp)
          ;; which-key integration
          (lsp-mode . lsp-enable-which-key-integration)
          ;; corfu integration
