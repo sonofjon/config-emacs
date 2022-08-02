@@ -730,36 +730,36 @@
   ;; No delay when switching projects
   (add-hook 'treemacs-project-follow-mode-hook
             (lambda () (setq treemacs--project-follow-delay 0)))
+  :custom
+  (treemacs-find-workspace-method 'find-for-file-or-manually-select)
+  ;; (treemacs-indentation-string " ")
+  ;; (treemacs-is-never-other-window nil)
+  ;; (treemacs-no-delete-other-windows t)
+  ;; (treemacs-project-follow-cleanup nil)
+  ;; (treemacs-persist-file (expand-file-name ".cache/(treemacs-persist" user-emacs-directory)))
+  ;; (treemacs-position 'left)
+  ;; (treemacs-litter-directories '("/node_modules" "/.venv" "/.cask"))
+  ;; (treemacs-show-hidden-files t)
+  ;; (treemacs-sorting 'alphabetic-asc)
+  (treemacs-width 30)
   :config
   (setq
-   treemacs-find-workspace-method           'find-for-file-or-manually-select
-   ;; treemacs-indentation                     2
-   ;; treemacs-indentation-string              " "
-   ;; treemacs-is-never-other-window           nil
-   ;; treemacs-no-delete-other-windows         t
-   ;; treemacs-project-follow-cleanup          nil
-   ;; treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-   ;; treemacs-position                        'left
-   ;; treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask")
-   ;; treemacs-show-hidden-files               t
-   ;; treemacs-sorting                         'alphabetic-asc
-   treemacs-width                           30)
-  ;; Follow current buffer file in Treemacs window (on by default)
-  ;; (treemacs-follow-mode 1)
-  ;; Only display current project in Treemacs window
-  (treemacs-project-follow-mode 1)
-  ;; Show visual indicator in the fringe for highlighted file
-  (treemacs-fringe-indicator-mode 'always)
-  ;; Detect file system changes (on by default)
-  ;; (treemacs-filewatch-mode 1)
-  ;; Hide files ignored by Git
-  ;; (treemacs-hide-gitignored-files-mode 1)
-  ;; Display indentation guides
-  (treemacs-indent-guide-mode 1)
-  ;; Display git project annotations
-  (treemacs-git-commit-diff-mode 1)
-  ;; Highlight files using git status
-  (treemacs-git-mode 'deferred)
+   ;; Follow current buffer file in Treemacs window (on by default)
+   ;; (treemacs-follow-mode 1)
+   ;; Only display current project in Treemacs window
+   (treemacs-project-follow-mode 1)
+   ;; Show visual indicator in the fringe for highlighted file
+   (treemacs-fringe-indicator-mode 'always)
+   ;; Detect file system changes (on by default)
+   ;; (treemacs-filewatch-mode 1)
+   ;; Hide files ignored by Git
+   ;; (treemacs-hide-gitignored-files-mode 1)
+   ;; Display indentation guides
+   (treemacs-indent-guide-mode 1)
+   ;; Display git project annotations
+   (treemacs-git-commit-diff-mode 1)
+   ;; Highlight files using git status
+   (treemacs-git-mode 'deferred))
   :bind (("M-0" . treemacs-select-window)   ; TODO: this conflicts with C-u 0
          ("C-c t 1" . treemacs-delete-other-windows)
          ("C-c t t" . treemacs)
