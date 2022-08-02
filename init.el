@@ -643,10 +643,10 @@
 ;; orderless (orderless completion style)
 (use-package orderless
   ;; :disabled
-  :after (:any icomplete-vertical vertico)
+  :after vertico
   :config
   ;; Use orderless for completion
-  ;;   (disables styles set for icomplete-vertical and vertico)
+  ;;   (disables styles set for vertico)
   (setq completion-styles '(orderless basic))
   ;; Use orderless everywhere
   (setq completion-category-defaults nil)
@@ -961,7 +961,7 @@
 ;; marginalia (add marginalia to minibuffer completions)
 (use-package marginalia
   :demand
-  :after (:any icomplete-vertical vertico)
+  :after vertico
   :bind (:map minibuffer-local-map ("M-m" . marginalia-cycle))
   :config
   (marginalia-mode 1))
