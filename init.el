@@ -376,9 +376,8 @@
   :hook ((prog-mode . dot-mode-on)
          (text-mode . dot-mode-on))
   :bind (:map dot-mode-map ("C-c d" . dot-mode-execute))
-  :custom
-  (dot-mode-verbose t)
   :config
+  (setq dot-mode-verbose t)
   (unbind-key "C-." dot-mode-map)
   (unbind-key "C-c ." dot-mode-map)
   (unbind-key "C-M-." dot-mode-map))
