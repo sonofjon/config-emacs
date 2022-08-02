@@ -17,29 +17,24 @@
 ;;;;; EARLY SETTINGS
 
 ;; System dependent settings
-(cond ((featurep 'ns)
+(cond ((featurep 'ns)   ; macOS
        ;; GUI settings
        (when (display-graphic-p)
-         ;; Add to exec-path
-         ;;   TODO: Use exec-path-from-shell package?
+         ;; Import path from shell
          (exec-path-from-shell-initialize))
        (message "Early settings for macOS"))
 
-      ((or (string-match-p "^brain[0-9]+$" (system-name))
-	   (equal (system-name) "endeavour-lxde")
-	   (equal (system-name) "kde-neon")
-	   (equal (system-name) "manjaro-xfce"))
-       (message "Early settings Linux"))
-
-      ((equal (system-name) "penguin")
+      ((equal (system-name) "penguin")   ; ChromeOS
        (message "Early settings ChromeOS"))
 
-      ((or (string-match-p "^brain[0-9]+-windows$" (system-name))
-           (string-match-p "^NT[0-9]\\{3\\}$" (system-name))
-	   (string-match-p "^TP[0-9]\\{3\\}$" (system-name)))
-       ;; Fix cursor color in terminal on WSL
+      ((and (eq system-type 'gnu/linux)
+            (getenv "WSLENV"))   ; WSL
+       ;; Fix cursor color in terminal
        (add-hook 'modus-themes-after-load-theme-hook #'aj8/modus-themes-custom-settings)
        (message "Early settings WSL"))
+
+      ((eq system-type 'gnu/linux)   ; Linux
+       (message "Early settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
 
@@ -1811,10 +1806,10 @@ Hide, show and navigate outlines.
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
-(cond ((featurep 'ns)
-       ;; Use left Option as Meta on macOS
+(cond ((featurep 'ns)   ; macOS
+       ;; Use left Option as Meta
        ;; (setq mac-option-modifier 'meta)
-       ;; Use left Command as Super on macOS
+       ;; Use left Command as Super
        ;; (setq mac-command-modifier 'super)
        ;; GUI settings
        (when (display-graphic-p)
@@ -1824,23 +1819,19 @@ Hide, show and navigate outlines.
          (setq-default line-spacing 1))
        (message "Late settings macOS"))
 
-      ((or (string-match-p "^brain[0-9]+$" (system-name))
-	   (equal (system-name) "endeavour-lxde")
-	   (equal (system-name) "kde-neon")
-	   (equal (system-name) "manjaro-xfce"))
-       (message "Late settings Linux"))
-
-      ((equal (system-name) "penguin")
+      ((equal (system-name) "penguin")   ; ChromeOS
        (message "Late settings ChromeOS"))
 
-      ((or (string-match-p "^brain[0-9]+-windows$" (system-name))
-           (string-match-p "^NT[0-9]\\{3\\}$" (system-name))
-           (string-match-p "^TP[0-9]\\{3\\}$" (system-name)))
-       ;; Enable (default) web browser on WSL
+      ((and (eq system-type 'gnu/linux)
+            (getenv "WSLENV"))   ; WSL
+       ;; Enable (default) web browser
        (setq browse-url-generic-program "wslview")
        (setq browse-url-secondary-browser-function #'browse-url-generic)
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
        (message "Late settings WSL"))
+
+      ((eq system-type 'gnu/linux)   ; Linux
+       (message "Late settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
 
