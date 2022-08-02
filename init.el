@@ -678,9 +678,7 @@
   ;; Unbind default TAB binding
   (unbind-key "TAB" vertico-map)
   ;; Enable M-x minibuffer-hide-completions (make function interactive)
-  (put 'minibuffer-hide-completions 'interactive-form '(interactive))
-  ;; Configure completion styles
-  (my/completion-styles))
+  (put 'minibuffer-hide-completions 'interactive-form '(interactive)))
 
 ;;; Spelling
 

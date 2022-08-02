@@ -543,20 +543,6 @@ Repeat command to select additional words backwards."
    (when (string-prefix-p "=" pattern)
     `(orderless-literal . ,(substring pattern 1))))
 
-;;; Misc
-
-;; Set custom completion styles
-(defun my/completion-styles ()
-  "Set custom completion styles."
-  ;; Completion styles
-  (setq completion-styles '(basic partial-completion initials))
-  ;; Completion styles for files
-  (setq completion-category-overrides '((file (styles . (basic substring))))))
-  ;; Disable *Completions* buffer
-  ;; (setq completion-show-help nil))
-  ;; Cycle completions
-  ;; (setq completion-cycle-threshold t)
-
 ;;;; Spelling
 
 ;;; ispell
