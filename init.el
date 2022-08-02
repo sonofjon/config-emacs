@@ -133,6 +133,11 @@
   ;; Set sort key
   (setq benchmark-init/list-sort-key  '("ms" . t)))
 
+;; esup (benchmark utility)
+;;   TODO: Full of bugs and inactive maintainer
+(use-package esup
+  :disabled)
+
 (use-package exec-path-from-shell
   :if (equal window-system 'ns))
 
@@ -150,11 +155,6 @@
   ;; (auto-package-update-hide-results t)
   :config
   (auto-package-update-maybe))
-
-;; esup (benchmark utility)
-;;   TODO: Full of bugs and inactive maintainer
-(use-package esup
-  :disabled)
 
 ;;; Theme
 
