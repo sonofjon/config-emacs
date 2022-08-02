@@ -926,6 +926,9 @@
   ;; Integration with Magit
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+  ;; Put highlights in the margin in Terminal
+  (when (display-graphic-p)
+    (setq diff-hl-margin-mode t))
   ;; Use diff-hl-mode everywhere
   (global-diff-hl-mode 1))
 
