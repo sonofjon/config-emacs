@@ -430,132 +430,6 @@
 
 ;;; Completion
 
-;; vertico (vertical completion UI)
-(use-package vertico
-  :bind (:map vertico-map
-              ("?" . minibuffer-completion-help)
-              ("C-c ?" . minibuffer-hide-completions)
-              ;; ("TAB" . vertico-insert)   ; default
-              ("<backtab>" . vertico-insert)
-              ("TAB" . minibuffer-complete))
-              ;; ("<backtab>" . minibuffer-force-complete))
-  :init
-  (vertico-mode)
-  :custom
-  ;; Enable cycling
-  (vertico-cycle t)
-  :config
-  ;; Unbind default TAB binding
-  (unbind-key "TAB" vertico-map)
-  ;; Enable M-x minibuffer-hide-completions (make function interactive)
-  (put 'minibuffer-hide-completions 'interactive-form '(interactive))
-  ;; Configure completion styles
-  (my/completion-styles))
-
-;; corfu (completion overlay)
-;;   TODO: enable corfu-history-mode and corfu-info-mode?
-(use-package corfu
-  :if (display-graphic-p)
-  ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
-  :custom
-  ;; (corfu-count 10)               ; maximal number of candidates to show
-  ;; (corfu-min-width 15)           ; popup minimum width in characters
-  ;; (corfu-max-width 100)          ; popup maximum width in characters."
-  ;; (corfu-cycle t)                ; enable cycling for `corfu-next/previous'
-  (corfu-auto t)                 ; enable auto completion
-  ;; (corfu-auto-prefix 3)          ; minimum length of prefix for auto completion."
-  ;; (corfu-separator ?\s)          ; orderless field separator
-  ;; (corfu-quit-at-boundary t)     ; automatically quit at word boundary
-  ;; (corfu-quit-no-match t)        ; automatically quit if there is no match
-  ;; (corfu-preview-current nil)    ; disable current candidate preview
-  ;; (corfu-preselect-first nil)    ; disable candidate preselection
-  ;; (corfu-on-exact-match nil)     ; configure handling of exact matches
-  ;; (corfu-echo-documentation nil) ; do not show documentation in the echo area
-  (corfu-scroll-margin 1)        ; use scroll margin
-  :init
-  ;; Enable corfu globally
-  ;;   (this is useful since dabbrev can be used in all buffers)
-  (global-corfu-mode))   ; TODO: note that if this is enabled in terminal mode
-                         ; consult-completions wont be active
-
-;; corfu-doc (documentation popup for corfu)
-(use-package corfu-doc
-  :after corfu
-  :hook (corfu-mode . corfu-doc-mode)
-  :bind (:map corfu-map
-              ("M-p" . corfu-doc-scroll-down)   ; corfu-next
-              ("M-n" . corfu-doc-scroll-up)     ; corfu-previous
-              ("M-d" . corfu-doc-toggle))
-  :custom
-  ;; (corfu-doc-delay 0)
-  ;; (corfu-doc-hide-threshold 0)
-  ;; Enable manually
-  (corfu-doc-auto nil))
-
-;; corfu-terminal (corfu popup on terminal)
-;;   TODO: check again when package more mature
-;; (use-package corfu-terminal
-;;   :if (not (display-graphic-p))
-;;   :disabled
-;;   :after corfu
-;;   :config
-;;   (corfu-terminal-mode 1)))
-
-;; (use-package corfu-terminal
-;;   :quelpa (corfu-terminal
-;;            :fetcher github
-;;            :url "https://codeberg.org/akib/emacs-corfu-terminal.git"))
-
-;; cape (completion at point extensions for corfu)
-;;   TODO: Fix completion in terminal
-(use-package cape
-  :if (not (display-graphic-p))
-  :after (corfu which-key)
-  ;; Bind dedicated completion commands
-  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-  :bind (("C-c u p" . completion-at-point)   ; capf
-         ("C-c u a" . cape-abbrev)
-         ("C-c u d" . cape-dabbrev)          ; or dabbrev-completion
-         ("C-c u h" . cape-history)
-         ("C-c u w" . cape-dict)
-         ("C-c u f" . cape-file)
-         ("C-c u i" . cape-ispell)
-         ("C-c u k" . cape-keyword)
-         ("C-c u l" . cape-line)
-         ("C-c u s" . cape-symbol))
-  :init
-  ;; Add `completion-at-point-functions', used by `completion-at-point'.
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  ;; (add-to-list 'completion-at-point-functions #'cape-history)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  (add-to-list 'completion-at-point-functions #'cape-abbrev)
-  (add-to-list 'completion-at-point-functions #'cape-ispell)
-  (add-to-list 'completion-at-point-functions #'cape-dict)
-  (add-to-list 'completion-at-point-functions #'cape-symbol)
-  (add-to-list 'completion-at-point-functions #'cape-line)
-  (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
-
-;; orderless (orderless completion style)
-(use-package orderless
-  ;; :disabled
-  :after (:any icomplete-vertical vertico)
-  :config
-  ;; Use orderless for completion
-  ;;   (disables styles set for icomplete-vertical and vertico)
-  (setq completion-styles '(orderless basic))
-  ;; Use orderless everywhere
-  (setq completion-category-defaults nil)
-  (setq completion-category-overrides '((file (styles basic partial-completion))))
-  ;; Matching styles
-  ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))   ; default
-  (setq orderless-matching-styles
-        '(orderless-prefixes
-          orderless-initialism)
-        orderless-style-dispatchers '(my/flex-if-twiddle
-                                      my/with-if-equal
-                                      my/without-if-bang)))
-
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
   :after which-key
@@ -662,6 +536,91 @@
 (use-package consult-project-extra
   :bind ("C-c p" . consult-project-extra-find))
 
+;; corfu (completion overlay)
+;;   TODO: enable corfu-history-mode and corfu-info-mode?
+(use-package corfu
+  :if (display-graphic-p)
+  ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
+  :custom
+  ;; (corfu-count 10)               ; maximal number of candidates to show
+  ;; (corfu-min-width 15)           ; popup minimum width in characters
+  ;; (corfu-max-width 100)          ; popup maximum width in characters."
+  ;; (corfu-cycle t)                ; enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ; enable auto completion
+  ;; (corfu-auto-prefix 3)          ; minimum length of prefix for auto completion."
+  ;; (corfu-separator ?\s)          ; orderless field separator
+  ;; (corfu-quit-at-boundary t)     ; automatically quit at word boundary
+  ;; (corfu-quit-no-match t)        ; automatically quit if there is no match
+  ;; (corfu-preview-current nil)    ; disable current candidate preview
+  ;; (corfu-preselect-first nil)    ; disable candidate preselection
+  ;; (corfu-on-exact-match nil)     ; configure handling of exact matches
+  ;; (corfu-echo-documentation nil) ; do not show documentation in the echo area
+  (corfu-scroll-margin 1)        ; use scroll margin
+  :init
+  ;; Enable corfu globally
+  ;;   (this is useful since dabbrev can be used in all buffers)
+  (global-corfu-mode))   ; TODO: note that if this is enabled in terminal mode
+                         ; consult-completions wont be active
+
+;; corfu-doc (documentation popup for corfu)
+(use-package corfu-doc
+  :after corfu
+  :hook (corfu-mode . corfu-doc-mode)
+  :bind (:map corfu-map
+              ("M-p" . corfu-doc-scroll-down)   ; corfu-next
+              ("M-n" . corfu-doc-scroll-up)     ; corfu-previous
+              ("M-d" . corfu-doc-toggle))
+  :custom
+  ;; (corfu-doc-delay 0)
+  ;; (corfu-doc-hide-threshold 0)
+  ;; Enable manually
+  (corfu-doc-auto nil))
+
+;; corfu-terminal (corfu popup on terminal)
+;;   TODO: check again when package more mature
+;; (use-package corfu-terminal
+;;   :if (not (display-graphic-p))
+;;   :disabled
+;;   :after corfu
+;;   :config
+;;   (corfu-terminal-mode 1)))
+
+;; (use-package corfu-terminal
+;;   :quelpa (corfu-terminal
+;;            :fetcher github
+;;            :url "https://codeberg.org/akib/emacs-corfu-terminal.git"))
+
+;; cape (completion at point extensions for corfu)
+;;   TODO: Fix completion in terminal
+(use-package cape
+  ;; TODO: Corfu runs only with GUI, and cape only without, yet :after Corfu!?
+  :if (not (display-graphic-p))
+  :after (corfu which-key)
+  ;; Bind dedicated completion commands
+  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+  :bind (("C-c u p" . completion-at-point)   ; capf
+         ("C-c u a" . cape-abbrev)
+         ("C-c u d" . cape-dabbrev)          ; or dabbrev-completion
+         ("C-c u h" . cape-history)
+         ("C-c u w" . cape-dict)
+         ("C-c u f" . cape-file)
+         ("C-c u i" . cape-ispell)
+         ("C-c u k" . cape-keyword)
+         ("C-c u l" . cape-line)
+         ("C-c u s" . cape-symbol))
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  ;; (add-to-list 'completion-at-point-functions #'cape-history)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  (add-to-list 'completion-at-point-functions #'cape-ispell)
+  (add-to-list 'completion-at-point-functions #'cape-dict)
+  (add-to-list 'completion-at-point-functions #'cape-symbol)
+  (add-to-list 'completion-at-point-functions #'cape-line)
+  (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
+
 ;; embark (context aware actions)
 (use-package embark
   :bind (("M-." . embark-act)
@@ -685,6 +644,48 @@
   ;; auto-updating embark collect buffer
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
+;; orderless (orderless completion style)
+(use-package orderless
+  ;; :disabled
+  :after (:any icomplete-vertical vertico)
+  :config
+  ;; Use orderless for completion
+  ;;   (disables styles set for icomplete-vertical and vertico)
+  (setq completion-styles '(orderless basic))
+  ;; Use orderless everywhere
+  (setq completion-category-defaults nil)
+  (setq completion-category-overrides '((file (styles basic partial-completion))))
+  ;; Matching styles
+  ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))   ; default
+  (setq orderless-matching-styles
+        '(orderless-prefixes
+          orderless-initialism)
+        orderless-style-dispatchers '(my/flex-if-twiddle
+                                      my/with-if-equal
+                                      my/without-if-bang)))
+
+;; vertico (vertical completion UI)
+(use-package vertico
+  :bind (:map vertico-map
+              ("?" . minibuffer-completion-help)
+              ("C-c ?" . minibuffer-hide-completions)
+              ;; ("TAB" . vertico-insert)   ; default
+              ("<backtab>" . vertico-insert)
+              ("TAB" . minibuffer-complete))
+              ;; ("<backtab>" . minibuffer-force-complete))
+  :init
+  (vertico-mode)
+  :custom
+  ;; Enable cycling
+  (vertico-cycle t)
+  :config
+  ;; Unbind default TAB binding
+  (unbind-key "TAB" vertico-map)
+  ;; Enable M-x minibuffer-hide-completions (make function interactive)
+  (put 'minibuffer-hide-completions 'interactive-form '(interactive))
+  ;; Configure completion styles
+  (my/completion-styles))
 
 ;;; Spelling
 
