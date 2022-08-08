@@ -409,7 +409,7 @@
          ("C-c z r" . undo-fu-only-redo)
          ("C-c z d" . undo-fu-disable-checkpoint))
   :init
-  (which-key-add-key-based-replacements "C-c z" "undo-fu")
+  (which-key-add-key-based-replacements "C-c z" "undo-fu")   ; add label for prefix key
   :custom
   (undo-fu-ignore-keyboard-quit t))
 
@@ -483,7 +483,7 @@
   ;;   Note, this does not work with LSP or eglot
   (when (not (display-graphic-p))   ; only enable if using terminal
     (setq completion-in-region-function #'consult-completion-in-region))
-  (which-key-add-key-based-replacements "C-c c" "consult")
+  (which-key-add-key-based-replacements "C-c c" "consult")   ; add label for prefix key
 
   ;; Configure the register formatting
   ;;   This improves the register preview for `consult-register',
@@ -614,7 +614,7 @@
   (add-to-list 'completion-at-point-functions #'cape-dict)
   (add-to-list 'completion-at-point-functions #'cape-symbol)
   (add-to-list 'completion-at-point-functions #'cape-line)
-  (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
+  (which-key-add-key-based-replacements "C-c u" "corfu/cape"))   ; add label for prefix key
 
 ;; embark (context aware actions)
 (use-package embark
@@ -700,7 +700,7 @@
   :defer
   :after which-key
   :init
-  (which-key-add-key-based-replacements "C-c t" "treemacs")
+  (which-key-add-key-based-replacements "C-c t" "treemacs")   ; add label for prefix keys
   (which-key-add-key-based-replacements "C-c C-p" "treemacs")
   (which-key-add-key-based-replacements "C-c C-w" "treemacs")
   :init
@@ -854,7 +854,7 @@
           '(flex)))   ; use flex
   ;; Prefix for lsp-command-keymap
   (setq lsp-keymap-prefix "C-c l")
-  (which-key-add-key-based-replacements "C-c l" "LSP")
+  (which-key-add-key-based-replacements "C-c l" "LSP")   ; add label for prefix key
   :custom
   ;; Use custom completion backend (Corfu)
   (lsp-completion-provider :none))
@@ -1044,7 +1044,7 @@
   :after which-key
   :diminish
   :init
-  (which-key-add-key-based-replacements "C-c /" "google-this")
+  (which-key-add-key-based-replacements "C-c /" "google-this")   ; add label for prefix key
   :config
   (google-this-mode 1))
 
@@ -1219,7 +1219,7 @@
 ;;; Outline
 
 ;; Outline minor mode prefix
-(which-key-add-key-based-replacements "C-c @" "outline")
+(which-key-add-key-based-replacements "C-c @" "outline")   ; add label for prefix key
 
 ;; Use TAB and S-TAB for cycling
 (setq outline-minor-mode-cycle t)
@@ -1545,7 +1545,7 @@
 (global-set-key (kbd "C-c w C-<down>") #'windmove-delete-down)
 (global-set-key (kbd "C-c w C-<left>") #'windmove-delete-left)
 (global-set-key (kbd "C-c w C-<right>") #'windmove-delete-right)
-(which-key-add-key-based-replacements "C-c w" "windmove")
+(which-key-add-key-based-replacements "C-c w" "windmove")   ; add label for prefix key
 
 (global-set-key (kbd "M-p") #'backward-paragraph)
 (global-set-key (kbd "M-n") #'forward-paragraph)
@@ -1556,7 +1556,7 @@
 ;; (global-set-key (kbd "C-c <down>") #'aj8/next-line)
 
 (global-set-key (kbd "C-c x l") #'scroll-lock-mode)
-(which-key-add-key-based-replacements "C-c x" "misc")
+(which-key-add-key-based-replacements "C-c x" "misc")   ; add label for prefix key
 
 (global-set-key (kbd "C-c i") #'imenu)
 
@@ -1616,15 +1616,16 @@
 (global-set-key (kbd "C-c e b") #'ediff-buffers)
 (global-set-key (kbd "C-c e l") #'ediff-regions-linewise)
 (global-set-key (kbd "C-c e w") #'ediff-regions-wordwise)
-(which-key-add-key-based-replacements "C-c e" "ediff")
 
 (global-set-key (kbd "C-x v -") #'vc-ediff)
+(which-key-add-key-based-replacements "C-c e" "ediff")   ; add label for prefix key
 
 ;;; Help
 
 (global-set-key (kbd "C-c H k") #'describe-keymap)
 (global-set-key (kbd "C-c H d") #'shortdoc-display-group)
-(which-key-add-key-based-replacements "C-c H" "help")
+
+(which-key-add-key-based-replacements "C-c H" "help")   ; add label for prefix key
 
 ;;; Web
 
@@ -1661,7 +1662,7 @@
 
 ;;;; Hydras
 
-(which-key-add-key-based-replacements "C-c y" "hydra")
+(which-key-add-key-based-replacements "C-c y" "hydra")   ; add label for prefix key
 
 ;;; Windows
 (defhydra hydra-window (:hint nil)
