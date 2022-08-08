@@ -1586,7 +1586,8 @@
 
 (global-set-key (kbd "M-u") #'upcase-dwim)
 (global-set-key (kbd "M-l") #'downcase-dwim)
-(global-set-key (kbd "M-c") #'capitalize-dwim)
+;; (global-set-key (kbd "M-c") #'capitalize-dwim)
+(global-set-key (kbd "M-c") #'aj8/capitalize-word-at-point)
 
 (global-set-key (kbd "C-c q") #'fill-individual-paragraphs) ; use with `C-x .'
                                                             ; for comments

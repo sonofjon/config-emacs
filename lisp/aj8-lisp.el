@@ -524,6 +524,14 @@ Repeat command to select additional words backwards."
       (kill-new symbol)
       (pulse-momentary-highlight-region (car bounds) (cdr bounds)))))
 
+;; Capitalize word at point
+(defun aj8/capitalize-word-at-point ()
+  "Capitalize ARG words from the beginning of the current word."
+  (interactive)
+  (unless (looking-at "\\<")
+    (backward-word))
+  (capitalize-word 1))
+
 ;;;; Completion
 
 ;;; Orderless style dispatchers
