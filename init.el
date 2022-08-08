@@ -1407,44 +1407,45 @@
 
 ;;; General
 
-;; Use sh-mode for non-standard bash config files
-(add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . sh-mode))
-(add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . sh-mode))
+;; activate-mark: deactivate highlight mode when selecting text
+(add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
+(add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
-;; outline-mode: remove form-feed character (^L) from regexp
-(add-hook 'outline-mode-hook
-          (lambda () (setq outline-regexp "[*]+")))
+;; kill-buffer: collect list of killed buffers
+(add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
-;; emacs-lisp-mode: outline settings
-(add-hook 'emacs-lisp-mode-hook
-          #'outline-headers-for-semicolon-buffers)
 ;;; Modes
 
 ;; conf-xdefaults-mode: outline settings
 (add-hook 'conf-xdefaults-mode-hook
           #'outline-headers-for-exclamation-mark-buffers)
 
-;; shell-scrip-mode: outline settings
-(add-hook 'sh-mode-hook
-          #'outline-headers-for-hash-mark-buffers)
+;; emacs-lisp-mode: outline settings
+(add-hook 'emacs-lisp-mode-hook
+          #'outline-headers-for-semicolon-buffers)
 
 ;; i3wm-config-mode: outline settings
 (add-hook 'i3wm-config-mode-hook
           #'outline-headers-for-hash-mark-buffers)
 
+;; Info-mode: allow multiple Info buffers
+(add-hook 'Info-mode-hook #'rename-uniquely)
+
+;; outline-mode: remove form-feed character (^L) from regexp
+(add-hook 'outline-mode-hook
+          (lambda () (setq outline-regexp "[*]+")))
+
 ;; powershell: outline settings
 (add-hook 'powershell-mode-hook
           #'outline-headers-for-hash-mark-buffers)
 
-;; activate-mark: deactivate highlight mode when selecting text
-(add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
-(add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
+;; sh-mode: for non-standard bash config files
+(add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . sh-mode))
 
-;; Info-mode: allow multiple Info buffers
-(add-hook 'Info-mode-hook #'rename-uniquely)
-
-;; kill-buffer: collect list of killed buffers
-(add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
+;; shell-scrip-mode: outline settings
+(add-hook 'sh-mode-hook
+          #'outline-headers-for-hash-mark-buffers)
 
 ;; TODO: loop over maps for quit-windows
 ;; (defun define-key-quit-windows (map)
@@ -1459,13 +1460,6 @@
 ;;     (let ((kmap (symbol-value (intern (concat str "-mode-map")))))
 ;;       (define-key kmap [remap quit-window] 'aj8/quit-window))))
 
-;; help-mode: kill buffers on quit
-(define-key help-mode-map [remap quit-window] #'aj8/quit-window)
-
-;; Info-mode: kill buffers on quit
-(with-eval-after-load "info"
-  (define-key Info-mode-map [remap quit-window] #'aj8/quit-window))
-
 ;; dired-mode: kill buffers on quit
 (with-eval-after-load "dired"
   (define-key dired-mode-map [remap quit-window] #'aj8/quit-window))
@@ -1473,6 +1467,13 @@
 ;; eww-mode: kill buffers on quit
 (with-eval-after-load "eww"
   (define-key eww-mode-map [remap quit-window] #'aj8/quit-window))
+
+;; help-mode: kill buffers on quit
+(define-key help-mode-map [remap quit-window] #'aj8/quit-window)
+
+;; Info-mode: kill buffers on quit
+(with-eval-after-load "info"
+  (define-key Info-mode-map [remap quit-window] #'aj8/quit-window))
 
 
 ;;;;; KEYBINDINGS
