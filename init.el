@@ -1819,6 +1819,10 @@ Hide, show and navigate outlines.
        (message "Late settings WSL"))
 
       ((eq system-type 'gnu/linux)   ; Linux
+       ;; Special settings for URxvt
+       (when (equal "rxvt-unicode-256color"
+                    (getenv-internal "TERM" initial-environment))
+         (rxvt-input-decode-map))
        (message "Late settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
@@ -1829,8 +1833,3 @@ Hide, show and navigate outlines.
 ;;       (load host-specific-files)
 ;;     (message (concat "No host specific customizations for " system-name))
 ;;     ))
-
-;; Special settings for URxvt
-(when (equal "rxvt-unicode-256color"
-             (getenv-internal "TERM" initial-environment))
-  (rxvt-input-decode-map))
