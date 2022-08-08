@@ -516,10 +516,7 @@
    :preview-key (list (kbd "<down>") (kbd "<up>")))
 
   ;; Narrowing key
-  ;; (setq consult-narrow-key "<")
-  ;; Enable narrowing help in the minibuffer
-  ;;   (you may want to use `embark-prefix-help-command' or which-key instead)
-  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+  (setq consult-narrow-key "<")
 
   ;; Completion
   (consult-customize
