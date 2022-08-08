@@ -1509,20 +1509,27 @@
 
 ;;; Theme
 
+;; Display column number
 (global-set-key (kbd "C-c n") #'column-number-mode)
 
 ;;; Windows
 
+;; Toggle window split
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
 
+;; Cycle window configrations
 (define-key winner-mode-map (kbd "C-c w <") #'winner-undo)
 (define-key winner-mode-map (kbd "C-c w >") #'winner-redo)
 
 ;;; Buffers
 
+;; Kill buffer
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
+
+;; Kill buffer (other window)
 (global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
+;; Buffer navigation
 (global-set-key (kbd "C-x <right>") #'my/project-next-buffer)
 (global-set-key (kbd "C-x <left>") #'my/project-previous-buffer)
 (global-set-key (kbd "C-x C-<right>") #'next-buffer)
@@ -1530,46 +1537,53 @@
 
 ;;; Outline
 
+;; Toggle outline-minor-mode
 (global-set-key (kbd "C-c o") #'outline-minor-mode)
 
 ;;; Navigation
 
+;; Windmove keys
 (windmove-default-keybindings 'ctrl)
 (windmove-swap-states-default-keybindings '(ctrl shift))
+
+;; Open windows
 (global-set-key (kbd "C-c w <up>") #'windmove-display-up)
 (global-set-key (kbd "C-c w <down>") #'windmove-display-down)
 (global-set-key (kbd "C-c w <left>") #'windmove-display-left)
 (global-set-key (kbd "C-c w <right>") #'windmove-display-right)
 (global-set-key (kbd "C-c w 0") #'windmove-display-same-window)
+
+;; Delete windows
 (global-set-key (kbd "C-c w C-<up>") #'windmove-delete-up)
 (global-set-key (kbd "C-c w C-<down>") #'windmove-delete-down)
 (global-set-key (kbd "C-c w C-<left>") #'windmove-delete-left)
 (global-set-key (kbd "C-c w C-<right>") #'windmove-delete-right)
+
 (which-key-add-key-based-replacements "C-c w" "windmove")   ; add label for prefix key
 
+;; Paragraph navigation
 (global-set-key (kbd "M-p") #'backward-paragraph)
 (global-set-key (kbd "M-n") #'forward-paragraph)
 
+;; Move to indentation point
 (global-set-key (kbd "M-a") #'back-to-indentation)
 
 ;; (global-set-key (kbd "C-c <up>") #'aj8/previous-line)
 ;; (global-set-key (kbd "C-c <down>") #'aj8/next-line)
 
+;; Enable scroll lock
 (global-set-key (kbd "C-c x l") #'scroll-lock-mode)
+
 (which-key-add-key-based-replacements "C-c x" "misc")   ; add label for prefix key
 
+;; Display Imenu
 (global-set-key (kbd "C-c i") #'imenu)
 
-;; (global-unset-key (kbd "C-M-<up>"))
-;; (global-unset-key (kbd "C-M-<down>"))
-;; (global-unset-key (kbd "C-M-<left>"))
-;; (global-unset-key (kbd "C-M-<right>"))
-;; (global-set-key (kbd "C-M-<left>") #'backward-up-list) ; overwrites default backward-sexp
-;; (global-set-key (kbd "C-M-<right>") #'down-list) ; overwrites default backward-sexp
-(global-set-key (kbd "C-M-<left>") #'backward-list) ; overwrites default backward-sexp
-(global-set-key (kbd "C-M-<right>") #'forward-list) ; overwrites default backward-sexp
-(global-set-key (kbd "C-M-p") #'backward-up-list)   ; overwrites default backward-list
-(global-set-key (kbd "C-M-n") #'down-list)          ; overwrites default forward-list
+;; Parens navigation
+;; (global-set-key (kbd "C-M-<left>") #'backward-list) ; overwrites default backward-sexp
+;; (global-set-key (kbd "C-M-<right>") #'forward-list) ; overwrites default backward-sexp
+;; (global-set-key (kbd "C-M-p") #'backward-up-list)   ; overwrites default backward-list
+;; (global-set-key (kbd "C-M-n") #'down-list)          ; overwrites default forward-list
 
 (global-set-key (kbd "C-c >") #'xref-find-definitions)  ; default M-.
 (global-set-key (kbd "C-c <") #'xref-pop-marker-stack)  ; default M-,
@@ -1580,59 +1594,77 @@
 
 ;;; Editing
 
+;; Kill line to the left
 (global-set-key (kbd "C-S-k") (lambda () (interactive) (kill-line 0)))
 
 ;; TODO: do I need this?
 (global-set-key (kbd "C-c ;") #'comment-line)
 
+;; Manipulate case
 (global-set-key (kbd "M-u") #'upcase-dwim)
 (global-set-key (kbd "M-l") #'downcase-dwim)
 ;; (global-set-key (kbd "M-c") #'capitalize-dwim)
 (global-set-key (kbd "M-c") #'aj8/capitalize-word-at-point)
 
-(global-set-key (kbd "C-c q") #'fill-individual-paragraphs) ; use with `C-x .'
-                                                            ; for comments
+;; Fill respecting indentation
+;;   (use with `C-x .'  for comments)
+(global-set-key (kbd "C-c q") #'fill-individual-paragraphs)
 
+;; Copy symbol at point
 (global-set-key (kbd "C-c s") #'my/copy-symbol-at-point)
 
+;; Indent to next nonblank character in previous line
 (global-set-key (kbd "C-c TAB") #'indent-relative)
 
 ;;; Completion
 
+;; Use hippie-expand
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;;; Spelling
 
 ;;; Files
 
+;; Find file at point
 (global-set-key (kbd "C-c f") #'find-file-at-point)
 
+;; Forget project
 (global-set-key (kbd "C-x p t") #'project-forget-project)
 
 ;;; Coding
 
 ;;; Version control
 
+;; Show diffs between buffers
 (global-set-key (kbd "C-c e b") #'ediff-buffers)
+
+;; Show diffs between regions
 (global-set-key (kbd "C-c e l") #'ediff-regions-linewise)
 (global-set-key (kbd "C-c e w") #'ediff-regions-wordwise)
 
-(global-set-key (kbd "C-x v -") #'vc-ediff)
 (which-key-add-key-based-replacements "C-c e" "ediff")   ; add label for prefix key
+
+;; Show diffs between file revisions
+(global-set-key (kbd "C-x v -") #'vc-ediff)
 
 ;;; Help
 
+;; Display keymaps
 (global-set-key (kbd "C-c H k") #'describe-keymap)
+
+;; Display commands by category
 (global-set-key (kbd "C-c H d") #'shortdoc-display-group)
 
 (which-key-add-key-based-replacements "C-c H" "help")   ; add label for prefix key
 
 ;;; Web
 
+;; Browse URL at point
 (global-set-key (kbd "C-c b") #'browse-url)
 
 ;;; Other
 
+;; Reload init.el
 (global-set-key (kbd "C-c r") #'reload-init-file)
 
 ;;; Unbind keys
@@ -1658,6 +1690,7 @@
 ;; ediff-mode
 ;;   TODO: check functionality
 (add-hook 'ediff-keymap-setup-hook
+          ;; Use both versions with ediff
           (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
 
 ;;;; Hydras
