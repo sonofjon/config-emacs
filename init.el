@@ -1403,10 +1403,9 @@
 ;; Show mode headers in describe-bindings buffer
 (setq describe-bindings-outline t)
 
-;;;; Other
+;;;; Hooks
 
-
-;;;;; MODES
+;;; General
 
 ;; Use sh-mode for non-standard bash config files
 (add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . sh-mode))
@@ -1419,6 +1418,7 @@
 ;; emacs-lisp-mode: outline settings
 (add-hook 'emacs-lisp-mode-hook
           #'outline-headers-for-semicolon-buffers)
+;;; Modes
 
 ;; conf-xdefaults-mode: outline settings
 (add-hook 'conf-xdefaults-mode-hook
