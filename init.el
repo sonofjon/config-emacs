@@ -1524,17 +1524,17 @@
 
 ;;; Buffers
 
-;; Kill buffer
-(global-set-key (kbd "C-x k") #'kill-this-buffer)
-
-;; Kill buffer (other window)
-(global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
-
 ;; Buffer navigation
 (global-set-key (kbd "C-x <right>") #'my/project-next-buffer)
 (global-set-key (kbd "C-x <left>") #'my/project-previous-buffer)
 (global-set-key (kbd "C-x C-<right>") #'next-buffer)
 (global-set-key (kbd "C-x C-<left>") #'previous-buffer)
+
+;; Kill buffer
+(global-set-key (kbd "C-x k") #'kill-this-buffer)
+
+;; Kill buffer (other window)
+(global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
 ;;; Outline
 
