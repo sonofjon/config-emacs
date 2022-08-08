@@ -1582,6 +1582,7 @@
 
 (global-set-key (kbd "C-S-k") (lambda () (interactive) (kill-line 0)))
 
+;; TODO: do I need this?
 (global-set-key (kbd "C-c ;") #'comment-line)
 
 (global-set-key (kbd "M-u") #'upcase-dwim)
@@ -1615,14 +1616,15 @@
 (global-set-key (kbd "C-c e b") #'ediff-buffers)
 (global-set-key (kbd "C-c e l") #'ediff-regions-linewise)
 (global-set-key (kbd "C-c e w") #'ediff-regions-wordwise)
-(global-set-key (kbd "C-x v -") #'vc-ediff)
 (which-key-add-key-based-replacements "C-c e" "ediff")
+
+(global-set-key (kbd "C-x v -") #'vc-ediff)
 
 ;;; Help
 
-(which-key-add-key-based-replacements "C-c H" "help")
 (global-set-key (kbd "C-c H k") #'describe-keymap)
 (global-set-key (kbd "C-c H d") #'shortdoc-display-group)
+(which-key-add-key-based-replacements "C-c H" "help")
 
 ;;; Web
 
@@ -1639,12 +1641,12 @@
 
 ;;;; Local
 
-;; Info-mode-map
+;; Info-mode
 (add-hook 'Info-mode-hook
           ;; Disable M-n
           (lambda () (define-key Info-mode-map (kbd "M-n") nil)))
 
-;; sh-mode-map
+;; sh-mode
 (add-hook 'sh-mode-hook
           ;; Disable SMIE commands
           (lambda () (define-key sh-mode-map (kbd "C-c =") nil)
@@ -1652,7 +1654,7 @@
                      (define-key sh-mode-map (kbd "C-c >") nil)
                      (define-key sh-mode-map (kbd "C-c ?") nil)))
 
-;; ediff-mode-map
+;; ediff-mode
 ;;   TODO: check functionality
 (add-hook 'ediff-keymap-setup-hook
           (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
