@@ -618,12 +618,13 @@
 
 ;; embark (context aware actions)
 (use-package embark
+  :after helpful   ; TODO: this shouldn't be needed
   :bind (("M-." . embark-act)
          ("M-," . embark-dwim)
          ("C-h B" . embark-bindings)) ; alternative for `describe-bindings'
-  ;; :init
-  ;; Optionally replace the key help with a completing-read interface
-  ;; (setq prefix-help-command #'embark-prefix-help-command)
+  :init
+  ;; Replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
   :config
   ;; Hide the mode line of the embark live/completions buffers
   (add-to-list 'display-buffer-alist
