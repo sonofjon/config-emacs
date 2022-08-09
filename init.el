@@ -649,7 +649,7 @@
   ;; Matching styles
   ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))   ; default
   (setq orderless-matching-styles
-        '(orderless-prefixes
+        '(orderless-literal
           orderless-initialism)
         orderless-style-dispatchers '(my/flex-if-twiddle
                                       my/with-if-equal
