@@ -49,7 +49,7 @@
 (if (not (package-installed-p 'use-package))
     (package-install 'use-package))
 
-;; Add use-package to imenu
+;; Add use-package to Imenu
 (setq use-package-enable-imenu-support t)
 
 ;; Load use-package
@@ -75,7 +75,7 @@
 
 ;;; Quelpa
 
-;; Don't update local clone of the MELPA git repo
+;; Don't update local clone of the MELPA git repository
 (setq quelpa-checkout-melpa-p nil)
 
 ;; Set upgrade interval
@@ -588,8 +588,6 @@
   ;; TODO: Corfu runs only with GUI, and cape only without, yet :after Corfu!?
   :if (not (display-graphic-p))
   :after (corfu which-key)
-  ;; Bind dedicated completion commands
-  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
   :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
          ("C-c u d" . cape-dabbrev)          ; or dabbrev-completion
@@ -685,8 +683,12 @@
   :bind (:map flyspell-mode-map
               ;; ("C-;" . flyspell-auto-correct-word)
               ("C-;" . flyspell-correct-wrapper)
-              ("C-," . (lambda () (interactive) (aj8/call-interactively-wih-prefix-toggle #'flyspell-correct-previous)))
-              ("C-." . (lambda () (interactive) (aj8/call-interactively-wih-prefix-toggle #'flyspell-correct-next)))
+              ("C-," . (lambda () (interactive)
+                         (aj8/call-interactively-wih-prefix-toggle
+                          #'flyspell-correct-previous)))
+              ("C-." . (lambda () (interactive)
+                         (aj8/call-interactively-wih-prefix-toggle
+                          #'flyspell-correct-next)))
               ("C-c ," . my/flyspell-goto-previous-error)
               ("C-c ." . flyspell-goto-next-error)))
 
@@ -1249,7 +1251,7 @@
 ;; Don't search invisible text by default
 ;; (setq isearch-invisible nil)
 
-;; Disable lax-whitespace searching by default
+;; Disable lax-whitespace search by default
 (setq isearch-lax-whitespace nil)
 
 ;; Interpret spaces as wildcards (with M-s SPC)
@@ -1297,7 +1299,7 @@
 ;; (setenv "LANG" "en_US.UTF-8")
 
 ;; Use aspell
-(setq ispell-program-name "aspell")
+(setq ispell-program-name "aspell")   ; this is already the default
 
 ;; Set language
 (setq ispell-dictionary "en_US")
@@ -1327,7 +1329,7 @@
 (setq ediff-split-window-function #'split-window-horizontally)
 (setq ediff-merge-split-window-function #'split-window-horizontally)
 
-;; Use existng frame in GUI
+;; Let ediff use existing frame in GUI
 (when (display-graphic-p)
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
@@ -1509,7 +1511,7 @@
 ;; Toggle window split
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
 
-;; Cycle window configrations
+;; Cycle window configurations
 (define-key winner-mode-map (kbd "C-c w <") #'winner-undo)
 (define-key winner-mode-map (kbd "C-c w >") #'winner-redo)
 
