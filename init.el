@@ -818,9 +818,7 @@
     (web-mode-enable-auto-indentation t)
     (web-mode-enable-auto-opening t)
     (web-mode-enable-auto-pairing t)
-    (web-mode-enable-auto-quoting t)
-    :config
-    (add-hook 'web-mode-hook (lambda () (setq truncate-lines nil))))
+    (web-mode-enable-auto-quoting t))
 
 ;; yaml-mode (major-mode for editing YAML files)
 (use-package yaml-mode
@@ -1191,7 +1189,7 @@
 (setq display-line-numbers-width-start t)
 
 ;; Do not display continuation lines
-(setq-default truncate-lines t)
+;; (setq-default truncate-lines t)
 
 ;;; Buffers
 
