@@ -651,9 +651,11 @@
   (setq orderless-matching-styles
         '(orderless-literal
           orderless-initialism)
-        orderless-style-dispatchers '(my/flex-if-twiddle
-                                      my/with-if-equal
-                                      my/without-if-bang)))
+        orderless-style-dispatchers '(aj8/orderless-dispatch-flex-if-twiddle
+                                      aj8/orderless-dispatch-literal-if-equal
+                                      aj8/orderless-dispatch-prefixes-if-less
+                                      aj8/orderless-dispatch-regexp-if-star
+                                      aj8/orderless-dispatch-without-if-bang)))
 
 ;; vertico (vertical completion UI)
 (use-package vertico

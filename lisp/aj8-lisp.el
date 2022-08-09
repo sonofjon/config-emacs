@@ -537,19 +537,29 @@ Repeat command to select additional words backwards."
 ;;; Orderless style dispatchers
 
 ;; Flex
-(defun my/flex-if-twiddle (pattern _index _total)
+(defun aj8/orderless-dispatch-flex-if-twiddle (pattern _index _total)
   (when (string-suffix-p "~" pattern)
     `(orderless-flex . ,(substring pattern 0 -1))))
 
-;; Exclude literal
-(defun my/without-if-bang (pattern _index _total)
+;; Literal
+(defun aj8/orderless-dispatch-literal-if-equal (pattern _index _total)
+   (when (string-suffix-p "=" pattern)
+    `(orderless-literal . ,(substring pattern 0 -1))))
+
+;; Prefixes
+(defun aj8/orderless-dispatch-prefixes-if-less (pattern _index _total)
+   (when (string-suffix-p "<" pattern)
+    `(orderless-prefixes . ,(substring pattern 0 -1))))
+
+;; Regexp
+(defun aj8/orderless-dispatch-regexp-if-star (pattern _index _total)
+   (when (string-suffix-p "*" pattern)
+    `(orderless-regexp . ,(substring pattern 0 -1))))
+
+;; Exclude
+(defun aj8/orderless-dispatch-without-if-bang (pattern _index _total)
   (when (string-prefix-p "!" pattern)
     `(orderless-without-literal . ,(substring pattern 1))))
-
-;; Include literal
-(defun my/with-if-equal (pattern _index _total)
-   (when (string-prefix-p "=" pattern)
-    `(orderless-literal . ,(substring pattern 1))))
 
 ;;;; Spelling
 
