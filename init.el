@@ -1318,6 +1318,9 @@
 
 ;;; Coding
 
+;; Open up the debugger on error
+;; (setq debug-on-error t)
+
 ;;; Version control
 
 ;; Use horizontal (side-by-side) view by default in ediff
@@ -1383,9 +1386,6 @@
 
 ;; Use 'y' or 'n' questions always
 ;; (setq use-short-answers t)
-
-;; Open up the debugger on error
-;; (setq debug-on-error t)
 
 ;; Use longer pulse
 (setq pulse-delay 0.05)   ; default is 0.03
