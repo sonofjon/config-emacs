@@ -149,7 +149,7 @@ Emacs session."
 ;;; Buffer switching
 
 (defcustom aj8/buffer-skip-regexp
-  (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Completions*" "*Help*"
+  (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Completions*"
                   "*Messages*" "*package*" "*Quail Completions*"
                   "*quelpa-build-checkout*" "*scratch*" "*Warnings*"
                   "*Async-native-compile-log*")
