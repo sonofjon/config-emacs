@@ -1096,79 +1096,6 @@
 
 ;;;;; CUSTOMIZATION
 
-;;;; Modes
-
-;;; Package management...
-
-;;; Theme...
-
-;; Enable line numbers
-;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
-
-;;; Windows...
-
-;; Enable winner mode
-(setq winner-dont-bind-my-keys t)
-(winner-mode 1)
-
-;;; Buffers...
-
-;; Persistent minibuffer history
-(savehist-mode 1)
-
-;; Show recursion depth in the minibuffer prompt
-(minibuffer-depth-indicate-mode 1)
-
-;;; Outline...
-
-;;; Navigation...
-
-;; Subword movement and editing: camelCase
-;;    Cannot be enabled at the same time as superword-mode
-;; (add-hook 'prog-mode-hook (lambda () (subword-mode 1)))
-
-;; Superword movement and editing: snake_case and kebab-case
-;;    Cannot be enabled at the same time as subword-mode
-;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
-
-;;; Search...
-
-;;; Selection...
-
-;; Delete selection on edit
-(delete-selection-mode 1)
-
-;;; Editing...
-
-;; Highlight current line
-(global-hl-line-mode 1)
-
-;;; Completion...
-
-;;; Spelling...
-
-;; On-the-fly spell checking
-(add-hook 'text-mode-hook #'flyspell-mode)
-(add-hook 'prog-mode-hook #'flyspell-prog-mode)
-
-;;; Files...
-
-;; Track recent files
-(recentf-mode 1)
-
-;;; Coding...
-
-;;; Version control...
-
-;;; Help...
-
-;;; Web...
-
-;;; Other...
-
-;; Expand abbreviations
-(add-hook 'text-mode-hook #'abbrev-mode)
-
 ;;;; Variables
 
 ;;; Package management
@@ -1192,6 +1119,9 @@
 
 ;; Do not display continuation lines
 ;; (setq-default truncate-lines t)
+
+;; Don't bind keys for winner
+(setq winner-dont-bind-my-keys t)
 
 ;;; Buffers
 
@@ -1397,6 +1327,78 @@
 
 ;; Show mode headers in describe-bindings buffer
 (setq describe-bindings-outline t)
+
+;;;; Modes
+
+;;; Package management...
+
+;;; Theme...
+
+;; Enable line numbers
+;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
+
+;;; Windows...
+
+;; Enable winner mode
+(winner-mode 1)
+
+;;; Buffers...
+
+;; Persistent minibuffer history
+(savehist-mode 1)
+
+;; Show recursion depth in the minibuffer prompt
+(minibuffer-depth-indicate-mode 1)
+
+;;; Outline...
+
+;;; Navigation...
+
+;; Subword movement and editing: camelCase
+;;    Cannot be enabled at the same time as superword-mode
+;; (add-hook 'prog-mode-hook (lambda () (subword-mode 1)))
+
+;; Superword movement and editing: snake_case and kebab-case
+;;    Cannot be enabled at the same time as subword-mode
+;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
+
+;;; Search...
+
+;;; Selection...
+
+;; Delete selection on edit
+(delete-selection-mode 1)
+
+;;; Editing...
+
+;; Highlight current line
+(global-hl-line-mode 1)
+
+;;; Completion...
+
+;;; Spelling...
+
+;; On-the-fly spell checking
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'prog-mode-hook #'flyspell-prog-mode)
+
+;;; Files...
+
+;; Track recent files
+(recentf-mode 1)
+
+;;; Coding...
+
+;;; Version control...
+
+;;; Help...
+
+;;; Web...
+
+;;; Other...
+
+;; Expand abbreviations
+(add-hook 'text-mode-hook #'abbrev-mode)
 
 ;;;; Hooks
 
