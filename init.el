@@ -635,8 +635,7 @@
   :after (embark consult)
   ;; if you want to have consult previews as you move around an
   ;; auto-updating embark collect buffer
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; orderless (orderless completion style)
 (use-package orderless
