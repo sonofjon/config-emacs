@@ -1136,6 +1136,9 @@
 ;; Allow minibuffer commands while in the minibuffer
 (setq enable-recursive-minibuffers t)
 
+;; Timeout for messages in active minibuffer
+(setq minibuffer-message-clear-timeout 1)
+
 ;; Open *info* buffers in same window
 (setq info-lookup-other-window-flag nil)
 
@@ -1618,6 +1621,22 @@
 
 ;; Use hippie-expand
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
+
+;; Change orderless matching style on the fly: flex
+(define-key minibuffer-local-map (kbd "C-f")
+  #'aj8/orderless-matching-style-flex)
+
+;; Change orderless matching style on the fly: literal
+(define-key minibuffer-local-map (kbd "C-l")
+  #'aj8/orderless-matching-style-literal)
+
+;; Change orderless matching style on the fly: regexp
+(define-key minibuffer-local-map (kbd "C-r")
+  #'aj8/orderless-matching-style-regexp)
+
+;; Change orderless matching style on the fly: prefixes
+(define-key minibuffer-local-map (kbd "C-p")
+  #'aj8/orderless-matching-style-prefixes)
 
 ;;; Spelling
 
