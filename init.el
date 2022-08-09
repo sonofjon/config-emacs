@@ -1247,7 +1247,7 @@
 ;;; Search
 
 ;; Don't search invisible text by default
-(setq isearch-invisible nil)
+;; (setq isearch-invisible nil)
 
 ;; Disable lax-whitespace searching by default
 (setq isearch-lax-whitespace nil)
