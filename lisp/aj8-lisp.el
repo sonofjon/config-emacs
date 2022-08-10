@@ -556,25 +556,25 @@ Repeat command to select additional words backwards."
 (defun aj8/orderless-matching-style--flex ()
   "Components match flexy for the rest of the session."
   (setq-local orderless-matching-styles '(orderless-flex orderless-initialism))
-  (minibuffer-message "flex"))
+  (minibuffer-message "[flex]"))
 
 ;; Literal
 (defun aj8/orderless-matching-style--literal ()
   "Components match literally for the rest of the session."
   (setq-local orderless-matching-styles '(orderless-literal orderless-initialism))
-  (minibuffer-message "literal"))
+  (minibuffer-message "[literal]"))
 
 ;; Prefixes
 (defun aj8/orderless-matching-style--prefixes ()
   "Components match prefixes for the rest of the session."
   (setq-local orderless-matching-styles '(orderless-prefixes orderless-initialism))
-  (minibuffer-message "prefixes"))
+  (minibuffer-message "[prefixes]"))
 
 ;; Regexp
 (defun aj8/orderless-matching-style--regexp ()
   "Components match regexp for the rest of the session."
   (setq-local orderless-matching-styles '(orderless-regexp orderless-initialism))
-  (minibuffer-message "regexp"))
+  (minibuffer-message "[regexp]"))
 
 ;;; Orderless style dispatchers
 

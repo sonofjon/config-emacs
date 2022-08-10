@@ -1616,7 +1616,7 @@
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;; Cycle through orderless matching styles on the fly
-(define-key minibuffer-local-map (kbd "M-o") #'aj8/orderless-matching-style-cycle)
+(global-set-key (kbd "M-o") #'aj8/orderless-matching-style-cycle)
 
 ;;; Spelling
 
