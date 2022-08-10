@@ -1276,20 +1276,16 @@
 ;;; Web
 
 ;; URL browser settings
-;;   TODO: There is also browse-url-default-windows|macosx-browser
-;;   TODO: New options in Emacs 28
-(setq browse-url-browser-function #'eww-browse-url)
-(setq browse-url-secondary-browser-function #'browse-url-default-browser)
-(setq browse-url-chrome-program "com.google.Chrome") ; TODO: doesn't exist
-(setq browse-url-handlers
-      '(("reddit\\.com" . browse-url-chrome)
-        ;; ("google\\.com" . browse-url-default-browser)
-        ("github\\.com" . browse-url-default-browser)
-        ("gitlab\\.com" . browse-url-default-browser)
-        ("stackexchange\\.com" . browse-url-default-browser)
-        ("stackoverflow\\.com" . browse-url-default-browser)
-        ;; ("sachachua\\.com" . browse-url-default-browser)
-        ("." . eww-browse-url)))
+(setq browse-url-browser-function #'browse-url-default-browser)
+(setq browse-url-secondary-browser-function #'eww-browse-url)
+;; (setq browse-url-handlers
+;;       '(("github\\.com" . browse-url-default-browser)
+;;         ("gitlab\\.com" . browse-url-default-browser)
+;;         ("google\\.com" . browse-url-default-browser)
+;;         ("reddit\\.com" . browse-url-default-browser)
+;;         ("stackexchange\\.com" . browse-url-default-browser)
+;;         ("stackoverflow\\.com" . browse-url-default-browser)
+;;         ("." . eww-browse-url)))
 
 ;; Default search engine
 (setq eww-search-prefix "https://google.com/search?q=")   ; default is duckduckgo
