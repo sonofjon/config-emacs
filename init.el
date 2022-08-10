@@ -1664,7 +1664,7 @@
 ;;; Web
 
 ;; Browse URL at point
-(global-set-key (kbd "C-c b") #'browse-url)
+(global-set-key (kbd "C-c b") #'browse-url-at-point)
 
 ;;; Other
 
