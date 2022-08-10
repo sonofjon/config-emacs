@@ -536,33 +536,45 @@ Repeat command to select additional words backwards."
 
 ;;; Orderless matching styles
 
-;; Flex
-(defun aj8/orderless-matching-style-flex ()
-  "Components match flexy for the rest of the session."
+;; Cycle through orderless matching styles
+(defun aj8/orderless-matching-style-cycle ()
+  "Cycle through orderless matching styles."
   (interactive)
+  (cond
+   ((eq (car orderless-matching-styles) 'orderless-literal)
+    (aj8/orderless-matching-style--prefixes))
+   ((eq (car orderless-matching-styles) 'orderless-prefixes)
+    (aj8/orderless-matching-style--regexp))
+   ((eq (car orderless-matching-styles) 'orderless-regexp)
+    (aj8/orderless-matching-style--flex))
+   ((eq (car orderless-matching--styles) 'orderless-flex)
+    (aj8/orderless-matching-style-literal))
+   (t
+    (error "Unknown matching style"))))
+
+;; Flex
+(defun aj8/orderless-matching-style--flex ()
+  "Components match flexy for the rest of the session."
   (setq-local orderless-matching-styles '(orderless-flex orderless-initialism))
-  (minibuffer-message "Matching flex"))
+  (minibuffer-message "flex"))
 
 ;; Literal
-(defun aj8/orderless-matching-style-literal ()
+(defun aj8/orderless-matching-style--literal ()
   "Components match literally for the rest of the session."
-  (interactive)
   (setq-local orderless-matching-styles '(orderless-literal orderless-initialism))
-  (minibuffer-message "Matching literal"))
+  (minibuffer-message "literal"))
 
 ;; Prefixes
-(defun aj8/orderless-matching-style-prefixes ()
+(defun aj8/orderless-matching-style--prefixes ()
   "Components match prefixes for the rest of the session."
-  (interactive)
   (setq-local orderless-matching-styles '(orderless-prefixes orderless-initialism))
-  (minibuffer-message "Matching prefixes"))
+  (minibuffer-message "prefixes"))
 
 ;; Regexp
-(defun aj8/orderless-matching-style-regexp ()
+(defun aj8/orderless-matching-style--regexp ()
   "Components match regexp for the rest of the session."
-  (interactive)
   (setq-local orderless-matching-styles '(orderless-regexp orderless-initialism))
-  (minibuffer-message "Matching regexp"))
+  (minibuffer-message "regexp"))
 
 ;;; Orderless style dispatchers
 
