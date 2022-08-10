@@ -583,10 +583,8 @@
 ;;            :url "https://codeberg.org/akib/emacs-corfu-terminal.git"))
 
 ;; cape (completion at point extensions for corfu)
-;;   TODO: Fix completion in terminal
 (use-package cape
-  ;; TODO: Corfu runs only with GUI, and cape only without, yet :after Corfu!?
-  :if (not (display-graphic-p))
+  :if (display-graphic-p)
   :after (corfu which-key)
   :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
