@@ -773,7 +773,7 @@ buffer in a new window instead."
 
 ;; Open new eww buffers in a new window
 ;;   C-u RET
-(defun aj8/eww-follow-link (&optional external mouse-event)
+(defun aj8/eww-follow-link ()
   "Browse the URL under point.
 Swaps the functionality of single and double prefix arguments,
 see `eww-follow-link' for details."
