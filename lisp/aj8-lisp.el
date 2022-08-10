@@ -547,8 +547,8 @@ Repeat command to select additional words backwards."
     (aj8/orderless-matching-style--regexp))
    ((eq (car orderless-matching-styles) 'orderless-regexp)
     (aj8/orderless-matching-style--flex))
-   ((eq (car orderless-matching--styles) 'orderless-flex)
-    (aj8/orderless-matching-style-literal))
+   ((eq (car orderless-matching-styles) 'orderless-flex)
+    (aj8/orderless-matching-style--literal))
    (t
     (error "Unknown matching style"))))
 
