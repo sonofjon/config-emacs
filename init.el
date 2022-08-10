@@ -721,23 +721,22 @@
   ;; (treemacs-sorting 'alphabetic-asc)
   (treemacs-width 30)
   :config
-  (setq
-   ;; Follow current buffer file in Treemacs window (on by default)
-   ;; (treemacs-follow-mode 1)
-   ;; Only display current project in Treemacs window
-   (treemacs-project-follow-mode 1)
-   ;; Show visual indicator in the fringe for highlighted file
-   (treemacs-fringe-indicator-mode 'always)
-   ;; Detect file system changes (on by default)
-   ;; (treemacs-filewatch-mode 1)
-   ;; Hide files ignored by Git
-   ;; (treemacs-hide-gitignored-files-mode 1)
-   ;; Display indentation guides
-   (treemacs-indent-guide-mode 1)
-   ;; Display git project annotations
-   (treemacs-git-commit-diff-mode 1)
-   ;; Highlight files using git status
-   (treemacs-git-mode 'deferred))
+  ;; Follow current buffer file in Treemacs window (on by default)
+  ;; (setq treemacs-follow-mode 1)
+  ;; Only display current project in Treemacs window
+  (setq treemacs-project-follow-mode 1)
+  ;; Show visual indicator in the fringe for highlighted file
+  (setq treemacs-fringe-indicator-mode 'always)
+  ;; Detect file system changes (on by default)
+  ;; (setq treemacs-filewatch-mode 1)
+  ;; Hide files ignored by Git
+  ;; (setq treemacs-hide-gitignored-files-mode 1)
+  ;; Display indentation guides
+  (setq treemacs-indent-guide-mode 1)
+  ;; Display git project annotations
+  (setq treemacs-git-commit-diff-mode 1)
+  ;; Highlight files using git status
+  (setq treemacs-git-mode 'deferred)
   :bind (("M-0" . treemacs-select-window)   ; TODO: this conflicts with C-u 0
          ("C-c t 1" . treemacs-delete-other-windows)
          ("C-c t t" . treemacs)
