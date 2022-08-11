@@ -1467,7 +1467,7 @@
 (define-key key-translation-map (kbd "C-M-<up>") (kbd "C-M-p"))
 (define-key key-translation-map (kbd "C-M-<down>") (kbd "C-M-n"))
 
-;;;; Global
+;;;; General
 
 ;;; Package management
 
@@ -1639,7 +1639,7 @@
 ;; (global-set-key (kbd "C-x") nil)
 ;; (global-unset-key (kbd "C-x"))   ; alternative syntax
 
-;;;; Local
+;;;; Hooks
 
 ;; Info-mode
 (add-hook 'Info-mode-hook
