@@ -1585,6 +1585,10 @@
 ;; Use hippie-expand
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
+;; Corfu navigation
+(define-key corfu-map [remap move-beginning-of-line] #'my/corfu-beginning-of-prompt)
+(define-key corfu-map [remap move-end-of-line] #'my/corfu-end-of-prompt)
+
 ;; Cycle through orderless matching styles on the fly
 (global-set-key (kbd "M-o") #'aj8/orderless-matching-style-cycle)
 

@@ -545,6 +545,20 @@ Repeat command to select additional words backwards."
 
 ;;;; Completion
 
+;;; Corfu navigation
+
+(defun my/corfu-beginning-of-prompt ()
+  "Move to beginning of completion input."
+  (interactive)
+  (corfu--goto -1)
+  (goto-char (car completion-in-region--data)))
+
+(defun my/corfu-end-of-prompt ()
+  "Move to end of completion input."
+  (interactive)
+  (corfu--goto -1)
+  (goto-char (cadr completion-in-region--data)))
+
 ;;; Orderless matching styles
 
 ;; Cycle through orderless matching styles
