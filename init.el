@@ -404,7 +404,6 @@
 ;; undo-fu (linear undo with redo)
 ;;   Note that undo-in-region is disabled by default
 (use-package undo-fu
-  :after which-key
   :bind (("C-c z u" . undo-fu-only-undo)
          ("C-c z r" . undo-fu-only-redo)
          ("C-c z d" . undo-fu-disable-checkpoint))
@@ -427,7 +426,6 @@
 
 ;; consult (practical commands based on Emacs completion)
 (use-package consult
-  :after which-key
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c c h" . consult-history)
          ("C-c c m" . consult-mode-command)
@@ -596,7 +594,7 @@
 ;; cape (completion at point extensions for Corfu)
 (use-package cape
   ;; :if (display-graphic-p)
-  :after (corfu which-key)
+  :after corfu
   :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
          ("C-c u d" . cape-dabbrev)          ; or dabbrev-completion
@@ -622,7 +620,6 @@
 
 ;; embark (context aware actions)
 (use-package embark
-  :after helpful   ; TODO: this shouldn't be needed
   :bind (("M-." . embark-act)
          ("M-," . embark-dwim)
          ("C-h B" . embark-bindings)) ; alternative for `describe-bindings'
@@ -647,10 +644,8 @@
 ;; orderless (orderless completion style)
 (use-package orderless
   ;; :disabled
-  :after vertico
   :config
   ;; Use orderless for completion
-  ;;   (disables styles set for vertico)
   (setq completion-styles '(orderless basic))
   ;; Use orderless everywhere
   (setq completion-category-defaults nil)
@@ -707,7 +702,6 @@
 ;; treemacs (a tree layout file explorer)
 (use-package treemacs
   :defer
-  :after which-key
   :init
   (which-key-add-key-based-replacements "C-c t" "treemacs")   ; add label for prefix keys
   (which-key-add-key-based-replacements "C-c C-p" "treemacs")
@@ -872,7 +866,7 @@
 
 ;; lsp-treemacs (Treemacs integration for LSP)
 (use-package lsp-treemacs
-  :after lsp-mode
+  :after (lsp-mode treemacs)
   :commands lsp-treemacs-errors-list)
 
 ;; lsp-pyright (lsp-mode client for Pyright language server)
@@ -960,7 +954,6 @@
 ;; marginalia (add marginalia to minibuffer completions)
 (use-package marginalia
   :demand
-  :after vertico
   :bind (:map minibuffer-local-map ("M-m" . marginalia-cycle))
   :config
   (marginalia-mode 1))
@@ -1042,7 +1035,6 @@
 
 ;; google-this (google search functions)
 (use-package google-this
-  :after which-key
   :diminish
   :init
   (which-key-add-key-based-replacements "C-c /" "google-this")   ; add label for prefix key
