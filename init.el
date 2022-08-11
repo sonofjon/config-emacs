@@ -481,9 +481,9 @@
 
   ;; Use consult for completion in region
   ;;   Note, this does not work with LSP or eglot
-  (when (not (display-graphic-p))   ; only enable if using terminal
-    (setq completion-in-region-function #'consult-completion-in-region))
   (which-key-add-key-based-replacements "C-c c" "consult")   ; add label for prefix key
+  ;; (when (not (display-graphic-p))   ; only enable if using terminal
+  ;;   (setq completion-in-region-function #'consult-completion-in-region))
 
   ;; Configure the register formatting
   ;;   This improves the register preview for `consult-register',
@@ -531,7 +531,7 @@
 ;; corfu (completion overlay)
 ;;   TODO: enable corfu-history-mode and corfu-info-mode?
 (use-package corfu
-  :if (display-graphic-p)
+  ;; :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
   :custom
   ;; (corfu-count 10)               ; maximal number of candidates to show
@@ -551,10 +551,9 @@
   :init
   ;; Enable corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
-  (global-corfu-mode))   ; TODO: note that if this is enabled in terminal mode
-                         ; consult-completions wont be active
+  (global-corfu-mode))
 
-;; corfu-doc (documentation popup for corfu)
+;; corfu-doc (documentation popup for Corfu)
 (use-package corfu-doc
   :after corfu
   :hook (corfu-mode . corfu-doc-mode)
@@ -568,23 +567,34 @@
   ;; Enable manually
   (corfu-doc-auto nil))
 
-;; corfu-terminal (corfu popup on terminal)
-;;   TODO: check again when package more mature
-;; (use-package corfu-terminal
-;;   :if (not (display-graphic-p))
-;;   :disabled
-;;   :after corfu
-;;   :config
-;;   (corfu-terminal-mode 1)))
+;; corfu-terminal (Corfu popup in terminal)
+(use-package corfu-terminal
+  :if (not (display-graphic-p))
+  :after corfu
+  :config
+  (corfu-terminal-mode 1))
 
 ;; (use-package corfu-terminal
 ;;   :quelpa (corfu-terminal
 ;;            :fetcher github
 ;;            :url "https://codeberg.org/akib/emacs-corfu-terminal.git"))
+;; (corfu-terminal-mode 1)
 
-;; cape (completion at point extensions for corfu)
+;; corfu-doc-terminal (documentation popup for Corfu in terminal)
+;; (use-package corfu-doc-terminal
+;;   :if (not (display-graphic-p))
+;;   :after corfu-doc
+;;   :config
+;;   (corfu-doc-terminal-mode 1))
+
+(quelpa '(corfu-doc-terminal
+          :fetcher git
+          :url "https://codeberg.org/akib/emacs-corfu-doc-terminal.git"))
+(corfu-doc-terminal-mode 1)
+
+;; cape (completion at point extensions for Corfu)
 (use-package cape
-  :if (display-graphic-p)
+  ;; :if (display-graphic-p)
   :after (corfu which-key)
   :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
