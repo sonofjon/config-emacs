@@ -1645,6 +1645,12 @@
 
 ;;;; Hooks
 
+;; ediff-mode
+;;   TODO: check functionality
+(add-hook 'ediff-keymap-setup-hook
+          ;; Use both versions with ediff
+          (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
+
 ;; Info-mode
 (add-hook 'Info-mode-hook
           ;; Disable M-n
@@ -1657,12 +1663,6 @@
                      (define-key sh-mode-map (kbd "C-c <") nil)
                      (define-key sh-mode-map (kbd "C-c >") nil)
                      (define-key sh-mode-map (kbd "C-c ?") nil)))
-
-;; ediff-mode
-;;   TODO: check functionality
-(add-hook 'ediff-keymap-setup-hook
-          ;; Use both versions with ediff
-          (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
 
 ;;;; Hydras
 
