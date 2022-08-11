@@ -20,27 +20,38 @@
 
 ;;; Kill windows
 
-;; Quit window and kill its buffer
-(defun aj8/quit-window ()
-  "Quit WINDOW and kill its buffer.
-With a prefix argument, bury the buffer instead (this is the
-inverse of the default behavior of the standard `quit-windows'
-function)."
-  (interactive)
-  (if current-prefix-arg   ; C-u
-      (quit-window)        ; bury
-    (quit-window 1)))      ; kill
+(defcustom my/quit-window-exceptions-regex "^\\*\\(Messages\\)"
+  "Regexp matching buffer names for which prefix argument should
+not be inverted."
+  :group 'my-config)
 
-;; Quit magit window and kill its buffer
-(defun aj8/magit-mode-bury-buffer ()
-  "Quit WINDOW and kill its buffer.
-With a prefix argument, bury the buffer instead (this is the
-inverse of the default behavior of the standard
-`magit-mode-quit-window' function)."
-  (interactive)
-  (if current-prefix-arg             ; C-u
-      (magit-mode-bury-buffer nil)   ; bury
-    (magit-mode-bury-buffer 1)))     ; kill
+(defcustom my/quit-window-known-wrappers '(magit-mode-bury-buffer
+                                           magit-log-bury-buffer
+                                           Info-exit)
+  "List of commands that call `quit-window' for which prefix
+argument should be inverted. "
+  :group 'my-config)
+
+(defun my/advice--quit-window (args)
+  "Advice function that makes `quit-window' quit WINDOW and kill
+its buffer. With a prefix argument, the buffer is buried
+instead. This is the inverse of the default behavior
+`quit-window'.
+
+This affects all calls to `quit-window' except in buffers
+matching `my/quit-window-exceptions-regex'. Calls to
+`quit-window' from wrapper functions defined by
+`my/quit-window-known-wrappers' are also affected."
+  (when (and (or (eq this-command 'quit-window)
+                 (member this-command my/quit-window-known-wrappers))
+             (not (string-match-p my/quit-window-exceptions-regex (buffer-name))))
+    (unless (consp args)
+      (setq args (list nil)))
+    (setf (car args) (not current-prefix-arg)))
+  args)
+
+;; Quit window and kill its buffer
+(advice-add 'quit-window :filter-args 'my/advice--quit-window)
 
 ;;; Better shrink/enlarge window functions
 

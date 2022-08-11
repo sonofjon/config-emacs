@@ -881,9 +881,7 @@
 ;; magit (user interface to git)
 (use-package magit
   :bind (("C-c g" . magit-file-dispatch)
-         ;; Kill, not bury, magit buffers
          :map magit-mode-map
-         ([remap magit-mode-bury-buffer] . aj8/magit-mode-bury-buffer)
          ("TAB" . magit-section-cycle)
          ("<backtab>" . magit-section-cycle-global))
          ;; Open files in other window
@@ -941,10 +939,7 @@
          ([remap describe-symbol] . helpful-symbol)
          ([remap describe-variable] . helpful-variable)
          ([remap describe-command] . helpful-command)
-         ("C-c h" . helpful-at-point)
-         :map helpful-mode-map
-         ;; Kill buffers on quit
-         ([remap quit-window] . aj8/quit-window))
+         ("C-c h" . helpful-at-point))
   :custom
   ;; Maximum number of *helpful* buffers
   (helpful-max-buffers nil)
@@ -1440,34 +1435,6 @@
 ;; shell-scrip-mode: outline settings
 (add-hook 'sh-mode-hook
           #'outline-headers-for-hash-mark-buffers)
-
-;; TODO: loop over maps for quit-windows
-;; (defun define-key-quit-windows (map)
-;;   (define-key map [remap quit-window] 'aj8/quit-window))
-
-;; (dolist (map '(help-mode-map Info-mode-map dired-mode-map eww-mode-map))
-;;   (with-eval-after-load map
-;;     (define-key (symbol-value map) [remap quit-window] 'aj8/quit-window)))
-
-;; (dolist (str (list "help" "Info" "dired" "eww"))
-;;   (with-eval-after-load str
-;;     (let ((kmap (symbol-value (intern (concat str "-mode-map")))))
-;;       (define-key kmap [remap quit-window] 'aj8/quit-window))))
-
-;; dired-mode: kill buffers on quit
-(with-eval-after-load "dired"
-  (define-key dired-mode-map [remap quit-window] #'aj8/quit-window))
-
-;; eww-mode: kill buffers on quit
-(with-eval-after-load "eww"
-  (define-key eww-mode-map [remap quit-window] #'aj8/quit-window))
-
-;; help-mode: kill buffers on quit
-(define-key help-mode-map [remap quit-window] #'aj8/quit-window)
-
-;; Info-mode: kill buffers on quit
-(with-eval-after-load "info"
-  (define-key Info-mode-map [remap quit-window] #'aj8/quit-window))
 
 
 ;;;;; KEYBINDINGS
