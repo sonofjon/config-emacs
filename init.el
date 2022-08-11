@@ -969,8 +969,8 @@
 (use-package which-key
   :diminish
   :custom
-  ;; Show which-key buffer on C-h
-  ;; (which-key-show-early-on-C-h t)
+  ;; Don't show which-key buffer on C-h
+  (which-key-use-C-h-commands nil)
   ;; Delay (default is 1.0 s)
   ;; (which-key-idle-delay 10000)
   (which-key-idle-delay 0.75)
