@@ -477,8 +477,8 @@
   ;; Enhance `completing-read-multiple'
   ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
 
-  ;; Use consult for completion in region
-  ;;   Note, this does not work with LSP or eglot
+  ;; Use Consult for completion in region
+  ;;   Note, this does not work with LSP or Eglot
   ;; (when (not (display-graphic-p))   ; only enable if using terminal
   ;;   (setq completion-in-region-function #'consult-completion-in-region))
 
@@ -523,7 +523,7 @@
    :completion-styles '(basic)))   ; disable orderless
    ;; :require-match t)
 
-;; consult-project-extra (project extension for consult)
+;; consult-project-extra (project extension for Consult)
 (use-package consult-project-extra
   :bind ("C-c p" . consult-project-extra-find))
 
@@ -548,7 +548,7 @@
   ;; (corfu-echo-documentation nil) ; do not show documentation in the echo area
   (corfu-scroll-margin 1)        ; use scroll margin
   :init
-  ;; Enable corfu globally
+  ;; Enable Corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
   (global-corfu-mode))
 
@@ -633,12 +633,12 @@
                  nil
                  (window-parameters (mode-line-format . none)))))
 
-;; embark-consult (integration between embark and consult)
+;; embark-consult (integration between Embark and Consult)
 (use-package embark-consult
   :demand t ; only necessary if you have the hook below
   :after (embark consult)
   ;; if you want to have consult previews as you move around an
-  ;; auto-updating embark collect buffer
+  ;; auto-updating Embark collect buffer
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; orderless (orderless completion style)
@@ -846,7 +846,7 @@
          (json-mode . lsp)
          ;; which-key integration
          (lsp-mode . lsp-enable-which-key-integration)
-         ;; corfu integration
+         ;; Corfu integration
          (lsp-completion-mode . my/lsp-mode-setup-completion))
   :init
   (defun my/lsp-mode-setup-completion ()
@@ -854,7 +854,7 @@
           '(flex)))   ; use flex
   ;; Prefix for lsp-command-keymap
   (setq lsp-keymap-prefix "C-c l")
-  (which-key-add-key-based-replacements "C-c l" "LSP")   ; add label for prefix key
+  (which-key-add-key-based-replacements "C-c l" "lsp")   ; add label for prefix key
   :custom
   ;; Use custom completion backend (Corfu)
   (lsp-completion-provider :none))
@@ -1025,6 +1025,7 @@
   (erc-services-mode 1)
   (erc-update-modules))
 
+;; erc-hl-nicks (nickname highlighting for ERC)
 (use-package erc-hl-nicks
   :disabled
   :defer
@@ -1033,7 +1034,7 @@
   (add-to-list 'erc-modules 'hl-nicks)
   (erc-update-modules))
 
-;; google-this (google search functions)
+;; google-this (Google search functions)
 (use-package google-this
   :diminish
   :init
