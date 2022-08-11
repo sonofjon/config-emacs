@@ -481,7 +481,6 @@
 
   ;; Use consult for completion in region
   ;;   Note, this does not work with LSP or eglot
-  (which-key-add-key-based-replacements "C-c c" "consult")   ; add label for prefix key
   ;; (when (not (display-graphic-p))   ; only enable if using terminal
   ;;   (setq completion-in-region-function #'consult-completion-in-region))
 
@@ -499,6 +498,8 @@
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
+
+  (which-key-add-key-based-replacements "C-c c" "consult")   ; add label for prefix key
 
   :config
   ;; Preview key
