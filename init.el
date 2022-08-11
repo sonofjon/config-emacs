@@ -646,7 +646,9 @@
   ;; :disabled
   :config
   ;; Use orderless for completion
-  (setq completion-styles '(orderless basic))
+  ;;   substring: needed for partial completion
+  ;;   basic: fallback
+  (setq completion-styles '(substring orderless basic))
   ;; Use orderless everywhere
   (setq completion-category-defaults nil)
   (setq completion-category-overrides '((file (styles basic partial-completion))))
