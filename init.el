@@ -1672,7 +1672,6 @@
 
 ;;; Windows
 (defhydra hydra-window (:hint nil)
-  ;; TODO: Improve layout
   "
                                                                    ╭─────────┐
   Select   Move   Resize    Split             Do                   │ Windows │
