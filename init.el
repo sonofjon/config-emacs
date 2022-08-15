@@ -518,10 +518,10 @@
   (setq consult-narrow-key "<")
 
   ;; Completion
-  (consult-customize
-   consult-completion-in-region
-   :completion-styles '(basic)))   ; disable orderless
-   ;; :require-match t)
+  ;; (consult-customize
+  ;;  consult-completion-in-region
+  ;;  :completion-styles '(basic))   ; disable orderless
+  ;;  ;; :require-match t)
 
 ;; consult-project-extra (project extension for Consult)
 (use-package consult-project-extra
