@@ -1218,6 +1218,10 @@
 ;; Show more details for completions
 (setq completions-detailed t)
 
+;; Hide commands which do not apply to the current mode
+;;   TODO: appears to have no effect
+(setq read-extended-command-predicate #'command-completion-default-include-p)
+
 ;; Let hippie-expand search for line expansions in all buffers
 ;; (add-to-list 'hippie-expand-try-functions-list 'try-expand-line-all-buffers t)
 (setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
