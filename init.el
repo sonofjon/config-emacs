@@ -532,6 +532,8 @@
 (use-package corfu
   ;; :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
+  :bind (:map corfu-map
+              ("RET" . corfu-quit))   ; pressing Return quits completion
   :custom
   ;; (corfu-count 10)               ; maximal number of candidates to show
   ;; (corfu-min-width 15)           ; popup minimum width in characters
