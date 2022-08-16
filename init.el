@@ -1442,6 +1442,9 @@
 (add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . sh-mode))
 
+;; [la]tex-mode:
+(add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
+
 ;; shell-scrip-mode: outline settings
 (add-hook 'sh-mode-hook
           #'outline-headers-for-hash-mark-buffers)
