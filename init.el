@@ -514,14 +514,14 @@
    consult--source-recent-file consult--source-project-recent-file
    :preview-key (list (kbd "<down>") (kbd "<up>")))
 
-  ;; Narrowing key
-  (setq consult-narrow-key "<")
-
   ;; Completion
   ;; (consult-customize
   ;;  consult-completion-in-region
   ;;  :completion-styles '(basic))   ; disable orderless
   ;;  ;; :require-match t)
+
+  ;; Narrowing key
+  (setq consult-narrow-key "<"))
 
 ;; consult-project-extra (project extension for Consult)
 (use-package consult-project-extra
