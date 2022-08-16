@@ -1172,9 +1172,6 @@
 ;; Preserve point position when scrolling
 (setq scroll-preserve-screen-position t)
 
-;; Save place in each file
-(setq save-place-mode t)
-
 ;; Use "repeat-mode" for "pop-mark"
 (setq set-mark-command-repeat-pop t)
 
@@ -1384,6 +1381,9 @@
 
 ;; Track recent files
 (recentf-mode 1)
+
+;; Save place in each file
+(save-place-mode 1)
 
 ;;; Coding...
 
