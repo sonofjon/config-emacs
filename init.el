@@ -701,7 +701,8 @@
                          (aj8/call-interactively-wih-prefix-toggle
                           #'flyspell-correct-next)))
               ("C-c ," . my/flyspell-goto-previous-error)
-              ("C-c ." . flyspell-goto-next-error)))
+              ("C-c ." . flyspell-goto-next-error)
+              ("C-c ;" . flyspell-auto-correct-word)))
 
 ;;; Files
 
@@ -1573,9 +1574,6 @@
 
 ;; Kill line to the left
 (global-set-key (kbd "C-S-k") (lambda () (interactive) (kill-line 0)))
-
-;; TODO: do I need this?
-(global-set-key (kbd "C-c ;") #'comment-line)
 
 ;; Manipulate case
 (global-set-key (kbd "M-u") #'upcase-dwim)
