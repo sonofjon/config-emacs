@@ -504,14 +504,14 @@
   ;; (setq consult-preview-key (kbd "M-`"))
   ;; (setq consult-preview-key (list (kbd "<down>") (kbd "<up>")))
 
-  ;; Configure preview on a per-command basis
+  ;; Manual preview for expensive commands
   (consult-customize
    consult-theme
    :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep consult-bookmark
    consult-recent-file consult-xref consult--source-bookmark
    consult--source-recent-file consult--source-project-recent-file
-   :preview-key (list (kbd "<down>") (kbd "<up>")))
+   :preview-key (kbd "M-`"))
 
   ;; Completion
   ;; (consult-customize
