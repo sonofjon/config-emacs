@@ -154,7 +154,6 @@
 ;;; Theme
 
 ;; dashboard (display a dashboard at startup)
-;;   TODO: make it work in Terminal
 (use-package dashboard
   ;; :disabled
   :custom
@@ -501,7 +500,6 @@
 
   :config
   ;; Preview key
-  ;;   TODO: does not work in terminal
   (setq consult-preview-key (kbd "M-`"))         ; default is 'any
   ;; (setq consult-preview-key (list (kbd "<down>") (kbd "<up>")))
 
@@ -600,7 +598,7 @@
   :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
          ("C-c u d" . cape-dabbrev)          ; or dabbrev-completion
-         ("C-c u h" . cape-history)
+         ("C-c u h" . cape-history)          ; only in shell or minibuffer?
          ("C-c u w" . cape-dict)
          ("C-c u f" . cape-file)
          ("C-c u i" . cape-ispell)
@@ -755,7 +753,6 @@
          ;; ("M-<down>" . treemacs-next-neighbour)   ; not needed
          ;; ("M-<up>" . treemacs-previous-neighbour)   ; not needed
          ("C-c C-p <down>" . treemacs-move-project-down)
-            ; TODO: update transient help with these new bindings
          ("C-c C-p <up>" . treemacs-move-project-up)
          ("o l" . treemacs-visit-node-in-least-recently-used-window)))
 
@@ -792,12 +789,8 @@
 
 ;; markdown-mode (major-mode for editing Markdown files)
 (use-package markdown-mode
-  :mode (".md" . markdown-mode)
-  ;; :mode (".md" . markdown-view-mode)
-  :config
-  ;;TODO: Fix diminish
-  (add-hook 'markdown-mode-hook (lambda () (diminish 'markdown-mode)))
-  (add-hook 'markdown-view-mode-hook (lambda () (diminish 'markdown-view-mode))))
+  :mode (".md" . markdown-mode))
+  ;; :mode (".md" . markdown-view-mode))
 
 ;; php-mode (major-mode for editing PHP files)
 (use-package php-mode
@@ -839,6 +832,7 @@
 (use-package rainbow-mode)
 
 ;; lsp-mode (language server protocol)
+;;   TODO: optionally enable orderless-flex for LSP completion, see Corfu Wiki
 (use-package lsp-mode
   ;; :disabled
   :commands (lsp lsp-deferred)
@@ -857,6 +851,7 @@
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(flex)))   ; use flex
+          ;; '(orderless)))   ; use orderless
   ;; Prefix for lsp-command-keymap
   (setq lsp-keymap-prefix "C-c l")
   (which-key-add-key-based-replacements "C-c l" "lsp")   ; add label for prefix key
@@ -1458,8 +1453,7 @@
 
 ;;;;; KEYBINDINGS
 
-;;   TODO: Unbind rebound keys, e.g. M-a for back-to-indentation
-;;
+;;   TODO: Unbind rebound keys? E.g. M-a for back-to-indentation
 ;;         Use minor-mode for keybindings? (https://stackoverflow.com/a/683575/1610035)
 
 ;;;; Escape codes

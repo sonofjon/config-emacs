@@ -220,7 +220,7 @@ If the current buffer does not belong to a project, call `previous-buffer'."
   "If there are multiple windows, then kill the buffer in the next window."
   (interactive)
   (unless (one-window-p)
-    (setq win (selected-window))   ; TODO: is setq the correct syntax?
+    (setq win (selected-window))
     (other-window 1)
     (when (window-parameter (selected-window) 'window-side)   ; skip side windows
       (other-window 1))
@@ -327,7 +327,6 @@ number of characters matched by `outline-regexp'."
 
 (defun outline--subheadings-visible-p ()
   "Check if there is a visible sub-heading."
-  (interactive)                         ; TODO: why interactive?
   (save-excursion
     (outline-next-heading)
     (not (outline-invisible-p))))
