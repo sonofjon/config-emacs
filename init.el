@@ -835,7 +835,8 @@
               ;; ("C-m" . newline-and-indent)))
 
 ;; rainbow-mode (syntax highlighting for color codes)
-(use-package rainbow-mode)
+(use-package rainbow-mode
+  :disabled)
 
 ;; lsp-mode (language server protocol)
 ;;   TODO: optionally enable orderless-flex for LSP completion, see Corfu Wiki
@@ -918,7 +919,7 @@
 
 ;; diff-hl (highlight uncommitted changes)
 (use-package diff-hl
-  ;; :disabled
+  :disabled
   :config
   ;; Integration with Magit
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
