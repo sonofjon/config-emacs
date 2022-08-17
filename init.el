@@ -530,8 +530,8 @@
 (use-package corfu
   ;; :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
-  :bind (:map corfu-map
-              ("RET" . corfu-quit))   ; pressing Return quits completion
+  ;; :bind (:map corfu-map
+  ;;             ("RET" . corfu-quit))   ; pressing Return quits completion
   :custom
   ;; (corfu-count 10)               ; maximal number of candidates to show
   ;; (corfu-min-width 15)           ; popup minimum width in characters
@@ -543,7 +543,7 @@
   ;; (corfu-quit-at-boundary t)     ; automatically quit at word boundary
   ;; (corfu-quit-no-match t)        ; automatically quit if there is no match
   ;; (corfu-preview-current nil)    ; disable current candidate preview
-  ;; (corfu-preselect-first nil)    ; disable candidate preselection
+  (corfu-preselect-first nil)    ; disable candidate preselection
   ;; (corfu-on-exact-match nil)     ; configure handling of exact matches
   ;; (corfu-echo-documentation nil) ; do not show documentation in the echo area
   (corfu-scroll-margin 1)        ; use scroll margin
