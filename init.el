@@ -526,7 +526,6 @@
   :bind ("C-c p" . consult-project-extra-find))
 
 ;; corfu (completion overlay)
-;;   TODO: enable corfu-history-mode and corfu-info-mode?
 (use-package corfu
   ;; :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
@@ -550,7 +549,12 @@
   :init
   ;; Enable Corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
-  (global-corfu-mode))
+  (global-corfu-mode)
+  :config
+  ;; Sort candidates by history
+  (corfu-history-mode 1)   ; requires savehist-mode
+  (savehist-mode 1)
+  (add-to-list 'savehist-additional-variables 'corfu-history))
 
 ;; corfu-doc (documentation popup for Corfu)
 (use-package corfu-doc
