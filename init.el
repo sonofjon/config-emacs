@@ -500,7 +500,8 @@
 
   :config
   ;; Preview key
-  (setq consult-preview-key (kbd "M-`"))         ; default is 'any
+  ;; (setq consult-preview-key 'any)   ; default
+  ;; (setq consult-preview-key (kbd "M-`"))
   ;; (setq consult-preview-key (list (kbd "<down>") (kbd "<up>")))
 
   ;; Configure preview on a per-command basis
