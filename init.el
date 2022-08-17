@@ -841,7 +841,6 @@
 ;; lsp-mode (language server protocol)
 ;;   TODO: optionally enable orderless-flex for LSP completion, see Corfu Wiki
 (use-package lsp-mode
-  ;; :disabled
   :commands (lsp lsp-deferred)
   :hook ((sh-mode . lsp)   ; or lsp-deferred
          ;; (html-mode . lsp)
@@ -943,6 +942,7 @@
 
 ;; helpful (alternative help)
 (use-package helpful
+  ;; :disabled
   ;; :demand
   :commands (helpful-key helpful-function helpful-symbol
              helpful-variable helpful-command)
