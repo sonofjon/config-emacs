@@ -1569,6 +1569,8 @@
 
 ;;; Search
 
+(define-key isearch-mode-map (kbd "TAB") #'isearch-complete)
+
 ;;; Selection
 
 ;;; Editing
