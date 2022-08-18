@@ -426,8 +426,8 @@
 (use-package consult
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c c h" . consult-history)
-         ("C-c c m" . consult-mode-command)
-         ("C-c c M" . consult-minor-mode-menu)
+         ("C-c c c" . consult-mode-command)
+         ("C-c c m" . consult-minor-mode-menu)
          ;; C-x bindings (ctl-x-map)
          ("C-x M-:" . consult-complex-command)   ; orig. repeat-complex-command
          ("C-x b" . consult-project-buffer)      ; orig. switch-to-buffer
@@ -1489,7 +1489,7 @@
 ;;; Theme
 
 ;; Display column number
-(global-set-key (kbd "C-c n") #'column-number-mode)
+(global-set-key (kbd "C-c N") #'column-number-mode)
 
 ;;; Windows
 
@@ -1517,7 +1517,7 @@
 ;;; Outline
 
 ;; Toggle outline-minor-mode
-(global-set-key (kbd "C-c o") #'outline-minor-mode)
+(global-set-key (kbd "C-c O") #'outline-minor-mode)
 
 ;;; Navigation
 
@@ -1551,7 +1551,7 @@
 ;; (global-set-key (kbd "C-c <down>") #'aj8/next-line)
 
 ;; Enable scroll lock
-(global-set-key (kbd "C-c x l") #'scroll-lock-mode)
+(global-set-key (kbd "C-c L") #'scroll-lock-mode)
 
 (which-key-add-key-based-replacements "C-c x" "misc")   ; add label for prefix key
 
