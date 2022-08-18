@@ -1519,6 +1519,13 @@
 ;; Toggle outline-minor-mode
 (global-set-key (kbd "C-c O") #'outline-minor-mode)
 
+;; Toggle outline-minor-mode
+(global-set-key (kbd "C-c F") #'hs-minor-mode)
+(global-set-key (kbd "C-c <left>") #'hs-hide-block)
+(global-set-key (kbd "C-c <right>") #'hs-show-block)
+(global-set-key (kbd "C-c C-<left>") #'hs-hide-all)
+(global-set-key (kbd "C-c C-<right>") #'hs-show-all)
+
 ;;; Navigation
 
 ;; Windmove keys
