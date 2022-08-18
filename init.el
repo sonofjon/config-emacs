@@ -324,9 +324,8 @@
 ;; outline-minor-faces (use faces from outline-mode)
 ;;   See also outline-minor-mode-highlight.
 (use-package outline-minor-faces
-  :defer
   :after outline
-  :hook (outline-minor-mode . outline-minor-faces-add-font-lock-keywords))
+  :config (add-hook 'outline-minor-mode-hook #'outline-minor-faces-mode))
 
 ;;; Navigation
 
