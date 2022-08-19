@@ -1134,6 +1134,9 @@
 ;; Do not switch to buffers already shown
 ;; (setq switch-to-prev-buffer-skip 'this)
 
+;; Skip some buffers when switching buffers
+;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
+
 ;; Allow minibuffer commands while in the minibuffer
 (setq enable-recursive-minibuffers t)
 
@@ -1146,8 +1149,6 @@
 ;; Reuse existing help window
 ;; (setq help-window-select t)
 
-;; Skip some buffers when switching buffers
-(setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
 ;; Additional variables to persist between sessions
 (add-to-list 'savehist-additional-variables 'kill-ring)
 (add-to-list 'savehist-additional-variables 'global-mark-ring)
