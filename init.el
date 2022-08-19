@@ -1148,6 +1148,9 @@
 
 ;; Skip some buffers when switching buffers
 (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
+;; Additional variables to persist between sessions
+(add-to-list 'savehist-additional-variables 'kill-ring)
+(add-to-list 'savehist-additional-variables 'global-mark-ring)
 
 ;;; Outline
 
