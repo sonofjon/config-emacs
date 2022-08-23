@@ -1318,6 +1318,9 @@
 
 ;;; Other
 
+;; Use eshell with Tramp
+(add-to-list 'eshell-modules-list 'eshell-tramp)
+
 ;; Use 'y' or 'n' questions always
 ;; (setq use-short-answers t)
 
