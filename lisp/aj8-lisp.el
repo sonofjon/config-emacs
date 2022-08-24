@@ -749,12 +749,6 @@ versa."
 
 ;;;; Coding
 
-;; TODO: Make it work!
-(defun whole-line-or-region-eval-region (prefix)
-  "Call `eval-region' on region or PREFIX whole line."
-  (interactive "*p")
-  (whole-line-or-region-wrap-beg-end 'eval-region prefix))
-
 ;;;; Version control
 
 ;;; Misc
