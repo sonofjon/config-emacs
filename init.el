@@ -646,13 +646,6 @@
 (use-package orderless
   ;; :disabled
   :config
-  ;; Use orderless for completion
-  ;;   substring: needed for partial completion
-  ;;   basic: fallback
-  (setq completion-styles '(substring orderless basic))
-  ;; Use orderless everywhere
-  (setq completion-category-defaults nil)
-  (setq completion-category-overrides '((file (styles basic partial-completion))))
   ;; Matching styles
   ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))   ; default
   (setq orderless-matching-styles
@@ -1216,6 +1209,16 @@
 (setq mouse-yank-at-point t)
 
 ;;; Completion
+
+;; Select completion styles
+(setq completion-styles '(substring orderless basic))
+                                        ; substring: needed for partial completion
+                                        ; orderless: space-separated components
+                                        ; basic: fallback
+
+;; Use partial completion for files
+(setq completion-category-defaults nil)
+(setq completion-category-overrides '((file (styles basic partial-completion))))
 
 ;; Use TAB for symbol completion (after indentation)
 (setq tab-always-indent 'complete)
