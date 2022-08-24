@@ -649,7 +649,7 @@
   ;; Matching styles
   ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))   ; default
   (setq orderless-matching-styles
-        '(orderless-literal)
+        '(orderless-literal orderless-regexp)
         orderless-style-dispatchers '(aj8/orderless-dispatch-flex-if-twiddle
                                       aj8/orderless-dispatch-literal-if-equal
                                       aj8/orderless-dispatch-prefixes-if-less
