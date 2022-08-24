@@ -1231,6 +1231,12 @@
 ;; (add-to-list 'hippie-expand-try-functions-list 'try-expand-line-all-buffers t)
 (setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
 
+;; Ignore some buffers with hippie-expand
+;;   TODO: only consider buffers with the same mode (see dabbrev-friend-buffer-function)
+(with-eval-after-load "hippie-exp"
+  (add-to-list 'hippie-expand-ignore-buffers aj8/buffer-skip-regexp)
+  (add-to-list 'hippie-expand-ignore-buffers "^\\*.*\\*$"))
+
 ;;; Spelling
 
 ;; Configure language environment
