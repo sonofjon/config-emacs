@@ -530,7 +530,10 @@
   ;; :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
   :bind (:map corfu-map
-              ("RET" . corfu-quit))   ; pressing Return quits completion
+              ("RET" . corfu-quit)   ; pressing Return quits completion
+              ;; Navigation using standard bol and eol keybindings
+              ([remap move-beginning-of-line] . my/corfu-beginning-of-prompt)
+              ([remap move-end-of-line] . my/corfu-end-of-prompt))
   :custom
   ;; (corfu-count 10)               ; maximal number of candidates to show
   ;; (corfu-min-width 15)           ; popup minimum width in characters
@@ -1609,10 +1612,6 @@
 
 ;; Use hippie-expand
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
-
-;; Corfu navigation
-(define-key corfu-map [remap move-beginning-of-line] #'my/corfu-beginning-of-prompt)
-(define-key corfu-map [remap move-end-of-line] #'my/corfu-end-of-prompt)
 
 ;; Cycle through orderless matching styles on the fly
 (global-set-key (kbd "M-o") #'aj8/orderless-matching-style-cycle)
