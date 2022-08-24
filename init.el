@@ -391,10 +391,10 @@
 
 ;; whole-line-or-region (apply to current line if region is undefined)
 (use-package whole-line-or-region
+  :demand
   :diminish whole-line-or-region-local-mode
-  ;; :bind
-  ;; (:map whole-line-or-region-local-mode-map
-  ;; ([remap ispell-region] . whole-line-or-region-ispell-region))
+  :bind (:map whole-line-or-region-local-mode-map
+              ([remap eval-region] . whole-line-or-region-eval-region))
   :config
   ;; Use whole-line-or-region-mode everywhere
   (whole-line-or-region-global-mode 1))
