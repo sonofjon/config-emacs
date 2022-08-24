@@ -859,6 +859,22 @@ When called from an eww buffer, provide the current link as
 
 ;;;; Other
 
+;;; Custom eval-sexp functions
+
+;; Eval next sexp
+(defun my/eval-next-sexp ()
+  (interactive)
+  (save-excursion
+    (forward-sexp)
+    (eval-last-sexp nil)))
+
+;; Eval sexp at point
+(defun my/eval-sexp-at-point (levels)
+  (interactive "p")
+  (save-excursion
+    (up-list (abs levels))
+    (eval-last-sexp nil)))
+
 ;;; xterm key sequence mappings for rxvt
 
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
