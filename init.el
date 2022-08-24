@@ -580,12 +580,6 @@
   :config
   (corfu-terminal-mode 1))
 
-;; (use-package corfu-terminal
-;;   :quelpa (corfu-terminal
-;;            :fetcher github
-;;            :url "https://codeberg.org/akib/emacs-corfu-terminal.git"))
-;; (corfu-terminal-mode 1)
-
 ;; corfu-doc-terminal (documentation popup for Corfu in terminal)
 ;; (use-package corfu-doc-terminal
 ;;   :if (not (display-graphic-p))
