@@ -106,7 +106,7 @@
 
 ;;; Early packages 
 
-;; benchmark-init (startup profiler)
+;; benchmark-init (benchmarks for require and load calls)
 (use-package benchmark-init
   :disabled
   :init
@@ -128,7 +128,7 @@
   ;; Set sort key
   (setq benchmark-init/list-sort-key  '("ms" . t)))
 
-;; esup (benchmark utility)
+;; esup (the Emacs StartUp Profiler (ESUP))
 ;;   TODO: Full of bugs and inactive maintainer
 (use-package esup
   :disabled)
@@ -138,7 +138,7 @@
 
 ;;; Package management
 
-;; auto-package-update (automatic package updates)
+;; auto-package-update (automatically update Emacs packages)
 (use-package auto-package-update
   :defer 60
   :custom
@@ -153,7 +153,7 @@
 
 ;;; Theme
 
-;; dashboard (display a dashboard at startup)
+;; dashboard (a startup screen extracted from Spacemacs)
 (use-package dashboard
   ;; :disabled
   :custom
@@ -183,16 +183,16 @@
   ;; Add startup hook
   (dashboard-setup-startup-hook))
 
-;; all-the-icons (icon support)
+;; all-the-icons (a library for inserting developer icons)
 (use-package all-the-icons
   :if (display-graphic-p))
 
-;; all-the-icons-dired (icon support for dired)
+;; all-the-icons-dired (shows icons for each file in dired mode)
 (use-package all-the-icons-dired
   :if (display-graphic-p)
   :hook (dired-mode . all-the-icons-dired-mode))
 
-;; modus-themes
+;; modus-themes (elegant, highly legible and customizable themes)
 (use-package modus-themes
   ;; :disabled
   :bind ("<f5>" . modus-themes-toggle)
@@ -297,17 +297,17 @@
 
 ;;; Windows
 
-;; rotate (rotate window position and layout)
+;; rotate (rotate the layout of Emacs)
 (use-package rotate
   :disabled)
 
-;; transpose-frame (transpose window arrangement)
+;; transpose-frame (transpose window arrangement in a frame)
 (use-package transpose-frame
   :defer)
 
 ;;; Buffers
 
-;; dimmer (dim inactive windows)
+;; dimmer (visually highlight the selected buffer)
 (use-package dimmer
   ;; :disabled
   :custom
@@ -321,7 +321,7 @@
 
 ;;; Outline
 
-;; outline-minor-faces (use faces from outline-mode)
+;; outline-minor-faces (headings faces for outline-minor-mode)
 ;;   See also outline-minor-mode-highlight.
 (use-package outline-minor-faces
   :after outline
@@ -329,7 +329,7 @@
 
 ;;; Navigation
 
-;; syntax-subword (fine-grained navigation)
+;; syntax-subword (make operations on words more fine-grained)
 (use-package syntax-subword
   :disabled
   :custom
@@ -343,14 +343,14 @@
 
 ;;; Selection
 
-;; expand-region (grow selected region by semantic units)
+;; expand-region (increase selected region by semantic units)
 (use-package expand-region
   :bind (("C-c =" . er/expand-region)
          ("C-c -" . er/contract-region)))
 
 ;;; Editing
 
-;; dot-mode (repeat command vim-style)
+;; dot-mode (minor mode to repeat typing or commands)
 (use-package dot-mode
   :diminish
   :hook ((prog-mode . dot-mode-on)
@@ -362,18 +362,18 @@
   (unbind-key "C-c ." dot-mode-map)
   (unbind-key "C-M-." dot-mode-map))
 
-;; lorem-ipsum (lorem ipsum text filler)
+;; lorem-ipsum (insert dummy pseudo latin text)
 (use-package lorem-ipsum
   :defer)
 
-;; move-dup (minor mode for moving and duplicating lines or rectangles)
+;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
 (use-package move-dup
   :bind (("C-c <up>" . move-dup-move-lines-up)
          ("C-c C-<up>" . move-dup-duplicate-up)
          ("C-c <down>" . move-dup-move-lines-down)
          ("C-c C-<down>" . move-dup-duplicate-down)))
 
-;; multiple-cursors (edit at multiple points)
+;; multiple-cursors (multiple cursors for Emacs)
 (use-package multiple-cursors
   :bind (:prefix-map multiple-cursors
                      :prefix "C-c m"
@@ -389,14 +389,14 @@
                      ;; ("" . mc/mark-all-dwim)
                      ("e" . mc/edit-lines)))
 
-;; whole-line-or-region (apply to current line if region is undefined)
+;; whole-line-or-region (operate on current line if region undefined)
 (use-package whole-line-or-region
   :diminish whole-line-or-region-local-mode
   :config
   ;; Use whole-line-or-region-mode everywhere
   (whole-line-or-region-global-mode 1))
 
-;; undo-fu (linear undo with redo)
+;; undo-fu (undo helper with redo)
 ;;   Note that undo-in-region is disabled by default
 (use-package undo-fu
   :bind (("C-c z u" . undo-fu-only-undo)
@@ -407,7 +407,7 @@
   :custom
   (undo-fu-ignore-keyboard-quit t))
 
-;; vundo (visual undo)
+;; vundo (visual undo tree)
 (use-package vundo
   :commands (vundo)
   :bind ("C-c v" . vundo)
@@ -419,7 +419,7 @@
 
 ;;; Completion
 
-;; consult (practical commands based on Emacs completion)
+;; consult (consulting completing-read)
 (use-package consult
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c c h" . consult-history)
@@ -518,11 +518,11 @@
   ;; Narrowing key
   (setq consult-narrow-key "<"))
 
-;; consult-project-extra (project extension for Consult)
+;; consult-project-extra (consult integration for project.el)
 (use-package consult-project-extra
   :bind ("C-c p" . consult-project-extra-find))
 
-;; corfu (completion overlay)
+;; corfu (Completion Overlay Region FUnction)
 (use-package corfu
   ;; :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
@@ -570,14 +570,14 @@
   ;; Enable manually
   (corfu-doc-auto nil))
 
-;; corfu-terminal (Corfu popup in terminal)
+;; corfu-terminal (Corfu popup on terminal)
 (use-package corfu-terminal
   :if (not (display-graphic-p))
   :after corfu
   :config
   (corfu-terminal-mode 1))
 
-;; corfu-doc-terminal (documentation popup for Corfu in terminal)
+;; corfu-doc-terminal (corfu-doc popup on terminal)
 ;; (use-package corfu-doc-terminal
 ;;   :if (not (display-graphic-p))
 ;;   :after corfu-doc
@@ -589,7 +589,7 @@
           :url "https://codeberg.org/akib/emacs-corfu-doc-terminal.git"))
 (corfu-doc-terminal-mode 1)
 
-;; cape (completion at point extensions for Corfu)
+;; cape (Completion At Point Extensions)
 (use-package cape
   ;; :if (display-graphic-p)
   :after corfu
@@ -616,7 +616,7 @@
   ;; (add-to-list 'completion-at-point-functions #'cape-line)
   (which-key-add-key-based-replacements "C-c u" "corfu/cape"))   ; add label for prefix key
 
-;; embark (context aware actions)
+;; embark (conveniently act on minibuffer completions)
 (use-package embark
   :bind (("M-." . embark-act)
          ("M-," . embark-dwim)
@@ -631,7 +631,7 @@
                  nil
                  (window-parameters (mode-line-format . none)))))
 
-;; embark-consult (integration between Embark and Consult)
+;; embark-consult (Consult integration for Embark)
 (use-package embark-consult
   :demand t ; only necessary if you have the hook below
   :after (embark consult)
@@ -639,7 +639,7 @@
   ;; auto-updating Embark collect buffer
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
-;; orderless (orderless completion style)
+;; orderless (completion style for matching regexps in any order)
 (use-package orderless
   ;; :disabled
   :config
@@ -653,7 +653,7 @@
                                       aj8/orderless-dispatch-regexp-if-star
                                       aj8/orderless-dispatch-without-if-bang)))
 
-;; vertico (vertical completion UI)
+;; vertico (VERTical Interactive COmpletion)
 (use-package vertico
   :bind (:map vertico-map
               ("?" . minibuffer-completion-help)
@@ -675,7 +675,7 @@
 
 ;;; Spelling
 
-;; flyspell-correct (wrapper for flyspell with completion)
+;; flyspell-correct (correcting words with Flyspell via custom interface)
 (use-package flyspell-correct
   :after flyspell
   :bind (:map flyspell-mode-map
@@ -693,7 +693,7 @@
 
 ;;; Files
 
-;; treemacs (a tree layout file explorer)
+;; treemacs (a tree style file explorer package)
 (use-package treemacs
   :defer
   :init
@@ -748,23 +748,23 @@
          ("C-c C-p <up>" . treemacs-move-project-up)
          ("o l" . treemacs-visit-node-in-least-recently-used-window)))
 
-;; treemacs-all-the-icons (all-the-icons for Treemacs)
+;; treemacs-all-the-icons (all-the-icons integration for Treemacs)
 (use-package treemacs-all-the-icons
   :if (display-graphic-p)
   :defer)
 
-;; treemacs-icons-dired (icons for dired)
+;; treemacs-icons-dired (Treemacs icons for Dired)
 ;; (use-package treemacs-icons-dired
 ;;   :hook (dired-mode . treemacs-icons-dired-enable-once))
 
-;; treemacs-magit (make Treemacs aware of Magit operations)
+;; treemacs-magit (Magit integration for Treemacs)
 (use-package treemacs-magit
   :defer
   :after (treemacs magit))
 
 ;;; Coding
 
-;; i3wm-config-mode (major-mode for editing i3 config files)
+;; i3wm-config-mode (major-mode for editing i3wm config files)
 (use-package i3wm-config-mode
   :defer)
 
@@ -788,7 +788,7 @@
 (use-package php-mode
   :mode ".php$")
 
-;; powershell (major-mode for editing and running PowerShell files)
+;; powershell (major-mode for editing PowerShell scripts)
 (use-package powershell
   :defer)
 
@@ -820,7 +820,7 @@
   :bind (:map yaml-mode-map))
               ;; ("C-m" . newline-and-indent)))
 
-;; rainbow-mode (syntax highlighting for color codes)
+;; rainbow-mode (colorize color names in buffers)
 (use-package rainbow-mode
   :disabled)
 
@@ -851,31 +851,31 @@
   ;; Use custom completion backend (Corfu)
   (lsp-completion-provider :none))
 
-;; lsp-ui-mode (UI modules for LSP)
+;; lsp-ui-mode (UI modules for lsp-mode)
 (use-package lsp-ui
   :after lsp-mode
   :commands lsp-ui-mode)
 
-;; lsp-treemacs (Treemacs integration for LSP)
+;; lsp-treemacs (LSP Treemacs)
 (use-package lsp-treemacs
   :after (lsp-mode treemacs)
   :commands lsp-treemacs-errors-list)
 
-;; lsp-pyright (lsp-mode client for Pyright language server)
+;; lsp-pyright (Python LSP client using Pyright)
 (use-package lsp-pyright
   :after lsp-mode
   :hook (python-mode . (lambda ()
                          (require 'lsp-pyright)
                          (lsp))))  ; or lsp-deferred
 
-;; flymake-shellcheck (Flymake handler for bash/sh scripts)
+;; flymake-shellcheck (a bash/sh Flymake backend powered by ShellCheck)
 (use-package flymake-shellcheck
   :commands flymake-shellcheck-load
   :hook (sh-mode . flymake-shellcheck-load))
 
 ;;; Version control
 
-;; magit (user interface to git)
+;; magit (a Git porcelain inside Emacs)
 (use-package magit
   :bind (("C-c g" . magit-file-dispatch)
          :map magit-mode-map
@@ -902,7 +902,7 @@
   (add-to-list 'magit-repolist-columns
                '("Flag" 4 magit-repolist-column-flag (:right-align t))))
 
-;; diff-hl (highlight uncommitted changes)
+;; diff-hl (highlight uncommitted changes using VC)
 (use-package diff-hl
   :disabled
   :config
@@ -915,7 +915,7 @@
   ;; Use diff-hl-mode everywhere
   (global-diff-hl-mode 1))
 
-;; ztree (directory-diff tool)
+;; ztree (text mode directory tree)
 (use-package ztree
   :defer
   :custom
@@ -926,7 +926,7 @@
 
 ;;; Help
 
-;; helpful (alternative help)
+;; helpful (a better *help* buffer)
 (use-package helpful
   ;; :disabled
   ;; :demand
@@ -944,14 +944,14 @@
   ;; Always open additional helpful buffers in the same window
   (helpful-switch-buffer-function #'aj8/helpful-switch-to-buffer))
 
-;; marginalia (add marginalia to minibuffer completions)
+;; marginalia (enrich existing commands with completion annotations)
 (use-package marginalia
   :demand
   :bind (:map minibuffer-local-map ("M-m" . marginalia-cycle))
   :config
   (marginalia-mode 1))
 
-;; which-key (display available keybindings)
+;; which-key (display available keybindings in popup)
 (use-package which-key
   :diminish
   :custom
@@ -967,7 +967,7 @@
 
 ;;; Web
 
-;; elfeed (web feed reader)
+;; elfeed (an Emacs Atom/RSS feed reader)
 (use-package elfeed
   :commands elfeed
   :bind (:map elfeed-search-mode-map
@@ -990,7 +990,7 @@
   (elfeed-search-title-min-width 16)    ; default is 16
   (elfeed-search-trailing-width 30))    ; default is 30
 
-;; erc (IRC client)
+;; erc (an Emacs internet relay chat client)
 (use-package erc
   :disabled
   :commands (erc erc-tls)
@@ -1018,7 +1018,7 @@
   (erc-services-mode 1)
   (erc-update-modules))
 
-;; erc-hl-nicks (nickname highlighting for ERC)
+;; erc-hl-nicks (ERC nick highlighter that ignores uniquifying chars when colorizing)
 (use-package erc-hl-nicks
   :disabled
   :defer
@@ -1027,7 +1027,7 @@
   (add-to-list 'erc-modules 'hl-nicks)
   (erc-update-modules))
 
-;; google-this (Google search functions)
+;; google-this (a set of functions and bindings to google under point)
 (use-package google-this
   :diminish
   :init
@@ -1037,7 +1037,7 @@
 
 ;;; Other
 
-;; diminish (hide minor modes)
+;; diminish (diminished modes are minor modes with no modeline display)
 (use-package diminish
   :config
   ;; Pre-loaded modes
@@ -1047,11 +1047,11 @@
   (add-hook 'abbrev-mode-hook (lambda () (diminish 'abbrev-mode)))
   (add-hook 'visual-line-mode-hook (lambda () (diminish 'visual-line-mode))))
 
-;; hydra (stateful keymaps)
+;; hydra (make bindings that stick around)
 (use-package hydra
   :defer)
 
-;; keyfreq (command stats)
+;; keyfreq (track command frequencies)
 (use-package keyfreq
   :init
   (setq keyfreq-excluded-commands '(self-insert-command
@@ -1072,11 +1072,11 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
-;; ssh-agency (manage ssh-agent)
+;; ssh-agency (manage ssh-agent from Emacs)
 (use-package ssh-agency
   :if (display-graphic-p))
 
-;; keychain-environment (manage ssh-agent and gpg-agent)
+;; keychain-environment (load keychain environment variables)
 (use-package keychain-environment
   :disabled
   :if (display-graphic-p)
