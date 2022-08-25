@@ -803,7 +803,7 @@
   :if (display-graphic-p)
   :hook (dired-mode . all-the-icons-dired-mode))
 
-;; modus-themes (elegant, highly legible and customizable themes)
+;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
   ;; :disabled
   :bind ("<f5>" . modus-themes-toggle)
@@ -992,7 +992,7 @@
   (elfeed-search-title-min-width 16)    ; default is 16
   (elfeed-search-trailing-width 30))    ; default is 30
 
-;; erc (an Emacs internet relay chat client)
+;; erc (an Emacs internet relay chat client) - [built-in package]
 (use-package erc
   :disabled
   :commands (erc erc-tls)
