@@ -762,6 +762,53 @@
 
 ;;; Terminal
 
+;; term (terminal-emulator) - [built-in package]
+(use-package term
+  :disabled
+  :commands term)
+  ;; :config
+  ;; Match the default Bash shell prompt
+  ;; (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
+
+;; eterm-256color (customizable 256 colors for term)
+(use-package eterm-256color
+  :disabled
+  :after term
+  :hook (term-mode . eterm-256color-mode))
+
+;; vterm (fully-featured terminal emulator)
+(use-package vterm
+  :commands vterm
+  :config
+  ;; Match the default Bash shell prompt
+  (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
+
+;; eshell (the Emacs command shell) - [built-in package]
+(use-package eshell
+  :hook (eshell-first-time-mode . efs/configure-eshell)
+  :init
+  (defun efs/configure-eshell ()
+    ;; Save command history when commands are entered
+    (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)))
+    ;; Truncate buffer for performance
+    ;; (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
+    ;; (setq eshell-history-size         10000
+    ;;       eshell-buffer-maximum-lines 10000
+    ;;       eshell-hist-ignoredups t
+    ;;       eshell-scroll-to-bottom-on-input t))
+  ;; :config
+  ;; (with-eval-after-load 'esh-opt
+    ;;
+    ;; (setq eshell-destroy-buffer-when-process-dies t)
+    ;;
+    ;; (setq eshell-visual-commands '("htop" "zsh" "vim")))
+
+;; eshell-git-prompt (some Eshell prompt for Git users)
+(use-package eshell-git-prompt
+  :after eshell
+  :config
+  (eshell-git-prompt-use-theme 'powerline))
+
 ;;; Theme
 
 ;; dashboard (a startup screen extracted from Spacemacs)
