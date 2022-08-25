@@ -151,160 +151,6 @@
   :config
   (auto-package-update-maybe))
 
-;;; Theme
-
-;; dashboard (a startup screen extracted from Spacemacs)
-(use-package dashboard
-  ;; :disabled
-  :custom
-  ;; Set the title
-  (dashboard-banner-logo-title "Welcome to the The Department of Productivity")
-  ;; Disable init info
-  ;; (dashboard-set-init-info nil)
-  ;; Disable footer
-  ;; (dashboard-set-footer nil)
-  ;; Display heading icons
-  ;; (dashboard-set-heading-icons t)
-  ;; Display file icons
-  (dashboard-set-file-icons t)
-  ;; Center content
-  (dashboard-center-content t)
-  ;; Set project backend
-  (dashboard-projects-backend 'project-el)
-  ;; Configure layout
-  (dashboard-items '((recents  . 5)
-                     (projects . 5)))
-  :config
-  ;; Set the banner
-  (if (display-graphic-p)
-      (setq dashboard-startup-banner 'logo)
-    (setq dashboard-startup-banner
-          (expand-file-name "dashboard-banner.txt" user-emacs-directory)))
-  ;; Add startup hook
-  (dashboard-setup-startup-hook))
-
-;; all-the-icons (a library for inserting developer icons)
-(use-package all-the-icons
-  :if (display-graphic-p))
-
-;; all-the-icons-dired (shows icons for each file in dired mode)
-(use-package all-the-icons-dired
-  :if (display-graphic-p)
-  :hook (dired-mode . all-the-icons-dired-mode))
-
-;; modus-themes (elegant, highly legible and customizable themes)
-(use-package modus-themes
-  ;; :disabled
-  :bind ("<f5>" . modus-themes-toggle)
-  ;; Add all customizations prior to loading the themes
-  :init
-  ;; Use italic font forms in more code constructs
-  (setq modus-themes-italic-constructs t)
-  ;; Use bold text in more code constructs
-  (setq modus-themes-bold-constructs nil)
-  ;; Use more subtle style for line numbers
-  (setq modus-themes-subtle-line-numbers t)
-  ;; Define the visibility of fringes
-  ;;   Options: `nil',`subtle', `intense'
-  (setq modus-themes-fringes nil)
-  ;; Control the style of spelling and code checkers/linters
-  ;;   Options: `straight-underline', `text-also', `background',
-  ;;            `intense', `faint'
-  (setq modus-themes-lang-checkers '(straight-underline text-also))
-  ;; Control the style of the mode line
-  ;;   Options: `3d' OR `moody', `borderless', `accented'
-  (setq modus-themes-mode-line '(borderless))
-  ;(setq modus-themes-mode-line nil)
-  ;; Control the style of code syntax highlighting
-  ;;   Options: `faint', `yellow-comments', `green-strings',
-  ;;            `alt-syntax'
-  (setq modus-themes-syntax '(faint green-strings alt-syntax))
-  ;; Style markup in Org, markdown, and others
-  ;;   Options: `bold', `italic', `background', `intense'
-  ;; (setq modus-themes-markup '(background italic))
-  (setq modus-themes-markup nil)
-  ;; Control the current line highlight of HL-line mode
-  ;;   Options: `accented', `underline', `intense'
-  (setq modus-themes-hl-line nil)
-  ;; Control the style of matching parentheses or delimiters
-  ;;   Options: `bold', `intense', `underline'
-  (setq modus-themes-paren-match '(intense))
-  ;; Set the style of links
-  ;;   Options: `neutral-underline' OR `no-underline', `faint' OR
-  ;;            `no-color', `bold', `italic', `background'
-  (setq modus-themes-links nil)
-  ;; Control the style of buttons in the Custom UI and related
-  ;;   Options: `flat', `accented', `faint', `variable-pitch',
-  ;;            `underline'
-  ;; (setq modus-themes-box-buttons '(variable-pitch flat faint 0.9))
-  (setq modus-themes-box-buttons nil)
-  ;; Set the style for minibuffer and REPL prompts
-  ;;   Options: `background', `bold', `gray', `intense', `italic'
-  (setq modus-themes-prompts nil)
-  ;; Control the style of the completion framework's interface
-  ;;   Options: see manual
-  (setq modus-themes-completions '((matches . (extrabold))
-                                   (selection . (semibold accented))
-                                   (popup . (accented intense))))
-  ;; (setq modus-themes-completions nil)
-  ;; Control the style of the active region
-  ;;   Options: `no-extend', `bg-only', `accented'
-  (setq modus-themes-region nil)
-  ;; Adjust the style of diffs
-  ;;   Options: `desaturated', `bg-only'
-  (setq modus-themes-diffs nil)
-  ;; Set the style of Org code blocks, quotes, and the like
-  ;;   Options: `gray-background', `tinted-background'
-  (setq modus-themes-org-blocks 'gray-background)
-  ;; Org styles
-  ;;   Options: see manual
-  ;; (setq modus-themes-org-agenda
-  ;;       '((header-block . (variable-pitch 1.3))
-  ;;         (mail-header-parse-date . (grayscale workaholic bold-today 1.1))
-  ;;         (event . (accented varied))
-  ;;         (scheduled . uniform)
-  ;;         (habit . traffic-light)))
-  (setq modus-themes-org-agenda nil)
-  ;; Heading styles
-  ;;   Options: `rainbow', `overline', `background', `monochrome'
-  ;; (setq modus-themes-headings
-  ;;       '((1 . (background monochrome))
-  ;;         (t . (monochrome))))
-  (setq modus-themes-headings
-        '((1 . (background rainbow))
-          (2 . (background))
-          (3 . (background monochrome))
-          (t . (monochrome))))
-  ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes))
-  ;; :config
-  ;; Load the theme
-  ;; (modus-themes-load-operandi))
-  ;; (modus-themes-load-vivendi))
-
-;; circadian (theme-switching based on daytime)
-(use-package circadian
-  :after modus-themes
-  :custom
-  ;; (circadian-themes '(("8:00" . modus-operandi)
-  ;;                     ("18:00"  . modus-vivendi)))
-  (circadian-themes '((:sunrise . modus-operandi)
-                      (:sunset  . modus-vivendi)))
-  (calendar-latitude 59.33)
-  (calendar-longitude 18.07)
-  :config
-  (circadian-setup))
-
-;;; Windows
-
-;; rotate (rotate the layout of Emacs)
-(use-package rotate
-  :disabled)
-
-;; transpose-frame (transpose window arrangement in a frame)
-(use-package transpose-frame
-  :defer)
-
 ;;; Buffers
 
 ;; dimmer (visually highlight the selected buffer)
@@ -319,103 +165,116 @@
   :config
   (dimmer-mode 1))
 
-;;; Outline
+;;; Coding
 
-;; outline-minor-faces (headings faces for outline-minor-mode)
-;;   See also outline-minor-mode-highlight.
-(use-package outline-minor-faces
-  :after outline
-  :config (add-hook 'outline-minor-mode-hook #'outline-minor-faces-mode))
-
-;;; Navigation
-
-;; syntax-subword (make operations on words more fine-grained)
-(use-package syntax-subword
-  :disabled
-  :custom
-  ;; Don't stop on spaces
-  (syntax-subword-skip-spaces t)
-  :config
-  ;; Use syntax-subword-mode everywhere
-  (global-syntax-subword-mode 1))
-
-;;; Search
-
-;;; Selection
-
-;; expand-region (increase selected region by semantic units)
-(use-package expand-region
-  :bind (("C-c =" . er/expand-region)
-         ("C-c -" . er/contract-region)))
-
-;;; Editing
-
-;; dot-mode (minor mode to repeat typing or commands)
-(use-package dot-mode
-  :diminish
-  :hook ((prog-mode . dot-mode-on)
-         (text-mode . dot-mode-on))
-  :bind (:map dot-mode-map ("C-c d" . dot-mode-execute))
-  :config
-  (setq dot-mode-verbose t)
-  (unbind-key "C-." dot-mode-map)
-  (unbind-key "C-c ." dot-mode-map)
-  (unbind-key "C-M-." dot-mode-map))
-
-;; lorem-ipsum (insert dummy pseudo latin text)
-(use-package lorem-ipsum
+;; i3wm-config-mode (major-mode for editing i3wm config files)
+(use-package i3wm-config-mode
   :defer)
 
-;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
-(use-package move-dup
-  :bind (("C-c <up>" . move-dup-move-lines-up)
-         ("C-c C-<up>" . move-dup-duplicate-up)
-         ("C-c <down>" . move-dup-move-lines-down)
-         ("C-c C-<down>" . move-dup-duplicate-down)))
-
-;; multiple-cursors (multiple cursors for Emacs)
-(use-package multiple-cursors
-  :bind (:prefix-map multiple-cursors
-                     :prefix "C-c m"
-                     :prefix-docstring "Multiple Cursors related"
-                     ("SPC" . set-rectangular-region-anchor)
-                     ("<" . mc/mark-previous-like-this)
-                     (">" . mc/mark-next-like-this)
-                     ("?" . mc/mark-all-like-this)
-                     ("," . mc/mark-previous-like-this-symbol)
-                     ("." . mc/mark-next-like-this-symbol)
-                     ("/" . mc/mark-all-like-this-dwim)
-                     ("m" . mc/mark-more-like-this-extended)
-                     ;; ("" . mc/mark-all-dwim)
-                     ("e" . mc/edit-lines)))
-
-;; whole-line-or-region (operate on current line if region undefined)
-(use-package whole-line-or-region
-  :diminish whole-line-or-region-local-mode
+;; json-mode (major-mode for editing JSON files)
+(use-package json-mode
+  :mode ".json"
+  :bind (:map json-mode-map
+              ("C-c C-b" . json-mode-beautify)
+              ("C-c C-s" . json-snatcher))
   :config
-  ;; Use whole-line-or-region-mode everywhere
-  (whole-line-or-region-global-mode 1))
+  (add-hook 'json-mode-hook (lambda () (setq-local js-indent-level 2)))
+  (unbind-key "C-c C-f" json-mode-map)
+  (unbind-key "C-c P" json-mode-map))
 
-;; undo-fu (undo helper with redo)
-;;   Note that undo-in-region is disabled by default
-(use-package undo-fu
-  :bind (("C-c z u" . undo-fu-only-undo)
-         ("C-c z r" . undo-fu-only-redo)
-         ("C-c z d" . undo-fu-disable-checkpoint))
+;; markdown-mode (major-mode for editing Markdown files)
+(use-package markdown-mode
+  :mode (".md" . markdown-mode))
+  ;; :mode (".md" . markdown-view-mode))
+
+;; php-mode (major-mode for editing PHP files)
+(use-package php-mode
+  :mode ".php$")
+
+;; powershell (major-mode for editing PowerShell scripts)
+(use-package powershell
+  :defer)
+
+;; web-mode (major-mode for editing web templates)
+(use-package web-mode
+    :mode (".html?$")
+    :init
+    ;; Engines
+    (setq web-mode-engines-alist '(("django" . "\\.html\\'")
+                                   ("blade" . "\\.blade\\.")))
+    :custom
+    ;; Indentation
+    ;; (web-mode-markup-indent-offset 2)
+    ;; (web-mode-code-indent-offset 2)
+    ;; Padding
+    ;; (web-mode-block-padding 1)
+    ;; Enable auto-functionality in the terminal
+    ;;   Note: this can be bad when pasting text
+    (web-mode-enable-auto-expanding t)
+    (web-mode-enable-auto-closing t)
+    (web-mode-enable-auto-indentation t)
+    (web-mode-enable-auto-opening t)
+    (web-mode-enable-auto-pairing t)
+    (web-mode-enable-auto-quoting t))
+
+;; yaml-mode (major-mode for editing YAML files)
+(use-package yaml-mode
+  :mode ".yml"
+  :bind (:map yaml-mode-map))
+              ;; ("C-m" . newline-and-indent)))
+
+;; rainbow-mode (colorize color names in buffers)
+(use-package rainbow-mode
+  :disabled)
+
+;; lsp-mode (language server protocol)
+;;   TODO: optionally enable orderless-flex for LSP completion, see Corfu Wiki
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook ((sh-mode . lsp)   ; or lsp-deferred
+         ;; (html-mode . lsp)
+         ;; (css-mode . lsp)
+         (web-mode . lsp)
+         (js-mode . lsp)
+         (json-mode . lsp)
+         (tex-mode . lsp)
+         ;; which-key integration
+         (lsp-mode . lsp-enable-which-key-integration)
+         ;; Corfu integration
+         (lsp-completion-mode . my/lsp-mode-setup-completion))
   :init
-  (which-key-add-key-based-replacements "C-c z" "undo-fu")   ; add label for prefix key
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(flex)))   ; use flex
+          ;; '(orderless)))   ; use orderless
+  ;; Prefix for lsp-command-keymap
+  (setq lsp-keymap-prefix "C-c l")
+  (which-key-add-key-based-replacements "C-c l" "lsp")   ; add label for prefix key
   :custom
-  (undo-fu-ignore-keyboard-quit t))
+  ;; Use custom completion backend (Corfu)
+  (lsp-completion-provider :none))
 
-;; vundo (visual undo tree)
-(use-package vundo
-  :commands (vundo)
-  :bind ("C-c v" . vundo)
-  :custom
-  ;; Use compact layout
-  (vundo-compact-display t)
-  ;; Use pretty Unicode characters
-  (vundo-glyph-alist vundo-unicode-symbols))
+;; lsp-ui-mode (UI modules for lsp-mode)
+(use-package lsp-ui
+  :after lsp-mode
+  :commands lsp-ui-mode)
+
+;; lsp-treemacs (LSP Treemacs)
+(use-package lsp-treemacs
+  :after (lsp-mode treemacs)
+  :commands lsp-treemacs-errors-list)
+
+;; lsp-pyright (Python LSP client using Pyright)
+(use-package lsp-pyright
+  :after lsp-mode
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp))))  ; or lsp-deferred
+
+;; flymake-shellcheck (a bash/sh Flymake backend powered by ShellCheck)
+(use-package flymake-shellcheck
+  :commands flymake-shellcheck-load
+  :hook (sh-mode . flymake-shellcheck-load))
 
 ;;; Completion
 
@@ -673,23 +532,74 @@
   ;; Enable M-x minibuffer-hide-completions (make function interactive)
   (put 'minibuffer-hide-completions 'interactive-form '(interactive)))
 
-;;; Spelling
+;;; Editing
 
-;; flyspell-correct (correcting words with Flyspell via custom interface)
-(use-package flyspell-correct
-  :after flyspell
-  :bind (:map flyspell-mode-map
-              ;; ("C-;" . flyspell-auto-correct-word)
-              ("C-;" . flyspell-correct-wrapper)
-              ("C-," . (lambda () (interactive)
-                         (aj8/call-interactively-wih-prefix-toggle
-                          #'flyspell-correct-previous)))
-              ("C-." . (lambda () (interactive)
-                         (aj8/call-interactively-wih-prefix-toggle
-                          #'flyspell-correct-next)))
-              ("C-c ," . my/flyspell-goto-previous-error)
-              ("C-c ." . flyspell-goto-next-error)
-              ("C-c ;" . flyspell-auto-correct-word)))
+;; dot-mode (minor mode to repeat typing or commands)
+(use-package dot-mode
+  :diminish
+  :hook ((prog-mode . dot-mode-on)
+         (text-mode . dot-mode-on))
+  :bind (:map dot-mode-map ("C-c d" . dot-mode-execute))
+  :config
+  (setq dot-mode-verbose t)
+  (unbind-key "C-." dot-mode-map)
+  (unbind-key "C-c ." dot-mode-map)
+  (unbind-key "C-M-." dot-mode-map))
+
+;; lorem-ipsum (insert dummy pseudo latin text)
+(use-package lorem-ipsum
+  :defer)
+
+;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
+(use-package move-dup
+  :bind (("C-c <up>" . move-dup-move-lines-up)
+         ("C-c C-<up>" . move-dup-duplicate-up)
+         ("C-c <down>" . move-dup-move-lines-down)
+         ("C-c C-<down>" . move-dup-duplicate-down)))
+
+;; multiple-cursors (multiple cursors for Emacs)
+(use-package multiple-cursors
+  :bind (:prefix-map multiple-cursors
+                     :prefix "C-c m"
+                     :prefix-docstring "Multiple Cursors related"
+                     ("SPC" . set-rectangular-region-anchor)
+                     ("<" . mc/mark-previous-like-this)
+                     (">" . mc/mark-next-like-this)
+                     ("?" . mc/mark-all-like-this)
+                     ("," . mc/mark-previous-like-this-symbol)
+                     ("." . mc/mark-next-like-this-symbol)
+                     ("/" . mc/mark-all-like-this-dwim)
+                     ("m" . mc/mark-more-like-this-extended)
+                     ;; ("" . mc/mark-all-dwim)
+                     ("e" . mc/edit-lines)))
+
+;; whole-line-or-region (operate on current line if region undefined)
+(use-package whole-line-or-region
+  :diminish whole-line-or-region-local-mode
+  :config
+  ;; Use whole-line-or-region-mode everywhere
+  (whole-line-or-region-global-mode 1))
+
+;; undo-fu (undo helper with redo)
+;;   Note that undo-in-region is disabled by default
+(use-package undo-fu
+  :bind (("C-c z u" . undo-fu-only-undo)
+         ("C-c z r" . undo-fu-only-redo)
+         ("C-c z d" . undo-fu-disable-checkpoint))
+  :init
+  (which-key-add-key-based-replacements "C-c z" "undo-fu")   ; add label for prefix key
+  :custom
+  (undo-fu-ignore-keyboard-quit t))
+
+;; vundo (visual undo tree)
+(use-package vundo
+  :commands (vundo)
+  :bind ("C-c v" . vundo)
+  :custom
+  ;; Use compact layout
+  (vundo-compact-display t)
+  ;; Use pretty Unicode characters
+  (vundo-glyph-alist vundo-unicode-symbols))
 
 ;;; Files
 
@@ -762,116 +672,239 @@
   :defer
   :after (treemacs magit))
 
-;;; Coding
+;;; Help
 
-;; i3wm-config-mode (major-mode for editing i3wm config files)
-(use-package i3wm-config-mode
-  :defer)
-
-;; json-mode (major-mode for editing JSON files)
-(use-package json-mode
-  :mode ".json"
-  :bind (:map json-mode-map
-              ("C-c C-b" . json-mode-beautify)
-              ("C-c C-s" . json-snatcher))
-  :config
-  (add-hook 'json-mode-hook (lambda () (setq-local js-indent-level 2)))
-  (unbind-key "C-c C-f" json-mode-map)
-  (unbind-key "C-c P" json-mode-map))
-
-;; markdown-mode (major-mode for editing Markdown files)
-(use-package markdown-mode
-  :mode (".md" . markdown-mode))
-  ;; :mode (".md" . markdown-view-mode))
-
-;; php-mode (major-mode for editing PHP files)
-(use-package php-mode
-  :mode ".php$")
-
-;; powershell (major-mode for editing PowerShell scripts)
-(use-package powershell
-  :defer)
-
-;; web-mode (major-mode for editing web templates)
-(use-package web-mode
-    :mode (".html?$")
-    :init
-    ;; Engines
-    (setq web-mode-engines-alist '(("django" . "\\.html\\'")
-                                   ("blade" . "\\.blade\\.")))
-    :custom
-    ;; Indentation
-    ;; (web-mode-markup-indent-offset 2)
-    ;; (web-mode-code-indent-offset 2)
-    ;; Padding
-    ;; (web-mode-block-padding 1)
-    ;; Enable auto-functionality in the terminal
-    ;;   Note: this can be bad when pasting text
-    (web-mode-enable-auto-expanding t)
-    (web-mode-enable-auto-closing t)
-    (web-mode-enable-auto-indentation t)
-    (web-mode-enable-auto-opening t)
-    (web-mode-enable-auto-pairing t)
-    (web-mode-enable-auto-quoting t))
-
-;; yaml-mode (major-mode for editing YAML files)
-(use-package yaml-mode
-  :mode ".yml"
-  :bind (:map yaml-mode-map))
-              ;; ("C-m" . newline-and-indent)))
-
-;; rainbow-mode (colorize color names in buffers)
-(use-package rainbow-mode
-  :disabled)
-
-;; lsp-mode (language server protocol)
-;;   TODO: optionally enable orderless-flex for LSP completion, see Corfu Wiki
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook ((sh-mode . lsp)   ; or lsp-deferred
-         ;; (html-mode . lsp)
-         ;; (css-mode . lsp)
-         (web-mode . lsp)
-         (js-mode . lsp)
-         (json-mode . lsp)
-         (tex-mode . lsp)
-         ;; which-key integration
-         (lsp-mode . lsp-enable-which-key-integration)
-         ;; Corfu integration
-         (lsp-completion-mode . my/lsp-mode-setup-completion))
-  :init
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(flex)))   ; use flex
-          ;; '(orderless)))   ; use orderless
-  ;; Prefix for lsp-command-keymap
-  (setq lsp-keymap-prefix "C-c l")
-  (which-key-add-key-based-replacements "C-c l" "lsp")   ; add label for prefix key
+;; helpful (a better *help* buffer)
+(use-package helpful
+  ;; :disabled
+  ;; :demand
+  :commands (helpful-key helpful-function helpful-symbol
+             helpful-variable helpful-command)
+  :bind (([remap describe-key] . helpful-key)
+         ([remap describe-function] . helpful-function)
+         ([remap describe-symbol] . helpful-symbol)
+         ([remap describe-variable] . helpful-variable)
+         ([remap describe-command] . helpful-command)
+         ("C-c h" . helpful-at-point))
   :custom
-  ;; Use custom completion backend (Corfu)
-  (lsp-completion-provider :none))
+  ;; Maximum number of *helpful* buffers
+  (helpful-max-buffers nil)
+  ;; Always open additional helpful buffers in the same window
+  (helpful-switch-buffer-function #'aj8/helpful-switch-to-buffer))
 
-;; lsp-ui-mode (UI modules for lsp-mode)
-(use-package lsp-ui
-  :after lsp-mode
-  :commands lsp-ui-mode)
+;; marginalia (enrich existing commands with completion annotations)
+(use-package marginalia
+  :demand
+  :bind (:map minibuffer-local-map ("M-m" . marginalia-cycle))
+  :config
+  (marginalia-mode 1))
 
-;; lsp-treemacs (LSP Treemacs)
-(use-package lsp-treemacs
-  :after (lsp-mode treemacs)
-  :commands lsp-treemacs-errors-list)
+;; which-key (display available keybindings in popup)
+(use-package which-key
+  :diminish
+  :custom
+  ;; Don't show which-key buffer on C-h
+  (which-key-use-C-h-commands nil)
+  ;; Delay (default is 1.0 s)
+  ;; (which-key-idle-delay 10000)
+  (which-key-idle-delay 0.75)
+  ;; Secondary delay (default is nil)
+  (which-key-idle-secondary-delay 0.05)
+  :config
+  (which-key-mode 1))
 
-;; lsp-pyright (Python LSP client using Pyright)
-(use-package lsp-pyright
-  :after lsp-mode
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp))))  ; or lsp-deferred
+;;; Navigation
 
-;; flymake-shellcheck (a bash/sh Flymake backend powered by ShellCheck)
-(use-package flymake-shellcheck
-  :commands flymake-shellcheck-load
-  :hook (sh-mode . flymake-shellcheck-load))
+;; syntax-subword (make operations on words more fine-grained)
+(use-package syntax-subword
+  :disabled
+  :custom
+  ;; Don't stop on spaces
+  (syntax-subword-skip-spaces t)
+  :config
+  ;; Use syntax-subword-mode everywhere
+  (global-syntax-subword-mode 1))
+
+;;; Outline
+
+;; outline-minor-faces (headings faces for outline-minor-mode)
+;;   See also outline-minor-mode-highlight.
+(use-package outline-minor-faces
+  :after outline
+  :config (add-hook 'outline-minor-mode-hook #'outline-minor-faces-mode))
+
+;;; Search
+
+;;; Selection
+
+;; expand-region (increase selected region by semantic units)
+(use-package expand-region
+  :bind (("C-c =" . er/expand-region)
+         ("C-c -" . er/contract-region)))
+
+;;; Spelling
+
+;; flyspell-correct (correcting words with Flyspell via custom interface)
+(use-package flyspell-correct
+  :after flyspell
+  :bind (:map flyspell-mode-map
+              ;; ("C-;" . flyspell-auto-correct-word)
+              ("C-;" . flyspell-correct-wrapper)
+              ("C-," . (lambda () (interactive)
+                         (aj8/call-interactively-wih-prefix-toggle
+                          #'flyspell-correct-previous)))
+              ("C-." . (lambda () (interactive)
+                         (aj8/call-interactively-wih-prefix-toggle
+                          #'flyspell-correct-next)))
+              ("C-c ," . my/flyspell-goto-previous-error)
+              ("C-c ." . flyspell-goto-next-error)
+              ("C-c ;" . flyspell-auto-correct-word)))
+
+;;; Terminal
+
+;;; Theme
+
+;; dashboard (a startup screen extracted from Spacemacs)
+(use-package dashboard
+  ;; :disabled
+  :custom
+  ;; Set the title
+  (dashboard-banner-logo-title "Welcome to the The Department of Productivity")
+  ;; Disable init info
+  ;; (dashboard-set-init-info nil)
+  ;; Disable footer
+  ;; (dashboard-set-footer nil)
+  ;; Display heading icons
+  ;; (dashboard-set-heading-icons t)
+  ;; Display file icons
+  (dashboard-set-file-icons t)
+  ;; Center content
+  (dashboard-center-content t)
+  ;; Set project backend
+  (dashboard-projects-backend 'project-el)
+  ;; Configure layout
+  (dashboard-items '((recents  . 5)
+                     (projects . 5)))
+  :config
+  ;; Set the banner
+  (if (display-graphic-p)
+      (setq dashboard-startup-banner 'logo)
+    (setq dashboard-startup-banner
+          (expand-file-name "dashboard-banner.txt" user-emacs-directory)))
+  ;; Add startup hook
+  (dashboard-setup-startup-hook))
+
+;; all-the-icons (a library for inserting developer icons)
+(use-package all-the-icons
+  :if (display-graphic-p))
+
+;; all-the-icons-dired (shows icons for each file in dired mode)
+(use-package all-the-icons-dired
+  :if (display-graphic-p)
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+;; modus-themes (elegant, highly legible and customizable themes)
+(use-package modus-themes
+  ;; :disabled
+  :bind ("<f5>" . modus-themes-toggle)
+  ;; Add all customizations prior to loading the themes
+  :init
+  ;; Use italic font forms in more code constructs
+  (setq modus-themes-italic-constructs t)
+  ;; Use bold text in more code constructs
+  (setq modus-themes-bold-constructs nil)
+  ;; Use more subtle style for line numbers
+  (setq modus-themes-subtle-line-numbers t)
+  ;; Define the visibility of fringes
+  ;;   Options: `nil',`subtle', `intense'
+  (setq modus-themes-fringes nil)
+  ;; Control the style of spelling and code checkers/linters
+  ;;   Options: `straight-underline', `text-also', `background',
+  ;;            `intense', `faint'
+  (setq modus-themes-lang-checkers '(straight-underline text-also))
+  ;; Control the style of the mode line
+  ;;   Options: `3d' OR `moody', `borderless', `accented'
+  (setq modus-themes-mode-line '(borderless))
+  ;(setq modus-themes-mode-line nil)
+  ;; Control the style of code syntax highlighting
+  ;;   Options: `faint', `yellow-comments', `green-strings',
+  ;;            `alt-syntax'
+  (setq modus-themes-syntax '(faint green-strings alt-syntax))
+  ;; Style markup in Org, markdown, and others
+  ;;   Options: `bold', `italic', `background', `intense'
+  ;; (setq modus-themes-markup '(background italic))
+  (setq modus-themes-markup nil)
+  ;; Control the current line highlight of HL-line mode
+  ;;   Options: `accented', `underline', `intense'
+  (setq modus-themes-hl-line nil)
+  ;; Control the style of matching parentheses or delimiters
+  ;;   Options: `bold', `intense', `underline'
+  (setq modus-themes-paren-match '(intense))
+  ;; Set the style of links
+  ;;   Options: `neutral-underline' OR `no-underline', `faint' OR
+  ;;            `no-color', `bold', `italic', `background'
+  (setq modus-themes-links nil)
+  ;; Control the style of buttons in the Custom UI and related
+  ;;   Options: `flat', `accented', `faint', `variable-pitch',
+  ;;            `underline'
+  ;; (setq modus-themes-box-buttons '(variable-pitch flat faint 0.9))
+  (setq modus-themes-box-buttons nil)
+  ;; Set the style for minibuffer and REPL prompts
+  ;;   Options: `background', `bold', `gray', `intense', `italic'
+  (setq modus-themes-prompts nil)
+  ;; Control the style of the completion framework's interface
+  ;;   Options: see manual
+  (setq modus-themes-completions '((matches . (extrabold))
+                                   (selection . (semibold accented))
+                                   (popup . (accented intense))))
+  ;; (setq modus-themes-completions nil)
+  ;; Control the style of the active region
+  ;;   Options: `no-extend', `bg-only', `accented'
+  (setq modus-themes-region nil)
+  ;; Adjust the style of diffs
+  ;;   Options: `desaturated', `bg-only'
+  (setq modus-themes-diffs nil)
+  ;; Set the style of Org code blocks, quotes, and the like
+  ;;   Options: `gray-background', `tinted-background'
+  (setq modus-themes-org-blocks 'gray-background)
+  ;; Org styles
+  ;;   Options: see manual
+  ;; (setq modus-themes-org-agenda
+  ;;       '((header-block . (variable-pitch 1.3))
+  ;;         (mail-header-parse-date . (grayscale workaholic bold-today 1.1))
+  ;;         (event . (accented varied))
+  ;;         (scheduled . uniform)
+  ;;         (habit . traffic-light)))
+  (setq modus-themes-org-agenda nil)
+  ;; Heading styles
+  ;;   Options: `rainbow', `overline', `background', `monochrome'
+  ;; (setq modus-themes-headings
+  ;;       '((1 . (background monochrome))
+  ;;         (t . (monochrome))))
+  (setq modus-themes-headings
+        '((1 . (background rainbow))
+          (2 . (background))
+          (3 . (background monochrome))
+          (t . (monochrome))))
+  ;; Load the theme files before enabling a theme
+  (modus-themes-load-themes))
+  ;; :config
+  ;; Load the theme
+  ;; (modus-themes-load-operandi))
+  ;; (modus-themes-load-vivendi))
+
+;; circadian (theme-switching based on daytime)
+(use-package circadian
+  :after modus-themes
+  :custom
+  ;; (circadian-themes '(("8:00" . modus-operandi)
+  ;;                     ("18:00"  . modus-vivendi)))
+  (circadian-themes '((:sunrise . modus-operandi)
+                      (:sunset  . modus-vivendi)))
+  (calendar-latitude 59.33)
+  (calendar-longitude 18.07)
+  :config
+  (circadian-setup))
 
 ;;; Version control
 
@@ -924,46 +957,15 @@
   ;; Customize file filter (default is all dot-files) 
   ;; (setq-default ztree-diff-filter-list (cons \"^.*\\.pyc\" ztree-diff-filter-list)))
 
-;;; Help
+;;; Windows
 
-;; helpful (a better *help* buffer)
-(use-package helpful
-  ;; :disabled
-  ;; :demand
-  :commands (helpful-key helpful-function helpful-symbol
-             helpful-variable helpful-command)
-  :bind (([remap describe-key] . helpful-key)
-         ([remap describe-function] . helpful-function)
-         ([remap describe-symbol] . helpful-symbol)
-         ([remap describe-variable] . helpful-variable)
-         ([remap describe-command] . helpful-command)
-         ("C-c h" . helpful-at-point))
-  :custom
-  ;; Maximum number of *helpful* buffers
-  (helpful-max-buffers nil)
-  ;; Always open additional helpful buffers in the same window
-  (helpful-switch-buffer-function #'aj8/helpful-switch-to-buffer))
+;; rotate (rotate the layout of Emacs)
+(use-package rotate
+  :disabled)
 
-;; marginalia (enrich existing commands with completion annotations)
-(use-package marginalia
-  :demand
-  :bind (:map minibuffer-local-map ("M-m" . marginalia-cycle))
-  :config
-  (marginalia-mode 1))
-
-;; which-key (display available keybindings in popup)
-(use-package which-key
-  :diminish
-  :custom
-  ;; Don't show which-key buffer on C-h
-  (which-key-use-C-h-commands nil)
-  ;; Delay (default is 1.0 s)
-  ;; (which-key-idle-delay 10000)
-  (which-key-idle-delay 0.75)
-  ;; Secondary delay (default is nil)
-  (which-key-idle-secondary-delay 0.05)
-  :config
-  (which-key-mode 1))
+;; transpose-frame (transpose window arrangement in a frame)
+(use-package transpose-frame
+  :defer)
 
 ;;; Web
 
@@ -1035,8 +1037,6 @@
   :config
   (google-this-mode 1))
 
-;;; Terminal
-
 ;;; Other
 
 ;; diminish (diminished modes are minor modes with no modeline display)
@@ -1095,26 +1095,6 @@
 ;; Natively compile packages during installation
 ;; (setq package-native-compile t)
 
-;;; Theme
-
-;;; Windows
-
-;; Prefer horizontal (side-by-side) window splitting
-;;   Note: the thresholds need to be twice as big as the smallest
-;;   window allowed, because the new windows each use half of the
-;;   former window size
-(setq split-width-threshold 140
-      split-height-threshold nil)
-
-;; Set display-line-number-width automatically
-(setq display-line-numbers-width-start t)
-
-;; Do not display continuation lines
-;; (setq-default truncate-lines t)
-
-;; Don't bind keys for winner
-(setq winner-dont-bind-my-keys t)
-
 ;;; Buffers
 
 ;; Hide buffer list at startup when loading multiple files
@@ -1141,6 +1121,72 @@
 ;; Additional variables to persist between sessions
 (add-to-list 'savehist-additional-variables 'kill-ring)
 (add-to-list 'savehist-additional-variables 'global-mark-ring)
+
+;;; Coding
+
+;; Open up the debugger on error
+;; (setq debug-on-error t)
+
+;;; Completion
+
+;; Select completion styles
+(setq completion-styles '(substring orderless basic))
+                                        ; substring: needed for partial completion
+                                        ; orderless: space-separated components
+                                        ; basic: fallback
+
+;; Use partial completion for files
+(setq completion-category-defaults nil)
+(setq completion-category-overrides '((file (styles basic partial-completion))))
+
+;; Use TAB for symbol completion (after indentation)
+(setq tab-always-indent 'complete)
+
+;; Show more details for completions
+(setq completions-detailed t)
+
+;; Hide commands which do not apply to the current mode
+;;   TODO: appears to have no effect
+(setq read-extended-command-predicate #'command-completion-default-include-p)
+
+;; Let hippie-expand search for line expansions in all buffers
+;; (add-to-list 'hippie-expand-try-functions-list 'try-expand-line-all-buffers t)
+(setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
+
+;; Ignore some buffers with hippie-expand
+;;   TODO: only consider buffers with the same mode (see dabbrev-friend-buffer-function)
+(with-eval-after-load "hippie-exp"
+  (add-to-list 'hippie-expand-ignore-buffers aj8/buffer-skip-regexp)
+  (add-to-list 'hippie-expand-ignore-buffers "^\\*.*\\*$"))
+
+;;; Editing
+
+;; Use spaces, not tabs
+(setq-default indent-tabs-mode nil)
+
+;; Delete trailing newline character with kill-line
+(setq kill-whole-line t)
+
+;; Don't use the mark when region is inactive
+;;   Note: messes with ediff
+;; (setq mark-even-if-inactive nil)
+
+;; Save clipboard text into kill ring before kill
+;; (setq save-interprogram-paste-before-kill t)
+
+;; Yank at point, not at pointer
+(setq mouse-yank-at-point t)
+
+;;; Files
+
+;; Custom listing style in dired
+;; (setq dired-listing-switches "-agho --group-directories-first")
+(setq dired-listing-switches "-agho")   ; macOS version
+
+;;; Help
+
+;; More extensive apropos commands
+(setq apropos-do-all t)
 
 ;;; Outline
 
@@ -1189,56 +1235,6 @@
 
 ;;; Selection
 
-;;; Editing
-
-;; Use spaces, not tabs
-(setq-default indent-tabs-mode nil)
-
-;; Delete trailing newline character with kill-line
-(setq kill-whole-line t)
-
-;; Don't use the mark when region is inactive
-;;   Note: messes with ediff
-;; (setq mark-even-if-inactive nil)
-
-;; Save clipboard text into kill ring before kill
-;; (setq save-interprogram-paste-before-kill t)
-
-;; Yank at point, not at pointer
-(setq mouse-yank-at-point t)
-
-;;; Completion
-
-;; Select completion styles
-(setq completion-styles '(substring orderless basic))
-                                        ; substring: needed for partial completion
-                                        ; orderless: space-separated components
-                                        ; basic: fallback
-
-;; Use partial completion for files
-(setq completion-category-defaults nil)
-(setq completion-category-overrides '((file (styles basic partial-completion))))
-
-;; Use TAB for symbol completion (after indentation)
-(setq tab-always-indent 'complete)
-
-;; Show more details for completions
-(setq completions-detailed t)
-
-;; Hide commands which do not apply to the current mode
-;;   TODO: appears to have no effect
-(setq read-extended-command-predicate #'command-completion-default-include-p)
-
-;; Let hippie-expand search for line expansions in all buffers
-;; (add-to-list 'hippie-expand-try-functions-list 'try-expand-line-all-buffers t)
-(setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
-
-;; Ignore some buffers with hippie-expand
-;;   TODO: only consider buffers with the same mode (see dabbrev-friend-buffer-function)
-(with-eval-after-load "hippie-exp"
-  (add-to-list 'hippie-expand-ignore-buffers aj8/buffer-skip-regexp)
-  (add-to-list 'hippie-expand-ignore-buffers "^\\*.*\\*$"))
-
 ;;; Spelling
 
 ;; Configure language environment
@@ -1258,17 +1254,9 @@
 ;; Enable flyspell in web-mode
 (put 'web-mode 'flyspell-mode-predicate #'my/web-mode-flyspell-verify)
 
-;;; Files
+;;; Terminal
 
-;; Custom listing style in dired
-;; (setq dired-listing-switches "-agho --group-directories-first")
-(setq dired-listing-switches "-agho")   ; macOS version
-
-;;; Coding
-
-;; Open up the debugger on error
-;; (setq debug-on-error t)
-
+;;; Theme
 ;;; Version control
 
 ;; Use horizontal (side-by-side) view by default in ediff
@@ -1278,11 +1266,6 @@
 ;; Let ediff use existing frame in GUI
 (when (display-graphic-p)
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
-
-;;; Help
-
-;; More extensive apropos commands
-(setq apropos-do-all t)
 
 ;;; Web
 
@@ -1326,7 +1309,23 @@
 ;; (setq shr-use-colors nil)             ; t is bad for accessibility
 ;; (setq shr-use-fonts nil)
 
-;;; Terminal
+;;; Windows
+
+;; Prefer horizontal (side-by-side) window splitting
+;;   Note: the thresholds need to be twice as big as the smallest
+;;   window allowed, because the new windows each use half of the
+;;   former window size
+(setq split-width-threshold 140
+      split-height-threshold nil)
+
+;; Set display-line-number-width automatically
+(setq display-line-numbers-width-start t)
+
+;; Do not display continuation lines
+;; (setq-default truncate-lines t)
+
+;; Don't bind keys for winner
+(setq winner-dont-bind-my-keys t)
 
 ;;; Other
 
@@ -1350,16 +1349,6 @@
 
 ;;; Admin...
 
-;;; Theme...
-
-;; Enable line numbers
-;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
-
-;;; Windows...
-
-;; Enable winner mode
-(winner-mode 1)
-
 ;;; Buffers...
 
 ;; Persistent minibuffer history
@@ -1367,6 +1356,25 @@
 
 ;; Show recursion depth in the minibuffer prompt
 (minibuffer-depth-indicate-mode 1)
+
+;;; Coding...
+
+;;; Completion...
+
+;;; Editing...
+
+;; Highlight current line
+(global-hl-line-mode 1)
+
+;;; Files...
+
+;; Track recent files
+(recentf-mode 1)
+
+;; Save place in each file
+(save-place-mode 1)
+
+;;; Help...
 
 ;;; Outline...
 
@@ -1387,36 +1395,27 @@
 ;; Delete selection on edit
 (delete-selection-mode 1)
 
-;;; Editing...
-
-;; Highlight current line
-(global-hl-line-mode 1)
-
-;;; Completion...
-
 ;;; Spelling...
 
 ;; On-the-fly spell checking
 (add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'prog-mode-hook #'flyspell-prog-mode)
 
-;;; Files...
+;;; Terminal
 
-;; Track recent files
-(recentf-mode 1)
+;;; Theme...
 
-;; Save place in each file
-(save-place-mode 1)
-
-;;; Coding...
+;; Enable line numbers
+;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 
 ;;; Version control...
 
-;;; Help...
+;;; Windows...
+
+;; Enable winner mode
+(winner-mode 1)
 
 ;;; Web...
-
-;;; Terminal
 
 ;;; Other...
 
@@ -1501,20 +1500,6 @@
 
 ;;; Admin
 
-;;; Theme
-
-;; Display column number
-(global-set-key (kbd "C-c N") #'column-number-mode)
-
-;;; Windows
-
-;; Toggle window split
-(global-set-key (kbd "C-x 9") #'my/toggle-window-split)
-
-;; Cycle window configurations
-(define-key winner-mode-map (kbd "C-c w <") #'winner-undo)
-(define-key winner-mode-map (kbd "C-c w >") #'winner-redo)
-
 ;;; Buffers
 
 ;; Buffer navigation
@@ -1529,17 +1514,54 @@
 ;; Kill buffer (other window)
 (global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
 
-;;; Outline
+;;; Coding
 
-;; Toggle outline-minor-mode
-(global-set-key (kbd "C-c O") #'outline-minor-mode)
+;;; Completion
 
-;; Toggle outline-minor-mode
-(global-set-key (kbd "C-c F") #'hs-minor-mode)
-(global-set-key (kbd "C-c <left>") #'hs-hide-block)
-(global-set-key (kbd "C-c <right>") #'hs-show-block)
-(global-set-key (kbd "C-c C-<left>") #'hs-hide-all)
-(global-set-key (kbd "C-c C-<right>") #'hs-show-all)
+;; Use hippie-expand
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
+
+;; Cycle through orderless matching styles on the fly
+(global-set-key (kbd "M-o") #'aj8/orderless-matching-style-cycle)
+
+;;; Editing
+
+;; Kill line to the left
+(global-set-key (kbd "C-S-k") (lambda () (interactive) (kill-line 0)))
+
+;; Manipulate case
+(global-set-key (kbd "M-u") #'upcase-dwim)
+(global-set-key (kbd "M-l") #'downcase-dwim)
+;; (global-set-key (kbd "M-c") #'capitalize-dwim)
+(global-set-key (kbd "M-c") #'aj8/capitalize-word-at-point)
+
+;; Fill respecting indentation
+;;   (use with `C-x .'  for comments)
+(global-set-key (kbd "C-c q") #'fill-individual-paragraphs)
+
+;; Copy symbol at point
+(global-set-key (kbd "C-c s") #'my/copy-symbol-at-point)
+
+;; Indent to next nonblank character in previous line
+(global-set-key (kbd "C-c TAB") #'indent-relative)
+
+;;; Files
+
+;; Find file at point
+(global-set-key (kbd "C-c f") #'find-file-at-point)
+
+;; Forget project
+(global-set-key (kbd "C-x p t") #'project-forget-project)
+
+;;; Help
+
+;; Display keymaps
+(global-set-key (kbd "C-c H k") #'describe-keymap)
+
+;; Display commands by category
+(global-set-key (kbd "C-c H d") #'shortdoc-display-group)
+
+(which-key-add-key-based-replacements "C-c H" "help")   ; add label for prefix key
 
 ;;; Navigation
 
@@ -1589,52 +1611,31 @@
 (global-set-key (kbd "C-c >") #'xref-find-definitions)  ; default M-.
 (global-set-key (kbd "C-c <") #'xref-pop-marker-stack)  ; default M-,
 
+;;; Outline
+
+;; Toggle outline-minor-mode
+(global-set-key (kbd "C-c O") #'outline-minor-mode)
+
+;; Toggle outline-minor-mode
+(global-set-key (kbd "C-c F") #'hs-minor-mode)
+(global-set-key (kbd "C-c <left>") #'hs-hide-block)
+(global-set-key (kbd "C-c <right>") #'hs-show-block)
+(global-set-key (kbd "C-c C-<left>") #'hs-hide-all)
+(global-set-key (kbd "C-c C-<right>") #'hs-show-all)
+
 ;;; Search
 
 (define-key isearch-mode-map (kbd "TAB") #'isearch-complete)
 
 ;;; Selection
 
-;;; Editing
-
-;; Kill line to the left
-(global-set-key (kbd "C-S-k") (lambda () (interactive) (kill-line 0)))
-
-;; Manipulate case
-(global-set-key (kbd "M-u") #'upcase-dwim)
-(global-set-key (kbd "M-l") #'downcase-dwim)
-;; (global-set-key (kbd "M-c") #'capitalize-dwim)
-(global-set-key (kbd "M-c") #'aj8/capitalize-word-at-point)
-
-;; Fill respecting indentation
-;;   (use with `C-x .'  for comments)
-(global-set-key (kbd "C-c q") #'fill-individual-paragraphs)
-
-;; Copy symbol at point
-(global-set-key (kbd "C-c s") #'my/copy-symbol-at-point)
-
-;; Indent to next nonblank character in previous line
-(global-set-key (kbd "C-c TAB") #'indent-relative)
-
-;;; Completion
-
-;; Use hippie-expand
-(global-set-key [remap dabbrev-expand] 'hippie-expand)
-
-;; Cycle through orderless matching styles on the fly
-(global-set-key (kbd "M-o") #'aj8/orderless-matching-style-cycle)
-
 ;;; Spelling
 
-;;; Files
+;;; Terminal
+;;; Theme
 
-;; Find file at point
-(global-set-key (kbd "C-c f") #'find-file-at-point)
-
-;; Forget project
-(global-set-key (kbd "C-x p t") #'project-forget-project)
-
-;;; Coding
+;; Display column number
+(global-set-key (kbd "C-c N") #'column-number-mode)
 
 ;;; Version control
 
@@ -1650,23 +1651,20 @@
 ;; Show diffs between file revisions
 (global-set-key (kbd "C-x v -") #'vc-ediff)
 
-;;; Help
-
-;; Display keymaps
-(global-set-key (kbd "C-c H k") #'describe-keymap)
-
-;; Display commands by category
-(global-set-key (kbd "C-c H d") #'shortdoc-display-group)
-
-(which-key-add-key-based-replacements "C-c H" "help")   ; add label for prefix key
-
 ;;; Web
 
 ;; Browse URL at point
 (global-set-key (kbd "C-c b") #'browse-url-at-point)
 
 
-;;; Terminal
+;;; Windows
+
+;; Toggle window split
+(global-set-key (kbd "C-x 9") #'my/toggle-window-split)
+
+;; Cycle window configurations
+(define-key winner-mode-map (kbd "C-c w <") #'winner-undo)
+(define-key winner-mode-map (kbd "C-c w >") #'winner-redo)
 
 ;;; Other
 
