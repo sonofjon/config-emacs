@@ -1035,6 +1035,8 @@
   :config
   (google-this-mode 1))
 
+;;; Terminal
+
 ;;; Other
 
 ;; diminish (diminished modes are minor modes with no modeline display)
@@ -1324,6 +1326,8 @@
 ;; (setq shr-use-colors nil)             ; t is bad for accessibility
 ;; (setq shr-use-fonts nil)
 
+;;; Terminal
+
 ;;; Other
 
 ;; Use Eshell with Tramp
@@ -1411,6 +1415,8 @@
 ;;; Help...
 
 ;;; Web...
+
+;;; Terminal
 
 ;;; Other...
 
@@ -1658,6 +1664,9 @@
 
 ;; Browse URL at point
 (global-set-key (kbd "C-c b") #'browse-url-at-point)
+
+
+;;; Terminal
 
 ;;; Other
 
