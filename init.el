@@ -136,7 +136,7 @@
 (use-package exec-path-from-shell
   :if (equal window-system 'ns))
 
-;;; Package management
+;;; Admin
 
 ;; auto-package-update (automatically update Emacs packages)
 (use-package auto-package-update
@@ -1090,7 +1090,7 @@
 
 ;;;; Variables
 
-;;; Package management
+;;; Admin
 
 ;; Natively compile packages during installation
 ;; (setq package-native-compile t)
@@ -1348,7 +1348,7 @@
 
 ;;;; Modes
 
-;;; Package management...
+;;; Admin...
 
 ;;; Theme...
 
@@ -1499,7 +1499,7 @@
 
 ;;;; General
 
-;;; Package management
+;;; Admin
 
 ;;; Theme
 
