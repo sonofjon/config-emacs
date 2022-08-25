@@ -695,7 +695,7 @@
 
 ;; treemacs (a tree style file explorer package)
 (use-package treemacs
-  :defer
+  :commands treemacs
   :init
   (which-key-add-key-based-replacements "C-c t" "treemacs")   ; add label for prefix keys
   (which-key-add-key-based-replacements "C-c C-p" "treemacs")
