@@ -1467,8 +1467,9 @@
 
 ;;;;; KEYBINDINGS
 
-;;   TODO: Unbind rebound keys? E.g. M-a for back-to-indentation
-;;         Use minor-mode for keybindings? (https://stackoverflow.com/a/683575/1610035)
+;;   TODO: Use minor-mode for keybindings?
+;;           (https://stackoverflow.com/a/683575/1610035)
+;;           (https://emacs.stackexchange.com/a/358/33325)
 
 ;;;; Escape codes
 
