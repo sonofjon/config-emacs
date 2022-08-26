@@ -765,6 +765,8 @@
 ;; term (terminal-emulator) - [built-in package]
 (use-package term
   :disabled
+  :ensure nil   ; don't install built-in packages
+                ; see https://github.com/jwiegley/use-package/issues/977
   :commands term)
   ;; :config
   ;; Match the default Bash shell prompt
@@ -785,6 +787,7 @@
 
 ;; eshell (the Emacs command shell) - [built-in package]
 (use-package eshell
+  :ensure nil   ; don't install built-in packages
   :hook (eshell-first-time-mode . efs/configure-eshell)
   :init
   (defun efs/configure-eshell ()
@@ -1042,6 +1045,7 @@
 ;; erc (an Emacs internet relay chat client) - [built-in package]
 (use-package erc
   :disabled
+  :ensure nil   ; don't install built-in packages
   :commands (erc erc-tls)
   :custom
   ;; Server settings
