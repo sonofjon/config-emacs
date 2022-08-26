@@ -573,6 +573,13 @@
                      ;; ("" . mc/mark-all-dwim)
                      ("e" . mc/edit-lines)))
 
+;; repeat-help (display keybindings for repeat-mode)
+(use-package repeat-help
+  :defer
+  :hook (repeat-mode . repeat-help-mode)
+  :custom
+  (repeat-help-auto t))
+
 ;; whole-line-or-region (operate on current line if region undefined)
 (use-package whole-line-or-region
   :diminish whole-line-or-region-local-mode
