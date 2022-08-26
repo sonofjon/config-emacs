@@ -792,14 +792,17 @@
   :init
   (defun efs/configure-eshell ()
     ;; Save command history when commands are entered
-    (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)))
+    (add-hook 'eshell-pre-command-hook 'eshell-save-some-history))
     ;; Truncate buffer for performance
     ;; (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
     ;; (setq eshell-history-size         10000
     ;;       eshell-buffer-maximum-lines 10000
     ;;       eshell-hist-ignoredups t
     ;;       eshell-scroll-to-bottom-on-input t))
-  ;; :config
+  :config
+  ;; Use Eshell with Tramp
+  (with-eval-after-load "eshell"
+    (add-to-list 'eshell-modules-list 'eshell-tramp)))
   ;; (with-eval-after-load 'esh-opt
     ;;
     ;; (setq eshell-destroy-buffer-when-process-dies t)
@@ -1379,10 +1382,6 @@
 (setq winner-dont-bind-my-keys t)
 
 ;;; Other
-
-;; Use Eshell with Tramp
-(with-eval-after-load "eshell"
-  (add-to-list 'eshell-modules-list 'eshell-tramp))
 
 ;; Use 'y' or 'n' questions always
 ;; (setq use-short-answers t)
