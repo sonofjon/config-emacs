@@ -1389,6 +1389,9 @@
 
 ;;; Windows
 
+;; Don't bind keys for winner
+(setq winner-dont-bind-my-keys t)
+
 ;; Prefer horizontal (side-by-side) window splitting
 ;;   Note: the thresholds need to be twice as big as the smallest
 ;;   window allowed, because the new windows each use half of the
@@ -1396,10 +1399,23 @@
 (setq split-width-threshold 140
       split-height-threshold nil)
 
+;; Enable horizontal window fitting
+;; (setq fit-window-to-buffer-horizontally t)
 
+;; Resize window combinations proportionally
+;; (setq window-combination-resize t)
 
-;; Don't bind keys for winner
-(setq winner-dont-bind-my-keys t)
+;; Try to even window sizes vertically only
+;; (setq even-window-sizes 'height-only)
+
+;; Allow switching to buffer in strongly dedicated windows
+;; (setq switch-to-buffer-in-dedicated-window 'pop)
+
+;; Top and bottom side windows occupy full frame width (default)
+(setq window-sides-vertical nil)
+
+;; Left and right side windows occupy full frame height
+;; (setq window-sides-vertical t)
 
 ;; Set maximum number of side-window slots
 ;; (setq window-sides-slots '(1 1 3 1))
