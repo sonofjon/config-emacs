@@ -1410,7 +1410,7 @@
          (display-buffer-in-side-window)
          (window-height . 0.16)
          (side . top)
-         (slot . -1))
+         (slot . 0))
         ;; ((or . ((derived-mode . messages-buffer-mode)
         ;;         "\\*Messages\\*"))
         ("\\*Messages\\*"
@@ -1424,7 +1424,7 @@
          (display-buffer-in-side-window)
          (window-height . 0.16)
          (side . top)
-         (slot . 1))
+         (slot . 0))
         ;; Right side window
         ;; ((or . ((derived-mode . help-mode)
         ;;         "\\*\\(Help\\|helpful.*\\)\\*"))
@@ -1439,7 +1439,7 @@
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . 0.45)
          (side . right)
-         (slot . 0))
+         (slot . 1))
         ;; ((or . ((derived-mode . Man-mode)
         ;;         (derived-mode . woman-mode)
         ;;         "\\*\\(Man\\|WoMan\\).*"))
@@ -1447,7 +1447,7 @@
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . 0.45)
          (side . right)
-         (slot . 1))
+         (slot . -1))
         ;; Bottom side window
         ("\\*.*\\(e?shell\\|v?term\\).*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
