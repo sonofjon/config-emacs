@@ -23,6 +23,7 @@
 (defcustom my/quit-window-exceptions-regex "^\\*\\(Messages\\)"
   "Regexp matching buffer names for which prefix argument should
 not be inverted."
+  :type 'regexp
   :group 'my-config)
 
 (defcustom my/quit-window-known-wrappers '(magit-mode-bury-buffer
@@ -30,6 +31,7 @@ not be inverted."
                                            Info-exit)
   "List of commands that call `quit-window' for which prefix
 argument should be inverted. "
+  :type 'sexp
   :group 'my-config)
 
 (defun my/advice--quit-window (args)
