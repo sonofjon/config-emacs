@@ -1328,6 +1328,13 @@
 ;;; Terminal
 
 ;;; Theme
+
+;; Set display-line-number-width automatically
+(setq display-line-numbers-width-start t)
+
+;; Do not display continuation lines
+;; (setq-default truncate-lines t)
+
 ;;; Version control
 
 ;; Use horizontal (side-by-side) view by default in ediff
@@ -1389,11 +1396,7 @@
 (setq split-width-threshold 140
       split-height-threshold nil)
 
-;; Set display-line-number-width automatically
-(setq display-line-numbers-width-start t)
 
-;; Do not display continuation lines
-;; (setq-default truncate-lines t)
 
 ;; Don't bind keys for winner
 (setq winner-dont-bind-my-keys t)
