@@ -1862,6 +1862,9 @@
 ;; Toggle window split
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
 
+;; Toggle side windows
+(global-set-key (kbd "C-x |") #'window-toggle-side-windows)
+
 ;; Cycle window configurations
 (define-key winner-mode-map (kbd "C-c w <") #'winner-undo)
 (define-key winner-mode-map (kbd "C-c w >") #'winner-redo)
