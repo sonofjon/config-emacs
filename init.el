@@ -1654,6 +1654,12 @@
 (add-hook 'sh-mode-hook
           #'outline-headers-for-hash-mark-buffers)
 
+;; visual-line-mode
+(add-hook 'help-mode-hook #'visual-line-mode)
+(add-hook 'helpful-mode-hook #'visual-line-mode)
+(add-hook 'Info-mode-hook #'visual-line-mode)
+;; (add-hook 'Man-mode-hook #'visual-line-mode)
+
 
 ;;;;; KEYBINDINGS
 
