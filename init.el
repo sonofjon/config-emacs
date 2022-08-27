@@ -799,13 +799,22 @@
   :init
   (defun efs/configure-eshell ()
     ;; Save command history when commands are entered
-    (add-hook 'eshell-pre-command-hook 'eshell-save-some-history))
+    (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
     ;; Truncate buffer for performance
     ;; (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
     ;; (setq eshell-history-size         10000
     ;;       eshell-buffer-maximum-lines 10000
     ;;       eshell-hist-ignoredups t
     ;;       eshell-scroll-to-bottom-on-input t))
+    ;; Rebind history keys
+    (define-key eshell-hist-mode-map (kbd "C-<down>") nil)   ; unbind
+    (define-key eshell-hist-mode-map (kbd "C-<up>") nil)   ; unbind
+    (define-key eshell-hist-mode-map (kbd "<down>") #'eshell-next-input)
+    (define-key eshell-hist-mode-map (kbd "<up>") #'eshell-previous-input)
+    (define-key eshell-hist-mode-map (kbd "M-<down>")
+      #'eshell-next-matching-input-from-input)
+    (define-key eshell-hist-mode-map (kbd "M-<up>")
+      #'eshell-previous-matching-input-from-input))
   :config
   ;; Use Eshell with Tramp
   (with-eval-after-load "eshell"
