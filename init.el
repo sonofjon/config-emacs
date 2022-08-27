@@ -1403,10 +1403,14 @@
 
 ;; Window rules
 (setq display-buffer-alist
-      `(;; No window
+      `(;;
+        ;; No window
+        ;;
         ;; ("\\*Async Shell Command\\*"
         ;;  (display-buffer-no-window))
+        ;;
         ;; Top side window
+        ;;
         ;; ((or . ((derived-mode . flymake-diagnostics-buffer-mode)
         ;;         "\\*Flymake diagnostics\\*"))
         ("\\*Flymake diagnostics.*\\*"
@@ -1428,7 +1432,14 @@
          (window-height . 0.16)
          (side . top)
          (slot . 0))
+        ;;
         ;; Right side window
+        ;;
+        ;;   Magit
+        ;;
+        ;;
+        ;;   Help
+        ;;
         ;; ((or . ((derived-mode . help-mode)
         ;;         "\\*\\(Help\\|helpful.*\\)\\*"))
         ("\\*\\(Help\\|helpful.*\\)\\*"
@@ -1451,13 +1462,17 @@
          (window-width . 0.45)
          (side . right)
          (slot . -1))
+        ;;
         ;; Bottom side window
+        ;;
         ("\\*.*\\(e?shell\\|v?term\\).*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-height . 0.16)
          (side . bottom)
          (slot . 0))
+        ;;
         ;; Bottom buffer (not side window)
+        ;;
         ("\\*Embark Actions\\*"
          (display-buffer-reuse-mode-window display-buffer-at-bottom)
          (window-height . fit-window-to-buffer)
