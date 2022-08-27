@@ -695,9 +695,7 @@
          ("C-c h" . helpful-at-point))
   :custom
   ;; Maximum number of *helpful* buffers
-  (helpful-max-buffers nil)
-  ;; Always open additional helpful buffers in the same window
-  (helpful-switch-buffer-function #'aj8/helpful-switch-to-buffer))
+  (helpful-max-buffers nil))
 
 ;; marginalia (enrich existing commands with completion annotations)
 (use-package marginalia
@@ -1399,6 +1397,69 @@
 
 ;; Don't bind keys for winner
 (setq winner-dont-bind-my-keys t)
+
+;; Window rules
+(setq display-buffer-alist
+      `(;; No window
+        ;; ("\\*Async Shell Command\\*"
+        ;;  (display-buffer-no-window))
+        ;; Top side window
+        ;; ((or . ((derived-mode . flymake-diagnostics-buffer-mode)
+        ;;         "\\*Flymake diagnostics\\*"))
+        ("\\*Flymake diagnostics.*\\*"
+         (display-buffer-in-side-window)
+         (window-height . 0.16)
+         (side . top)
+         (slot . -1))
+        ;; ((or . ((derived-mode . messages-buffer-mode)
+        ;;         "\\*Messages\\*"))
+        ("\\*Messages\\*"
+         (display-buffer-in-side-window)
+         (window-height . 0.16)
+         (side . top)
+         (slot . 0))
+        ;; ((or . ((derived-mode . backtrace-mode)
+        ;;         "\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"))
+        ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+         (display-buffer-in-side-window)
+         (window-height . 0.16)
+         (side . top)
+         (slot . 1))
+        ;; Right side window
+        ;; ((or . ((derived-mode . help-mode)
+        ;;         "\\*\\(Help\\|helpful.*\\)\\*"))
+        ("\\*\\(Help\\|helpful.*\\)\\*"
+         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (window-width . 0.45)
+         (side . right)
+         (slot . -1))
+        ;; ((or . ((derived-mode . Info-mode)
+        ;;         "\\*info.*\\*"))
+        ("\\*info.*\\*"
+         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (window-width . 0.45)
+         (side . right)
+         (slot . 0))
+        ;; ((or . ((derived-mode . Man-mode)
+        ;;         (derived-mode . woman-mode)
+        ;;         "\\*\\(Man\\|WoMan\\).*"))
+        ("\\*\\(Man\\|WoMan\\).*"
+         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (window-width . 0.45)
+         (side . right)
+         (slot . 1))
+        ;; Bottom side window
+        ("\\*.*\\(e?shell\\|v?term\\).*"
+         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (window-height . 0.16)
+         (side . bottom)
+         (slot . 0))
+        ;; Bottom buffer (not side window)
+        ("\\*Embark Actions\\*"
+         (display-buffer-reuse-mode-window display-buffer-at-bottom)
+         (window-height . fit-window-to-buffer)
+         (window-parameters . ((no-other-window . t)
+                               (mode-line-format . none))))))
 
 ;;; Other
 
