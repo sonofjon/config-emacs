@@ -1849,17 +1849,17 @@
 
 ;;; Windows
 
-;; Manipulate window size
-(global-set-key (kbd "C-x !") #'delete-other-windows-vertically)
-(global-set-key (kbd "C-x -") #'balance-windows)
-(global-set-key (kbd "C-x _") #'balance-windows-area)
-(global-set-key (kbd "C-x +") #'fit-window-to-buffer)
+;; Resize windows
 (global-set-key (kbd "C-x }") #'hydra-move-splitter-up)   ; TODO: add to repeat map
 (global-set-key (kbd "C-x {") #'hydra-move-splitter-down)
 (global-set-key (kbd "C-x >") #'hydra-move-splitter-right) ; override `scroll-right'
 (global-set-key (kbd "C-x <") #'hydra-move-splitter-left) ; override `scroll-left'
 
-;; Toggle window split
+;; Misc window manipulation
+(global-set-key (kbd "C-x !") #'delete-other-windows-vertically)
+(global-set-key (kbd "C-x -") #'balance-windows)
+(global-set-key (kbd "C-x _") #'balance-windows-area)
+(global-set-key (kbd "C-x +") #'fit-window-to-buffer)
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
 
 ;; Toggle side windows
