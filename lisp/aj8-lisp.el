@@ -184,7 +184,8 @@ Emacs session."
               eos)
   "Regular expression matching buffers ignored by `next-buffer'
 and `previous-buffer'."
-  :type 'regexp)
+  :type 'regexp
+  :group 'aj8-lisp)
 
 (defun aj8/buffer-skip-p (window buffer bury-or-kill)
   "Return t if BUFFER name matches `aj8/buffer-skip-regexp'."
