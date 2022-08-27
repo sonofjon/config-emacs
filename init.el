@@ -1437,6 +1437,24 @@
         ;;
         ;;   Magit
         ;;
+        ("\\(magit:.*\\|magit-log:\\|magit-log-select:.*\\)"
+         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (window-width . 0.45)
+         (side . right)
+         (slot . -1))
+        ("\\(magit-diff:\\|magit-revision:\\|magit-stash:\\).*"
+         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (window-width . 0.45)
+         (side . right)
+         (slot . 1))
+        ("COMMIT_EDITMSG"
+         ;; (display-buffer-at-bottom)
+         ;; (window-height . fit-window-to-buffer)
+         ;; (window-parameters . ((no-other-window . t))))
+         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (window-width . 0.45)
+         (side . right)
+         (slot . 1))
         ;;
         ;;   Help
         ;;
