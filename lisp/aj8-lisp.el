@@ -18,6 +18,17 @@
 
 ;;;; Windows
 
+;; TODO: these don't work in display-buffer-alist
+(defcustom aj8/side-window-height 0.16
+  "Top side window height."
+  :type 'number
+  :group 'aj8-lisp)
+
+(defcustom aj8/side-window-widh 0.40
+  "Right side window width."
+  :type 'number
+  :group 'aj8-lisp)
+
 ;;; Kill windows
 
 (defcustom my/quit-window-exceptions-regex "^\\*\\(Messages\\)"
