@@ -1398,6 +1398,9 @@
 ;; Don't bind keys for winner
 (setq winner-dont-bind-my-keys t)
 
+;; Set maximum number of side-window slots
+;; (setq window-sides-slots '(1 1 3 1))
+
 ;; Window rules
 (setq display-buffer-alist
       `(;; No window
