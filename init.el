@@ -1464,7 +1464,7 @@
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . 0.45)
          (side . right)
-         (slot . -1))
+         (slot . 1))
         ;; ((or . ((derived-mode . Info-mode)
         ;;         "\\*info.*\\*"))
         ("\\*info.*\\*"
@@ -1479,7 +1479,7 @@
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . 0.45)
          (side . right)
-         (slot . -1))
+         (slot . 1))
         ;;
         ;; Bottom side window
         ;;
