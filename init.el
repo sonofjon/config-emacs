@@ -1723,10 +1723,10 @@
 (global-set-key (kbd "C-x -") #'balance-windows)
 (global-set-key (kbd "C-x _") #'balance-windows-area)
 (global-set-key (kbd "C-x +") #'fit-window-to-buffer)
-(global-set-key (kbd "C-x }") #'enlarge-window)   ; TODO: add to repeat map
-(global-set-key (kbd "C-x {") #'shrink-window)
-(global-set-key (kbd "C-x >") #'enlarge-window-horizontally) ; override `scroll-right'
-(global-set-key (kbd "C-x <") #'shrink-window-horizontally) ; override `scroll-left'
+(global-set-key (kbd "C-x }") #'hydra-move-splitter-up)   ; TODO: add to repeat map
+(global-set-key (kbd "C-x {") #'hydra-move-splitter-down)
+(global-set-key (kbd "C-x >") #'hydra-move-splitter-right) ; override `scroll-right'
+(global-set-key (kbd "C-x <") #'hydra-move-splitter-left) ; override `scroll-left'
 
 ;; Toggle window split
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
