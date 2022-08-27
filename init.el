@@ -1716,8 +1716,17 @@
 ;; Browse URL at point
 (global-set-key (kbd "C-c b") #'browse-url-at-point)
 
-
 ;;; Windows
+
+;; Manipulate window size
+(global-set-key (kbd "C-x !") #'delete-other-windows-vertically)
+(global-set-key (kbd "C-x -") #'balance-windows)
+(global-set-key (kbd "C-x _") #'balance-windows-area)
+(global-set-key (kbd "C-x +") #'fit-window-to-buffer)
+(global-set-key (kbd "C-x }") #'enlarge-window)   ; TODO: add to repeat map
+(global-set-key (kbd "C-x {") #'shrink-window)
+(global-set-key (kbd "C-x >") #'enlarge-window-horizontally) ; override `scroll-right'
+(global-set-key (kbd "C-x <") #'shrink-window-horizontally) ; override `scroll-left'
 
 ;; Toggle window split
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
