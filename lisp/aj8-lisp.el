@@ -18,15 +18,24 @@
 
 ;;;; Windows
 
-;; TODO: these don't work in display-buffer-alist
 (defcustom aj8/side-window-height 0.16
   "Top side window height."
   :type 'number
   :group 'aj8-lisp)
 
-(defcustom aj8/side-window-widh 0.40
+(defcustom aj8/side-window-width 0.40
   "Right side window width."
   :type 'number
+  :group 'aj8-lisp)
+
+(defcustom aj8/side-window-width-dynamic
+  (if (>= (frame-width) 160)
+      (floor (/ (frame-width) 2))
+    (- (frame-width) 80))
+  "Right side window width. If the width of the frame is greater
+than or equal to 160 characters, split the frame in two, if less
+than 160 characters set width to 80 characters."
+  :type 'integer
   :group 'aj8-lisp)
 
 ;;; Kill windows

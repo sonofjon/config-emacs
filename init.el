@@ -1434,21 +1434,21 @@
         ;;         "\\*Flymake diagnostics\\*"))
         ("\\*Flymake diagnostics.*\\*"
          (display-buffer-in-side-window)
-         (window-height . 0.16)
+         (window-height . ,aj8/side-window-height)
          (side . top)
          (slot . 0))
         ;; ((or . ((derived-mode . messages-buffer-mode)
         ;;         "\\*Messages\\*"))
         ("\\*Messages\\*"
          (display-buffer-in-side-window)
-         (window-height . 0.16)
+         (window-height . ,aj8/side-window-height)
          (side . top)
          (slot . 0))
         ;; ((or . ((derived-mode . backtrace-mode)
         ;;         "\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"))
         ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
          (display-buffer-in-side-window)
-         (window-height . 0.16)
+         (window-height . ,aj8/side-window-height)
          (side . top)
          (slot . 0))
         ;;
@@ -1458,12 +1458,12 @@
         ;;
         ("\\(magit:.*\\|magit-log:\\|magit-log-select:.*\\)"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
-         (window-width . 0.45)
+         (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . -1))
         ("\\(magit-diff:\\|magit-revision:\\|magit-stash:\\).*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
-         (window-width . 0.45)
+         (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1))
         ("COMMIT_EDITMSG"
@@ -1471,7 +1471,7 @@
          ;; (window-height . fit-window-to-buffer)
          ;; (window-parameters . ((no-other-window . t))))
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
-         (window-width . 0.45)
+         (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1))
         ;;
@@ -1481,14 +1481,14 @@
         ;;         "\\*\\(Help\\|helpful.*\\)\\*"))
         ("\\*\\(Help\\|helpful.*\\)\\*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
-         (window-width . 0.45)
+         (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1))
         ;; ((or . ((derived-mode . Info-mode)
         ;;         "\\*info.*\\*"))
         ("\\*info.*\\*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
-         (window-width . 0.45)
+         (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1))
         ;; ((or . ((derived-mode . Man-mode)
@@ -1496,7 +1496,7 @@
         ;;         "\\*\\(Man\\|WoMan\\).*"))
         ("\\*\\(Man\\|WoMan\\).*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
-         (window-width . 0.45)
+         (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1))
         ;;
@@ -1504,7 +1504,7 @@
         ;;
         ("\\*.*\\(e?shell\\|v?term\\).*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
-         (window-height . 0.16)
+         (window-height . ,aj8/side-window-height)
          (side . bottom)
          (slot . 0))
         ;;
