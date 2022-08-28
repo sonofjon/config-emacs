@@ -1850,20 +1850,25 @@
 ;;; Windows
 
 ;; Resize windows
-(global-set-key (kbd "C-x }") #'hydra-move-splitter-up)   ; TODO: add to repeat map
+(global-set-key (kbd "C-x }") #'hydra-move-splitter-up)      ; TODO: add to repeat map
 (global-set-key (kbd "C-x {") #'hydra-move-splitter-down)
-(global-set-key (kbd "C-x >") #'hydra-move-splitter-right) ; override `scroll-right'
-(global-set-key (kbd "C-x <") #'hydra-move-splitter-left) ; override `scroll-left'
+(global-set-key (kbd "C-x >") #'hydra-move-splitter-right)   ; override `scroll-right'
+(global-set-key (kbd "C-x <") #'hydra-move-splitter-left)    ; override `scroll-left'
 
 ;; Misc window manipulation
 (global-set-key (kbd "C-x !") #'delete-other-windows-vertically)
-(global-set-key (kbd "C-x -") #'balance-windows)
-(global-set-key (kbd "C-x _") #'balance-windows-area)
-(global-set-key (kbd "C-x +") #'fit-window-to-buffer)
+(global-set-key (kbd "C-x =") #'balance-windows)        ; override `what-cursor-position'
+(global-set-key (kbd "C-x +") #'balance-windows-area)   ; override `balance-windows'
+;; (global-set-key (kbd "C-x -") #'shrink-window-if-larger-than-buffer)   ; default
+(global-set-key (kbd "C-x _") #'fit-window-to-buffer)   ; enlarges and shrinks
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
 
 ;; Toggle side windows
 (global-set-key (kbd "C-x |") #'window-toggle-side-windows)
+
+;; Add enlarge/shrink-window-horizontally to repeat-map
+(define-key resize-window-repeat-map ">" #'enlarge-window-horizontally)
+(define-key resize-window-repeat-map "<" #'shrink-window-horizontally)
 
 ;; Cycle window configurations
 (define-key winner-mode-map (kbd "C-c w <") #'winner-undo)
