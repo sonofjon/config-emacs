@@ -1063,7 +1063,13 @@
   (add-hook 'magit-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
   ;; Add status flag to repository list
   (add-to-list 'magit-repolist-columns
-               '("Flag" 4 magit-repolist-column-flag (:right-align t))))
+               '("Flag" 4 magit-repolist-column-flag (:right-align t)))
+  ;; Hide header section by default
+  (add-to-list 'magit-section-initial-visibility-alist '(headers . hide))
+  ;; Hide commit message section by default
+  (add-to-list 'magit-section-initial-visibility-alist '(commit-message . hide))
+  ;; Hide diffstat section by default
+  (add-to-list 'magit-section-initial-visibility-alist '(diffstat . hide)))
 
 ;; diff-hl (highlight uncommitted changes using VC)
 (use-package diff-hl
