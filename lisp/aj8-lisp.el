@@ -1,149 +1,6 @@
 ;;;;; FUNCTIONS
 
-;;;; Package management
-
-;;;; Theme
-
-;; Custom settings for modus-themes
-(defun aj8/modus-themes-custom-settings ()
-  "If in terminal, change cursor color on theme switch."
-  (when (not (display-graphic-p))   ; if using terminal
-    (cond
-     ((string-match-p "modus-operandi" (symbol-name (modus-themes--current-theme)))
-      (send-string-to-terminal "\033]12;black\007"))
-     ((string-match-p "modus-vivendi" (symbol-name (modus-themes--current-theme)))
-      (send-string-to-terminal "\033]12;white\007"))
-     (t
-      (error "Unknown modus-theme name")))))
-
-;;;; Windows
-
-(defcustom aj8/side-window-height 0.16
-  "Top side window height."
-  :type 'number
-  :group 'aj8-lisp)
-
-(defcustom aj8/side-window-width 0.40
-  "Right side window width."
-  :type 'number
-  :group 'aj8-lisp)
-
-(defcustom aj8/side-window-width-dynamic
-  (if (>= (frame-width) 160)
-      (floor (/ (frame-width) 2))
-    (- (frame-width) 80))
-  "Right side window width. If the width of the frame is greater
-than or equal to 160 characters, split the frame in two, if less
-than 160 characters set width to 80 characters."
-  :type 'integer
-  :group 'aj8-lisp)
-
-;;; Kill windows
-
-(defcustom my/quit-window-exceptions-regex "^\\*\\(Messages\\)"
-  "Regexp matching buffer names for which prefix argument should
-not be inverted."
-  :type 'regexp
-  :group 'my-config)
-
-(defcustom my/quit-window-known-wrappers '(magit-mode-bury-buffer
-                                           magit-log-bury-buffer
-                                           Info-exit)
-  "List of commands that call `quit-window' for which prefix
-argument should be inverted. "
-  :type 'sexp
-  :group 'my-config)
-
-(defun my/advice--quit-window (args)
-  "Advice function that makes `quit-window' quit WINDOW and kill
-its buffer. With a prefix argument, the buffer is buried
-instead. This is the inverse of the default behavior
-`quit-window'.
-
-This affects all calls to `quit-window' except in buffers
-matching `my/quit-window-exceptions-regex'. Calls to
-`quit-window' from wrapper functions defined by
-`my/quit-window-known-wrappers' are also affected."
-  (when (and (or (eq this-command 'quit-window)
-                 (member this-command my/quit-window-known-wrappers))
-             (not (string-match-p my/quit-window-exceptions-regex (buffer-name))))
-    (unless (consp args)
-      (setq args (list nil)))
-    (setf (car args) (not current-prefix-arg)))
-  args)
-
-;; Quit window and kill its buffer
-(advice-add 'quit-window :filter-args 'my/advice--quit-window)
-
-;;; Better shrink/enlarge window functions
-
-;; Wrapper for shrink-window-horizontally
-(defun hydra-move-splitter-left (arg)
-  "Move window splitter left."
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'right))
-      (shrink-window-horizontally arg)
-    (enlarge-window-horizontally arg)))
-
-;; Wrapper for enlarge-window-horizontally
-(defun hydra-move-splitter-right (arg)
-  "Move window splitter right."
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'right))
-      (enlarge-window-horizontally arg)
-    (shrink-window-horizontally arg)))
-
-;; Wrapper for enlarge-window
-(defun hydra-move-splitter-up (arg)
-  "Move window splitter up."
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'up))
-      (enlarge-window arg)
-    (shrink-window arg)))
-
-;; Wrapper for shrink-window
-(defun hydra-move-splitter-down (arg)
-  "Move window splitter down."
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'up))
-      (shrink-window arg)
-    (enlarge-window arg)))
-
-;;; Misc
-
-;; Toggle window split
-(defun my/toggle-window-split ()
-  "If the window is split vertically, split it horizontally, and vice versa."
-  (interactive)
-  (unless (= (count-windows) 2)
-    (error "Can only toggle a window split in two!"))
-  (let ((split-vertically-p (window-combined-p)))
-    (delete-window)   ; close current window
-    (if split-vertically-p
-        (split-window-horizontally)
-      (split-window-vertically))   ; makes a split with the other window twice
-    (switch-to-buffer nil)))   ; restore the original window
-                               ; in this part of the window
-
-;; Visit oldest window with Treemacs
-(defun treemacs-visit-node-in-least-recently-used-window (&optional arg)
-  "Open current file or tag in window selected by `get-lru-window'.
-Stay in the current window with a single prefix argument ARG, or close the
-Treemacs window with a double prefix argument."
-  (interactive "P")
-  (treemacs--execute-button-action
-   :window (get-lru-window (selected-frame) nil :not-selected)
-   :file-action (find-file (treemacs-safe-button-get btn :path))
-   :dir-action (dired (treemacs-safe-button-get btn :path))
-   :tag-section-action (treemacs--visit-or-expand/collapse-tag-node btn arg nil)
-   :tag-action (treemacs--goto-tag btn)
-   :window-arg arg
-   :ensure-window-split t
-   :no-match-explanation "Node is neither a file, a directory or a tag - nothing to do here."))
+;;;; Admin
 
 ;;;; Buffers
 
@@ -260,6 +117,234 @@ If the current buffer does not belong to a project, call `previous-buffer'."
        (interactive)
        (switch-to-buffer (get-buffer-create "*scratch*"))
        (lisp-interaction-mode))
+
+;;;; Coding
+
+;;;; Completion
+
+;;; Corfu navigation
+
+(defun my/corfu-beginning-of-prompt ()
+  "Move to beginning of completion input."
+  (interactive)
+  (corfu--goto -1)
+  (goto-char (car completion-in-region--data)))
+
+(defun my/corfu-end-of-prompt ()
+  "Move to end of completion input."
+  (interactive)
+  (corfu--goto -1)
+  (goto-char (cadr completion-in-region--data)))
+
+;;; Orderless matching styles
+
+;; Cycle through orderless matching styles
+(defun aj8/orderless-matching-style-cycle ()
+  "Cycle through orderless matching styles."
+  (interactive)
+  (cond
+   ((eq (car orderless-matching-styles) 'orderless-literal)
+    (aj8/orderless-matching-style--prefixes))
+   ((eq (car orderless-matching-styles) 'orderless-prefixes)
+    (aj8/orderless-matching-style--regexp))
+   ((eq (car orderless-matching-styles) 'orderless-regexp)
+    (aj8/orderless-matching-style--flex))
+   ((eq (car orderless-matching-styles) 'orderless-flex)
+    (aj8/orderless-matching-style--literal))
+   (t
+    (error "Unknown matching style"))))
+
+;; Flex
+(defun aj8/orderless-matching-style--flex ()
+  "Components match flexy for the rest of the session."
+  (setq-local orderless-matching-styles '(orderless-flex))
+  (minibuffer-message "[flex]"))
+
+;; Literal
+(defun aj8/orderless-matching-style--literal ()
+  "Components match literally for the rest of the session."
+  (setq-local orderless-matching-styles '(orderless-literal))
+  (minibuffer-message "[literal]"))
+
+;; Prefixes
+(defun aj8/orderless-matching-style--prefixes ()
+  "Components match prefixes for the rest of the session."
+  (setq-local orderless-matching-styles '(orderless-prefixes))
+  (minibuffer-message "[prefixes]"))
+
+;; Regexp
+(defun aj8/orderless-matching-style--regexp ()
+  "Components match regexp for the rest of the session."
+  (setq-local orderless-matching-styles '(orderless-regexp))
+  (minibuffer-message "[regexp]"))
+
+;;; Orderless style dispatchers
+
+;; Flex
+(defun aj8/orderless-dispatch-flex-if-twiddle (pattern _index _total)
+  (when (string-suffix-p "~" pattern)
+    `(orderless-flex . ,(substring pattern 0 -1))))
+
+;; Literal
+(defun aj8/orderless-dispatch-literal-if-equal (pattern _index _total)
+   (when (string-suffix-p "=" pattern)
+    `(orderless-literal . ,(substring pattern 0 -1))))
+
+;; Prefixes
+(defun aj8/orderless-dispatch-prefixes-if-less (pattern _index _total)
+   (when (string-suffix-p "<" pattern)
+    `(orderless-prefixes . ,(substring pattern 0 -1))))
+
+;; Regexp
+(defun aj8/orderless-dispatch-regexp-if-star (pattern _index _total)
+   (when (string-suffix-p "*" pattern)
+    `(orderless-regexp . ,(substring pattern 0 -1))))
+
+;; Exclude
+(defun aj8/orderless-dispatch-without-if-bang (pattern _index _total)
+  (when (string-prefix-p "!" pattern)
+    `(orderless-without-literal . ,(substring pattern 1))))
+
+;;;; Editing
+
+;;; Misc
+
+;; Copy symbol at point
+(defun my/copy-symbol-at-point ()
+  "Add the symbol at point to the kill ring."
+  (interactive)
+  (let ((symbol (thing-at-point 'symbol))
+        (bounds (bounds-of-thing-at-point 'symbol)))
+    (when symbol
+      (kill-new symbol)
+      (pulse-momentary-highlight-region (car bounds) (cdr bounds)))))
+
+;; Capitalize word at point
+(defun aj8/capitalize-word-at-point ()
+  "Capitalize ARG words from the beginning of the current word."
+  (interactive)
+  (unless (looking-at "\\<")
+    (backward-word))
+  (capitalize-word 1))
+
+;;;; Files
+
+;;;; Help
+
+;;; Misc
+
+;;;; Navigation
+
+;;; Scrolling
+
+;; Scroll up one paragraph
+(defun aj8/scroll-up-paragraph ()
+  ;; TODO: Why is the scroll-up-line at the end needed?
+  "Scroll text of selected window upward one paragraph."
+  (interactive)
+  (save-excursion
+    (goto-char (window-end))
+    (while (progn
+             (scroll-up-line)
+             (forward-line)
+             (looking-at "^$")))   ; scroll past all empty lines
+    (while (progn
+             (scroll-up-line)
+             (forward-line)
+             (not (looking-at "^$"))))
+    (scroll-up-line)))
+
+;; Scroll down one paragraph
+(defun aj8/scroll-down-paragraph ()
+  "Scroll text of selected window downward one paragraph."
+  (interactive)
+  (save-excursion
+    (goto-char (window-start))
+    (while (progn
+             (scroll-down-line)
+             (forward-line -1)
+             (looking-at "^$")))   ; scroll past all empty lines
+    (while (progn
+             (scroll-down-line)
+             (forward-line -1)
+             (not (looking-at "^$"))))))
+    ;; (scroll-down-line)))
+
+;;; Movement by lines or comments
+
+;; Move up a line, skipping comments and empty lines
+(defun aj8/previous-line ()
+  "Move to the previous line that is not empty and not a comment."
+  (interactive)
+  (previous-line)
+  ;; Skip empty lines
+  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
+                                        (line-beginning-position)
+                                        (line-end-position)))
+      (aj8/previous-line))
+  ;; Skip comment lines
+  (if (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
+                                           (line-beginning-position)
+                                           (line-end-position)))
+      (aj8/previous-line)))
+
+;; Move down a line, skipping comments and empty lines
+(defun aj8/next-line ()
+  "Move to the next line that is not empty and not a comment."
+  (interactive)
+  (next-line) ; use forward-line?
+  ;; Skip empty lines
+  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
+                                        (line-beginning-position)
+                                        (line-end-position)))
+      (aj8/next-line))
+  ;; Skip comment lines
+  (if (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
+                                           (line-beginning-position)
+                                           (line-end-position)))
+      (aj8/next-line)))
+
+;; Move to previous comment
+(defun aj8/previous-comment ()
+  "Move to the previous comment line."
+  (interactive)
+  (previous-line)
+  ;; Skip empty lines
+  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
+                                        (line-beginning-position)
+                                        (line-end-position)))
+      (aj8/previous-comment))
+  ;; Skip lines that are not comments
+  (if (not (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
+                                                (line-beginning-position)
+                                                (line-end-position))))
+      (aj8/previous-comment)))
+
+;; Move to next comment
+(defun aj8/next-comment ()
+  "Move to the next comment line."
+  (interactive)
+  (next-line) ; use forward-line?
+  ;; Skip empty lines
+  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
+                                        (line-beginning-position)
+                                        (line-end-position)))
+      (aj8/next-comment))
+  ;; Skip lines that are not comments
+  (if (not (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
+                                                (line-beginning-position)
+                                                (line-end-position))))
+      (aj8/next-comment)))
+
+;;; Movement by whitespace
+
+;; Backward movement by whitespace
+;;   (complements the built-in forward-whitespace)
+(defun my/backward-whitespace (arg)
+  "Move point to the beginning of the current sequence of whitespace characters."
+  (interactive "^p")
+  (forward-whitespace (- arg)))
+
 
 ;;;; Outline
 
@@ -403,119 +488,6 @@ number of characters matched by `outline-regexp'."
     (kill-new result)
     (message "Visible strings have been copied to the kill ring.")))
 
-;;;; Navigation
-
-;;; Scrolling
-
-;; Scroll up one paragraph
-(defun aj8/scroll-up-paragraph ()
-  ;; TODO: Why is the scroll-up-line at the end needed?
-  "Scroll text of selected window upward one paragraph."
-  (interactive)
-  (save-excursion
-    (goto-char (window-end))
-    (while (progn
-             (scroll-up-line)
-             (forward-line)
-             (looking-at "^$")))   ; scroll past all empty lines
-    (while (progn
-             (scroll-up-line)
-             (forward-line)
-             (not (looking-at "^$"))))
-    (scroll-up-line)))
-
-;; Scroll down one paragraph
-(defun aj8/scroll-down-paragraph ()
-  "Scroll text of selected window downward one paragraph."
-  (interactive)
-  (save-excursion
-    (goto-char (window-start))
-    (while (progn
-             (scroll-down-line)
-             (forward-line -1)
-             (looking-at "^$")))   ; scroll past all empty lines
-    (while (progn
-             (scroll-down-line)
-             (forward-line -1)
-             (not (looking-at "^$"))))))
-    ;; (scroll-down-line)))
-
-;;; Movement by lines or comments
-
-;; Move up a line, skipping comments and empty lines
-(defun aj8/previous-line ()
-  "Move to the previous line that is not empty and not a comment."
-  (interactive)
-  (previous-line)
-  ;; Skip empty lines
-  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
-                                        (line-beginning-position)
-                                        (line-end-position)))
-      (aj8/previous-line))
-  ;; Skip comment lines
-  (if (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
-                                           (line-beginning-position)
-                                           (line-end-position)))
-      (aj8/previous-line)))
-
-;; Move down a line, skipping comments and empty lines
-(defun aj8/next-line ()
-  "Move to the next line that is not empty and not a comment."
-  (interactive)
-  (next-line) ; use forward-line?
-  ;; Skip empty lines
-  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
-                                        (line-beginning-position)
-                                        (line-end-position)))
-      (aj8/next-line))
-  ;; Skip comment lines
-  (if (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
-                                           (line-beginning-position)
-                                           (line-end-position)))
-      (aj8/next-line)))
-
-;; Move to previous comment
-(defun aj8/previous-comment ()
-  "Move to the previous comment line."
-  (interactive)
-  (previous-line)
-  ;; Skip empty lines
-  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
-                                        (line-beginning-position)
-                                        (line-end-position)))
-      (aj8/previous-comment))
-  ;; Skip lines that are not comments
-  (if (not (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
-                                                (line-beginning-position)
-                                                (line-end-position))))
-      (aj8/previous-comment)))
-
-;; Move to next comment
-(defun aj8/next-comment ()
-  "Move to the next comment line."
-  (interactive)
-  (next-line) ; use forward-line?
-  ;; Skip empty lines
-  (if (string-match-p "^[[:space:]]*$" (buffer-substring-no-properties
-                                        (line-beginning-position)
-                                        (line-end-position)))
-      (aj8/next-comment))
-  ;; Skip lines that are not comments
-  (if (not (string-match-p "^[[:space:]]*\\s<" (buffer-substring-no-properties
-                                                (line-beginning-position)
-                                                (line-end-position))))
-      (aj8/next-comment)))
-
-;;; Movement by whitespace
-
-;; Backward movement by whitespace
-;;   (complements the built-in forward-whitespace)
-(defun my/backward-whitespace (arg)
-  "Move point to the beginning of the current sequence of whitespace characters."
-  (interactive "^p")
-  (forward-whitespace (- arg)))
-
-
 ;;;; Search
 
 ;;;; Selection
@@ -546,113 +518,6 @@ Repeat command to select additional words backwards."
         (forward-word))
     (set-mark (point)))
   (backward-word N))
-
-;;;; Editing
-
-;;; Misc
-
-;; Copy symbol at point
-(defun my/copy-symbol-at-point ()
-  "Add the symbol at point to the kill ring."
-  (interactive)
-  (let ((symbol (thing-at-point 'symbol))
-        (bounds (bounds-of-thing-at-point 'symbol)))
-    (when symbol
-      (kill-new symbol)
-      (pulse-momentary-highlight-region (car bounds) (cdr bounds)))))
-
-;; Capitalize word at point
-(defun aj8/capitalize-word-at-point ()
-  "Capitalize ARG words from the beginning of the current word."
-  (interactive)
-  (unless (looking-at "\\<")
-    (backward-word))
-  (capitalize-word 1))
-
-;;;; Completion
-
-;;; Corfu navigation
-
-(defun my/corfu-beginning-of-prompt ()
-  "Move to beginning of completion input."
-  (interactive)
-  (corfu--goto -1)
-  (goto-char (car completion-in-region--data)))
-
-(defun my/corfu-end-of-prompt ()
-  "Move to end of completion input."
-  (interactive)
-  (corfu--goto -1)
-  (goto-char (cadr completion-in-region--data)))
-
-;;; Orderless matching styles
-
-;; Cycle through orderless matching styles
-(defun aj8/orderless-matching-style-cycle ()
-  "Cycle through orderless matching styles."
-  (interactive)
-  (cond
-   ((eq (car orderless-matching-styles) 'orderless-literal)
-    (aj8/orderless-matching-style--prefixes))
-   ((eq (car orderless-matching-styles) 'orderless-prefixes)
-    (aj8/orderless-matching-style--regexp))
-   ((eq (car orderless-matching-styles) 'orderless-regexp)
-    (aj8/orderless-matching-style--flex))
-   ((eq (car orderless-matching-styles) 'orderless-flex)
-    (aj8/orderless-matching-style--literal))
-   (t
-    (error "Unknown matching style"))))
-
-;; Flex
-(defun aj8/orderless-matching-style--flex ()
-  "Components match flexy for the rest of the session."
-  (setq-local orderless-matching-styles '(orderless-flex))
-  (minibuffer-message "[flex]"))
-
-;; Literal
-(defun aj8/orderless-matching-style--literal ()
-  "Components match literally for the rest of the session."
-  (setq-local orderless-matching-styles '(orderless-literal))
-  (minibuffer-message "[literal]"))
-
-;; Prefixes
-(defun aj8/orderless-matching-style--prefixes ()
-  "Components match prefixes for the rest of the session."
-  (setq-local orderless-matching-styles '(orderless-prefixes))
-  (minibuffer-message "[prefixes]"))
-
-;; Regexp
-(defun aj8/orderless-matching-style--regexp ()
-  "Components match regexp for the rest of the session."
-  (setq-local orderless-matching-styles '(orderless-regexp))
-  (minibuffer-message "[regexp]"))
-
-;;; Orderless style dispatchers
-
-;; Flex
-(defun aj8/orderless-dispatch-flex-if-twiddle (pattern _index _total)
-  (when (string-suffix-p "~" pattern)
-    `(orderless-flex . ,(substring pattern 0 -1))))
-
-;; Literal
-(defun aj8/orderless-dispatch-literal-if-equal (pattern _index _total)
-   (when (string-suffix-p "=" pattern)
-    `(orderless-literal . ,(substring pattern 0 -1))))
-
-;; Prefixes
-(defun aj8/orderless-dispatch-prefixes-if-less (pattern _index _total)
-   (when (string-suffix-p "<" pattern)
-    `(orderless-prefixes . ,(substring pattern 0 -1))))
-
-;; Regexp
-(defun aj8/orderless-dispatch-regexp-if-star (pattern _index _total)
-   (when (string-suffix-p "*" pattern)
-    `(orderless-regexp . ,(substring pattern 0 -1))))
-
-;; Exclude
-(defun aj8/orderless-dispatch-without-if-bang (pattern _index _total)
-  (when (string-prefix-p "!" pattern)
-    `(orderless-without-literal . ,(substring pattern 1))))
 
 ;;;; Spelling
 
@@ -768,9 +633,21 @@ versa."
             (message "No more miss-spelled word!")
             (setq arg 0))))))
 
-;;;; Files
+;;;; Terminal
 
-;;;; Coding
+;;;; Theme
+
+;; Custom settings for modus-themes
+(defun aj8/modus-themes-custom-settings ()
+  "If in terminal, change cursor color on theme switch."
+  (when (not (display-graphic-p))   ; if using terminal
+    (cond
+     ((string-match-p "modus-operandi" (symbol-name (modus-themes--current-theme)))
+      (send-string-to-terminal "\033]12;black\007"))
+     ((string-match-p "modus-vivendi" (symbol-name (modus-themes--current-theme)))
+      (send-string-to-terminal "\033]12;white\007"))
+     (t
+      (error "Unknown modus-theme name")))))
 
 ;;;; Version control
 
@@ -788,9 +665,134 @@ versa."
                     (ediff-get-region-contents ediff-current-difference
                                                'B ediff-control-buffer))))
 
-;;;; Help
+;;;; Windows
+
+(defcustom aj8/side-window-height 0.16
+  "Top side window height."
+  :type 'number
+  :group 'aj8-lisp)
+
+(defcustom aj8/side-window-width 0.40
+  "Right side window width."
+  :type 'number
+  :group 'aj8-lisp)
+
+(defcustom aj8/side-window-width-dynamic
+  (if (>= (frame-width) 160)
+      (floor (/ (frame-width) 2))
+    (- (frame-width) 80))
+  "Right side window width. If the width of the frame is greater
+than or equal to 160 characters, split the frame in two, if less
+than 160 characters set width to 80 characters."
+  :type 'integer
+  :group 'aj8-lisp)
+
+;;; Kill windows
+
+(defcustom my/quit-window-exceptions-regex "^\\*\\(Messages\\)"
+  "Regexp matching buffer names for which prefix argument should
+not be inverted."
+  :type 'regexp
+  :group 'my-config)
+
+(defcustom my/quit-window-known-wrappers '(magit-mode-bury-buffer
+                                           magit-log-bury-buffer
+                                           Info-exit)
+  "List of commands that call `quit-window' for which prefix
+argument should be inverted. "
+  :type 'sexp
+  :group 'my-config)
+
+(defun my/advice--quit-window (args)
+  "Advice function that makes `quit-window' quit WINDOW and kill
+its buffer. With a prefix argument, the buffer is buried
+instead. This is the inverse of the default behavior
+`quit-window'.
+
+This affects all calls to `quit-window' except in buffers
+matching `my/quit-window-exceptions-regex'. Calls to
+`quit-window' from wrapper functions defined by
+`my/quit-window-known-wrappers' are also affected."
+  (when (and (or (eq this-command 'quit-window)
+                 (member this-command my/quit-window-known-wrappers))
+             (not (string-match-p my/quit-window-exceptions-regex (buffer-name))))
+    (unless (consp args)
+      (setq args (list nil)))
+    (setf (car args) (not current-prefix-arg)))
+  args)
+
+;; Quit window and kill its buffer
+(advice-add 'quit-window :filter-args 'my/advice--quit-window)
+
+;;; Better shrink/enlarge window functions
+
+;; Wrapper for shrink-window-horizontally
+(defun hydra-move-splitter-left (arg)
+  "Move window splitter left."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'right))
+      (shrink-window-horizontally arg)
+    (enlarge-window-horizontally arg)))
+
+;; Wrapper for enlarge-window-horizontally
+(defun hydra-move-splitter-right (arg)
+  "Move window splitter right."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'right))
+      (enlarge-window-horizontally arg)
+    (shrink-window-horizontally arg)))
+
+;; Wrapper for enlarge-window
+(defun hydra-move-splitter-up (arg)
+  "Move window splitter up."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'up))
+      (enlarge-window arg)
+    (shrink-window arg)))
+
+;; Wrapper for shrink-window
+(defun hydra-move-splitter-down (arg)
+  "Move window splitter down."
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'up))
+      (shrink-window arg)
+    (enlarge-window arg)))
 
 ;;; Misc
+
+;; Toggle window split
+(defun my/toggle-window-split ()
+  "If the window is split vertically, split it horizontally, and vice versa."
+  (interactive)
+  (unless (= (count-windows) 2)
+    (error "Can only toggle a window split in two!"))
+  (let ((split-vertically-p (window-combined-p)))
+    (delete-window)   ; close current window
+    (if split-vertically-p
+        (split-window-horizontally)
+      (split-window-vertically))   ; makes a split with the other window twice
+    (switch-to-buffer nil)))   ; restore the original window
+                               ; in this part of the window
+
+;; Visit oldest window with Treemacs
+(defun treemacs-visit-node-in-least-recently-used-window (&optional arg)
+  "Open current file or tag in window selected by `get-lru-window'.
+Stay in the current window with a single prefix argument ARG, or close the
+Treemacs window with a double prefix argument."
+  (interactive "P")
+  (treemacs--execute-button-action
+   :window (get-lru-window (selected-frame) nil :not-selected)
+   :file-action (find-file (treemacs-safe-button-get btn :path))
+   :dir-action (dired (treemacs-safe-button-get btn :path))
+   :tag-section-action (treemacs--visit-or-expand/collapse-tag-node btn arg nil)
+   :tag-action (treemacs--goto-tag btn)
+   :window-arg arg
+   :ensure-window-split t
+   :no-match-explanation "Node is neither a file, a directory or a tag - nothing to do here."))
 
 ;;;; Web
 
