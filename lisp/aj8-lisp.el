@@ -202,8 +202,8 @@ If the current buffer does not belong to a project, call `previous-buffer'."
 
 ;; Exclude
 (defun aj8/orderless-dispatch-without-if-bang (pattern _index _total)
-  (when (string-prefix-p "!" pattern)
-    `(orderless-without-literal . ,(substring pattern 1))))
+  (when (string-suffix-p "!" pattern)
+    `(orderless-without-literal . ,(substring pattern 0 -1))))
 
 ;;;; Editing
 
