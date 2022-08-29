@@ -106,7 +106,7 @@ If the current buffer does not belong to a project, call `previous-buffer'."
   (unless (one-window-p)
     (setq win (selected-window))
     (other-window 1)
-    (when (window-parameter (selected-window) 'window-side)   ; skip side windows
+    (while (window-parameter (selected-window) 'window-side)   ; skip side windows
       (other-window 1))
     (kill-buffer)
     (select-window win)))
