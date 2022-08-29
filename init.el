@@ -729,6 +729,21 @@
 
 ;;; Navigation
 
+;; mosey (mosey around your buffers)
+(use-package mosey
+  :bind* (("C-a" . mosey-bol-backward-bounce)
+          ("C-e" . mosey-eol-forward-cycle))
+  :init
+  ;; Function list for beginning of line
+  (defmosey '(beginning-of-line
+              back-to-indentation)
+    :prefix "bol")
+  ;; Function list for end of line
+  (defmosey '(mosey-goto-end-of-code
+              mosey-goto-beginning-of-comment-text
+              end-of-line)
+    :prefix "eol"))
+
 ;; syntax-subword (make operations on words more fine-grained)
 (use-package syntax-subword
   :disabled
