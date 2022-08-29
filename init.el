@@ -1865,7 +1865,7 @@
 
 ;; Misc window manipulation
 (global-set-key (kbd "C-x !") #'delete-other-windows-vertically)
-(global-set-key (kbd "C-x =") #'balance-windows)        ; override `what-cursor-position'
+(global-set-key (kbd "C-x =") #'balance-windows)   ; override `what-cursor-position'
 (global-set-key (kbd "C-x +") #'balance-windows-area)   ; override `balance-windows'
 ;; (global-set-key (kbd "C-x -") #'shrink-window-if-larger-than-buffer)   ; default
 (global-set-key (kbd "C-x _") #'fit-window-to-buffer)   ; enlarges and shrinks

@@ -60,7 +60,7 @@ and `previous-buffer'."
 ;;; Project buffer switching
 ;;;   (imported from projectile and adapted for project.el)
 
-;; Find next/previous projct buffer
+;; Find next/previous project buffer
 (defun my/project--repeat-until-project-buffer (orig-fun &rest args)
   "Repeat ORIG-FUN with ARGS until the current buffer is a project buffer."
   (if (project-current)
