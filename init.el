@@ -1604,6 +1604,9 @@
 
 ;;; Other...
 
+;; Enable repeat mode
+(repeat-mode 1)
+
 ;; Expand abbreviations
 (add-hook 'text-mode-hook #'abbrev-mode)
 
