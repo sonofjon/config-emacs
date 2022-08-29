@@ -386,7 +386,7 @@
   ;; :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
   :bind (:map corfu-map
-              ("RET" . corfu-quit)   ; pressing Return quits completion
+              ;; ("RET" . corfu-quit)   ; pressing Return quits completion
               ;; Navigation using standard bol and eol keybindings
               ([remap move-beginning-of-line] . my/corfu-beginning-of-prompt)
               ([remap move-end-of-line] . my/corfu-end-of-prompt))
