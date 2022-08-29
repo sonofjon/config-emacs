@@ -483,6 +483,11 @@
   :init
   ;; Replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
+  :custom
+  ;; Hide some actions
+  (embark-verbose-indicator-excluded-actions
+   '("\\(local\\|global\\)-set-key" ".*debug-.*" "elp-.*" ".*trace-.*"
+     embark-history-remove))
   :config
   ;; Hide the mode line of the embark live/completions buffers
   (add-to-list 'display-buffer-alist
