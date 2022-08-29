@@ -969,6 +969,40 @@
   ;; (modus-themes-load-operandi))
   ;; (modus-themes-load-vivendi))
 
+;; ef-themes (colorful and legible themes)
+(use-package ef-themes
+  ;; Themes:
+  ;;   Light: `ef-day', `ef-light', `ef-spring', `ef-summer'.
+  ;;   Dark:  `ef-autumn', `ef-dark', `ef-night', `ef-winter'.
+  ;;   All the themes are included in the variable `ef-themes-collection'.
+  ;; Commands:
+  ;;   `ef-themes-toggle'
+  ;;   `ef-themes-select'
+  ;;   `ef-themes-load-random'
+  ;;   `ef-themes-preview-colors'
+  ;;   `ef-themes-preview-colors-current'
+  :disabled
+  :bind ("<f5>" . ef-themes-toggle)
+  ;; Make customizations that affect Emacs faces before loading a theme
+  :init
+  (setq ef-themes-headings
+        '((0 . (ultrabold))
+          (1 . (extrabold))
+          (2 . (bold))
+          (3 . (semibold))
+          (t . (regular))))
+  ;; Disable all other themes to avoid awkward blending
+  (mapc #'disable-theme custom-enabled-themes)
+  ;; Load theme
+  (load-theme 'ef-light :no-confirm)
+  ;; (load-theme 'ef-dark :no-confirm)
+  ;; Load  theme (also calls `ef-themes-post-load-hook')
+  ;; (ef-themes-select 'ef-light)
+  ;; (ef-themes-select 'ef-dark)
+  :config
+  ;; Specify themes for ef-themes-toggle command
+  (setq ef-themes-to-toggle '(ef-light ef-dark)))
+
 ;; circadian (theme-switching based on daytime)
 (use-package circadian
   :after modus-themes
@@ -977,6 +1011,8 @@
   ;;                     ("18:00"  . modus-vivendi)))
   (circadian-themes '((:sunrise . modus-operandi)
                       (:sunset  . modus-vivendi)))
+  ;; (circadian-themes '((:sunrise . ef-light)
+  ;;                     (:sunset  . ef-dark)))
   (calendar-latitude 59.33)
   (calendar-longitude 18.07)
   :config
