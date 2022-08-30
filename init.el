@@ -585,7 +585,6 @@
 
 ;; repeat-help (display keybindings for repeat-mode)
 (use-package repeat-help
-  :defer
   :hook (repeat-mode . repeat-help-mode)
   :custom
   (repeat-help-auto t))
