@@ -1572,6 +1572,15 @@
          (slot . 1)
          (window-parameters . ((no-delete-other-windows . t))))
         ;;
+        ;;   Other
+        ;;
+        ("\\*\\(Embark Collect:.*\\|use-package statistics\\)\\*"
+         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (window-width . ,aj8/side-window-width-dynamic)
+         (side . right)
+         (slot . -1)
+         (window-parameters . ((no-delete-other-windows . t))))
+        ;;
         ;; Bottom side window
         ;;
         ("\\*.*\\(e?shell\\|v?term\\).*"
