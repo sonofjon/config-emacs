@@ -108,7 +108,9 @@ If the current buffer does not belong to a project, call `previous-buffer'."
     (other-window 1)
     (while (window-parameter (selected-window) 'window-side)   ; skip side windows
       (other-window 1))
-    (kill-buffer)
+    (if (not (eq (selected-window) win))   ; don't kill initial window
+        (kill-buffer)
+      (message "No other window to kill"))
     (select-window win)))
 
 ;; Make a *scratch* buffer
