@@ -1499,21 +1499,24 @@
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
-         (slot . 0))
+         (slot . 0)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;; ((or . ((derived-mode . messages-buffer-mode)
         ;;         "\\*Messages\\*"))
         ("\\*Messages\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
-         (slot . 0))
+         (slot . 0)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;; ((or . ((derived-mode . backtrace-mode)
         ;;         "\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"))
         ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
-         (slot . 0))
+         (slot . 0)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;; Right side window
         ;;
@@ -1523,20 +1526,23 @@
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
-         (slot . -1))
+         (slot . -1)
+         (window-parameters . ((no-delete-other-windows . t))))
         ("\\(magit-diff:\\|magit-revision:\\|magit-stash:\\).*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
-         (slot . 1))
+         (slot . 1)
+         (window-parameters . ((no-delete-other-windows . t))))
         ("COMMIT_EDITMSG"
          ;; (display-buffer-at-bottom)
          ;; (window-height . fit-window-to-buffer)
-         ;; (window-parameters . ((no-other-window . t))))
+         ;; (window-parameters . ((no-delete-other-windows . t))))
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
-         (slot . 1))
+         (slot . -1)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;;   Help
         ;;
@@ -1546,14 +1552,16 @@
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
-         (slot . 1))
+         (slot . 1)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;; ((or . ((derived-mode . Info-mode)
         ;;         "\\*info.*\\*"))
         ("\\*info.*\\*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
-         (slot . 1))
+         (slot . 1)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;; ((or . ((derived-mode . Man-mode)
         ;;         (derived-mode . woman-mode)
         ;;         "\\*\\(Man\\|WoMan\\).*"))
@@ -1561,7 +1569,8 @@
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
-         (slot . 1))
+         (slot . 1)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;; Bottom side window
         ;;
@@ -1569,7 +1578,8 @@
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . bottom)
-         (slot . 0))
+         (slot . 0)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;; Bottom buffer (not side window)
         ;;
