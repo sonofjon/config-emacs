@@ -978,11 +978,12 @@
           (3 . (background monochrome))
           (t . (monochrome))))
   ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes))
-  ;; :config
+  (modus-themes-load-themes)
+  :config
   ;; Load the theme
-  ;; (modus-themes-load-operandi))
-  ;; (modus-themes-load-vivendi))
+  (if (aj8/daytime-p)
+      (modus-themes-load-operandi)
+    (modus-themes-load-vivendi)))
 
 ;; ef-themes (colorful and legible themes)
 (use-package ef-themes
@@ -1009,7 +1010,9 @@
   ;; Disable all other themes to avoid awkward blending
   (mapc #'disable-theme custom-enabled-themes)
   ;; Load theme
-  (load-theme 'ef-light :no-confirm)
+  (if (aj8/daytime-p)
+      (load-theme 'ef-light :no-confirm)
+    (load-theme 'ef-dark :no-confirm))
   ;; (load-theme 'ef-dark :no-confirm)
   ;; Load  theme (also calls `ef-themes-post-load-hook')
   ;; (ef-themes-select 'ef-light)
@@ -1026,10 +1029,6 @@
   ;;                     ("18:00"  . modus-vivendi)))
   (circadian-themes '((:sunrise . modus-operandi)
                       (:sunset  . modus-vivendi)))
-  ;; (circadian-themes '((:sunrise . ef-light)
-  ;;                     (:sunset  . ef-dark)))
-  (calendar-latitude 59.33)
-  (calendar-longitude 18.07)
   :config
   (circadian-setup))
 

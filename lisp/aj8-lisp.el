@@ -659,6 +659,38 @@ versa."
 
 ;;;; Theme
 
+;;; Time functions
+
+(require 'solar)
+
+(setq calendar-latitude 59.33)
+(setq calendar-longitude 18.07)
+
+(defun aj8/time-sunrise ()
+  "Get clean sunrise time string from `solar-sunset-sunrise`."
+  (cl-first (cl-first (solar-sunrise-sunset (calendar-current-date)))))
+
+(defun aj8/time-sunset ()
+  "Get clean sunset time string from `solar-sunset-sunrise`."
+  (cl-first (cl-second (solar-sunrise-sunset (calendar-current-date)))))
+
+(defcustom aj8/time-sunrise (aj8/time-sunrise)
+  "Sunrise time."
+  :type 'number
+  :group 'aj8-lisp)
+
+(defcustom aj8/time-sunset (aj8/time-sunset)
+  "Sunrise time."
+  :type 'number
+  :group 'aj8-lisp)
+
+(defun aj8/daytime-p ()
+  "Return True if current time is daytime, False otherwise."
+  (and (> (decoded-time-hour (decode-time)) aj8/time-sunrise)
+       (< (decoded-time-hour (decode-time)) aj8/time-sunset)))
+
+;;; Modus
+
 ;; Custom settings for modus-themes
 (defun aj8/modus-themes-custom-settings ()
   "If in terminal, change cursor color on theme switch."
