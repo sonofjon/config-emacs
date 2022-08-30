@@ -156,6 +156,7 @@
 ;; dimmer (visually highlight the selected buffer)
 (use-package dimmer
   ;; :disabled
+  :commands dimmer-config-change-handler
   :custom
   ;; What to dim
   ;; (dimmer-adjustment-mode ':both)
@@ -591,6 +592,7 @@
 
 ;; whole-line-or-region (operate on current line if region undefined)
 (use-package whole-line-or-region
+  :defer 1
   :diminish whole-line-or-region-local-mode
   :config
   ;; Use whole-line-or-region-mode everywhere
@@ -857,7 +859,7 @@
 
 ;; dashboard (a startup screen extracted from Spacemacs)
 (use-package dashboard
-  ;; :disabled
+  :disabled  ; 0.3s startup time
   :custom
   ;; Set the title
   (dashboard-banner-logo-title "Welcome to the The Department of Productivity")
@@ -1023,6 +1025,8 @@
 
 ;; circadian (theme-switching based on daytime)
 (use-package circadian
+  ;; :disabled  ; 0.3s startup time
+  :defer 60
   :after modus-themes
   :custom
   ;; (circadian-themes '(("8:00" . modus-operandi)
@@ -1158,6 +1162,7 @@
 
 ;; google-this (a set of functions and bindings to google under point)
 (use-package google-this
+  :defer 1
   :diminish
   :init
   (which-key-add-key-based-replacements "C-c /" "google-this")   ; add label for prefix key
