@@ -40,13 +40,14 @@ Emacs session."
 
 (defcustom aj8/buffer-skip-regexp
   (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Completions*"
-                  "*Messages*" "*package*" "*Quail Completions*"
-                  "*quelpa-build-checkout*" "*scratch*" "*Warnings*"
-                  "*Async-native-compile-log*")
+                  "*Flymake log*" "*lsp-log*" "*Messages*" "*package*"
+                  "*Quail Completions*" "*quelpa-build-checkout*"
+                  "*scratch*" "*Warnings*" "*Async-native-compile-log*")
               (seq "magit-diff" (zero-or-more anything))
               (seq "magit-process" (zero-or-more anything))
               (seq "magit-revision" (zero-or-more anything))
-              (seq "magit-stash" (zero-or-more anything)))
+              (seq "magit-stash" (zero-or-more anything))
+              (seq "*" (one-or-more anything) "-ls" (zero-or-more anything)) "*")
               eos)
   "Regular expression matching buffers ignored by `next-buffer'
 and `previous-buffer'."
