@@ -71,7 +71,7 @@
 
 ;; Gather package statistics
 ;;   (use with use-package-report)
-(setq use-package-compute-statistics t)
+;; (setq use-package-compute-statistics t)
 
 ;;; Quelpa
 
