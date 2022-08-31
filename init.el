@@ -1233,7 +1233,7 @@
 (setq inhibit-startup-buffer-menu t)
 
 ;; Do not switch to buffers already shown
-;; (setq switch-to-prev-buffer-skip 'this)
+(setq switch-to-prev-buffer-skip 'this)
 
 ;; Skip some buffers when switching buffers
 ;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
