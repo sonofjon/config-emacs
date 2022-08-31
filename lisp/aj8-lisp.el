@@ -84,19 +84,16 @@ and `previous-buffer'."
   "In selected window switch to the next project buffer.
 If the current buffer does not belong to a project, call `next-buffer'."
   (interactive)
-  ;; TODO: use advice instead?
-  (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
-  (my/project--repeat-until-project-buffer #'next-buffer)
-  (setq switch-to-prev-buffer-skip nil))
+  (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+    (my/project--repeat-until-project-buffer #'next-buffer)))
 
 ;; Switch to previous project buffer
 (defun my/project-previous-buffer ()
   "In selected window switch to the previous project buffer.
 If the current buffer does not belong to a project, call `previous-buffer'."
   (interactive)
-  (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
-  (my/project--repeat-until-project-buffer #'previous-buffer)
-  (setq switch-to-prev-buffer-skip nil))
+  (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+    (my/project--repeat-until-project-buffer #'previous-buffer)))
 
 ;;; Misc
 
