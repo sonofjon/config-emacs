@@ -870,9 +870,11 @@ capf:s, see documentation.")
 
 ;; eshell-git-prompt (some Eshell prompt for Git users)
 (use-package eshell-git-prompt
+  :if (display-graphic-p)
   :after eshell
   :config
-  (eshell-git-prompt-use-theme 'powerline))
+  (when (display-graphic-p)
+      (eshell-git-prompt-use-theme 'powerline)))
 
 ;;; Theme
 
