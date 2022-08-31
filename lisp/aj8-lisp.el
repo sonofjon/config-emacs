@@ -669,6 +669,7 @@ versa."
 (setq calendar-longitude 18.07)
 
 (defun aj8/time-sunrise ()
+  ;; TODO: Should return fractional value
   "Get clean sunrise time string from `solar-sunset-sunrise`."
   (cl-first (cl-first (solar-sunrise-sunset (calendar-current-date)))))
 

@@ -257,7 +257,7 @@
 
 ;; lsp-ui-mode (UI modules for lsp-mode)
 (use-package lsp-ui
-  :after lsp-mode
+  :after lsp-mode   ; TODO: make sure all :after packages use autoload
   :commands lsp-ui-mode)
 
 ;; lsp-treemacs (LSP Treemacs)
@@ -400,6 +400,7 @@
   ;; (corfu-auto-prefix 3)          ; minimum length of prefix for auto completion."
   ;; (corfu-separator ?\s)          ; orderless field separator
   ;; (corfu-quit-at-boundary t)     ; automatically quit at word boundary
+  ;; TODO: corfu doesn't quit when attempting to complete long lines
   ;; (corfu-quit-no-match t)        ; automatically quit if there is no match
   ;; (corfu-preview-current nil)    ; disable current candidate preview
   ;; (corfu-preselect-first nil)    ; disable candidate preselection
@@ -736,6 +737,7 @@
           ("C-e" . mosey-eol-forward-cycle))
   :init
   ;; Function list for beginning of line
+  ;; TODO: beginning of line first, then back to indentation
   (defmosey '(beginning-of-line
               back-to-indentation)
     :prefix "bol")
