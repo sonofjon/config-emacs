@@ -120,6 +120,16 @@ If the current buffer does not belong to a project, call `previous-buffer'."
        (switch-to-buffer (get-buffer-create "*scratch*"))
        (lisp-interaction-mode))
 
+;; Tag buffer name
+(defun aj8/tag-buffer-name (tag)
+  "Add TAG to buffer name."
+  (rename-buffer (format "%s # %s" (buffer-name) tag)))
+
+;; Prefix buffer name
+(defun aj8/prefix-buffer-name (prefix)
+  "Add PREFIX to buffer name."
+  (rename-buffer (format "%s: %s" prefix (buffer-name))))
+
 ;;;; Coding
 
 ;;;; Completion
