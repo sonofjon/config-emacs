@@ -951,6 +951,15 @@ When called from an eww buffer, provide the current link as
 
 ;;; Custom repeat-maps
 
+;; Add repeat-mode support for any keymap
+(defun my/repeatize (keymap)
+  "Add `repeat-mode' support to a KEYMAP."
+  (map-keymap
+   (lambda (_key cmd)
+     (when (symbolp cmd)
+       (put cmd 'repeat-map keymap)))
+   (symbol-value keymap)))
+
 ;; Create repeat-map for window resizing
 (defvar aj8/resize-window-repeat-map
   (let ((map (make-sparse-keymap)))
