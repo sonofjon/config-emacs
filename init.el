@@ -465,6 +465,25 @@
          ("C-c u l" . cape-line)
          ("C-c u s" . cape-symbol))          ; complete symbols everywhere
   :init
+  ;; Cape completion at point functions
+  (defalias 'cape-ispell+dabbrev+symbol+keyword (cape-super-capf #'cape-ispell
+	 ;; TODO: symbol completion fails on hyphen when ispell precedes symbol
+								 #'cape-dabbrev
+								 #'cape-symbol
+								 #'cape-keyword)
+    "Completion at point function for Cape, combining completions
+from ispell, dabbrev, symbol and keyword. Note that the order of
+the capf:s matter. Also, cape-file does not merge well with the other
+capf:s, see documentation.")
+  (defalias 'cape-dabbrev+symbol+keyword+ispell (cape-super-capf #'cape-dabbrev
+								 #'cape-symbol
+								 #'cape-keyword
+								 #'cape-ispell)
+    "Completion at point function for Cape, combining completions
+from dabbrev, symbol, keyword and ispell. Note that the order of
+the capf:s matter. Also, cape-symbol must precede cape-ispell
+(bug?). Also, cape-file does not merge well with the other
+capf:s, see documentation.")
   ;; Add `completion-at-point-functions', used by `completion-at-point'
   ;; (add-to-list 'completion-at-point-functions #'cape-file)
   ;; ;; (add-to-list 'completion-at-point-functions #'cape-history)
