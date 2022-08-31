@@ -1254,6 +1254,9 @@
 ;; Reuse dired buffers
 (setf dired-kill-when-opening-new-dired-buffer t)
 
+;; Kill customize group windows
+(setq custom-buffer-done-kill t)
+
 ;; Additional variables to persist between sessions
 (add-to-list 'savehist-additional-variables 'kill-ring)
 (add-to-list 'savehist-additional-variables 'global-mark-ring)
