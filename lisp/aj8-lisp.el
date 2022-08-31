@@ -950,12 +950,15 @@ When called from an eww buffer, provide the current link as
     (define-key map "<" #'hydra-move-splitter-left)
     map))
 
-;; Add repeat-map property to commands
+;; Add repeat-map property to window resizing commands
 (dolist (cmd '(hydra-move-splitter-up
                hydra-move-splitter-down
                hydra-move-splitter-right
                hydra-move-splitter-left))
   (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
+
+;; Add "/" to undo-repeat-map
+(define-key undo-repeat-map "/" #'undo)
 
 ;;; xterm key sequence mappings for rxvt
 
