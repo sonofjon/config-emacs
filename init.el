@@ -411,6 +411,13 @@
   ;; Enable Corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
   (global-corfu-mode)
+  ;; Enable Corfu in the minibuffer
+  (defun corfu-enable-always-in-minibuffer ()
+    "Enable Corfu in the minibuffer if Vertico is not active."
+    (unless (bound-and-true-p vertico--input)
+      ;; (setq-local corfu-auto nil) Enable/disable auto completion
+      (corfu-mode 1)))
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
   :config
   ;; Sort candidates by history
   (corfu-history-mode 1)   ; requires savehist-mode
