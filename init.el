@@ -1581,7 +1581,7 @@
         ;;
         ;;   Other
         ;;
-        ("\\*\\(Embark Collect:.*\\|use-package statistics\\)\\*"
+        ("\\*\\(Embark Collect:.*\\|Occur\\|use-package statistics\\)\\*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
