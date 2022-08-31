@@ -938,6 +938,9 @@ When called from an eww buffer, provide the current link as
        (put cmd 'repeat-map keymap)))
    (symbol-value keymap)))
 
+;; Add repeat-map for Smerge
+(with-eval-after-load "smerge" (my/repeatize 'smerge-basic-map))
+
 ;; Create repeat-map for window resizing
 (defvar aj8/resize-window-repeat-map
   (let ((map (make-sparse-keymap)))
