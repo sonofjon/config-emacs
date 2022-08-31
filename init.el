@@ -233,12 +233,12 @@
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook ((sh-mode . lsp)   ; or lsp-deferred
-         ;; (html-mode . lsp)
-         ;; (css-mode . lsp)
-         (web-mode . lsp)
-         (js-mode . lsp)
-         (json-mode . lsp)
-         (tex-mode . lsp)
+         ;; (html-mode . lsp-deferred)
+         ;; (css-mode . lsp-deferred)
+         (web-mode . lsp-deferred)
+         (js-mode . lsp-deferred)
+         (json-mode . lsp-deferred)
+         (tex-mode . lsp-deferred)
          ;; which-key integration
          (lsp-mode . lsp-enable-which-key-integration)
          ;; Corfu integration
@@ -270,7 +270,7 @@
   :after lsp-mode
   :hook (python-mode . (lambda ()
                          (require 'lsp-pyright)
-                         (lsp))))  ; or lsp-deferred
+                         (lsp-deferred))))  ; or lsp-deferred
 
 ;; flymake-shellcheck (a bash/sh Flymake backend powered by ShellCheck)
 (use-package flymake-shellcheck
