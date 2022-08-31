@@ -1945,7 +1945,7 @@
 ;;; Windows
 
 ;; Resize windows
-(global-set-key (kbd "C-x }") #'hydra-move-splitter-up)      ; TODO: add to repeat map
+(global-set-key (kbd "C-x }") #'hydra-move-splitter-up)
 (global-set-key (kbd "C-x {") #'hydra-move-splitter-down)
 (global-set-key (kbd "C-x >") #'hydra-move-splitter-right)   ; override `scroll-right'
 (global-set-key (kbd "C-x <") #'hydra-move-splitter-left)    ; override `scroll-left'
@@ -1960,10 +1960,6 @@
 
 ;; Toggle side windows
 (global-set-key (kbd "C-x |") #'window-toggle-side-windows)
-
-;; Add enlarge/shrink-window-horizontally to repeat-map
-(define-key resize-window-repeat-map ">" #'enlarge-window-horizontally)
-(define-key resize-window-repeat-map "<" #'shrink-window-horizontally)
 
 ;; Cycle window configurations
 (define-key winner-mode-map (kbd "C-c w <") #'winner-undo)

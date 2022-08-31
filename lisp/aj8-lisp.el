@@ -949,6 +949,24 @@ When called from an eww buffer, provide the current link as
     (up-list (abs levels))
     (eval-last-sexp nil)))
 
+;;; Custom repeat-maps
+
+;; Create repeat-map for window resizing
+(defvar aj8/resize-window-repeat-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "}" #'hydra-move-splitter-up)
+    (define-key map "{" #'hydra-move-splitter-down)
+    (define-key map ">" #'hydra-move-splitter-right)
+    (define-key map "<" #'hydra-move-splitter-left)
+    map))
+
+;; Add repeat-map property to commands
+(dolist (cmd '(hydra-move-splitter-up
+               hydra-move-splitter-down
+               hydra-move-splitter-right
+               hydra-move-splitter-left))
+  (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
+
 ;;; xterm key sequence mappings for rxvt
 
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
