@@ -733,11 +733,10 @@
 
 ;; mosey (mosey around your buffers)
 (use-package mosey
-  :bind* (("C-a" . mosey-bol-backward-bounce)
-          ("C-e" . mosey-eol-forward-cycle))
+  :bind* (("C-a" . mosey-bol-forward-bounce)
+          ("C-e" . mosey-eol-backward-cycle))
   :init
   ;; Function list for beginning of line
-  ;; TODO: beginning of line first, then back to indentation
   (defmosey '(beginning-of-line
               back-to-indentation)
     :prefix "bol")
