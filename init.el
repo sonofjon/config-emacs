@@ -1319,6 +1319,9 @@
 ;; (setq dired-listing-switches "-agho --group-directories-first")
 (setq dired-listing-switches "-agho")   ; macOS version
 
+;; Don't ask about using dired-find-alternate-file
+(put 'dired-find-alternate-file 'disabled nil)
+
 ;;; Help
 
 ;; More extensive apropos commands
@@ -1830,6 +1833,9 @@
 
 ;; Forget project
 (global-set-key (kbd "C-x p t") #'project-forget-project)
+
+;; Reuse dired buffers
+(define-key dired-mode-map (kbd "RET") #'dired-find-alternate-file)
 
 ;;; Help
 
