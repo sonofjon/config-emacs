@@ -1251,6 +1251,9 @@
 ;; Reuse existing help window
 ;; (setq help-window-select t)
 
+;; Reuse dired buffers
+(setf dired-kill-when-opening-new-dired-buffer t)
+
 ;; Additional variables to persist between sessions
 (add-to-list 'savehist-additional-variables 'kill-ring)
 (add-to-list 'savehist-additional-variables 'global-mark-ring)
@@ -1318,9 +1321,6 @@
 ;; Custom listing style in dired
 ;; (setq dired-listing-switches "-agho --group-directories-first")
 (setq dired-listing-switches "-agho")   ; macOS version
-
-;; Don't ask about using dired-find-alternate-file
-(put 'dired-find-alternate-file 'disabled nil)
 
 ;;; Help
 
@@ -1833,9 +1833,6 @@
 
 ;; Forget project
 (global-set-key (kbd "C-x p t") #'project-forget-project)
-
-;; Reuse dired buffers
-(define-key dired-mode-map (kbd "RET") #'dired-find-alternate-file)
 
 ;;; Help
 
