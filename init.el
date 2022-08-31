@@ -1079,6 +1079,7 @@ capf:s, see documentation.")
    '(("~/dotfiles"                . 1)
      ("~/projects"                . 1)
      ("~/git"                     . 1)))
+  (magit-clone-name-alist '(("\\`\\(?:github:\\|gh:\\)?\\([^:]+\\)\\'" "github.com" "sonofjon")))
   :config
   ;; Disable hl-line-mode
   (add-hook 'magit-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
