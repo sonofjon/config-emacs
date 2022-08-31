@@ -400,7 +400,6 @@
   ;; (corfu-auto-prefix 3)          ; minimum length of prefix for auto completion."
   ;; (corfu-separator ?\s)          ; orderless field separator
   ;; (corfu-quit-at-boundary t)     ; automatically quit at word boundary
-  ;; TODO: corfu doesn't quit when attempting to complete long lines
   ;; (corfu-quit-no-match t)        ; automatically quit if there is no match
   ;; (corfu-preview-current nil)    ; disable current candidate preview
   ;; (corfu-preselect-first nil)    ; disable candidate preselection
@@ -484,7 +483,7 @@
   ;; ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
   ;; Use a combination of capf:s instead
   (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-line)
+  ;; (add-to-list 'completion-at-point-functions #'cape-line)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev+symbol+keyword+ispell)
   (which-key-add-key-based-replacements "C-c u" "corfu/cape"))   ; add label for prefix key
 
