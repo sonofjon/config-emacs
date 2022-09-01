@@ -257,7 +257,7 @@
 
 ;; lsp-ui-mode (UI modules for lsp-mode)
 (use-package lsp-ui
-  :after lsp-mode   ; TODO: make sure all :after packages use autoload
+  :after lsp-mode
   :commands lsp-ui-mode)
 
 ;; lsp-treemacs (LSP Treemacs)
