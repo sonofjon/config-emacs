@@ -185,6 +185,10 @@
   (unbind-key "C-c C-f" json-mode-map)
   (unbind-key "C-c P" json-mode-map))
 
+;; lua-mode (major-mode for editing Lua scripts)
+(use-package lua-mode
+  :mode ("\\.lua$" . lua-mode))
+
 ;; markdown-mode (major-mode for editing Markdown files)
 (use-package markdown-mode
   :mode ("\\.md$" . markdown-mode))
@@ -240,6 +244,7 @@
          (web-mode . lsp-deferred)
          (js-mode . lsp-deferred)
          (json-mode . lsp-deferred)
+         (lua-mode . lsp-deferred)
          (tex-mode . lsp-deferred)
          ;; which-key integration
          (lsp-mode . lsp-enable-which-key-integration)
