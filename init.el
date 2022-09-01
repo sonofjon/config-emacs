@@ -826,6 +826,7 @@
 
 ;; eshell (the Emacs command shell) - [built-in package]
 (use-package eshell
+  :ensure nil   ; don't install built-in packages
   :hook (eshell-first-time-mode . efs/configure-eshell)
   :init
   (defun efs/configure-eshell ()
