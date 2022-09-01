@@ -795,7 +795,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
 ;;; Better shrink/enlarge window functions
 
 ;; Wrapper for shrink-window-horizontally
-(defun hydra-move-splitter-left (arg)
+(defun my/move-splitter-left (arg)
   "Move window splitter left."
   (interactive "p")
   (if (let ((windmove-wrap-around))
@@ -804,7 +804,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
     (enlarge-window-horizontally arg)))
 
 ;; Wrapper for enlarge-window-horizontally
-(defun hydra-move-splitter-right (arg)
+(defun my/move-splitter-right (arg)
   "Move window splitter right."
   (interactive "p")
   (if (let ((windmove-wrap-around))
@@ -813,7 +813,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
     (shrink-window-horizontally arg)))
 
 ;; Wrapper for enlarge-window
-(defun hydra-move-splitter-up (arg)
+(defun my/move-splitter-up (arg)
   "Move window splitter up."
   (interactive "p")
   (if (let ((windmove-wrap-around))
@@ -822,7 +822,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
     (shrink-window arg)))
 
 ;; Wrapper for shrink-window
-(defun hydra-move-splitter-down (arg)
+(defun my/move-splitter-down (arg)
   "Move window splitter down."
   (interactive "p")
   (if (let ((windmove-wrap-around))
@@ -967,17 +967,17 @@ When called from an eww buffer, provide the current link as
 ;; Create repeat-map for window resizing
 (defvar aj8/resize-window-repeat-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "{" #'hydra-move-splitter-up)
-    (define-key map "}" #'hydra-move-splitter-down)
-    (define-key map ">" #'hydra-move-splitter-right)
-    (define-key map "<" #'hydra-move-splitter-left)
+    (define-key map "{" #'my/move-splitter-up)
+    (define-key map "}" #'my/move-splitter-down)
+    (define-key map ">" #'my/move-splitter-right)
+    (define-key map "<" #'my/move-splitter-left)
     map))
 
 ;; Add repeat-map property to window resizing commands
-(dolist (cmd '(hydra-move-splitter-up
-               hydra-move-splitter-down
-               hydra-move-splitter-right
-               hydra-move-splitter-left))
+(dolist (cmd '(my/move-splitter-up
+               my/move-splitter-down
+               my/move-splitter-right
+               my/move-splitter-left))
   (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
 
 ;; Add "/" to undo-repeat-map

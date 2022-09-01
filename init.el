@@ -1956,10 +1956,10 @@
 ;;; Windows
 
 ;; Resize windows
-(global-set-key (kbd "C-x {") #'hydra-move-splitter-up)
-(global-set-key (kbd "C-x }") #'hydra-move-splitter-down)
-(global-set-key (kbd "C-x >") #'hydra-move-splitter-right)   ; override `scroll-right'
-(global-set-key (kbd "C-x <") #'hydra-move-splitter-left)    ; override `scroll-left'
+(global-set-key (kbd "C-x {") #'my/move-splitter-up)
+(global-set-key (kbd "C-x }") #'my/move-splitter-down)
+(global-set-key (kbd "C-x >") #'my/move-splitter-right)   ; override `scroll-right'
+(global-set-key (kbd "C-x <") #'my/move-splitter-left)    ; override `scroll-left'
 
 ;; Misc window manipulation
 (global-set-key (kbd "C-x !") #'delete-other-windows-vertically)
@@ -2043,21 +2043,21 @@
   ;; ("S-<down>" enlarge-window)
   ("M-<left>" (lambda ()
                 (interactive)
-                (hydra-move-splitter-left 1)
+                (my/move-splitter-left 1)
                 (message "Width: %s Height: %s" (window-body-width) (window-body-height))))
   ("M-<right>" (lambda ()
                 (interactive)
-                (hydra-move-splitter-right 1)
+                (my/move-splitter-right 1)
                 (message "Width: %s Height: %s" (window-body-width) (window-body-height))))
-  ;; ("M-<up>" hydra-move-splitter-up)
+  ;; ("M-<up>" my/move-splitter-up)
   ("M-p" (lambda ()
                 (interactive)
-                (hydra-move-splitter-up 1)
+                (my/move-splitter-up 1)
                 (message "Width: %s Height: %s" (window-body-width) (window-body-height))))
-  ;; ("M-<down>" hydra-move-splitter-down)
+  ;; ("M-<down>" my/move-splitter-down)
   ("M-n" (lambda ()
                 (interactive)
-                (hydra-move-splitter-down 1)
+                (my/move-splitter-down 1)
                 (message "Width: %s Height: %s" (window-body-width) (window-body-height))))
   ("v" split-window-vertically)
   ("h" split-window-horizontally)
