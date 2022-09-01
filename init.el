@@ -1515,16 +1515,12 @@
         ;;
         ;; Top side window
         ;;
-        ;; ((or . ((derived-mode . flymake-diagnostics-buffer-mode)
-        ;;         "\\*Flymake diagnostics\\*"))
         ("\\*Flymake diagnostics.*\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
          (slot . 0)
          (window-parameters . ((no-delete-other-windows . t))))
-        ;; ((or . ((derived-mode . messages-buffer-mode)
-        ;;         "\\*Messages\\*"))
         ("\\*Messages\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
@@ -1568,25 +1564,18 @@
         ;;
         ;;   Help
         ;;
-        ;; ((or . ((derived-mode . help-mode)
-        ;;         "\\*\\(Help\\|helpful.*\\)\\*"))
         ("\\*\\(Help\\|helpful.*\\)\\*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ;; ((or . ((derived-mode . Info-mode)
-        ;;         "\\*info.*\\*"))
         ("\\*info.*\\*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ;; ((or . ((derived-mode . Man-mode)
-        ;;         (derived-mode . woman-mode)
-        ;;         "\\*\\(Man\\|WoMan\\).*"))
         ("\\*\\(Man\\|WoMan\\).*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
@@ -1612,7 +1601,7 @@
         ;;
         ;; Bottom side window
         ;;
-        ("\\*.*\\(e?shell\\|v?term\\).*"
+        ("\\*\\(e?shell\\|v?term\\)\\*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . bottom)
