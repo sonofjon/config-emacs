@@ -60,7 +60,7 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-;; For debugging startup
+;; Report about loading and configuration details
 (setq use-package-verbose t)
 
 ;; Lower time threshold for package load time reporting
@@ -198,7 +198,7 @@
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
-    :mode (".html?$")
+    :mode ".html?$"
     :init
     ;; Engines
     (setq web-mode-engines-alist '(("django" . "\\.html\\'")
@@ -267,7 +267,8 @@
 
 ;; lsp-pyright (Python LSP client using Pyright)
 (use-package lsp-pyright
-  :after lsp-mode
+  ;; TODO: autoload package
+  ;; :after lsp-mode
   :hook (python-mode . (lambda ()
                          (require 'lsp-pyright)
                          (lsp-deferred))))  ; or lsp-deferred
@@ -1035,7 +1036,7 @@
 (use-package circadian
   ;; :disabled  ; 0.3s startup time
   :defer 60
-  :after modus-themes
+  :after (:any modus-themes ef-themes)
   :custom
   ;; (circadian-themes '(("8:00" . modus-operandi)
   ;;                     ("18:00"  . modus-vivendi)))
