@@ -40,9 +40,10 @@ Emacs session."
 
 (defcustom aj8/buffer-skip-regexp
   (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Completions*"
-                  "*Flymake log*" "*lsp-log*" "*Messages*" "*package*"
-                  "*Quail Completions*" "*quelpa-build-checkout*"
-                  "*scratch*" "*Warnings*" "*Async-native-compile-log*")
+                  "*Flymake log*" "*GNU Emacs*" "*lsp-log*"
+                  "*Messages*" "*package*" "*Quail Completions*"
+                  "*quelpa-build-checkout*" "*scratch*" "*Warnings*"
+                  "*Async-native-compile-log*")
               (seq "magit-diff" (zero-or-more anything))
               (seq "magit-process" (zero-or-more anything))
               (seq "magit-revision" (zero-or-more anything))
