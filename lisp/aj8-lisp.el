@@ -966,8 +966,8 @@ When called from an eww buffer, provide the current link as
 ;; Create repeat-map for window resizing
 (defvar aj8/resize-window-repeat-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "}" #'hydra-move-splitter-up)
-    (define-key map "{" #'hydra-move-splitter-down)
+    (define-key map "{" #'hydra-move-splitter-up)
+    (define-key map "}" #'hydra-move-splitter-down)
     (define-key map ">" #'hydra-move-splitter-right)
     (define-key map "<" #'hydra-move-splitter-left)
     map))

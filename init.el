@@ -1955,8 +1955,8 @@
 ;;; Windows
 
 ;; Resize windows
-(global-set-key (kbd "C-x }") #'hydra-move-splitter-up)
-(global-set-key (kbd "C-x {") #'hydra-move-splitter-down)
+(global-set-key (kbd "C-x {") #'hydra-move-splitter-up)
+(global-set-key (kbd "C-x }") #'hydra-move-splitter-down)
 (global-set-key (kbd "C-x >") #'hydra-move-splitter-right)   ; override `scroll-right'
 (global-set-key (kbd "C-x <") #'hydra-move-splitter-left)    ; override `scroll-left'
 
