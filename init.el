@@ -30,7 +30,8 @@
       ((and (eq system-type 'gnu/linux)
             (getenv "WSLENV"))   ; WSL
        ;; Fix cursor color in terminal
-       (add-hook 'modus-themes-after-load-theme-hook #'aj8/modus-themes-custom-settings)
+       (add-hook 'modus-themes-after-load-theme-hook
+                 #'aj8/modus-themes-custom-settings)
        (message "Early settings WSL"))
 
       ((eq system-type 'gnu/linux)   ; Linux
@@ -85,7 +86,8 @@
 ;; Install Quelpa
 (unless (package-installed-p 'quelpa)
   (with-temp-buffer
-    (url-insert-file-contents "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
+    (url-insert-file-contents
+     "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
     (eval-buffer)
     (quelpa-self-upgrade)))
 
@@ -250,7 +252,8 @@
           ;; '(orderless)))   ; use orderless
   ;; Prefix for lsp-command-keymap
   (setq lsp-keymap-prefix "C-c l")
-  (which-key-add-key-based-replacements "C-c l" "lsp")   ; add label for prefix key
+  (which-key-add-key-based-replacements "C-c l" "lsp")
+                                        ; add label for prefix key
   :custom
   ;; Use custom completion backend (Corfu)
   (lsp-completion-provider :none))
@@ -293,7 +296,8 @@
          ("C-x r b" . consult-bookmark)          ; orig. bookmark-jump
          ;; Custom M-# bindings for fast register access
          ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store)        ; orig. abbrev-prefix-mark (unrelated)
+         ("M-'" . consult-register-store)        ; orig. abbrev-prefix-mark
+                                                 ; (unrelated)
          ("C-M-#" . consult-register)
          ;; Other custom bindings
          ;; ("M-y" . consult-yank-pop)           ; orig. yank-pop
@@ -301,7 +305,7 @@
          ;; M-g bindings (goto-map)
          ("M-g g" . consult-goto-line)           ; orig. goto-line
          ("M-g M-g" . consult-goto-line)         ; orig. goto-line
-         ("M-g o" . consult-outline)             ; Alternative: consult-org-heading
+         ("M-g o" . consult-outline)             ; alt.: consult-org-heading
          ("M-g m" . consult-mark)
          ("M-g k" . consult-global-mark)
          ("M-g i" . consult-imenu)
@@ -323,15 +327,18 @@
          :map isearch-mode-map
          ("M-e" . consult-isearch-history)       ; orig. isearch-edit-string
          ("M-s e" . consult-isearch-history)     ; orig. isearch-edit-string
-         ("M-s l" . consult-line)                ; needed by consult-line to detect isearch
-         ("M-s L" . consult-line-multi)          ; needed by consult-line to detect Isearch
+         ("M-s l" . consult-line)                ; needed by consult-line to
+                                                 ; detect Isearch
+         ("M-s L" . consult-line-multi)          ; needed by consult-line to
+                                                 ; detect Isearch
          ;; Minibuffer history
          :map minibuffer-local-map
-         ("M-s" . consult-history)               ; orig. next-matching-history-element
-         ("M-r" . consult-history))              ; orig. previous-matching-history-element
+         ("M-s" . consult-history)    ; orig. next-matching-history-element
+         ("M-r" . consult-history))   ; orig. previous-matching-history-element
   :init
   ;; Enhance `completing-read-multiple'
-  ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+  ;; (advice-add #'completing-read-multiple :override
+  ;;             #'consult-completing-read-multiple)
 
   ;; Use Consult for completion in region
   ;;   Note, this does not work with LSP or Eglot
@@ -353,7 +360,8 @@
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
 
-  (which-key-add-key-based-replacements "C-c c" "consult")   ; add label for prefix key
+  (which-key-add-key-based-replacements "C-c c" "consult")
+                                        ; add label for prefix key
 
   :config
   ;; Preview key
@@ -398,7 +406,7 @@
   ;; (corfu-max-width 100)          ; popup maximum width in characters."
   ;; (corfu-cycle t)                ; enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ; enable auto completion
-  ;; (corfu-auto-prefix 3)          ; minimum length of prefix for auto completion."
+  ;; (corfu-auto-prefix 3)          ; min. length of prefix for auto completion."
   ;; (corfu-separator ?\s)          ; orderless field separator
   ;; (corfu-quit-at-boundary t)     ; automatically quit at word boundary
   ;; (corfu-quit-no-match t)        ; automatically quit if there is no match
@@ -541,7 +549,8 @@ capf:s, see documentation.")
   ;; :disabled
   :config
   ;; Matching styles
-  ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))   ; default
+  ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))
+  ;;                                       ; default
   (setq orderless-matching-styles
         '(orderless-literal orderless-regexp)
         orderless-style-dispatchers '(aj8/orderless-dispatch-flex-if-twiddle
@@ -632,7 +641,8 @@ capf:s, see documentation.")
          ("C-c z r" . undo-fu-only-redo)
          ("C-c z d" . undo-fu-disable-checkpoint))
   :init
-  (which-key-add-key-based-replacements "C-c z" "undo-fu")   ; add label for prefix key
+  (which-key-add-key-based-replacements "C-c z" "undo-fu")
+                                        ; add label for prefix key
   :custom
   (undo-fu-ignore-keyboard-quit t))
 
@@ -652,7 +662,8 @@ capf:s, see documentation.")
 (use-package treemacs
   :commands treemacs
   :init
-  (which-key-add-key-based-replacements "C-c t" "treemacs")   ; add label for prefix keys
+  (which-key-add-key-based-replacements "C-c t" "treemacs")
+                                        ; add label for prefix keys
   (which-key-add-key-based-replacements "C-c C-p" "treemacs")
   (which-key-add-key-based-replacements "C-c C-w" "treemacs")
   :init
@@ -665,7 +676,8 @@ capf:s, see documentation.")
   ;; (treemacs-is-never-other-window nil)
   ;; (treemacs-no-delete-other-windows t)
   ;; (treemacs-project-follow-cleanup nil)
-  ;; (treemacs-persist-file (expand-file-name ".cache/(treemacs-persist" user-emacs-directory)))
+  ;; (treemacs-persist-file (expand-file-name ".cache/(treemacs-persist"
+  ;;                                          user-emacs-directory)))
   ;; (treemacs-position 'left)
   ;; (treemacs-litter-directories '("/node_modules" "/.venv" "/.cask"))
   ;; (treemacs-show-hidden-files t)
@@ -839,7 +851,8 @@ capf:s, see documentation.")
 
 ;; vterm (fully-featured terminal emulator)
 (use-package vterm
-  ;; TODO: Fix M-f, M-b, M-d (note, recent breaking changes were applied to emacs-livterm project)
+  ;; TODO: Fix M-f, M-b, M-d (note, recent breaking changes were
+  ;;       applied to emacs-livterm project)
   :commands vterm
   :config
   ;; Match the default Bash shell prompt
@@ -1087,7 +1100,8 @@ capf:s, see documentation.")
    '(("~/dotfiles"                . 1)
      ("~/projects"                . 1)
      ("~/git"                     . 1)))
-  (magit-clone-name-alist '(("\\`\\(?:github:\\|gh:\\)?\\([^:]+\\)\\'" "github.com" "sonofjon")))
+  (magit-clone-name-alist '(("\\`\\(?:github:\\|gh:\\)?\\([^:]+\\)\\'"
+                             "github.com" "sonofjon")))
   :config
   ;; Disable hl-line-mode
   (add-hook 'magit-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
@@ -1121,7 +1135,8 @@ capf:s, see documentation.")
   ;; Use pretty Unicode art
   (ztree-draw-unicode-lines t))
   ;; Customize file filter (default is all dot-files) 
-  ;; (setq-default ztree-diff-filter-list (cons \"^.*\\.pyc\" ztree-diff-filter-list)))
+  ;; (setq-default ztree-diff-filter-list
+  ;;               (cons \"^.*\\.pyc\" ztree-diff-filter-list)))
 
 ;;; Windows
 
@@ -1187,7 +1202,7 @@ capf:s, see documentation.")
   (erc-services-mode 1)
   (erc-update-modules))
 
-;; erc-hl-nicks (ERC nick highlighter that ignores uniquifying chars when colorizing)
+;; erc-hl-nicks (ERC nick highlighter)
 (use-package erc-hl-nicks
   :disabled
   :defer
@@ -1201,7 +1216,8 @@ capf:s, see documentation.")
   :defer 1
   :diminish
   :init
-  (which-key-add-key-based-replacements "C-c /" "google-this")   ; add label for prefix key
+  (which-key-add-key-based-replacements "C-c /" "google-this")
+                                        ; add label for prefix key
   :config
   (google-this-mode 1))
 
@@ -1305,9 +1321,9 @@ capf:s, see documentation.")
 
 ;; Select completion styles
 (setq completion-styles '(substring orderless basic))
-                                        ; substring: needed for partial completion
-                                        ; orderless: space-separated components
-                                        ; basic: fallback
+                                       ; substring: needed for partial completion
+                                       ; orderless: space-separated components
+                                       ; basic: fallback
 
 ;; Use partial completion for files
 (setq completion-category-defaults nil)
@@ -1331,7 +1347,8 @@ capf:s, see documentation.")
 (setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
 
 ;; Ignore some buffers with hippie-expand
-;;   TODO: only consider buffers with the same mode (see dabbrev-friend-buffer-function)
+;;   TODO: only consider buffers with the same mode (see
+;;         dabbrev-friend-buffer-function)
 (with-eval-after-load "hippie-exp"
   (add-to-list 'hippie-expand-ignore-buffers aj8/buffer-skip-regexp)
   (add-to-list 'hippie-expand-ignore-buffers "^\\*.*\\*$"))
@@ -1368,7 +1385,8 @@ capf:s, see documentation.")
 ;;; Outline
 
 ;; Outline minor mode prefix
-(which-key-add-key-based-replacements "C-c @" "outline")   ; add label for prefix key
+(which-key-add-key-based-replacements "C-c @" "outline")
+                                        ; add label for prefix key
 
 ;; Use TAB and S-TAB for cycling
 (setq outline-minor-mode-cycle t)
@@ -1879,7 +1897,8 @@ capf:s, see documentation.")
 ;; Display commands by category
 (global-set-key (kbd "C-c H d") #'shortdoc-display-group)
 
-(which-key-add-key-based-replacements "C-c H" "help")   ; add label for prefix key
+(which-key-add-key-based-replacements "C-c H" "help")
+                                        ; add label for prefix key
 
 ;;; Navigation
 
@@ -1900,7 +1919,8 @@ capf:s, see documentation.")
 (global-set-key (kbd "C-c w C-<left>") #'windmove-delete-left)
 (global-set-key (kbd "C-c w C-<right>") #'windmove-delete-right)
 
-(which-key-add-key-based-replacements "C-c w" "windmove")   ; add label for prefix key
+(which-key-add-key-based-replacements "C-c w" "windmove")
+                                        ; add label for prefix key
 
 ;; Paragraph navigation
 (global-set-key (kbd "M-p") #'backward-paragraph)
@@ -1915,16 +1935,22 @@ capf:s, see documentation.")
 ;; Enable scroll lock
 (global-set-key (kbd "C-c L") #'scroll-lock-mode)
 
-(which-key-add-key-based-replacements "C-c x" "misc")   ; add label for prefix key
+(which-key-add-key-based-replacements "C-c x" "misc")
+                                        ; add label for prefix key
 
 ;; Display Imenu
 (global-set-key (kbd "C-c i") #'imenu)
 
 ;; Parens navigation
-;; (global-set-key (kbd "C-M-<left>") #'backward-list) ; overwrites default backward-sexp
-;; (global-set-key (kbd "C-M-<right>") #'forward-list) ; overwrites default backward-sexp
-;; (global-set-key (kbd "C-M-p") #'backward-up-list)   ; overwrites default backward-list
-;; (global-set-key (kbd "C-M-n") #'down-list)          ; overwrites default forward-list
+;;   TODO: Why are these commented out?
+;; (global-set-key (kbd "C-M-<left>") #'backward-list)
+;;                                         ; overwrites default backward-sexp
+;; (global-set-key (kbd "C-M-<right>") #'forward-list)
+;;                                         ; overwrites default backward-sexp
+;; (global-set-key (kbd "C-M-p") #'backward-up-list)
+;;                                         ; overwrites default backward-list
+;; (global-set-key (kbd "C-M-n") #'down-list)
+;;                                         ; overwrites default forward-list
 
 (global-set-key (kbd "C-c >") #'xref-find-definitions)  ; default M-.
 (global-set-key (kbd "C-c <") #'xref-pop-marker-stack)  ; default M-,
@@ -1964,7 +1990,8 @@ capf:s, see documentation.")
 (global-set-key (kbd "C-c e l") #'ediff-regions-linewise)
 (global-set-key (kbd "C-c e w") #'ediff-regions-wordwise)
 
-(which-key-add-key-based-replacements "C-c e" "ediff")   ; add label for prefix key
+(which-key-add-key-based-replacements "C-c e" "ediff")
+                                        ; add label for prefix key
 
 ;; Show diffs between file revisions
 (global-set-key (kbd "C-x v -") #'vc-ediff)
@@ -1979,14 +2006,16 @@ capf:s, see documentation.")
 ;; Resize windows
 (global-set-key (kbd "C-x {") #'my/move-splitter-up)
 (global-set-key (kbd "C-x }") #'my/move-splitter-down)
-(global-set-key (kbd "C-x >") #'my/move-splitter-right)   ; override `scroll-right'
-(global-set-key (kbd "C-x <") #'my/move-splitter-left)    ; override `scroll-left'
+(global-set-key (kbd "C-x >") #'my/move-splitter-right) ; override `scroll-right'
+(global-set-key (kbd "C-x <") #'my/move-splitter-left)  ; override `scroll-left'
 
 ;; Misc window manipulation
 (global-set-key (kbd "C-x !") #'delete-other-windows-vertically)
-(global-set-key (kbd "C-x =") #'balance-windows)   ; override `what-cursor-position'
-(global-set-key (kbd "C-x +") #'balance-windows-area)   ; override `balance-windows'
-;; (global-set-key (kbd "C-x -") #'shrink-window-if-larger-than-buffer)   ; default
+(global-set-key (kbd "C-x =") #'balance-windows)
+                                        ; override `what-cursor-position'
+(global-set-key (kbd "C-x +") #'balance-windows-area)
+                                        ; override `balance-windows'
+;; (global-set-key (kbd "C-x -") #'shrink-window-if-larger-than-buffer) ; default
 (global-set-key (kbd "C-x _") #'fit-window-to-buffer)   ; enlarges and shrinks
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
 
@@ -2030,7 +2059,8 @@ capf:s, see documentation.")
 
 ;;;; Hydras
 
-(which-key-add-key-based-replacements "C-c y" "hydra")   ; add label for prefix key
+(which-key-add-key-based-replacements "C-c y" "hydra")
+                                        ; add label for prefix key
 
 ;;; Windows
 (defhydra hydra-window (:hint nil)
@@ -2065,21 +2095,25 @@ capf:s, see documentation.")
   ("M-<left>" (lambda ()
                 (interactive)
                 (my/move-splitter-left 1)
-                (message "Width: %s Height: %s" (window-body-width) (window-body-height))))
+                (message "Width: %s Height: %s"
+                         (window-body-width) (window-body-height))))
   ("M-<right>" (lambda ()
                 (interactive)
                 (my/move-splitter-right 1)
-                (message "Width: %s Height: %s" (window-body-width) (window-body-height))))
+                (message "Width: %s Height: %s"
+                         (window-body-width) (window-body-height))))
   ;; ("M-<up>" my/move-splitter-up)
   ("M-p" (lambda ()
                 (interactive)
                 (my/move-splitter-up 1)
-                (message "Width: %s Height: %s" (window-body-width) (window-body-height))))
+                (message "Width: %s Height: %s"
+                         (window-body-width) (window-body-height))))
   ;; ("M-<down>" my/move-splitter-down)
   ("M-n" (lambda ()
                 (interactive)
                 (my/move-splitter-down 1)
-                (message "Width: %s Height: %s" (window-body-width) (window-body-height))))
+                (message "Width: %s Height: %s"
+                         (window-body-width) (window-body-height))))
   ("v" split-window-vertically)
   ("h" split-window-horizontally)
   ("b" balance-windows)

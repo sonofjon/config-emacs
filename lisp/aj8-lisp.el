@@ -106,7 +106,7 @@ If the current buffer does not belong to a project, call `previous-buffer'."
   (unless (one-window-p)
     (setq win (selected-window))
     (other-window 1)
-    (while (window-parameter (selected-window) 'window-side)   ; skip side windows
+    (while (window-parameter (selected-window) 'window-side) ; skip side windows
       (other-window 1))
     (if (not (eq (selected-window) win))   ; don't kill initial window
         (kill-buffer)
@@ -359,7 +359,8 @@ If the current buffer does not belong to a project, call `previous-buffer'."
 
 ;; Helper function for Mosey
 (defun aj8/goto-beginning-of-comment ()
-  "Move point to beginning of comment on current line. See also `mosey-goto-beginning-of-comment-text'."
+  "Move point to beginning of comment on current line. See also
+`mosey-goto-beginning-of-comment-text'."
   (when (save-excursion
           (end-of-line)
           (re-search-backward (rx (syntax comment-start))
@@ -695,9 +696,11 @@ versa."
   "If in terminal, change cursor color on theme switch."
   (when (not (display-graphic-p))   ; if using terminal
     (cond
-     ((string-match-p "modus-operandi" (symbol-name (modus-themes--current-theme)))
+     ((string-match-p "modus-operandi"
+                      (symbol-name (modus-themes--current-theme)))
       (send-string-to-terminal "\033]12;black\007"))
-     ((string-match-p "modus-vivendi" (symbol-name (modus-themes--current-theme)))
+     ((string-match-p "modus-vivendi"
+                      (symbol-name (modus-themes--current-theme)))
       (send-string-to-terminal "\033]12;white\007"))
      (t
       (error "Unknown modus-theme name")))))
