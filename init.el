@@ -825,7 +825,6 @@
 
 ;; eshell (the Emacs command shell) - [built-in package]
 (use-package eshell
-  :ensure nil   ; don't install built-in packages
   :hook (eshell-first-time-mode . efs/configure-eshell)
   :init
   (defun efs/configure-eshell ()
@@ -847,14 +846,12 @@
     (define-key eshell-hist-mode-map (kbd "M-<up>")
       #'eshell-previous-matching-input-from-input))
   :config
-  ;; Use Eshell with Tramp
+  ;; Set Eshell options here
+  ;; (with-eval-after-load 'esh-opt
+  ;;   (setq eshell-visual-commands '("htop" "zsh" "vim")))
+  ;; Add Tramp support
   (with-eval-after-load "eshell"
     (add-to-list 'eshell-modules-list 'eshell-tramp)))
-  ;; (with-eval-after-load 'esh-opt
-    ;;
-    ;; (setq eshell-destroy-buffer-when-process-dies t)
-    ;;
-    ;; (setq eshell-visual-commands '("htop" "zsh" "vim")))
 
 ;; eshell-git-prompt (some Eshell prompt for Git users)
 (use-package eshell-git-prompt
@@ -862,7 +859,7 @@
   :after eshell
   :config
   (when (display-graphic-p)
-      (eshell-git-prompt-use-theme 'powerline)))
+    (eshell-git-prompt-use-theme 'powerline)))
 
 ;;; Theme
 
