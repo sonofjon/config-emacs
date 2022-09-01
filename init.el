@@ -176,7 +176,7 @@
 
 ;; json-mode (major-mode for editing JSON files)
 (use-package json-mode
-  :mode ".json"
+  :mode "\\.json$"
   :bind (:map json-mode-map
               ("C-c C-b" . json-mode-beautify)
               ("C-c C-s" . json-snatcher))
@@ -187,12 +187,12 @@
 
 ;; markdown-mode (major-mode for editing Markdown files)
 (use-package markdown-mode
-  :mode (".md" . markdown-mode))
-  ;; :mode (".md" . markdown-view-mode))
+  :mode ("\\.md$" . markdown-mode))
+  ;; :mode ("\\.md$" . markdown-view-mode))
 
 ;; php-mode (major-mode for editing PHP files)
 (use-package php-mode
-  :mode ".php$")
+  :mode "\\.php$")
 
 ;; powershell (major-mode for editing PowerShell scripts)
 (use-package powershell
@@ -200,7 +200,7 @@
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
-    :mode ".html?$"
+    :mode "\\.html?$"
     :init
     ;; Engines
     (setq web-mode-engines-alist '(("django" . "\\.html\\'")
@@ -222,7 +222,7 @@
 
 ;; yaml-mode (major-mode for editing YAML files)
 (use-package yaml-mode
-  :mode ".yml"
+  :mode "\\.yml$"
   :bind (:map yaml-mode-map))
               ;; ("C-m" . newline-and-indent)))
 
