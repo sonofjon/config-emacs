@@ -740,8 +740,8 @@
 
 ;; mosey (mosey around your buffers)
 (use-package mosey
-  :bind* (("C-a" . mosey-bol-forward-bounce)
-          ("C-e" . mosey-eol-backward-cycle))
+  :bind (("C-a" . mosey-bol-forward-bounce)
+         ("C-e" . mosey-eol-backward-cycle))
   :init
   ;; Function list for beginning of line
   (defmosey '(beginning-of-line
