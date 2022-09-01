@@ -160,6 +160,7 @@ the capf:s matter. Also, cape-file does not merge well with the other
 capf:s, see documentation.")
 
 (defalias 'cape-dabbrev+symbol+keyword+ispell (cape-super-capf #'cape-dabbrev
+  ;; TODO: doesnt remember recent candidates
                                                                #'cape-symbol
                                                                #'cape-keyword
                                                                #'cape-ispell)

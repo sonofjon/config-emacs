@@ -818,6 +818,7 @@
 
 ;; vterm (fully-featured terminal emulator)
 (use-package vterm
+  ;; TODO: Fix M-f, M-b, M-d (note, recent breaking changes were applied to emacs-livterm project)
   :commands vterm
   :config
   ;; Match the default Bash shell prompt
