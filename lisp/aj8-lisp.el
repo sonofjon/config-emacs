@@ -357,6 +357,14 @@ If the current buffer does not belong to a project, call `previous-buffer'."
   (interactive "^p")
   (forward-whitespace (- arg)))
 
+;; Helper function for Mosey
+(defun aj8/goto-beginning-of-comment ()
+  "Move point to beginning of comment on current line. See also `mosey-goto-beginning-of-comment-text'."
+  (when (save-excursion
+          (end-of-line)
+          (re-search-backward (rx (syntax comment-start))
+                              (line-beginning-position) t))
+    (goto-char (- (match-end 0) 1))))
 
 ;;;; Outline
 

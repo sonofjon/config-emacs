@@ -769,6 +769,7 @@ capf:s, see documentation.")
     :prefix "bol")
   ;; Function list for end of line
   (defmosey '(mosey-goto-end-of-code
+              aj8/goto-beginning-of-comment
               mosey-goto-beginning-of-comment-text
               end-of-line)
     :prefix "eol"))
