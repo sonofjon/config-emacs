@@ -506,6 +506,14 @@ from dabbrev, symbol, keyword and ispell. Note that the order of
 the capf:s matter. Also, cape-symbol must precede cape-ispell
 (bug?). Also, cape-file does not merge well with the other
 capf:s, see documentation.")
+  (defalias 'cape-symbol+keyword+ispell (cape-super-capf #'cape-symbol
+                                                         #'cape-keyword
+                                                         #'cape-ispell)
+    "Completion at point function for Cape, combining completions
+from dabbrev, symbol, keyword and ispell. Note that the order of
+the capf:s matter. Also, cape-symbol must precede cape-ispell
+(bug?). Also, cape-file does not merge well with the other
+capf:s, see documentation.")
   ;; Add `completion-at-point-functions', used by `completion-at-point'
   ;; (add-to-list 'completion-at-point-functions #'cape-file)
   ;; ;; (add-to-list 'completion-at-point-functions #'cape-history)
@@ -519,8 +527,12 @@ capf:s, see documentation.")
   ;; Use a combination of capf:s instead
   (add-to-list 'completion-at-point-functions #'cape-file)
   ;; (add-to-list 'completion-at-point-functions #'cape-line)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev+symbol+keyword+ispell)
-  (which-key-add-key-based-replacements "C-c u" "corfu/cape"))   ; add label for prefix key
+  ;; (add-to-list 'completion-at-point-functions
+  ;;              #'cape-dabbrev+symbol+keyword+ispell)
+  (add-to-list 'completion-at-point-functions
+               #'cape-symbol+keyword+ispell)
+  (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
+                                        ; add label for prefix
 
 ;; embark (conveniently act on minibuffer completions)
 (use-package embark
