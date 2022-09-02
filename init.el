@@ -397,6 +397,7 @@
   :bind ("C-c p" . consult-project-extra-find))
 
 ;; corfu (Completion Overlay Region FUnction)
+;;   TODO: Use separate matching-style for Corfu and Vertico, e.g. I don't want regexp in Corfu
 (use-package corfu
   ;; :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
