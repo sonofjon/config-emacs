@@ -1569,12 +1569,6 @@ capf:s, see documentation.")
         ;;
         ;; Top side window
         ;;
-        ("\\*Flymake diagnostics.*\\*"
-         (display-buffer-in-side-window)
-         (window-height . ,aj8/side-window-height)
-         (side . top)
-         (slot . 0)
-         (window-parameters . ((no-delete-other-windows . t))))
         ("\\*Messages\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
@@ -1582,8 +1576,26 @@ capf:s, see documentation.")
          (slot . 0)
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ((or . ((derived-mode . backtrace-mode)
-        ;;         "\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"))
-        ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+        ;;         "\\*\\(Async-native-compile-log\\|Backtrace\\|Compile-Log\\|Warnings\\)\\*"))
+        ("\\*\\(Backtrace\\|Warnings\\)\\*"
+         (display-buffer-in-side-window)
+         (window-height . ,aj8/side-window-height)
+         (side . top)
+         (slot . 0)
+         (window-parameters . ((no-delete-other-windows . t))))
+        ("\\*.*-[Ll]og\\*"
+         (display-buffer-in-side-window)
+         (window-height . ,aj8/side-window-height)
+         (side . top)
+         (slot . 0)
+         (window-parameters . ((no-delete-other-windows . t))))
+        ("\\*Flymake diagnostics.*\\*"
+         (display-buffer-in-side-window)
+         (window-height . ,aj8/side-window-height)
+         (side . top)
+         (slot . 0)
+         (window-parameters . ((no-delete-other-windows . t))))
+        ("\\*magit-process:.*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
