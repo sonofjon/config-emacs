@@ -1155,6 +1155,42 @@ capf:s, see documentation.")
 
 ;;; Windows
 
+;; popper (summon and dismiss buffers as popups)
+(use-package popper
+  :bind (("C-`"   . popper-toggle-latest)
+         ("M-`"   . popper-cycle)
+         ("C-M-`" . popper-toggle-type))
+  :custom
+  (popper-reference-buffers
+   '("\\*Messages\\*"
+     "\\*\\(Backtrace\\|Warnings\\)\\*"
+     "\\*.*-[Ll]og\\*"
+     "\\*Flymake diagnostics.*\\*"
+     "\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|use-package statistics\\)\\*"
+     "magit.*"
+     compilation-mode
+     help-mode
+     helpful-mode
+     Info-mode
+     dired-mode
+     "\\*\\(Man\\|WoMan\\).*\\*"
+     "^\\*eshell.*\\*$" eshell-mode
+     "^\\*shell.*\\*$" shell-mode
+     "^\\*term.*\\*$" term-mode
+     "^\\*vterm.*\\*$" vterm-mode))
+     ;; (completion-list-mode . hide)))
+  ;; Group by project
+  (popper-group-function #'popper-group-by-project)
+  ;; No display control (use display-buffer-alist)
+  (popper-display-control nil)
+  ;; Disable mode-line
+  (popper-mode-line nil)
+  :config
+  ;; Enable popper
+  (popper-mode 1)
+  ;; Show echo area hints
+  (popper-echo-mode 1))
+
 ;; rotate (rotate the layout of Emacs)
 (use-package rotate
   :disabled)
