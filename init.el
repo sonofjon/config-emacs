@@ -281,11 +281,6 @@
                          (require 'lsp-pyright)
                          (lsp-deferred))))  ; or lsp-deferred
 
-;; flymake-shellcheck (a bash/sh Flymake backend powered by ShellCheck)
-(use-package flymake-shellcheck
-  :commands flymake-shellcheck-load
-  :hook (sh-mode . flymake-shellcheck-load))
-
 ;;; Completion
 
 ;; consult (consulting completing-read)
