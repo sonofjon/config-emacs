@@ -261,7 +261,9 @@
                                         ; add label for prefix key
   :custom
   ;; Use custom completion backend (Corfu)
-  (lsp-completion-provider :none))
+  (lsp-completion-provider :none)
+  ;; Disable snippet support (requires Yanippet)
+  (lsp-enable-snippet nil))
 
 ;; lsp-ui-mode (UI modules for lsp-mode)
 (use-package lsp-ui
