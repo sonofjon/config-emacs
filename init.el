@@ -1646,7 +1646,7 @@ capf:s, see documentation.")
             (side . right)
             (slot . -1)
             (window-parameters . ((no-delete-other-windows . t))))))
-        ("\\*\\(Embark Collect:.*\\|Occur\\|Pp Macroexpand Output\\|use-package statistics\\)\\*"
+        ("\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|use-package statistics\\)\\*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
