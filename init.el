@@ -1594,7 +1594,7 @@ capf:s, see documentation.")
         ;;
         ;;   Magit
         ;;
-        ("\\(magit:.*\\|magit-log:\\|magit-reflog:\\|magit-log-select:.*\\)"
+        ("\\(magit:\\|magit-log:\\|magit-reflog:\\|magit-log-select:\\).*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
@@ -1630,7 +1630,7 @@ capf:s, see documentation.")
          (side . right)
          (slot . 1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ("\\*\\(Man\\|WoMan\\).*"
+        ("\\*\\(Man\\|WoMan\\).*\\*"
          (display-buffer-reuse-mode-window display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
