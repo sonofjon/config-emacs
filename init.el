@@ -50,22 +50,22 @@
 (if (not (package-installed-p 'use-package))
     (package-install 'use-package))
 
-;; Add use-package to Imenu
-(setq use-package-enable-imenu-support t)
-
 ;; Load use-package
 (eval-when-compile
   (require 'use-package))
 
 ;; Always install packages if not present
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
+;; (require 'use-package-ensure)
+;; (setq use-package-always-ensure t)
 
 ;; Report about loading and configuration details
 (setq use-package-verbose t)
 
 ;; Lower time threshold for package load time reporting
 (setq use-package-minimum-reported-time 0.001)
+
+;; Add use-package to Imenu
+(setq use-package-enable-imenu-support t)
 
 ;; Alternative option to prioritize archives
 ;; (setq use-package-always-pin "melpa-stable")
@@ -105,6 +105,86 @@
 (require 'aj8-lisp)
 
 ;;;; Packages
+
+;; Selected packages
+;;   Install packages with (package-install-selected-packages)
+;;   Remove packages with (package-autoremove)
+;;   Use use-package for configuration only
+(custom-set-variables '(package-selected-packages
+                        '(all-the-icons
+                          all-the-icons-dired
+                          auto-package-update
+                          benchmark-init
+                          cape
+                          circadian
+                          consult
+                          consult-project-extra
+                          corfu
+                          corfu-doc
+                          corfu-doc-terminal
+                          corfu-terminal
+                          dashboard
+                          diff-hl
+                          diminish
+                          dimmer
+                          dot-mode
+                          ef-themes
+                          elfeed
+                          embark
+                          embark-consult
+                          erc-hl-nicks
+                          eshell-git-prompt
+                          esup
+                          eterm-256color
+                          exec-path-from-shell
+                          expand-region
+                          flyspell-correct
+                          google-this
+                          helpful
+                          hydra
+                          i3wm-config-mode
+                          json-mode
+                          keychain-environment
+                          keyfreq
+                          lorem-ipsum
+                          lsp-mode
+                          lsp-pyright
+                          lsp-treemacs
+                          lsp-ui
+                          lua-mode
+                          magit
+                          marginalia
+                          markdown-mode
+                          modus-themes
+                          mosey
+                          move-dup
+                          multiple-cursors
+                          orderless
+                          outline-minor-faces
+                          php-mode
+                          popper
+                          powershell
+                          rainbow-mode
+                          repeat-help
+                          rotate
+                          ssh-agency
+                          syntax-subword
+                          transpose-frame
+                          treemacs
+                          treemacs-all-the-icons
+                          treemacs-magit
+                          undo-fu
+                          vertico
+                          vterm
+                          vundo
+                          web-mode
+                          which-key
+                          whole-line-or-region
+                          yaml-mode
+                          ztree)))
+
+;; Install selected packages
+(package-install-selected-packages)
 
 ;;; Early packages 
 
