@@ -277,11 +277,17 @@
 
 ;; lsp-pyright (Python LSP client using Pyright)
 (use-package lsp-pyright
-  ;; TODO: autoload package
   ;; :after lsp-mode
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp-deferred))))  ; or lsp-deferred
+  ;; Default hook
+  ;; :hook (python-mode . (lambda ()
+  ;;                        (require 'lsp-pyright)
+  ;;                        (lsp-deferred))))  ; or lsp-deferred
+  ;; Custom hook (ensure autoload)
+  :hook (python-mode . aj8/start-pyright)
+  :init
+  (defun aj8/start-pyright ()
+    (require 'lsp-pyright)
+    (lsp-deferred)))
 
 ;;; Completion
 
