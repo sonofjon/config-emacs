@@ -1843,6 +1843,9 @@ capf:s, see documentation.")
 ;; Highlight current line
 (global-hl-line-mode 1)
 
+;; Auto-insert closing parens, bracket and double-quotes
+(electric-pair-mode 1)
+
 ;;; Files...
 
 ;; Track recent files
