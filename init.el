@@ -1762,6 +1762,12 @@ capf:s, see documentation.")
          (side . right)
          (slot . 1)
          (window-parameters . ((no-delete-other-windows . t))))
+        ("COMMIT_EDITMSG"
+         (display-buffer-in-side-window)
+         (window-width . ,aj8/side-window-width-dynamic)
+         (side . right)
+         (slot . -1)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;;   Help
         ;;
@@ -1806,10 +1812,6 @@ capf:s, see documentation.")
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . bottom)
-         (window-parameters . ((no-delete-other-windows . t))))
-        ("COMMIT_EDITMSG"
-         (display-buffer-in-side-window)
-         (window-height . ,aj8/side-window-height)
          (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;; Bottom buffer (not side window)
