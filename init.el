@@ -1681,8 +1681,8 @@ capf:s, see documentation.")
 ;;   Note: the thresholds need to be twice as big as the smallest
 ;;   window allowed, because the new windows each use half of the
 ;;   former window size
-(setq split-width-threshold 140
-      split-height-threshold nil)
+(setq split-width-threshold nil
+      split-height-threshold 0)
 
 ;; Enable horizontal window fitting
 ;; (setq fit-window-to-buffer-horizontally t)
