@@ -1830,6 +1830,12 @@ capf:s, see documentation.")
 
 ;;; Other
 
+;; Custom interface: don't convert symbols to words (tags)
+(setq custom-unlispify-tag-names nil)
+
+;; Custom interface: don't convert symbols to words (menu)
+(setq custom-unlispify-menu-entries t)
+
 ;; Use 'y' or 'n' questions always
 ;; (setq use-short-answers t)
 
