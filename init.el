@@ -1748,13 +1748,13 @@ capf:s, see documentation.")
         ;;   Magit
         ;;
         ("\\(magit:\\|magit-log:\\|magit-reflog:\\|magit-log-select:\\).*"
-         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . -1)
          (window-parameters . ((no-delete-other-windows . t))))
         ("\\(magit-diff:\\|magit-revision:\\|magit-stash:\\).*"
-         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1)
@@ -1772,19 +1772,19 @@ capf:s, see documentation.")
         ;;   Help
         ;;
         ("\\*\\(Help\\|helpful.*\\)\\*"
-         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1)
          (window-parameters . ((no-delete-other-windows . t))))
         ("\\*info.*\\*"
-         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1)
          (window-parameters . ((no-delete-other-windows . t))))
         ("\\*\\(Man\\|WoMan\\).*\\*"
-         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . 1)
@@ -1794,13 +1794,13 @@ capf:s, see documentation.")
         ;;
         ((lambda (buffer _alist)
            (with-current-buffer buffer (derived-mode-p 'dired-mode))) .
-         ((display-buffer-reuse-mode-window display-buffer-in-side-window) .
+         ((display-buffer-in-side-window) .
           ((window-width . ,aj8/side-window-width-dynamic)
             (side . right)
             (slot . -1)
             (window-parameters . ((no-delete-other-windows . t))))))
         ("\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|use-package statistics\\)\\*"
-         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
          (slot . -1)
@@ -1809,7 +1809,7 @@ capf:s, see documentation.")
         ;; Bottom side window
         ;;
         ("\\*\\(e?shell\\|v?term\\)\\*"
-         (display-buffer-reuse-mode-window display-buffer-in-side-window)
+         (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . bottom)
          (window-parameters . ((no-delete-other-windows . t))))
