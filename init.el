@@ -1807,6 +1807,10 @@ capf:s, see documentation.")
          (window-height . ,aj8/side-window-height)
          (side . bottom)
          (window-parameters . ((no-delete-other-windows . t))))
+        ("COMMIT_EDITMSG"
+         (display-buffer-in-side-window)
+         (window-height . ,aj8/side-window-height)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;; Bottom buffer (not side window)
         ;;
@@ -1814,11 +1818,7 @@ capf:s, see documentation.")
          (display-buffer-reuse-mode-window display-buffer-at-bottom)
          (window-height . fit-window-to-buffer)
          (window-parameters . ((no-other-window . t)
-                               (mode-line-format . none))))
-        ("COMMIT_EDITMSG"
-         (display-buffer-at-bottom)
-         (window-height . ,aj8/side-window-height)
-         (window-parameters . ((no-delete-other-windows . t))))))
+                               (mode-line-format . none))))))
 
 ;;Obey display actions when switching buffers
 (setq switch-to-buffer-obey-display-actions t)
