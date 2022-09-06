@@ -2219,6 +2219,12 @@ capf:s, see documentation.")
 ;; Reload init.el
 (global-set-key (kbd "C-c r") #'reload-init-file)
 
+;; Evaluate next sexp
+(global-set-key (kbd "C-x M-e") #'my/eval-next-sexp)
+
+;; Evaluate sexp at point
+(global-set-key (kbd "C-x C-M-e") #'my/eval-sexp-at-point)
+
 ;;; Unbind keys
 
 ;; (global-set-key (kbd "C-x") nil)
