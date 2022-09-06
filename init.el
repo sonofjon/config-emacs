@@ -1721,6 +1721,11 @@ capf:s, see documentation.")
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Async-native-compile-log\\|Compile-Log\\|Native-compile-Log\\)\\*"
+        ("\\*\\(Async-native-compile-log\\)\\*"
+         (display-buffer-in-side-window)
+         (window-height . ,aj8/side-window-height)
+         (side . top)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;; ((or . ((derived-mode-p . backtrace-mode)
         ;;         (derived-mode-p . compilation-mode)
         ((lambda (buffer _alist)
