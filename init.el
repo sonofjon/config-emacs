@@ -1121,6 +1121,10 @@ capf:s, see documentation.")
    '(("~/dotfiles"                . 1)
      ("~/projects"                . 1)
      ("~/git"                     . 1)))
+  ;; Clone command is transient
+  (magit-clone-always-transient t)
+  ;; Github mapping for user sonofjon
+  ;;   Clone with "gh:repository"
   (magit-clone-name-alist '(("\\`\\(?:github:\\|gh:\\)?\\([^:]+\\)\\'"
                              "github.com" "sonofjon")))
   :config
