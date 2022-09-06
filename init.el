@@ -1828,6 +1828,9 @@ capf:s, see documentation.")
          (window-parameters . ((no-other-window . t)
                                (mode-line-format . none))))))
 
+;;Obey display actions when switching buffers
+(setq switch-to-buffer-obey-display-actions t)
+
 ;;; Other
 
 ;; Custom interface: don't convert symbols to words (tags)
