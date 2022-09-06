@@ -887,6 +887,7 @@ capf:s, see documentation.")
 ;;; Navigation
 
 ;; mosey (mosey around your buffers)
+;;   TODO: C-e goes to the left if point is >~ beginning-of-comment
 (use-package mosey
   :bind (("C-a" . mosey-bol-forward-bounce)
          ("C-e" . mosey-eol-backward-cycle))
