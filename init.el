@@ -357,6 +357,7 @@
   :commands lsp-treemacs-errors-list)
 
 ;; lsp-pyright (Python LSP client using Pyright)
+;;   TODO: Use add-hook in init-sectino instead?
 (use-package lsp-pyright
   ;; :after lsp-mode
   ;; Default hook
