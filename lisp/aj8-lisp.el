@@ -723,6 +723,8 @@ versa."
 
 ;;;; Windows
 
+;;; Side windows
+
 (defcustom aj8/side-window-height 0.16
   "Top side window height."
   :type 'number
@@ -833,6 +835,21 @@ matching `my/quit-window-exceptions-regex'. Calls to
       (split-window-vertically))   ; makes a split with the other window twice
     (switch-to-buffer nil)))   ; restore the original window
                                ; in this part of the window
+;; Split parent window below
+(defun mp-split-below (&optional arg)
+  "Split window below from the parent or from root with ARG."
+  (interactive "P")
+  (split-window (if arg (frame-root-window)
+                  (window-parent (selected-window)))
+                nil 'below nil))
+
+;; Split parent window right
+(defun mp-split-right (&optional arg)
+  "Split window right from the parent or from root with ARG."
+  (interactive "P")
+  (split-window (if arg (frame-root-window)
+                  (window-parent (selected-window)))
+                nil 'right nil))
 
 ;; Visit oldest window with Treemacs
 (defun treemacs-visit-node-in-least-recently-used-window (&optional arg)
