@@ -167,6 +167,7 @@
                           rainbow-mode
                           repeat-help
                           rotate
+                          smartparens
                           ssh-agency
                           syntax-subword
                           transpose-frame
@@ -726,6 +727,20 @@ capf:s, see documentation.")
   :hook (repeat-mode . repeat-help-mode)
   :custom
   (repeat-help-auto t))
+
+;; smartparens (automatic insertion, wrapping and paredit-like navigation)
+;;   TODO: Is it a problem that I have rebound C-M-<arrows>?
+(use-package smartparens
+  ;; :hook (emacs-lisp-mode smartparens-mode)
+  :hook (prog-mode . smartparens-mode)
+  ;; :custom
+  ;; Enforce that pairs are always balanced
+  (smartparens-strict-mode t)
+  :config
+  ;; Use default config
+  (require 'smartparens-config))
+  ;; Use smartparens globally
+  ;; (smartparens-global-mode 1))
 
 ;; whole-line-or-region (operate on current line if region undefined)
 (use-package whole-line-or-region
@@ -1844,7 +1859,7 @@ capf:s, see documentation.")
 (global-hl-line-mode 1)
 
 ;; Auto-insert closing parens, bracket and double-quotes
-(electric-pair-mode 1)
+;; (electric-pair-mode 1)
 
 ;;; Files...
 
