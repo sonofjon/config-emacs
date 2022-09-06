@@ -2413,6 +2413,9 @@ Hide, show and navigate outlines.
 
       (t (user-error "Unexpected system-name: %s" system-name)))
 
+;; Display messages buffer
+(display-buffer "*Messages*")
+
 ;; Conditionally load host specific stuff
 ;; (let ((host-specific-files (concat (make-load-path-base) system-name ".el")))
 ;;   (if (file-exists-p host-specific-files)
