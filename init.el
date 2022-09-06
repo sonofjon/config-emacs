@@ -2185,6 +2185,10 @@ capf:s, see documentation.")
 (global-set-key (kbd "C-c w C-<left>") #'windmove-delete-left)
 (global-set-key (kbd "C-c w C-<right>") #'windmove-delete-right)
 
+;; Cycle window configurations
+(define-key winner-mode-map (kbd "C-c w <") #'winner-undo)
+(define-key winner-mode-map (kbd "C-c w >") #'winner-redo)
+
 (which-key-add-key-based-replacements "C-c w" "windows")
                                         ; add label for prefix key
 
@@ -2198,6 +2202,9 @@ capf:s, see documentation.")
 (global-set-key (kbd "C-c 2") #'mp-split-below)
 (global-set-key (kbd "C-c 3") #'mp-split-right)
 
+;; Toggle side windows
+(global-set-key (kbd "C-x |") #'window-toggle-side-windows)
+
 ;; Misc window manipulation
 (global-set-key (kbd "C-x !") #'delete-other-windows-vertically)
 (global-set-key (kbd "C-x =") #'balance-windows)
@@ -2207,13 +2214,6 @@ capf:s, see documentation.")
 ;; (global-set-key (kbd "C-x -") #'shrink-window-if-larger-than-buffer) ; default
 (global-set-key (kbd "C-x _") #'fit-window-to-buffer)   ; enlarges and shrinks
 (global-set-key (kbd "C-x 9") #'my/toggle-window-split)
-
-;; Toggle side windows
-(global-set-key (kbd "C-x |") #'window-toggle-side-windows)
-
-;; Cycle window configurations
-(define-key winner-mode-map (kbd "C-c w <") #'winner-undo)
-(define-key winner-mode-map (kbd "C-c w >") #'winner-redo)
 
 ;;; Other
 
