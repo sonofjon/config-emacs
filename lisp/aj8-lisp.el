@@ -736,7 +736,7 @@ versa."
 (defcustom aj8/side-window-width-dynamic
   (if (>= (frame-width) 160)
       (floor (/ (frame-width) 2))
-    (- (frame-width) 80))
+    (- (frame-width) 81))
   "Right side window width. If the width of the frame is greater
 than or equal to 160 characters, split the frame in two, if less
 than 160 characters set width to 80 characters."
