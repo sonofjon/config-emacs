@@ -1617,6 +1617,9 @@ capf:s, see documentation.")
 
 ;;; Version control
 
+;; Follow symlinks
+(setq vc-follow-symlinks t)
+
 ;; Use horizontal (side-by-side) view by default in ediff
 (setq ediff-split-window-function #'split-window-horizontally)
 (setq ediff-merge-split-window-function #'split-window-horizontally)
