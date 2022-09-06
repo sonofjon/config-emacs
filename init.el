@@ -2087,26 +2087,6 @@ capf:s, see documentation.")
 
 ;;; Navigation
 
-;; Windmove keys
-(windmove-default-keybindings 'ctrl)
-(windmove-swap-states-default-keybindings '(ctrl shift))
-
-;; Open windows
-(global-set-key (kbd "C-c w <up>") #'windmove-display-up)
-(global-set-key (kbd "C-c w <down>") #'windmove-display-down)
-(global-set-key (kbd "C-c w <left>") #'windmove-display-left)
-(global-set-key (kbd "C-c w <right>") #'windmove-display-right)
-(global-set-key (kbd "C-c w 0") #'windmove-display-same-window)
-
-;; Delete windows
-(global-set-key (kbd "C-c w C-<up>") #'windmove-delete-up)
-(global-set-key (kbd "C-c w C-<down>") #'windmove-delete-down)
-(global-set-key (kbd "C-c w C-<left>") #'windmove-delete-left)
-(global-set-key (kbd "C-c w C-<right>") #'windmove-delete-right)
-
-(which-key-add-key-based-replacements "C-c w" "windmove")
-                                        ; add label for prefix key
-
 ;; Paragraph navigation
 (global-set-key (kbd "M-p") #'backward-paragraph)
 (global-set-key (kbd "M-n") #'forward-paragraph)
@@ -2187,6 +2167,26 @@ capf:s, see documentation.")
 (global-set-key (kbd "C-c b") #'browse-url-at-point)
 
 ;;; Windows
+
+;; Windmove keys
+(windmove-default-keybindings 'ctrl)
+(windmove-swap-states-default-keybindings '(ctrl shift))
+
+;; Open windows
+(global-set-key (kbd "C-c w <up>") #'windmove-display-up)
+(global-set-key (kbd "C-c w <down>") #'windmove-display-down)
+(global-set-key (kbd "C-c w <left>") #'windmove-display-left)
+(global-set-key (kbd "C-c w <right>") #'windmove-display-right)
+(global-set-key (kbd "C-c w 0") #'windmove-display-same-window)
+
+;; Delete windows
+(global-set-key (kbd "C-c w C-<up>") #'windmove-delete-up)
+(global-set-key (kbd "C-c w C-<down>") #'windmove-delete-down)
+(global-set-key (kbd "C-c w C-<left>") #'windmove-delete-left)
+(global-set-key (kbd "C-c w C-<right>") #'windmove-delete-right)
+
+(which-key-add-key-based-replacements "C-c w" "windows")
+                                        ; add label for prefix key
 
 ;; Resize windows
 (global-set-key (kbd "C-x {") #'my/move-splitter-up)
