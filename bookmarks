@@ -2,11 +2,18 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Functions"
- (front-context-string . "s\n==============")
- (rear-context-string . "onymous Function")
- (position . 697080)
- (filename . "/home/andreas/local/share/emacs/28.1.90/share/info/elisp")
+(("Anonymous functions"
+ (front-context-string . "File: elisp.info")
+ (rear-context-string)
+ (position . 697494)
+ (filename . "/home/andreas/local/share/emacs/28.1.91/share/info/elisp")
  (info-node . "Anonymous Functions")
+ (handler . Info-bookmark-jump))
+("Dedicated side windows"
+ (front-context-string . "     ‘dedicated’")
+ (rear-context-string . "pecified side.\n\n")
+ (position . 2103005)
+ (filename . "/home/andreas/local/share/emacs/28.1.91/share/info/elisp")
+ (info-node . "Displaying Buffers in Side Windows")
  (handler . Info-bookmark-jump))
 )
