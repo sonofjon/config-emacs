@@ -1762,15 +1762,6 @@ capf:s, see documentation.")
          (side . right)
          (slot . 1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ("COMMIT_EDITMSG"
-         ;; (display-buffer-at-bottom)
-         ;; (window-height . fit-window-to-buffer)
-         ;; (window-parameters . ((no-delete-other-windows . t))))
-         (display-buffer-reuse-mode-window display-buffer-in-side-window)
-         (window-width . ,aj8/side-window-width-dynamic)
-         (side . right)
-         (slot . -1)
-         (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;;   Help
         ;;
@@ -1823,7 +1814,11 @@ capf:s, see documentation.")
          (display-buffer-reuse-mode-window display-buffer-at-bottom)
          (window-height . fit-window-to-buffer)
          (window-parameters . ((no-other-window . t)
-                               (mode-line-format . none))))))
+                               (mode-line-format . none))))
+        ("COMMIT_EDITMSG"
+         (display-buffer-at-bottom)
+         (window-height . ,aj8/side-window-height)
+         (window-parameters . ((no-delete-other-windows . t))))))
 
 ;;Obey display actions when switching buffers
 (setq switch-to-buffer-obey-display-actions t)
