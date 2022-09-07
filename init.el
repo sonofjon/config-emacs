@@ -1587,7 +1587,7 @@ capf:s, see documentation.")
 ;; (setq isearch-invisible nil)
 
 ;; Disable lax-whitespace search by default
-(setq isearch-lax-whitespace nil)
+;; (setq isearch-lax-whitespace nil)
 
 ;; Interpret spaces as wildcards (with M-s SPC)
 (setq search-whitespace-regexp ".*?")
