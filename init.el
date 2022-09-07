@@ -817,7 +817,7 @@ capf:s, see documentation.")
   (setq treemacs-git-commit-diff-mode 1)
   ;; Highlight files using git status
   (setq treemacs-git-mode 'deferred)
-  :bind (("M-0" . treemacs-select-window)   ; TODO: this conflicts with C-u 0
+  :bind (("M-0" . treemacs-select-window)
          ("C-c t 1" . treemacs-delete-other-windows)
          ("C-c t t" . treemacs)
          ("C-c t d" . treemacs-select-directory)
