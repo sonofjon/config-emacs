@@ -1517,8 +1517,9 @@ capf:s, see documentation.")
 ;;   TODO: only consider buffers with the same mode (see
 ;;         dabbrev-friend-buffer-function)
 (with-eval-after-load "hippie-exp"
-  (add-to-list 'hippie-expand-ignore-buffers aj8/buffer-skip-regexp)
-  (add-to-list 'hippie-expand-ignore-buffers "^\\*.*\\*$"))
+  (add-to-list 'hippie-expand-ignore-buffers "^\\*.*\\*$")
+  (add-to-list 'hippie-expand-ignore-buffers "magit:.*")
+  (add-to-list 'hippie-expand-ignore-buffers aj8/buffer-skip-regexp))
 
 ;;; Editing
 
