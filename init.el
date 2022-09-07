@@ -1279,9 +1279,9 @@ capf:s, see documentation.")
   :custom
   (popper-reference-buffers
    '("\\*\\(Messages\\|Warnings\\)\\*"
-     "\\*Async-native-compile-log\\*"
+     "\\*\\(Async-native-compile-log\\|quelpa-build-checkout\\)\\*"
      "\\*Flymake diagnostics.*\\*"
-     "\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|package update results\\|quelpa-build-checkout\\|use-package statistics\\)\\*"
+     "\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|package update results\\|Semantic SymRef\\|use-package statistics\\)\\*"
      "magit.*"
      backtrace-mode
      compilation-mode
@@ -1813,7 +1813,7 @@ capf:s, see documentation.")
             (side . right)
             (slot . -1)
             (window-parameters . ((no-delete-other-windows . t))))))
-        ("\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|package update results\\|use-package statistics\\)\\*"
+        ("\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|package update results\\|Semantic SymRef\\|use-package statistics\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
