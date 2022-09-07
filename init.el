@@ -243,9 +243,19 @@
   ;; What to dim
   ;; (dimmer-adjustment-mode ':both)
   ;; Adjust dimming amount
-  (dimmer-fraction 0.25)         ; default is 0.20
-  (dimmer-use-colorspace :rgb)   ; for use with modus themes
+  (dimmer-fraction 0.25)   ; default is 0.20
+  ;; Fix for Modus themes
+  (dimmer-use-colorspace :rgb)
+  ;; Don't dim these buffers
+  ;; (dimmer-buffer-exclusion-regexps "")
   :config
+  ;; Don't dim Hydra buffers
+  (dimmer-configure-hydra)
+  ;; Don't dim Magit transient buffers
+  (dimmer-configure-magit)
+  ;; Don't dim which-key buffers
+  (dimmer-configure-which-key)
+  ;; Enable dimmer-mode
   (dimmer-mode 1))
 
 ;;; Coding
