@@ -1764,7 +1764,7 @@ capf:s, see documentation.")
         ;;
         ;;   Magit
         ;;
-        ("\\(magit:\\|magit-log:\\|magit-reflog:\\|magit-log-select:\\).*"
+        ("\\(magit:\\|magit-log.*:\\|magit-reflog:\\|magit-log-select:\\).*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
