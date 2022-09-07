@@ -39,17 +39,12 @@ Emacs session."
 ;;; Buffer switching
 
 (defcustom aj8/buffer-skip-regexp
-  (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Completions*"
-                  "*Flymake log*" "*GNU Emacs*" "*lsp-log*"
-                  "*Messages*" "*package*" "*Quail Completions*"
-                  "*quelpa-build-checkout*" "*scratch*" "*Warnings*"
-                  "*Async-native-compile-log*")
+  (rx bos (or (or "*Messages*" "*scratch*" "*Warnings*")
               (seq "magit-diff" (zero-or-more anything))
               (seq "magit-process" (zero-or-more anything))
               (seq "magit-revision" (zero-or-more anything))
-              (seq "magit-stash" (zero-or-more anything))
-              (seq "*" (one-or-more anything) "-ls" (zero-or-more anything)) "*")
-              eos)
+              (seq "magit-stash" (zero-or-more anything)))
+      eos)
   "Regular expression matching buffers ignored by `next-buffer'
 and `previous-buffer'."
   :type 'regexp
@@ -86,16 +81,16 @@ and `previous-buffer'."
   "In selected window switch to the next project buffer.
 If the current buffer does not belong to a project, call `next-buffer'."
   (interactive)
-  (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
-    (my/project--repeat-until-project-buffer #'next-buffer)))
+  ;; (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+    (my/project--repeat-until-project-buffer #'next-buffer))
 
 ;; Switch to previous project buffer
 (defun my/project-previous-buffer ()
   "In selected window switch to the previous project buffer.
 If the current buffer does not belong to a project, call `previous-buffer'."
   (interactive)
-  (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
-    (my/project--repeat-until-project-buffer #'previous-buffer)))
+  ;; (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+    (my/project--repeat-until-project-buffer #'previous-buffer))
 
 ;;; Misc
 
