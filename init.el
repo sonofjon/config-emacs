@@ -2033,10 +2033,10 @@ capf:s, see documentation.")
 ;;; Buffers
 
 ;; Buffer navigation
-(global-set-key (kbd "C-x <right>") #'my/project-next-buffer)
-(global-set-key (kbd "C-x <left>") #'my/project-previous-buffer)
-(global-set-key (kbd "C-x C-<right>") #'next-buffer)
-(global-set-key (kbd "C-x C-<left>") #'previous-buffer)
+(global-set-key (kbd "C-x <right>") #'next-buffer)
+(global-set-key (kbd "C-x <left>") #'previous-buffer)
+(global-set-key (kbd "C-x C-<right>") #'my/project-next-buffer)
+(global-set-key (kbd "C-x C-<left>") #'my/project-previous-buffer)
 
 ;; Kill buffer
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
