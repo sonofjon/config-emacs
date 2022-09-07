@@ -239,7 +239,6 @@
 ;; dimmer (visually highlight the selected buffer)
 (use-package dimmer
   ;; :disabled
-  :commands dimmer-config-change-handler
   :custom
   ;; What to dim
   ;; (dimmer-adjustment-mode ':both)
