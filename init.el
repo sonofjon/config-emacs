@@ -1269,12 +1269,12 @@ capf:s, see documentation.")
          ("C-M-`" . popper-toggle-type))
   :custom
   (popper-reference-buffers
-   '("\\*Messages\\*"
-     "\\*\\(Backtrace\\|Warnings\\)\\*"
-     "\\*.*-[Ll]og\\*"
+   '("\\*\\(Messages\\|Warnings\\)\\*"
+     "\\*Async-native-compile-log\\*"
      "\\*Flymake diagnostics.*\\*"
-     "\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|use-package statistics\\)\\*"
+     "\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|package update results\\|use-package statistics\\)\\*"
      "magit.*"
+     backtrace-mode
      compilation-mode
      help-mode
      helpful-mode
@@ -1721,7 +1721,7 @@ capf:s, see documentation.")
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Async-native-compile-log\\|Native-compile-Log\\)\\*"
-        ("\\*\\(Async-native-compile-log\\)\\*"
+        ("\\*Async-native-compile-log\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
