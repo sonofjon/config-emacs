@@ -1371,8 +1371,8 @@ capf:s, see documentation.")
 
 ;; google-this (a set of functions and bindings to google under point)
 (use-package google-this
-  :defer 1
   :diminish
+  :bind-keymap ("C-c /" . google-this-mode-map)
   :init
   (which-key-add-key-based-replacements "C-c /" "google-this")
                                         ; add label for prefix key
