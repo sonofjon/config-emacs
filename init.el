@@ -1720,7 +1720,7 @@ capf:s, see documentation.")
          (window-height . ,aj8/side-window-height)
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
-        ;; ("\\*\\(Async-native-compile-log\\|Compile-Log\\|Native-compile-Log\\)\\*"
+        ;; ("\\*\\(Async-native-compile-log\\|Native-compile-Log\\)\\*"
         ("\\*\\(Async-native-compile-log\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
@@ -1796,7 +1796,7 @@ capf:s, see documentation.")
          (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;;   Other
-        ;;
+        ;;  TODO: Doesn't work for Pp Macroexpand Output
         ((lambda (buffer _alist)
            (with-current-buffer buffer (derived-mode-p 'dired-mode))) .
          ((display-buffer-in-side-window) .
@@ -1804,7 +1804,7 @@ capf:s, see documentation.")
             (side . right)
             (slot . -1)
             (window-parameters . ((no-delete-other-windows . t))))))
-        ("\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|use-package statistics\\)\\*"
+        ("\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|package update results\\|use-package statistics\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
