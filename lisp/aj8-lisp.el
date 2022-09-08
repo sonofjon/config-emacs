@@ -92,6 +92,32 @@ If the current buffer does not belong to a project, call `previous-buffer'."
   ;; (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
     (my/project--repeat-until-project-buffer #'previous-buffer))
 
+;;; Manipulate buffer names
+
+;; Tag buffer name
+(defun aj8/tag-buffer-name (tag)
+  "Add TAG to buffer name."
+  (rename-buffer (format "%s # %s" (buffer-name) tag)))
+
+;; Prefix buffer name
+(defun aj8/prefix-buffer-name (prefix)
+  "Add PREFIX to buffer name."
+  (rename-buffer (format "%s: %s" prefix (buffer-name))))
+
+;;; Buffer matching functions
+
+;; Make major-mode matching function
+(defun mp-make-display-buffer-matcher-function (major-modes)
+  "Return a lambda function that matches against a list of
+major-modes."
+  (lambda (buffer-name action)
+    (with-current-buffer buffer-name (apply #'derived-mode-p major-modes))))
+
+;; Check if buffer belongs to a project
+;; (defun mp-buffer-has-project-p (buffer action)
+;;   "Return non-nil if BUFFER belongs to a project."
+;;   (with-current-buffer buffer (project-current nil)))
+
 ;;; Misc
 
 ;; Kill buffer in other window
@@ -114,16 +140,6 @@ If the current buffer does not belong to a project, call `previous-buffer'."
        (interactive)
        (switch-to-buffer (get-buffer-create "*scratch*"))
        (lisp-interaction-mode))
-
-;; Tag buffer name
-(defun aj8/tag-buffer-name (tag)
-  "Add TAG to buffer name."
-  (rename-buffer (format "%s # %s" (buffer-name) tag)))
-
-;; Prefix buffer name
-(defun aj8/prefix-buffer-name (prefix)
-  "Add PREFIX to buffer name."
-  (rename-buffer (format "%s: %s" prefix (buffer-name))))
 
 ;;;; Coding
 
