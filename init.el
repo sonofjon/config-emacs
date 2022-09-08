@@ -1227,6 +1227,9 @@ capf:s, see documentation.")
    '(("~/dotfiles"                . 1)
      ("~/projects"                . 1)
      ("~/git"                     . 1)))
+  ;; Set alternative display function
+  ;; (magit-display-buffer-function 'magit-display-buffer-fullcolumn-most-v1)
+  (magit-display-buffer-function 'display-buffer)
   ;; Clone command is transient
   (magit-clone-always-transient t)
   ;; Github mapping for user sonofjon
