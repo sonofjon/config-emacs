@@ -1279,16 +1279,16 @@ capf:s, see documentation.")
   :custom
   (popper-reference-buffers
    '("\\*\\(Messages\\|Warnings\\)\\*"
-     "\\*\\(Async-native-compile-log\\|quelpa-build-checkout\\)\\*"
-     "\\*Flymake diagnostics.*\\*"
-     "\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|package update results\\|Semantic SymRef\\|use-package statistics\\)\\*"
+     "\\*\\(Async-native-compile-log\\|.*ls.*\\|quelpa-build-checkout\\)\\*"
+     "\\*\\(Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|package update results\\)\\*"
      "magit.*"
      backtrace-mode
      compilation-mode
+     dired-mode
      help-mode
      helpful-mode
      Info-mode
-     dired-mode
+     tabulated-list-mode
      "\\*\\(Man\\|WoMan\\).*\\*"
      "^\\*eshell.*\\*$" eshell-mode
      "^\\*shell.*\\*$" shell-mode
@@ -1731,7 +1731,7 @@ capf:s, see documentation.")
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Native-compile-Log\\)\\*"
-        ("\\*\\(Async-native-compile-log\\|quelpa-build-checkout\\)\\*"
+        ("\\*\\(Async-native-compile-log\\|.*ls.*\\|quelpa-build-checkout\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
@@ -1745,16 +1745,11 @@ capf:s, see documentation.")
          (window-height . ,aj8/side-window-height)
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
-        ;; ("\\*.*-[Ll]og\\*"
+        ;; ("\\*Flymake diagnostics.*\\*"
         ;;  (display-buffer-in-side-window)
         ;;  (window-height . ,aj8/side-window-height)
         ;;  (side . top)
         ;;  (window-parameters . ((no-delete-other-windows . t))))
-        ("\\*Flymake diagnostics.*\\*"
-         (display-buffer-in-side-window)
-         (window-height . ,aj8/side-window-height)
-         (side . top)
-         (window-parameters . ((no-delete-other-windows . t))))
         ("magit-process:.*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
@@ -1806,15 +1801,16 @@ capf:s, see documentation.")
          (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;;   Other
-        ;;  TODO: Doesn't work for Pp Macroexpand Output
+        ;;
         ((lambda (buffer _alist)
-           (with-current-buffer buffer (derived-mode-p 'dired-mode))) .
+           (with-current-buffer buffer (or (derived-mode-p 'dired-mode)
+                                           (derived-mode-p 'tabulated-list-mode)))) .
          ((display-buffer-in-side-window) .
           ((window-width . ,aj8/side-window-width-dynamic)
             (side . right)
             (slot . -1)
             (window-parameters . ((no-delete-other-windows . t))))))
-        ("\\*\\(Embark Collect:.*\\|Occur\\|Packages\\|.*Output\\|package update results\\|Semantic SymRef\\|use-package statistics\\)\\*"
+        ("\\*\\(Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|package update results\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
@@ -1837,7 +1833,7 @@ capf:s, see documentation.")
          (window-parameters . ((no-other-window . t)
                                (mode-line-format . none))))))
 
-;;Obey display actions when switching buffers
+;; Obey display actions when switching buffers
 (setq switch-to-buffer-obey-display-actions t)
 
 ;;; Other
