@@ -106,10 +106,10 @@
 
 ;;;; Packages
 
-;; Selected packages
-;;   Install packages with (package-install-selected-packages)
-;;   Remove packages with (package-autoremove)
-;;   Use use-package for configuration only
+;;; Selected packages
+;;;   Install packages with (package-install-selected-packages)
+;;;   Remove packages with (package-autoremove)
+;;;   Use use-package for configuration only
 (custom-set-variables '(package-selected-packages
                         '(all-the-icons
                           all-the-icons-dired
