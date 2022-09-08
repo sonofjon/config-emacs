@@ -1303,7 +1303,7 @@ capf:s, see documentation.")
   ;; No display control (use display-buffer-alist)
   (popper-display-control nil)
   ;; Disable mode-line
-  (popper-mode-line nil)
+  ;; (popper-mode-line nil)
   :config
   ;; Enable popper
   (popper-mode 1)
