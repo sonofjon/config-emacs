@@ -1723,6 +1723,10 @@ capf:s, see documentation.")
 ;; (setq window-sides-slots '(1 1 3 1))
 
 ;; Window rules
+;;   TODO: Buffers that are not displayed, e.g. quelpa-build-checkout
+;;   and *Compile-Log*, do not seem to be affected by
+;;   display-buffer-alist, such that these buffers appear in the main
+;;   buffer when applying next-buffer.
 (setq display-buffer-alist
       `(;;
         ;; Example using mp-make-display-buffer-matcher-function
