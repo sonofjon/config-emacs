@@ -1821,6 +1821,7 @@ capf:s, see documentation.")
         ;;
         ;;   Other
         ;;
+        ;; TODO: doesn't capture *Bookmark List*
         ((lambda (buffer _alist)
            (with-current-buffer buffer (or (derived-mode-p 'dired-mode)
                                            (derived-mode-p 'tabulated-list-mode)))) .
