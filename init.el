@@ -1588,6 +1588,9 @@ capf:s, see documentation.")
 ;; Use "repeat-mode" for "pop-mark"
 (setq set-mark-command-repeat-pop t)
 
+;; Auto-save bookmarks
+(setq bookmark-save-flag 1)
+
 ;;; Search
 
 ;; Don't search invisible text by default
