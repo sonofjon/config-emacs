@@ -140,6 +140,9 @@
                           eterm-256color
                           exec-path-from-shell
                           expand-region
+                          flymake-aspell
+                          flymake-json
+                          flymake-lua
                           flyspell-correct
                           google-this
                           helpful
@@ -383,6 +386,18 @@
   (defun aj8/start-pyright ()
     (require 'lsp-pyright)
     (lsp-deferred)))
+
+;; flymake-aspell (Aspell checker for Flycheck)
+(use-package flymake-aspell
+  :hook (text-mode . flymake-aspell-setup))
+
+;; flymake-json (a Flymake handler for json using jsonlint)
+(use-package flymake-json
+  :hook (json-mode . flymake-json-load))
+
+;; flymake-lua (Flymake for Lua)
+(use-package flymake-lua
+  :hook (lua-mode . flymake-lua-load))
 
 ;;; Completion
 
