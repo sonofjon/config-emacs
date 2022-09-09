@@ -1067,5 +1067,13 @@ will be applied."
   (interactive)
   (load-file user-init-file))
 
+;; List parent modes
+(defun my/derived-modes (mode)
+  "Display a list of the ancestor modes that MODE is derived from."
+  (interactive (list major-mode))
+  (defun iter (mode)
+    (and mode
+         (cons mode (iter (get mode 'derived-mode-parent)))))
+  (message "%s" (iter mode)))
 
 (provide 'aj8-lisp)
