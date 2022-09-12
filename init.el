@@ -1289,6 +1289,8 @@ capf:s, see documentation.")
   (magit-clone-name-alist '(("\\`\\(?:github:\\|gh:\\)?\\([^:]+\\)\\'"
                              "github.com" "sonofjon")))
   :config
+  ;; Back up uncommitted changes
+  (magit-wip-mode 1)
   ;; Disable hl-line-mode
   (add-hook 'magit-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
   ;; Add status flag to repository list
