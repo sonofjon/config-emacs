@@ -110,7 +110,7 @@
 ;;;   Install packages with (package-install-selected-packages)
 ;;;   Remove packages with (package-autoremove)
 ;;;   Use use-package for configuration only
-(custom-set-variables '(package-selected-packages
+(customize-set-variable 'package-selected-packages
                         '(all-the-icons
                           all-the-icons-dired
                           auto-package-update
@@ -187,7 +187,7 @@
                           which-key
                           whole-line-or-region
                           yaml-mode
-                          ztree)))
+                          ztree))
 
 ;; Install selected packages
 (package-install-selected-packages)
