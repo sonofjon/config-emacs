@@ -118,12 +118,14 @@
                           cape
                           circadian
                           consult
+                          consult-dash
                           consult-project-extra
                           corfu
                           corfu-doc
                           corfu-doc-terminal
                           corfu-terminal
                           dashboard
+                          dash-docs
                           diff-hl
                           diminish
                           dimmer
@@ -894,6 +896,24 @@ capf:s, see documentation.")
   (which-key-idle-secondary-delay 0.05)
   :config
   (which-key-mode 1))
+
+;; dash-docs (offline documentation browser using Dash docsets)
+;;   Requirements: sqlite3
+(use-package dash-docs
+  :dash (yaml-mode "Ansible")
+         (sh-mode "Bash")
+         (web-mode "HTML")
+         (LaTeX-mode "LaTeX")
+         (lua-mode "Lua_5.4")
+         (markdown-mode "Markdown")
+         (python-mode "Python_3" "Django"))
+
+;; consult-dash (consult front-end for dash-docs)
+(use-package consult-dash
+  :bind (("C-c H H" . consult-dash))
+  :config
+  ;; Use the symbol at point as initial search term
+  (consult-customize consult-dash :initial (thing-at-point 'symbol)))
 
 ;;; Navigation
 
