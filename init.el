@@ -1995,6 +1995,9 @@ capf:s, see documentation.")
 ;; dired-after-readin: tag dired buffer names
 (add-hook 'dired-after-readin-hook (lambda () (aj8/prefix-buffer-name "dired")))
 
+;; Disable side windows before Ediff
+(add-hook 'ediff-before-setup-windows-hook 'window-toggle-side-windows)
+
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
