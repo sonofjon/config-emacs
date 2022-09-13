@@ -913,6 +913,8 @@ capf:s, see documentation.")
   (which-key-idle-delay 0.75)
   ;; Secondary delay (default is nil)
   (which-key-idle-secondary-delay 0.05)
+  ;; Display remapped commands
+  (which-key-compute-remaps t)
   :config
   (which-key-mode 1))
 
