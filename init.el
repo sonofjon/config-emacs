@@ -961,6 +961,8 @@ reported by `frame-width'. See
         (markdown-mode "Markdown")
         (python-mode "Python 3" "Django")
   :config
+  ;; Disable debugging
+  (setq dash-docs-enable-debugging nil)
   ;; Set browser function
   (setq dash-docs-browser-func #'eww-browse-url))
 
