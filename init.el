@@ -389,7 +389,10 @@
 
 ;; flymake-aspell (Aspell checker for Flycheck)
 (use-package flymake-aspell
-  :hook (text-mode . flymake-aspell-setup))
+  :hook (text-mode . flymake-aspell-setup)
+  :config
+  ;; Don't prompt for saving personal dictionary
+  (setq ispell-silently-savep t))
 
 ;; flymake-json (a Flymake handler for json using jsonlint)
 (use-package flymake-json
