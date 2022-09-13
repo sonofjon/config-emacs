@@ -908,6 +908,8 @@ capf:s, see documentation.")
   :custom
   ;; Don't show which-key buffer on C-h
   (which-key-use-C-h-commands nil)
+  ;; Preserve window configuration
+  (which-key-preserve-window-configuration t)
   ;; Delay (default is 1.0 s)
   ;; (which-key-idle-delay 10000)
   (which-key-idle-delay 0.75)
