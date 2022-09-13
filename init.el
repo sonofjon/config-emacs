@@ -59,7 +59,7 @@
 ;; (setq use-package-always-ensure t)
 
 ;; Report about loading and configuration details
-(setq use-package-verbose t)
+;; (setq use-package-verbose t)
 
 ;; Lower time threshold for package load time reporting
 (setq use-package-minimum-reported-time 0.001)
