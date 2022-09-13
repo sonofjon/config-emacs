@@ -922,12 +922,11 @@ capf:s, see documentation.")
 (use-package dash-docs
   :dash (yaml-mode "Ansible")
         (sh-mode "Bash")
-        (emacs-lisp-mode "Emacs_Lisp")
+        (emacs-lisp-mode "Emacs Lisp")
         (web-mode "HTML")
         (LaTeX-mode "LaTeX")
         (lua-mode "Lua_5.4")
         (markdown-mode "Markdown")
-        (python-mode "Python_3" "Django"))
   ;; :init
   ;; (defun minimal-browse-url (url)
   ;;   "browse an arbitrary url (as url) in a new frameless firefox window."
@@ -937,6 +936,7 @@ capf:s, see documentation.")
   ;;    (concat "firefox -p default-release --new-window " url)
   ;;    nil 0))
   ;; :config
+        (python-mode "Python 3" "Django")
   ;; Set browser function
   ;; (setq dash-docs-browser-func 'minimal-browse-url))
 
