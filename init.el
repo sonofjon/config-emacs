@@ -318,9 +318,9 @@
 
 ;; yaml-mode (major-mode for editing YAML files)
 (use-package yaml-mode
-  :mode "\\.yml$"
-  :bind (:map yaml-mode-map))
-              ;; ("C-m" . newline-and-indent)))
+  :mode "\\.yml$")
+  ;; :bind (:map yaml-mode-map
+  ;;             ("C-m" . newline-and-indent)))
 
 ;; rainbow-mode (colorize color names in buffers)
 (use-package rainbow-mode
