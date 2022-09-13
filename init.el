@@ -903,13 +903,39 @@ capf:s, see documentation.")
   (marginalia-mode 1))
 
 ;; which-key (display available keybindings in popup)
+;;   TODO: which-key buffer overlaps with bottom side-window buffer
 (use-package which-key
   :diminish
+  :init
+  (defun aj8/which-key-description-length (width)
+    "Return `which-key' description width for different frame
+widths. Note that the available width is slightly less than
+reported by `frame-width'. See
+`which-key--side-window-max-dimensions'"
+    ;; (message "%s" width)
+    (cond
+     ((= width 142)   ; brain10-windows
+      ;; 0.15)   ; TODO: floats don't work
+      21)
+     (t
+      27)))   ; default value
   :custom
-  ;; Don't show which-key buffer on C-h
-  (which-key-use-C-h-commands nil)
   ;; Preserve window configuration
   (which-key-preserve-window-configuration t)
+  ;; Max window height
+  ;;   (default is 0.25)
+  (which-key-side-window-max-height 0.5)
+  ;; Max description length
+  ;;   (default is 27)
+  (which-key-max-description-length #'aj8/which-key-description-length)
+  ;; Min description length
+  ;;   (default is 0)
+  (which-key-min-column-description-width
+   (aj8/which-key-description-length
+    (cdr (which-key--side-window-max-dimensions))))   ; same as max length
+  ;; Column padding
+  ;;   (default is 0)
+  (which-key-add-column-padding 1)
   ;; Delay (default is 1.0 s)
   ;; (which-key-idle-delay 10000)
   (which-key-idle-delay 0.75)
@@ -917,6 +943,8 @@ capf:s, see documentation.")
   (which-key-idle-secondary-delay 0.05)
   ;; Display remapped commands
   (which-key-compute-remaps t)
+  ;; Don't show which-key buffer on C-h
+  (which-key-use-C-h-commands nil)
   :config
   (which-key-mode 1))
 
