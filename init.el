@@ -910,6 +910,17 @@ capf:s, see documentation.")
         (lua-mode "Lua_5.4")
         (markdown-mode "Markdown")
         (python-mode "Python_3" "Django"))
+  ;; :init
+  ;; (defun minimal-browse-url (url)
+  ;;   "browse an arbitrary url (as url) in a new frameless firefox window."
+  ;;   (split-window-right)
+  ;;   (other-window 1)
+  ;;   (call-process-shell-command
+  ;;    (concat "firefox -p default-release --new-window " url)
+  ;;    nil 0))
+  ;; :config
+  ;; Set browser function
+  ;; (setq dash-docs-browser-func 'minimal-browse-url))
 
 ;; consult-dash (consult front-end for dash-docs)
 (use-package consult-dash
