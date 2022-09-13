@@ -903,15 +903,17 @@ capf:s, see documentation.")
 ;;   Requirements: sqlite3
 (use-package dash-docs
   :dash (yaml-mode "Ansible")
-         (sh-mode "Bash")
-         (web-mode "HTML")
-         (LaTeX-mode "LaTeX")
-         (lua-mode "Lua_5.4")
-         (markdown-mode "Markdown")
-         (python-mode "Python_3" "Django"))
+        (sh-mode "Bash")
+        (emacs-lisp-mode "Emacs_Lisp")
+        (web-mode "HTML")
+        (LaTeX-mode "LaTeX")
+        (lua-mode "Lua_5.4")
+        (markdown-mode "Markdown")
+        (python-mode "Python_3" "Django"))
 
 ;; consult-dash (consult front-end for dash-docs)
 (use-package consult-dash
+  :after dash-docs
   :bind (("C-c H H" . consult-dash))
   :config
   ;; Use the symbol at point as initial search term
