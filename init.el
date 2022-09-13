@@ -1793,7 +1793,7 @@ reported by `frame-width'. See
 ;; (setq window-combination-resize t)
 
 ;; Try to even window sizes vertically only
-;; (setq even-window-sizes 'height-only)
+(setq even-window-sizes 'height-only)
 
 ;; Allow switching to buffer in strongly dedicated windows
 ;; (setq switch-to-buffer-in-dedicated-window 'pop)
