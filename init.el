@@ -899,6 +899,7 @@ capf:s, see documentation.")
   (which-key-mode 1))
 
 ;; dash-docs (offline documentation browser using Dash docsets)
+;;   Usage: M-x dash-docs-install-docset
 ;;   Requirements: sqlite3
 (use-package dash-docs
   :dash (yaml-mode "Ansible")
