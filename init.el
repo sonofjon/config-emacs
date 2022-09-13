@@ -339,6 +339,7 @@
          (json-mode . lsp-deferred)
          (lua-mode . lsp-deferred)
          (tex-mode . lsp-deferred)
+         (yaml-mode . lsp-deferred)
          ;; which-key integration
          (lsp-mode . lsp-enable-which-key-integration)
          ;; Corfu integration
