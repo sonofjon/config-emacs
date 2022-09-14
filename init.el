@@ -956,8 +956,8 @@ reported by `frame-width'. See
         (sh-mode "Bash")
         (emacs-lisp-mode "Emacs Lisp")
         (web-mode "HTML")
-        (LaTeX-mode "LaTeX")
-        (lua-mode "Lua_5.4")
+        (latex-mode "LaTeX")
+        (lua-mode "Lua 5.4")
         (markdown-mode "Markdown")
         (python-mode "Python 3" "Django")
   :config
