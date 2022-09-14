@@ -1890,8 +1890,23 @@ reported by `frame-width'. See
          (slot . -1)
          (window-parameters . ((no-delete-other-windows . t))))
         ;;
+        ;;   Browser
+        ;;
+        ("\\*eww:.*\\*"
+         (display-buffer-in-side-window)
+         (window-width . ,aj8/side-window-width-dynamic)
+         (side . right)
+         (slot . 1)
+         (window-parameters . ((no-delete-other-windows . t))))
+        ;;
         ;;   Help
         ;;
+        ("\\*Apropos\\*"
+         (display-buffer-in-side-window)
+         (window-width . ,aj8/side-window-width-dynamic)
+         (side . right)
+         (slot . 1)
+         (window-parameters . ((no-delete-other-windows . t))))
         ("\\*\\(Help\\|helpful.*\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
