@@ -961,6 +961,8 @@ reported by `frame-width'. See
         (markdown-mode "Markdown")
         (python-mode "Python 3" "Django")
   :config
+  ;; Make sure dash-docs directory exists on initial run
+  (dash-docs--ensure-created-docsets-path dash-docs-docsets-path)
   ;; Disable debugging
   (setq dash-docs-enable-debugging nil)
   ;; Set browser function
