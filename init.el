@@ -904,6 +904,7 @@ capf:s, see documentation.")
 
 ;; which-key (display available keybindings in popup)
 ;;   TODO: which-key buffer overlaps with bottom side-window buffer
+;;         Error setting which-key-min-column-description-width: (void-function aj8/which-key-description-length)
 (use-package which-key
   :diminish
   :init
@@ -1892,6 +1893,7 @@ reported by `frame-width'. See
         ;;
         ;;   Browser
         ;;
+        ;; TODO: doesn't work initially
         ("\\*eww:.*\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
