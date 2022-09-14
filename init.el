@@ -124,6 +124,7 @@
                           corfu-doc-terminal
                           corfu-terminal
                           dashboard
+                          devdocs
                           diff-hl
                           diminish
                           dimmer
@@ -945,6 +946,25 @@ reported by `frame-width'. See
   (which-key-use-C-h-commands nil)
   :config
   (which-key-mode 1))
+
+;; devdocs (Emacs viewer for DevDocs)
+;;   Usage: M-x devdocs-install
+(use-package devdocs
+  :bind ("C-c H d" . devdocs-lookup)
+  :custom
+  ;; Select devdocs window
+  (devdocs-window-select t)
+  :config
+  (add-hook 'yaml-mode-hook
+            (lambda () (setq-local devdocs-current-docs '("ansible"))))
+  (add-hook 'sh-mode-hook
+            (lambda () (setq-local devdocs-current-docs '("bash"))))
+  (add-hook 'latex-mode-hook
+            (lambda () (setq-local devdocs-current-docs '("latex"))))
+  (add-hook 'lua-mode-hook
+            (lambda () (setq-local devdocs-current-docs '("lua~5.4"))))
+  (add-hook 'python-mode-hook
+            (lambda () (setq-local devdocs-current-docs '("python~3.10")))))
 
 ;;; Navigation
 
@@ -1886,7 +1906,7 @@ reported by `frame-width'. See
             (side . right)
             (slot . -1)
             (window-parameters . ((no-delete-other-windows . t))))))
-        ("\\*\\(Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|package update results\\)\\*"
+        ("\\*\\(Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|package update results\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
@@ -2170,7 +2190,7 @@ reported by `frame-width'. See
 (global-set-key (kbd "C-c H k") #'describe-keymap)
 
 ;; Display commands by category
-(global-set-key (kbd "C-c H d") #'shortdoc-display-group)
+(global-set-key (kbd "C-c H s") #'shortdoc-display-group)
 
 (which-key-add-key-based-replacements "C-c H" "help")
                                         ; add label for prefix key
