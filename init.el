@@ -1157,7 +1157,7 @@ reported by `frame-width'. See
 
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
-  ;; :disabled
+  :disabled
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
@@ -1249,8 +1249,8 @@ reported by `frame-width'. See
 ;; ef-themes (colorful and legible themes)
 (use-package ef-themes
   ;; Themes:
-  ;;   Light: `ef-day', `ef-light', `ef-spring', `ef-summer'.
-  ;;   Dark:  `ef-autumn', `ef-dark', `ef-night', `ef-winter'.
+  ;;   Light: `ef-day', `ef-light', `ef-duo-light', `ef-spring', `ef-summer'.
+  ;;   Dark:  `ef-night', `ef-dark', `ef-duo-dark', `ef-autumn', `ef-winter'.
   ;;   All the themes are included in the variable `ef-themes-collection'.
   ;; Commands:
   ;;   `ef-themes-toggle'
@@ -1258,7 +1258,7 @@ reported by `frame-width'. See
   ;;   `ef-themes-load-random'
   ;;   `ef-themes-preview-colors'
   ;;   `ef-themes-preview-colors-current'
-  :disabled
+  ;; :disabled
   :bind ("<f5>" . ef-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
   :init
@@ -1272,15 +1272,18 @@ reported by `frame-width'. See
   (mapc #'disable-theme custom-enabled-themes)
   ;; Load theme
   (if (aj8/daytime-p)
-      (load-theme 'ef-light :no-confirm)
-    (load-theme 'ef-dark :no-confirm))
+      ;; (load-theme 'ef-light :no-confirm)
+      (load-theme 'ef-duo-light :no-confirm)
+    ;; (load-theme 'ef-dark :no-confirm))
+    (load-theme 'ef-duo-dark :no-confirm))
   ;; (load-theme 'ef-dark :no-confirm)
   ;; Load  theme (also calls `ef-themes-post-load-hook')
   ;; (ef-themes-select 'ef-light)
   ;; (ef-themes-select 'ef-dark)
   :config
   ;; Specify themes for ef-themes-toggle command
-  (setq ef-themes-to-toggle '(ef-light ef-dark)))
+  ;; (setq ef-themes-to-toggle '(ef-light ef-dark)))
+  (setq ef-themes-to-toggle '(ef-duo-light ef-duo-dark)))
 
 ;; circadian (theme-switching based on daytime)
 (use-package circadian
