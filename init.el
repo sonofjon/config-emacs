@@ -118,14 +118,12 @@
                           cape
                           circadian
                           consult
-                          consult-dash
                           consult-project-extra
                           corfu
                           corfu-doc
                           corfu-doc-terminal
                           corfu-terminal
                           dashboard
-                          dash-docs
                           diff-hl
                           diminish
                           dimmer
@@ -947,34 +945,6 @@ reported by `frame-width'. See
   (which-key-use-C-h-commands nil)
   :config
   (which-key-mode 1))
-
-;; dash-docs (offline documentation browser using Dash docsets)
-;;   Usage: M-x dash-docs-install-docset
-;;   Requirements: sqlite3
-(use-package dash-docs
-  :dash (yaml-mode "Ansible")
-        (sh-mode "Bash")
-        (emacs-lisp-mode "Emacs Lisp")
-        (web-mode "HTML")
-        (latex-mode "LaTeX")
-        (lua-mode "Lua 5.4")
-        (markdown-mode "Markdown")
-        (python-mode "Python 3" "Django")
-  :config
-  ;; Make sure dash-docs directory exists on initial run
-  (dash-docs--ensure-created-docsets-path dash-docs-docsets-path)
-  ;; Disable debugging
-  (setq dash-docs-enable-debugging nil)
-  ;; Set browser function
-  (setq dash-docs-browser-func #'eww-browse-url))
-
-;; consult-dash (consult front-end for dash-docs)
-(use-package consult-dash
-  :after dash-docs
-  :bind (("C-c H H" . consult-dash))
-  :config
-  ;; Use the symbol at point as initial search term
-  (consult-customize consult-dash :initial (thing-at-point 'symbol)))
 
 ;;; Navigation
 
