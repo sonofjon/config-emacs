@@ -125,6 +125,7 @@
                           corfu-terminal
                           dashboard
                           devdocs
+                          devdocs-browser
                           diff-hl
                           diminish
                           dimmer
@@ -965,6 +966,21 @@ reported by `frame-width'. See
             (lambda () (setq-local devdocs-current-docs '("lua~5.4"))))
   (add-hook 'python-mode-hook
             (lambda () (setq-local devdocs-current-docs '("python~3.10")))))
+
+;; devdocs-browser (browse devdocs.io documents using EWW)
+;;   Usage: M-x devdocs-browser-install-doc
+(use-package devdocs-browser
+  :bind ("C-c H D" . devdocs-browser-open)
+  ;; :custom
+  ;; ;; Select devdocs window
+  ;; (devdocs-window-select t)
+  :custom
+  (devdocs-browser-major-mode-docs-alist '((yaml-mode "Ansible")
+                                           (sh-mode "Bash")
+                                           (emacs-lisp-mode "Elisp")
+                                           (latex-mode "LaTeX")
+                                           (lua-mode "Lua")
+                                           (python-mode "Python"))))
 
 ;;; Navigation
 
