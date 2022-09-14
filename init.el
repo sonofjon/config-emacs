@@ -2062,10 +2062,6 @@ reported by `frame-width'. See
 
 ;;; Modes
 
-;; conf-xdefaults-mode: outline settings
-(add-hook 'conf-xdefaults-mode-hook
-          #'outline-headers-for-exclamation-mark-buffers)
-
 ;; emacs-lisp-mode: outline settings
 (add-hook 'emacs-lisp-mode-hook
           #'outline-headers-for-semicolon-buffers)
@@ -2073,6 +2069,14 @@ reported by `frame-width'. See
 ;; i3wm-config-mode: outline settings
 (add-hook 'i3wm-config-mode-hook
           #'outline-headers-for-hash-mark-buffers)
+
+;; latex-mode: outline settings
+(add-hook 'latex-mode-hook
+          #'outline-headers-for-percentage-buffers)
+
+;; conf-xdefaults-mode: outline settings
+(add-hook 'conf-xdefaults-mode-hook
+          #'outline-headers-for-exclamation-mark-buffers)
 
 ;; Info-mode: allow multiple Info buffers
 (add-hook 'Info-mode-hook #'rename-uniquely)

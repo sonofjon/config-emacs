@@ -410,6 +410,20 @@ for comments."
   ;; Use custom 'outline-level' for sh-mode
   (setq-local outline-level 'aj8/outline-level))
 
+;; LaTeX files
+(defun outline-headers-for-percentage-buffers ()
+  "Set outline header format for buffers using hash mark (\"%\")
+for comments."
+  ;; Set custom outline heading format
+  (setq-local outline-regexp "\\(%+ \\)\\([^(\\ ]\\)")
+  (setq-local outline-heading-alist
+              '(("%%%% " . 1)
+                ("%%% " . 2)
+                ("%% " . 3)
+                ("% " . 4)))
+  ;; Use custom 'outline-level' for sh-mode
+  (setq-local outline-level 'aj8/outline-level))
+
 ;; Xresources files
 (defun outline-headers-for-exclamation-mark-buffers ()
   "Set outline header format for buffers using exclamation
