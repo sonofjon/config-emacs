@@ -250,6 +250,17 @@ major-modes."
     (backward-word))
   (capitalize-word 1))
 
+;; Capitalize word at point
+(defun aj8/delete-blank-lines-region (beg end &optional region)
+  "Delete blank lines, leaving one, in region."
+  (interactive (progn
+                 (let ((beg (mark))
+                       (end (point)))
+                   (unless (and beg end)
+                     (user-error "The mark is not set now, so there is no region"))
+                   (list beg end 'region))))
+  (replace-regexp "\\(\\(^\\s-*$\\)\n\\)\\{2,\\}" "\n" nil beg end))
+
 ;;;; Files
 
 ;;;; Help
