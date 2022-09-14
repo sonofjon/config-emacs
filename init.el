@@ -2095,6 +2095,8 @@ reported by `frame-width'. See
 
 ;; [la]tex-mode:
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
+(add-hook 'latex-mode-hook (lambda () (setq comment-add 0)))   ; use single comment
+                                                               ; character only
 
 ;; shell-scrip-mode: outline settings
 (add-hook 'sh-mode-hook
