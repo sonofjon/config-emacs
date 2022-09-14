@@ -1923,7 +1923,7 @@ reported by `frame-width'. See
         ;;
         ;; Bottom side window
         ;;
-        ("\\*\\(e?shell\\|v?term\\)\\*"
+        ("\\*\\(e?shell\\|v?term\\|tex-shell\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . bottom)
