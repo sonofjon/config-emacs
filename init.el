@@ -989,10 +989,9 @@ reported by `frame-width'. See
 ;;; Navigation
 
 ;; mosey (mosey around your buffers)
-;;   TODO: C-e goes to the left if point is >~ beginning-of-comment
 (use-package mosey
-  :bind (("C-a" . mosey-bol-forward-bounce)
-         ("C-e" . mosey-eol-backward-cycle))
+  :bind (("C-a" . aj8/mosey-bol)
+         ("C-e" . aj8/mosey-eol))
   :init
   ;; Function list for beginning of line
   (defmosey '(beginning-of-line

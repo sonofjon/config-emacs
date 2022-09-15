@@ -370,16 +370,9 @@ major-modes."
                                                 (line-end-position))))
       (aj8/next-comment)))
 
-;;; Movement by whitespace
+;;; Helper functions for Mosey
 
-;; Backward movement by whitespace
-;;   (complements the built-in forward-whitespace)
-(defun my/backward-whitespace (arg)
-  "Move point to the beginning of the current sequence of whitespace characters."
-  (interactive "^p")
-  (forward-whitespace (- arg)))
-
-;; Helper function for Mosey
+;; Move to beginning of comment
 (defun aj8/goto-beginning-of-comment ()
   "Move point to beginning of comment on current line. See also
 `mosey-goto-beginning-of-comment-text'."
@@ -388,6 +381,35 @@ major-modes."
           (re-search-backward (rx (syntax comment-start))
                               (line-beginning-position) t))
     (goto-char (- (match-end 0) 1))))
+
+;; Combine Mosey with regular move-end-of-line
+(defun aj8/mosey-eol ()
+  "Move point to end of line and then cycle backward between mosey
+points."
+  (interactive)
+  (if (or (eolp)
+          (eq last-command 'aj8/mosey-eol))
+      (mosey-eol-backward-cycle)
+    (move-end-of-line nil)))
+
+;; Combine Mosey with regular move-beginning-of-line
+(defun aj8/mosey-bol ()
+  "Move point to beginning of line and then cycle forward between
+mosey points."
+  (interactive)
+  (if (or (bolp)
+          (eq last-command 'aj8/mosey-eol))
+      (mosey-bol-forward-cycle)
+    (move-beginning-of-line nil)))
+
+;;; Misc
+
+;; Backward movement by whitespace
+;;   (complements the built-in forward-whitespace)
+(defun my/backward-whitespace (arg)
+  "Move point to the beginning of the current sequence of whitespace characters."
+  (interactive "^p")
+  (forward-whitespace (- arg)))
 
 ;;;; Outline
 
