@@ -1295,8 +1295,12 @@ reported by `frame-width'. See
   :custom
   ;; (circadian-themes '(("8:00" . modus-operandi)
   ;;                     ("18:00"  . modus-vivendi)))
-  (circadian-themes '((:sunrise . modus-operandi)
-                      (:sunset  . modus-vivendi)))
+  ;; (circadian-themes '((:sunrise . modus-operandi)
+  ;;                     (:sunset  . modus-vivendi)))
+  ;; (circadian-themes '((:sunrise . ef-light)
+  ;;                     (:sunset  . ef-dark)))
+  (circadian-themes '((:sunrise . ef-duo-light)
+                      (:sunset  . ef-duo-dark)))
   :config
   (circadian-setup))
 
