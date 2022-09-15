@@ -1335,6 +1335,7 @@ reported by `frame-width'. See
   ;;   Clone with "gh:repository"
   (magit-clone-name-alist '(("\\`\\(?:github:\\|gh:\\)?\\([^:]+\\)\\'"
                              "github.com" "sonofjon")))
+  (magit-wip-mode-lighter "")
   :config
   ;; Back up uncommitted changes
   (magit-wip-mode 1)
