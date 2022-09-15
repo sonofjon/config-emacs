@@ -761,9 +761,9 @@ capf:s, see documentation.")
 (use-package smartparens
   ;; :hook (emacs-lisp-mode smartparens-mode)
   :hook (prog-mode . smartparens-mode)
-  ;; :custom
+  :custom
   ;; Enforce that pairs are always balanced
-  (smartparens-strict-mode t)
+  (smartparens-global-strict-mode t)
   :config
   ;; Use default config
   (require 'smartparens-config))
