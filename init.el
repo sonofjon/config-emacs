@@ -373,19 +373,12 @@
   :commands lsp-treemacs-errors-list)
 
 ;; lsp-pyright (Python LSP client using Pyright)
-;;   TODO: Use add-hook in init-sectino instead?
 (use-package lsp-pyright
   ;; :after lsp-mode
-  ;; Default hook
-  ;; :hook (python-mode . (lambda ()
-  ;;                        (require 'lsp-pyright)
-  ;;                        (lsp-deferred))))  ; or lsp-deferred
-  ;; Custom hook (ensure autoload)
-  :hook (python-mode . aj8/start-pyright)
-  :init
-  (defun aj8/start-pyright ()
-    (require 'lsp-pyright)
-    (lsp-deferred)))
+  :config
+  (add-hook 'python-mode-hook (lambda ()
+                                (require 'lsp-pyright)
+                                (lsp-deferred))))  ; or lsp-deferred
 
 ;; flymake-aspell (Aspell checker for Flycheck)
 ;;   Requires: aspell
