@@ -1362,10 +1362,7 @@ capf:s, see documentation.")
 
 ;; popper (summon and dismiss buffers as popups)
 (use-package popper
-  ;; TODO: activate after project setup
-  ;;       activate after window setup?
-  ;; :after (setup-windows setup-project)
-  ;; :commands popper-mode
+  :demand
   :bind (("C-`"   . popper-toggle-latest)
          ("M-`"   . popper-cycle)
          ("C-M-`" . popper-toggle-type))
