@@ -1370,7 +1370,7 @@ capf:s, see documentation.")
   (popper-reference-buffers
    '("\\*\\(Messages\\|Warnings\\)\\*"
      "\\*\\(Async-native-compile-log\\|.*ls.*\\|quelpa-build-checkout\\)\\*"
-     "\\*\\(Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|package update results\\)\\*"
+     "\\*\\(Bookmark List\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|package update results\\)\\*"
      "magit.*"
      backtrace-mode
      compilation-mode
@@ -1379,11 +1379,13 @@ capf:s, see documentation.")
      helpful-mode
      Info-mode
      tabulated-list-mode
+     "\\*eww.*\\*"
+     "\\*Apropos\\*"
      "\\*\\(Man\\|WoMan\\).*\\*"
      "^\\*eshell.*\\*$" eshell-mode
      "^\\*shell.*\\*$" shell-mode
      "^\\*term.*\\*$" term-mode
-     "^\\*vterm.*\\*$" vterm-mode))
+     "\\*tex-shell\\*"))
      ;; (completion-list-mode . hide)))
   ;; Group by project
   (popper-group-function #'popper-group-by-project)
