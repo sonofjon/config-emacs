@@ -764,8 +764,38 @@ capf:s, see documentation.")
   :custom
   ;; Enforce that pairs are always balanced
   (smartparens-global-strict-mode t)
+  ;; ;; Use default keybindings
+  ;; (sp-base-key-bindings 'sp)
+  ;; ;; Override some default keybindings
+  ;; (sp-override-key-bindings '(("C-M-f" . sp-forward-sexp)
+  ;;                             ("C-M-b" . sp-backward-sexp)
+  ;;                             ("C-M-d" . sp-down-sexp)
+  ;;                             ("C-M-a" . sp-backward-down-sexp)
+  ;;                             ("C-S-d" . sp-beginning-of-sexp)
+  ;;                             ("C-S-a" . sp-end-of-sexp)
+  ;;                             ("C-M-e" . sp-up-sexp)
+  ;;                             ("C-M-u" . sp-backward-up-sexp)
+  ;;                             ("C-M-n" . sp-next-sexp)
+  ;;                             ("C-M-p" . sp-previous-sexp)
+  ;;                             ("C-M-k" . sp-kill-sexp)
+  ;;                             ("C-M-w" . sp-copy-sexp)
+  ;;                             ("M-<delete>" . sp-unwrap-sexp)
+  ;;                             ("M-<backspace>" . sp-backward-unwrap-sexp)
+  ;;                             ("C-<right>" . sp-forward-slurp-sexp)
+  ;;                             ("C-<left>" . sp-forward-barf-sexp)
+  ;;                             ("C-M-<left>" . sp-backward-slurp-sexp)
+  ;;                             ("C-M-<right>" . sp-backward-barf-sexp)
+  ;;                             ("M-D" . sp-splice-sexp)
+  ;;                             ("C-M-<delete>" . sp-splice-sexp-killing-forward)   ; Ctrl-Alt-Del!
+  ;;                             ("C-M-<backspace>" . sp-splice-sexp-killing-backward)
+  ;;                             ("C-S-<backspace>" . sp-splice-sexp-killing-around)
+  ;;                             ("C-]" . sp-select-next-thing-exchange)
+  ;;                             ("C-M-]" . sp-select-next-thing)
+  ;;                             ("C-M-SPC" . sp-mark-sexp)
+  ;;                             ("M-F" . sp-forward-symbol)
+  ;;                             ("M-B" . sp-backward-symbol)))
   :config
-  ;; Use default config
+  ;; Use default Config
   (require 'smartparens-config))
   ;; Use smartparens globally
   ;; (smartparens-global-mode 1))
