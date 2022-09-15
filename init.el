@@ -1933,7 +1933,6 @@ reported by `frame-width'. See
         ;;
         ;;   Other
         ;;
-        ;; TODO: doesn't capture *Bookmark List*
         ((lambda (buffer _alist)
            (with-current-buffer buffer (or (derived-mode-p 'dired-mode)
                                            (derived-mode-p 'tabulated-list-mode)))) .
@@ -1942,7 +1941,7 @@ reported by `frame-width'. See
             (side . right)
             (slot . -1)
             (window-parameters . ((no-delete-other-windows . t))))))
-        ("\\*\\(Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|package update results\\)\\*"
+        ("\\*\\(Bookmark List\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|package update results\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
