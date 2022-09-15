@@ -388,6 +388,7 @@
     (lsp-deferred)))
 
 ;; flymake-aspell (Aspell checker for Flycheck)
+;;   Requires: aspell
 (use-package flymake-aspell
   :hook (text-mode . flymake-aspell-setup)
   :config
@@ -395,10 +396,12 @@
   (setq ispell-silently-savep t))
 
 ;; flymake-json (a Flymake handler for json using jsonlint)
+;;   Requires: jsonlint
 (use-package flymake-json
   :hook (json-mode . flymake-json-load))
 
 ;; flymake-lua (Flymake for Lua)
+;;   Requires: luac
 (use-package flymake-lua
   :hook (lua-mode . flymake-lua-load))
 
