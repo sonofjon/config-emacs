@@ -276,7 +276,7 @@
 
 ;; markdown-mode (major-mode for editing Markdown files)
 (use-package markdown-mode
-  :mode ("\\.md$" . markdown-mode))
+  :mode ("\\.md$"))
   ;; :mode ("\\.md$" . markdown-view-mode))
 
 ;; php-mode (major-mode for editing PHP files)
@@ -285,6 +285,7 @@
 
 ;; powershell (major-mode for editing PowerShell scripts)
 (use-package powershell
+  ;; :mode ("\\.ps1$" . powershell-mode)
   :defer)
 
 ;; web-mode (major-mode for editing web templates)
