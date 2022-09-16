@@ -2141,6 +2141,7 @@ capf:s, see documentation.")
   ;; (define-key input-decode-map "\e[1;8A" [C-M-S-up])
   ;; (define-key input-decode-map "\e[1;8B" [C-M-S-down])
 
+  (define-key input-decode-map "\e[32;2u" (kbd "S-SPC"))
   (define-key input-decode-map "\e[96;5u" (kbd "C-`"))
   (define-key input-decode-map "\e[96;7u" (kbd "C-M-`"))
   (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))
