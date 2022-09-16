@@ -1362,7 +1362,9 @@ capf:s, see documentation.")
 
 ;; popper (summon and dismiss buffers as popups)
 (use-package popper
-  :demand
+  :demand   ; note that :demand and :after can be combined
+            ; (ensures popper is required, not auto-loaded, after project)
+  :after project   ; needed for popper-group-by-project
   :bind (("C-`"   . popper-toggle-latest)
          ("M-`"   . popper-cycle)
          ("C-M-`" . popper-toggle-type))
