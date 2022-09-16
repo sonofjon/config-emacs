@@ -932,21 +932,6 @@ capf:s, see documentation.")
 ;;   TODO: which-key buffer overlaps with bottom side-window buffer
 (use-package which-key
   :diminish
-  :init
-  (defun aj8/which-key-description-length (width)
-    "Return `which-key' description width for different frame
-widths. Note that the available width is slightly less than
-reported by `frame-width'. See
-`which-key--side-window-max-dimensions'"
-    ;; (message "%s" width)
-    (cond
-     ((= width 142)   ; brain10-windows
-      ;; 0.15)   ; TODO: floats don't work
-      21)
-     ((= width 172)   ; macOS
-      26)
-     (t
-      27)))   ; default value
   :custom
   ;; Preserve window configuration
   (which-key-preserve-window-configuration t)
@@ -1106,25 +1091,6 @@ reported by `frame-width'. See
 (use-package eshell
   :ensure nil   ; don't install built-in packages
   :hook (eshell-first-time-mode . efs/configure-eshell)
-  :init
-  (defun efs/configure-eshell ()
-    ;; Save command history when commands are entered
-    (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
-    ;; Truncate buffer for performance
-    ;; (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
-    ;; (setq eshell-history-size         10000
-    ;;       eshell-buffer-maximum-lines 10000
-    ;;       eshell-hist-ignoredups t
-    ;;       eshell-scroll-to-bottom-on-input t))
-    ;; Rebind history keys
-    (define-key eshell-hist-mode-map (kbd "C-<down>") nil)   ; unbind
-    (define-key eshell-hist-mode-map (kbd "C-<up>") nil)   ; unbind
-    (define-key eshell-hist-mode-map (kbd "<down>") #'eshell-next-input)
-    (define-key eshell-hist-mode-map (kbd "<up>") #'eshell-previous-input)
-    (define-key eshell-hist-mode-map (kbd "M-<down>")
-      #'eshell-next-matching-input-from-input)
-    (define-key eshell-hist-mode-map (kbd "M-<up>")
-      #'eshell-previous-matching-input-from-input))
   :config
   ;; Set Eshell options here
   ;; (with-eval-after-load 'esh-opt
@@ -1385,7 +1351,7 @@ reported by `frame-width'. See
   ;; Integration with Magit
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-  ;; Put highlights in the margin in Terminal
+  ;; Put highlights in the margin in terminal
   (when (display-graphic-p)
     (setq diff-hl-margin-mode t))
   ;; Use diff-hl-mode everywhere
