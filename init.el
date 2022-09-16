@@ -943,6 +943,8 @@ reported by `frame-width'. See
      ((= width 142)   ; brain10-windows
       ;; 0.15)   ; TODO: floats don't work
       21)
+     ((= width 172)   ; macOS
+      26)
      (t
       27)))   ; default value
   :custom
