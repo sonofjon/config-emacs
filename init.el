@@ -1182,7 +1182,9 @@ reported by `frame-width'. See
 
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
-  :disabled
+  ;; :disabled
+  :if (and (eq system-type 'gnu/linux)   ; WSL
+           (getenv "WSLENV"))
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
@@ -1284,6 +1286,8 @@ reported by `frame-width'. See
   ;;   `ef-themes-preview-colors'
   ;;   `ef-themes-preview-colors-current'
   ;; :disabled
+  :unless (and (eq system-type 'gnu/linux)   ; WSL
+               (getenv "WSLENV"))
   :bind ("<f5>" . ef-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
   :init
@@ -1301,10 +1305,6 @@ reported by `frame-width'. See
       (load-theme 'ef-duo-light :no-confirm)
     ;; (load-theme 'ef-dark :no-confirm))
     (load-theme 'ef-duo-dark :no-confirm))
-  ;; (load-theme 'ef-dark :no-confirm)
-  ;; Load  theme (also calls `ef-themes-post-load-hook')
-  ;; (ef-themes-select 'ef-light)
-  ;; (ef-themes-select 'ef-dark)
   :config
   ;; Specify themes for ef-themes-toggle command
   ;; (setq ef-themes-to-toggle '(ef-light ef-dark)))
@@ -1315,16 +1315,17 @@ reported by `frame-width'. See
   ;; :disabled  ; 0.3s startup time
   :defer 60
   :after (:any modus-themes ef-themes)
-  :custom
-  ;; (circadian-themes '(("8:00" . modus-operandi)
-  ;;                     ("18:00"  . modus-vivendi)))
-  ;; (circadian-themes '((:sunrise . modus-operandi)
-  ;;                     (:sunset  . modus-vivendi)))
-  ;; (circadian-themes '((:sunrise . ef-light)
-  ;;                     (:sunset  . ef-dark)))
-  (circadian-themes '((:sunrise . ef-duo-light)
-                      (:sunset  . ef-duo-dark)))
   :config
+  (if (and (eq system-type 'gnu/linux)   ; WSL
+           (getenv "WSLENV"))
+      ;; (circadian-themes '(("8:00" . modus-operandi)
+      ;;                     ("18:00"  . modus-vivendi)))
+      (customize-set-variable 'circadian-themes '((:sunrise . modus-operandi)
+                                                 (:sunset  . modus-vivendi)))
+    ;; (customize-set-variable 'circadian-themes '((:sunrise . ef-light)
+    ;;                                            (:sunset  . ef-dark)))
+    (customize-set-variable 'circadian-themes '((:sunrise . ef-duo-light)
+                                               (:sunset  . ef-duo-dark))))
   (circadian-setup))
 
 ;;; Version control
