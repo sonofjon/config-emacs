@@ -365,8 +365,8 @@
 
 ;; lsp-pyright (Python LSP client using Pyright)
 (use-package lsp-pyright
-  ;; :after lsp-mode
-  :config
+  :commands python-mode
+  :init
   (add-hook 'python-mode-hook (lambda ()
                                 (require 'lsp-pyright)
                                 (lsp-deferred))))  ; or lsp-deferred
