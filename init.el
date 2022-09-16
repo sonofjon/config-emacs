@@ -930,7 +930,6 @@ capf:s, see documentation.")
 
 ;; which-key (display available keybindings in popup)
 ;;   TODO: which-key buffer overlaps with bottom side-window buffer
-;;         Error setting which-key-min-column-description-width: (void-function aj8/which-key-description-length)
 (use-package which-key
   :diminish
   :init
@@ -956,10 +955,7 @@ reported by `frame-width'. See
   ;;   (default is 27)
   (which-key-max-description-length #'aj8/which-key-description-length)
   ;; Min description length
-  ;;   (default is 0)
-  (which-key-min-column-description-width
-   (aj8/which-key-description-length
-    (cdr (which-key--side-window-max-dimensions))))   ; same as max length
+  ;;   (see :config section)
   ;; Column padding
   ;;   (default is 0)
   (which-key-add-column-padding 1)
@@ -973,6 +969,11 @@ reported by `frame-width'. See
   ;; Don't show which-key buffer on C-h
   (which-key-use-C-h-commands nil)
   :config
+  ;; Min description length
+  ;;   (same as max length; default is 0)
+  (customize-set-variable 'which-key-min-column-description-width
+                          (eval (aj8/which-key-description-length
+                                 (cdr (which-key--side-window-max-dimensions)))))
   (which-key-mode 1))
 
 ;; devdocs (Emacs viewer for DevDocs)
