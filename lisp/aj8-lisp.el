@@ -824,6 +824,13 @@ than 160 characters set width to 80 characters."
   :type 'integer
   :group 'aj8-lisp)
 
+(defun aj8/make-not-side-window ()
+  "."
+  (interactive)
+  (let ((buffer (current-buffer)))
+    (with-current-buffer buffer
+      (display-buffer-use-some-window buffer '()))))
+
 ;;; Kill windows
 
 (defcustom my/quit-window-exceptions-regex "^\\*\\(Messages\\)"
