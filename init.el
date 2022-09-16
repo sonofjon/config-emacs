@@ -399,8 +399,8 @@
          ("C-c c m" . consult-minor-mode-menu)
          ;; C-x bindings (ctl-x-map)
          ("C-x M-:" . consult-complex-command)   ; orig. repeat-complex-command
-         ("C-x b" . consult-project-buffer)      ; orig. switch-to-buffer
-         ("C-x B" . consult-buffer)
+         ("C-x b" . consult-buffer)              ; orig. switch-to-buffer
+         ("C-x B" . consult-project-buffer)
          ("C-x r b" . consult-bookmark)          ; orig. bookmark-jump
          ;; Custom M-# bindings for fast register access
          ("M-#" . consult-register-load)
