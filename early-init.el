@@ -4,7 +4,7 @@
 
 ;; Reduce garbage collection during startup
 ;;   (and reset default values after)
-(setq gc-cons-threshold (* 50 1000 1000)
+(setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.5)
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000
                                             gc-cons-percentage 0.1)))
