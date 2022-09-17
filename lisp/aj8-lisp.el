@@ -250,7 +250,7 @@ major-modes."
     (backward-word))
   (capitalize-word 1))
 
-;; Capitalize word at point
+;; Delete blank lines in region
 (defun aj8/delete-blank-lines-region (beg end &optional region)
   "Delete blank lines, leaving one, in region."
   (interactive (progn

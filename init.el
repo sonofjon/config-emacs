@@ -532,7 +532,7 @@
   (defun corfu-enable-always-in-minibuffer ()
     "Enable Corfu in the minibuffer if Vertico is not active."
     (unless (bound-and-true-p vertico--input)
-      ;; (setq-local corfu-auto nil) Enable/disable auto completion
+      ;; (setq-local corfu-auto nil)   ; enable/disable auto completion
       (corfu-mode 1)))
   (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
   :config
@@ -1361,6 +1361,7 @@ capf:s, see documentation.")
 ;;; Windows
 
 ;; popper (summon and dismiss buffers as popups)
+;;   TODO: popper commands don't work well
 (use-package popper
   :demand   ; note that :demand and :after can be combined
             ; (ensures popper is required, not auto-loaded, after project)
