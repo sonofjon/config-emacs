@@ -750,41 +750,68 @@ capf:s, see documentation.")
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
 ;;   TODO: Is it a problem that I have rebound C-M-<arrows>?
 (use-package smartparens
+  ;; :disabled
   ;; :hook (emacs-lisp-mode smartparens-mode)
   :hook (prog-mode . smartparens-mode)
   :custom
   ;; Enforce that pairs are always balanced
   (smartparens-global-strict-mode t)
   ;; ;; Use default keybindings
-  ;; (sp-base-key-bindings 'sp)
+  (sp-base-key-bindings 'sp)
   ;; ;; Override some default keybindings
-  ;; (sp-override-key-bindings '(("C-M-f" . sp-forward-sexp)
-  ;;                             ("C-M-b" . sp-backward-sexp)
-  ;;                             ("C-M-d" . sp-down-sexp)
-  ;;                             ("C-M-a" . sp-backward-down-sexp)
-  ;;                             ("C-S-d" . sp-beginning-of-sexp)
-  ;;                             ("C-S-a" . sp-end-of-sexp)
-  ;;                             ("C-M-e" . sp-up-sexp)
-  ;;                             ("C-M-u" . sp-backward-up-sexp)
-  ;;                             ("C-M-n" . sp-next-sexp)
-  ;;                             ("C-M-p" . sp-previous-sexp)
-  ;;                             ("C-M-k" . sp-kill-sexp)
-  ;;                             ("C-M-w" . sp-copy-sexp)
-  ;;                             ("M-<delete>" . sp-unwrap-sexp)
-  ;;                             ("M-<backspace>" . sp-backward-unwrap-sexp)
-  ;;                             ("C-<right>" . sp-forward-slurp-sexp)
-  ;;                             ("C-<left>" . sp-forward-barf-sexp)
-  ;;                             ("C-M-<left>" . sp-backward-slurp-sexp)
-  ;;                             ("C-M-<right>" . sp-backward-barf-sexp)
-  ;;                             ("M-D" . sp-splice-sexp)
-  ;;                             ("C-M-<delete>" . sp-splice-sexp-killing-forward)   ; Ctrl-Alt-Del!
-  ;;                             ("C-M-<backspace>" . sp-splice-sexp-killing-backward)
-  ;;                             ("C-S-<backspace>" . sp-splice-sexp-killing-around)
-  ;;                             ("C-]" . sp-select-next-thing-exchange)
-  ;;                             ("C-M-]" . sp-select-next-thing)
-  ;;                             ("C-M-SPC" . sp-mark-sexp)
-  ;;                             ("M-F" . sp-forward-symbol)
-  ;;                             ("M-B" . sp-backward-symbol)))
+;; (global-set-key (kbd "C-M-<left>") #'backward-list)
+;;                                         ; overwrites default backward-sexp
+;; (global-set-key (kbd "C-M-<right>") #'forward-list)
+;;                                         ; overwrites default backward-sexp
+;; (global-set-key (kbd "C-M-p") #'backward-up-list)
+;;                                         ; overwrites default backward-list
+;; (global-set-key (kbd "C-M-n") #'down-list)
+;;                                         ; overwrites default forward-list
+  (sp-override-key-bindings
+   ;; Default set                                          ; defaults:
+   '(("C-M-<right>" . sp-forward-sexp)                     ; forward-sexp
+     ("C-M-<left>" . sp-backward-sexp)                     ; backward-sexp
+     ("C-M-n" . sp-down-sexp)                              ; down-list
+     ;; ("C-M-a" . sp-backward-down-sexp)
+     ("C-M-a" . sp-beginning-of-sexp)                      ; beginning-of-defun
+     ("C-M-e" . sp-end-of-sexp)                            ; end-of-defun
+     ("C-M-p" . sp-up-sexp)
+     ;; ("C-M-u" . sp-backward-up-sexp)                       ; backward-up-list
+     ;; ("C-M-n" . sp-next-sexp)                              ; forward-list
+; FIX     ;; ("C-M-S-<right>" . sp-next-sexp)                              ; forward-list
+     ;; ("C-M-p" . sp-previous-sexp)                          ; backward-list
+; FIX     ;; ("C-M-S-<left>" . sp-previous-sexp)                          ; backward-list
+     ("C-M-k" . sp-kill-sexp)                              ; kill-sexp
+     ("C-M-S-k" . sp-backward-kill-sexp)
+     ("C-k" . sp-kill-hybrid-sexp)
+     ("C-M-w" . sp-copy-sexp)                              ; append-next-kill
+     ("C-c ) )" . sp-unwrap-sexp)
+     ("C-c ) (" . sp-backward-unwrap-sexp)
+     ("C-]" . sp-forward-slurp-sexp)
+     ("C-}" . sp-forward-barf-sexp)
+     ;; ("C-[" . sp-backward-slurp-sexp)
+     ("C-}" . sp-backward-barf-sexp)
+     ("C-c ) _" . sp-splice-sexp)
+     ("C-]" . sp-select-next-thing-exchange)               ; abort-recursive-edit
+     ("C-M-]" . sp-select-next-thing)
+     ("C-M-SPC" . sp-mark-sexp)                            ; mark-sexp
+     ("M-F" . sp-forward-symbol)   ; remove?
+     ("M-B" . sp-backward-symbol)   ; remove?
+     ;; Other
+     ("C-M-t" . sp-transpose-sexp)
+     ("C-c ) t" . sp-transpose-hybrid-sexp)
+     ("C-M-j" . sp-join-sexp)
+     ("C-M-c" . sp-convolute-sexp)
+     ;; Wrappers
+     ("C-c (" . sp-wrap-round)
+     ("C-c [" . sp-wrap-square)
+     ("C-c {" . sp-wrap-curly)
+     ;; ("C-c ("  . wrap-with-parens)
+     ;; ("C-c ["  . wrap-with-brackets)
+     ;; ("C-c {"  . wrap-with-braces)
+     ("C-c '"  . wrap-with-single-quotes)   ; TODO: Fix
+     ("C-c \"" . wrap-with'-double-quotes)
+     ("C-c `"  . wrap-with-back-quotes)))
   :config
   ;; Use default Config
   (require 'smartparens-config))
@@ -2188,7 +2215,7 @@ capf:s, see documentation.")
 ;;; Editing
 
 ;; Kill line to the left
-(global-set-key (kbd "C-S-k") (lambda () (interactive) (kill-line 0)))
+(global-set-key (kbd "M-k") (lambda () (interactive) (kill-line 0)))
 
 ;; Manipulate case
 (global-set-key (kbd "M-u") #'upcase-dwim)
