@@ -810,7 +810,7 @@ capf:s, see documentation.")
      ;; ("C-c ["  . wrap-with-brackets)
      ;; ("C-c {"  . wrap-with-braces)
      ("C-c '"  . wrap-with-single-quotes)   ; TODO: Fix
-     ("C-c \"" . wrap-with'-double-quotes)
+     ("C-c \"" . wrap-with-double-quotes)
      ("C-c `"  . wrap-with-back-quotes)))
   :config
   ;; Use default Config
