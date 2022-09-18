@@ -771,26 +771,26 @@ capf:s, see documentation.")
    ;; Default set                                          ; defaults:
    '(("C-M-<right>" . sp-forward-sexp)                     ; forward-sexp
      ("C-M-<left>" . sp-backward-sexp)                     ; backward-sexp
-     ("C-M-n" . sp-down-sexp)                              ; down-list
+     ("C-M-n" . sp-down-sexp)                              ; forward-list
      ;; ("C-M-a" . sp-backward-down-sexp)
      ("C-M-a" . sp-beginning-of-sexp)                      ; beginning-of-defun
      ("C-M-e" . sp-end-of-sexp)                            ; end-of-defun
-     ("C-M-p" . sp-up-sexp)
-     ;; ("C-M-u" . sp-backward-up-sexp)                       ; backward-up-list
-     ;; ("C-M-n" . sp-next-sexp)                              ; forward-list
-; FIX     ;; ("C-M-S-<right>" . sp-next-sexp)                              ; forward-list
-     ;; ("C-M-p" . sp-previous-sexp)                          ; backward-list
-; FIX     ;; ("C-M-S-<left>" . sp-previous-sexp)                          ; backward-list
+     ;; ("C-M-p" . sp-up-sexp)
+     ("C-M-p" . sp-backward-up-sexp)                       ; backward-list
+     ;; ("C-M-n" . sp-next-sexp)                              ; 
+     ;; ("C-M-S-<right>" . sp-next-sexp)                      ; 
+     ;; ("C-M-p" . sp-previous-sexp)                          ; 
+     ;; ("C-M-S-<left>" . sp-previous-sexp)                   ; 
      ("C-M-k" . sp-kill-sexp)                              ; kill-sexp
-     ("C-M-S-k" . sp-backward-kill-sexp)
-     ("C-k" . sp-kill-hybrid-sexp)
+     ("C-M-<backspace>" . sp-backward-kill-sexp)
+     ("C-k" . sp-kill-hybrid-sexp)                         ; kill-line
      ("C-M-w" . sp-copy-sexp)                              ; append-next-kill
      ("C-c ) )" . sp-unwrap-sexp)
      ("C-c ) (" . sp-backward-unwrap-sexp)
-     ("C-]" . sp-forward-slurp-sexp)
+     ("C-]" . sp-forward-slurp-sexp)                       ; abort-recursive-edit
      ("C-}" . sp-forward-barf-sexp)
-     ;; ("C-[" . sp-backward-slurp-sexp)
-     ("C-}" . sp-backward-barf-sexp)
+     ;; ("C-[" . sp-backward-slurp-sexp)                   ; ESC-prefix
+     ("C-{" . sp-backward-barf-sexp)
      ("C-c ) _" . sp-splice-sexp)
      ("C-]" . sp-select-next-thing-exchange)               ; abort-recursive-edit
      ("C-M-]" . sp-select-next-thing)
@@ -798,10 +798,10 @@ capf:s, see documentation.")
      ("M-F" . sp-forward-symbol)   ; remove?
      ("M-B" . sp-backward-symbol)   ; remove?
      ;; Other
-     ("C-M-t" . sp-transpose-sexp)
+     ("C-M-t" . sp-transpose-sexp)                         ; sp-transpose-sexp
      ("C-c ) t" . sp-transpose-hybrid-sexp)
-     ("C-M-j" . sp-join-sexp)
-     ("C-M-c" . sp-convolute-sexp)
+     ("C-M-j" . sp-join-sexp)                              ; default-indent-new-line
+     ("C-M-c" . sp-convolute-sexp)                         ; exit-recursive-edit
      ;; Wrappers
      ("C-c (" . sp-wrap-round)
      ("C-c [" . sp-wrap-square)
