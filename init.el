@@ -1625,8 +1625,7 @@ capf:s, see documentation.")
 (setq completions-detailed t)
 
 ;; Hide commands which do not apply to the current mode
-;;   TODO: appears to have no effect
-(setq read-extended-command-predicate #'command-completion-default-include-p)
+;; (setq read-extended-command-predicate #'command-completion-default-include-p)
 
 ;; Let Dabbrev searches be case sensitive
 (setq dabbrev-case-fold-search nil)
