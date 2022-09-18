@@ -2215,7 +2215,7 @@ capf:s, see documentation.")
 ;;; Editing
 
 ;; Kill line to the left
-(global-set-key (kbd "M-k") (lambda () (interactive) (kill-line 0)))
+(global-set-key (kbd "C-<backspace>") (lambda () (interactive) (kill-line 0)))
 
 ;; Manipulate case
 (global-set-key (kbd "M-u") #'upcase-dwim)
