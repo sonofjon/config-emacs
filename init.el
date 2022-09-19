@@ -778,7 +778,7 @@ capf:s, see documentation.")
               ;; ("C-[" . sp-backward-slurp-sexp)       ; ESC-prefix
               ("C-{" . sp-backward-barf-sexp)
               ("C-c ) _" . sp-splice-sexp)
-              ("C-]" . sp-select-next-thing-exchange)   ; abort-recursive-edit
+              ;; ("C-]" . sp-select-next-thing-exchange   ; abort-recursive-edit)
               ("C-M-]" . sp-select-next-thing)
               ("C-M-SPC" . sp-mark-sexp)                ; mark-sexp
               ("M-F" . sp-forward-symbol)   ; remove?
