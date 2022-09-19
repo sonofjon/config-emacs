@@ -752,59 +752,60 @@ capf:s, see documentation.")
 (use-package smartparens
   ;; :hook (emacs-lisp-mode smartparens-mode)
   :hook (prog-mode . smartparens-mode)
+  :bind (:map smartparens-mode-map
+              ;; Base set                               ; defaults:
+              ("C-M-<right>" . sp-forward-sexp)         ; forward-sexp
+              ("C-M-<left>" . sp-backward-sexp)         ; backward-sexp
+              ("C-M-n" . sp-down-sexp)                  ; forward-list
+              ;; ("C-M-a" . sp-backward-down-sexp)
+              ("C-M-a" . sp-beginning-of-sexp)          ; beginning-of-defun
+              ("C-M-e" . sp-end-of-sexp)                ; end-of-defun
+              ;; ("C-M-p" . sp-up-sexp)
+              ("C-M-p" . sp-backward-up-sexp)           ; backward-list
+              ;; ("C-M-n" . sp-next-sexp)                  ; 
+              ;; ("C-M-S-<right>" . sp-next-sexp)          ; 
+              ;; ("C-M-p" . sp-previous-sexp)              ; 
+              ;; ("C-M-S-<left>" . sp-previous-sexp)       ; 
+              ("C-M-k" . sp-kill-sexp)                  ; kill-sexp
+              ("C-M-w" . sp-copy-sexp)                  ; append-next-kill
+              ("C-c ) )" . sp-unwrap-sexp)
+              ("C-c ) (" . sp-backward-unwrap-sexp)
+              ("C-]" . sp-forward-slurp-sexp)           ; abort-recursive-edit
+              ("C-}" . sp-forward-barf-sexp)
+              ;; ("C-[" . sp-backward-slurp-sexp)       ; ESC-prefix
+              ("C-{" . sp-backward-barf-sexp)
+              ("C-c ) _" . sp-splice-sexp)
+              ("C-]" . sp-select-next-thing-exchange)   ; abort-recursive-edit
+              ("C-M-]" . sp-select-next-thing)
+              ("C-M-SPC" . sp-mark-sexp)                ; mark-sexp
+              ("M-F" . sp-forward-symbol)   ; remove?
+              ("M-B" . sp-backward-symbol)   ; remove?
+              ;; Other
+              ("C-M-<backspace>" . sp-backward-kill-sexp)
+              ("C-k" . sp-kill-hybrid-sexp)             ; kill-line
+              ("C-M-t" . sp-transpose-sexp)             ; sp-transpose-sexp
+              ("C-c ) t" . sp-transpose-hybrid-sexp)
+              ("C-M-j" . sp-join-sexp)                  ; default-indent-new-line
+              ("C-M-c" . sp-convolute-sexp)             ; exit-recursive-edit
+              ;; Wrappers
+              ("C-c (" . sp-wrap-round)
+              ("C-c [" . sp-wrap-square)
+              ("C-c {" . sp-wrap-curly)
+              ;; ("C-c ("  . wrap-with-parens)
+              ;; ("C-c ["  . wrap-with-brackets)
+              ;; ("C-c {"  . wrap-with-braces)
+              ("C-c '"  . wrap-with-single-quotes)   ; TODO: Fix
+              ("C-c \"" . wrap-with-double-quotes)
+              ("C-c `"  . wrap-with-back-quotes))
   :custom
   ;; Enforce that pairs are always balanced
   (smartparens-global-strict-mode t)
   ;; Use default keybindings
-  (sp-base-key-bindings 'sp)
+  ;; (sp-base-key-bindings 'sp)
   ;; Override some default keybindings
-  (sp-override-key-bindings
-   ;; Base set                                     ; defaults:
-   '(("C-M-<right>" . sp-forward-sexp)             ; forward-sexp
-     ("C-M-<left>" . sp-backward-sexp)             ; backward-sexp
-     ("C-M-n" . sp-down-sexp)                      ; forward-list
-     ;; ("C-M-a" . sp-backward-down-sexp)
-     ("C-M-a" . sp-beginning-of-sexp)              ; beginning-of-defun
-     ("C-M-e" . sp-end-of-sexp)                    ; end-of-defun
-     ;; ("C-M-p" . sp-up-sexp)
-     ("C-M-p" . sp-backward-up-sexp)               ; backward-list
-     ;; ("C-M-n" . sp-next-sexp)                      ; 
-     ;; ("C-M-S-<right>" . sp-next-sexp)              ; 
-     ;; ("C-M-p" . sp-previous-sexp)                  ; 
-     ;; ("C-M-S-<left>" . sp-previous-sexp)           ; 
-     ("C-M-k" . sp-kill-sexp)                      ; kill-sexp
-     ("C-M-w" . sp-copy-sexp)                      ; append-next-kill
-     ("C-c ) )" . sp-unwrap-sexp)
-     ("C-c ) (" . sp-backward-unwrap-sexp)
-     ("C-]" . sp-forward-slurp-sexp)               ; abort-recursive-edit
-     ("C-}" . sp-forward-barf-sexp)
-     ;; ("C-[" . sp-backward-slurp-sexp)           ; ESC-prefix
-     ("C-{" . sp-backward-barf-sexp)
-     ("C-c ) _" . sp-splice-sexp)
-     ("C-]" . sp-select-next-thing-exchange)       ; abort-recursive-edit
-     ("C-M-]" . sp-select-next-thing)
-     ("C-M-SPC" . sp-mark-sexp)                    ; mark-sexp
-     ("M-F" . sp-forward-symbol)   ; remove?
-     ("M-B" . sp-backward-symbol)   ; remove?
-     ;; Other
-     ("C-M-<backspace>" . sp-backward-kill-sexp)
-     ("C-k" . sp-kill-hybrid-sexp)                 ; kill-line
-     ("C-M-t" . sp-transpose-sexp)                 ; sp-transpose-sexp
-     ("C-c ) t" . sp-transpose-hybrid-sexp)
-     ("C-M-j" . sp-join-sexp)                      ; default-indent-new-line
-     ("C-M-c" . sp-convolute-sexp)                 ; exit-recursive-edit
-     ;; Wrappers
-     ("C-c (" . sp-wrap-round)
-     ("C-c [" . sp-wrap-square)
-     ("C-c {" . sp-wrap-curly)
-     ;; ("C-c ("  . wrap-with-parens)
-     ;; ("C-c ["  . wrap-with-brackets)
-     ;; ("C-c {"  . wrap-with-braces)
-     ("C-c '"  . wrap-with-single-quotes)   ; TODO: Fix
-     ("C-c \"" . wrap-with-double-quotes)
-     ("C-c `"  . wrap-with-back-quotes)))
+  ;; (sp-override-key-bindings '())
   :config
-  ;; Use default Config
+  ;; Use default config
   (require 'smartparens-config))
   ;; Use smartparens globally
   ;; (smartparens-global-mode 1))
