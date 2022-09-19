@@ -2008,6 +2008,10 @@ capf:s, see documentation.")
 ;; Show mode headers in describe-bindings buffer
 (setq describe-bindings-outline t)
 
+;; Don't prompt with xref-find-references
+(with-eval-after-load "xref"
+  (add-to-list 'xref-prompt-for-identifier 'xref-find-references))
+
 ;;;; Modes
 
 ;;; Admin...
