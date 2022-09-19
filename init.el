@@ -2237,6 +2237,10 @@ capf:s, see documentation.")
 ;; Indent to next nonblank character in previous line
 (global-set-key (kbd "C-c TAB") #'indent-relative)
 
+;; Exit recursive edit
+;;   Default key C-M-c overridden by custom Smartparens key
+(global-set-key (kbd "C-c C-c") #'exit-recursive-edit)
+
 ;;; Files
 
 ;; Find file at point
