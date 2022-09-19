@@ -801,12 +801,14 @@ capf:s, see documentation.")
               ("C-c \"" . wrap-with-double-quotes)
               ("C-c `"  . wrap-with-back-quotes))
   :custom
-  ;; Enforce that pairs are always balanced
-  (smartparens-global-strict-mode t)
   ;; Use default keybindings
   ;; (sp-base-key-bindings 'sp)
   ;; Override some default keybindings
   ;; (sp-override-key-bindings '())
+  ;; Enforce that pairs are always balanced
+  (smartparens-global-strict-mode t)
+  ;; Don't consider symbols and strings as expressions
+  (sp-navigate-consider-symbols nil)
   :config
   ;; Use default config
   (require 'smartparens-config))
