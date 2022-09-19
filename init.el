@@ -751,6 +751,8 @@ capf:s, see documentation.")
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
 ;;   TODO: Investigate smartparens-strict-mode-map, e.g M-d changes behaviour
 (use-package smartparens
+  ;; :disabled
+  :diminish
   ;; :hook (emacs-lisp-mode smartparens-mode)
   :hook (prog-mode . smartparens-mode)
   :bind (:map smartparens-mode-map
