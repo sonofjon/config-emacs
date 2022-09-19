@@ -749,23 +749,26 @@ capf:s, see documentation.")
   (repeat-help-auto t))
 
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
+;;   TODO: Investigate smartparens-strict-mode-map, e.g M-d changes behaviour
 (use-package smartparens
   ;; :hook (emacs-lisp-mode smartparens-mode)
   :hook (prog-mode . smartparens-mode)
   :bind (:map smartparens-mode-map
               ;; Base set                               ; defaults:
               ("C-M-<right>" . sp-forward-sexp)         ; forward-sexp
+              ;; ("C-M-f" . sp-forward-sexp)               ; forward-sexp
               ("C-M-<left>" . sp-backward-sexp)         ; backward-sexp
+              ;; ("C-M-b" . sp-backward-sexp)              ; backward-sexp
               ("C-M-n" . sp-down-sexp)                  ; forward-list
               ;; ("C-M-a" . sp-backward-down-sexp)
               ("C-M-a" . sp-beginning-of-sexp)          ; beginning-of-defun
               ("C-M-e" . sp-end-of-sexp)                ; end-of-defun
               ;; ("C-M-p" . sp-up-sexp)
               ("C-M-p" . sp-backward-up-sexp)           ; backward-list
-              ;; ("C-M-n" . sp-next-sexp)                  ; 
-              ;; ("C-M-S-<right>" . sp-next-sexp)          ; 
-              ;; ("C-M-p" . sp-previous-sexp)              ; 
-              ;; ("C-M-S-<left>" . sp-previous-sexp)       ; 
+              ;; ("C-M-n" . sp-next-sexp)                  ; forward-list
+              ;; ("C-M-<right>" . sp-next-sexp)          ; 
+              ;; ("C-M-p" . sp-previous-sexp)              ; backward-list
+              ;; ("C-M-<left>" . sp-previous-sexp)       ; 
               ("C-M-k" . sp-kill-sexp)                  ; kill-sexp
               ("C-M-w" . sp-copy-sexp)                  ; append-next-kill
               ("C-c ) )" . sp-unwrap-sexp)
