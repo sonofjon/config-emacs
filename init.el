@@ -1385,7 +1385,7 @@ capf:s, see documentation.")
             ; (ensures popper is required, not auto-loaded, after project)
   :after project   ; needed for popper-group-by-project
   :bind (("C-`"   . popper-toggle-latest)
-         ("M-`"   . popper-cycle)
+         ;; ("M-`"   . popper-cycle)   ; TODO: conflicts with consult
          ("C-M-`" . popper-toggle-type))
   :custom
   (popper-reference-buffers
