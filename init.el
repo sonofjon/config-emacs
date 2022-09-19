@@ -1960,7 +1960,7 @@ capf:s, see documentation.")
          (side . right)
          (slot . -1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|package update results\\)\\*"
+        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|package update results\\|tex-shell\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
@@ -1969,7 +1969,7 @@ capf:s, see documentation.")
         ;;
         ;; Bottom side window
         ;;
-        ("\\*\\(e?shell\\|v?term\\|tex-shell\\)\\*"
+        ("\\*\\(e?shell\\|v?term\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . bottom)
