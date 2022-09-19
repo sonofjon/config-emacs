@@ -341,8 +341,8 @@
   :init
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(flex)))   ; use flex
-          ;; '(orderless)))   ; use orderless
+          ;; '(flex)))   ; use flex
+          '(orderless)))   ; use orderless
   ;; Prefix for lsp-command-keymap
   (setq lsp-keymap-prefix "C-c l")
   (which-key-add-key-based-replacements "C-c l" "lsp")
