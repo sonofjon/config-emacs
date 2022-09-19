@@ -749,60 +749,50 @@ capf:s, see documentation.")
   (repeat-help-auto t))
 
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
-;;   TODO: Is it a problem that I have rebound C-M-<arrows>?
 (use-package smartparens
-  ;; :disabled
   ;; :hook (emacs-lisp-mode smartparens-mode)
   :hook (prog-mode . smartparens-mode)
   :custom
   ;; Enforce that pairs are always balanced
   (smartparens-global-strict-mode t)
-  ;; ;; Use default keybindings
+  ;; Use default keybindings
   (sp-base-key-bindings 'sp)
-  ;; ;; Override some default keybindings
-;; (global-set-key (kbd "C-M-<left>") #'backward-list)
-;;                                         ; overwrites default backward-sexp
-;; (global-set-key (kbd "C-M-<right>") #'forward-list)
-;;                                         ; overwrites default backward-sexp
-;; (global-set-key (kbd "C-M-p") #'backward-up-list)
-;;                                         ; overwrites default backward-list
-;; (global-set-key (kbd "C-M-n") #'down-list)
-;;                                         ; overwrites default forward-list
+  ;; Override some default keybindings
   (sp-override-key-bindings
-   ;; Default set                                          ; defaults:
-   '(("C-M-<right>" . sp-forward-sexp)                     ; forward-sexp
-     ("C-M-<left>" . sp-backward-sexp)                     ; backward-sexp
-     ("C-M-n" . sp-down-sexp)                              ; forward-list
+   ;; Base set                                     ; defaults:
+   '(("C-M-<right>" . sp-forward-sexp)             ; forward-sexp
+     ("C-M-<left>" . sp-backward-sexp)             ; backward-sexp
+     ("C-M-n" . sp-down-sexp)                      ; forward-list
      ;; ("C-M-a" . sp-backward-down-sexp)
-     ("C-M-a" . sp-beginning-of-sexp)                      ; beginning-of-defun
-     ("C-M-e" . sp-end-of-sexp)                            ; end-of-defun
+     ("C-M-a" . sp-beginning-of-sexp)              ; beginning-of-defun
+     ("C-M-e" . sp-end-of-sexp)                    ; end-of-defun
      ;; ("C-M-p" . sp-up-sexp)
-     ("C-M-p" . sp-backward-up-sexp)                       ; backward-list
-     ;; ("C-M-n" . sp-next-sexp)                              ; 
-     ;; ("C-M-S-<right>" . sp-next-sexp)                      ; 
-     ;; ("C-M-p" . sp-previous-sexp)                          ; 
-     ;; ("C-M-S-<left>" . sp-previous-sexp)                   ; 
-     ("C-M-k" . sp-kill-sexp)                              ; kill-sexp
-     ("C-M-<backspace>" . sp-backward-kill-sexp)
-     ("C-k" . sp-kill-hybrid-sexp)                         ; kill-line
-     ("C-M-w" . sp-copy-sexp)                              ; append-next-kill
+     ("C-M-p" . sp-backward-up-sexp)               ; backward-list
+     ;; ("C-M-n" . sp-next-sexp)                      ; 
+     ;; ("C-M-S-<right>" . sp-next-sexp)              ; 
+     ;; ("C-M-p" . sp-previous-sexp)                  ; 
+     ;; ("C-M-S-<left>" . sp-previous-sexp)           ; 
+     ("C-M-k" . sp-kill-sexp)                      ; kill-sexp
+     ("C-M-w" . sp-copy-sexp)                      ; append-next-kill
      ("C-c ) )" . sp-unwrap-sexp)
      ("C-c ) (" . sp-backward-unwrap-sexp)
-     ("C-]" . sp-forward-slurp-sexp)                       ; abort-recursive-edit
+     ("C-]" . sp-forward-slurp-sexp)               ; abort-recursive-edit
      ("C-}" . sp-forward-barf-sexp)
-     ;; ("C-[" . sp-backward-slurp-sexp)                   ; ESC-prefix
+     ;; ("C-[" . sp-backward-slurp-sexp)           ; ESC-prefix
      ("C-{" . sp-backward-barf-sexp)
      ("C-c ) _" . sp-splice-sexp)
-     ("C-]" . sp-select-next-thing-exchange)               ; abort-recursive-edit
+     ("C-]" . sp-select-next-thing-exchange)       ; abort-recursive-edit
      ("C-M-]" . sp-select-next-thing)
-     ("C-M-SPC" . sp-mark-sexp)                            ; mark-sexp
+     ("C-M-SPC" . sp-mark-sexp)                    ; mark-sexp
      ("M-F" . sp-forward-symbol)   ; remove?
      ("M-B" . sp-backward-symbol)   ; remove?
      ;; Other
-     ("C-M-t" . sp-transpose-sexp)                         ; sp-transpose-sexp
+     ("C-M-<backspace>" . sp-backward-kill-sexp)
+     ("C-k" . sp-kill-hybrid-sexp)                 ; kill-line
+     ("C-M-t" . sp-transpose-sexp)                 ; sp-transpose-sexp
      ("C-c ) t" . sp-transpose-hybrid-sexp)
-     ("C-M-j" . sp-join-sexp)                              ; default-indent-new-line
-     ("C-M-c" . sp-convolute-sexp)                         ; exit-recursive-edit
+     ("C-M-j" . sp-join-sexp)                      ; default-indent-new-line
+     ("C-M-c" . sp-convolute-sexp)                 ; exit-recursive-edit
      ;; Wrappers
      ("C-c (" . sp-wrap-round)
      ("C-c [" . sp-wrap-square)
@@ -2280,17 +2270,6 @@ capf:s, see documentation.")
 
 ;; Display Imenu
 (global-set-key (kbd "C-c i") #'imenu)
-
-;; Parens navigation
-;;   TODO: Why are these commented out?
-;; (global-set-key (kbd "C-M-<left>") #'backward-list)
-;;                                         ; overwrites default backward-sexp
-;; (global-set-key (kbd "C-M-<right>") #'forward-list)
-;;                                         ; overwrites default backward-sexp
-;; (global-set-key (kbd "C-M-p") #'backward-up-list)
-;;                                         ; overwrites default backward-list
-;; (global-set-key (kbd "C-M-n") #'down-list)
-;;                                         ; overwrites default forward-list
 
 (global-set-key (kbd "C-c >") #'xref-find-definitions)  ; default M-.
 (global-set-key (kbd "C-c <") #'xref-pop-marker-stack)  ; default M-,
