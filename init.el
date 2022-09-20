@@ -786,7 +786,8 @@ capf:s, see documentation.")
               ("M-B" . sp-backward-symbol)   ; remove?
               ;; Other
               ("C-M-<backspace>" . sp-backward-kill-sexp)
-              ("C-k" . sp-kill-hybrid-sexp)             ; kill-line
+              ;; ("C-k" . sp-kill-hybrid-sexp)             ; kill-line
+                                        ; (this is used anyway, with strict mode)
               ("C-M-t" . sp-transpose-sexp)             ; sp-transpose-sexp
               ("C-c s t" . sp-transpose-hybrid-sexp)
               ("C-M-j" . sp-join-sexp)                  ; default-indent-new-line
