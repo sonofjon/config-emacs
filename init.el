@@ -749,9 +749,9 @@ capf:s, see documentation.")
   (repeat-help-auto t))
 
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
-;;   TODO: Investigate smartparens-strict-mode-map, e.g M-d changes behaviour
+;;   TODO: Investigate smartparens-strict-mode-map, e.g M-d and C-w changes behaviour
+;;   TODO: create a smart wrapper for sp-down/up-sexp that knows whether to go forward or backward
 (use-package smartparens
-  ;; :disabled
   :diminish
   ;; :hook (emacs-lisp-mode smartparens-mode)
   :hook (prog-mode . smartparens-mode)
@@ -762,10 +762,10 @@ capf:s, see documentation.")
               ;; ("C-M-b" . sp-backward-sexp)              ; backward-sexp
               ("C-M-<left>" . sp-backward-sexp)         ; backward-sexp
               ("C-M-n" . sp-down-sexp)                  ; forward-list
-              ;; ("C-M-a" . sp-backward-down-sexp)
+              ;; ("C-M-a" . sp-backward-down-sexp)         ; use M-- C-M-<down>
               ("C-M-a" . sp-beginning-of-sexp)          ; beginning-of-defun
               ("C-M-e" . sp-end-of-sexp)                ; end-of-defun
-              ;; ("C-M-p" . sp-up-sexp)
+              ;; ("C-M-e" . sp-up-sexp)                    ; use M-- C-M-<up>
               ("C-M-p" . sp-backward-up-sexp)           ; backward-list
               ;; ("C-M-n" . sp-next-sexp)                  ; forward-list
               ;; ("C-M-p" . sp-previous-sexp)              ; backward-list
