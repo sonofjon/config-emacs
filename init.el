@@ -787,12 +787,22 @@ capf:s, see documentation.")
               ("M-B" . sp-backward-symbol)   ; remove?
               ;; Other
               ("C-M-<backspace>" . sp-backward-kill-sexp)
-              ;; ("C-k" . sp-kill-hybrid-sexp)             ; kill-line
-                                        ; (this is used anyway, with strict mode)
-              ("C-M-t" . sp-transpose-sexp)             ; sp-transpose-sexp
-              ("C-c s t" . sp-transpose-hybrid-sexp)
-              ("C-M-j" . sp-join-sexp)                  ; default-indent-new-line
-              ("C-M-c" . sp-convolute-sexp)             ; exit-recursive-edit
+              ;; ("C-k" . sp-kill-hybrid-sexp)        ; kill-line
+                                        ; (this is used anyway,
+                                        ; with strict mode)
+              ("C-c s a" . sp-absorb-sexp)
+              ("C-c s e" . sp-emit-sexp)
+              ("C-c s c" . sp-convolute-sexp)        ; alternative: C-M-c
+                                                     ; (exit-recursive-edit)
+              ("C-c s j" . sp-join-sexp)             ; alternative: C-M-j
+                                                     ; (default-indent-new-line)
+              ("C-c s r" . sp-rewrap-sexp)           ; alternative: C-M-r
+              ("C-c s t" . sp-transpose-sexp)        ; alternative: C-M-t
+                                                     ; (transpose-sexp)
+              ("C-c s u" . sp-transpose-hybrid-sexp)
+              ("C-c s w" . sp-swap-enclosing-sexp)
+              ("C-c s x" . sp-extract-before-sexp)   ; alternative: C-M-x
+              ("C-c s y" . sp-extract-after-sexp)    ; alternative: C-M-y
               ;; Wrappers
               ("C-c (" . sp-wrap-round)
               ("C-c [" . sp-wrap-square)
