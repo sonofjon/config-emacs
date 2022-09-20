@@ -750,6 +750,7 @@ capf:s, see documentation.")
 
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
 ;;   TODO: Investigate smartparens-strict-mode-map, e.g M-d and C-w changes behaviour
+;;           - M-d done! TODO: how to create sp-kill-word that doesn't kill symbol? 
 ;;   TODO: create a smart wrapper for sp-down/up-sexp that knows whether to go forward or backward
 (use-package smartparens
   :diminish
@@ -799,7 +800,10 @@ capf:s, see documentation.")
               ;; ("C-c {"  . wrap-with-braces)
               ("C-c '"  . wrap-with-single-quotes)   ; TODO: Fix
               ("C-c \"" . wrap-with-double-quotes)
-              ("C-c `"  . wrap-with-back-quotes))
+              ("C-c `"  . wrap-with-back-quotes)
+              :map smartparens-strict-mode-map
+              ([remap kill-word] . nil)           ; unbind sp-kill-word
+              ([remap backward-kill-word] . nil)) ; unbind sp-backward-kill-word
   :init
   (which-key-add-key-based-replacements "C-c s" "smartparens")
   :custom
