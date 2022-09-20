@@ -757,31 +757,32 @@ capf:s, see documentation.")
   ;; :hook (emacs-lisp-mode smartparens-mode)
   :hook (prog-mode . smartparens-mode)
   :bind (:map smartparens-mode-map
-              ;; Base set                               ; defaults:
-              ;; ("C-M-f" . sp-forward-sexp)               ; forward-sexp
-              ("C-M-<right>" . sp-forward-sexp)         ; forward-sexp
-              ;; ("C-M-b" . sp-backward-sexp)              ; backward-sexp
-              ("C-M-<left>" . sp-backward-sexp)         ; backward-sexp
-              ("C-M-n" . sp-down-sexp)                  ; forward-list
-              ;; ("C-M-a" . sp-backward-down-sexp)         ; use M-- C-M-<down>
-              ("C-M-a" . sp-beginning-of-sexp)          ; beginning-of-defun
-              ("C-M-e" . sp-end-of-sexp)                ; end-of-defun
-              ;; ("C-M-e" . sp-up-sexp)                    ; use M-- C-M-<up>
-              ("C-M-p" . sp-backward-up-sexp)           ; backward-list
-              ;; ("C-M-n" . sp-next-sexp)                  ; forward-list
-              ;; ("C-M-p" . sp-previous-sexp)              ; backward-list
-              ("C-M-k" . sp-kill-sexp)                  ; kill-sexp
-              ("C-M-w" . sp-copy-sexp)                  ; append-next-kill
+              ;; Base set                                ; defaults:
+              ;; ("C-M-f" . sp-forward-sexp)             ; forward-sexp
+              ("C-M-<right>" . sp-forward-sexp)
+              ;; ("C-M-b" . sp-backward-sexp)            ; backward-sexp
+              ("C-M-<left>" . sp-backward-sexp)
+              ("C-M-n" . sp-down-sexp)                   ; forward-list
+              ;; ("C-M-a" . sp-backward-down-sexp)       ; use M-- C-M-<down>
+              ("C-M-a" . sp-beginning-of-sexp)           ; beginning-of-defun
+              ("C-M-e" . sp-end-of-sexp)                 ; end-of-defun
+              ;; ("C-M-e" . sp-up-sexp)                  ; use M-- C-M-<up>
+              ("C-M-p" . sp-backward-up-sexp)            ; backward-list
+              ;; ("C-M-n" . sp-next-sexp)                ; forward-list
+              ;; ("C-M-p" . sp-previous-sexp)            ; backward-list
+              ("C-M-k" . sp-kill-sexp)                   ; kill-sexp
+              ("C-M-w" . sp-copy-sexp)                   ; append-next-kill
               ("C-c s ]" . sp-unwrap-sexp)
-              ("C-]" . sp-forward-slurp-sexp)           ; abort-recursive-edit
+              ("C-]" . sp-forward-slurp-sexp)            ; abort-recursive-edit
               ("C-c s [" . sp-backward-unwrap-sexp)
               ("C-}" . sp-forward-barf-sexp)
-              ;; ("C-[" . sp-backward-slurp-sexp)       ; ESC-prefix
+              ;; ("C-[" . sp-backward-slurp-sexp)        ; ESC-prefix
+                                                         ; use M-- C-]
               ("C-{" . sp-backward-barf-sexp)
               ("C-c s s" . sp-splice-sexp)
-              ;; ("C-]" . sp-select-next-thing-exchange   ; abort-recursive-edit)
+              ;; ("C-]" . sp-select-next-thing-exchange) ; abort-recursive-edit
               ("C-M-]" . sp-select-next-thing)
-              ("C-M-SPC" . sp-mark-sexp)                ; mark-sexp
+              ("C-M-SPC" . sp-mark-sexp)                 ; mark-sexp
               ("M-F" . sp-forward-symbol)   ; remove?
               ("M-B" . sp-backward-symbol)   ; remove?
               ;; Other
