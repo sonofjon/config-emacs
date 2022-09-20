@@ -345,6 +345,8 @@
           '(orderless)))   ; use orderless
   ;; Prefix for lsp-command-keymap
   (setq lsp-keymap-prefix "C-c l")
+  ;; Don't show process id in modeline
+  (advice-add #'lsp--workspace-print :override #'aj8/lsp--workspace-print)
   (which-key-add-key-based-replacements "C-c l" "lsp")
                                         ; add label for prefix key
   :custom
