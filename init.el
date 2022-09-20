@@ -757,10 +757,10 @@ capf:s, see documentation.")
   :hook (prog-mode . smartparens-mode)
   :bind (:map smartparens-mode-map
               ;; Base set                               ; defaults:
-              ("C-M-<right>" . sp-forward-sexp)         ; forward-sexp
               ;; ("C-M-f" . sp-forward-sexp)               ; forward-sexp
-              ("C-M-<left>" . sp-backward-sexp)         ; backward-sexp
+              ("C-M-<right>" . sp-forward-sexp)         ; forward-sexp
               ;; ("C-M-b" . sp-backward-sexp)              ; backward-sexp
+              ("C-M-<left>" . sp-backward-sexp)         ; backward-sexp
               ("C-M-n" . sp-down-sexp)                  ; forward-list
               ;; ("C-M-a" . sp-backward-down-sexp)
               ("C-M-a" . sp-beginning-of-sexp)          ; beginning-of-defun
@@ -768,18 +768,16 @@ capf:s, see documentation.")
               ;; ("C-M-p" . sp-up-sexp)
               ("C-M-p" . sp-backward-up-sexp)           ; backward-list
               ;; ("C-M-n" . sp-next-sexp)                  ; forward-list
-              ;; ("C-M-<right>" . sp-next-sexp)          ; 
               ;; ("C-M-p" . sp-previous-sexp)              ; backward-list
-              ;; ("C-M-<left>" . sp-previous-sexp)       ; 
               ("C-M-k" . sp-kill-sexp)                  ; kill-sexp
               ("C-M-w" . sp-copy-sexp)                  ; append-next-kill
-              ("C-c ) )" . sp-unwrap-sexp)
-              ("C-c ) (" . sp-backward-unwrap-sexp)
+              ("C-c s ]" . sp-unwrap-sexp)
               ("C-]" . sp-forward-slurp-sexp)           ; abort-recursive-edit
+              ("C-c s [" . sp-backward-unwrap-sexp)
               ("C-}" . sp-forward-barf-sexp)
               ;; ("C-[" . sp-backward-slurp-sexp)       ; ESC-prefix
               ("C-{" . sp-backward-barf-sexp)
-              ("C-c ) _" . sp-splice-sexp)
+              ("C-c s s" . sp-splice-sexp)
               ;; ("C-]" . sp-select-next-thing-exchange   ; abort-recursive-edit)
               ("C-M-]" . sp-select-next-thing)
               ("C-M-SPC" . sp-mark-sexp)                ; mark-sexp
@@ -789,7 +787,7 @@ capf:s, see documentation.")
               ("C-M-<backspace>" . sp-backward-kill-sexp)
               ("C-k" . sp-kill-hybrid-sexp)             ; kill-line
               ("C-M-t" . sp-transpose-sexp)             ; sp-transpose-sexp
-              ("C-c ) t" . sp-transpose-hybrid-sexp)
+              ("C-c s t" . sp-transpose-hybrid-sexp)
               ("C-M-j" . sp-join-sexp)                  ; default-indent-new-line
               ("C-M-c" . sp-convolute-sexp)             ; exit-recursive-edit
               ;; Wrappers
@@ -802,6 +800,8 @@ capf:s, see documentation.")
               ("C-c '"  . wrap-with-single-quotes)   ; TODO: Fix
               ("C-c \"" . wrap-with-double-quotes)
               ("C-c `"  . wrap-with-back-quotes))
+  :init
+  (which-key-add-key-based-replacements "C-c s" "smartparens")
   :custom
   ;; Use default keybindings
   ;; (sp-base-key-bindings 'sp)
@@ -2235,7 +2235,7 @@ capf:s, see documentation.")
 (global-set-key (kbd "C-c q") #'fill-individual-paragraphs)
 
 ;; Copy symbol at point
-(global-set-key (kbd "C-c s") #'my/copy-symbol-at-point)
+(global-set-key (kbd "C-c o") #'my/copy-symbol-at-point)
 
 ;; Indent to next nonblank character in previous line
 (global-set-key (kbd "C-c TAB") #'indent-relative)
