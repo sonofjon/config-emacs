@@ -826,7 +826,7 @@ capf:s, see documentation.")
   ;; Enforce that pairs are always balanced
   (smartparens-global-strict-mode t)
   ;; Don't consider symbols and strings as expressions
-  (sp-navigate-consider-symbols nil)   ; WARNING: deprecated
+  ;; (sp-navigate-consider-symbols nil)   ; WARNING: deprecated
   :config
   ;; Use default config
   (require 'smartparens-config))
