@@ -793,19 +793,29 @@ capf:s, see documentation.")
               ;; ("C-k" . sp-kill-hybrid-sexp)        ; kill-line
                                         ; (this is used anyway,
                                         ; with strict mode)
-              ("C-c s a" . sp-absorb-sexp)
-              ("C-c s e" . sp-emit-sexp)
+              ("C-M-;" . sp-comment)
+              ("C-c s a" . sp-extract-after-sexp)
+              ("C-c s b" . sp-extract-before-sexp)
               ("C-c s c" . sp-convolute-sexp)        ; alternative: C-M-c
                                                      ; (exit-recursive-edit)
+              ("C-c s e" . sp-emit-sexp)
+              ("C-c s h" . sp-transpose-hybrid-sexp) ; alternative: C-M-h
+                                                     ; (mark-defun)
               ("C-c s j" . sp-join-sexp)             ; alternative: C-M-j
                                                      ; (default-indent-new-line)
+              ("C-c s n" . sp-add-to-next-sexp)
+              ("C-c s p" . sp-add-to-previous-sexp)
+              ("C-c s o" . sp-absorb-sexp)           ; alternative: C-M-o
+                                                     ; (split-line)
               ("C-c s r" . sp-rewrap-sexp)           ; alternative: C-M-r
               ("C-c s t" . sp-transpose-sexp)        ; alternative: C-M-t
                                                      ; (transpose-sexp)
-              ("C-c s u" . sp-transpose-hybrid-sexp)
               ("C-c s w" . sp-swap-enclosing-sexp)
-              ("C-c s x" . sp-extract-before-sexp)   ; alternative: C-M-x
-              ("C-c s y" . sp-extract-after-sexp)    ; alternative: C-M-y
+              ;; Prefixes
+              ("C-c s O" . sp-prefix-symbol-object)
+              ("C-c s P" . sp-prefix-pair-object)
+              ("C-c s T" . sp-prefix-tag-object)
+              ("C-c s S" . sp-prefix-save-excursion)
               ;; Wrappers
               ("C-c (" . sp-wrap-round)
               ("C-c [" . sp-wrap-square)
