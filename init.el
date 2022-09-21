@@ -757,6 +757,8 @@ capf:s, see documentation.")
   ;; :hook (emacs-lisp-mode smartparens-mode)
   :hook ((prog-mode . smartparens-mode)
          (prog-mode . show-smartparens-mode))
+         ;; (prog-mode . smartparens-strict-mode))
+         ;; (minibuffer-setup . turn-on-smartparens-strict-mode))
   :bind (:map smartparens-mode-map
               ;; Base set                                ; defaults:
               ;; ("C-M-f" . sp-forward-sexp)             ; forward-sexp
@@ -819,20 +821,21 @@ capf:s, see documentation.")
               ([remap backward-kill-word] . nil)) ; unbind sp-backward-kill-word
   :init
   (which-key-add-key-based-replacements "C-c s" "smartparens")
-  :custom
+  ;; :custom
   ;; Use default keybindings
   ;; (sp-base-key-bindings 'sp)
   ;; Override some default keybindings
   ;; (sp-override-key-bindings '())
   ;; Enforce that pairs are always balanced
-  (smartparens-global-strict-mode t)
+  ;; (smartparens-global-strict-mode t)
   ;; Don't consider symbols and strings as expressions
   ;; (sp-navigate-consider-symbols nil)   ; WARNING: deprecated
   :config
   ;; Use default config
   (require 'smartparens-config))
   ;; Use smartparens globally
-  ;; (smartparens-global-mode 1))
+  ;; (smartparens-global-mode 1)
+  ;; (show-smartparens-global-mode 1))
 
 ;; whole-line-or-region (operate on current line if region undefined)
 (use-package whole-line-or-region
