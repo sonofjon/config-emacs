@@ -755,7 +755,8 @@ capf:s, see documentation.")
 (use-package smartparens
   :diminish
   ;; :hook (emacs-lisp-mode smartparens-mode)
-  :hook (prog-mode . smartparens-mode)
+  :hook ((prog-mode . smartparens-mode)
+         (prog-mode . show-smartparens-mode))
   :bind (:map smartparens-mode-map
               ;; Base set                                ; defaults:
               ;; ("C-M-f" . sp-forward-sexp)             ; forward-sexp
