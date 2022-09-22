@@ -724,7 +724,7 @@ capf:s, see documentation.")
   (vertico-cycle t)
   :config
   ;; Unbind default TAB binding
-  (unbind-key "TAB" vertico-map)
+  (unbind-key "TAB" vertico-map)   ; TODO: is this working?
   ;; Enable M-x minibuffer-hide-completions (make function interactive)
   (put 'minibuffer-hide-completions 'interactive-form '(interactive)))
 
