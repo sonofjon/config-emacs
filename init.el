@@ -118,6 +118,7 @@
                           cape
                           circadian
                           consult
+                          consult-eglot
                           consult-project-extra
                           corfu
                           corfu-doc
@@ -131,6 +132,7 @@
                           dimmer
                           dot-mode
                           ef-themes
+                          eglot
                           elfeed
                           embark
                           embark-consult
@@ -320,10 +322,32 @@
 (use-package rainbow-mode
   :disabled)
 
+;; eglot (client for language server protocol servers)
+(use-package eglot
+  :disabled
+  :hook ((sh-mode . eglot-ensure)
+         ;; (html-mode . eglot-ensure)
+         ;; (css-mode . eglot-ensure)
+         (web-mode . eglot-ensure) ; fix?
+         (js-mode . eglot-ensure)
+         (json-mode . eglot-ensure)
+         (lua-mode . eglot-ensure)
+         (python-mode . eglot-ensure) ; change to pyright
+         (tex-mode . eglot-ensure) ; install digestif / change to texlab
+         (yaml-mode . eglot-ensure))
+  :config
+  ;; Enable eglot in code external to project
+  (setq eglot-extend-to-xref t))
+
+;; consult-eglot (query workspace symbol from eglot using consult)
+(use-package consult-eglot
+  :disabled)
+
 ;; lsp-mode (language server protocol)
 ;;   Requirements: npm (nvm)
 ;;   TODO: optionally enable orderless-flex for LSP completion, see Corfu Wiki
 (use-package lsp-mode
+  ;; :disabled
   :commands (lsp lsp-deferred)
   :hook ((sh-mode . lsp)   ; or lsp-deferred
          ;; (html-mode . lsp-deferred)
