@@ -17,7 +17,7 @@
 ;;;;; EARLY SETTINGS
 
 ;; System dependent settings
-(cond ((featurep 'ns)   ; macOS
+(cond ((featurep 'ns)                    ; macOS
        ;; GUI settings
        (when (display-graphic-p)
          ;; Import path from shell
@@ -28,13 +28,13 @@
        (message "Early settings ChromeOS"))
 
       ((and (eq system-type 'gnu/linux)
-            (getenv "WSLENV"))   ; WSL
+            (getenv "WSLENV"))           ; WSL
        ;; Fix cursor color in terminal
        (add-hook 'modus-themes-after-load-theme-hook
                  #'aj8/modus-themes-custom-settings)
        (message "Early settings WSL"))
 
-      ((eq system-type 'gnu/linux)   ; Linux
+      ((eq system-type 'gnu/linux)       ; Linux
        (message "Early settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
@@ -377,7 +377,7 @@
   :custom
   ;; Use custom completion backend (Corfu)
   (lsp-completion-provider :none)
-  ;; Disable snippet support (requires Yanippet)
+  ;; Disable snippet support (requires Yasnippet)
   (lsp-enable-snippet nil))
 
 ;; lsp-ui-mode (UI modules for lsp-mode)
@@ -529,7 +529,6 @@
 ;; corfu (Completion Overlay Region FUnction)
 ;;   TODO: Use separate matching-style for Corfu and Vertico, e.g. I don't want regexp in Corfu
 (use-package corfu
-  ;; :if (display-graphic-p)
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
   :bind (:map corfu-map
               ;; ("RET" . corfu-quit)   ; pressing Return quits completion
@@ -604,7 +603,6 @@
 
 ;; cape (Completion At Point Extensions)
 (use-package cape
-  ;; :if (display-graphic-p)
   :after corfu
   :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
@@ -695,7 +693,6 @@ capf:s, see documentation.")
 
 ;; orderless (completion style for matching regexps in any order)
 (use-package orderless
-  ;; :disabled
   :config
   ;; Matching styles
   ;; (setq orderless-matching-styles '(orderless-literal orderless-regexp))
@@ -2617,7 +2614,7 @@ Hide, show and navigate outlines.
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
-(cond ((featurep 'ns)   ; macOS
+(cond ((featurep 'ns)                    ; macOS
        ;; Use left Option as Meta
        ;; (setq mac-option-modifier 'meta)
        ;; Use left Command as Super
@@ -2634,7 +2631,7 @@ Hide, show and navigate outlines.
        (message "Late settings ChromeOS"))
 
       ((and (eq system-type 'gnu/linux)
-            (getenv "WSLENV"))   ; WSL
+            (getenv "WSLENV"))           ; WSL
        ;; Enable (default) web browser
        ;;   Requirements: wslu
        (setq browse-url-generic-program "wslview")
@@ -2642,7 +2639,7 @@ Hide, show and navigate outlines.
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
        (message "Late settings WSL"))
 
-      ((eq system-type 'gnu/linux)   ; Linux
+      ((eq system-type 'gnu/linux)       ; Linux
        ;; Special settings for URxvt
        (when (equal "rxvt-unicode-256color"
                     (getenv-internal "TERM" initial-environment))
