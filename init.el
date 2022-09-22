@@ -319,6 +319,7 @@
   ;;             ("C-m" . newline-and-indent)))
 
 ;; rainbow-mode (colorize color names in buffers)
+;;   TODO: not needed (colors are shown with rainbow-mode disabled on WSL machines)?
 (use-package rainbow-mode
   :disabled)
 
