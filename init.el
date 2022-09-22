@@ -2065,7 +2065,7 @@ capf:s, see documentation.")
 
 ;; Don't prompt with xref-find-references
 (with-eval-after-load "xref"
-  (add-to-list 'xref-prompt-for-identifier 'xref-find-references))
+  (add-to-list 'xref-prompt-for-identifier 'xref-find-references t))
 
 ;;;; Modes
 
