@@ -1921,7 +1921,7 @@ capf:s, see documentation.")
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Native-compile-Log\\)\\*"
-        ("\\*\\(Async-native-compile-log\\|lsp-log\\|.*-ls\\(::.*\\)?\\|quelpa-build-checkout\\)\\*"
+        ("\\*\\(Async-native-compile-log\\|lsp-log\\|.*-ls\\(::.*\\)?\\|quelpa-build-checkout\\|texlab\\(::stderr\\)?\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
