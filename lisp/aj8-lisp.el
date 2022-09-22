@@ -486,6 +486,7 @@ for comments."
   (setq-local outline-level 'aj8/outline-level))
 
 ;; LaTeX files
+;;   TODO: outline-cycle shows all sub-headings, not just one level down
 (defun outline-headers-for-percentage-buffers ()
   "Set outline header format for buffers using hash mark (\"%\")
 for comments."
