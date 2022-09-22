@@ -2227,6 +2227,8 @@ capf:s, see documentation.")
   ;; (define-key input-decode-map "\e[1;8A" [C-M-S-up])
   ;; (define-key input-decode-map "\e[1;8B" [C-M-S-down])
 
+  (define-key input-decode-map "\e[8;5u" (kbd "C-<backspace>"))
+  (define-key input-decode-map "\e[8;6u" (kbd "C-S-<backspace>"))
   (define-key input-decode-map "\e[8;7u" (kbd "C-M-<backspace>"))
   (define-key input-decode-map "\e[32;2u" (kbd "S-SPC"))
   (define-key input-decode-map "\e[91;7u" (kbd "C-M-["))
@@ -2236,9 +2238,7 @@ capf:s, see documentation.")
   (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))
   (define-key input-decode-map "\e[118;8u" (kbd "C-M-S-v"))
   (define-key input-decode-map "\e[123;5u" (kbd "C-{"))
-  (define-key input-decode-map "\e[125;5u" (kbd "C-}"))
-  (define-key input-decode-map "\e[127;5u" [C-backspace])
-  (define-key input-decode-map "\e[127;6u" [C-S-backspace]))
+  (define-key input-decode-map "\e[125;5u" (kbd "C-}")))
 
 ;;;; Translations
 
