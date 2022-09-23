@@ -2464,15 +2464,15 @@ capf:s, see documentation.")
 ;; Info-mode
 (add-hook 'Info-mode-hook
           ;; Disable M-n
-          (lambda () (define-key Info-mode-map (kbd "M-n") nil)))
+          (lambda () (local-unset-key (kbd "M-n"))))
 
 ;; sh-mode
 (add-hook 'sh-mode-hook
           ;; Disable SMIE commands
-          (lambda () (define-key sh-mode-map (kbd "C-c =") nil)
-                     (define-key sh-mode-map (kbd "C-c <") nil)
-                     (define-key sh-mode-map (kbd "C-c >") nil)
-                     (define-key sh-mode-map (kbd "C-c ?") nil)))
+          (lambda () (local-unset-key (kbd "C-c ="))
+                     (local-unset-key (kbd "C-c <"))
+                     (local-unset-key (kbd "C-c >"))
+                     (local-unset-key (kbd "C-c ?"))))
 
 ;;;; Hydras
 
