@@ -2466,6 +2466,13 @@ capf:s, see documentation.")
           ;; Disable M-n
           (lambda () (local-unset-key (kbd "M-n"))))
 
+(add-hook 'tex-mode-hook
+          ;; Disable commands handled by Smartparens
+          (lambda () (define-key tex-mode-map (kbd "C-c ]") nil)
+                     (define-key tex-mode-map (kbd "C-c {") nil)
+                     (define-key tex-mode-map (kbd "C-c }") nil)
+                     (define-key tex-mode-map (kbd "C-c /") nil)))
+
 ;; sh-mode
 (add-hook 'sh-mode-hook
           ;; Disable SMIE commands
