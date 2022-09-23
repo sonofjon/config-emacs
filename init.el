@@ -809,6 +809,7 @@ capf:s, see documentation.")
               ("C-c s s" . sp-splice-sexp)
               ;; ("C-]" . sp-select-next-thing-exchange) ; abort-recursive-edit
               ("C-M-]" . sp-select-next-thing)
+              ;; ("C-M-[" . sp-select-previous-thing)
               ("C-M-SPC" . sp-mark-sexp)                 ; mark-sexp
               ("M-F" . sp-forward-symbol)   ; remove?
               ("M-B" . sp-backward-symbol)   ; remove?
