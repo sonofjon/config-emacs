@@ -493,10 +493,11 @@ for comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(%+ \\)\\([^(\\ ]\\)")
   (setq-local outline-heading-alist
-              '(("%%%% " . 1)
-                ("%%% " . 2)
-                ("%% " . 3)
-                ("% " . 4)))
+              '(("%%%%% " . 1)
+                ("%%%% " . 2)
+                ("%%% " . 3)
+                ("%% " . 4)
+                ("% " . 5)))
   ;; Use custom 'outline-level' for sh-mode
   (setq-local outline-level 'aj8/outline-level))
 
