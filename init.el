@@ -1317,8 +1317,10 @@ capf:s, see documentation.")
 ;; ef-themes (colorful and legible themes)
 (use-package ef-themes
   ;; Themes:
-  ;;   Light: `ef-day', `ef-light', `ef-duo-light', `ef-spring', `ef-summer'.
-  ;;   Dark:  `ef-night', `ef-dark', `ef-duo-dark', `ef-autumn', `ef-winter'.
+  ;;   Light: `ef-day', `ef-spring', `ef-summer', `ef-light', `ef-duo-light',
+  ;;          `ef-trio-light'.
+  ;;   Dark:  `ef-night', `ef-autumn', `ef-winter', `ef-dark', `ef-duo-dark',
+  ;;          `ef-trio-dark'.
   ;;   All the themes are included in the variable `ef-themes-collection'.
   ;; Commands:
   ;;   `ef-themes-toggle'
