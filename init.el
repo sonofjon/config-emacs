@@ -119,6 +119,7 @@
                           circadian
                           consult
                           consult-eglot
+                          consult-lsp
                           consult-project-extra
                           corfu
                           corfu-doc
@@ -397,6 +398,12 @@
   (add-hook 'python-mode-hook (lambda ()
                                 (require 'lsp-pyright)
                                 (lsp-deferred))))  ; or lsp-deferred
+
+;; consult-lsp (LSP-mode Consult integration)
+(use-package consult-lsp
+  ;; :disabled
+  :after (consult lsp-mode)
+  :bind (:map lsp-mode-map ([remap xref-find-apropos] . consult-lsp-symbols)))
 
 ;; flymake-aspell (Aspell checker for Flycheck)
 ;;   Requires: aspell
