@@ -2149,6 +2149,9 @@ capf:s, see documentation.")
 
 ;;; Web...
 
+;; Buttonize URLs
+;; (global-goto-address-mode 1)
+
 ;;; Other...
 
 ;; Enable repeat mode
