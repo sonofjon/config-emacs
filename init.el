@@ -346,7 +346,7 @@
   :disabled)
 
 ;; lsp-mode (language server protocol)
-;;   Requirements: npm (nvm)
+;;   Requires: npm (nvm)
 ;;   TODO: optionally enable orderless-flex for LSP completion, see Corfu Wiki
 (use-package lsp-mode
   ;; :disabled
@@ -1791,7 +1791,7 @@ capf:s, see documentation.")
 ;; (setenv "LANG" "en_US.UTF-8")
 
 ;; Use aspell
-;;   Requirements: aspell
+;;   Requires: aspell
 (setq ispell-program-name "aspell")   ; this is already the default
 
 ;; Set language
@@ -2653,7 +2653,7 @@ Hide, show and navigate outlines.
       ((and (eq system-type 'gnu/linux)
             (getenv "WSLENV"))           ; WSL
        ;; Enable (default) web browser
-       ;;   Requirements: wslu
+       ;;   Requires: wslu
        (setq browse-url-generic-program "wslview")
        (setq browse-url-secondary-browser-function #'browse-url-generic)
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
