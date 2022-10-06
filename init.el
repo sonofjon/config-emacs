@@ -1239,7 +1239,7 @@ capf:s, see documentation.")
   ;; Use italic font forms in more code constructs
   (setq modus-themes-italic-constructs t)
   ;; Use bold text in more code constructs
-  (setq modus-themes-bold-constructs nil)
+  (setq modus-themes-bold-constructs t)
   ;; Use more subtle style for line numbers
   (setq modus-themes-subtle-line-numbers t)
   ;; Define the visibility of fringes
