@@ -156,6 +156,7 @@
                           keyfreq
                           lorem-ipsum
                           lsp-mode
+                          lsp-latex
                           lsp-pyright
                           lsp-treemacs
                           lsp-ui
@@ -390,6 +391,11 @@
 (use-package lsp-treemacs
   :after (lsp-mode treemacs)
   :commands lsp-treemacs-errors-list)
+
+;; lsp-latex (LSP-mode client for LaTeX, on texlab)
+(use-package lsp-latex
+  :config
+  (setq lsp-latex-diagnostics-ignored-patterns '("^Overfull.*" "^Underfull.*")))
 
 ;; lsp-pyright (Python LSP client using Pyright)
 (use-package lsp-pyright
