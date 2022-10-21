@@ -1165,6 +1165,7 @@ capf:s, see documentation.")
 
 ;; vterm (fully-featured terminal emulator)
 (use-package vterm
+  ;; Requires: cmake, libvterm-dev
   ;; TODO: Fix M-f, M-b, M-d (note, recent breaking changes were
   ;;       applied to emacs-livterm project)
   :commands vterm
