@@ -1332,9 +1332,9 @@ capf:s, see documentation.")
 (use-package ef-themes
   ;; Themes:
   ;;   Light: `ef-day', `ef-spring', `ef-summer', `ef-light', `ef-duo-light',
-  ;;          `ef-trio-light', `ef-frost'.
+  ;;          `ef-trio-light', `ef-frost', `ef-cyprus'.
   ;;   Dark:  `ef-night', `ef-autumn', `ef-winter', `ef-dark', `ef-duo-dark',
-  ;;          `ef-trio-dark', `ef-bio'.
+  ;;          `ef-trio-dark', `ef-bio', `ef-cherie'.
   ;;   All the themes are included in the variable `ef-themes-collection'.
   ;; Commands:
   ;;   `ef-themes-toggle'
