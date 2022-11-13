@@ -414,7 +414,9 @@
 
 ;; flymake-aspell (Aspell checker for Flycheck)
 ;;   Requires: aspell
+;;   TODO: Should this be disabled on all systems (it was initially disabled no macOS)?
 (use-package flymake-aspell
+  :disabled
   :hook (text-mode . flymake-aspell-setup)
   :config
   ;; Don't prompt for saving personal dictionary
