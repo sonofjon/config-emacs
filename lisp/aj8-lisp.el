@@ -572,7 +572,7 @@ number of characters matched by `outline-regexp'."
   (when (outline-on-heading-p)
     (cond ((and (outline--body-p)
                 (outline--body-visible-p))
-           (outline-hide-entry)
+           ;; (outline-hide-entry)
            (outline-hide-leaves))
           (t
            (outline-hide-subtree)))))
@@ -583,6 +583,7 @@ number of characters matched by `outline-regexp'."
   (when (outline-on-heading-p)
     (cond ((and (outline--subheadings-p)
                 (not (outline--subheadings-visible-p)))
+           (outline-show-entry)
            (outline-show-children))
           ((and (not (outline--subheadings-p))
                 (not (outline--body-visible-p)))
