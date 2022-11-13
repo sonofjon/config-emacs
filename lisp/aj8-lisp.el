@@ -1057,15 +1057,12 @@ web query using `eww-search-prefix'.
 When called from an eww buffer, provide the current link as
 \\<minibuffer-local-map>\\[next-history-element]."
   (interactive
-   (let ((all-history (delete-dups
-                       (append prot-eww-visited-history
-                               eww-prompt-history)))
-         (current-url (prot-eww--get-current-url)))
+   (let ((current-url (prot-eww--get-current-url)))
      (list
-      (completing-read "Run EWW on: " all-history
+      (completing-read "Run EWW on: " eww-prompt-history
                        nil nil current-url 'eww-prompt-history current-url)
       (prefix-numeric-value current-prefix-arg))))
-  (prot-eww url arg))
+  (eww url arg))
 
 ;;;; Other
 
