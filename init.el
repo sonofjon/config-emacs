@@ -217,7 +217,7 @@
   :disabled)
 
 (use-package exec-path-from-shell
-  :if (equal window-system 'ns))
+  :if (equal window-system 'ns))   ; macOS
 
 ;;; Admin
 
