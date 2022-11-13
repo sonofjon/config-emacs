@@ -2511,6 +2511,17 @@ capf:s, see documentation.")
                      (local-unset-key (kbd "C-c >"))
                      (local-unset-key (kbd "C-c ?"))))
 
+;; tex-shell
+;;   TODO: C-c C-p is not bound
+;;
+;;   A better solution is to prevent C-c C-p and C-w from being bound
+;;   to treemacs commands outside of treemacs buffers! This is how
+;;   regular treemacs operates, but not with lsp-tremacs
+;;
+;; (add-hook 'tex-shell-hook
+;;           ;; Disable C-c C-p (conflicts with comint-previous-prompt)
+;;           (lambda () (define-key tex-shell-map (kbd "C-c C-p") nil)))
+
 ;;;; Hydras
 
 (which-key-add-key-based-replacements "C-c y" "hydra")
