@@ -169,6 +169,7 @@
                           move-dup
                           multiple-cursors
                           orderless
+                          osx-trash
                           outline-minor-faces
                           php-mode
                           popper
@@ -916,6 +917,14 @@ capf:s, see documentation.")
   (vundo-glyph-alist vundo-unicode-symbols))
 
 ;;; Files
+
+;; osx-trash (system trash for OS X)
+;;   TODO: Test if it works!
+(use-package osx-trash
+  :if (equal window-system 'ns)   ; macOS
+  :config
+  (osx-trash-setup)
+  (setq delete-by-moving-to-trash t))
 
 ;; treemacs (a tree style file explorer package)
 (use-package treemacs
