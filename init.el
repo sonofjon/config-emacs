@@ -576,6 +576,8 @@
     "Enable Corfu in the minibuffer if Vertico is not active."
     (unless (bound-and-true-p vertico--input)
       ;; (setq-local corfu-auto nil)   ; enable/disable auto completion
+      (setq-local corfu-echo-delay nil) ; disable automatic echo and popup
+                  ;; corfu-popupinfo-delay nil)
       (corfu-mode 1)))
   (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
   :config
