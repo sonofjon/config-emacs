@@ -586,7 +586,22 @@
   (savehist-mode 1)
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
+;; corfu-echo (show Corfu candidate documentation in echo area)
+;;   Note, this is an extension included in the Corfu package
+(use-package corfu-echo
+  :after corfu
+  :config
+  (corfu-echo-mode 1))
+
+;; corfu-info (show Corfu candidate information in a separate buffer)
+;;   Note, this is an extension included in the Corfu package
+(use-package corfu-info
+  :after corfu)
+
 ;; corfu-doc (documentation popup for Corfu)
+;;   TODO: could perhaps be replaced by Corfu extension
+;;         corfu-popupinfo.el, but note, there is no corresponding
+;;         package for terminal
 (use-package corfu-doc
   :after corfu
   :hook (corfu-mode . corfu-doc-mode)
