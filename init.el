@@ -1048,6 +1048,8 @@ capf:s, see documentation.")
 (use-package which-key
   :diminish
   :custom
+  ;; Use minibuffer
+  ;; (which-key-popup-type 'minibuffer)   ; default is side-window
   ;; Preserve window configuration
   (which-key-preserve-window-configuration t)
   ;; Max window height
