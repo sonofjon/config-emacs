@@ -704,7 +704,7 @@ capf:s, see documentation.")
          ("C-h B" . embark-bindings)) ; alternative for `describe-bindings'
   :init
   ;; Replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
+  ;; (setq prefix-help-command #'embark-prefix-help-command)
   :custom
   ;; Hide some actions
   (embark-verbose-indicator-excluded-actions
@@ -1069,7 +1069,7 @@ capf:s, see documentation.")
   ;; Display remapped commands
   (which-key-compute-remaps t)
   ;; Don't show which-key buffer on C-h
-  (which-key-use-C-h-commands nil)
+  ;; (which-key-use-C-h-commands nil)
   :config
   ;; Min description length
   ;;   (same as max length; default is 0)
