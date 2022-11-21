@@ -390,6 +390,7 @@
 
 ;; lsp-treemacs (LSP Treemacs)
 (use-package lsp-treemacs
+  :disabled
   :after (lsp-mode treemacs)
   :commands lsp-treemacs-errors-list)
 
@@ -2529,15 +2530,15 @@ capf:s, see documentation.")
                      (local-unset-key (kbd "C-c ?"))))
 
 ;; tex-shell
-;;   TODO: C-c C-p is not bound
-;;
+;;   TODO: C-c C-p is overwritten by lsp-treemacs binding
+(add-hook 'tex-shell-hook
+          ;; Disable C-c C-p (conflicts with comint-previous-prompt)
+          (lambda () (define-key tex-shell-map (kbd "C-c C-p") nil)))
 ;;   A better solution is to prevent C-c C-p and C-w from being bound
 ;;   to treemacs commands outside of treemacs buffers! This is how
-;;   regular treemacs operates, but not with lsp-tremacs
+;;   regular treemacs operates, but not with lsp-treemacs
 ;;
-;; (add-hook 'tex-shell-hook
-;;           ;; Disable C-c C-p (conflicts with comint-previous-prompt)
-;;           (lambda () (define-key tex-shell-map (kbd "C-c C-p") nil)))
+;;   Temporary solution: disable lsp-treemacs (may switch to eglot anyway)
 
 ;;;; Hydras
 
