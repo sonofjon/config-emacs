@@ -1044,7 +1044,9 @@ capf:s, see documentation.")
   (marginalia-mode 1))
 
 ;; which-key (display available keybindings in popup)
-;;   TODO: which-key buffer overlaps with bottom side-window buffer
+;;   TODO: which-key buffer overlaps with bottom side-window buffer (which might be OK?)
+;;         When doing so which-key fails to 1) display a complete list of commands,
+;;                                          2) grow window to respect height defined below
 (use-package which-key
   :diminish
   :custom
