@@ -390,7 +390,7 @@
 
 ;; lsp-treemacs (LSP Treemacs)
 (use-package lsp-treemacs
-  :disabled
+  ;; :disabled
   :after (lsp-mode treemacs)
   :commands lsp-treemacs-errors-list)
 
@@ -952,8 +952,9 @@ capf:s, see documentation.")
   :init
   (which-key-add-key-based-replacements "C-c t" "treemacs")
                                         ; add label for prefix keys
-  (which-key-add-key-based-replacements "C-c C-p" "treemacs")
-  (which-key-add-key-based-replacements "C-c C-w" "treemacs")
+  (which-key-add-major-mode-key-based-replacements 'treemacs-mode
+    "C-c C-p" "project"
+    "C-c C-w" "workspace")
   :init
   ;; No delay when switching projects
   (add-hook 'treemacs-project-follow-mode-hook
@@ -2528,17 +2529,6 @@ capf:s, see documentation.")
                      (local-unset-key (kbd "C-c <"))
                      (local-unset-key (kbd "C-c >"))
                      (local-unset-key (kbd "C-c ?"))))
-
-;; tex-shell
-;;   TODO: C-c C-p is overwritten by lsp-treemacs binding
-(add-hook 'tex-shell-hook
-          ;; Disable C-c C-p (conflicts with comint-previous-prompt)
-          (lambda () (define-key tex-shell-map (kbd "C-c C-p") nil)))
-;;   A better solution is to prevent C-c C-p and C-w from being bound
-;;   to treemacs commands outside of treemacs buffers! This is how
-;;   regular treemacs operates, but not with lsp-treemacs
-;;
-;;   Temporary solution: disable lsp-treemacs (may switch to eglot anyway)
 
 ;;;; Hydras
 
