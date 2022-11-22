@@ -77,28 +77,27 @@
 ;;; Quelpa
 
 ;; Don't update local clone of the MELPA git repository
-(setq quelpa-checkout-melpa-p nil)
+;; (setq quelpa-checkout-melpa-p nil)
 
 ;; Set upgrade interval
-(setq quelpa-upgrade-interval 7)
-(add-hook 'after-init-hook #'quelpa-upgrade-all-maybe)
+;; (setq quelpa-upgrade-interval 7)
+;; (add-hook 'after-init-hook #'quelpa-upgrade-all-maybe)
 
 ;; Install Quelpa
-(unless (package-installed-p 'quelpa)
-  (with-temp-buffer
-    (url-insert-file-contents
-     "https://github.com/quelpa/quelpa/raw/master/quelpa.el")
-    (eval-buffer)
-    (quelpa-self-upgrade)))
+;; (unless (package-installed-p 'quelpa)
+;;   (with-temp-buffer
+;;     (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+;;     (eval-buffer)
+;;     (quelpa-self-upgrade)))
 
 ;; Install quelpa-use-package
-(quelpa
- '(quelpa-use-package
-   :fetcher git
-   :url "https://github.com/quelpa/quelpa-use-package.git"))
+;; (quelpa
+;;  '(quelpa-use-package
+;;    :fetcher git
+;;    :url "https://github.com/quelpa/quelpa-use-package.git"))
 
 ;; Load quelpa-use-package
-(require 'quelpa-use-package)
+;; (require 'quelpa-use-package)
 
 ;;; Local
 
@@ -630,10 +629,10 @@
 ;;   :config
 ;;   (corfu-doc-terminal-mode 1))
 
-(quelpa '(corfu-doc-terminal
-          :fetcher git
-          :url "https://codeberg.org/akib/emacs-corfu-doc-terminal.git"))
-(corfu-doc-terminal-mode 1)
+;; (quelpa '(corfu-doc-terminal
+;;           :fetcher git
+;;           :url "https://codeberg.org/akib/emacs-corfu-doc-terminal.git"))
+;; (corfu-doc-terminal-mode 1)
 
 ;; cape (Completion At Point Extensions)
 (use-package cape
