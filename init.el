@@ -21,7 +21,10 @@
        ;; GUI settings
        (when (display-graphic-p)
          ;; Import path from shell
-         (exec-path-from-shell-initialize))
+         (exec-path-from-shell-initialize))   ; TODO: this command might
+                                              ; not yet be available if
+                                              ; exec-path-from-shell is not
+                                              ; yet installed
        (message "Early settings for macOS"))
 
       ((equal (system-name) "penguin")   ; ChromeOS
