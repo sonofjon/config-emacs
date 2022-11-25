@@ -217,7 +217,7 @@
   :disabled)
 
 (use-package exec-path-from-shell
-  :if (equal window-system 'ns))   ; macOS
+  :if (featurep 'ns))   ; macOS
 
 ;;; Admin
 
@@ -923,7 +923,7 @@ capf:s, see documentation.")
 ;; osx-trash (system trash for OS X)
 ;;   TODO: Test if it works!
 (use-package osx-trash
-  :if (equal window-system 'ns)   ; macOS
+  :if (featurep 'ns)   ; macOS
   :config
   (osx-trash-setup)
   (setq delete-by-moving-to-trash t))
