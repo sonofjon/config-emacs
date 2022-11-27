@@ -82,6 +82,7 @@ and `previous-buffer'."
 If the current buffer does not belong to a project, call `next-buffer'."
   (interactive)
   ;; (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+  ;;   TODO: In Emacs 29 there is also switch-to-prev-buffer-skip-regexp
     (my/project--repeat-until-project-buffer #'next-buffer))
 
 ;; Switch to previous project buffer
@@ -1028,6 +1029,7 @@ see `eww-follow-link' for details."
    (t (error "Unexpected input arguments"))))
 
 ;; More useful buffer names in eww
+;;   TODO: Emacs 29: Use eww-auto-rename-buffer instead
 (defun prot-eww--rename-buffer ()
   "Rename EWW buffer using page title or URL.
 To be used by `eww-after-render-hook'."

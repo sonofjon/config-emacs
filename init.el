@@ -449,7 +449,7 @@
          ("M-g I" . consult-imenu-multi)
          ;; M-s bindings (search-map)
          ("M-s d" . consult-find)
-         ("M-s R" . consult-recent-file)
+         ("M-s R" . consult-recent-file)        ; TODO: Emacs 29 has recentf-open
          ("M-s D" . consult-locate)
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
@@ -734,6 +734,7 @@ capf:s, see documentation.")
   :defer)
 
 ;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
+;;   TODO: this is partly replaced by duplicate-line and duplicate-dwim in Emacs 29
 (use-package move-dup
   :bind (("C-c <up>" . move-dup-move-lines-up)
          ("C-c C-<up>" . move-dup-duplicate-up)
@@ -2228,6 +2229,8 @@ capf:s, see documentation.")
 ;;   TODO: Use minor-mode for keybindings?
 ;;           (https://stackoverflow.com/a/683575/1610035)
 ;;           (https://emacs.stackexchange.com/a/358/33325)
+;;
+;;         Emacs 29: bind restart-emacs
 
 ;;;; Escape codes
 
@@ -2348,6 +2351,7 @@ capf:s, see documentation.")
 ;; Display Imenu
 (global-set-key (kbd "C-c i") #'imenu)
 
+;; TODO: Emacs 29: Implement new function xref-go-forward
 (global-set-key (kbd "C-c >") #'xref-find-definitions)  ; default M-.
 (global-set-key (kbd "C-c <") #'xref-pop-marker-stack)  ; default M-,
 
