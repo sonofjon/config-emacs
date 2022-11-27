@@ -148,7 +148,6 @@
                           helpful
                           hydra
                           i3wm-config-mode
-                          json-mode
                           keychain-environment
                           keyfreq
                           lorem-ipsum
@@ -260,17 +259,6 @@
 ;; i3wm-config-mode (major-mode for editing i3wm config files)
 (use-package i3wm-config-mode
   :defer)
-
-;; json-mode (major-mode for editing JSON files)
-(use-package json-mode
-  :mode "\\.json$"
-  :bind (:map json-mode-map
-              ("C-c C-b" . json-mode-beautify)
-              ("C-c C-s" . json-snatcher))
-  :config
-  (add-hook 'json-mode-hook (lambda () (setq-local js-indent-level 2)))
-  (unbind-key "C-c C-f" json-mode-map)
-  (unbind-key "C-c P" json-mode-map))
 
 ;; lua-mode (major-mode for editing Lua scripts)
 (use-package lua-mode
