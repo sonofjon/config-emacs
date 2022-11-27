@@ -135,13 +135,6 @@ major-modes."
       (message "No other window to kill"))
     (select-window win)))
 
-;; Make a *scratch* buffer
-(defun create-scratch-buffer nil
-       "Create a scratch buffer."
-       (interactive)
-       (switch-to-buffer (get-buffer-create "*scratch*"))
-       (lisp-interaction-mode))
-
 ;;;; Coding
 
 ;; Custom LSP modeline print function without process id
