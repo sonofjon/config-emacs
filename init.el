@@ -121,8 +121,6 @@
                           consult-lsp
                           consult-project-extra
                           corfu
-                          corfu-doc
-                          corfu-doc-terminal
                           corfu-terminal
                           dashboard
                           devdocs
@@ -598,41 +596,12 @@
 (use-package corfu-info
   :after corfu)
 
-;; corfu-doc (documentation popup for Corfu)
-;;   TODO: could perhaps be replaced by Corfu extension
-;;         corfu-popupinfo.el, but note, there is no corresponding
-;;         package for terminal
-(use-package corfu-doc
-  :after corfu
-  :hook (corfu-mode . corfu-doc-mode)
-  :bind (:map corfu-map
-              ("M-p" . corfu-doc-scroll-down)   ; corfu-next
-              ("M-n" . corfu-doc-scroll-up)     ; corfu-previous
-              ("M-d" . corfu-doc-toggle))
-  :custom
-  ;; (corfu-doc-delay 0)
-  ;; (corfu-doc-hide-threshold 0)
-  ;; Enable manually
-  (corfu-doc-auto nil))
-
 ;; corfu-terminal (Corfu popup on terminal)
 (use-package corfu-terminal
   :if (not (display-graphic-p))
   :after corfu
   :config
   (corfu-terminal-mode 1))
-
-;; corfu-doc-terminal (corfu-doc popup on terminal)
-;; (use-package corfu-doc-terminal
-;;   :if (not (display-graphic-p))
-;;   :after corfu-doc
-;;   :config
-;;   (corfu-doc-terminal-mode 1))
-
-;; (quelpa '(corfu-doc-terminal
-;;           :fetcher git
-;;           :url "https://codeberg.org/akib/emacs-corfu-doc-terminal.git"))
-;; (corfu-doc-terminal-mode 1)
 
 ;; cape (Completion At Point Extensions)
 (use-package cape
