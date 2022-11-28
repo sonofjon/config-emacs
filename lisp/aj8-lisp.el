@@ -868,6 +868,7 @@ than 160 characters set width to 80 characters."
   :type 'integer
   :group 'aj8-lisp)
 
+;; TODO: finish this
 (defun aj8/make-not-side-window ()
   "."
   (interactive)
