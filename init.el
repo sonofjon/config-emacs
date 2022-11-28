@@ -1646,6 +1646,9 @@ capf:s, see documentation.")
 ;; Timeout for messages in active minibuffer
 (setq minibuffer-message-clear-timeout 1)
 
+;; Open *Help* buffers in same window
+(setq help-window-keep-selected t)
+
 ;; Open *info* buffers in same window
 (setq info-lookup-other-window-flag nil)
 
