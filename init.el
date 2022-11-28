@@ -2436,10 +2436,6 @@ capf:s, see documentation.")
 (global-set-key (kbd "C-x >") #'my/move-splitter-right) ; override `scroll-right'
 (global-set-key (kbd "C-x <") #'my/move-splitter-left)  ; override `scroll-left'
 
-;; Split parent windows
-(global-set-key (kbd "C-c 2") #'mp-split-below)
-(global-set-key (kbd "C-c 3") #'mp-split-right)
-
 ;; Toggle side windows
 (global-set-key (kbd "C-x |") #'window-toggle-side-windows)
 
