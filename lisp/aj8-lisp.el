@@ -764,13 +764,13 @@ versa."
   ;;       eshell-hist-ignoredups t
   ;;       eshell-scroll-to-bottom-on-input t))
   ;; Rebind history keys
-  (define-key eshell-hist-mode-map (kbd "C-<down>") nil)   ; unbind
-  (define-key eshell-hist-mode-map (kbd "C-<up>") nil)   ; unbind
-  (define-key eshell-hist-mode-map (kbd "<down>") #'eshell-next-input)
-  (define-key eshell-hist-mode-map (kbd "<up>") #'eshell-previous-input)
-  (define-key eshell-hist-mode-map (kbd "M-<down>")
+  (keymap-set eshell-hist-mode-map "C-<down>" nil)   ; unbind
+  (keymap-set eshell-hist-mode-map "C-<up>" nil)   ; unbind
+  (keymap-set eshell-hist-mode-map "<down>" #'eshell-next-input)
+  (keymap-set eshell-hist-mode-map "<up>" #'eshell-previous-input)
+  (keymap-set eshell-hist-mode-map "M-<down>"
     #'eshell-next-matching-input-from-input)
-  (define-key eshell-hist-mode-map (kbd "M-<up>")
+  (keymap-set eshell-hist-mode-map "M-<up>"
     #'eshell-previous-matching-input-from-input))
 
 ;;;; Theme
@@ -1082,10 +1082,10 @@ When called from an eww buffer, provide the current link as
 ;; Create repeat-map for window resizing
 (defvar aj8/resize-window-repeat-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "{" #'my/move-splitter-up)
-    (define-key map "}" #'my/move-splitter-down)
-    (define-key map ">" #'my/move-splitter-right)
-    (define-key map "<" #'my/move-splitter-left)
+    (keymap-set map "{" #'my/move-splitter-up)
+    (keymap-set map "}" #'my/move-splitter-down)
+    (keymap-set map ">" #'my/move-splitter-right)
+    (keymap-set map "<" #'my/move-splitter-left)
     map))
 
 ;; Add repeat-map property to window resizing commands
@@ -1096,7 +1096,7 @@ When called from an eww buffer, provide the current link as
   (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
 
 ;; Add "/" to undo-repeat-map
-(define-key undo-repeat-map "/" #'undo)
+(keymap-set undo-repeat-map "/" #'undo)
 
 ;;; xterm key sequence mappings for rxvt
 
