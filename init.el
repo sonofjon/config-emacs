@@ -1061,7 +1061,7 @@ capf:s, see documentation.")
   (add-hook 'lua-mode-hook
             (lambda () (setq-local devdocs-current-docs '("lua~5.4"))))
   (add-hook 'python-mode-hook
-            (lambda () (setq-local devdocs-current-docs '("python~3.10")))))
+            (lambda () (setq-local devdocs-current-docs '("python~3.11")))))
 
 ;; devdocs-browser (browse devdocs.io documents using EWW)
 ;;   Usage: M-x devdocs-browser-install-doc
