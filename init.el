@@ -118,7 +118,7 @@
                           circadian
                           consult
                           consult-eglot
-                          consult-lsp
+                          ;; consult-lsp
                           consult-project-extra
                           corfu
                           corfu-terminal
@@ -151,11 +151,11 @@
                           keychain-environment
                           keyfreq
                           lorem-ipsum
-                          lsp-mode
-                          lsp-latex
-                          lsp-pyright
-                          lsp-treemacs
-                          lsp-ui
+                          ;; lsp-mode
+                          ;; lsp-latex
+                          ;; lsp-pyright
+                          ;; lsp-treemacs
+                          ;; lsp-ui
                           lua-mode
                           magit
                           marginalia
@@ -280,7 +280,7 @@
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
-    :mode "\\.html?$"
+    ;; :mode "\\.html?$"
     :init
     ;; Engines
     (setq web-mode-engines-alist '(("django" . "\\.html\\'")
@@ -313,10 +313,9 @@
 
 ;; eglot (client for language server protocol servers)
 (use-package eglot
-  :disabled
   :hook ((sh-mode . eglot-ensure)
-         ;; (html-mode . eglot-ensure)
-         ;; (css-mode . eglot-ensure)
+         (html-mode . eglot-ensure)
+         (css-mode . eglot-ensure)
          (web-mode . eglot-ensure) ; fix?
          (js-mode . eglot-ensure)
          (json-mode . eglot-ensure)
@@ -329,74 +328,74 @@
   (setq eglot-extend-to-xref t))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
-(use-package consult-eglot
-  :disabled)
+(use-package consult-eglot)
+  ;; :disabled)
 
 ;; lsp-mode (language server protocol)
 ;;   Requires: npm (nvm)
 ;;   TODO: optionally enable orderless-flex for LSP completion, see Corfu Wiki
-(use-package lsp-mode
-  ;; :disabled
-  :commands (lsp lsp-deferred)
-  :hook ((sh-mode . lsp)   ; or lsp-deferred
-         ;; (html-mode . lsp-deferred)
-         ;; (css-mode . lsp-deferred)
-         (web-mode . lsp-deferred)
-         (js-mode . lsp-deferred)
-         (json-mode . lsp-deferred)
-         (lua-mode . lsp-deferred)
-         (tex-mode . lsp-deferred)
-         (yaml-mode . lsp-deferred)
-         ;; which-key integration
-         (lsp-mode . lsp-enable-which-key-integration)
-         ;; Corfu integration
-         (lsp-completion-mode . my/lsp-mode-setup-completion))
-  :init
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          ;; '(flex)))   ; use flex
-          '(orderless)))   ; use orderless
-  ;; Prefix for lsp-command-keymap
-  (setq lsp-keymap-prefix "C-c l")
-  ;; Don't show process id in modeline
-  (advice-add #'lsp--workspace-print :override #'aj8/lsp--workspace-print)
-  (which-key-add-key-based-replacements "C-c l" "lsp")
-                                        ; add label for prefix key
-  :custom
-  ;; Use custom completion backend (Corfu)
-  (lsp-completion-provider :none)
-  ;; Disable snippet support (requires Yasnippet)
-  (lsp-enable-snippet nil))
+;; (use-package lsp-mode
+;;   ;; :disabled
+;;   :commands (lsp lsp-deferred)
+;;   :hook ((sh-mode . lsp)   ; or lsp-deferred
+;;          ;; (html-mode . lsp-deferred)
+;;          ;; (css-mode . lsp-deferred)
+;;          (web-mode . lsp-deferred)
+;;          (js-mode . lsp-deferred)
+;;          (json-mode . lsp-deferred)
+;;          (lua-mode . lsp-deferred)
+;;          (tex-mode . lsp-deferred)
+;;          (yaml-mode . lsp-deferred)
+;;          ;; which-key integration
+;;          (lsp-mode . lsp-enable-which-key-integration)
+;;          ;; Corfu integration
+;;          (lsp-completion-mode . my/lsp-mode-setup-completion))
+;;   :init
+;;   (defun my/lsp-mode-setup-completion ()
+;;     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+;;           ;; '(flex)))   ; use flex
+;;           '(orderless)))   ; use orderless
+;;   ;; Prefix for lsp-command-keymap
+;;   (setq lsp-keymap-prefix "C-c l")
+;;   ;; Don't show process id in modeline
+;;   (advice-add #'lsp--workspace-print :override #'aj8/lsp--workspace-print)
+;;   (which-key-add-key-based-replacements "C-c l" "lsp")
+;;                                         ; add label for prefix key
+;;   :custom
+;;   ;; Use custom completion backend (Corfu)
+;;   (lsp-completion-provider :none)
+;;   ;; Disable snippet support (requires Yasnippet)
+;;   (lsp-enable-snippet nil))
 
 ;; lsp-ui-mode (UI modules for lsp-mode)
-(use-package lsp-ui
-  :after lsp-mode
-  :commands lsp-ui-mode)
+;; (use-package lsp-ui
+;;   :after lsp-mode
+;;   :commands lsp-ui-mode)
 
 ;; lsp-treemacs (LSP Treemacs)
-(use-package lsp-treemacs
-  ;; :disabled
-  :after (lsp-mode treemacs)
-  :commands lsp-treemacs-errors-list)
+;; (use-package lsp-treemacs
+;;   ;; :disabled
+;;   :after (lsp-mode treemacs)
+;;   :commands lsp-treemacs-errors-list)
 
 ;; lsp-latex (LSP-mode client for LaTeX, on texlab)
-(use-package lsp-latex
-  :config
-  (setq lsp-latex-diagnostics-ignored-patterns '("^Overfull.*" "^Underfull.*")))
+;; (use-package lsp-latex
+;;   :config
+;;   (setq lsp-latex-diagnostics-ignored-patterns '("^Overfull.*" "^Underfull.*")))
 
 ;; lsp-pyright (Python LSP client using Pyright)
-(use-package lsp-pyright
-  :commands python-mode
-  :init
-  (add-hook 'python-mode-hook (lambda ()
-                                (require 'lsp-pyright)
-                                (lsp-deferred))))  ; or lsp-deferred
+;; (use-package lsp-pyright
+;;   :commands python-mode
+;;   :init
+;;   (add-hook 'python-mode-hook (lambda ()
+;;                                 (require 'lsp-pyright)
+;;                                 (lsp-deferred))))  ; or lsp-deferred
 
 ;; consult-lsp (LSP-mode Consult integration)
-(use-package consult-lsp
-  ;; :disabled
-  :after (consult lsp-mode)
-  :bind (:map lsp-mode-map ([remap xref-find-apropos] . consult-lsp-symbols)))
+;; (use-package consult-lsp
+;;   ;; :disabled
+;;   :after (consult lsp-mode)
+;;   :bind (:map lsp-mode-map ([remap xref-find-apropos] . consult-lsp-symbols)))
 
 ;; flymake-aspell (Aspell checker for Flycheck)
 ;;   Requires: aspell
@@ -1929,7 +1928,7 @@ capf:s, see documentation.")
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Native-compile-Log\\)\\*"
-        ("\\*\\(Async-native-compile-log\\|lsp-log\\|.*-ls\\(::.*\\)?\\|quelpa-build-checkout\\|texlab\\(::stderr\\)?\\)\\*"
+        ("\\*\\(Async-native-compile-log\\|EGLOT.*events\\|lsp-log\\|.*-ls\\(::.*\\)?\\|quelpa-build-checkout\\|texlab\\(::stderr\\)?\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
