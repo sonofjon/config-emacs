@@ -112,6 +112,7 @@
 (customize-set-variable 'package-selected-packages
                         '(all-the-icons
                           all-the-icons-dired
+                          ansible
                           auto-package-update
                           benchmark-init
                           cape
@@ -255,6 +256,11 @@
   (dimmer-mode 1))
 
 ;;; Coding
+
+;; ansible (minor-mode for editing Ansible (YAML) files)
+(use-package ansible
+  :mode "\\.yml$"
+  :hook (yaml-mode . (lambda () (ansible 1))))
 
 ;; i3wm-config-mode (major-mode for editing i3wm config files)
 (use-package i3wm-config-mode
