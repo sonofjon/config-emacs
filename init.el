@@ -131,7 +131,7 @@
                           dimmer
                           dot-mode
                           ef-themes
-                          eglot
+                          ;; eglot
                           elfeed
                           embark
                           embark-consult
@@ -161,7 +161,7 @@
                           magit
                           marginalia
                           markdown-mode
-                          modus-themes
+                          ;; modus-themes
                           mosey
                           move-dup
                           multiple-cursors
