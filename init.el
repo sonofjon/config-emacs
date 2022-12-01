@@ -334,6 +334,8 @@
   ;; Shutdown server after buffer kill
   ;; (eglot-autoshutdown t)
   :config
+  ;; Add server for web-mode
+  (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
   ;; Enable eglot in code external to project
   (setq eglot-extend-to-xref t))
 
