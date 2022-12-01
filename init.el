@@ -142,6 +142,7 @@
                           exec-path-from-shell
                           expand-region
                           flymake-aspell
+                          flymake-eslint
                           flymake-json
                           flymake-lua
                           flyspell-correct
@@ -412,6 +413,11 @@
   :config
   ;; Don't prompt for saving personal dictionary
   (setq ispell-silently-savep t))
+
+;; flymake-eslint (a Flymake backend for Javascript using eslint)
+;;   Requires: eslint
+(use-package flymake-eslint
+  :hook (js-mode . flymake-eslint-enable))
 
 ;; flymake-json (a Flymake handler for json using jsonlint)
 ;;   Requires: jsonlint
