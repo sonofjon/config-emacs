@@ -330,6 +330,9 @@
          (python-mode . eglot-ensure) ; change to pyright
          (tex-mode . eglot-ensure) ; install digestif / change to texlab
          (yaml-mode . eglot-ensure))
+  :custom
+  ;; Shutdown server after buffer kill
+  ;; (eglot-autoshutdown t)
   :config
   ;; Enable eglot in code external to project
   (setq eglot-extend-to-xref t))
