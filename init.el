@@ -1383,7 +1383,8 @@ capf:s, see documentation.")
         ;; standard-themes-fringes 'subtle
         ;; The following accept lists of properties
         standard-themes-links '(neutral-underline)
-        standard-themes-region '(no-extend neutral intense)
+        ;; standard-themes-region '(no-extend neutral intense)
+        standard-themes-region '(neutral)
         standard-themes-prompts '(bold italic))
         ;; More complex alist to set weight, height, and optional
         ;; `variable-pitch' per heading level (t is for any level not
