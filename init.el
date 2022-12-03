@@ -441,6 +441,7 @@
   :bind (;; C-c bindings (mode-specific-map)
          ("C-c c h" . consult-history)
          ("C-c c c" . consult-mode-command)
+         ("C-c c k" . consult-kmacro)
          ("C-c c m" . consult-minor-mode-menu)
          ;; C-x bindings (ctl-x-map)
          ("C-x M-:" . consult-complex-command)   ; orig. repeat-complex-command
