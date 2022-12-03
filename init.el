@@ -520,7 +520,8 @@
    :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep consult-bookmark
    consult-recent-file consult-xref consult--source-bookmark
-   consult--source-recent-file consult--source-project-recent-file
+   consult--source-file-register consult--source-recent-file
+   consult--source-project-recent-file
    :preview-key (kbd "M-`"))
 
   ;; Completion
