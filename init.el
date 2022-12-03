@@ -1368,8 +1368,7 @@ capf:s, see documentation.")
 
 ;; standard-themes (like the default theme but more consistent)
 (use-package standard-themes
-  :if (and (eq system-type 'gnu/linux)   ; WSL
-           (getenv "WSLENV"))
+  :if (and (eq system-type 'gnu/linux) (getenv "WSLENV"))   ; WSL
   :bind ("<f5>" . standard-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
   :init
@@ -1415,8 +1414,7 @@ capf:s, see documentation.")
   :defer 60
   :after (:any modus-themes ef-themes)
   :config
-  (if (and (eq system-type 'gnu/linux)   ; WSL
-           (getenv "WSLENV"))
+  (if (and (eq system-type 'gnu/linux) (getenv "WSLENV"))   ; WSL
       ;; (circadian-themes '(("8:00" . modus-operandi)
       ;;                     ("18:00"  . modus-vivendi)))
       (customize-set-variable 'circadian-themes '((:sunrise . modus-operandi)
@@ -2683,7 +2681,7 @@ Hide, show and navigate outlines.
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
-(cond ((featurep 'ns)                    ; macOS
+(cond ((featurep 'ns)                                       ; macOS
        ;; Use left Option as Meta
        ;; (setq mac-option-modifier 'meta)
        ;; Use left Command as Super
@@ -2696,11 +2694,10 @@ Hide, show and navigate outlines.
          (setq-default line-spacing 1))
        (message "Late settings macOS"))
 
-      ((equal (system-name) "penguin")   ; ChromeOS
+      ((equal (system-name) "penguin")                      ; ChromeOS
        (message "Late settings ChromeOS"))
 
-      ((and (eq system-type 'gnu/linux)
-            (getenv "WSLENV"))           ; WSL
+      ((and (eq system-type 'gnu/linux) (getenv "WSLENV"))  ; WSL
        ;; Enable (default) web browser
        ;;   Requires: wslu
        (setq browse-url-generic-program "wslview")
@@ -2708,7 +2705,7 @@ Hide, show and navigate outlines.
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
        (message "Late settings WSL"))
 
-      ((eq system-type 'gnu/linux)       ; Linux
+      ((eq system-type 'gnu/linux)                          ; Linux
        ;; Special settings for URxvt
        (when (equal "rxvt-unicode-256color"
                     (getenv-internal "TERM" initial-environment))
