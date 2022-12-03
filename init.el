@@ -1372,47 +1372,43 @@ capf:s, see documentation.")
     (modus-themes-load-vivendi)))
 
 ;; standard-themes (like the default theme but more consistent)
+;;   TODO: Customize
+;;         Fix cursor
 (use-package standard-themes
-  :if (and (eq system-type 'gnu/linux)   ; WSL
-           (getenv "WSLENV"))
+  :if (and (eq system-type 'gnu/linux) (getenv "WSLENV"))   ; WSL
   :bind ("<f5>" . standard-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
   :init
   (setq standard-themes-bold-constructs t
         standard-themes-italic-constructs t
-        standard-themes-mixed-fonts t
-        standard-themes-variable-pitch-ui t
-        standard-themes-mode-line-accented t
-
+        ;; standard-themes-mixed-fonts t
+        ;; standard-themes-variable-pitch-ui t
+        ;; standard-themes-mode-line-accented t
         ;; Accepts a symbol value:
-        standard-themes-fringes 'subtle
-
+        ;; standard-themes-fringes 'subtle
         ;; The following accept lists of properties
         standard-themes-links '(neutral-underline)
         standard-themes-region '(no-extend neutral intense)
         standard-themes-prompts '(bold italic)
-
-        ;; more complex alist to set weight, height, and optional
+        ;; More complex alist to set weight, height, and optional
         ;; `variable-pitch' per heading level (t is for any level not
         ;; specified):
-        standard-themes-headings
-        '((0 . (variable-pitch light 1.9))
-          (1 . (variable-pitch light 1.8))
-          (2 . (variable-pitch light 1.7))
-          (3 . (variable-pitch semilight 1.6))
-          (4 . (variable-pitch semilight 1.5))
-          (5 . (variable-pitch 1.4))
-          (6 . (variable-pitch 1.3))
-          (7 . (variable-pitch 1.2))
-          (t . (variable-pitch 1.1))))
+        ;; standard-themes-headings
+        ;; '((0 . (variable-pitch light 1.9))
+        ;;   (1 . (variable-pitch light 1.8))
+        ;;   (2 . (variable-pitch light 1.7))
+        ;;   (3 . (variable-pitch semilight 1.6))
+        ;;   (4 . (variable-pitch semilight 1.5))
+        ;;   (5 . (variable-pitch 1.4))
+        ;;   (6 . (variable-pitch 1.3))
+        ;;   (7 . (variable-pitch 1.2))
+        ;;   (t . (variable-pitch 1.1))))
   ;; Disable all other themes to avoid awkward blending:
   (mapc #'disable-theme custom-enabled-themes)
   ;; Load theme
   (if (aj8/daytime-p)
-      ;; (load-theme 'standard- light :no-confirm)
-      (load-theme 'standard- duo-light :no-confirm)
-    ;; (load-theme 'standard- dark :no-confirm))
-    (load-theme 'standard- duo-dark :no-confirm)))
+      (load-theme 'standard-light :no-confirm)
+    (load-theme 'standard-dark :no-confirm)))
 
 ;; circadian (theme-switching based on daytime)
 (use-package circadian
@@ -1420,8 +1416,7 @@ capf:s, see documentation.")
   :defer 60
   :after (:any modus-themes ef-themes)
   :config
-  (if (and (eq system-type 'gnu/linux)   ; WSL
-           (getenv "WSLENV"))
+  (if (and (eq system-type 'gnu/linux) (getenv "WSLENV"))   ; WSL
       ;; (circadian-themes '(("8:00" . modus-operandi)
       ;;                     ("18:00"  . modus-vivendi)))
       (customize-set-variable 'circadian-themes '((:sunrise . modus-operandi)
@@ -2692,7 +2687,7 @@ Hide, show and navigate outlines.
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
-(cond ((featurep 'ns)                    ; macOS
+(cond ((featurep 'ns)                                       ; macOS
        ;; Use left Option as Meta
        ;; (setq mac-option-modifier 'meta)
        ;; Use left Command as Super
@@ -2705,11 +2700,10 @@ Hide, show and navigate outlines.
          (setq-default line-spacing 1))
        (message "Late settings macOS"))
 
-      ((equal (system-name) "penguin")   ; ChromeOS
+      ((equal (system-name) "penguin")                      ; ChromeOS
        (message "Late settings ChromeOS"))
 
-      ((and (eq system-type 'gnu/linux)
-            (getenv "WSLENV"))           ; WSL
+      ((and (eq system-type 'gnu/linux) (getenv "WSLENV"))  ; WSL
        ;; Enable (default) web browser
        ;;   Requires: wslu
        (setq browse-url-generic-program "wslview")
@@ -2717,7 +2711,7 @@ Hide, show and navigate outlines.
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
        (message "Late settings WSL"))
 
-      ((eq system-type 'gnu/linux)       ; Linux
+      ((eq system-type 'gnu/linux)                          ; Linux
        ;; Special settings for URxvt
        (when (equal "rxvt-unicode-256color"
                     (getenv-internal "TERM" initial-environment))
