@@ -451,6 +451,7 @@
          ;; Other custom bindings
          ;; ("M-y" . consult-yank-pop)           ; orig. yank-pop
          ;; M-g bindings (goto-map)
+         ("M-g f" . consult-flymake)
          ("M-g g" . consult-goto-line)           ; orig. goto-line
          ("M-g M-g" . consult-goto-line)         ; orig. goto-line
          ("M-g o" . consult-outline)             ; alt.: consult-org-heading
