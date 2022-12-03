@@ -2041,7 +2041,7 @@ capf:s, see documentation.")
          (side . right)
          (slot . -1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|package update results\\|tex-shell\\)\\*"
+        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
