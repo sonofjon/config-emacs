@@ -1367,6 +1367,8 @@ capf:s, see documentation.")
     (modus-themes-load-vivendi)))
 
 ;; standard-themes (like the default theme but more consistent)
+;;   TODO: Customize
+;;         Fix cursor
 (use-package standard-themes
   :if (and (eq system-type 'gnu/linux) (getenv "WSLENV"))   ; WSL
   :bind ("<f5>" . standard-themes-toggle)
@@ -1383,8 +1385,7 @@ capf:s, see documentation.")
         standard-themes-links '(neutral-underline)
         standard-themes-region '(no-extend neutral intense)
         standard-themes-prompts '(bold italic)
-
-        ;; more complex alist to set weight, height, and optional
+        ;; More complex alist to set weight, height, and optional
         ;; `variable-pitch' per heading level (t is for any level not
         ;; specified):
         ;; standard-themes-headings
@@ -1403,7 +1404,6 @@ capf:s, see documentation.")
   (if (aj8/daytime-p)
       (load-theme 'standard-light :no-confirm)
     (load-theme 'standard-dark :no-confirm)))
-    
 
 ;; circadian (theme-switching based on daytime)
 (use-package circadian
