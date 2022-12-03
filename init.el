@@ -485,10 +485,6 @@
          ("M-s" . consult-history)    ; orig. next-matching-history-element
          ("M-r" . consult-history))   ; orig. previous-matching-history-element
   :init
-  ;; Enhance `completing-read-multiple'
-  ;; (advice-add #'completing-read-multiple :override
-  ;;             #'consult-completing-read-multiple)
-
   ;; Use Consult for completion in region
   ;;   Note, this does not work with LSP or Eglot
   ;; (when (not (display-graphic-p))   ; only enable if using terminal
