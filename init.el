@@ -1403,10 +1403,9 @@ capf:s, see documentation.")
   (mapc #'disable-theme custom-enabled-themes)
   ;; Load theme
   (if (aj8/daytime-p)
-      ;; (load-theme 'standard- light :no-confirm)
-      (load-theme 'standard- duo-light :no-confirm)
-    ;; (load-theme 'standard- dark :no-confirm))
-    (load-theme 'standard- duo-dark :no-confirm)))
+      (load-theme 'standard-light :no-confirm)
+    (load-theme 'standard-dark :no-confirm)))
+    
 
 ;; circadian (theme-switching based on daytime)
 (use-package circadian
