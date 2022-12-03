@@ -1237,9 +1237,8 @@ capf:s, see documentation.")
 
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
-  ;; :disabled
-  :if (and (eq system-type 'gnu/linux)   ; WSL
-           (getenv "WSLENV"))
+  :if (or (eq system-type 'gnu/linux)         ; Linux
+           (equal (system-name) "penguin"))   ; ChromeOS
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
@@ -1343,8 +1342,7 @@ capf:s, see documentation.")
   ;;   `ef-themes-preview-colors'
   ;;   `ef-themes-preview-colors-current'
   ;; :disabled
-  :unless (and (eq system-type 'gnu/linux)   ; WSL
-               (getenv "WSLENV"))
+  :if (featurep 'ns)   ; macOS
   :bind ("<f5>" . ef-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
   :init
