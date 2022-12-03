@@ -1236,6 +1236,44 @@ capf:s, see documentation.")
   :if (display-graphic-p)
   :hook (dired-mode . all-the-icons-dired-mode))
 
+;; ef-themes (colorful and legible themes)
+(use-package ef-themes
+  ;; Themes:
+  ;;   Light: `ef-day', `ef-spring', `ef-summer', `ef-light', `ef-duo-light',
+  ;;          `ef-trio-light', `ef-frost', `ef-cyprus'.
+  ;;   Dark:  `ef-night', `ef-autumn', `ef-winter', `ef-dark', `ef-duo-dark',
+  ;;          `ef-trio-dark', `ef-bio', `ef-cherie'.
+  ;;   All the themes are included in the variable `ef-themes-collection'.
+  ;; Commands:
+  ;;   `ef-themes-toggle'
+  ;;   `ef-themes-select'
+  ;;   `ef-themes-load-random'
+  ;;   `ef-themes-preview-colors'
+  ;;   `ef-themes-preview-colors-current'
+  ;; :disabled
+  :if (featurep 'ns)   ; macOS
+  :bind ("<f5>" . ef-themes-toggle)
+  ;; Make customizations that affect Emacs faces before loading a theme
+  :init
+  (setq ef-themes-headings
+        '((0 . (ultrabold))
+          (1 . (extrabold))
+          (2 . (bold))
+          (3 . (semibold))
+          (t . (regular))))
+  ;; Disable all other themes to avoid awkward blending
+  (mapc #'disable-theme custom-enabled-themes)
+  ;; Load theme
+  (if (aj8/daytime-p)
+      ;; (load-theme 'ef-light :no-confirm)
+      (load-theme 'ef-duo-light :no-confirm)
+    ;; (load-theme 'ef-dark :no-confirm))
+    (load-theme 'ef-duo-dark :no-confirm))
+  :config
+  ;; Specify themes for ef-themes-toggle command
+  ;; (setq ef-themes-to-toggle '(ef-light ef-dark)))
+  (setq ef-themes-to-toggle '(ef-duo-light ef-duo-dark)))
+
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
   :if (or (eq system-type 'gnu/linux)         ; Linux
@@ -1327,44 +1365,6 @@ capf:s, see documentation.")
   (if (aj8/daytime-p)
       (modus-themes-load-operandi)
     (modus-themes-load-vivendi)))
-
-;; ef-themes (colorful and legible themes)
-(use-package ef-themes
-  ;; Themes:
-  ;;   Light: `ef-day', `ef-spring', `ef-summer', `ef-light', `ef-duo-light',
-  ;;          `ef-trio-light', `ef-frost', `ef-cyprus'.
-  ;;   Dark:  `ef-night', `ef-autumn', `ef-winter', `ef-dark', `ef-duo-dark',
-  ;;          `ef-trio-dark', `ef-bio', `ef-cherie'.
-  ;;   All the themes are included in the variable `ef-themes-collection'.
-  ;; Commands:
-  ;;   `ef-themes-toggle'
-  ;;   `ef-themes-select'
-  ;;   `ef-themes-load-random'
-  ;;   `ef-themes-preview-colors'
-  ;;   `ef-themes-preview-colors-current'
-  ;; :disabled
-  :if (featurep 'ns)   ; macOS
-  :bind ("<f5>" . ef-themes-toggle)
-  ;; Make customizations that affect Emacs faces before loading a theme
-  :init
-  (setq ef-themes-headings
-        '((0 . (ultrabold))
-          (1 . (extrabold))
-          (2 . (bold))
-          (3 . (semibold))
-          (t . (regular))))
-  ;; Disable all other themes to avoid awkward blending
-  (mapc #'disable-theme custom-enabled-themes)
-  ;; Load theme
-  (if (aj8/daytime-p)
-      ;; (load-theme 'ef-light :no-confirm)
-      (load-theme 'ef-duo-light :no-confirm)
-    ;; (load-theme 'ef-dark :no-confirm))
-    (load-theme 'ef-duo-dark :no-confirm))
-  :config
-  ;; Specify themes for ef-themes-toggle command
-  ;; (setq ef-themes-to-toggle '(ef-light ef-dark)))
-  (setq ef-themes-to-toggle '(ef-duo-light ef-duo-dark)))
 
 ;; standard-themes (like the default theme but more consistent)
 (use-package standard-themes
