@@ -454,7 +454,6 @@
          ("C-M-#" . consult-register)
          ;; Other custom bindings
          ;; ("M-y" . consult-yank-pop)           ; orig. yank-pop
-         ("<help> a" . consult-apropos)          ; orig. apropos-command
          ;; M-g bindings (goto-map)
          ("M-g g" . consult-goto-line)           ; orig. goto-line
          ("M-g M-g" . consult-goto-line)         ; orig. goto-line
