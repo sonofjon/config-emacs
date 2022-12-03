@@ -196,7 +196,7 @@
 ;; Install selected packages
 (package-install-selected-packages)
 
-;;; Early packages 
+;;; Early packages
 
 ;; benchmark-init (benchmarks for require and load calls)
 (use-package benchmark-init
@@ -780,7 +780,7 @@ capf:s, see documentation.")
 
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
 ;;   TODO: Investigate smartparens-strict-mode-map, e.g M-d and C-w changes behaviour
-;;           - M-d done! TODO: how to create sp-kill-word that doesn't kill symbol? 
+;;           - M-d done! TODO: how to create sp-kill-word that doesn't kill symbol?
 ;;   TODO: create a smart wrapper for sp-down/up-sexp that knows whether to go forward or backward
 (use-package smartparens
   :diminish
@@ -1388,8 +1388,9 @@ capf:s, see documentation.")
         ;; standard-themes-fringes 'subtle
         ;; The following accept lists of properties
         standard-themes-links '(neutral-underline)
-        standard-themes-region '(no-extend neutral intense)
-        standard-themes-prompts '(bold italic)
+        ;; standard-themes-region '(no-extend neutral intense)
+        standard-themes-region '(neutral)
+        standard-themes-prompts '(bold italic))
         ;; More complex alist to set weight, height, and optional
         ;; `variable-pitch' per heading level (t is for any level not
         ;; specified):
@@ -1493,7 +1494,7 @@ capf:s, see documentation.")
   :custom
   ;; Use pretty Unicode art
   (ztree-draw-unicode-lines t))
-  ;; Customize file filter (default is all dot-files) 
+  ;; Customize file filter (default is all dot-files)
   ;; (setq-default ztree-diff-filter-list
   ;;               (cons \"^.*\\.pyc\" ztree-diff-filter-list)))
 
