@@ -1374,13 +1374,11 @@ capf:s, see documentation.")
   :init
   (setq standard-themes-bold-constructs t
         standard-themes-italic-constructs t
-        standard-themes-mixed-fonts t
-        standard-themes-variable-pitch-ui t
-        standard-themes-mode-line-accented t
-
+        ;; standard-themes-mixed-fonts t
+        ;; standard-themes-variable-pitch-ui t
+        ;; standard-themes-mode-line-accented t
         ;; Accepts a symbol value:
-        standard-themes-fringes 'subtle
-
+        ;; standard-themes-fringes 'subtle
         ;; The following accept lists of properties
         standard-themes-links '(neutral-underline)
         standard-themes-region '(no-extend neutral intense)
@@ -1389,16 +1387,16 @@ capf:s, see documentation.")
         ;; more complex alist to set weight, height, and optional
         ;; `variable-pitch' per heading level (t is for any level not
         ;; specified):
-        standard-themes-headings
-        '((0 . (variable-pitch light 1.9))
-          (1 . (variable-pitch light 1.8))
-          (2 . (variable-pitch light 1.7))
-          (3 . (variable-pitch semilight 1.6))
-          (4 . (variable-pitch semilight 1.5))
-          (5 . (variable-pitch 1.4))
-          (6 . (variable-pitch 1.3))
-          (7 . (variable-pitch 1.2))
-          (t . (variable-pitch 1.1))))
+        ;; standard-themes-headings
+        ;; '((0 . (variable-pitch light 1.9))
+        ;;   (1 . (variable-pitch light 1.8))
+        ;;   (2 . (variable-pitch light 1.7))
+        ;;   (3 . (variable-pitch semilight 1.6))
+        ;;   (4 . (variable-pitch semilight 1.5))
+        ;;   (5 . (variable-pitch 1.4))
+        ;;   (6 . (variable-pitch 1.3))
+        ;;   (7 . (variable-pitch 1.2))
+        ;;   (t . (variable-pitch 1.1))))
   ;; Disable all other themes to avoid awkward blending:
   (mapc #'disable-theme custom-enabled-themes)
   ;; Load theme
