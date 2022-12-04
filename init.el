@@ -424,16 +424,19 @@
 ;; flymake-eslint (a Flymake backend for Javascript using eslint)
 ;;   Requires: eslint
 (use-package flymake-eslint
+  :disabled
   :hook (js-mode . flymake-eslint-enable))
 
 ;; flymake-json (a Flymake handler for json using jsonlint)
 ;;   Requires: jsonlint
 (use-package flymake-json
+  :disabled
   :hook (json-mode . flymake-json-load))
 
 ;; flymake-lua (Flymake for Lua)
 ;;   Requires: luac
 (use-package flymake-lua
+  :disabled
   :hook (lua-mode . flymake-lua-load))
 
 ;;; Completion
