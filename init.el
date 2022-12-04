@@ -341,7 +341,8 @@
   (setq eglot-extend-to-xref t))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
-(use-package consult-eglot)
+(use-package consult-eglot
+  :after (consult eglot))
   ;; :disabled)
 
 ;; lsp-mode (language server protocol)
