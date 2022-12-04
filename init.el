@@ -502,7 +502,6 @@
   ;; (corfu-preselect-first nil)    ; disable candidate preselection
   ;; (corfu-on-exact-match 'insert)   ; configure handling of exact matches
   ;;   TODO: match not inserted with orderless
-  ;; (corfu-echo-documentation nil) ; do not show documentation in the echo area
   (corfu-scroll-margin 1)        ; use scroll margin
   :init
   ;; Enable Corfu globally
