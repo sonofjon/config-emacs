@@ -591,7 +591,7 @@ capf:s, see documentation.")
   ;; Add `completion-at-point-functions', used by `completion-at-point'
   ;; (add-to-list 'completion-at-point-functions #'cape-file)
   ;; ;; (add-to-list 'completion-at-point-functions #'cape-history)
-  ;; (add-to-list 'completion-at-point-functions #'cape-line)
+  (add-to-list 'completion-at-point-functions #'cape-line)
   ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
   ;; ;; (add-to-list 'completion-at-point-functions #'cape-dict)
   ;; (add-to-list 'completion-at-point-functions #'cape-keyword)
