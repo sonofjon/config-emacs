@@ -563,8 +563,8 @@
                                                                  #'cape-keyword)
     "Completion at point function for Cape, combining completions
 from ispell, dabbrev, symbol and keyword. Note that the order of
-the capf:s matter. Also, cape-file does not merge well with the other
-capf:s, see documentation.")
+the capf:s matter. Also, cape-file does not merge well with the
+other capf:s, see documentation.")
   (defalias 'cape-dabbrev+symbol+keyword+ispell (cape-super-capf #'cape-dabbrev
   ;; TODO: doesnt remember recent candidates
                                                                  #'cape-symbol
@@ -572,8 +572,8 @@ capf:s, see documentation.")
                                                                  #'cape-ispell)
     "Completion at point function for Cape, combining completions
 from dabbrev, symbol, keyword and ispell. Note that the order of
-the capf:s matter. Also, cape-symbol must precede cape-ispell
-(bug?). Also, cape-file does not merge well with the other
+the capf:s matter. Also, cape-file does not merge well with the
+other capf:s, see documentation.")
   (defalias 'cape-ispell+symbol+keyword (cape-super-capf #'cape-ispell
                                                          #'cape-symbol
                                                          #'cape-keyword)
@@ -585,9 +585,8 @@ capf:s, see documentation.")
                                                          #'cape-keyword
                                                          #'cape-ispell)
     "Completion at point function for Cape, combining completions
-from dabbrev, symbol, keyword and ispell. Note that the order of
-the capf:s matter. Also, cape-symbol must precede cape-ispell
-(bug?). Also, cape-file does not merge well with the other
+from symbol, keyword and ispell. Note that the order of the
+capf:s matter. Also, cape-file does not merge well with the other
 capf:s, see documentation.")
   ;; Add `completion-at-point-functions', used by `completion-at-point'
   ;; (add-to-list 'completion-at-point-functions #'cape-file)
