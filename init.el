@@ -323,13 +323,15 @@
 (use-package eglot
   :hook ((sh-mode . eglot-ensure)
          (html-mode . eglot-ensure)
+         (mhtml-mode . eglot-ensure)
          (css-mode . eglot-ensure)
-         (web-mode . eglot-ensure) ; fix?
+         (web-mode . eglot-ensure)
          (js-mode . eglot-ensure)
          (json-mode . eglot-ensure)
          (lua-mode . eglot-ensure)
-         (python-mode . eglot-ensure) ; change to pyright
-         (tex-mode . eglot-ensure) ; install digestif / change to texlab
+         (markdown-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
+         (tex-mode . eglot-ensure)
          (yaml-mode . eglot-ensure))
   ;; :custom
   ;; Shutdown server after buffer kill
@@ -337,6 +339,8 @@
   :config
   ;; Add server for web-mode
   (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
+  ;; Change server for markdown-mode
+  (add-to-list 'eglot-server-programs '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
   ;; Enable eglot in code external to project
   (setq eglot-extend-to-xref t))
 
