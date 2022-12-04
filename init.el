@@ -574,6 +574,12 @@ capf:s, see documentation.")
 from dabbrev, symbol, keyword and ispell. Note that the order of
 the capf:s matter. Also, cape-symbol must precede cape-ispell
 (bug?). Also, cape-file does not merge well with the other
+  (defalias 'cape-ispell+symbol+keyword (cape-super-capf #'cape-ispell
+                                                         #'cape-symbol
+                                                         #'cape-keyword)
+    "Completion at point function for Cape, combining completions
+from ispell, symbol and keyword. Note that the order of the
+capf:s matter. Also, cape-file does not merge well with the other
 capf:s, see documentation.")
   (defalias 'cape-symbol+keyword+ispell (cape-super-capf #'cape-symbol
                                                          #'cape-keyword
@@ -600,6 +606,10 @@ capf:s, see documentation.")
   ;;              #'cape-dabbrev+symbol+keyword+ispell)
   (add-to-list 'completion-at-point-functions
                #'cape-symbol+keyword+ispell)
+  ;; Completion at point function for text-mode
+  (defun aj8/text-mode-capf ()
+    (setq-local completion-at-point-functions #'cape-ispell+symbol+keyword))
+  (add-hook 'text-mode-hook #'aj8/text-mode-capf)
   (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
                                         ; add label for prefix
 
