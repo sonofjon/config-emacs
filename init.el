@@ -331,9 +331,9 @@
          (python-mode . eglot-ensure) ; change to pyright
          (tex-mode . eglot-ensure) ; install digestif / change to texlab
          (yaml-mode . eglot-ensure))
-  :custom
+  ;; :custom
   ;; Shutdown server after buffer kill
-  ;; (eglot-autoshutdown t)
+  (eglot-autoshutdown t)
   :config
   ;; Add server for web-mode
   (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
