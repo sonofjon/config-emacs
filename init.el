@@ -590,6 +590,12 @@ from symbol, keyword and ispell. Note that the order of the
 capf:s matter. Also, cape-file does not merge well with the other
 capf:s, see documentation.")
   ;; Add `completion-at-point-functions', used by `completion-at-point'
+  ;;   Note that this adds functions to the global value of
+  ;;   completion-at-point-functions. Any buffer-local values of
+  ;;   completion-at-point-functions will take precedence, however, if
+  ;;   the buffer-local value contains `t' the global value of
+  ;;   completion-at-point-functions will be used if the buffer-local
+  ;;   value doesn't provide a match.
   ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
   ;; (add-to-list 'completion-at-point-functions
