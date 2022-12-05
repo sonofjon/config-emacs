@@ -650,22 +650,20 @@ from symbol, keyword and ispell. Note that the order of the
 capf:s matter. Also, cape-file does not merge well with the other
 capf:s, see documentation.")
   ;; Add `completion-at-point-functions', used by `completion-at-point'
-  ;; (add-to-list 'completion-at-point-functions #'cape-file)
-  ;; ;; (add-to-list 'completion-at-point-functions #'cape-history)
-  (add-to-list 'completion-at-point-functions #'cape-line)
-  ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
-  ;; ;; (add-to-list 'completion-at-point-functions #'cape-dict)
-  ;; (add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
   ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  ;; ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;; Use a combination of capf:s instead
   (add-to-list 'completion-at-point-functions #'cape-file)
-  ;; (add-to-list 'completion-at-point-functions #'cape-line)
   ;; (add-to-list 'completion-at-point-functions
   ;;              #'cape-dabbrev+symbol+keyword+ispell)
   (add-to-list 'completion-at-point-functions
                #'cape-symbol+keyword+ispell)
+  ;; (add-to-list 'completion-at-point-functions #'cape-history)
+  ;; (add-to-list 'completion-at-point-functions #'cape-keyword)
+  ;; (add-to-list 'completion-at-point-functions #'cape-tex)
+  ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
+  ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
+  ;; (add-to-list 'completion-at-point-functions #'cape-dict)
+  ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+  (add-to-list 'completion-at-point-functions #'cape-line)
   ;; Completion at point function for text-mode
   (defun aj8/text-mode-capf ()
     (setq-local completion-at-point-functions #'cape-ispell+symbol+keyword))
