@@ -585,6 +585,8 @@ capf:s, see documentation.")
   (defalias 'cape-symbol+keyword+ispell (cape-super-capf #'cape-symbol
                                                          #'cape-keyword
                                                          #'cape-ispell)
+  (defalias 'cape-ispell+dabbrev (cape-super-capf #'cape-ispell
+                                                  #'cape-dabbrev)
     "Completion at point function for Cape, combining completions
 from symbol, keyword and ispell. Note that the order of the
 capf:s matter. Also, cape-file does not merge well with the other
@@ -652,7 +654,7 @@ capf:s, see documentation.")
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
                                    (current-buffer)))
-                        (list #'cape-ispell+symbol+keyword t))))
+                        (list #'cape-ispell+dabbrev t))))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
 
   (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
