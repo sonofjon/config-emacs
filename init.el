@@ -557,15 +557,6 @@
          ("C-c u t" . cape-tex))
   :init
   ;; Custom completion at point functions
-  (defalias 'cape-ispell+dabbrev+symbol+keyword (cape-super-capf #'cape-ispell
-    ;; TODO: symbol completion fails on hyphen when ispell precedes symbol
-                                                                 #'cape-dabbrev
-                                                                 #'cape-symbol
-                                                                 #'cape-keyword)
-    "Completion at point function for Cape, combining completions
-from ispell, dabbrev, symbol and keyword. Note that the order of
-the capf:s matter. Also, cape-file does not merge well with the
-other capf:s, see documentation.")
   (defalias 'cape-dabbrev+symbol+keyword+ispell (cape-super-capf #'cape-dabbrev
   ;; TODO: doesnt remember recent candidates
                                                                  #'cape-symbol
@@ -575,16 +566,29 @@ other capf:s, see documentation.")
 from dabbrev, symbol, keyword and ispell. Note that the order of
 the capf:s matter. Also, cape-file does not merge well with the
 other capf:s, see documentation.")
+  (defalias 'cape-ispell+dabbrev+symbol+keyword (cape-super-capf #'cape-ispell
+    ;; TODO: symbol completion fails on hyphen when ispell precedes symbol
+                                                                 #'cape-dabbrev
+                                                                 #'cape-symbol
+                                                                 #'cape-keyword)
+    "Completion at point function for Cape, combining completions
+from ispell, dabbrev, symbol and keyword. Note that the order of
+the capf:s matter. Also, cape-file does not merge well with the
+other capf:s, see documentation.")
+  (defalias 'cape-symbol+keyword+ispell (cape-super-capf #'cape-symbol
+                                                         #'cape-keyword
+                                                         #'cape-ispell)
+    "Completion at point function for Cape, combining completions
+from symbol, keyword and ispell. Note that the order of the
+capf:s matter. Also, cape-file does not merge well with the other
+capf:s, see documentation.")
   (defalias 'cape-ispell+symbol+keyword (cape-super-capf #'cape-ispell
                                                          #'cape-symbol
                                                          #'cape-keyword)
     "Completion at point function for Cape, combining completions
-from ispell, symbol and keyword. Note that the order of the
+from ispell and dabbrev. Note that the order of the
 capf:s matter. Also, cape-file does not merge well with the other
 capf:s, see documentation.")
-  (defalias 'cape-symbol+keyword+ispell (cape-super-capf #'cape-symbol
-                                                         #'cape-keyword
-                                                         #'cape-ispell)
   (defalias 'cape-ispell+dabbrev (cape-super-capf #'cape-ispell
                                                   #'cape-dabbrev)
     "Completion at point function for Cape, combining completions
