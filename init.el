@@ -686,7 +686,7 @@ capf:s, see documentation.")
   ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
   ;; (add-to-list 'completion-at-point-functions #'cape-dict)
   ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
-  (add-to-list 'completion-at-point-functions #'cape-line)
+  ;; (add-to-list 'completion-at-point-functions #'cape-line)
 
   ;; Completion at point function for prog-mode
   (defun aj8/prog-mode-capf ()
