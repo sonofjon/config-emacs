@@ -612,7 +612,8 @@ capf:s, see documentation.")
   (add-to-list 'completion-at-point-functions #'cape-line)
   ;; Completion at point function for text-mode
   (defun aj8/text-mode-capf ()
-    (setq-local completion-at-point-functions #'cape-ispell+symbol+keyword))
+    (setq-local completion-at-point-functions
+                (list#'cape-ispell+symbol+keyword t)))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
   (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
                                         ; add label for prefix
