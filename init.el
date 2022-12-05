@@ -553,7 +553,7 @@
          ("C-c u i" . cape-ispell)
          ("C-c u k" . cape-keyword)
          ("C-c u l" . cape-line)
-         ("C-c u s" . cape-symbol)          ; complete symbols everywhere
+         ("C-c u s" . cape-symbol)           ; complete symbols everywhere
          ("C-c u t" . cape-tex))
   :init
   ;; Custom completion at point functions
@@ -606,16 +606,40 @@ capf:s, see documentation.")
   ;; (add-to-list 'completion-at-point-functions #'cape-dict)
   ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
   (add-to-list 'completion-at-point-functions #'cape-line)
+
   ;; Completion at point function for prog-mode
   (defun aj8/prog-mode-capf ()
+    ;; (add-hook 'completion-at-point-functions
+    ;;            #'cape-symbol+keyword+ispell nil t))
+    ;; (add-to-list 'completion-at-point-functions
+    ;;              #'cape-symbol+keyword+ispell))
+    ;; (setq-local completion-at-point-functions
+    ;;             (list #'cape-symbol+keyword+ispell t)))
+    ;; Insert custom capf before `t' in buffer-local value
     (setq-local completion-at-point-functions
-                (list #'cape-symbol+keyword+ispell t)))
+                (append (remove t (buffer-local-value
+                                   'completion-at-point-functions
+                                   (current-buffer)))
+                        (list #'cape-symbol+keyword+ispell t))))
   (add-hook 'prog-mode-hook #'aj8/prog-mode-capf)
+  ;; (add-hook 'emacs-lisp-mode-hook #'aj8/prog-mode-capf)
+
   ;; Completion at point function for text-mode
   (defun aj8/text-mode-capf ()
+    ;; (add-hook 'completion-at-point-functions
+    ;;            #'cape-ispell+symbol+keyword nil t))
+    ;; (add-to-list 'completion-at-point-functions
+    ;;               #'cape-ispell+symbol+keyword))
+    ;; (setq-local completion-at-point-functions
+    ;;             (list#'cape-ispell+symbol+keyword t)))
+    ;; Insert custom capf before `t' in buffer-local value
     (setq-local completion-at-point-functions
-                (list#'cape-ispell+symbol+keyword t)))
+                (append (remove t (buffer-local-value
+                                   'completion-at-point-functions
+                                   (current-buffer)))
+                        (list #'cape-ispell+symbol+keyword t))))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
+
   (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
                                         ; add label for prefix
 
