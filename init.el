@@ -658,10 +658,6 @@ capf:s, see documentation.")
   ;;   value doesn't provide a match.
   ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
-  ;; (add-to-list 'completion-at-point-functions
-  ;;              #'cape-dabbrev+symbol+keyword+ispell)
-  (add-to-list 'completion-at-point-functions
-               #'cape-symbol+keyword+ispell)
   ;; (add-to-list 'completion-at-point-functions #'cape-history)
   ;; (add-to-list 'completion-at-point-functions #'cape-keyword)
   ;; (add-to-list 'completion-at-point-functions #'cape-tex)
@@ -670,6 +666,11 @@ capf:s, see documentation.")
   ;; (add-to-list 'completion-at-point-functions #'cape-dict)
   ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
   (add-to-list 'completion-at-point-functions #'cape-line)
+  ;; Completion at point function for prog-mode
+  (defun aj8/prog-mode-capf ()
+    (setq-local completion-at-point-functions
+                (list #'cape-symbol+keyword+ispell t)))
+  (add-hook 'prog-mode-hook #'aj8/prog-mode-capf)
   ;; Completion at point function for text-mode
   (defun aj8/text-mode-capf ()
     (setq-local completion-at-point-functions
