@@ -1105,8 +1105,12 @@ When called from an eww buffer, provide the current link as
 ;; Add "/" to undo-repeat-map
 (keymap-set undo-repeat-map "/" #'undo)
 
-;;; xterm key sequence mappings for rxvt
+;; Disable buffer-navigation-repeat-map
+;;   TODO: This is a hack, should be a better way to disable (the whole map)
+(keymap-set buffer-navigation-repeat-map "<left>" nil)
+(keymap-set buffer-navigation-repeat-map "<right>" nil)
 
+;;; xterm key sequence mappings for rxvt
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
   "Add mappings for a given list of escape sequences and list of
 keys."
