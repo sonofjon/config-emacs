@@ -553,7 +553,8 @@
          ("C-c u i" . cape-ispell)
          ("C-c u k" . cape-keyword)
          ("C-c u l" . cape-line)
-         ("C-c u s" . cape-symbol))          ; complete symbols everywhere
+         ("C-c u s" . cape-symbol)          ; complete symbols everywhere
+         ("C-c u t" . cape-tex))
   :init
   ;; Custom completion at point functions
   (defalias 'cape-ispell+dabbrev+symbol+keyword (cape-super-capf #'cape-ispell
