@@ -1056,6 +1056,8 @@ When called from an eww buffer, provide the current link as
     (eval-last-sexp nil)))
 
 ;;; Custom repeat-maps
+;;;   TODO: Add move-dup
+;;;         Remove switch buffer
 
 ;; Add repeat-mode support for any keymap
 (defun my/repeatize (keymap)
