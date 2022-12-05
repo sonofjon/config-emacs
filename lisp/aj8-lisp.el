@@ -1056,8 +1056,7 @@ When called from an eww buffer, provide the current link as
     (eval-last-sexp nil)))
 
 ;;; Custom repeat-maps
-;;;   TODO: Add move-dup
-;;;         Remove switch buffer
+;;;   TODO: Remove switch buffer
 
 ;; Add repeat-mode support for any keymap
 (defun my/repeatize (keymap)
@@ -1086,6 +1085,22 @@ When called from an eww buffer, provide the current link as
                my/move-splitter-right
                my/move-splitter-left))
   (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
+
+;; Create repeat-map for move-dup
+(defvar aj8/move-dup-repeat-map
+  (let ((map (make-sparse-keymap)))
+    (keymap-set map "<up>" #'move-dup-move-lines-up)
+    (keymap-set map "C-<up>" #'move-dup-duplicate-up)
+    (keymap-set map "<down>" #'move-dup-move-lines-down)
+    (keymap-set map "C-<down>" #'move-dup-duplicate-down)
+    map))
+
+;; Add repeat-map property to move-dup commands
+(dolist (cmd '(move-dup-move-lines-up
+               move-dup-duplicate-up
+               move-dup-move-lines-down
+               move-dup-duplicate-down))
+  (put cmd 'repeat-map 'aj8/move-dup-repeat-map))
 
 ;; Add "/" to undo-repeat-map
 (keymap-set undo-repeat-map "/" #'undo)
