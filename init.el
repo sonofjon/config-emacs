@@ -649,13 +649,28 @@ capf:s, see documentation.")
 from symbol, keyword and ispell. Note that the order of the
 capf:s matter. Also, cape-file does not merge well with the other
 capf:s, see documentation.")
+
   ;; Add `completion-at-point-functions', used by `completion-at-point'
   ;;   Note that this adds functions to the global value of
   ;;   completion-at-point-functions. Any buffer-local values of
   ;;   completion-at-point-functions will take precedence, however, if
   ;;   the buffer-local value contains `t' the global value of
   ;;   completion-at-point-functions will be used if the buffer-local
-  ;;   value doesn't provide a match.
+  ;;   value doesn't provide a match. Unless the buffer-local value
+  ;;   use exclusive completion functions, in which case the global
+  ;;   value is never called. In such cases, you have to add the
+  ;;   global values in mode-hooks. E.g.
+  ;;
+  ;;     (defun my/register-default-capfs ()
+  ;;       "Add capf to current mode. This is a workaround for the fact
+  ;;     that some modes fill the buffer-local capfs with exclusive
+  ;;     completion functions, so that the global capfs don't get called."
+  ;;       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  ;;       (add-to-list 'completion-at-point-functions #'cape-file)
+  ;;       (add-to-list 'completion-at-point-functions #'cape-line))
+  ;;
+  ;;     (add-hook 'emacs-lisp-mode #'my/register-default-caps)
+
   ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
   ;; (add-to-list 'completion-at-point-functions #'cape-history)
