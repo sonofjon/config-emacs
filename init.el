@@ -310,6 +310,19 @@
 ;; eglot (client for language server protocol servers)
 ;;   TODO: disable auto-display documentation
 (use-package eglot
+  :bind (:map eglot-mode-map
+              ("C-c l a o" . eglot-code-action-organize-imports)
+              ("C-c l a q" . eglot-code-action-quickfix)
+              ("C-c l a e" . eglot-code-action-extract)
+              ("C-c l a i" . eglot-code-action-inline)
+              ("C-c l a r" . eglot-code-action-rewrite)
+              ("C-c l f" . eglot-format)
+              ("C-c l F" . eglot-format-buffer)
+              ("C-c l d" . flymake-show-buffer-diagnostics)
+              ("C-c l D" . flymake-show-project-diagnostics)
+              ;; ("C-c l h" . eldoc)
+              ("C-c h" . eldoc)
+              ("C-c l r" . eglot-rename))
   :hook ((sh-mode . eglot-ensure)
          (html-mode . eglot-ensure)
          (mhtml-mode . eglot-ensure)
