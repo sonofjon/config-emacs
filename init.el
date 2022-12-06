@@ -360,7 +360,8 @@
 
 ;; flymake-aspell (Aspell checker for Flycheck)
 ;;   Requires: aspell
-;;   TODO: Should this be disabled on all systems (it was initially disabled no macOS)?
+;;   TODO: Should this be disabled on all systems (it was initially
+;;         disabled on macOS)?
 (use-package flymake-aspell
   :disabled
   :hook (text-mode . flymake-aspell-setup)
@@ -495,7 +496,8 @@
   :bind ("C-c p" . consult-project-extra-find))
 
 ;; corfu (Completion Overlay Region FUnction)
-;;   TODO: Use separate matching-style for Corfu and Vertico, e.g. I don't want regexp in Corfu
+;;   TODO: Use separate matching-style for Corfu and Vertico,
+;;         e.g. I don't want regexp in Corfu
 (use-package corfu
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
   :bind (:map corfu-map
@@ -515,7 +517,7 @@
   ;; (corfu-quit-no-match t)        ; automatically quit if there is no match
   ;; (corfu-preview-current nil)    ; disable current candidate preview
   ;; (corfu-preselect-first nil)    ; disable candidate preselection
-  ;; (corfu-on-exact-match 'insert)   ; configure handling of exact matches
+  ;; (corfu-on-exact-match 'insert) ; configure handling of exact matches
   ;;   TODO: match not inserted with orderless
   (corfu-scroll-margin 1)        ; use scroll margin
   :init
@@ -752,7 +754,7 @@ from symbol, keyword and ispell.")
   :defer)
 
 ;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
-;;   TODO: this is partly replaced by duplicate-line and duplicate-dwim in Emacs 29
+;;   (this is partly replaced by duplicate-line and duplicate-dwim in Emacs 29)
 (use-package move-dup
   :bind (("C-c <up>" . move-dup-move-lines-up)
          ("C-c C-<up>" . move-dup-duplicate-up)
@@ -784,7 +786,7 @@ from symbol, keyword and ispell.")
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
 ;;   TODO: Investigate smartparens-strict-mode-map, e.g M-d and C-w changes behaviour
 ;;           - M-d done! TODO: how to create sp-kill-word that doesn't kill symbol?
-;;   TODO: create a smart wrapper for sp-down/up-sexp that knows whether to go forward or backward
+;;   TODO: Create a smart wrapper for sp-down/up-sexp that knows whether to go forward or backward
 (use-package smartparens
   :diminish
   ;; :hook (emacs-lisp-mode smartparens-mode)
