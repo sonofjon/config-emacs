@@ -345,6 +345,8 @@
   (add-to-list 'eglot-server-programs '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
   ;; Enable eglot in code external to project
   (setq eglot-extend-to-xref t))
+  ;; Use Orderless for Eglot (default is Flex)
+  (setq completion-category-overrides '((eglot (styles orderless))))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
