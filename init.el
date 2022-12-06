@@ -599,11 +599,15 @@ from symbol, keyword and ispell.")
                                                          #'cape-symbol
                                                          #'cape-keyword)
     "Completion at point function for Cape, combining completions
-from ispell and dabbrev.")
+from ispell, symbol and keyword.")
   (defalias 'cape-ispell+dabbrev (cape-super-capf #'cape-ispell
                                                   #'cape-dabbrev)
     "Completion at point function for Cape, combining completions
-from symbol, keyword and ispell.")
+from ispell and dabbrev.")
+  (defalias 'cape-dabbrev+ispell (cape-super-capf #'cape-dabbrev
+                                                  #'cape-ispell)
+    "Completion at point function for Cape, combining completions
+from dabbrev and ispell.")
 
   ;; Add `completion-at-point-functions', used by `completion-at-point'
   ;;   Note that this adds functions to the global value of
@@ -667,7 +671,7 @@ from symbol, keyword and ispell.")
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
                                    (current-buffer)))
-                        (list #'cape-ispell+dabbrev t))))
+                        (list #'cape-dabbrev+ispell t))))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
 
   (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
