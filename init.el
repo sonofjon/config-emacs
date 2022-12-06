@@ -1307,6 +1307,8 @@ from symbol, keyword and ispell.")
           (2 . (bold))
           (3 . (semibold))
           (t . (regular))))
+  ;; (setq ef-themes-region '(intense no-extend neutral))
+  (setq ef-themes-region '(neutral))
   ;; Disable all other themes to avoid awkward blending
   (mapc #'disable-theme custom-enabled-themes)
   ;; Load theme
