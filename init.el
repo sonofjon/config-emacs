@@ -334,16 +334,16 @@
          (python-mode . eglot-ensure)
          (tex-mode . eglot-ensure)
          (yaml-mode . eglot-ensure))
-  ;; :custom
+  :custom
   ;; Shutdown server after buffer kill
   (eglot-autoshutdown t)
+  ;; Enable eglot in code external to project
+  (eglot-extend-to-xref t)
   :config
   ;; Add server for web-mode
   (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
   ;; Change server for markdown-mode
   (add-to-list 'eglot-server-programs '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
-  ;; Enable eglot in code external to project
-  (setq eglot-extend-to-xref t))
   ;; Use Orderless for Eglot (default is Flex)
   (setq completion-category-overrides '((eglot (styles orderless))))
   ;; Don't manage ELDoc
