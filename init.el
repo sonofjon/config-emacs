@@ -292,25 +292,25 @@
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
-    :mode "\\.html?$"
-    :init
-    ;; Engines
-    (setq web-mode-engines-alist '(("django" . "\\.html\\'")
-                                   ("blade" . "\\.blade\\.")))
-    :custom
-    ;; Indentation
-    ;; (web-mode-markup-indent-offset 2)
-    ;; (web-mode-code-indent-offset 2)
-    ;; Padding
-    ;; (web-mode-block-padding 1)
-    ;; Enable auto-functionality in the terminal
-    ;;   Note: this can be bad when pasting text
-    (web-mode-enable-auto-expanding t)
-    (web-mode-enable-auto-closing t)
-    (web-mode-enable-auto-indentation t)
-    (web-mode-enable-auto-opening t)
-    (web-mode-enable-auto-pairing t)
-    (web-mode-enable-auto-quoting t))
+  :mode "\\.html?$"
+  :init
+  ;; Engines
+  (setq web-mode-engines-alist '(("django" . "\\.html\\'")
+                                 ("blade" . "\\.blade\\.")))
+  :custom
+  ;; Indentation
+  ;; (web-mode-markup-indent-offset 2)
+  ;; (web-mode-code-indent-offset 2)
+  ;; Padding
+  ;; (web-mode-block-padding 1)
+  ;; Enable auto-functionality in the terminal
+  ;;   Note: this can be bad when pasting text
+  (web-mode-enable-auto-expanding t)
+  (web-mode-enable-auto-closing t)
+  (web-mode-enable-auto-indentation t)
+  (web-mode-enable-auto-opening t)
+  (web-mode-enable-auto-pairing t)
+  (web-mode-enable-auto-quoting t))
 
 ;; yaml-mode (major-mode for editing YAML files)
 (use-package yaml-mode
