@@ -308,6 +308,7 @@
   ;;             ("C-m" . newline-and-indent)))
 
 ;; eglot (client for language server protocol servers)
+;;   TODO: disable auto-display documentation
 (use-package eglot
   :hook ((sh-mode . eglot-ensure)
          (html-mode . eglot-ensure)
