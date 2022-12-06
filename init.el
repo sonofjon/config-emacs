@@ -797,6 +797,7 @@ from dabbrev and ispell.")
   :defer)
 
 ;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
+;;   (this is partly replaced by duplicate-line and duplicate-dwim in Emacs 29)
 (use-package move-dup
   :bind (("C-c <up>" . move-dup-move-lines-up)
          ("C-c C-<up>" . move-dup-duplicate-up)
@@ -828,7 +829,7 @@ from dabbrev and ispell.")
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
 ;;   TODO: Investigate smartparens-strict-mode-map, e.g M-d and C-w changes behaviour
 ;;           - M-d done! TODO: how to create sp-kill-word that doesn't kill symbol?
-;;   TODO: create a smart wrapper for sp-down/up-sexp that knows whether to go forward or backward
+;;   TODO: Create a smart wrapper for sp-down/up-sexp that knows whether to go forward or backward
 (use-package smartparens
   :diminish
   ;; :hook (emacs-lisp-mode smartparens-mode)
