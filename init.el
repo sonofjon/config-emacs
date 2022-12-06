@@ -308,7 +308,6 @@
   ;;             ("C-m" . newline-and-indent)))
 
 ;; eglot (client for language server protocol servers)
-;;   TODO: disable auto-display documentation
 (use-package eglot
   :bind (:map eglot-mode-map
               ("C-c l a o" . eglot-code-action-organize-imports)
@@ -347,6 +346,12 @@
   (setq eglot-extend-to-xref t))
   ;; Use Orderless for Eglot (default is Flex)
   (setq completion-category-overrides '((eglot (styles orderless))))
+  ;; Don't manage ELDoc
+  ;; (add-to-list 'eglot-stay-out-of 'eldoc))
+  ;; Limit ELDoc to a single line
+  ;; (setq eldoc-echo-area-use-multiline-p nil))   ; doesn't work nicely
+  ;; Don't auto-show documentation
+  (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1))))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
