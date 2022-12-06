@@ -166,7 +166,6 @@
                           php-mode
                           popper
                           powershell
-                          rainbow-mode
                           repeat-help
                           rotate
                           smartparens
@@ -307,11 +306,6 @@
   :mode "\\.yml$")
   ;; :bind (:map yaml-mode-map
   ;;             ("C-m" . newline-and-indent)))
-
-;; rainbow-mode (colorize color names in buffers)
-;;   TODO: not needed (colors are shown with rainbow-mode disabled on WSL machines)?
-(use-package rainbow-mode
-  :disabled)
 
 ;; eglot (client for language server protocol servers)
 (use-package eglot
