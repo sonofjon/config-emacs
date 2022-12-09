@@ -31,7 +31,8 @@
                  #'aj8/modus-themes-custom-settings)
        (message "Early settings WSL"))
 
-      ((eq system-type 'gnu/linux)       ; Linux
+      ((and (eq system-type 'gnu/linux)
+            (not (getenv "WSLENV")))     ; Linux
        (message "Early settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
@@ -1263,7 +1264,8 @@ from dabbrev and ispell.")
 
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
-  :if (eq system-type 'gnu/linux)   ; Linux
+  :if (and (eq system-type 'gnu/linux)
+           (not (getenv "WSLENV")))   ; Linux
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
@@ -1356,7 +1358,8 @@ from dabbrev and ispell.")
 ;;   TODO: Customize
 ;;         Fix cursor
 (use-package standard-themes
-  :if (and (eq system-type 'gnu/linux) (getenv "WSLENV"))   ; WSL
+  :if (and (eq system-type 'gnu/linux)
+           (getenv "WSLENV"))   ; WSL
   :bind ("<f5>" . standard-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
   :init
@@ -2669,7 +2672,7 @@ Hide, show and navigate outlines.
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
-(cond ((eq system-type 'darwin)                             ; macOS
+(cond ((eq system-type 'darwin)           ; macOS
        ;; Use left Option as Meta
        ;; (setq mac-option-modifier 'meta)
        ;; Use left Command as Super
@@ -2682,7 +2685,8 @@ Hide, show and navigate outlines.
          (setq-default line-spacing 1))
        (message "Late settings macOS"))
 
-      ((and (eq system-type 'gnu/linux) (getenv "WSLENV"))  ; WSL
+      ((and (eq system-type 'gnu/linux)
+            (getenv "WSLENV"))            ; WSL
        ;; Enable (default) web browser
        ;;   Requires: wslu
        (setq browse-url-generic-program "wslview")
@@ -2690,7 +2694,8 @@ Hide, show and navigate outlines.
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
        (message "Late settings WSL"))
 
-      ((eq system-type 'gnu/linux)                          ; Linux
+      ((and (eq system-type 'gnu/linux)
+            (not (getenv "WSLENV")))      ; Linux
        ;; Special settings for URxvt
        (when (equal "rxvt-unicode-256color"
                     (getenv-internal "TERM" initial-environment))
