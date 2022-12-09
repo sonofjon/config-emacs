@@ -17,7 +17,7 @@
 ;;;;; EARLY SETTINGS
 
 ;; System dependent settings
-(cond ((featurep 'ns)                    ; macOS
+(cond ((eq system-type 'darwin)          ; macOS
        ;; GUI settings
        (when (display-graphic-p)
          ;; Import path from shell
@@ -1303,7 +1303,7 @@ from dabbrev and ispell.")
   ;;   `ef-themes-preview-colors'
   ;;   `ef-themes-preview-colors-current'
   ;; :disabled
-  :if (featurep 'ns)   ; macOS
+  :if (eq system-type 'darwin)   ; macOS
   :bind ("<f5>" . ef-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
   :init
@@ -2733,7 +2733,7 @@ Hide, show and navigate outlines.
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
-(cond ((featurep 'ns)                                       ; macOS
+(cond ((eq system-type 'darwin)                             ; macOS
        ;; Use left Option as Meta
        ;; (setq mac-option-modifier 'meta)
        ;; Use left Command as Super
