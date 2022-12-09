@@ -44,16 +44,7 @@
 
 ;;; use-package
 
-;; Install use-package
-(if (not (package-installed-p 'use-package))
-    (package-install 'use-package))
-
-;; Load use-package
-(eval-when-compile
-  (require 'use-package))
-
 ;; Always install packages if not present
-;; (require 'use-package-ensure)
 ;; (setq use-package-always-ensure t)
 
 ;; Report about loading and configuration details
