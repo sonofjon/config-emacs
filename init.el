@@ -1966,7 +1966,7 @@ from dabbrev and ispell.")
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Native-compile-Log\\)\\*"
-        ("\\*\\(Async-native-compile-log\\|EGLOT.*events\\|lsp-log\\|.*-ls\\(::.*\\)?\\|texlab\\(::stderr\\)?\\)\\*"
+        ("\\*\\(Async-native-compile-log\\|EGLOT.*events\\|.*-ls\\(::.*\\)?\\|texlab\\(::stderr\\)?\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
