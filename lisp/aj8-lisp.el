@@ -82,6 +82,7 @@ and `previous-buffer'."
 If the current buffer does not belong to a project, call `next-buffer'."
   (interactive)
   ;; (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+  ;;   TODO: In Emacs 29 there is also switch-to-prev-buffer-skip-regexp
     (my/project--repeat-until-project-buffer #'next-buffer))
 
 ;; Switch to previous project buffer
@@ -134,24 +135,7 @@ major-modes."
       (message "No other window to kill"))
     (select-window win)))
 
-;; Make a *scratch* buffer
-(defun create-scratch-buffer nil
-       "Create a scratch buffer."
-       (interactive)
-       (switch-to-buffer (get-buffer-create "*scratch*"))
-       (lisp-interaction-mode))
-
 ;;;; Coding
-
-;; Custom LSP modeline print function without process id
-(defun aj8/lsp--workspace-print (workspace)
-  "Visual representation WORKSPACE."
-  (let* ((proc (lsp--workspace-cmd-proc workspace))
-         (status (lsp--workspace-status workspace))
-         (server-id (-> workspace lsp--workspace-client lsp--client-server-id symbol-name)))
-    (if (eq 'initialized status)
-        (format "%s" server-id)
-      (format "%s/%s" server-id status))))
 
 ;;;; Completion
 
@@ -770,13 +754,13 @@ versa."
   ;;       eshell-hist-ignoredups t
   ;;       eshell-scroll-to-bottom-on-input t))
   ;; Rebind history keys
-  (define-key eshell-hist-mode-map (kbd "C-<down>") nil)   ; unbind
-  (define-key eshell-hist-mode-map (kbd "C-<up>") nil)   ; unbind
-  (define-key eshell-hist-mode-map (kbd "<down>") #'eshell-next-input)
-  (define-key eshell-hist-mode-map (kbd "<up>") #'eshell-previous-input)
-  (define-key eshell-hist-mode-map (kbd "M-<down>")
+  (keymap-set eshell-hist-mode-map "C-<down>" nil)   ; unbind
+  (keymap-set eshell-hist-mode-map "C-<up>" nil)   ; unbind
+  (keymap-set eshell-hist-mode-map "<down>" #'eshell-next-input)
+  (keymap-set eshell-hist-mode-map "<up>" #'eshell-previous-input)
+  (keymap-set eshell-hist-mode-map "M-<down>"
     #'eshell-next-matching-input-from-input)
-  (define-key eshell-hist-mode-map (kbd "M-<up>")
+  (keymap-set eshell-hist-mode-map "M-<up>"
     #'eshell-previous-matching-input-from-input))
 
 ;;;; Theme
@@ -966,22 +950,6 @@ matching `my/quit-window-exceptions-regex'. Calls to
       (split-window-vertically))   ; makes a split with the other window twice
     (switch-to-buffer nil)))   ; restore the original window
                                ; in this part of the window
-;; Split parent window below
-(defun mp-split-below (&optional arg)
-  "Split window below from the parent or from root with ARG."
-  (interactive "P")
-  (split-window (if arg (frame-root-window)
-                  (window-parent (selected-window)))
-                nil 'below nil))
-
-;; Split parent window right
-(defun mp-split-right (&optional arg)
-  "Split window right from the parent or from root with ARG."
-  (interactive "P")
-  (split-window (if arg (frame-root-window)
-                  (window-parent (selected-window)))
-                nil 'right nil))
-
 ;; Visit oldest window with Treemacs
 (defun treemacs-visit-node-in-least-recently-used-window (&optional arg)
   "Open current file or tag in window selected by `get-lru-window'.
@@ -1028,6 +996,7 @@ see `eww-follow-link' for details."
    (t (error "Unexpected input arguments"))))
 
 ;; More useful buffer names in eww
+;;   TODO: Emacs 29: Use eww-auto-rename-buffer instead
 (defun prot-eww--rename-buffer ()
   "Rename EWW buffer using page title or URL.
 To be used by `eww-after-render-hook'."
@@ -1087,6 +1056,7 @@ When called from an eww buffer, provide the current link as
     (eval-last-sexp nil)))
 
 ;;; Custom repeat-maps
+;;;   TODO: Remove switch buffer
 
 ;; Add repeat-mode support for any keymap
 (defun my/repeatize (keymap)
@@ -1103,10 +1073,10 @@ When called from an eww buffer, provide the current link as
 ;; Create repeat-map for window resizing
 (defvar aj8/resize-window-repeat-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "{" #'my/move-splitter-up)
-    (define-key map "}" #'my/move-splitter-down)
-    (define-key map ">" #'my/move-splitter-right)
-    (define-key map "<" #'my/move-splitter-left)
+    (keymap-set map "{" #'my/move-splitter-up)
+    (keymap-set map "}" #'my/move-splitter-down)
+    (keymap-set map ">" #'my/move-splitter-right)
+    (keymap-set map "<" #'my/move-splitter-left)
     map))
 
 ;; Add repeat-map property to window resizing commands
@@ -1116,11 +1086,31 @@ When called from an eww buffer, provide the current link as
                my/move-splitter-left))
   (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
 
+;; Create repeat-map for move-dup
+(defvar aj8/move-dup-repeat-map
+  (let ((map (make-sparse-keymap)))
+    (keymap-set map "<up>" #'move-dup-move-lines-up)
+    (keymap-set map "C-<up>" #'move-dup-duplicate-up)
+    (keymap-set map "<down>" #'move-dup-move-lines-down)
+    (keymap-set map "C-<down>" #'move-dup-duplicate-down)
+    map))
+
+;; Add repeat-map property to move-dup commands
+(dolist (cmd '(move-dup-move-lines-up
+               move-dup-duplicate-up
+               move-dup-move-lines-down
+               move-dup-duplicate-down))
+  (put cmd 'repeat-map 'aj8/move-dup-repeat-map))
+
 ;; Add "/" to undo-repeat-map
-(define-key undo-repeat-map "/" #'undo)
+(keymap-set undo-repeat-map "/" #'undo)
+
+;; Disable buffer-navigation-repeat-map
+;;   TODO: This is a hack, should be a better way to disable (the whole map)
+(keymap-set buffer-navigation-repeat-map "<left>" nil)
+(keymap-set buffer-navigation-repeat-map "<right>" nil)
 
 ;;; xterm key sequence mappings for rxvt
-
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
   "Add mappings for a given list of escape sequences and list of
 keys."

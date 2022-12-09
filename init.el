@@ -85,13 +85,13 @@
 (customize-set-variable 'package-selected-packages
                         '(all-the-icons
                           all-the-icons-dired
+                          ansible
                           auto-package-update
                           benchmark-init
                           cape
                           circadian
                           consult
                           consult-eglot
-                          consult-lsp
                           consult-project-extra
                           corfu
                           corfu-terminal
@@ -103,7 +103,7 @@
                           dimmer
                           dot-mode
                           ef-themes
-                          eglot
+                          ;; eglot
                           elfeed
                           embark
                           embark-consult
@@ -114,6 +114,7 @@
                           exec-path-from-shell
                           expand-region
                           flymake-aspell
+                          flymake-eslint
                           flymake-json
                           flymake-lua
                           flyspell-correct
@@ -121,20 +122,14 @@
                           helpful
                           hydra
                           i3wm-config-mode
-                          json-mode
                           keychain-environment
                           keyfreq
                           lorem-ipsum
-                          lsp-mode
-                          lsp-latex
-                          lsp-pyright
-                          lsp-treemacs
-                          lsp-ui
                           lua-mode
                           magit
                           marginalia
                           markdown-mode
-                          modus-themes
+                          ;; modus-themes
                           mosey
                           move-dup
                           multiple-cursors
@@ -230,20 +225,14 @@
 
 ;;; Coding
 
+;; ansible (minor-mode for editing Ansible (YAML) files)
+(use-package ansible
+  :mode "\\.yml$"
+  :hook (yaml-mode . (lambda () (ansible 1))))
+
 ;; i3wm-config-mode (major-mode for editing i3wm config files)
 (use-package i3wm-config-mode
   :defer)
-
-;; json-mode (major-mode for editing JSON files)
-(use-package json-mode
-  :mode "\\.json$"
-  :bind (:map json-mode-map
-              ("C-c C-b" . json-mode-beautify)
-              ("C-c C-s" . json-snatcher))
-  :config
-  (add-hook 'json-mode-hook (lambda () (setq-local js-indent-level 2)))
-  (unbind-key "C-c C-f" json-mode-map)
-  (unbind-key "C-c P" json-mode-map))
 
 ;; lua-mode (major-mode for editing Lua scripts)
 (use-package lua-mode
@@ -293,90 +282,54 @@
 
 ;; eglot (client for language server protocol servers)
 (use-package eglot
-  :disabled
+  :bind (:map eglot-mode-map
+              ("C-c l a o" . eglot-code-action-organize-imports)
+              ("C-c l a q" . eglot-code-action-quickfix)
+              ("C-c l a e" . eglot-code-action-extract)
+              ("C-c l a i" . eglot-code-action-inline)
+              ("C-c l a r" . eglot-code-action-rewrite)
+              ("C-c l f" . eglot-format)
+              ("C-c l F" . eglot-format-buffer)
+              ("C-c l d" . flymake-show-buffer-diagnostics)
+              ("C-c l D" . flymake-show-project-diagnostics)
+              ;; ("C-c l h" . eldoc)
+              ("C-c h" . eldoc)
+              ("C-c l r" . eglot-rename))
   :hook ((sh-mode . eglot-ensure)
-         ;; (html-mode . eglot-ensure)
-         ;; (css-mode . eglot-ensure)
-         (web-mode . eglot-ensure) ; fix?
+         (html-mode . eglot-ensure)
+         (mhtml-mode . eglot-ensure)
+         (css-mode . eglot-ensure)
+         (web-mode . eglot-ensure)
          (js-mode . eglot-ensure)
          (json-mode . eglot-ensure)
          (lua-mode . eglot-ensure)
-         (python-mode . eglot-ensure) ; change to pyright
-         (tex-mode . eglot-ensure) ; install digestif / change to texlab
+         (markdown-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
+         (tex-mode . eglot-ensure)
          (yaml-mode . eglot-ensure))
-  :config
+  :custom
+  ;; Shutdown server after buffer kill
+  (eglot-autoshutdown t)
   ;; Enable eglot in code external to project
-  (setq eglot-extend-to-xref t))
+  (eglot-extend-to-xref t)
+  :config
+  ;; Add server for web-mode
+  (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
+  ;; Change server for markdown-mode
+  (add-to-list 'eglot-server-programs '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
+  ;; Use Orderless for Eglot (default is Flex)
+  (setq completion-category-overrides '((eglot (styles orderless))))
+  ;; Don't manage ELDoc
+  ;; (add-to-list 'eglot-stay-out-of 'eldoc))
+  ;; Limit ELDoc to a single line
+  ;; (setq eldoc-echo-area-use-multiline-p nil))   ; doesn't work nicely
+  ;; Don't auto-show documentation
+  (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1))))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
-  :disabled)
-
-;; lsp-mode (language server protocol)
-;;   Requires: npm (nvm)
-;;   TODO: optionally enable orderless-flex for LSP completion, see Corfu Wiki
-(use-package lsp-mode
-  ;; :disabled
-  :commands (lsp lsp-deferred)
-  :hook ((sh-mode . lsp)   ; or lsp-deferred
-         ;; (html-mode . lsp-deferred)
-         ;; (css-mode . lsp-deferred)
-         (web-mode . lsp-deferred)
-         (js-mode . lsp-deferred)
-         (json-mode . lsp-deferred)
-         (lua-mode . lsp-deferred)
-         (tex-mode . lsp-deferred)
-         (yaml-mode . lsp-deferred)
-         ;; which-key integration
-         (lsp-mode . lsp-enable-which-key-integration)
-         ;; Corfu integration
-         (lsp-completion-mode . my/lsp-mode-setup-completion))
-  :init
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          ;; '(flex)))   ; use flex
-          '(orderless)))   ; use orderless
-  ;; Prefix for lsp-command-keymap
-  (setq lsp-keymap-prefix "C-c l")
-  ;; Don't show process id in modeline
-  (advice-add #'lsp--workspace-print :override #'aj8/lsp--workspace-print)
-  (which-key-add-key-based-replacements "C-c l" "lsp")
-                                        ; add label for prefix key
-  :custom
-  ;; Use custom completion backend (Corfu)
-  (lsp-completion-provider :none)
-  ;; Disable snippet support (requires Yasnippet)
-  (lsp-enable-snippet nil))
-
-;; lsp-ui-mode (UI modules for lsp-mode)
-(use-package lsp-ui
-  :after lsp-mode
-  :commands lsp-ui-mode)
-
-;; lsp-treemacs (LSP Treemacs)
-(use-package lsp-treemacs
-  ;; :disabled
-  :after (lsp-mode treemacs)
-  :commands lsp-treemacs-errors-list)
-
-;; lsp-latex (LSP-mode client for LaTeX, on texlab)
-(use-package lsp-latex
-  :config
-  (setq lsp-latex-diagnostics-ignored-patterns '("^Overfull.*" "^Underfull.*")))
-
-;; lsp-pyright (Python LSP client using Pyright)
-(use-package lsp-pyright
-  :commands python-mode
-  :init
-  (add-hook 'python-mode-hook (lambda ()
-                                (require 'lsp-pyright)
-                                (lsp-deferred))))  ; or lsp-deferred
-
-;; consult-lsp (LSP-mode Consult integration)
-(use-package consult-lsp
-  ;; :disabled
-  :after (consult lsp-mode)
-  :bind (:map lsp-mode-map ([remap xref-find-apropos] . consult-lsp-symbols)))
+  :after (consult eglot))
+  ;; :disabled)
 
 ;; flymake-aspell (Aspell checker for Flycheck)
 ;;   Requires: aspell
@@ -389,14 +342,22 @@
   ;; Don't prompt for saving personal dictionary
   (setq ispell-silently-savep t))
 
+;; flymake-eslint (a Flymake backend for Javascript using eslint)
+;;   Requires: eslint
+(use-package flymake-eslint
+  :disabled
+  :hook (js-mode . flymake-eslint-enable))
+
 ;; flymake-json (a Flymake handler for json using jsonlint)
 ;;   Requires: jsonlint
 (use-package flymake-json
+  :disabled
   :hook (json-mode . flymake-json-load))
 
 ;; flymake-lua (Flymake for Lua)
 ;;   Requires: luac
 (use-package flymake-lua
+  :disabled
   :hook (lua-mode . flymake-lua-load))
 
 ;;; Completion
@@ -431,7 +392,7 @@
          ("M-g I" . consult-imenu-multi)
          ;; M-s bindings (search-map)
          ("M-s d" . consult-find)
-         ("M-s R" . consult-recent-file)
+         ("M-s R" . consult-recent-file)        ; TODO: Emacs 29 has recentf-open
          ("M-s D" . consult-locate)
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
@@ -1721,6 +1682,9 @@ from dabbrev and ispell.")
 ;; Timeout for messages in active minibuffer
 (setq minibuffer-message-clear-timeout 1)
 
+;; Open *Help* buffers in same window
+(setq help-window-keep-selected t)
+
 ;; Open *info* buffers in same window
 (setq info-lookup-other-window-flag nil)
 
@@ -1927,9 +1891,9 @@ from dabbrev and ispell.")
 (setq eww-history-limit 100)
 ;; Don't shadow default eww keybindings
 (with-eval-after-load "shr"
-  (define-key shr-map (kbd "u") nil)
-  (define-key shr-map (kbd "v") nil)
-  (define-key shr-map (kbd "w") nil))
+  (keymap-set shr-map "u" nil)
+  (keymap-set shr-map "v" nil)
+  (keymap-set shr-map "w" nil))
 ;; Open new eww buffers in a new window (M-RET)
 (with-eval-after-load "eww"
   (define-key eww-mode-map
@@ -2001,7 +1965,7 @@ from dabbrev and ispell.")
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Native-compile-Log\\)\\*"
-        ("\\*\\(Async-native-compile-log\\|lsp-log\\|.*-ls\\(::.*\\)?\\|texlab\\(::stderr\\)?\\)\\*"
+        ("\\*\\(Async-native-compile-log\\|EGLOT.*events\\|.*-ls\\(::.*\\)?\\|texlab\\(::stderr\\)?\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
@@ -2304,6 +2268,8 @@ from dabbrev and ispell.")
 ;;   TODO: Use minor-mode for keybindings?
 ;;           (https://stackoverflow.com/a/683575/1610035)
 ;;           (https://emacs.stackexchange.com/a/358/33325)
+;;
+;;         Emacs 29: bind restart-emacs
 
 ;;;; Escape codes
 
@@ -2326,10 +2292,10 @@ from dabbrev and ispell.")
 
 ;;;; Translations
 
-(define-key key-translation-map (kbd "M-<up>") (kbd "M-p"))
-(define-key key-translation-map (kbd "M-<down>") (kbd "M-n"))
-(define-key key-translation-map (kbd "C-M-<up>") (kbd "C-M-p"))
-(define-key key-translation-map (kbd "C-M-<down>") (kbd "C-M-n"))
+(keymap-set key-translation-map "M-<up>" "M-p")
+(keymap-set key-translation-map "M-<down>" "M-n")
+(keymap-set key-translation-map "C-M-<up>" "C-M-p")
+(keymap-set key-translation-map "C-M-<down>" "C-M-n")
 
 ;;;; General
 
@@ -2338,16 +2304,16 @@ from dabbrev and ispell.")
 ;;; Buffers
 
 ;; Buffer navigation
-(global-set-key (kbd "C-x <right>") #'next-buffer)
-(global-set-key (kbd "C-x <left>") #'previous-buffer)
-(global-set-key (kbd "C-x C-<right>") #'my/project-next-buffer)
-(global-set-key (kbd "C-x C-<left>") #'my/project-previous-buffer)
+(keymap-global-set "C-x <right>" #'next-buffer)
+(keymap-global-set "C-x <left>" #'previous-buffer)
+(keymap-global-set "C-x C-<right>" #'my/project-next-buffer)
+(keymap-global-set "C-x C-<left>" #'my/project-previous-buffer)
 
 ;; Kill buffer
-(global-set-key (kbd "C-x k") #'kill-this-buffer)
+(keymap-global-set "C-x k" #'kill-this-buffer)
 
 ;; Kill buffer (other window)
-(global-set-key (kbd "C-c k") #'my/kill-buffer-other-window)
+(keymap-global-set "C-c k" #'my/kill-buffer-other-window)
 
 ;;; Coding
 
@@ -2357,48 +2323,48 @@ from dabbrev and ispell.")
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;; Cycle through orderless matching styles on the fly
-(global-set-key (kbd "M-o") #'aj8/orderless-matching-style-cycle)
+(keymap-global-set "M-o" #'aj8/orderless-matching-style-cycle)
 
 ;;; Editing
 
 ;; Kill line to the left
-(global-set-key (kbd "C-<backspace>") (lambda () (interactive) (kill-line 0)))
+(keymap-global-set "C-<backspace>" (lambda () (interactive) (kill-line 0)))
 
 ;; Manipulate case
-(global-set-key (kbd "M-u") #'upcase-dwim)
-(global-set-key (kbd "M-l") #'downcase-dwim)
-;; (global-set-key (kbd "M-c") #'capitalize-dwim)
-(global-set-key (kbd "M-c") #'aj8/capitalize-word-at-point)
+(keymap-global-set "M-u" #'upcase-dwim)
+(keymap-global-set "M-l" #'downcase-dwim)
+;; (keymap-global-set "M-c" #'capitalize-dwim)
+(keymap-global-set "M-c" #'aj8/capitalize-word-at-point)
 
 ;; Fill respecting indentation
 ;;   (use with `C-x .'  for comments)
-(global-set-key (kbd "C-c q") #'fill-individual-paragraphs)
+(keymap-global-set "C-c q" #'fill-individual-paragraphs)
 
 ;; Copy symbol at point
-(global-set-key (kbd "C-c o") #'my/copy-symbol-at-point)
+(keymap-global-set "C-c o" #'my/copy-symbol-at-point)
 
 ;; Indent to next nonblank character in previous line
-(global-set-key (kbd "C-c TAB") #'indent-relative)
+(keymap-global-set "C-c TAB" #'indent-relative)
 
 ;; Exit recursive edit
 ;;   Default key C-M-c overridden by custom Smartparens key
-(global-set-key (kbd "C-c C-c") #'exit-recursive-edit)
+(keymap-global-set "C-c C-c" #'exit-recursive-edit)
 
 ;;; Files
 
 ;; Find file at point
-(global-set-key (kbd "C-c f") #'find-file-at-point)
+(keymap-global-set "C-c f" #'find-file-at-point)
 
 ;; Forget project
-(global-set-key (kbd "C-x p t") #'project-forget-project)
+(keymap-global-set "C-x p t" #'project-forget-project)
 
 ;;; Help
 
 ;; Display keymaps
-(global-set-key (kbd "C-c H k") #'describe-keymap)
+(keymap-global-set "C-c H k" #'describe-keymap)
 
 ;; Display commands by category
-(global-set-key (kbd "C-c H s") #'shortdoc-display-group)
+(keymap-global-set "C-c H s" #'shortdoc-display-group)
 
 (which-key-add-key-based-replacements "C-c H" "help")
                                         ; add label for prefix key
@@ -2406,42 +2372,43 @@ from dabbrev and ispell.")
 ;;; Navigation
 
 ;; Paragraph navigation
-(global-set-key (kbd "M-p") #'backward-paragraph)
-(global-set-key (kbd "M-n") #'forward-paragraph)
+(keymap-global-set "M-p" #'backward-paragraph)
+(keymap-global-set "M-n" #'forward-paragraph)
 
 ;; Move to indentation point
-(global-set-key (kbd "M-a") #'back-to-indentation)
+(keymap-global-set "M-a" #'back-to-indentation)
 
-;; (global-set-key (kbd "C-c <up>") #'aj8/previous-line)
-;; (global-set-key (kbd "C-c <down>") #'aj8/next-line)
+;; (keymap-global-set "C-c <up>" #'aj8/previous-line)
+;; (keymap-global-set "C-c <down>" #'aj8/next-line)
 
 ;; Enable scroll lock
-(global-set-key (kbd "C-c L") #'scroll-lock-mode)
+(keymap-global-set "C-c L" #'scroll-lock-mode)
 
 (which-key-add-key-based-replacements "C-c x" "misc")
                                         ; add label for prefix key
 
 ;; Display Imenu
-(global-set-key (kbd "C-c i") #'imenu)
+(keymap-global-set "C-c i" #'imenu)
 
-(global-set-key (kbd "C-c >") #'xref-find-definitions)  ; default M-.
-(global-set-key (kbd "C-c <") #'xref-pop-marker-stack)  ; default M-,
+;; TODO: Emacs 29: Implement new function xref-go-forward
+(keymap-global-set "C-c >" #'xref-find-definitions)  ; default M-.
+(keymap-global-set "C-c <" #'xref-pop-marker-stack)  ; default M-,
 
 ;;; Outline
 
 ;; Toggle outline-minor-mode
-(global-set-key (kbd "C-c O") #'outline-minor-mode)
+(keymap-global-set "C-c O" #'outline-minor-mode)
 
 ;; Toggle outline-minor-mode
-(global-set-key (kbd "C-c F") #'hs-minor-mode)
-(global-set-key (kbd "C-c <left>") #'hs-hide-block)
-(global-set-key (kbd "C-c <right>") #'hs-show-block)
-(global-set-key (kbd "C-c C-<left>") #'hs-hide-all)
-(global-set-key (kbd "C-c C-<right>") #'hs-show-all)
+(keymap-global-set "C-c F" #'hs-minor-mode)
+(keymap-global-set "C-c <left>" #'hs-hide-block)
+(keymap-global-set "C-c <right>" #'hs-show-block)
+(keymap-global-set "C-c C-<left>" #'hs-hide-all)
+(keymap-global-set "C-c C-<right>" #'hs-show-all)
 
 ;;; Search
 
-(define-key isearch-mode-map (kbd "TAB") #'isearch-complete)
+(keymap-set isearch-mode-map "TAB" #'isearch-complete)
 
 ;;; Selection
 
@@ -2451,27 +2418,27 @@ from dabbrev and ispell.")
 ;;; Theme
 
 ;; Display column number
-(global-set-key (kbd "C-c N") #'column-number-mode)
+(keymap-global-set "C-c N" #'column-number-mode)
 
 ;;; Version control
 
 ;; Show diffs between buffers
-(global-set-key (kbd "C-c e b") #'ediff-buffers)
+(keymap-global-set "C-c e b" #'ediff-buffers)
 
 ;; Show diffs between regions
-(global-set-key (kbd "C-c e l") #'ediff-regions-linewise)
-(global-set-key (kbd "C-c e w") #'ediff-regions-wordwise)
+(keymap-global-set "C-c e l" #'ediff-regions-linewise)
+(keymap-global-set "C-c e w" #'ediff-regions-wordwise)
 
 (which-key-add-key-based-replacements "C-c e" "ediff")
                                         ; add label for prefix key
 
 ;; Show diffs between file revisions
-(global-set-key (kbd "C-x v -") #'vc-ediff)
+(keymap-global-set "C-x v -" #'vc-ediff)
 
 ;;; Web
 
 ;; Browse URL at point
-(global-set-key (kbd "C-c b") #'browse-url-at-point)
+(keymap-global-set "C-c b" #'browse-url-at-point)
 
 ;;; Windows
 
@@ -2480,63 +2447,59 @@ from dabbrev and ispell.")
 (windmove-swap-states-default-keybindings '(ctrl shift))
 
 ;; Open windows
-(global-set-key (kbd "C-c w <up>") #'windmove-display-up)
-(global-set-key (kbd "C-c w <down>") #'windmove-display-down)
-(global-set-key (kbd "C-c w <left>") #'windmove-display-left)
-(global-set-key (kbd "C-c w <right>") #'windmove-display-right)
-(global-set-key (kbd "C-c w 0") #'windmove-display-same-window)
+(keymap-global-set "C-c w <up>" #'windmove-display-up)
+(keymap-global-set "C-c w <down>" #'windmove-display-down)
+(keymap-global-set "C-c w <left>" #'windmove-display-left)
+(keymap-global-set "C-c w <right>" #'windmove-display-right)
+(keymap-global-set "C-c w 0" #'windmove-display-same-window)
 
 ;; Delete windows
-(global-set-key (kbd "C-c w C-<up>") #'windmove-delete-up)
-(global-set-key (kbd "C-c w C-<down>") #'windmove-delete-down)
-(global-set-key (kbd "C-c w C-<left>") #'windmove-delete-left)
-(global-set-key (kbd "C-c w C-<right>") #'windmove-delete-right)
+(keymap-global-set "C-c w C-<up>" #'windmove-delete-up)
+(keymap-global-set "C-c w C-<down>" #'windmove-delete-down)
+(keymap-global-set "C-c w C-<left>" #'windmove-delete-left)
+(keymap-global-set "C-c w C-<right>" #'windmove-delete-right)
 
 ;; Cycle window configurations
-(define-key winner-mode-map (kbd "C-c w <") #'winner-undo)
-(define-key winner-mode-map (kbd "C-c w >") #'winner-redo)
+(keymap-set winner-mode-map "C-c w <" #'winner-undo)
+(keymap-set winner-mode-map "C-c w >" #'winner-redo)
 
 (which-key-add-key-based-replacements "C-c w" "windows")
                                         ; add label for prefix key
 
 ;; Resize windows
-(global-set-key (kbd "C-x {") #'my/move-splitter-up)
-(global-set-key (kbd "C-x }") #'my/move-splitter-down)
-(global-set-key (kbd "C-x >") #'my/move-splitter-right) ; override `scroll-right'
-(global-set-key (kbd "C-x <") #'my/move-splitter-left)  ; override `scroll-left'
-
-;; Split parent windows
-(global-set-key (kbd "C-c 2") #'mp-split-below)
-(global-set-key (kbd "C-c 3") #'mp-split-right)
+(keymap-global-set "C-x {" #'my/move-splitter-up)
+(keymap-global-set "C-x }" #'my/move-splitter-down)
+(keymap-global-set "C-x >" #'my/move-splitter-right) ; override `scroll-right'
+(keymap-global-set "C-x <" #'my/move-splitter-left)  ; override `scroll-left'
 
 ;; Toggle side windows
-(global-set-key (kbd "C-x |") #'window-toggle-side-windows)
+(keymap-global-set "C-x |" #'window-toggle-side-windows)
 
 ;; Misc window manipulation
-(global-set-key (kbd "C-x !") #'delete-other-windows-vertically)
-(global-set-key (kbd "C-x =") #'balance-windows)
+(keymap-global-set "C-x !" #'delete-other-windows-vertically)
+(keymap-global-set "C-x =" #'balance-windows)
                                         ; override `what-cursor-position'
-(global-set-key (kbd "C-x +") #'balance-windows-area)
+(keymap-global-set "C-x +" #'balance-windows-area)
                                         ; override `balance-windows'
-;; (global-set-key (kbd "C-x -") #'shrink-window-if-larger-than-buffer) ; default
-(global-set-key (kbd "C-x _") #'fit-window-to-buffer)   ; enlarges and shrinks
-(global-set-key (kbd "C-x 9") #'my/toggle-window-split)
+;; (keymap-global-set "C-x -" #'shrink-window-if-larger-than-buffer) ; default
+(keymap-global-set "C-x _" #'fit-window-to-buffer)   ; enlarges and shrinks
+(keymap-global-set "C-x 9" #'my/toggle-window-split)
 
 ;;; Other
 
 ;; Reload init.el
-(global-set-key (kbd "C-c r") #'reload-init-file)
+(keymap-global-set "C-c r" #'reload-init-file)
 
 ;; Evaluate next sexp
-(global-set-key (kbd "C-x M-e") #'my/eval-next-sexp)
+(keymap-global-set "C-x M-e" #'my/eval-next-sexp)
 
 ;; Evaluate sexp at point
-(global-set-key (kbd "C-x C-M-e") #'my/eval-sexp-at-point)
+(keymap-global-set "C-x C-M-e" #'my/eval-sexp-at-point)
 
 ;;; Unbind keys
 
-;; (global-set-key (kbd "C-x") nil)
-;; (global-unset-key (kbd "C-x"))   ; alternative syntax
+;; (keymap-global-set "C-x" nil)
+;; (keymap-global-unset "C-x")   ; alternative syntax
 
 ;;;; Hooks
 
@@ -2544,27 +2507,29 @@ from dabbrev and ispell.")
 ;;   TODO: check functionality
 (add-hook 'ediff-keymap-setup-hook
           ;; Use both versions with ediff
-          (lambda () (define-key ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
+          (lambda () (keymap-set ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
 
 ;; Info-mode
 (add-hook 'Info-mode-hook
           ;; Disable M-n
-          (lambda () (local-unset-key (kbd "M-n"))))
+          (lambda () (keymap-local-unset "M-n")))
 
 (add-hook 'tex-mode-hook
           ;; Disable commands handled by Smartparens
-          (lambda () (define-key tex-mode-map (kbd "C-c ]") nil)
-                     (define-key tex-mode-map (kbd "C-c {") nil)
-                     (define-key tex-mode-map (kbd "C-c }") nil)
-                     (define-key tex-mode-map (kbd "C-c /") nil)))
+          (lambda ()
+            (keymap-set tex-mode-map "C-c ]" nil)
+            (keymap-set tex-mode-map "C-c {" nil)
+            (keymap-set tex-mode-map "C-c }" nil)
+            (keymap-set tex-mode-map "C-c /" nil)))
 
 ;; sh-mode
 (add-hook 'sh-mode-hook
           ;; Disable SMIE commands
-          (lambda () (local-unset-key (kbd "C-c ="))
-                     (local-unset-key (kbd "C-c <"))
-                     (local-unset-key (kbd "C-c >"))
-                     (local-unset-key (kbd "C-c ?"))))
+          (lambda ()
+            (keymap-local-unset "C-c =")
+            (keymap-local-unset "C-c <")
+            (keymap-local-unset "C-c >")
+            (keymap-local-unset "C-c ?")))
 
 ;;;; Hydras
 
@@ -2636,7 +2601,7 @@ from dabbrev and ispell.")
   ("o" flop-frame)
   ("r" rotate-frame-clockwise))
 
-(global-set-key (kbd "C-c y w") #'hydra-window/body)
+(keymap-global-set "C-c y w" #'hydra-window/body)
 
 ;;; Scrolling
 (defhydra hydra-scroll (:hint nil)
@@ -2654,7 +2619,7 @@ Scroll by line or paragraph.
   ("<left>" aj8/scroll-down-paragraph)
   ("<right>" aj8/scroll-up-paragraph))
 
-(global-set-key (kbd "C-c y s") #'hydra-scroll/body)
+(keymap-global-set "C-c y s" #'hydra-scroll/body)
 
 ;;; Line navigation
 (defhydra hydra-navigation (:hint nil)
@@ -2672,7 +2637,7 @@ Move to the next line or comment.
   ("<left>" aj8/previous-comment)
   ("<right>" aj8/next-comment))
 
-(global-set-key (kbd "C-c y n") #'hydra-navigation/body)
+(keymap-global-set "C-c y n" #'hydra-navigation/body)
 
 ;;; Outline
 (defhydra hydra-outline (:color pink :hint nil)
@@ -2701,7 +2666,7 @@ Hide, show and navigate outlines.
   ;; Quit
   ("q" nil "quit"))
 
-(global-set-key (kbd "C-c y o") #'hydra-outline/body)
+(keymap-global-set "C-c y o" #'hydra-outline/body)
 
 
 ;;;;; LATE SETTINGS
