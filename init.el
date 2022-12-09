@@ -301,6 +301,7 @@
          (css-mode . eglot-ensure)
          (web-mode . eglot-ensure)
          (js-mode . eglot-ensure)
+         (js-json-mode . eglot-ensure)
          (json-mode . eglot-ensure)
          (lua-mode . eglot-ensure)
          (markdown-mode . eglot-ensure)
@@ -313,10 +314,12 @@
   ;; Enable eglot in code external to project
   (eglot-extend-to-xref t)
   :config
-  ;; Add server for web-mode
-  (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
+  ;; Add server for js-json-mode
+  (add-to-list 'eglot-server-programs '(js-json-mode . ("vscode-json-language-server" "--stdio")))
   ;; Change server for markdown-mode
   (add-to-list 'eglot-server-programs '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
+  ;; Add server for web-mode
+  (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
   ;; Use Orderless for Eglot (default is Flex)
   (setq completion-category-overrides '((eglot (styles orderless))))
   ;; Don't manage ELDoc
@@ -352,7 +355,8 @@
 ;;   Requires: jsonlint
 (use-package flymake-json
   :disabled
-  :hook (json-mode . flymake-json-load))
+  :hook ((json-mode . flymake-json-load)
+         (js-json-mode . flymake-json-load)))
 
 ;; flymake-lua (Flymake for Lua)
 ;;   Requires: luac
