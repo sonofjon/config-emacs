@@ -72,31 +72,6 @@
 ;;   (use with use-package-report)
 ;; (setq use-package-compute-statistics t)
 
-;;; Quelpa
-
-;; Don't update local clone of the MELPA git repository
-;; (setq quelpa-checkout-melpa-p nil)
-
-;; Set upgrade interval
-;; (setq quelpa-upgrade-interval 7)
-;; (add-hook 'after-init-hook #'quelpa-upgrade-all-maybe)
-
-;; Install Quelpa
-;; (unless (package-installed-p 'quelpa)
-;;   (with-temp-buffer
-;;     (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-;;     (eval-buffer)
-;;     (quelpa-self-upgrade)))
-
-;; Install quelpa-use-package
-;; (quelpa
-;;  '(quelpa-use-package
-;;    :fetcher git
-;;    :url "https://github.com/quelpa/quelpa-use-package.git"))
-
-;; Load quelpa-use-package
-;; (require 'quelpa-use-package)
-
 ;;; Local
 
 (require 'aj8-lisp)
@@ -1560,7 +1535,7 @@ from dabbrev and ispell.")
   :custom
   (popper-reference-buffers
    '("\\*\\(Messages\\|Warnings\\)\\*"
-     "\\*\\(Async-native-compile-log\\|.*ls.*\\|quelpa-build-checkout\\)\\*"
+     "\\*\\(Async-native-compile-log\\|.*ls.*\\)\\*"
      "\\*\\(Bookmark List\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|package update results\\)\\*"
      "magit.*"
      backtrace-mode
@@ -2026,7 +2001,7 @@ from dabbrev and ispell.")
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Native-compile-Log\\)\\*"
-        ("\\*\\(Async-native-compile-log\\|lsp-log\\|.*-ls\\(::.*\\)?\\|quelpa-build-checkout\\|texlab\\(::stderr\\)?\\)\\*"
+        ("\\*\\(Async-native-compile-log\\|lsp-log\\|.*-ls\\(::.*\\)?\\|texlab\\(::stderr\\)?\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
