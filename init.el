@@ -24,9 +24,6 @@
          (exec-path-from-shell-initialize))
        (message "Early settings for macOS"))
 
-      ((equal (system-name) "penguin")   ; ChromeOS
-       (message "Early settings ChromeOS"))
-
       ((and (eq system-type 'gnu/linux)
             (getenv "WSLENV"))           ; WSL
        ;; Fix cursor color in terminal
@@ -1266,8 +1263,7 @@ from dabbrev and ispell.")
 
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
-  :if (or (eq system-type 'gnu/linux)         ; Linux
-           (equal (system-name) "penguin"))   ; ChromeOS
+  :if (eq system-type 'gnu/linux)   ; Linux
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
@@ -2685,9 +2681,6 @@ Hide, show and navigate outlines.
          ;; Increase line spacing
          (setq-default line-spacing 1))
        (message "Late settings macOS"))
-
-      ((equal (system-name) "penguin")                      ; ChromeOS
-       (message "Late settings ChromeOS"))
 
       ((and (eq system-type 'gnu/linux) (getenv "WSLENV"))  ; WSL
        ;; Enable (default) web browser
