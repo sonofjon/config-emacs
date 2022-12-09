@@ -281,6 +281,7 @@
   ;;             ("C-m" . newline-and-indent)))
 
 ;; eglot (client for language server protocol servers)
+;;   TODO: May need to add texlab manually
 (use-package eglot
   :bind (:map eglot-mode-map
               ("C-c l a o" . eglot-code-action-organize-imports)
@@ -301,7 +302,7 @@
          (css-mode . eglot-ensure)
          (web-mode . eglot-ensure)
          (js-mode . eglot-ensure)
-         (js-json-mode . eglot-ensure)
+         (js-json-mode . eglot-ensure)   ; Is this needed?
          (json-mode . eglot-ensure)
          (lua-mode . eglot-ensure)
          (markdown-mode . eglot-ensure)
