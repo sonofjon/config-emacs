@@ -289,7 +289,7 @@
          (css-mode . eglot-ensure)
          (web-mode . eglot-ensure)
          (js-mode . eglot-ensure)
-         (js-json-mode . eglot-ensure)   ; Is this needed?
+         (js-json-mode . eglot-ensure)   ; TODO: Is this needed?
          (json-mode . eglot-ensure)
          (lua-mode . eglot-ensure)
          (markdown-mode . eglot-ensure)
@@ -303,8 +303,10 @@
   (eglot-extend-to-xref t)
   :config
   ;; Add server for js-json-mode
+  ;;   TODO: is this still needed?
   (add-to-list 'eglot-server-programs '(js-json-mode . ("vscode-json-language-server" "--stdio")))
   ;; Change server for markdown-mode
+  ;;   TODO: Remove Marksman entry
   (add-to-list 'eglot-server-programs '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
   ;; Change server for tex-mode
   ;;   TODO: Remove Digestif entry
