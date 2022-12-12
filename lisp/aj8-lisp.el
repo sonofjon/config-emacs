@@ -796,21 +796,21 @@ versa."
   (and (> (decoded-time-hour (decode-time)) aj8/time-sunrise)
        (< (decoded-time-hour (decode-time)) aj8/time-sunset)))
 
-;;; Modus
+;;; Cursor
 
-;; Custom settings for modus-themes
-(defun aj8/modus-themes-custom-settings ()
-  "If in terminal, change cursor color on theme switch."
+;; Change cursor color (black)
+(defun aj8/black-cursor ()
+  "If in terminal, make cursor black."
+  (interactive)
   (when (not (display-graphic-p))   ; if using terminal
-    (cond
-     ((string-match-p "modus-operandi"
-                      (symbol-name (modus-themes--current-theme)))
-      (send-string-to-terminal "\033]12;black\007"))
-     ((string-match-p "modus-vivendi"
-                      (symbol-name (modus-themes--current-theme)))
-      (send-string-to-terminal "\033]12;white\007"))
-     (t
-      (error "Unknown modus-theme name")))))
+    (send-string-to-terminal "\033]12;black\007")))
+
+;; Change cursor color (white)
+(defun aj8/white-cursor ()
+  "If in terminal, make cursor white."
+  (interactive)
+  (when (not (display-graphic-p))   ; if using terminal
+    (send-string-to-terminal "\033]12;white\007")))
 
 ;;;; Version control
 

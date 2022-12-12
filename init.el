@@ -26,9 +26,6 @@
 
       ((and (eq system-type 'gnu/linux)
             (getenv "WSLENV"))           ; WSL
-       ;; Fix cursor color in terminal
-       (add-hook 'modus-themes-after-load-theme-hook
-                 #'aj8/modus-themes-custom-settings)
        (message "Early settings WSL"))
 
       ((and (eq system-type 'gnu/linux)
