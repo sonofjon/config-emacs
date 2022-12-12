@@ -269,7 +269,6 @@
   ;;             ("C-m" . newline-and-indent)))
 
 ;; eglot (client for language server protocol servers)
-;;   TODO: May need to add texlab manually
 (use-package eglot
   :bind (:map eglot-mode-map
               ("C-c l a o" . eglot-code-action-organize-imports)
@@ -307,6 +306,9 @@
   (add-to-list 'eglot-server-programs '(js-json-mode . ("vscode-json-language-server" "--stdio")))
   ;; Change server for markdown-mode
   (add-to-list 'eglot-server-programs '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
+  ;; Change server for tex-mode
+  ;;   TODO: Remove Digestif entry
+  (add-to-list 'eglot-server-programs '((tex-mode context-mode texinfo-mode bibtex-mode) . ("texlab")))
   ;; Add server for web-mode
   (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
   ;; Use Orderless for Eglot (default is Flex)
