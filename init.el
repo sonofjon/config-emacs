@@ -392,7 +392,7 @@
          ("M-g I" . consult-imenu-multi)
          ;; M-s bindings (search-map)
          ("M-s d" . consult-find)
-         ("M-s R" . consult-recent-file)        ; TODO: Emacs 29 has recentf-open
+         ("M-s R" . consult-recent-file)   ; TODO: Emacs 29 has recentf-open
          ("M-s D" . consult-locate)
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
@@ -555,32 +555,32 @@
                                                                  #'cape-keyword
                                                                  #'cape-ispell)
     "Completion at point function for Cape, combining completions
-from dabbrev, symbol, keyword and ispell.")
+from Dabbrev, symbol, keyword and Ispell.")
   (defalias 'cape-ispell+dabbrev+symbol+keyword (cape-super-capf #'cape-ispell
     ;; TODO: symbol completion fails on hyphen when ispell precedes symbol
                                                                  #'cape-dabbrev
                                                                  #'cape-symbol
                                                                  #'cape-keyword)
     "Completion at point function for Cape, combining completions
-from ispell, dabbrev, symbol and keyword.")
+from Ispell, Dabbrev, symbol and keyword.")
   (defalias 'cape-symbol+keyword+ispell (cape-super-capf #'cape-symbol
                                                          #'cape-keyword
                                                          #'cape-ispell)
     "Completion at point function for Cape, combining completions
-from symbol, keyword and ispell.")
+from symbol, keyword and Ispell.")
   (defalias 'cape-ispell+symbol+keyword (cape-super-capf #'cape-ispell
                                                          #'cape-symbol
                                                          #'cape-keyword)
     "Completion at point function for Cape, combining completions
-from ispell, symbol and keyword.")
+from Ispell, symbol and keyword.")
   (defalias 'cape-ispell+dabbrev (cape-super-capf #'cape-ispell
                                                   #'cape-dabbrev)
     "Completion at point function for Cape, combining completions
-from ispell and dabbrev.")
+from Ispell and Dabbrev.")
   (defalias 'cape-dabbrev+ispell (cape-super-capf #'cape-dabbrev
                                                   #'cape-ispell)
     "Completion at point function for Cape, combining completions
-from dabbrev and ispell.")
+from Dabbrev and Ispell.")
 
   ;; Add `completion-at-point-functions', used by `completion-at-point'
   ;;   Note that this adds functions to the global value of
@@ -996,9 +996,11 @@ from dabbrev and ispell.")
   (marginalia-mode 1))
 
 ;; which-key (display available keybindings in popup)
-;;   TODO: which-key buffer overlaps with bottom side-window buffer (which might be OK?)
-;;         When doing so which-key fails to 1) display a complete list of commands,
-;;                                          2) grow window to respect height defined below
+;;   TODO: which-key buffer overlaps with bottom side-window buffer
+;;           (which might be OK?)
+;;         When doing so, which-key fails to
+;;           1) display a complete list of commands
+;;           2) grow window to respect the height defined below
 (use-package which-key
   :diminish
   :custom
