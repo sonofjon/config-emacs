@@ -104,7 +104,6 @@
                           flymake-aspell
                           flymake-eslint
                           flymake-json
-                          flymake-lua
                           flyspell-correct
                           google-this
                           helpful
@@ -353,12 +352,6 @@
   :disabled
   :hook ((json-mode . flymake-json-load)
          (js-json-mode . flymake-json-load)))
-
-;; flymake-lua (Flymake for Lua)
-;;   Requires: luac
-(use-package flymake-lua
-  :disabled
-  :hook (lua-mode . flymake-lua-load))
 
 ;;; Completion
 
