@@ -539,7 +539,7 @@
          ("C-c u d" . cape-dabbrev)          ; or dabbrev-completion
          ("C-c u e" . my/cape-elisp)
          ("C-c u h" . cape-history)          ; only in shell or minibuffer?
-         ("C-c u w" . cape-dict)
+         ("C-c u w" . cape-dict)             ; requires wamerican
          ("C-c u f" . cape-file)
          ("C-c u i" . cape-ispell)
          ("C-c u k" . cape-keyword)
