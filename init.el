@@ -760,9 +760,8 @@ from Dabbrev and Ispell.")
   (repeat-help-auto t))
 
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
-;;   TODO: Investigate smartparens-strict-mode-map, e.g M-d and C-w changes behaviour
-;;           - M-d done! TODO: how to create sp-kill-word that doesn't kill symbol?
-;;   TODO: Create a smart wrapper for sp-down/up-sexp that knows whether to go forward or backward
+;;   TODO: Create a smart wrapper for sp-down/up-sexp that knows whether to
+;;         go forward or backward
 (use-package smartparens
   :diminish
   ;; :hook (emacs-lisp-mode smartparens-mode)
@@ -838,9 +837,11 @@ from Dabbrev and Ispell.")
               ("C-c '"  . wrap-with-single-quotes)   ; TODO: Fix
               ("C-c \"" . wrap-with-double-quotes)
               ("C-c `"  . wrap-with-back-quotes)
+              ;; Use standard C-w, M-d, M-<backspace> in strict mode
               :map smartparens-strict-mode-map
-              ([remap kill-word] . nil)           ; unbind sp-kill-word
-              ([remap backward-kill-word] . nil)) ; unbind sp-backward-kill-word
+              ([remap kill-region] . nil))         ; unbind sp-kill-region
+              ;; ([remap kill-word] . nil)           ; unbind sp-kill-word
+              ;; ([remap backward-kill-word] . nil)) ; unbind sp-backward-kill-word
   :init
   (which-key-add-key-based-replacements "C-c s" "smartparens")
   ;; :custom
