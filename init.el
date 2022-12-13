@@ -537,6 +537,7 @@
   :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
          ("C-c u d" . cape-dabbrev)          ; or dabbrev-completion
+         ("C-c u e" . my/cape-elisp)
          ("C-c u h" . cape-history)          ; only in shell or minibuffer?
          ("C-c u w" . cape-dict)
          ("C-c u f" . cape-file)
@@ -581,6 +582,9 @@ from Ispell and Dabbrev.")
                                                   #'cape-ispell)
     "Completion at point function for Cape, combining completions
 from Dabbrev and Ispell.")
+  (defalias 'my/cape-elisp (cape-interactive-capf #'elisp-completion-at-point)
+    "Completion at point function for Cape, allowing for completion of
+Elisp code explicitly in arbitrary buffers.")
 
   ;; Add `completion-at-point-functions', used by `completion-at-point'
   ;;   Note that this adds functions to the global value of
