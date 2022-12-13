@@ -286,10 +286,10 @@
          (html-mode . eglot-ensure)
          (mhtml-mode . eglot-ensure)
          (css-mode . eglot-ensure)
-         (web-mode . eglot-ensure)
+         (web-mode . eglot-ensure)   ; no linting
          (js-mode . eglot-ensure)
          (js-json-mode . eglot-ensure)   ; TODO: Is this needed?
-         (json-mode . eglot-ensure)
+         (json-mode . eglot-ensure)   ; no linting
          (lua-mode . eglot-ensure)
          (markdown-mode . eglot-ensure)
          (python-mode . eglot-ensure)
