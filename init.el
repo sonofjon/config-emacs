@@ -582,6 +582,10 @@ from Ispell and Dabbrev.")
                                                   #'cape-ispell)
     "Completion at point function for Cape, combining completions
 from Dabbrev and Ispell.")
+  (defalias 'cape-dabbrev+dict (cape-super-capf #'cape-dabbrev
+                                                #'cape-dict)
+    "Completion at point function for Cape, combining completions
+from Dabbrev and Ispell.")
   (defalias 'my/cape-elisp (cape-interactive-capf #'elisp-completion-at-point)
     "Completion at point function for Cape, allowing for completion of
 Elisp code explicitly in arbitrary buffers.")
