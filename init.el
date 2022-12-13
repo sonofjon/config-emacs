@@ -1709,10 +1709,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Kill customize group windows
 (setq custom-buffer-done-kill t)
 
-;; Additional variables to persist between sessions
-(add-to-list 'savehist-additional-variables 'kill-ring)
-(add-to-list 'savehist-additional-variables 'global-mark-ring)
-
 ;;; Coding
 
 ;; Open up the debugger on error
@@ -2134,6 +2130,10 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; Persistent minibuffer history
 (savehist-mode 1)
+
+;; Additional variables to persist between sessions
+(add-to-list 'savehist-additional-variables 'kill-ring)
+(add-to-list 'savehist-additional-variables 'global-mark-ring)
 
 ;; Show recursion depth in the minibuffer prompt
 (minibuffer-depth-indicate-mode 1)
