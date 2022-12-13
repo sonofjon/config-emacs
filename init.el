@@ -288,7 +288,7 @@
          (css-mode . eglot-ensure)
          (web-mode . eglot-ensure)   ; no linting
          (js-mode . eglot-ensure)
-         (js-json-mode . eglot-ensure)   ; TODO: Is this needed?
+         (js-json-mode . eglot-ensure)
          (json-mode . eglot-ensure)   ; no linting
          (lua-mode . eglot-ensure)
          (markdown-mode . eglot-ensure)
@@ -340,8 +340,6 @@
 
 ;; flymake-aspell (Aspell checker for Flycheck)
 ;;   Requires: aspell
-;;   TODO: Should this be disabled on all systems (it was initially
-;;         disabled on macOS)?
 (use-package flymake-aspell
   :disabled
   :hook (text-mode . flymake-aspell-setup)
@@ -1154,8 +1152,6 @@ from dabbrev and ispell.")
 ;; vterm (fully-featured terminal emulator)
 (use-package vterm
   ;; Requires: cmake, libvterm-dev
-  ;; TODO: Fix M-f, M-b, M-d (note, recent breaking changes were
-  ;;       applied to emacs-livterm project)
   :commands vterm
   :config
   ;; Match the default Bash shell prompt
@@ -1356,8 +1352,6 @@ from dabbrev and ispell.")
     (modus-themes-load-vivendi)))
 
 ;; standard-themes (like the default theme but more consistent)
-;;   TODO: Customize
-;;         Fix cursor
 (use-package standard-themes
   :if (and (eq system-type 'gnu/linux)
            (getenv "WSLENV"))   ; WSL
@@ -2269,8 +2263,6 @@ from dabbrev and ispell.")
 ;;   TODO: Use minor-mode for keybindings?
 ;;           (https://stackoverflow.com/a/683575/1610035)
 ;;           (https://emacs.stackexchange.com/a/358/33325)
-;;
-;;         Emacs 29: bind restart-emacs
 
 ;;;; Escape codes
 
