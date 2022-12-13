@@ -322,7 +322,9 @@
   ;; Limit ELDoc to a single line
   ;; (setq eldoc-echo-area-use-multiline-p nil))   ; doesn't work nicely
   ;; Don't auto-show documentation
-  (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1))))
+  (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1)))
+  (which-key-add-key-based-replacements "C-c l" "lsp"))
+                                        ; add label for prefix key
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
