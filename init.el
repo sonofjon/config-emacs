@@ -315,6 +315,13 @@
   (add-to-list 'eglot-server-programs '((tex-mode context-mode texinfo-mode bibtex-mode) . ("texlab")))
   ;; Add server for web-mode
   (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
+  ;; Enable Flymake backend for json-mode
+  (add-hook 'eglot-managed-mode-hook
+            (lambda ()
+              (when (or (derived-mode-p 'json-mode)
+                        (derived-mode-p 'js-json-mode))
+                (add-hook 'flymake-diagnostic-functions
+                          'json-flymake nil t))))   ; TODO: doesn't work
   ;; Use Orderless for Eglot (default is Flex)
   (setq completion-category-overrides '((eglot (styles orderless))))
   ;; Don't manage ELDoc
@@ -351,7 +358,7 @@
 ;; flymake-json (a Flymake handler for json using jsonlint)
 ;;   Requires: jsonlint
 (use-package flymake-json
-  :disabled
+  ;; :disabled
   :hook ((json-mode . flymake-json-load)
          (js-json-mode . flymake-json-load)))
 
