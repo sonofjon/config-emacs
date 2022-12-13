@@ -1742,6 +1742,9 @@ from Dabbrev and Ispell.")
 
 ;;; Editing
 
+;; Set fill column
+(setq-default fill-column 76)   ; default is 70
+
 ;; Use spaces, not tabs
 (setq-default indent-tabs-mode nil)
 
