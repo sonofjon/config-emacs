@@ -505,12 +505,12 @@
       (setq-local corfu-echo-delay nil) ; disable automatic echo and popup
                   ;; corfu-popupinfo-delay nil)
       (corfu-mode 1)))
-  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
-  :config
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1))
+  ;; :config
   ;; Sort candidates by history
-  (corfu-history-mode 1)   ; requires savehist-mode
-  (savehist-mode 1)
-  (add-to-list 'savehist-additional-variables 'corfu-history))
+  ;; (corfu-history-mode 1)   ; requires savehist-mode
+  ;; (savehist-mode 1)
+  ;; (add-to-list 'savehist-additional-variables 'corfu-history))
 
 ;; corfu-echo (show Corfu candidate documentation in echo area)
 ;;   Note, this is an extension included in the Corfu package
