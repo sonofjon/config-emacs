@@ -591,15 +591,16 @@ from Dabbrev and Ispell.")
 Elisp code explicitly in arbitrary buffers.")
 
   ;; Add `completion-at-point-functions', used by `completion-at-point'
+  ;;
   ;;   Note that this adds functions to the global value of
   ;;   completion-at-point-functions. Any buffer-local values of
-  ;;   completion-at-point-functions will take precedence, however, if
-  ;;   the buffer-local value contains `t' the global value of
-  ;;   completion-at-point-functions will be used if the buffer-local
-  ;;   value doesn't provide a match. Unless the buffer-local value
-  ;;   use exclusive completion functions, in which case the global
-  ;;   value is never called. In such cases, you have to add the
-  ;;   global values in mode-hooks. E.g.
+  ;;   completion-at-point-functions will take precedence, however, if the
+  ;;   buffer-local value contains `t' the global value of
+  ;;   completion-at-point-functions will be used if the buffer-local value
+  ;;   doesn't provide a match. Unless the buffer-local value use exclusive
+  ;;   completion functions, in which case the global value is never
+  ;;   called. In such cases, you can add the global values in
+  ;;   mode-hooks. E.g.
   ;;
   ;;     (defun my/register-default-capfs ()
   ;;       "Add capf to current mode. This is a workaround for the fact
@@ -610,6 +611,11 @@ Elisp code explicitly in arbitrary buffers.")
   ;;       (add-to-list 'completion-at-point-functions #'cape-line))
   ;;
   ;;     (add-hook 'emacs-lisp-mode #'my/register-default-caps)
+  ;;
+  ;;   The elisp-completion-at-point function is exclusive. To make it
+  ;;   non-exclusive you can wrap it with cape-capf-properties:
+  ;;
+  ;;     (cape-capf-properties #'elisp-completion-at-point :exclusive 'no)
 
   ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
