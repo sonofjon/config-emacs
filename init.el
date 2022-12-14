@@ -663,6 +663,7 @@ Elisp code explicitly in arbitrary buffers.")
 
   :custom
   ;; Sort candidates by length and alphabetically
+  ;;   Also see https://github.com/minad/cape/issues/44
   (corfu-sort-override-function 'corfu-sort-length-alpha)
   :config
   (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
