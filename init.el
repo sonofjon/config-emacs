@@ -661,6 +661,10 @@ Elisp code explicitly in arbitrary buffers.")
                         (list #'cape-dabbrev+ispell t))))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
 
+  :custom
+  ;; Sort candidates by length and alphabetically
+  (corfu-sort-override-function 'corfu-sort-length-alpha)
+  :config
   (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
                                         ; add label for prefix
 
