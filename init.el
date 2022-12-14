@@ -197,7 +197,7 @@
   ;; Adjust dimming amount
   (dimmer-fraction 0.25)   ; default is 0.20
   ;; Fix for Modus themes
-  (dimmer-use-colorspace :rgb)
+  ;; (dimmer-use-colorspace :rgb)
   ;; Don't dim these buffers
   ;; (dimmer-buffer-exclusion-regexps "")
   :config
