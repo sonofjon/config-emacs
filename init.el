@@ -532,6 +532,8 @@
   (corfu-terminal-mode 1))
 
 ;; cape (Completion At Point Extensions)
+;;   TODO: Make ispell available in comments (sh-mode, and others?)
+;;         (note that it works in elisp mode)
 (use-package cape
   :after corfu
   :bind (("C-c u p" . completion-at-point)   ; capf
