@@ -2410,9 +2410,11 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Display Imenu
 (keymap-global-set "C-c i" #'imenu)
 
-;; TODO: Emacs 29: Implement new function xref-go-forward
-(keymap-global-set "C-c >" #'xref-find-definitions)  ; default M-.
-(keymap-global-set "C-c <" #'xref-pop-marker-stack)  ; default M-,
+;; Xref
+(keymap-global-set "M-?" #'xref-find-references)      ; default
+(keymap-global-set "C-c ?" #'xref-find-definitions)   ; old default M-.
+(keymap-global-set "C-c <" #'xref-go-back)
+(keymap-global-set "C-c >" #'xref-go-forward)         ; default C-M-,
 
 ;;; Outline
 
