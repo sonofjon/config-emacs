@@ -911,6 +911,10 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Use pretty Unicode characters
   (vundo-glyph-alist vundo-unicode-symbols))
 
+;; lingva (access Google Translate without tracking via lingva.ml)
+(use-package lingva
+  :bind ("C-c a" . lingva-translate))
+
 ;;; Files
 
 ;; osx-trash (system trash for OS X)
