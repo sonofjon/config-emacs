@@ -111,6 +111,7 @@
                           i3wm-config-mode
                           keychain-environment
                           keyfreq
+                          lingva
                           lorem-ipsum
                           lua-mode
                           magit
