@@ -1727,7 +1727,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; (setq debug-on-error t)
 
 ;; Set path for Tree-sitter modules
-(setq treesit-extra-load-path '("/home/andreas/git/tree-sitter-module/dist/"))
+(setq treesit-extra-load-path '("~/git/tree-sitter-module/dist/"))
 
 ;;; Completion
 
