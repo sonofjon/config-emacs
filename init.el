@@ -534,12 +534,15 @@
 
 ;; cape (Completion At Point Extensions)
 ;;   TODO: Make ispell available in comments (sh-mode, and others?)
-;;         (note that it works in elisp mode)
+;;         (note that it works in elisp mode) (see cape-capf-inside-string
+;;         and cape-capf-inside-comment and commit:
+;;         https://github.com/minad/cape/commit/9b97dbbc7624415ee25f79de9ea357feb1e2e547)
 (use-package cape
   :after corfu
   :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
          ("C-c u d" . cape-dabbrev)          ; or dabbrev-completion
+                                             ; see also dabbrev-capf on Emacs 29
          ("C-c u e" . my/cape-elisp)
          ("C-c u h" . cape-history)          ; only in shell or minibuffer?
          ("C-c u w" . cape-dict)             ; requires wamerican
@@ -619,6 +622,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;;   non-exclusive you can wrap it with cape-capf-properties:
   ;;
   ;;     (cape-capf-properties #'elisp-completion-at-point :exclusive 'no)
+  ;;
+  ;;   or more recently, use cape-wrap-nonexclusive.
 
   ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
