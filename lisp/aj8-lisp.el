@@ -631,7 +631,7 @@ Repeat command to select additional words backwards."
 ;;; ispell
 
 ;; Toggle ispell program
-;;   Requires: aspell, hunspell, hunspell-sv
+;;   Requires: aspell, aspell-en, hunspell, hunspell-sv
 (defun aj8/toggle-ispell-program ()
   "Toggle `ispell` program.
 If current program is `aspell`, switch to `hunspell`, and vice
