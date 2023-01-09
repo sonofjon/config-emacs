@@ -1294,6 +1294,7 @@ Elisp code explicitly in arbitrary buffers.")
   (setq ef-themes-to-toggle '(ef-duo-light ef-duo-dark)))
 
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
+;;   TODO: Update for version 4.0
 (use-package modus-themes
   :if (and (eq system-type 'gnu/linux)
            (not (getenv "WSLENV")))   ; Linux
