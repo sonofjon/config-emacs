@@ -121,6 +121,7 @@
                           mosey
                           move-dup
                           multiple-cursors
+                          obsidian
                           orderless
                           osx-trash
                           outline-minor-faces
@@ -1674,6 +1675,21 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
+
+;; obsidian (Obsidian notes interface)
+(use-package obsidian
+  :bind (:map obsidian-mode-map
+              ("C-c C-o" . obsidian-follow-link-at-point))   ; default: markdown-follow-thing-at-point
+              ;; ("C-c C-b" . obsidian-backlink-jump)
+              ;; ("C-c C-l" . obsidian-insert-wikilink))   ; alt: obsidian-insert-link
+  :custom
+  ;; Define folder for `obsidian-capture'
+  (obsidian-inbox-directory "Inbox")
+  :config
+  ;; Define vault location
+  (obsidian-specify-path "~/Dropbox/Apps/Obsidian/obsidian-vault/"))
+  ;; Enable mode
+  ;; (global-obsidian-mode t))
 
 ;; ssh-agency (manage ssh-agent from Emacs)
 (use-package ssh-agency
