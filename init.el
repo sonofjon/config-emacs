@@ -1503,6 +1503,7 @@ Elisp code explicitly in arbitrary buffers.")
   (global-diff-hl-mode 1))
 
 ;; ztree (text mode directory tree)
+;;   TODO: Alternative package: diffed
 (use-package ztree
   :defer
   :custom
