@@ -303,20 +303,15 @@
   ;; Enable eglot in code external to project
   (eglot-extend-to-xref t)
   :config
-  ;; Add server for js-json-mode
-  ;;   TODO: is this still needed?
-  (add-to-list 'eglot-server-programs '(js-json-mode . ("vscode-json-language-server" "--stdio")))
-  ;; Change server for lua-mode
-  ;;   TODO: Remove lua-lsp entry
-  (add-to-list 'eglot-server-programs '(lua-mode . ("lua-language-server")))
   ;; Change server for markdown-mode
-  ;;   TODO: Remove Marksman entry
-  (add-to-list 'eglot-server-programs '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
-  ;; Change server for tex-mode
-  ;;   TODO: Remove Digestif entry
-  (add-to-list 'eglot-server-programs '((tex-mode context-mode texinfo-mode bibtex-mode) . ("texlab")))
+  (setf (alist-get 'markdown-mode eglot-server-programs)
+        (list "vscode-markdown-language-server" "--stdio"))
+  ;; Alternative: add server for markdown-mode (this will shadow other entries)
+  ;; (add-to-list 'eglot-server-programs
+  ;;              '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
   ;; Add server for web-mode
-  (add-to-list 'eglot-server-programs '(web-mode . ("vscode-html-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '(web-mode . ("vscode-html-language-server" "--stdio")))
   ;; Enable Flymake backend for json-mode
   (add-hook 'eglot-managed-mode-hook
             (lambda ()
