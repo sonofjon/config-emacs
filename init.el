@@ -2243,7 +2243,7 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
 ;; dired-after-readin: tag dired buffer names
-(add-hook 'dired-after-readin-hook (lambda () (aj8/prefix-buffer-name "dired")))
+(add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
 
 ;; Disable side windows before Ediff
 (add-hook 'ediff-before-setup-windows-hook 'window-toggle-side-windows)
