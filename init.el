@@ -439,8 +439,8 @@
   :config
   ;; Preview key
   ;; (setq consult-preview-key 'any)   ; default
-  ;; (setq consult-preview-key (kbd "M-`"))
-  ;; (setq consult-preview-key (list (kbd "<down>") (kbd "<up>")))
+  ;; (setq consult-preview-key "M-`")
+  ;; (setq consult-preview-key (list "<down>" "<up>"))
 
   ;; Manual preview for expensive commands
   (consult-customize
@@ -450,7 +450,7 @@
    consult-recent-file consult-xref consult--source-bookmark
    consult--source-file-register consult--source-recent-file
    consult--source-project-recent-file
-   :preview-key (kbd "M-`"))
+   :preview-key "M-`")
 
   ;; Completion
   ;; (consult-customize
