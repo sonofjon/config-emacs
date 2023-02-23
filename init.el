@@ -1126,6 +1126,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Use syntax-subword-mode everywhere
   (global-syntax-subword-mode 1))
 
+;;; Org
+
 ;;; Outline
 
 ;; outline-minor-faces (headings faces for outline-minor-mode)
@@ -1849,6 +1851,18 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Auto-save bookmarks
 (setq bookmark-save-flag 1)
 
+;;; Org
+
+;; Use speed keys
+(setq org-use-speed-commands t)
+
+;; Don't require confirmation when evaluating code
+(setq org-confirm-babel-evaluate nil)
+
+;; Use shift-selection
+;;   (disables org-shiftup, org-shiftdown, org-shiftleft and org-shiftright)
+;; (setq org-support-shift-select t)
+
 ;;; Search
 
 ;; Don't search invisible text by default
@@ -2145,9 +2159,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Use longer pulse
 (setq pulse-delay 0.05)   ; default is 0.03
 
-;; Use speed keys in org-mode
-(setq org-use-speed-commands t)
-
 ;; Show mode headers in describe-bindings buffer
 (setq describe-bindings-outline t)
 
@@ -2204,6 +2215,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Superword movement and editing: snake_case and kebab-case
 ;;    Cannot be enabled at the same time as subword-mode
 ;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
+
+;;; Org
 
 ;;; Search...
 
@@ -2441,6 +2454,8 @@ Elisp code explicitly in arbitrary buffers.")
 (keymap-global-set "C-c ?" #'xref-find-definitions)   ; old default M-.
 (keymap-global-set "C-c <" #'xref-go-back)
 (keymap-global-set "C-c >" #'xref-go-forward)         ; default C-M-,
+
+;;; Org
 
 ;;; Outline
 
