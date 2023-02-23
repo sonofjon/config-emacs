@@ -1817,19 +1817,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; More extensive apropos commands
 (setq apropos-do-all t)
 
-;;; Outline
-
-;; Outline minor mode prefix
-(which-key-add-key-based-replacements "C-c @" "outline")
-                                        ; add label for prefix key
-
-;; Use TAB and S-TAB for cycling
-(setq outline-minor-mode-cycle t)
-
-;; Highlight headings
-;;   See also outline-minor-faces.
-;; (setq outline-minor-mode-highlight t)   ; alternatives: 'override and 'append
-
 ;;; Navigation
 
 ;; Scrolling
@@ -1862,6 +1849,19 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Use shift-selection
 ;;   (disables org-shiftup, org-shiftdown, org-shiftleft and org-shiftright)
 ;; (setq org-support-shift-select t)
+
+;;; Outline
+
+;; Outline minor mode prefix
+(which-key-add-key-based-replacements "C-c @" "outline")
+                                        ; add label for prefix key
+
+;; Use TAB and S-TAB for cycling
+(setq outline-minor-mode-cycle t)
+
+;; Highlight headings
+;;   See also outline-minor-faces.
+;; (setq outline-minor-mode-highlight t)   ; alternatives: 'override and 'append
 
 ;;; Search
 
@@ -2204,8 +2204,6 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Help...
 
-;;; Outline...
-
 ;;; Navigation...
 
 ;; Subword movement and editing: camelCase
@@ -2217,6 +2215,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;; (add-hook 'prog-mode-hook (lambda () (superword-mode 1)))
 
 ;;; Org
+
+;;; Outline...
 
 ;;; Search...
 
