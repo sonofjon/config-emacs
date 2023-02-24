@@ -139,6 +139,7 @@
                           treemacs-all-the-icons
                           treemacs-magit
                           undo-fu
+                          unfill
                           vertico
                           vterm
                           vundo
@@ -890,6 +891,11 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Use whole-line-or-region-mode everywhere
   (whole-line-or-region-global-mode 1))
+
+;; unfill (do the opposite of fill-paragraph or fill-region)
+(use-package unfill
+  :bind (("M-S-q" . 'unfill-paragraph)
+         ("C-M-S-q" . 'unfill-region)))
 
 ;; undo-fu (undo helper with redo)
 ;;   Note that undo-in-region is disabled by default
@@ -2345,6 +2351,8 @@ Elisp code explicitly in arbitrary buffers.")
   (define-key input-decode-map "\e[96;5u" (kbd "C-`"))
   (define-key input-decode-map "\e[96;7u" (kbd "C-M-`"))
   (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))
+  (define-key input-decode-map "\e[113;4u" (kbd "M-S-q"))
+  (define-key input-decode-map "\e[113;8u" (kbd "C-M-S-q"))
   (define-key input-decode-map "\e[118;8u" (kbd "C-M-S-v"))
   (define-key input-decode-map "\e[123;5u" (kbd "C-{"))
   (define-key input-decode-map "\e[125;5u" (kbd "C-}")))
