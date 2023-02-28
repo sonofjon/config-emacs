@@ -34,7 +34,7 @@ Emacs session."
         (when file
           (setq killed-file-list (cl-delete file killed-file-list :test #'equal))
           (find-file file)))
-    (error "No recently-killed files to reopen")))
+    (user-error "No recently-killed files to reopen")))
 
 ;;; Buffer switching
 
@@ -672,14 +672,14 @@ versa."
     (unless (file-exists-p ispell-personal-dictionary)
       (with-temp-buffer (write-file ispell-personal-dictionary))))
    (t
-    (error "`ispell-program` must be either `aspell` or `hunspell`"))))
+    (user-error "`ispell-program` must be either `aspell` or `hunspell`"))))
 
 
 ;;; Flyspell
 
 ;; Setup for web-mode
 (defun my/web-mode-flyspell-verify ()
-  "Fly Spell predicate of `web-mode`."
+  "Flyspell predicate of `web-mode'."
   (let* ((font-face-at-point (get-text-property (- (point) 1) 'face))
          rlt)
     ;; If rlt is t, the word at point is POSSIBLY a typo, continue checking.
@@ -962,7 +962,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
   "If the window is split vertically, split it horizontally, and vice versa."
   (interactive)
   (unless (= (count-windows) 2)
-    (error "Can only toggle a window split in two!"))
+    (user-error "Can only toggle a window split in two!"))
   (let ((split-vertically-p (window-combined-p)))
     (delete-window)   ; close current window
     (if split-vertically-p
@@ -1013,7 +1013,7 @@ see `eww-follow-link' for details."
     (eww-follow-link '(16)))
    ((equal current-prefix-arg '(16)) ; C-u C-u
     (eww-follow-link '(4)))
-   (t (error "Unexpected input arguments"))))
+   (t (user-error "Unexpected input arguments"))))
 
 ;; More useful buffer names in eww
 ;;   TODO: Emacs 29: Use eww-auto-rename-buffer instead
