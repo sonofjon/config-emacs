@@ -270,7 +270,7 @@ respectively."
 
 ;; Capitalize word at point
 (defun aj8/capitalize-word-at-point ()
-  "Capitalize ARG words from the beginning of the current word."
+  "Capitalize word at point from the beginning of the word."
   (interactive)
   (unless (looking-at "\\<")
     (backward-word))
@@ -653,8 +653,8 @@ Repeat command to select additional words backwards."
 ;; Toggle ispell program
 ;;   Requires: aspell, aspell-en, hunspell, hunspell-sv
 (defun aj8/toggle-ispell-program ()
-  "Toggle `ispell` program.
-If current program is `aspell`, switch to `hunspell`, and vice
+  "Toggle `ispell' program.
+If current program is `aspell', switch to `hunspell', and vice
 versa."
   (interactive)
   (cond
@@ -690,7 +690,7 @@ versa."
 
 ;; Setup for web-mode (with blacklist)
 ;; (defun my/web-mode-flyspell-verify ()
-;;   "Fly Spell predicate of `web-mode`."
+;;   "Flyspell predicate of `web-mode'."
 ;;   (let* ((f (get-text-property (- (point) 1) 'face))
 ;;          rlt)
 ;;     (cond
@@ -725,7 +725,7 @@ versa."
 
 ;; Goto previous flyspell error
 (defun my/flyspell-goto-previous-error (arg)
-  "Go to arg previous spelling error."
+  "Go to ARG previous spelling error."
   (interactive "p")
   (while (not (= 0 arg))
     (let ((pos (point))
@@ -794,11 +794,11 @@ versa."
 
 (defun aj8/time-sunrise ()
   ;; TODO: Should return fractional value
-  "Get clean sunrise time string from `solar-sunset-sunrise`."
+  "Get clean sunrise time string from `solar-sunset-sunrise'."
   (cl-first (cl-first (solar-sunrise-sunset (calendar-current-date)))))
 
 (defun aj8/time-sunset ()
-  "Get clean sunset time string from `solar-sunset-sunrise`."
+  "Get clean sunset time string from `solar-sunset-sunrise'."
   (cl-first (cl-second (solar-sunrise-sunset (calendar-current-date)))))
 
 (defcustom aj8/time-sunrise (aj8/time-sunrise)
@@ -812,7 +812,7 @@ versa."
   :group 'aj8-lisp)
 
 (defun aj8/daytime-p ()
-  "Return True if current time is daytime, False otherwise."
+  "Return t if current time is daytime, nil otherwise."
   (and (> (decoded-time-hour (decode-time)) aj8/time-sunrise)
        (< (decoded-time-hour (decode-time)) aj8/time-sunset)))
 
@@ -897,7 +897,7 @@ argument should be inverted. "
   :group 'my-config)
 
 (defun my/advice--quit-window (args)
-  "Advice function that makes `quit-window' quit WINDOW and kill
+  "Advice function that makes `quit-window' quit window and kill
 its buffer. With a prefix argument, the buffer is buried
 instead. This is the inverse of the default behavior
 `quit-window'.
@@ -972,7 +972,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
                                ; in this part of the window
 ;; Visit oldest window with Treemacs
 (defun treemacs-visit-node-in-least-recently-used-window (&optional arg)
-  "Open current file or tag in window selected by `get-lru-window'.
+  "Open the current file or tag in the window selected by `get-lru-window'.
 Stay in the current window with a single prefix argument ARG, or close the
 Treemacs window with a double prefix argument."
   (interactive "P")
@@ -1175,7 +1175,7 @@ keys to the the respective xterm key sequence."
 ;; Swap universal prefix argument for functions
 ;;   (using advice)
 (defun my/toggle-prefix-arg (fun)
-  "Toggle universal prefix argument for FUNCTION fun.
+  "Toggle universal prefix argument for the function FUN.
 If called with a prefix argument, the prefix argument will be
 removed. If called without a prefix argument, a prefix argument
 will be applied. This only works for interactive \"P\"
@@ -1191,7 +1191,7 @@ functions."
 ;; Swap universal prefix argument for functions
 ;;   (during function call)
 (defun aj8/call-interactively-wih-prefix-toggle (fun)
-  "Call FUNCTION fun and toggle its universal prefix argument.
+  "Call the function FUN and toggle its universal prefix argument.
 If called with a prefix argument, the prefix argument will be
 removed. If called without a prefix argument, a prefix argument
 will be applied."
