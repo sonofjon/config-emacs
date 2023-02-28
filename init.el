@@ -2039,7 +2039,7 @@ Elisp code explicitly in arbitrary buffers.")
          (side . top)
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Native-compile-Log\\)\\*"
-        ("\\*\\(Async-native-compile-log\\|EGLOT.*events\\|.*-ls\\(::.*\\)?\\|texlab\\(::stderr\\)?\\)\\*"
+        ("\\*\\(Async-native-compile-log\\|Native-compile-Log\\|EGLOT.*events\\|.*-ls\\(::.*\\)?\\|texlab\\(::stderr\\)?\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
