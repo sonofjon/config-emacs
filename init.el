@@ -146,6 +146,7 @@
                           web-mode
                           which-key
                           whole-line-or-region
+                          xclip
                           yaml-mode
                           ztree))
 
@@ -918,6 +919,15 @@ Elisp code explicitly in arbitrary buffers.")
   (vundo-compact-display t)
   ;; Use pretty Unicode characters
   (vundo-glyph-alist vundo-unicode-symbols))
+
+;; xclip (copy&paste GUI clipboard from text terminal)
+;;   Requires: macOS: `pbpaste/pbcopy' - installed by default
+;;             X11: `xclip' or `xsel'
+;;             Wayland: `wl-clipboard'
+(use-package xclip
+  :config
+  ;; Enable xclip globally
+  (xclip-mode 1))
 
 ;; lingva (access Google Translate without tracking via lingva.ml)
 (use-package lingva
