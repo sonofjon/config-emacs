@@ -1130,17 +1130,6 @@ When called from an eww buffer, provide the current link as
 (keymap-set buffer-navigation-repeat-map "<left>" nil)
 (keymap-set buffer-navigation-repeat-map "<right>" nil)
 
-;;; Obsidian functions
-
-(defun aj8/obsidian-rename-file-from-front-matter ()
-  "Rename current file according to title in front matter."
-  (interactive)
-  (let* ((file (buffer-file-name))
-         (dict (obsidian--file-front-matter file)))
-    (if dict
-        (let ((title (gethash 'title dict)))
-          (my/rename-file-and-buffer (concat title ".md"))))))
-
 ;;; xterm key sequence mappings for rxvt
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
   "Add mappings for a given list of escape sequences and list of
