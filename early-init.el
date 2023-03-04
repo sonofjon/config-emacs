@@ -13,6 +13,8 @@
 ;;; GUI
 
 ;; Remove unneeded UI elements
+;; (push '(tool-bar-lines . 0) initial-frame-alist)   ; disable tool bar
+;; (push '(menu-bar-lines . 0) initial-frame-alist)   ; disable menu bar
 (push '(tool-bar-lines . 0) default-frame-alist)   ; disable tool bar
 (push '(menu-bar-lines . 0) default-frame-alist)   ; disable menu bar
 (push '(vertical-scroll-bars . nil) default-frame-alist)   ; disable scroll bar
