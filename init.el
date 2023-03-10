@@ -703,7 +703,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; embark-consult (Consult integration for Embark)
 (use-package embark-consult
-  :demand t ; only necessary if you have the hook below
+  :demand t   ; only necessary if you have the hook below
   :after (embark consult)
   ;; if you want to have consult previews as you move around an
   ;; auto-updating Embark collect buffer
@@ -1025,7 +1025,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; helpful (a better *help* buffer)
 (use-package helpful
   ;; :disabled
-  ;; :demand
+  ;; :demand t
   :commands (helpful-key helpful-function helpful-symbol
              helpful-variable helpful-command)
   :bind (([remap describe-key] . helpful-key)
@@ -1040,7 +1040,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; marginalia (enrich existing commands with completion annotations)
 (use-package marginalia
-  :demand
+  :demand t
   :bind (:map minibuffer-local-map ("M-m" . marginalia-cycle))
   :config
   (marginalia-mode 1))
@@ -1538,8 +1538,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;; popper (summon and dismiss buffers as popups)
 ;;   TODO: popper commands don't work well
 (use-package popper
-  :demand   ; note that :demand and :after can be combined
-            ; (ensures popper is required, not auto-loaded, after project)
+  :demand t  ; note that :demand and :after can be combined
+             ; (ensures popper is required, not auto-loaded, after project)
   :after project   ; needed for popper-group-by-project
   :bind (("C-`"   . popper-toggle-latest)
          ;; ("M-`"   . popper-cycle)   ; TODO: conflicts with consult
