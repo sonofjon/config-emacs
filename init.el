@@ -136,6 +136,7 @@
                           treemacs
                           treemacs-all-the-icons
                           treemacs-magit
+                          treesit-auto
                           undo-fu
                           unfill
                           vertico
@@ -356,6 +357,13 @@
   ;; :disabled
   :hook ((json-mode . flymake-json-load)
          (js-json-mode . flymake-json-load)))
+
+;; treesit-auto (automatically use tree-sitter enhanced major modes)
+(use-package treesit-auto
+  :demand t
+  :config
+  (setq treesit-auto-install 'prompt)
+  (global-treesit-auto-mode))
 
 ;;; Completion
 
@@ -1761,7 +1769,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; (setq debug-on-error t)
 
 ;; Set path for Tree-sitter modules
-(setq treesit-extra-load-path '("~/git/tree-sitter-module/dist/"))
+;; (setq treesit-extra-load-path '("~/git/tree-sitter-module/dist/"))
 
 ;;; Completion
 
