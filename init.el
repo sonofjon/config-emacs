@@ -234,11 +234,12 @@
 
 ;; powershell (major-mode for editing PowerShell scripts)
 (use-package powershell
-  ;; :mode ("\\.ps1$" . powershell-mode)
-  :defer)
+  :defer
+  :mode ("\\.ps1$" . powershell-mode))
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
+  :disabled
   :mode "\\.html?$"
   :init
   ;; Engines
