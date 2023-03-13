@@ -1236,5 +1236,11 @@ reported by `frame-width'. See
                                                   (string-to-number (aref (cadr b) 3))))
                        :right-align t)])))
 
+;; Add indicator for Treesitter modes in the modeline
+(defun aj8/treesit-mode-name ()
+  "Set mode-name to 'Mode[TS]' if the current major mode has 'ts' in its name."
+  (when (string-match-p "ts" (symbol-name major-mode))
+    (setq mode-name (concat mode-name "[TS]"))))
+
 
 (provide 'aj8-lisp)
