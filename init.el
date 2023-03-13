@@ -221,7 +221,7 @@
 
 ;; lua-mode (major-mode for editing Lua scripts)
 (use-package lua-mode
-  :mode ("\\.lua$" . lua-mode))
+  :mode ("\\.lua$"))
 
 ;; markdown-mode (major-mode for editing Markdown files)
 (use-package markdown-mode
