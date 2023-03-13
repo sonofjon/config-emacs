@@ -1120,6 +1120,9 @@ When called from an eww buffer, provide the current link as
 ;; Add repeat-map for Smerge
 (with-eval-after-load "smerge" (my/repeatize 'smerge-basic-map))
 
+;; Add repeat-map for Smartparens
+;; (with-eval-after-load "smartparens" (my/repeatize 'smartparens-mode-map))
+
 ;; Create repeat-map for window resizing
 (defvar aj8/resize-window-repeat-map
   (let ((map (make-sparse-keymap)))
