@@ -786,8 +786,6 @@ Elisp code explicitly in arbitrary buffers.")
   (repeat-help-auto t))
 
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
-;;   TODO: Create a smart wrapper for sp-down/up-sexp that knows whether to
-;;         go forward or backward
 (use-package smartparens
   :diminish
   ;; :hook (emacs-lisp-mode smartparens-mode)
@@ -801,12 +799,14 @@ Elisp code explicitly in arbitrary buffers.")
               ("C-M-<right>" . sp-forward-sexp)
               ;; ("C-M-b" . sp-backward-sexp)            ; backward-sexp
               ("C-M-<left>" . sp-backward-sexp)
-              ("C-M-n" . sp-down-sexp)                   ; forward-list
+              ;; ("C-M-n" . sp-down-sexp)                ; forward-list
+              ("C-M-n" . aj8/sp-down-sexp-dwim)          ; forward-list
               ;; ("C-M-a" . sp-backward-down-sexp)       ; use M-- C-M-<down>
               ("C-M-a" . sp-beginning-of-sexp)           ; beginning-of-defun
               ("C-M-e" . sp-end-of-sexp)                 ; end-of-defun
               ;; ("C-M-e" . sp-up-sexp)                  ; use M-- C-M-<up>
-              ("C-M-p" . sp-backward-up-sexp)            ; backward-list
+              ;; ("C-M-p" . sp-backward-up-sexp)         ; backward-list
+              ("C-M-p" . aj8/sp-up-sexp-dwim)            ; backward-list
               ;; ("C-M-n" . sp-next-sexp)                ; forward-list
               ;; ("C-M-p" . sp-previous-sexp)            ; backward-list
               ("C-M-k" . sp-kill-sexp)                   ; kill-sexp

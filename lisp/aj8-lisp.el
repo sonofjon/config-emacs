@@ -286,6 +286,40 @@ respectively."
                (double-quote . "\"")
                (back-quote . "`")))
 
+(defun aj8/sp-down-sexp-dwim ()
+  "Move point up one level of s-expression (sexp) based on distance to surrounding parentheses.
+
+If POINT is closer to an opening parenthesis (in the forward
+direction) than to a closing parenthesis (in the backward
+direction), move forward down. Otherwise move backward down."
+  (interactive)
+  (let* ((pos (point))
+         (forward-dist (save-excursion
+                         (skip-chars-forward "^(")
+                         (- (point) pos)))
+         (backward-dist (save-excursion
+                          (skip-chars-backward "^)")
+                          (- pos (point))))
+         (direction (if (> forward-dist backward-dist) -1 1)))
+    (sp-down-sexp direction)))
+
+(defun aj8/sp-up-sexp-dwim ()
+  "Move point down one level of s-expression (sexp) based on distance to surrounding parentheses.
+
+If POINT is closer to an opening parenthesis (in the backward
+direction) than to a closing parenthesis (in the forward
+direction), move backward up. Otherwise move forward up."
+  (interactive)
+  (let* ((pos (point))
+         (forward-dist (save-excursion
+                         (skip-chars-forward "^)")
+                         (- (point) pos)))
+         (backward-dist (save-excursion
+                          (skip-chars-backward "^(")
+                          (- pos (point))))
+         (direction (if (> forward-dist backward-dist) -1 1)))
+    (sp-up-sexp direction)))
+
 ;;; Misc
 
 ;; Copy symbol at point
