@@ -848,6 +848,9 @@ Elisp code explicitly in arbitrary buffers.")
               ("C-c s t" . sp-transpose-sexp)        ; alternative: C-M-t
                                                      ; (transpose-sexp)
               ("C-c s w" . sp-swap-enclosing-sexp)
+              ("C-c s <" . sp-splice-sexp-killing-backward)
+              ("C-c s >" . sp-splice-sexp-killing-forward)
+              ("C-c s |" . sp-splice-sexp-killing-around)
               ;; Prefixes
               ("C-c s O" . sp-prefix-symbol-object)
               ("C-c s P" . sp-prefix-pair-object)
