@@ -2020,10 +2020,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; (setq window-sides-slots '(1 1 3 1))
 
 ;; Window rules
-;;   TODO: Buffers that are not displayed, e.g. quelpa-build-checkout
-;;   and *Compile-Log*, do not seem to be affected by
-;;   display-buffer-alist, such that these buffers appear in the main
-;;   buffer when applying next-buffer.
 (setq display-buffer-alist
       `(;;
         ;; Example using mp-make-display-buffer-matcher-function
@@ -2388,8 +2384,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Buffers
 
 ;; Buffer navigation
-(keymap-global-set "C-x <right>" #'next-buffer)
-(keymap-global-set "C-x <left>" #'previous-buffer)
+(keymap-global-set "C-x <right>" #'aj8/switch-to-next-buffer-no-side-window)
+(keymap-global-set "C-x <left>" #'aj8/switch-to-prev-buffer-no-side-window)
 (keymap-global-set "C-x C-<right>" #'my/project-next-buffer)
 (keymap-global-set "C-x C-<left>" #'my/project-previous-buffer)
 

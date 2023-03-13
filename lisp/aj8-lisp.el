@@ -50,9 +50,39 @@ and `previous-buffer'."
   :type 'regexp
   :group 'aj8-lisp)
 
+(defun aj8/buffer-side-window-p (buffer)
+  "Return t if BUFFER is displayed in a side window."
+  (let ((window (get-buffer-window buffer)))
+    (and window (window-parameter window 'window-side))))
+
 (defun aj8/buffer-skip-p (window buffer bury-or-kill)
-  "Return t if BUFFER name matches `aj8/buffer-skip-regexp'."
-  (string-match-p aj8/buffer-skip-regexp (buffer-name buffer)))
+  "Return t if BUFFER should be skipped."
+  ;; Buffer name matches `aj8/buffer-skip-regexp'
+  ;; (string-match-p aj8/buffer-skip-regexp (buffer-name buffer)))
+  ;; Buffer is displayed in a side window
+  (aj8/buffer-side-window-p buffer))
+
+(defun aj8/switch-to-prev-buffer-no-side-window ()
+  "Switch to the previously selected buffer, skipping side windows.
+
+If the current window is a side window use the regular
+`switch-to-prev-buffer'."
+  (interactive)
+  (if (window-parameter nil 'window-side)
+      (switch-to-prev-buffer)
+    (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+      (switch-to-prev-buffer))))
+
+(defun aj8/switch-to-next-buffer-no-side-window ()
+  "Switch to the next selected buffer, skipping side windows.
+
+If the current window is a side window use the regular
+`switch-to-next-buffer'."
+  (interactive)
+  (if (window-parameter nil 'window-side)
+      (switch-to-next-buffer)
+    (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+      (switch-to-next-buffer))))
 
 ;;; Project buffer switching
 ;;;   (imported from projectile and adapted for project.el)
