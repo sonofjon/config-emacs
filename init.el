@@ -281,19 +281,31 @@
               ;; ("C-c l h" . eldoc)
               ("C-c h" . eldoc)
               ("C-c l r" . eglot-rename))
-  :hook ((sh-mode . eglot-ensure)
-         (html-mode . eglot-ensure)
+  :hook (;; standard modes
+         (sh-mode . eglot-ensure)
+         ;; (html-mode . eglot-ensure)   ;  mhtml is default for HTML
          (mhtml-mode . eglot-ensure)
          (css-mode . eglot-ensure)
-         (web-mode . eglot-ensure)   ; no linting
+         (web-mode . eglot-ensure)       ; no linting
          (js-mode . eglot-ensure)
-         (js-json-mode . eglot-ensure)
-         (json-mode . eglot-ensure)   ; no linting
+         (json-mode . eglot-ensure)      ; no linting
          (lua-mode . eglot-ensure)
          (markdown-mode . eglot-ensure)
          (python-mode . eglot-ensure)
-         (tex-mode . eglot-ensure)
+         (latex-mode . eglot-ensure)
          (yaml-mode . eglot-ensure))
+         ;; ;; Tree sitter modes
+         ;; (bash-ts-mode . eglot-ensure)
+         ;; ;; (html-ts-mode . eglot-ensure)       ; NA
+         ;; (css-ts-mode . eglot-ensure)
+         ;; (js-ts-mode . eglot-ensure)
+         ;; (json-ts-mode . eglot-ensure)
+         ;; ;; (lua-ts-mode . eglot-ensure)        ; NA
+         ;; ;; (markdown-ts-mode . eglot-ensure)   ; NA
+         ;; (python-ts-mode . eglot-ensure)
+         ;; ;; (latex-ts-mode . eglot-ensure)      ; NA
+         ;; (yaml-ts-mode . eglot-ensure))
+  :init
   :custom
   ;; Shutdown server after buffer kill
   (eglot-autoshutdown t)
@@ -313,7 +325,7 @@
   (add-hook 'eglot-managed-mode-hook
             (lambda ()
               (when (or (derived-mode-p 'json-mode)
-                        (derived-mode-p 'js-json-mode))
+                        (derived-mode-p 'json-ts-mode))
                 (add-hook 'flymake-diagnostic-functions
                           'json-flymake nil t))))   ; TODO: doesn't work
   ;; Use Orderless for Eglot (default is Flex)
@@ -346,13 +358,14 @@
 (use-package flymake-eslint
   :disabled
   :hook (js-mode . flymake-eslint-enable))
+         ;; (js-ts-mode . flymake-eslint-enable)))
 
 ;; flymake-json (a Flymake handler for json using jsonlint)
 ;;   Requires: jsonlint
 (use-package flymake-json
   ;; :disabled
-  :hook ((json-mode . flymake-json-load)
-         (js-json-mode . flymake-json-load)))
+  :hook (json-mode . flymake-json-load))
+         ;; (json-ts-mode . flymake-json-load)))
 
 ;; treesit-auto (automatically use tree-sitter enhanced major modes)
 (use-package treesit-auto
@@ -1110,11 +1123,16 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (devdocs-window-select t)
   :custom
   (devdocs-browser-major-mode-docs-alist '((yaml-mode "Ansible")
+                                           (yaml-ts-mode "Ansible")
                                            (sh-mode "Bash")
+                                           (bash-ts-mode "Bash")
                                            (emacs-lisp-mode "Elisp")
                                            (latex-mode "LaTeX")
+                                           (latex-ts-mode "LaTeX")
                                            (lua-mode "Lua")
-                                           (python-mode "Python"))))
+                                           (lua-ts-mode "Lua")
+                                           (python-mode "Python")
+                                           (python-ts-mode "Python"))))
 
 ;;; Navigation
 
@@ -2301,10 +2319,6 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'emacs-lisp-mode-hook
           #'outline-headers-for-semicolon-buffers)
 
-;; latex-mode: outline settings
-(add-hook 'latex-mode-hook
-          #'outline-headers-for-percentage-buffers)
-
 ;; conf-xdefaults-mode: outline settings
 (add-hook 'conf-xdefaults-mode-hook
           #'outline-headers-for-exclamation-mark-buffers)
@@ -2324,14 +2338,26 @@ Elisp code explicitly in arbitrary buffers.")
 (add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . sh-mode))
 
-;; [la]tex-mode:
+;; [la]tex-mode: outline settings
+(add-hook 'latex-mode-hook
+          #'outline-headers-for-percentage-buffers)
+;; (add-hook 'latex-ts-mode-hook
+;;           #'outline-headers-for-percentage-buffers)
+
+;; [la]tex-mode: enable auto-mode
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
+;; (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-ts-mode))
+
+;; [la]tex-mode: adjust comment style
 (add-hook 'latex-mode-hook (lambda () (setq comment-add 0)))   ; use single comment
                                                                ; character only
+;; (add-hook 'latex-ts-mode-hook (lambda () (setq comment-add 0)))   ; use single comment
 
 ;; shell-script-mode: outline settings
 (add-hook 'sh-mode-hook
           #'outline-headers-for-hash-mark-buffers)
+;; (add-hook 'bash-ts-mode-hook
+;;           #'outline-headers-for-hash-mark-buffers)
 
 ;; visual-line-mode
 (add-hook 'help-mode-hook #'visual-line-mode)
