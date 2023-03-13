@@ -301,11 +301,11 @@
   (eglot-extend-to-xref t)
   :config
   ;; Change server for markdown-mode
-  (setf (alist-get 'markdown-mode eglot-server-programs)
-        (list "vscode-markdown-language-server" "--stdio"))
+  ;; (setf (alist-get 'markdown-mode eglot-server-programs)
+  ;;       (list "vscode-markdown-language-server" "--stdio"))
   ;; Alternative: add server for markdown-mode (this will shadow other entries)
-  ;; (add-to-list 'eglot-server-programs
-  ;;              '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '(markdown-mode . ("vscode-markdown-language-server" "--stdio")))
   ;; Add server for web-mode
   (add-to-list 'eglot-server-programs
                '(web-mode . ("vscode-html-language-server" "--stdio")))
