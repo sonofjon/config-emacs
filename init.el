@@ -2286,7 +2286,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; dired-after-readin: tag dired buffer names
 (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
 
-;; Disable side windows before Ediff
+;; ediff-before-setup-windows: disable side windows before Ediff
 (add-hook 'ediff-before-setup-windows-hook 'window-toggle-side-windows)
 
 ;; kill-buffer: collect list of killed buffers
@@ -2326,7 +2326,7 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'latex-mode-hook (lambda () (setq comment-add 0)))   ; use single comment
                                                                ; character only
 
-;; shell-scrip-mode: outline settings
+;; shell-script-mode: outline settings
 (add-hook 'sh-mode-hook
           #'outline-headers-for-hash-mark-buffers)
 
@@ -2592,6 +2592,7 @@ Elisp code explicitly in arbitrary buffers.")
           ;; Disable M-n
           (lambda () (keymap-local-unset "M-n")))
 
+;;[la]tex-mode
 (add-hook 'tex-mode-hook
           ;; Disable commands handled by Smartparens
           (lambda ()
