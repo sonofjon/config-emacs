@@ -281,8 +281,7 @@
               ;; ("C-c l h" . eldoc)
               ("C-c h" . eldoc)
               ("C-c l r" . eglot-rename))
-  :hook (;; standard modes
-         (sh-mode . eglot-ensure)
+  :hook ((sh-mode . eglot-ensure)
          ;; (html-mode . eglot-ensure)   ;  mhtml is default for HTML
          (mhtml-mode . eglot-ensure)
          (css-mode . eglot-ensure)
@@ -294,17 +293,6 @@
          (python-mode . eglot-ensure)
          (latex-mode . eglot-ensure)
          (yaml-mode . eglot-ensure))
-         ;; ;; Tree sitter modes
-         ;; (bash-ts-mode . eglot-ensure)
-         ;; ;; (html-ts-mode . eglot-ensure)       ; NA
-         ;; (css-ts-mode . eglot-ensure)
-         ;; (js-ts-mode . eglot-ensure)
-         ;; (json-ts-mode . eglot-ensure)
-         ;; ;; (lua-ts-mode . eglot-ensure)        ; NA
-         ;; ;; (markdown-ts-mode . eglot-ensure)   ; NA
-         ;; (python-ts-mode . eglot-ensure)
-         ;; ;; (latex-ts-mode . eglot-ensure)      ; NA
-         ;; (yaml-ts-mode . eglot-ensure))
   :init
   :custom
   ;; Shutdown server after buffer kill
@@ -358,14 +346,12 @@
 (use-package flymake-eslint
   :disabled
   :hook (js-mode . flymake-eslint-enable))
-         ;; (js-ts-mode . flymake-eslint-enable)))
 
 ;; flymake-json (a Flymake handler for json using jsonlint)
 ;;   Requires: jsonlint
 (use-package flymake-json
   ;; :disabled
   :hook (json-mode . flymake-json-load))
-         ;; (json-ts-mode . flymake-json-load)))
 
 ;; treesit-auto (automatically use tree-sitter enhanced major modes)
 (use-package treesit-auto
@@ -2341,8 +2327,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; [la]tex-mode: outline settings
 (add-hook 'latex-mode-hook
           #'outline-headers-for-percentage-buffers)
-;; (add-hook 'latex-ts-mode-hook
-;;           #'outline-headers-for-percentage-buffers)
 
 ;; [la]tex-mode: enable auto-mode
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
@@ -2351,13 +2335,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;; [la]tex-mode: adjust comment style
 (add-hook 'latex-mode-hook (lambda () (setq comment-add 0)))   ; use single comment
                                                                ; character only
-;; (add-hook 'latex-ts-mode-hook (lambda () (setq comment-add 0)))   ; use single comment
 
 ;; shell-script-mode: outline settings
 (add-hook 'sh-mode-hook
           #'outline-headers-for-hash-mark-buffers)
-;; (add-hook 'bash-ts-mode-hook
-;;           #'outline-headers-for-hash-mark-buffers)
 
 ;; visual-line-mode
 (add-hook 'help-mode-hook #'visual-line-mode)
@@ -2638,6 +2619,19 @@ Elisp code explicitly in arbitrary buffers.")
             (keymap-local-unset "C-c <")
             (keymap-local-unset "C-c >")
             (keymap-local-unset "C-c ?")))
+
+;; Treesitter
+;;   Copy standard mode hooks to their Treesitter equivalents
+(setq bash-ts-mode-hook sh-mode-hook)
+;; (setq html-ts-mode-hook html-mode-hook)
+(setq css-ts-mode-hook css-mode-hook)
+(setq js-ts-mode-hook js-mode-hook)
+(setq json-ts-mode-hook json-mode-hook)
+;; (setq lua-ts-mode-hook lua-mode-hook)
+;; (setq markdown-ts-mode-hook markdown-mode-hook)
+(setq python-ts-mode-hook python-mode-hook)
+;; (setq latex-ts-mode-hook latex-mode-hook)   ; TODO: tex-mode-hook
+(setq yaml-ts-mode-hook yaml-mode-hook)
 
 ;;;; Hydras
 
