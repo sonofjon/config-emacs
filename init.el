@@ -107,7 +107,6 @@
                           google-this
                           helpful
                           hydra
-                          i3wm-config-mode
                           keychain-environment
                           keyfreq
                           lingva
@@ -219,10 +218,6 @@
 (use-package ansible
   :mode "\\.yml$"
   :hook (yaml-mode . (lambda () (ansible 1))))
-
-;; i3wm-config-mode (major-mode for editing i3wm config files)
-(use-package i3wm-config-mode
-  :defer)
 
 ;; lua-mode (major-mode for editing Lua scripts)
 (use-package lua-mode
@@ -2302,10 +2297,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; emacs-lisp-mode: outline settings
 (add-hook 'emacs-lisp-mode-hook
           #'outline-headers-for-semicolon-buffers)
-
-;; i3wm-config-mode: outline settings
-(add-hook 'i3wm-config-mode-hook
-          #'outline-headers-for-hash-mark-buffers)
 
 ;; latex-mode: outline settings
 (add-hook 'latex-mode-hook
