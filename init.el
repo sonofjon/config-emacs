@@ -113,6 +113,7 @@
                           lorem-ipsum
                           lua-mode
                           magit
+			  magit-todos
                           marginalia
                           markdown-mode
                           mosey
@@ -1510,6 +1511,11 @@ Elisp code explicitly in arbitrary buffers.")
   (add-to-list 'magit-section-initial-visibility-alist '(commit-message . hide))
   ;; Hide diffstat section by default
   (add-to-list 'magit-section-initial-visibility-alist '(diffstat . hide)))
+
+;; magit-todo (show source file TODOs in Magit)
+(use-package magit-todo
+  :after magit
+  :hook (magit-mode . magit-todos-mode))
 
 ;; diff-hl (highlight uncommitted changes using VC)
 (use-package diff-hl
