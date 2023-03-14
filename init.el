@@ -1940,6 +1940,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Do not display continuation lines
 ;; (setq-default truncate-lines t)
 
+;; Show context around the opening paren if it is offscreen
+;;   TODO: Make the text in the echo area persist until key press
+(setq show-paren-context-when-offscreen t)
+
 ;;; Version control
 
 ;; Follow symlinks
