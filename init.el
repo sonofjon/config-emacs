@@ -71,7 +71,8 @@
 ;;;   Remove packages with (package-autoremove)
 ;;;   Use use-package for configuration only
 (customize-set-variable 'package-selected-packages
-                        '(all-the-icons
+                        '(aio   ; requirement for gptel
+                          all-the-icons
                           all-the-icons-dired
                           ansible
                           auto-package-update
@@ -149,8 +150,19 @@
                           yaml-mode
                           ztree))
 
+;;; Selected packages sources
+;;;   Install packages with (package-vc-install-selected-packages)
+;;;   Use use-package for configuration only
+(customize-set-variable 'package-vc-selected-packages
+                        '(
+                          ;; (foo . "0f39eb3fd9")   ; specific revision
+                          ;; (bar . nil)            ; any revision
+                          (gptel :url "https://github.com/karthink/gptel")))
+
+
 ;; Install selected packages
 (package-install-selected-packages)
+(package-vc-install-selected-packages)
 
 ;;; Early packages
 
@@ -1678,6 +1690,17 @@ Elisp code explicitly in arbitrary buffers.")
   (add-hook 'abbrev-mode-hook (lambda () (diminish 'abbrev-mode)))
   (add-hook 'visual-line-mode-hook (lambda () (diminish 'visual-line-mode))))
 
+;; aio (async/await for Emacs Lisp)
+;; (use-package aio)
+
+;; gptel (a simple ChatGPT client for Emacs)
+;;   Requires: aio
+(use-package gptel
+  :bind ("C-c G" . gptel))
+  ;; :custom
+  ;; Display response in chunks
+  ;; (gptel-playback t))
+
 ;; hydra (make bindings that stick around)
 (use-package hydra
   :defer)
@@ -2149,7 +2172,7 @@ Elisp code explicitly in arbitrary buffers.")
          (side . right)
          (slot . -1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
+        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
