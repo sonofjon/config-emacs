@@ -697,7 +697,7 @@ Elisp code explicitly in arbitrary buffers.")
          ("C-h B" . embark-bindings)) ; alternative for `describe-bindings'
   :init
   ;; Replace the key help with a completing-read interface
-  ;; (setq prefix-help-command #'embark-prefix-help-command)
+  (setq prefix-help-command #'embark-prefix-help-command)
   :custom
   ;; Hide some actions
   (embark-verbose-indicator-excluded-actions
