@@ -71,8 +71,7 @@
 ;;;   Remove packages with (package-autoremove)
 ;;;   Use use-package for configuration only
 (customize-set-variable 'package-selected-packages
-                        '(aio   ; requirement for gptel
-                          all-the-icons
+                        '(all-the-icons
                           all-the-icons-dired
                           ansible
                           auto-package-update
@@ -107,6 +106,7 @@
                           flymake-json
                           flyspell-correct
                           google-this
+                          gptel
                           helpful
                           hydra
                           keychain-environment
@@ -156,7 +156,6 @@
                         '(
                           ;; (foo . "0f39eb3fd9")   ; specific revision
                           ;; (bar . nil)            ; any revision
-                          (gptel :url "https://github.com/karthink/gptel")))
 
 
 ;; Install selected packages
@@ -1648,11 +1647,7 @@ Elisp code explicitly in arbitrary buffers.")
   (add-hook 'abbrev-mode-hook (lambda () (diminish 'abbrev-mode)))
   (add-hook 'visual-line-mode-hook (lambda () (diminish 'visual-line-mode))))
 
-;; aio (async/await for Emacs Lisp)
-;; (use-package aio)
-
 ;; gptel (a simple ChatGPT client for Emacs)
-;;   Requires: aio
 (use-package gptel
   :bind ("C-c G" . gptel))
   ;; :custom
