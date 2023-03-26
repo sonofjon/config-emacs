@@ -136,9 +136,6 @@
                           standard-themes
                           syntax-subword
                           transpose-frame
-                          treemacs
-                          treemacs-all-the-icons
-                          treemacs-magit
                           treesit-auto
                           undo-fu
                           unfill
@@ -994,78 +991,6 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   (osx-trash-setup)
   (setq delete-by-moving-to-trash t))
-
-;; treemacs (a tree style file explorer package)
-(use-package treemacs
-  :commands treemacs
-  :init
-  (which-key-add-key-based-replacements "C-c t" "treemacs")
-                                        ; add label for prefix keys
-  (which-key-add-major-mode-key-based-replacements 'treemacs-mode
-    "C-c C-p" "project"
-    "C-c C-w" "workspace")
-  :init
-  ;; No delay when switching projects
-  (add-hook 'treemacs-project-follow-mode-hook
-            (lambda () (setq treemacs--project-follow-delay 0)))
-  :custom
-  (treemacs-find-workspace-method 'find-for-file-or-manually-select)
-  ;; (treemacs-indentation-string " ")
-  ;; (treemacs-is-never-other-window nil)
-  ;; (treemacs-no-delete-other-windows t)
-  ;; (treemacs-project-follow-cleanup nil)
-  ;; (treemacs-persist-file (expand-file-name ".cache/(treemacs-persist"
-  ;;                                          user-emacs-directory)))
-  ;; (treemacs-position 'left)
-  ;; (treemacs-litter-directories '("/node_modules" "/.venv" "/.cask"))
-  ;; (treemacs-show-hidden-files t)
-  ;; (treemacs-sorting 'alphabetic-asc)
-  (treemacs-width 30)
-  :config
-  ;; Follow current buffer file in Treemacs window (on by default)
-  ;; (setq treemacs-follow-mode 1)
-  ;; Only display current project in Treemacs window
-  (setq treemacs-project-follow-mode 1)
-  ;; Show visual indicator in the fringe for highlighted file
-  (setq treemacs-fringe-indicator-mode 'always)
-  ;; Detect file system changes (on by default)
-  ;; (setq treemacs-filewatch-mode 1)
-  ;; Hide files ignored by Git
-  ;; (setq treemacs-hide-gitignored-files-mode 1)
-  ;; Display indentation guides
-  (setq treemacs-indent-guide-mode 1)
-  ;; Display git project annotations
-  (setq treemacs-git-commit-diff-mode 1)
-  ;; Highlight files using git status
-  (setq treemacs-git-mode 'deferred)
-  :bind (("M-0" . treemacs-select-window)
-         ("C-c t 1" . treemacs-delete-other-windows)
-         ("C-c t t" . treemacs)
-         ("C-c t d" . treemacs-select-directory)
-         ("C-c t f" . treemacs-find-file)
-         :map treemacs-mode-map
-         ;; Custom navigation
-         ("<down>" . treemacs-next-line)
-         ("<up>" . treemacs-previous-line)
-         ;; ("M-<down>" . treemacs-next-neighbour)   ; not needed
-         ;; ("M-<up>" . treemacs-previous-neighbour)   ; not needed
-         ("C-c C-p <down>" . treemacs-move-project-down)
-         ("C-c C-p <up>" . treemacs-move-project-up)
-         ("o l" . treemacs-visit-node-in-least-recently-used-window)))
-
-;; treemacs-all-the-icons (all-the-icons integration for Treemacs)
-(use-package treemacs-all-the-icons
-  :if (display-graphic-p)
-  :defer)
-
-;; treemacs-icons-dired (Treemacs icons for Dired)
-;; (use-package treemacs-icons-dired
-;;   :hook (dired-mode . treemacs-icons-dired-enable-once))
-
-;; treemacs-magit (Magit integration for Treemacs)
-(use-package treemacs-magit
-  :defer
-  :after (treemacs magit))
 
 ;;; Help
 

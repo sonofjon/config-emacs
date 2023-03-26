@@ -1034,21 +1034,6 @@ matching `my/quit-window-exceptions-regex'. Calls to
       (split-window-vertically))   ; makes a split with the other window twice
     (switch-to-buffer nil)))   ; restore the original window
                                ; in this part of the window
-;; Visit oldest window with Treemacs
-(defun treemacs-visit-node-in-least-recently-used-window (&optional arg)
-  "Open the current file or tag in the window selected by `get-lru-window'.
-Stay in the current window with a single prefix argument ARG, or close the
-Treemacs window with a double prefix argument."
-  (interactive "P")
-  (treemacs--execute-button-action
-   :window (get-lru-window (selected-frame) nil :not-selected)
-   :file-action (find-file (treemacs-safe-button-get btn :path))
-   :dir-action (dired (treemacs-safe-button-get btn :path))
-   :tag-section-action (treemacs--visit-or-expand/collapse-tag-node btn arg nil)
-   :tag-action (treemacs--goto-tag btn)
-   :window-arg arg
-   :ensure-window-split t
-   :no-match-explanation "Node is neither a file, a directory or a tag - nothing to do here."))
 
 ;;;; Web
 
