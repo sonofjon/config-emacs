@@ -1049,7 +1049,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Display remapped commands
   (which-key-compute-remaps t)
   ;; Don't show which-key buffer on C-h
-  ;; (which-key-use-C-h-commands nil)
+  (which-key-use-C-h-commands nil)
   :config
   ;; Min description length
   ;;   (same as max length; default is 0)
