@@ -1182,6 +1182,21 @@ When called from an eww buffer, provide the current link as
 (keymap-set buffer-navigation-repeat-map "<left>" nil)
 (keymap-set buffer-navigation-repeat-map "<right>" nil)
 
+;; Repeat state for arbitrary keymaps
+;; (defun repeated-prefix-help-command ()
+;;   TODO: Does not work
+;;   (interactive)
+;;   (when-let* ((keys (this-command-keys-vector))
+;;               (prefix (seq-take keys (1- (length keys))))
+;;               (orig-keymap (key-binding prefix 'accept-default))
+;;               (keymap (copy-keymap orig-keymap))
+;;               (exit-func (set-transient-map keymap t #'which-key-abort)))
+;;     (define-key keymap [remap keyboard-quit]
+;;       (lambda () (interactive) (funcall exit-func)))
+;;     (which-key--create-buffer-and-show nil keymap)))
+
+;; (setq prefix-help-command #'repeated-prefix-help-command)
+
 ;;; xterm key sequence mappings for rxvt
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
   "Add mappings for a given list of escape sequences and list of
