@@ -1053,9 +1053,10 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Min description length
   ;;   (same as max length; default is 0)
-  (customize-set-variable 'which-key-min-column-description-width
-                          (eval (aj8/which-key-description-length
-                                 (cdr (which-key--side-window-max-dimensions)))))
+  (customize-set-variable
+   'which-key-min-column-description-width
+   (eval (aj8/which-key-description-length
+          (cdr (which-key--side-window-max-dimensions)))))
   (which-key-mode 1))
 
 ;; devdocs (Emacs viewer for DevDocs)
