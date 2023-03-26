@@ -87,6 +87,7 @@
                           dashboard
                           devdocs
                           devdocs-browser
+                          dired-sidebar
                           diff-hl
                           diminish
                           dimmer
@@ -949,6 +950,35 @@ Elisp code explicitly in arbitrary buffers.")
   :bind ("C-c a" . lingva-translate))
 
 ;;; Files
+
+;; dired-sidebar (tree browser leveraging dired)
+(use-package dired-sidebar
+  :bind (("C-c x" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :custom
+  ;; Window rule
+  ;; (dired-sidebar-display-alist
+  ;;  '((side . right)
+  ;;    (slot . -1)
+  ;;    (window-width . aj8/side-window-width-dynamic)))
+  ;;    ;; (window-parameters . ((no-delete-other-windows . t)))))
+  ;; Don't delete dired-sidebar window
+  (dired-sidebar-no-delete-other-windows t)
+  ;; Refresh sidebar to match current file
+  ;; (dired-sidebar-should-follow-file t)   ; TODO: what does this do?
+  ;; Center cursor when updating tui interface
+  ;; (dired-sidebar-recenter-cursor-on-tui-update t)   ; TODO: what does this do?
+  ;; The tree style to display
+  (dired-sidebar-theme 'ascii)   ; none, ascii, icons (all-the-icons) (default)
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands))
 
 ;; osx-trash (system trash for OS X)
 (use-package osx-trash
@@ -2158,8 +2188,7 @@ Elisp code explicitly in arbitrary buffers.")
         ;;   Other
         ;;
         ((lambda (buffer _alist)
-           (with-current-buffer buffer (or (derived-mode-p 'dired-mode)
-                                           (derived-mode-p 'git-rebase-mode)
+           (with-current-buffer buffer (or (derived-mode-p 'git-rebase-mode)
                                            (derived-mode-p 'tabulated-list-mode))))
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
@@ -2314,7 +2343,7 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
 ;; dired-after-readin: tag dired buffer names
-(add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
+;; (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
 
 ;; ediff-before-setup-windows: disable side windows before Ediff
 (add-hook 'ediff-before-setup-windows-hook 'window-toggle-side-windows)
