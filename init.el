@@ -90,7 +90,6 @@
                           diff-hl
                           diminish
                           dimmer
-                          dot-mode
                           ef-themes
                           elfeed
                           embark
@@ -752,18 +751,6 @@ Elisp code explicitly in arbitrary buffers.")
   (put 'minibuffer-hide-completions 'interactive-form '(interactive)))
 
 ;;; Editing
-
-;; dot-mode (minor mode to repeat typing or commands)
-(use-package dot-mode
-  :diminish
-  :hook ((prog-mode . dot-mode-on)
-         (text-mode . dot-mode-on))
-  :bind (:map dot-mode-map ("C-c d" . dot-mode-execute))
-  :config
-  (setq dot-mode-verbose t)
-  (unbind-key "C-." dot-mode-map)
-  (unbind-key "C-c ." dot-mode-map)
-  (unbind-key "C-M-." dot-mode-map))
 
 ;; lorem-ipsum (insert dummy pseudo latin text)
 (use-package lorem-ipsum
