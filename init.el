@@ -1202,12 +1202,8 @@ Elisp code explicitly in arbitrary buffers.")
   :bind (:map flyspell-mode-map
               ;; ("C-;" . flyspell-auto-correct-word)
               ("C-;" . flyspell-correct-wrapper)
-              ("C-," . (lambda () (interactive)
-                         (aj8/call-interactively-wih-prefix-toggle
-                          #'flyspell-correct-previous)))
-              ("C-." . (lambda () (interactive)
-                         (aj8/call-interactively-wih-prefix-toggle
-                          #'flyspell-correct-next)))
+              ("C-," . flyspell-correct-previous)
+              ("C-." . flyspell-correct-next)
               ("C-c ," . my/flyspell-goto-previous-error)
               ("C-c ." . flyspell-goto-next-error)
               ("C-c ;" . flyspell-auto-correct-word)))
