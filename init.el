@@ -87,6 +87,7 @@
                           dashboard
                           devdocs
                           devdocs-browser
+                          dired-hide-dotfiles
                           dired-sidebar
                           diff-hl
                           diminish
@@ -979,6 +980,13 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
   (push 'rotate-windows dired-sidebar-toggle-hidden-commands))
+
+;; dired-hide-dotfiles (hide dotfiles in dired)
+(use-package dired-hide-dotfiles
+  :demand
+  ;; :hook (dired-mode . dired-hide-dotfiles-mode)
+  :bind (:map dired-mode-map
+              ("." . dired-hide-dotfiles-mode)))   ; default: dired-clean-directory
 
 ;; osx-trash (system trash for OS X)
 (use-package osx-trash
