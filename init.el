@@ -2285,6 +2285,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; after-change-major-mode: add Treesitter indicator in the modeline
 (add-hook 'after-change-major-mode-hook 'aj8/treesit-mode-name)
 
+;; messages-buffer-mode: auto-update *Messages* buffer
+(add-hook 'messages-buffer-mode-hook #'auto-revert-mode)
+
 ;;; Modes
 
 ;; emacs-lisp-mode: outline settings
