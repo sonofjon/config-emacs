@@ -800,9 +800,8 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package smartparens
   :diminish
   ;; :hook (emacs-lisp-mode smartparens-mode)
-  :hook ((prog-mode . smartparens-mode)
-         (prog-mode . show-smartparens-mode))
-         ;; (prog-mode . smartparens-strict-mode))
+  :hook (prog-mode . smartparens-mode)
+         ;; (prog-mode . smartparens-strict-mode)
          ;; (minibuffer-setup . turn-on-smartparens-strict-mode))
   :bind (:map smartparens-mode-map
               ;; Base set                                ; defaults:
