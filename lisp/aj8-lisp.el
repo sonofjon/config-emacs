@@ -286,39 +286,76 @@ respectively."
                (double-quote . "\"")
                (back-quote . "`")))
 
+;; TODO: Combine both functions to reuse common code
 (defun aj8/sp-down-sexp-dwim ()
-  "Move point up one level of s-expression (sexp) based on distance to surrounding parentheses.
+  "Move point down one level of s-expression (sexp).
 
-If POINT is closer to an opening parenthesis (in the forward
-direction) than to a closing parenthesis (in the backward
-direction), move forward down. Otherwise move backward down."
+The function moves point in the direction that makes sense, i.e.
+in the forward direction if point is surrounded by left
+parentheses, and in the backward direction if surrounded by right
+parentheses. If point is between a right and a left parenthesis
+it chooses the closest direction to move down.
+
+Note that the logic in this function only considers parenthesis-
+delimited s-expressions."
   (interactive)
-  (let* ((pos (point))
-         (forward-dist (save-excursion
-                         (skip-chars-forward "^(")
-                         (- (point) pos)))
-         (backward-dist (save-excursion
-                          (skip-chars-backward "^)")
-                          (- pos (point))))
-         (direction (if (> forward-dist backward-dist) -1 1)))
-    (sp-down-sexp direction)))
+  (when-let* ((prev-paren-pos (save-excursion
+                                (search-backward-regexp "[()]" nil t)))
+              (next-paren-pos (save-excursion
+                                (search-forward-regexp "[()]" nil t)))
+              (forward-dist (count-matches "\\S-" (point) next-paren-pos))
+              (backward-dist (count-matches "\\S-" prev-paren-pos (point)))
+              (direction (if (> forward-dist backward-dist) -1 1)))
+    ;; Move point in the appropriate direction
+    (cond ((and (= (char-after prev-paren-pos) ?\()
+                (= (char-before next-paren-pos) ?\())   ; left parens
+           (sp-down-sexp 1))
+          ((and (= (char-after prev-paren-pos) ?\))
+                (= (char-before next-paren-pos) ?\)))   ; right parens
+           (sp-down-sexp -1))
+          ((and (= (char-after prev-paren-pos) ?\()
+                (= (char-before next-paren-pos) ?\)))   ; inside parens
+           (sp-down-sexp (- direction)))
+          ((and (= (char-after prev-paren-pos) ?\))
+                (= (char-before next-paren-pos) ?\())   ; outside parens
+           (sp-down-sexp direction))
+          (t
+           (error "Condition not met!")))))
 
 (defun aj8/sp-up-sexp-dwim ()
-  "Move point down one level of s-expression (sexp) based on distance to surrounding parentheses.
+  "Move point up one level of s-expression (sexp).
 
-If POINT is closer to an opening parenthesis (in the backward
-direction) than to a closing parenthesis (in the forward
-direction), move backward up. Otherwise move forward up."
+The function moves point in the direction that makes sense, i.e.
+in the forward direction if point is surrounded by right
+parentheses, and in the backward direction if surrounded by left
+parentheses. If point is between a left and a right parenthesis
+it chooses the closest direction to move up.
+
+Note that the logic in this function only considers parenthesis-
+delimited s-expressions."
   (interactive)
-  (let* ((pos (point))
-         (forward-dist (save-excursion
-                         (skip-chars-forward "^)")
-                         (- (point) pos)))
-         (backward-dist (save-excursion
-                          (skip-chars-backward "^(")
-                          (- pos (point))))
-         (direction (if (> forward-dist backward-dist) -1 1)))
-    (sp-up-sexp direction)))
+  (when-let* ((prev-paren-pos (save-excursion
+                          (search-backward-regexp "[()]" nil t)))
+              (next-paren-pos (save-excursion
+                          (search-forward-regexp "[()]" nil t)))
+              (forward-dist (count-matches "\\S-" (point) next-paren-pos))
+              (backward-dist (count-matches "\\S-" prev-paren-pos (point)))
+              (direction (if (> forward-dist backward-dist) -1 1)))
+    ;; Move point in the appropriate direction
+    (cond ((and (= (char-after prev-paren-pos) ?\()
+                (= (char-before next-paren-pos) ?\())   ; left parens
+           (sp-up-sexp -1))
+          ((and (= (char-after prev-paren-pos) ?\))
+                (= (char-before next-paren-pos) ?\)))   ; right parens
+           (sp-up-sexp 1))
+          ((and (= (char-after prev-paren-pos) ?\()
+                (= (char-before next-paren-pos) ?\)))   ; inside parens
+           (sp-up-sexp direction))
+          ((and (= (char-after prev-paren-pos) ?\))
+                (= (char-before next-paren-pos) ?\())   ; outside parens
+           (sp-up-sexp (- direction)))
+          (t
+           (error "Condition not met!")))))
 
 ;;; Misc
 
