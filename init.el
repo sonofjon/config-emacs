@@ -790,9 +790,9 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; repeat-help (display keybindings for repeat-mode)
 (use-package repeat-help
-  :hook (repeat-mode . repeat-help-mode)
-  :custom
-  (repeat-help-auto t))
+  :hook (repeat-mode . repeat-help-mode))
+  ;; :custom
+  ;; (repeat-help-auto t))
 
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
 (use-package smartparens
