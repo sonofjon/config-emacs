@@ -303,10 +303,8 @@ delimited s-expressions."
                                 (search-backward-regexp "[()]" nil t)))
               (next-paren-pos (save-excursion
                                 (search-forward-regexp "[()]" nil t)))
-              (forward-dist (count-matches "[^\n[:space:]]"
-                                           (point) next-paren-pos))
-              (backward-dist (count-matches "[^\n[:space:]]"
-                                            prev-paren-pos (point))))
+              (forward-dist (- next-paren-pos (point)))
+              (backward-dist (- (point) prev-paren-pos)))
     (let* ((prev-paren-left-p (= (char-after prev-paren-pos) ?\())
            (next-paren-left-p (= (char-before next-paren-pos) ?\())
            (prev-paren-right-p (= (char-after prev-paren-pos) ?\)))
@@ -339,10 +337,8 @@ delimited s-expressions."
                                 (search-backward-regexp "[()]" nil t)))
               (next-paren-pos (save-excursion
                                 (search-forward-regexp "[()]" nil t)))
-              (forward-dist (count-matches "[^\n[:space:]]"
-                                           (point) next-paren-pos))
-              (backward-dist (count-matches "[^\n[:space:]]"
-                                            prev-paren-pos (point))))
+              (forward-dist (- next-paren-pos (point)))
+              (backward-dist (- (point) prev-paren-pos)))
     (let* ((prev-paren-left-p (= (char-after prev-paren-pos) ?\())
            (next-paren-left-p (= (char-before next-paren-pos) ?\())
            (prev-paren-right-p (= (char-after prev-paren-pos) ?\)))
