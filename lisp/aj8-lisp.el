@@ -303,24 +303,25 @@ delimited s-expressions."
                                 (search-backward-regexp "[()]" nil t)))
               (next-paren-pos (save-excursion
                                 (search-forward-regexp "[()]" nil t)))
-              (forward-dist (count-matches "\\S-" (point) next-paren-pos))
-              (backward-dist (count-matches "\\S-" prev-paren-pos (point)))
-              (direction (if (> forward-dist backward-dist) -1 1)))
-    ;; Move point in the appropriate direction
-    (cond ((and (= (char-after prev-paren-pos) ?\()
-                (= (char-before next-paren-pos) ?\())   ; left parens
-           (sp-down-sexp 1))
-          ((and (= (char-after prev-paren-pos) ?\))
-                (= (char-before next-paren-pos) ?\)))   ; right parens
-           (sp-down-sexp -1))
-          ((and (= (char-after prev-paren-pos) ?\()
-                (= (char-before next-paren-pos) ?\)))   ; inside parens
-           (sp-down-sexp (- direction)))
-          ((and (= (char-after prev-paren-pos) ?\))
-                (= (char-before next-paren-pos) ?\())   ; outside parens
-           (sp-down-sexp direction))
-          (t
-           (error "Condition not met!")))))
+              (forward-dist (count-matches "[^\n[:space:]]"
+                                           (point) next-paren-pos))
+              (backward-dist (count-matches "[^\n[:space:]]"
+                                            prev-paren-pos (point))))
+    (let* ((prev-paren-left-p (= (char-after prev-paren-pos) ?\())
+           (next-paren-left-p (= (char-before next-paren-pos) ?\())
+           (prev-paren-right-p (= (char-after prev-paren-pos) ?\)))
+           (next-paren-right-p (= (char-before next-paren-pos) ?\)))
+           (point-eol-p (looking-at-p "[[:space:]]*$"))
+           (point-bol-p (looking-back "^[[:space:]]*"))
+           (direction (cond ((and prev-paren-left-p next-paren-left-p) 1)
+                            ((and prev-paren-right-p next-paren-right-p) -1)
+                            (point-bol-p 1)
+                            (point-eol-p -1)
+                            (t (if (> forward-dist backward-dist) -1 1)))))
+      ;; (message "Forward distance: '%s', backward distance: '%s'"
+      ;;          forward-dist backward-dist)
+      ;; Move point in the appropriate direction
+      (sp-down-sexp direction))))
 
 (defun aj8/sp-up-sexp-dwim ()
   "Move point up one level of s-expression (sexp).
@@ -335,27 +336,28 @@ Note that the logic in this function only considers parenthesis-
 delimited s-expressions."
   (interactive)
   (when-let* ((prev-paren-pos (save-excursion
-                          (search-backward-regexp "[()]" nil t)))
+                                (search-backward-regexp "[()]" nil t)))
               (next-paren-pos (save-excursion
-                          (search-forward-regexp "[()]" nil t)))
-              (forward-dist (count-matches "\\S-" (point) next-paren-pos))
-              (backward-dist (count-matches "\\S-" prev-paren-pos (point)))
-              (direction (if (> forward-dist backward-dist) -1 1)))
-    ;; Move point in the appropriate direction
-    (cond ((and (= (char-after prev-paren-pos) ?\()
-                (= (char-before next-paren-pos) ?\())   ; left parens
-           (sp-up-sexp -1))
-          ((and (= (char-after prev-paren-pos) ?\))
-                (= (char-before next-paren-pos) ?\)))   ; right parens
-           (sp-up-sexp 1))
-          ((and (= (char-after prev-paren-pos) ?\()
-                (= (char-before next-paren-pos) ?\)))   ; inside parens
-           (sp-up-sexp direction))
-          ((and (= (char-after prev-paren-pos) ?\))
-                (= (char-before next-paren-pos) ?\())   ; outside parens
-           (sp-up-sexp (- direction)))
-          (t
-           (error "Condition not met!")))))
+                                (search-forward-regexp "[()]" nil t)))
+              (forward-dist (count-matches "[^\n[:space:]]"
+                                           (point) next-paren-pos))
+              (backward-dist (count-matches "[^\n[:space:]]"
+                                            prev-paren-pos (point))))
+    (let* ((prev-paren-left-p (= (char-after prev-paren-pos) ?\())
+           (next-paren-left-p (= (char-before next-paren-pos) ?\())
+           (prev-paren-right-p (= (char-after prev-paren-pos) ?\)))
+           (next-paren-right-p (= (char-before next-paren-pos) ?\)))
+           (point-eol-p (looking-at-p "[[:space:]]*$"))
+           (point-bol-p (looking-back "^[[:space:]]*"))
+           (direction (cond ((and prev-paren-left-p next-paren-left-p) -1)
+                            ((and prev-paren-right-p next-paren-right-p) 1)
+                            (point-bol-p -1)
+                            (point-eol-p 1)
+                            (t (if (> forward-dist backward-dist) -1 1)))))
+      ;; (message "Forward distance: '%s', backward distance: '%s'"
+      ;;          forward-dist backward-dist)
+      ;; Move point in the appropriate direction
+      (sp-up-sexp direction))))
 
 ;;; Misc
 
