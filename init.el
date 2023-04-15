@@ -559,7 +559,6 @@
          ("C-c u h" . cape-history)          ; only in shell or minibuffer?
          ("C-c u w" . cape-dict)             ; requires wamerican
          ("C-c u f" . cape-file)
-         ("C-c u i" . cape-ispell)
          ("C-c u k" . cape-keyword)
          ("C-c u l" . cape-line)
          ("C-c u s" . cape-symbol)           ; complete symbols everywhere
@@ -568,42 +567,42 @@
   ;; Custom completion at point functions
   ;;   Note that the order of the capf:s matter. Also, cape-file does
   ;;   not merge well with the other capf:s, see documentation.
-  (defalias 'cape-dabbrev+symbol+keyword+ispell (cape-super-capf #'cape-dabbrev
+  (defalias 'cape-dabbrev+symbol+keyword+dict (cape-super-capf #'cape-dabbrev
   ;; TODO: doesnt remember recent candidates
-                                                                 #'cape-symbol
-                                                                 #'cape-keyword
-                                                                 #'cape-ispell)
+                                                               #'cape-symbol
+                                                               #'cape-keyword
+                                                               #'cape-dict)
     "Completion at point function for Cape, combining completions
-from Dabbrev, symbol, keyword and Ispell.")
-  (defalias 'cape-ispell+dabbrev+symbol+keyword (cape-super-capf #'cape-ispell
-    ;; TODO: symbol completion fails on hyphen when ispell precedes symbol
-                                                                 #'cape-dabbrev
-                                                                 #'cape-symbol
-                                                                 #'cape-keyword)
+from Dabbrev, symbol, keyword and dictionary.")
+  (defalias 'cape-dict+dabbrev+symbol+keyword (cape-super-capf #'cape-dict
+    ;; TODO: symbol completion fails on hyphen when dict precedes symbol
+                                                               #'cape-dabbrev
+                                                               #'cape-symbol
+                                                               #'cape-keyword)
     "Completion at point function for Cape, combining completions
-from Ispell, Dabbrev, symbol and keyword.")
-  (defalias 'cape-symbol+keyword+ispell (cape-super-capf #'cape-symbol
-                                                         #'cape-keyword
-                                                         #'cape-ispell)
+from dictionary, Dabbrev, symbol and keyword.")
+  (defalias 'cape-symbol+keyword+dict (cape-super-capf #'cape-symbol
+                                                       #'cape-keyword
+                                                       #'cape-dict)
     "Completion at point function for Cape, combining completions
-from symbol, keyword and Ispell.")
-  (defalias 'cape-ispell+symbol+keyword (cape-super-capf #'cape-ispell
-                                                         #'cape-symbol
-                                                         #'cape-keyword)
+from symbol, keyword and dictionary.")
+  (defalias 'cape-dict+symbol+keyword (cape-super-capf #'cape-dict
+                                                       #'cape-symbol
+                                                       #'cape-keyword)
     "Completion at point function for Cape, combining completions
-from Ispell, symbol and keyword.")
-  (defalias 'cape-ispell+dabbrev (cape-super-capf #'cape-ispell
-                                                  #'cape-dabbrev)
+from dictionary, symbol and keyword.")
+  (defalias 'cape-dict+dabbrev (cape-super-capf #'cape-dict
+                                                #'cape-dabbrev)
     "Completion at point function for Cape, combining completions
-from Ispell and Dabbrev.")
-  (defalias 'cape-dabbrev+ispell (cape-super-capf #'cape-dabbrev
-                                                  #'cape-ispell)
-    "Completion at point function for Cape, combining completions
-from Dabbrev and Ispell.")
+from dictionary and Dabbrev.")
   (defalias 'cape-dabbrev+dict (cape-super-capf #'cape-dabbrev
                                                 #'cape-dict)
     "Completion at point function for Cape, combining completions
-from Dabbrev and Ispell.")
+from Dabbrev and dictionary.")
+  (defalias 'cape-dabbrev+dict (cape-super-capf #'cape-dabbrev
+                                                #'cape-dict)
+    "Completion at point function for Cape, combining completions
+from Dabbrev and dictionary.")
   (defalias 'my/cape-elisp (cape-interactive-capf #'elisp-completion-at-point)
     "Completion at point function for Cape, allowing for completion of
 Elisp code explicitly in arbitrary buffers.")
@@ -643,7 +642,6 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (add-to-list 'completion-at-point-functions #'cape-keyword)
   ;; (add-to-list 'completion-at-point-functions #'cape-tex)
   ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;; (add-to-list 'completion-at-point-functions #'cape-ispell)
   ;; (add-to-list 'completion-at-point-functions #'cape-dict)
   ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
   ;; (add-to-list 'completion-at-point-functions #'cape-line)
@@ -651,34 +649,34 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Completion at point function for prog-mode
   (defun aj8/prog-mode-capf ()
     ;; (add-hook 'completion-at-point-functions
-    ;;            #'cape-symbol+keyword+ispell nil t))
+    ;;            #'cape-symbol+keyword+dict nil t))
     ;; (add-to-list 'completion-at-point-functions
-    ;;              #'cape-symbol+keyword+ispell))
+    ;;              #'cape-symbol+keyword+dict))
     ;; (setq-local completion-at-point-functions
-    ;;             (list #'cape-symbol+keyword+ispell t)))
+    ;;             (list #'cape-symbol+keyword+dict t)))
     ;; Insert custom capf before `t' in buffer-local value
     (setq-local completion-at-point-functions
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
                                    (current-buffer)))
-                        (list #'cape-symbol+keyword+ispell t))))
+                        (list #'cape-symbol+keyword+dict t))))
   (add-hook 'prog-mode-hook #'aj8/prog-mode-capf)
   ;; (add-hook 'emacs-lisp-mode-hook #'aj8/prog-mode-capf)
 
   ;; Completion at point function for text-mode
   (defun aj8/text-mode-capf ()
     ;; (add-hook 'completion-at-point-functions
-    ;;            #'cape-ispell+symbol+keyword nil t))
+    ;;            #'cape-dict+symbol+keyword nil t))
     ;; (add-to-list 'completion-at-point-functions
-    ;;               #'cape-ispell+symbol+keyword))
+    ;;               #'cape-dict+symbol+keyword))
     ;; (setq-local completion-at-point-functions
-    ;;             (list#'cape-ispell+symbol+keyword t)))
+    ;;             (list#'cape-dict+symbol+keyword t)))
     ;; Insert custom capf before `t' in buffer-local value
     (setq-local completion-at-point-functions
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
                                    (current-buffer)))
-                        (list #'cape-dabbrev+ispell t))))
+                        (list #'cape-dabbrev+dict t))))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
 
   :custom
