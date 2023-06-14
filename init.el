@@ -1249,9 +1249,9 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package ef-themes
   ;; Themes:
   ;;   Light: `ef-day', `ef-spring', `ef-summer', `ef-light', `ef-duo-light',
-  ;;          `ef-trio-light', `ef-frost', `ef-cyprus'.
+  ;;          `ef-trio-light', `ef-frost', `ef-cyprus', `ef-kassio'.
   ;;   Dark:  `ef-night', `ef-autumn', `ef-winter', `ef-dark', `ef-duo-dark',
-  ;;          `ef-trio-dark', `ef-bio', `ef-cherie'.
+  ;;          `ef-trio-dark', `ef-bio', `ef-cherie', `ef-symbiosis'.
   ;;   All the themes are included in the variable `ef-themes-collection'.
   ;; Commands:
   ;;   `ef-themes-toggle'
