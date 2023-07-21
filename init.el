@@ -779,9 +779,6 @@ Elisp code explicitly in arbitrary buffers.")
                      ("e" . mc/edit-lines)))
 
 ;; multi-line (multi-line statements)
-;;   TODO: Doesn't work
-;;         https://github.com/IvanMalison/multi-line/issues/15
-;;         https://github.com/IvanMalison/multi-line/pull/16
 (use-package multi-line
   ;; Demand multi-line to avoid failure to load mode specific strategies
   ;;   (https://github.com/IvanMalison/multi-line/issues/8)
