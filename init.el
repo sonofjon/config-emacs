@@ -1646,9 +1646,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; gptel (a simple ChatGPT client for Emacs)
 (use-package gptel
   :bind ("C-c G" . gptel))
-  ;; :custom
-  ;; Display response in chunks
-  ;; (gptel-playback t))
 
 ;; hydra (make bindings that stick around)
 (use-package hydra
