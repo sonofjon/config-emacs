@@ -389,6 +389,7 @@ delimited s-expressions."
 ;;;; Files
 
 ;; Rename file and buffer
+;;   TODO: Replaced in Emacs 29 by rename-visited-file
 (defun my/rename-file-and-buffer (new-name)
   "Renames the current buffer and file to NEW-NAME."
   (interactive "sNew name: ")
