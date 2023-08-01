@@ -1648,6 +1648,12 @@ Elisp code explicitly in arbitrary buffers.")
 ;; gptel (a simple ChatGPT client for Emacs)
 (use-package gptel
   :bind ("C-c G" . gptel))
+  ;; :custom
+  ;; ;; Set model
+  ;; (gptel-model "gpt-3.5-turbo")   ; default
+  ;; (gptel-model "gpt-4")
+  ;; ;; Display response in chunks
+  ;; (gptel-playback t))
 
 ;; hydra (make bindings that stick around)
 (use-package hydra
