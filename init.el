@@ -1733,7 +1733,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Timeout for messages in active minibuffer
 (setq minibuffer-message-clear-timeout 1)
 
-;; Open *Help* buffers in same window
+;; Reuse windows for *Help* buffers
 (setq help-window-keep-selected t)
 
 ;; Open *info* buffers in same window
