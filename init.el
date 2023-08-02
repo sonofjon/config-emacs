@@ -2444,6 +2444,9 @@ Elisp code explicitly in arbitrary buffers.")
 (which-key-add-key-based-replacements "C-c H" "help")
                                         ; add label for prefix key
 
+;; Set keybindings for find-function and relatives
+(find-function-setup-keys)
+
 ;;; Navigation
 
 ;; Paragraph navigation
