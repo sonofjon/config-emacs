@@ -1739,8 +1739,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Open *info* buffers in same window
 (setq info-lookup-other-window-flag nil)
 
-;; Reuse existing help window
-;; (setq help-window-select t)
+;; Always select help window
+(setq help-window-select t)
 
 ;; Reuse dired buffers
 (setf dired-kill-when-opening-new-dired-buffer t)
