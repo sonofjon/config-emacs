@@ -1816,6 +1816,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; (setq dired-listing-switches "-agho --group-directories-first")
 (setq dired-listing-switches "-agho")   ; macOS version
 
+;; Guess target directory in dired
+(setq dired-dwim-target t)
+
 ;;; Help
 
 ;; More extensive apropos commands
