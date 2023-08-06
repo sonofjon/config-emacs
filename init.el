@@ -985,7 +985,7 @@ Elisp code explicitly in arbitrary buffers.")
   :if (featurep 'ns)   ; macOS
   :config
   (osx-trash-setup)
-  (setq delete-by-moving-to-trash t))
+  (setq delete-by-moving-to-trash t))   ; TODO: add this to all systems
 
 ;;; Help
 
