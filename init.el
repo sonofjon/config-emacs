@@ -157,7 +157,8 @@
  '(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
    ;; (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el"
-   (obsidian-yaml-tools :url "/Users/andreas/projects/obsidian-yaml-tools.el"
+   (obsidian-yaml-tools :url (concat (expand-file-name "~")
+                                     "/projects/obsidian-yaml-tools.el")
                         :branch "dev")))
 
 ;; Install selected packages
