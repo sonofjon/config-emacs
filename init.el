@@ -2315,6 +2315,9 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'conf-xdefaults-mode-hook
           #'outline-headers-for-exclamation-mark-buffers)
 
+;; dired-mode: use dired-x
+(add-hook 'dired-mode-hook (lambda () (require 'dired-x)))
+
 ;; Info-mode: allow multiple Info buffers
 (add-hook 'Info-mode-hook #'rename-uniquely)
 
