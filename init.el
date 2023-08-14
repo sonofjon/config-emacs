@@ -971,6 +971,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;;    (slot . -1)
   ;;    (window-width . aj8/side-window-width-dynamic)))
   ;;    ;; (window-parameters . ((no-delete-other-windows . t)))))
+  ;; Set custom width
+  (dired-sidebar-width 30)   ; default is 35
   ;; Don't delete dired-sidebar window
   (dired-sidebar-no-delete-other-windows t)
   ;; Refresh sidebar to match current file
