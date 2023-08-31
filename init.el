@@ -745,6 +745,8 @@ Elisp code explicitly in arbitrary buffers.")
                                       aj8/orderless-dispatch-without-if-bang)))
 
 ;; vertico (VERTical Interactive COmpletion)
+;;   TODO: Set up vertico-repeat
+;;         Set up vertico-grid-mode (with vertico-multiform-mode?)?
 (use-package vertico
   :bind (:map vertico-map
               ("?" . minibuffer-completion-help)
