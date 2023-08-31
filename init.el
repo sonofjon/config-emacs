@@ -77,7 +77,8 @@
 ;;;   Remove packages with (package-autoremove)
 ;;;   Use use-package for configuration only
 (customize-set-variable 'package-selected-packages
-                        '(all-the-icons
+                        '(ahk-mode
+                          all-the-icons
                           all-the-icons-dired
                           ansible
                           auto-package-update
@@ -236,6 +237,10 @@
   (dimmer-mode 1))
 
 ;;; Coding
+
+;; ahk-mode (major-mode for editing AHK (AutoHotkey and AutoHotkey_L))
+(use-package ahk-mode
+  :mode "\\.ahk$")
 
 ;; ansible (minor-mode for editing Ansible (YAML) files)
 (use-package ansible
