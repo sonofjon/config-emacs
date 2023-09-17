@@ -107,7 +107,7 @@
                           esup
                           eterm-256color
                           exec-path-from-shell
-                          expand-region
+                          expreg
                           flymake-aspell
                           flymake-eslint
                           flymake-json
@@ -1154,10 +1154,10 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Selection
 
-;; expand-region (increase selected region by semantic units)
-(use-package expand-region
-  :bind (("C-c =" . er/expand-region)
-         ("C-c -" . er/contract-region)))
+;; expreg (simple expand region)
+(use-package expreg
+  :bind (("C-c =" . expreg-expand)
+         ("C-c -" . expreg-contract)))
 
 ;;; Spelling
 
