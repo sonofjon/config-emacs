@@ -1498,8 +1498,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Hide diffstat section by default
   (add-to-list 'magit-section-initial-visibility-alist '(diffstat . hide)))
 
-;; magit-todo (show source file TODOs in Magit)
-(use-package magit-todo
+;; magit-todos (show source file TODOs in Magit)
+(use-package magit-todos
   :after magit
   :hook (magit-mode . magit-todos-mode))
 
