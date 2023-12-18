@@ -582,43 +582,43 @@
   ;; Custom completion at point functions
   ;;   Note that the order of the capf:s matter. Also, cape-file does
   ;;   not merge well with the other capf:s, see documentation.
-  (defalias 'cape-dabbrev+symbol+keyword+dict (cape-super-capf #'cape-dabbrev
+  (defalias 'cape-dabbrev+symbol+keyword+dict (cape-capf-super #'cape-dabbrev
   ;; TODO: doesnt remember recent candidates
                                                                #'cape-symbol
                                                                #'cape-keyword
                                                                #'cape-dict)
     "Completion at point function for Cape, combining completions
 from Dabbrev, symbol, keyword and dictionary.")
-  (defalias 'cape-dict+dabbrev+symbol+keyword (cape-super-capf #'cape-dict
+  (defalias 'cape-dict+dabbrev+symbol+keyword (cape-capf-super #'cape-dict
     ;; TODO: symbol completion fails on hyphen when dict precedes symbol
                                                                #'cape-dabbrev
                                                                #'cape-symbol
                                                                #'cape-keyword)
     "Completion at point function for Cape, combining completions
 from dictionary, Dabbrev, symbol and keyword.")
-  (defalias 'cape-symbol+keyword+dict (cape-super-capf #'cape-symbol
+  (defalias 'cape-symbol+keyword+dict (cape-capf-super #'cape-symbol
                                                        #'cape-keyword
                                                        #'cape-dict)
     "Completion at point function for Cape, combining completions
 from symbol, keyword and dictionary.")
-  (defalias 'cape-dict+symbol+keyword (cape-super-capf #'cape-dict
+  (defalias 'cape-dict+symbol+keyword (cape-capf-super #'cape-dict
                                                        #'cape-symbol
                                                        #'cape-keyword)
     "Completion at point function for Cape, combining completions
 from dictionary, symbol and keyword.")
-  (defalias 'cape-dict+dabbrev (cape-super-capf #'cape-dict
+  (defalias 'cape-dict+dabbrev (cape-capf-super #'cape-dict
                                                 #'cape-dabbrev)
     "Completion at point function for Cape, combining completions
 from dictionary and Dabbrev.")
-  (defalias 'cape-dabbrev+dict (cape-super-capf #'cape-dabbrev
+  (defalias 'cape-dabbrev+dict (cape-capf-super #'cape-dabbrev
                                                 #'cape-dict)
     "Completion at point function for Cape, combining completions
 from Dabbrev and dictionary.")
-  (defalias 'cape-dabbrev+dict (cape-super-capf #'cape-dabbrev
+  (defalias 'cape-dabbrev+dict (cape-capf-super #'cape-dabbrev
                                                 #'cape-dict)
     "Completion at point function for Cape, combining completions
 from Dabbrev and dictionary.")
-  (defalias 'my/cape-elisp (cape-interactive-capf #'elisp-completion-at-point)
+  (defalias 'my/cape-elisp (cape-capf-interactive #'elisp-completion-at-point)
     "Completion at point function for Cape, allowing for completion of
 Elisp code explicitly in arbitrary buffers.")
 
