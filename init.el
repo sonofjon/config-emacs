@@ -1498,7 +1498,9 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Hide diffstat section by default
   (add-to-list 'magit-section-initial-visibility-alist '(diffstat . hide))
   ;; Add Git user to header
-  (add-to-list 'magit-status-headers-hook 'magit-insert-user-header t))
+  (add-to-list 'magit-status-headers-hook 'magit-insert-user-header t)
+  ;; Reduce log margin
+  (setf (nth 4 magit-log-margin) 15))
 
 ;; magit-todos (show source file TODOs in Magit)
 (use-package magit-todos
