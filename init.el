@@ -1471,7 +1471,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Set path to known git repositories
   (magit-repository-directories
    '(("~/dotfiles"                . 1)
-     ("~/projects"                . 1)
+     ("~/projects"                . 2)
      ("~/git"                     . 1)))
   ;; Set alternative display function
   ;; (magit-display-buffer-function 'magit-display-buffer-fullcolumn-most-v1)
