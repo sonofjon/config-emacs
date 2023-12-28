@@ -2294,8 +2294,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;; dired-after-readin: tag dired buffer names
 ;; (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
 
-;; ediff-before-setup-windows: disable side windows before Ediff
-(add-hook 'ediff-before-setup-windows-hook 'window-toggle-side-windows)
+;; ediff-before-setup: disable side windows before Ediff
+(add-hook 'ediff-before-setup-hook 'window-toggle-side-windows)
 
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
