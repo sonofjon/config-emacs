@@ -2296,6 +2296,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; ediff-before-setup: disable side windows before Ediff
 (add-hook 'ediff-before-setup-hook 'window-toggle-side-windows)
+(add-hook 'ediff-quit-hook 'window-toggle-side-windows)
 
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
