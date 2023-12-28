@@ -1500,7 +1500,9 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Add Git user to header
   (add-to-list 'magit-status-headers-hook 'magit-insert-user-header t)
   ;; Reduce log margin
-  (setf (nth 4 magit-log-margin) 15))
+  (setf (nth 4 magit-log-margin) 15)
+  ;; Use abbreviated ages in log margin
+  (setf (nth 1 magit-log-margin) 'age-abbreviated))
 
 ;; magit-todos (show source file TODOs in Magit)
 (use-package magit-todos
