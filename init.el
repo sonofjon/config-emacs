@@ -2671,6 +2671,61 @@ Elisp code explicitly in arbitrary buffers.")
 (which-key-add-key-based-replacements "C-c y" "hydra")
                                         ; add label for prefix key
 
+;;; Editing
+
+;; Markdown
+(defhydra hydra-markdown (:hint nil)
+  "
+Formatting:     _B_: bold           _I_: italic
+                _Q_: quote          _C_: code           _P_: pre-formatted
+Headings:       _H_: automatic
+                _1_: h1       _2_: h2       _3_: h3       _4_: h4
+Lists:          _m_: new item       _<_: promote        _>_: demote
+Tables:         _a_: align          _s_: sort           _t_: transpose
+  Navigation    _n_: next row       _p_: previous row
+                _f_: forward cell   _b_: backward cell
+  Rows          ___: insert         _-_: delete
+  Columns       _|_: insert         _\\_: delete
+                _h_: move left      _l_: move right
+All:
+  Move          _k_: move up        _j_: move down
+
+"
+  ("B" markdown-insert-bold)
+  ("I" markdown-insert-italic)
+  ("Q" markdown-insert-blockquote :color gray)
+  ("C" markdown-insert-code :color gray)
+  ("P" markdown-insert-pre :color gray)
+
+  ("H" markdown-insert-header-dwim)
+  ("1" markdown-insert-header-atx-1)
+  ("2" markdown-insert-header-atx-2)
+  ("3" markdown-insert-header-atx-3)
+  ("4" markdown-insert-header-atx-4)
+
+  ("m" markdown-insert-list-item)
+  ("<" markdown-promote)
+  (">" markdown-demote)
+
+  ("a" markdown-table-align)
+  ("s" markdown-table-sort-lines)
+  ("t" markdown-table-transpose)
+  ("n" markdown-table-next-row)
+  ("p" aj8/markdown-table-prev-row)
+  ("f" markdown-table-forward-cell)
+  ("b" markdown-table-backward-cell)
+  ("_" markdown-table-insert-row)
+  ("-" markdown-table-delete-row)
+  ("|" markdown-table-insert-column)
+  ("\\" markdown-table-delete-column)
+  ("h" markdown-table-move-column-left)
+  ("l" markdown-table-move-column-right)
+
+  ("k" markdown-move-up)
+  ("j" markdown-move-down))
+
+(keymap-global-set "C-c y m" #'hydra-markdown/body)
+
 ;;; Windows
 (defhydra hydra-window (:hint nil)
   "
