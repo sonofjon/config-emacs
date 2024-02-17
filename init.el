@@ -2342,11 +2342,11 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'outline-mode-hook
           (lambda () (setq outline-regexp "[*]+")))
 
-;; powershell: outline settings
+;; powershell-mode: outline settings
 (add-hook 'powershell-mode-hook
           #'outline-headers-for-hash-mark-buffers)
 
-;; python: outline settings
+;; python-mode: outline settings
 (add-hook 'python-mode-hook
           #'outline-headers-for-hash-mark-buffers)
 
