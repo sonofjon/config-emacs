@@ -1503,6 +1503,10 @@ Elisp code explicitly in arbitrary buffers.")
   (setf (nth 4 magit-log-margin) 15)
   ;; Use abbreviated ages in log margin
   (setf (nth 1 magit-log-margin) 'age-abbreviated))
+  ;; Activate Smerge hydra on file visit in smerge-mode (TODO)
+  ;; (add-hook 'magit-diff-visit-file-hook (lambda ()
+  ;;                                  (when smerge-mode
+  ;;                                    (hydra-smerge/body)))))
 
 ;; magit-todos (show source file TODOs in Magit)
 (use-package magit-todos
