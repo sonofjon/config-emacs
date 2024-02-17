@@ -2353,6 +2353,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; sh-mode: for non-standard bash config files
 (add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.profile_.*\\'" . sh-mode))
 
 ;; [la]tex-mode: outline settings
 (add-hook 'latex-mode-hook
