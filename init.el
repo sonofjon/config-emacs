@@ -1852,6 +1852,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Guess target directory in dired
 (setq dired-dwim-target t)
 
+;; Number of saved recent files
+(setq recentf-max-saved-items 100)
+
 ;;; Help
 
 ;; More extensive apropos commands
