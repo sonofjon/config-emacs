@@ -2794,7 +2794,9 @@ All:
 
 (keymap-global-set "C-c y w" #'hydra-window/body)
 
-;;; Scrolling
+;;; Navigation
+
+;; Scrolling
 (defhydra hydra-scroll (:hint nil)
   "
 ^Line^            ^Paragraph^
@@ -2812,7 +2814,7 @@ Scroll by line or paragraph.
 
 (keymap-global-set "C-c y s" #'hydra-scroll/body)
 
-;;; Line navigation
+;; Line navigation
 (defhydra hydra-navigation (:hint nil)
   "
 ^Line^            ^Comment^
