@@ -167,6 +167,12 @@ major-modes."
 
 ;;;; Coding
 
+;; (defun aj8/python-mode-hook ()
+;;   "Custom Python mode hook."
+;;   ;; Exclude virtual environment directories from project
+;;   ;;   Not needed: use M-s G
+;;   (setq-local project-ignored-files '(".venv/*")))
+
 ;;;; Completion
 
 ;;; Corfu navigation

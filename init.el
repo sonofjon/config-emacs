@@ -2350,6 +2350,9 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'python-mode-hook
           #'outline-headers-for-hash-mark-buffers)
 
+;; python-mode: other settings
+;; (add-hook 'python-mode-hook 'aj8/python-mode-hook)
+
 ;; sh-mode: for non-standard bash config files
 (add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . sh-mode))
