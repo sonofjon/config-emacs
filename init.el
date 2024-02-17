@@ -1853,6 +1853,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Guess target directory in dired
 (setq dired-dwim-target t)
 
+;; Don't display free disk space
+(setq dired-free-space nil)
+
 ;; Number of saved recent files
 (setq recentf-max-saved-items 100)
 
