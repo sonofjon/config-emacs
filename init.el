@@ -2336,6 +2336,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; dired-mode: use dired-x
 (add-hook 'dired-mode-hook (lambda () (require 'dired-x)))
 
+;; dired-mode: hide details
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
+
 ;; Info-mode: allow multiple Info buffers
 (add-hook 'Info-mode-hook #'rename-uniquely)
 
