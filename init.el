@@ -576,7 +576,7 @@
          ("C-c u f" . cape-file)
          ("C-c u k" . cape-keyword)
          ("C-c u l" . cape-line)
-         ("C-c u s" . cape-symbol)           ; complete symbols everywhere
+         ("C-c u s" . cape-elisp-symbol)     ; complete symbols everywhere
          ("C-c u t" . cape-tex))
   :init
   ;; Custom completion at point functions
@@ -584,7 +584,7 @@
   ;;   not merge well with the other capf:s, see documentation.
   (defalias 'cape-dabbrev+symbol+keyword+dict (cape-capf-super #'cape-dabbrev
   ;; TODO: doesnt remember recent candidates
-                                                               #'cape-symbol
+                                                               #'cape-elisp-symbol
                                                                #'cape-keyword
                                                                #'cape-dict)
     "Completion at point function for Cape, combining completions
@@ -592,17 +592,17 @@ from Dabbrev, symbol, keyword and dictionary.")
   (defalias 'cape-dict+dabbrev+symbol+keyword (cape-capf-super #'cape-dict
     ;; TODO: symbol completion fails on hyphen when dict precedes symbol
                                                                #'cape-dabbrev
-                                                               #'cape-symbol
+                                                               #'cape-elisp-symbol
                                                                #'cape-keyword)
     "Completion at point function for Cape, combining completions
 from dictionary, Dabbrev, symbol and keyword.")
-  (defalias 'cape-symbol+keyword+dict (cape-capf-super #'cape-symbol
+  (defalias 'cape-symbol+keyword+dict (cape-capf-super #'cape-elisp-symbol
                                                        #'cape-keyword
                                                        #'cape-dict)
     "Completion at point function for Cape, combining completions
 from symbol, keyword and dictionary.")
   (defalias 'cape-dict+symbol+keyword (cape-capf-super #'cape-dict
-                                                       #'cape-symbol
+                                                       #'cape-elisp-symbol
                                                        #'cape-keyword)
     "Completion at point function for Cape, combining completions
 from dictionary, symbol and keyword.")
@@ -658,7 +658,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (add-to-list 'completion-at-point-functions #'cape-tex)
   ;; (add-to-list 'completion-at-point-functions #'cape-abbrev)
   ;; (add-to-list 'completion-at-point-functions #'cape-dict)
-  ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
+  ;; (add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
   ;; (add-to-list 'completion-at-point-functions #'cape-line)
 
   ;; Completion at point function for prog-mode
