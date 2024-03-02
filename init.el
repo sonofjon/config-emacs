@@ -1682,8 +1682,11 @@ Elisp code explicitly in arbitrary buffers.")
   ;; ;; Set model
   ;; (gptel-model "gpt-3.5-turbo")   ; default
   ;; (gptel-model "gpt-4")
-  ;; ;; Display response in chunks
-  ;; (gptel-playback t))
+  :config
+  ;; Scroll window automatically
+  (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
+  ;; Jump to next prompt after response
+  (add-hook 'gptel-post-response-functions 'gptel-end-of-response))
 
 ;; hydra (make bindings that stick around)
 (use-package hydra
