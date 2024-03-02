@@ -397,6 +397,7 @@
 
 ;; pet (executable and virtualenv tracker for python-mode)
 (use-package pet
+  :disabled
   :ensure-system-package dasel
   :config
   (add-hook 'python-base-mode-hook 'pet-mode -1))
