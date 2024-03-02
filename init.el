@@ -1677,7 +1677,8 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; gptel (a simple ChatGPT client for Emacs)
 (use-package gptel
-  :bind ("C-c G" . gptel))
+  :bind (("C-c t" . gptel)
+         ("C-c T" . gptel-menu))
   ;; :custom
   ;; ;; Set model
   ;; (gptel-model "gpt-3.5-turbo")   ; default
