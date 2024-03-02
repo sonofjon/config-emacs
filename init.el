@@ -140,6 +140,7 @@
                           python-black
                           repeat-help
                           rotate
+                          ruff-format
                           smartparens
                           ssh-agency
                           standard-themes
@@ -388,11 +389,16 @@
   ;; :disabled
   :hook (json-mode . flymake-json-load))
 
-;; flymake-ruff (a Flymake plugin for python files using ruff)
+;; flymake-ruff (a Flymake plugin for python files using Ruff)
 ;;   Requires: ruff
 (use-package flymake-ruff
   ;; :hook (python-mode . flymake-ruff-load))   ; without eglot
   :hook (eglot-managed-mode . flymake-ruff-load))   ; with eglot
+
+;; ruff-format (Ruff format Python source)
+;;   Requires: ruff
+(use-package ruff-format)
+  ;; :hook (python-mode . ruff-format-on-save-mode))
 
 ;; treesit-auto (automatically use tree-sitter enhanced major modes)
 (use-package treesit-auto
