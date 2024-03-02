@@ -111,6 +111,7 @@
                           flymake-aspell
                           flymake-eslint
                           flymake-json
+                          flymake-ruff
                           flyspell-correct
                           google-this
                           gptel
@@ -386,6 +387,12 @@
 (use-package flymake-json
   ;; :disabled
   :hook (json-mode . flymake-json-load))
+
+;; flymake-ruff (a Flymake plugin for python files using ruff)
+;;   Requires: ruff
+(use-package flymake-ruff
+  ;; :hook (python-mode . flymake-ruff-load))   ; without eglot
+  :hook (eglot-managed-mode . flymake-ruff-load))   ; with eglot
 
 ;; treesit-auto (automatically use tree-sitter enhanced major modes)
 (use-package treesit-auto
