@@ -363,35 +363,35 @@
   ;; :disabled)
 
 ;; flymake-aspell (Aspell checker for Flycheck)
-;;   Requires: aspell
 (use-package flymake-aspell
   :disabled
+  :ensure-system-package aspell
   :hook (text-mode . flymake-aspell-setup)
   :config
   ;; Don't prompt for saving personal dictionary
   (setq ispell-silently-savep t))
 
 ;; flymake-eslint (a Flymake backend for Javascript using eslint)
-;;   Requires: eslint
 (use-package flymake-eslint
+  :ensure-system-package eslint
   :disabled
   :hook (js-mode . flymake-eslint-enable))
 
 ;; flymake-json (a Flymake handler for json using jsonlint)
-;;   Requires: jsonlint
 (use-package flymake-json
   ;; :disabled
+  :ensure-system-package jsonlint
   :hook (json-mode . flymake-json-load))
 
 ;; flymake-ruff (a Flymake plugin for python files using Ruff)
-;;   Requires: ruff
 (use-package flymake-ruff
+  :ensure-system-package ruff
   ;; :hook (python-mode . flymake-ruff-load))   ; without eglot
   :hook (eglot-managed-mode . flymake-ruff-load))   ; with eglot
 
 ;; ruff-format (Ruff format Python source)
-;;   Requires: ruff
-(use-package ruff-format)
+(use-package ruff-format
+  :ensure-system-package ruff)
   ;; :hook (python-mode . ruff-format-on-save-mode))
 
 ;; treesit-auto (automatically use tree-sitter enhanced major modes)
@@ -567,6 +567,7 @@
 
 ;; corfu-terminal (Corfu popup on terminal)
 (use-package corfu-terminal
+  ;; :ensure-system-package wamerican
   :if (not (display-graphic-p))
   :after corfu
   :config
@@ -964,6 +965,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;;             X11: `xclip' or `xsel'
 ;;             Wayland: `wl-clipboard'
 (use-package xclip
+  ;; :ensure-system-package ...
   :config
   ;; Enable xclip globally
   (xclip-mode 1))
@@ -1206,7 +1208,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; vterm (fully-featured terminal emulator)
 (use-package vterm
-  ;; Requires: cmake, libvterm-dev
+  :ensure-system-package (cmake libvterm-dev)
   :commands vterm
   :config
   ;; Match the default Bash shell prompt
