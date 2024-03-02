@@ -134,6 +134,7 @@
                           orderless
                           osx-trash
                           outline-minor-faces
+                          pet
                           php-mode
                           popper
                           powershell
@@ -393,6 +394,12 @@
 (use-package ruff-format
   :ensure-system-package ruff)
   ;; :hook (python-mode . ruff-format-on-save-mode))
+
+;; pet (executable and virtualenv tracker for python-mode)
+(use-package pet
+  :ensure-system-package dasel
+  :config
+  (add-hook 'python-base-mode-hook 'pet-mode -1))
 
 ;; treesit-auto (automatically use tree-sitter enhanced major modes)
 (use-package treesit-auto
