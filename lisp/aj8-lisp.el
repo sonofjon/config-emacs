@@ -1326,7 +1326,7 @@ reported by `frame-width'. See
      ((= width 142)   ; brain10-windows
       ;; 0.15)   ; TODO: floats don't work
       21)
-     ((= width 137)   ; 98-28514
+     ((= width 138)   ; 98-28514
       26)
      ((= width 160)   ; brain10-windows (reduced font)
       24)
