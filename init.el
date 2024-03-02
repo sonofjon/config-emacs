@@ -137,7 +137,6 @@
                           php-mode
                           popper
                           powershell
-                          python-black
                           repeat-help
                           rotate
                           ruff-format
@@ -267,11 +266,6 @@
 (use-package powershell
   :defer
   :mode ("\\.ps1$" . powershell-mode))
-
-;; python-black (commands for reformatting Python code via black)
-(use-package python-black
-  :after python)
-  ;; :hook (python-mode . python-black-on-save-mode-enable-dwim))
 
 ;; web-mode (major-mode for editing web templates)
 (use-package web-mode
