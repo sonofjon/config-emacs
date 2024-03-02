@@ -2692,6 +2692,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; Treesitter
 ;;   Copy standard mode hooks to their Treesitter equivalents
+;;   TODO: use ...-base-mode-hook instead
 (setq bash-ts-mode-hook sh-mode-hook)
 ;; (setq html-ts-mode-hook html-mode-hook)
 (setq css-ts-mode-hook css-mode-hook)
