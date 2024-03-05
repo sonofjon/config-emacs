@@ -933,6 +933,13 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (smartparens-global-mode 1)
   ;; (show-smartparens-global-mode 1))
 
+;; string-inflection (underscore -> UPCASE -> CamelCase -> lowerCamelCase conversion of names)
+(use-package string-inflection
+  :bind (("C-c i c" . string-inflection-lower-camelcase)
+         ("C-c i k" . string-inflection-kebab-case)
+         ("C-c i s" . string-inflection-underscore)
+         ("C-c i x" . string-inflection-all-cycle)))   ; TODO: add repeat-map for this command
+
 ;; whole-line-or-region (operate on current line if region undefined)
 (use-package whole-line-or-region
   :defer 1
@@ -2542,7 +2549,7 @@ Elisp code explicitly in arbitrary buffers.")
 (keymap-global-set "C-c L" #'scroll-lock-mode)
 
 ;; Display Imenu
-(keymap-global-set "C-c i" #'imenu)
+;; (keymap-global-set "C-c i" #'imenu)
 
 ;; Xref
 (keymap-global-set "M-?" #'xref-find-references)      ; default
