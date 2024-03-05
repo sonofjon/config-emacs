@@ -381,7 +381,7 @@
 ;; flymake-ruff (a Flymake plugin for python files using Ruff)
 (use-package flymake-ruff
   :ensure-system-package ruff
-  ;; :hook (python-mode . flymake-ruff-load))   ; without eglot
+  ;; :hook (python-base-mode . flymake-ruff-load))   ; without eglot
   :hook (eglot-managed-mode . flymake-ruff-load))   ; with eglot
 
 ;; ruff-format (Ruff format Python source)
