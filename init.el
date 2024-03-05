@@ -380,12 +380,15 @@
 
 ;; flymake-ruff (a Flymake plugin for python files using Ruff)
 (use-package flymake-ruff
+  :disabled
   :ensure-system-package ruff
   ;; :hook (python-base-mode . flymake-ruff-load))   ; without eglot
   :hook (eglot-managed-mode . flymake-ruff-load))   ; with eglot
+                       ; TODO: should only activate python-mode!
 
 ;; ruff-format (Ruff format Python source)
 (use-package ruff-format
+  :disabled
   :ensure-system-package ruff)
   ;; :hook (python-mode . ruff-format-on-save-mode))
 
