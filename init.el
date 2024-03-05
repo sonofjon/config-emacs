@@ -2541,9 +2541,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Enable scroll lock
 (keymap-global-set "C-c L" #'scroll-lock-mode)
 
-(which-key-add-key-based-replacements "C-c x" "misc")
-                                        ; add label for prefix key
-
 ;; Display Imenu
 (keymap-global-set "C-c i" #'imenu)
 
