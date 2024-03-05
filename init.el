@@ -334,6 +334,9 @@
   ;; Add server for web-mode
   (add-to-list 'eglot-server-programs
                '(web-mode . ("vscode-html-language-server" "--stdio")))
+  ;; Prefer ruff-lsp for Python
+  (add-to-list 'eglot-server-programs
+               '(python-base-mode . ("ruff-lsp")))
   ;; Enable Flymake backend for json-mode
   (add-hook 'eglot-managed-mode-hook
             (lambda ()
