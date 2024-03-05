@@ -1707,6 +1707,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (gptel-model "gpt-3.5-turbo")   ; default
   ;; (gptel-model "gpt-4")
   :config
+  ;; Enable word-wrap
+  (visual-line-mode 1)
   ;; Scroll window automatically
   (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
   ;; Jump to next prompt after response
