@@ -2015,14 +2015,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; URL browser settings
 (setq browse-url-browser-function #'browse-url-default-browser)
 (setq browse-url-secondary-browser-function #'eww-browse-url)
-;; (setq browse-url-handlers
-;;       '(("github\\.com" . browse-url-default-browser)
-;;         ("gitlab\\.com" . browse-url-default-browser)
-;;         ("google\\.com" . browse-url-default-browser)
-;;         ("reddit\\.com" . browse-url-default-browser)
-;;         ("stackexchange\\.com" . browse-url-default-browser)
-;;         ("stackoverflow\\.com" . browse-url-default-browser)
-;;         ("." . eww-browse-url)))
+(setq browse-url-handlers
+      '(("\\.md$" . eww-browse-url)
+        ("." . browse-url-default-browser)))
 
 ;; Default search engine
 (setq eww-search-prefix "https://google.com/search?q=")   ; default is duckduckgo
