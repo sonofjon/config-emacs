@@ -2961,7 +2961,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
        ;; Enable (default) web browser
        ;;   Requires: wslu
        (setq browse-url-generic-program "wslview")
-       (setq browse-url-secondary-browser-function #'browse-url-generic)
+       (setq browse-url-browser-function #'browse-url-generic)
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
        (message "Late settings WSL"))
 
