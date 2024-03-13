@@ -1533,6 +1533,8 @@ Elisp code explicitly in arbitrary buffers.")
                              "github.com" "sonofjon")))
   (magit-wip-mode-lighter "")
   :config
+  ;; Enable word-wrap
+  (add-hook 'magit-status-mode-hook (lambda () (visual-line-mode 1)))
   ;; Back up uncommitted changes
   (magit-wip-mode 1)
   ;; Disable hl-line-mode
