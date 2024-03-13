@@ -1128,15 +1128,15 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Select devdocs window
   (devdocs-window-select t)
   :config
-  (add-hook 'yaml-mode-hook
+  (add-hook 'yaml-ts-mode-hook
             (lambda () (setq-local devdocs-current-docs '("ansible"))))
-  (add-hook 'sh-mode-hook
+  (add-hook 'bash-ts-mode-hook
             (lambda () (setq-local devdocs-current-docs '("bash"))))
   (add-hook 'latex-mode-hook
             (lambda () (setq-local devdocs-current-docs '("latex"))))
   (add-hook 'lua-mode-hook
             (lambda () (setq-local devdocs-current-docs '("lua~5.4"))))
-  (add-hook 'python-mode-hook
+  (add-hook 'python-ts-mode-hook
             (lambda () (setq-local devdocs-current-docs '("python~3.11")))))
 
 ;; devdocs-browser (browse devdocs.io documents using EWW)
@@ -1147,16 +1147,11 @@ Elisp code explicitly in arbitrary buffers.")
   ;; ;; Select devdocs window
   ;; (devdocs-window-select t)
   :custom
-  (devdocs-browser-major-mode-docs-alist '((yaml-mode "Ansible")
-                                           (yaml-ts-mode "Ansible")
-                                           (sh-mode "Bash")
+  (devdocs-browser-major-mode-docs-alist '((yaml-ts-mode "Ansible")
                                            (bash-ts-mode "Bash")
                                            (emacs-lisp-mode "Elisp")
                                            (latex-mode "LaTeX")
-                                           (latex-ts-mode "LaTeX")
                                            (lua-mode "Lua")
-                                           (lua-ts-mode "Lua")
-                                           (python-mode "Python")
                                            (python-ts-mode "Python"))))
 
 ;;; Navigation
