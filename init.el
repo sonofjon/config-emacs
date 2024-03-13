@@ -793,9 +793,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 (use-package combobulate
   :after treesit
-  :preface
-  ;; Custom prefix key
-  (setq combobulate-key-prefix "C-c C")
+  ;; :load-path ("path-to-git-checkout-of-combobulate"))
   :hook (;; (bash-ts-mode . combobulate-mode)   ; NA
          (css-ts-mode . combobulate-mode)
          ;; (html-ts-mode . combobulate-mode)   ; require Emacs 30
@@ -803,8 +801,13 @@ Elisp code explicitly in arbitrary buffers.")
          (json-ts-mode . combobulate-mode)
          ;; (markdown-ts-mode . combobulate-mode)   ; NA
          (python-ts-mode . combobulate-mode)
-         (yaml-ts-mode . combobulate-mode)))
-  ;; :load-path ("path-to-git-checkout-of-combobulate"))
+         (yaml-ts-mode . combobulate-mode))
+  :init
+  (which-key-add-key-based-replacements "C-c o" "combobulate")
+                                        ; add label for prefix
+  :config
+  ;; Custom prefix key
+  (setq combobulate-key-prefix "C-c o"))
 
 ;; lingva (access Google Translate without tracking via lingva.ml)
 (use-package lingva
