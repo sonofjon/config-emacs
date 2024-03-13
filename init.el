@@ -1672,7 +1672,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Server settings
   (erc-server "irc.libera.chat")
   (erc-nick "ajdev8")
-  (erc-user-full-name "Andreas Jonsson")
+  (erc-user-full-name user-full-name)
   (erc-autojoin-channels-alist '(("libera.chat" "#systemcrafters")))
   ;; Buffers
   (erc-join-buffer 'bury)
@@ -1798,6 +1798,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;;;;; CUSTOMIZATION
 
 ;;;; Variables
+
+;; Personal settings
+(setq user-full-name "Andreas Jonsson")
+(setq user-mail-address "ajdev8@gmail.com")
 
 ;;; Admin
 
