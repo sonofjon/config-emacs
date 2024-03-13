@@ -2721,8 +2721,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Treesitter
 ;;   Copy standard mode hooks to their Treesitter equivalents
 (dolist (hook '((bash-ts-mode-hook . sh-mode-hook)
-                ;; (html-ts-mode-hook . html-mode-hook)   ; NA
                 (css-ts-mode-hook . css-mode-hook)
+                ;; (html-ts-mode-hook . html-mode-hook)   ; NA
                 (js-ts-mode-hook . js-mode-hook)
                 (json-ts-mode-hook . json-mode-hook)
                 ;; (lua-ts-mode-hook . lua-mode-hook)    ; NA
