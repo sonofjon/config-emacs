@@ -400,7 +400,7 @@
   :disabled
   :ensure-system-package dasel
   :config
-  (add-hook 'python-base-mode-hook 'pet-mode -1))
+  (add-hook 'python-base-mode-hook (lambda () (pet-mode -1))))
 
 ;; treesit-auto (automatically use tree-sitter enhanced major modes)
 (use-package treesit-auto
