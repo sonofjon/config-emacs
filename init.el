@@ -2721,16 +2721,18 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; Treesitter
 ;;   Copy standard mode hooks to their Treesitter equivalents
-(setq bash-ts-mode-hook sh-mode-hook)
-;; (setq html-ts-mode-hook html-mode-hook)
-(setq css-ts-mode-hook css-mode-hook)
-(setq js-ts-mode-hook js-mode-hook)
-(setq json-ts-mode-hook json-mode-hook)
-;; (setq lua-ts-mode-hook lua-mode-hook)   ; NA
-(setq markdown-ts-mode-hook markdown-mode-hook)
-(setq python-ts-mode-hook python-mode-hook)
-;; (setq latex-ts-mode-hook latex-mode-hook)   ; NA
-(setq yaml-ts-mode-hook yaml-mode-hook)
+(dolist (hook '((bash-ts-mode-hook . sh-mode-hook)
+                ;; (html-ts-mode-hook . html-mode-hook)   ; NA
+                (css-ts-mode-hook . css-mode-hook)
+                (js-ts-mode-hook . js-mode-hook)
+                (json-ts-mode-hook . json-mode-hook)
+                ;; (lua-ts-mode-hook . lua-mode-hook)    ; NA
+                (markdown-ts-mode-hook . markdown-mode-hook)
+                (python-ts-mode-hook . python-mode-hook)
+                ;; (latex-ts-mode-hook . latex-mode-hook) ; NA
+                (yaml-ts-mode-hook . yaml-mode-hook)))
+  (dolist (func (symbol-value (cdr hook)))
+    (add-hook (car hook) func)))
 
 ;;;; Hydras
 
