@@ -1845,6 +1845,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Open up the debugger on error
 ;; (setq debug-on-error t)
 
+;; Use maximum decoration detail
+(setq treesit-font-lock-level 4)
+
 ;;; Completion
 
 ;; Select completion styles
