@@ -326,6 +326,7 @@
          (yaml-mode . eglot-ensure))
   :init
   (which-key-add-key-based-replacements "C-c l" "lsp")
+  (which-key-add-key-based-replacements "C-c l a" "action")
                                         ; add label for prefix key
   :custom
   ;; Shutdown server after buffer kill
@@ -804,6 +805,11 @@ Elisp code explicitly in arbitrary buffers.")
          (yaml-ts-mode . combobulate-mode))
   :init
   (which-key-add-key-based-replacements "C-c o" "combobulate")
+  (which-key-add-key-based-replacements "C-c o B" "builder")
+  (which-key-add-key-based-replacements "C-c o e" "envelop")
+  (which-key-add-key-based-replacements "C-c o h" "highlight")
+  (which-key-add-key-based-replacements "C-c o t" "edit")
+  (which-key-add-key-based-replacements "C-c o x" "xref")
                                         ; add label for prefix
   :config
   ;; Custom prefix key
