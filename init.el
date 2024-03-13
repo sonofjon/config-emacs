@@ -1726,10 +1726,10 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package gptel
   :bind (("C-c t" . gptel)
          ("C-c T" . gptel-menu))
-  ;; :custom
+  :custom
   ;; ;; Set model
   ;; (gptel-model "gpt-3.5-turbo")   ; default
-  ;; (gptel-model "gpt-4")
+  (gptel-model "gpt-4")
   :config
   ;; Enable word-wrap
   (visual-line-mode 1)
