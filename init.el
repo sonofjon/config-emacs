@@ -808,7 +808,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; lingva (access Google Translate without tracking via lingva.ml)
 (use-package lingva
-  :bind ("C-c a" . lingva-translate))
+  :bind ("C-c x t" . lingva-translate))
 
 ;; lorem-ipsum (insert dummy pseudo latin text)
 (use-package lorem-ipsum
@@ -938,6 +938,7 @@ Elisp code explicitly in arbitrary buffers.")
               ;; ([remap backward-kill-word] . nil)) ; unbind sp-backward-kill-word
   :init
   (which-key-add-key-based-replacements "C-c s" "smartparens")
+                                        ; add label for prefix
   ;; :custom
   ;; Use default keybindings
   ;; (sp-base-key-bindings 'sp)
@@ -2521,7 +2522,10 @@ Elisp code explicitly in arbitrary buffers.")
 (keymap-global-set "C-c q" #'fill-individual-paragraphs)
 
 ;; Copy symbol at point
-(keymap-global-set "C-c o" #'my/copy-symbol-at-point)
+(keymap-global-set "C-c x c" #'my/copy-symbol-at-point)
+
+(which-key-add-key-based-replacements "C-c x" "misc")
+                                        ; add label for prefix key
 
 ;; Indent to next nonblank character in previous line
 (keymap-global-set "C-c TAB" #'indent-relative)
@@ -2672,7 +2676,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Other
 
 ;; Reload init.el
-(keymap-global-set "C-c r" #'reload-init-file)
+(keymap-global-set "C-c x r" #'reload-init-file)
 
 ;; Evaluate next sexp
 (keymap-global-set "C-x M-e" #'my/eval-next-sexp)
