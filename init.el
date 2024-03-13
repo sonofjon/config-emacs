@@ -806,6 +806,10 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Load path
   ;; :load-path ("path-to-git-checkout-of-combobulate"))
 
+;; lingva (access Google Translate without tracking via lingva.ml)
+(use-package lingva
+  :bind ("C-c a" . lingva-translate))
+
 ;; lorem-ipsum (insert dummy pseudo latin text)
 (use-package lorem-ipsum
   :defer)
@@ -1001,10 +1005,6 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Enable xclip globally
   (xclip-mode 1))
-
-;; lingva (access Google Translate without tracking via lingva.ml)
-(use-package lingva
-  :bind ("C-c a" . lingva-translate))
 
 ;;; Files
 
