@@ -166,7 +166,7 @@
  'package-vc-selected-packages
  `(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
-   ;; (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el")))
+   (combobulate :url "https://github.com/mickeynp/combobulate.git")
    ;; (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el"
    ;;                      :branch "dev")))
    ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
@@ -788,6 +788,22 @@ Elisp code explicitly in arbitrary buffers.")
   (put 'minibuffer-hide-completions 'interactive-form '(interactive)))
 
 ;;; Editing
+
+(use-package combobulate
+  :after treesit
+  :preface
+  ;; Custom prefix key
+  (setq combobulate-key-prefix "C-c C")
+  :hook ((python-ts-mode . combobulate-mode)
+         (js-ts-mode . combobulate-mode)
+         (html-ts-mode . combobulate-mode)
+         (css-ts-mode . combobulate-mode)
+         (yaml-ts-mode . combobulate-mode)
+         (typescript-ts-mode . combobulate-mode)
+         (json-ts-mode . combobulate-mode)
+         (tsx-ts-mode . combobulate-mode)))
+  ;; Load path
+  ;; :load-path ("path-to-git-checkout-of-combobulate"))
 
 ;; lorem-ipsum (insert dummy pseudo latin text)
 (use-package lorem-ipsum
