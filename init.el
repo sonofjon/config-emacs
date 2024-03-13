@@ -2417,9 +2417,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; (add-hook 'python-mode-hook 'aj8/python-mode-hook)
 
 ;; sh-mode: for non-standard bash config files
-(add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . sh-mode))
-(add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . sh-mode))
-(add-to-list 'auto-mode-alist '("\\.profile_.*\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . bash-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . bash-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.profile_.*\\'" . bash-ts-mode))
 
 ;; [la]tex-mode: outline settings
 (add-hook 'latex-mode-hook
