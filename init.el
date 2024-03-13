@@ -325,6 +325,8 @@
          (latex-mode . eglot-ensure)
          (yaml-mode . eglot-ensure))
   :init
+  (which-key-add-key-based-replacements "C-c l" "lsp")
+                                        ; add label for prefix key
   :custom
   ;; Shutdown server after buffer kill
   (eglot-autoshutdown t)
@@ -351,9 +353,7 @@
   ;; Limit ELDoc to a single line
   ;; (setq eldoc-echo-area-use-multiline-p nil))   ; doesn't work nicely
   ;; Don't auto-show documentation
-  (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1)))
-  (which-key-add-key-based-replacements "C-c l" "lsp"))
-                                        ; add label for prefix key
+  (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1))))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
@@ -718,13 +718,13 @@ Elisp code explicitly in arbitrary buffers.")
                         (list #'cape-dabbrev+dict t))))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
 
+  (which-key-add-key-based-replacements "C-c u" "corfu/cape")
+                                        ; add label for prefix
+
   :custom
   ;; Sort candidates by length and alphabetically
   ;;   Also see https://github.com/minad/cape/issues/44
-  (corfu-sort-override-function 'corfu-sort-length-alpha)
-  :config
-  (which-key-add-key-based-replacements "C-c u" "corfu/cape"))
-                                        ; add label for prefix
+  (corfu-sort-override-function 'corfu-sort-length-alpha))
 
 ;; embark (conveniently act on minibuffer completions)
 (use-package embark
@@ -959,7 +959,10 @@ Elisp code explicitly in arbitrary buffers.")
   :bind (("C-c i c" . string-inflection-lower-camelcase)
          ("C-c i k" . string-inflection-kebab-case)
          ("C-c i s" . string-inflection-underscore)
-         ("C-c i x" . string-inflection-all-cycle)))   ; TODO: add repeat-map for this command
+         ("C-c i x" . string-inflection-all-cycle))   ; TODO: add repeat-map for this command
+  :init
+  (which-key-add-key-based-replacements "C-c i" "inflection"))
+                                        ; add label for prefix key
 
 ;; whole-line-or-region (operate on current line if region undefined)
 (use-package whole-line-or-region
