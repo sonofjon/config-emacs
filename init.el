@@ -405,8 +405,9 @@
 ;; treesit-auto (automatically use tree-sitter enhanced major modes)
 (use-package treesit-auto
   :demand t
+  :custom
+  (treesit-auto-install 'prompt)
   :config
-  (setq treesit-auto-install 'prompt)
   (global-treesit-auto-mode))
 
 ;;; Completion
