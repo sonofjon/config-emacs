@@ -864,7 +864,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
 (use-package smartparens
   :diminish
-  :hook (emacs-lisp-mode smartparens-mode)
+  :hook (emacs-lisp-mode . smartparens-mode)
          ;; (prog-mode . smartparens-strict-mode)
          ;; (minibuffer-setup . turn-on-smartparens-strict-mode))
   :bind (:map smartparens-mode-map
