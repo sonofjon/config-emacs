@@ -793,6 +793,10 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Editing
 
+;; combobulate
+;;   TODO: Missing functionality: barf, slurp, forward/backward sexp (navigate
+;;         by parens), ...
+;;         Don't dump tree into *Messages*
 (use-package combobulate
   :after treesit
   ;; :load-path ("path-to-git-checkout-of-combobulate"))
