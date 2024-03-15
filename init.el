@@ -804,6 +804,19 @@ Elisp code explicitly in arbitrary buffers.")
          ;; (markdown-ts-mode . combobulate-mode)   ; NA
          (python-ts-mode . combobulate-mode)
          (yaml-ts-mode . combobulate-mode))
+  :bind (:map combobulate-key-map
+              ("C-M-n" . combobulate-navigate-down)   ; forward-list
+              ("C-M-<right>" . combobulate-navigate-next)   ; forward-sexp
+              ("C-M-<left>" . combobulate-navigate-previous)   ; backward-sexp
+              ("C-M-p" . combobulate-navigate-up)   ; backward-list
+              ("C-c o <up>" . combobulate-splice-up)
+              ("C-c o <down>" . combobulate-splice-down)
+              ("C-c o <right>" . combobulate-splice-self)
+              ("C-c o <left>" . combobulate-splice-parent)
+              ("C-M-d" . combobulate-drag-down)   ; down-list
+              ("C-M-u" . combobulate-drag-up)   ; backward-up-list
+              ("M-a" . combobulate-navigate-logical-previous)
+              ("M-e" . combobulate-navigate-logical-next))
   :init
   (which-key-add-key-based-replacements "C-c o" "combobulate")
   (which-key-add-key-based-replacements "C-c o B" "builder")
