@@ -2278,6 +2278,9 @@ Elisp code explicitly in arbitrary buffers.")
 (with-eval-after-load "xref"
   (add-to-list 'xref-prompt-for-identifier 'xref-find-references t))
 
+;; Fill gpg passwords in the minibuffer
+(setq epg-pinentry-mode 'loopback)
+
 ;;;; Modes
 
 ;;; Admin...
