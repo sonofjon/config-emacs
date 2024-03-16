@@ -811,7 +811,12 @@ Elisp code explicitly in arbitrary buffers.")
               ("C-M-d" . combobulate-drag-down)   ; down-list
               ("C-M-u" . combobulate-drag-up)   ; backward-up-list
               ("M-a" . combobulate-navigate-logical-previous)
-              ("M-e" . combobulate-navigate-logical-next))
+              ("M-e" . combobulate-navigate-logical-next)
+              ("M-a" . combobulate-navigate-logical-previous)
+              ("M-<down>" . nil)
+              ("M-<left>" . nil)
+              ("M-<right>" . nil)
+              ("M-<up>" . nil))
   :init
   (which-key-add-key-based-replacements "C-c o" "combobulate")
   (which-key-add-key-based-replacements "C-c o B" "builder")
