@@ -353,12 +353,13 @@
 (use-package flymake-eslint
   :ensure-system-package eslint
   :disabled
-  :hook (js-mode . flymake-eslint-enable))
+  :hook (js-base-mode . flymake-eslint-enable))
 
 ;; flymake-json (a Flymake handler for json using jsonlint)
+;;   TODO: doesn't work
 (use-package flymake-json
   :ensure-system-package jsonlint
-  :hook (json-mode . flymake-json-load))
+  :hook (json-ts-mode . flymake-json-load))
 
 ;; flymake-ruff (a Flymake plugin for python files using Ruff)
 (use-package flymake-ruff
@@ -372,7 +373,7 @@
 (use-package ruff-format
   :disabled
   :ensure-system-package ruff)
-  ;; :hook (python-mode . ruff-format-on-save-mode))
+  ;; :hook (python-base-mode . ruff-format-on-save-mode))
 
 ;; pet (executable and virtualenv tracker for python-mode)
 (use-package pet
