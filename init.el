@@ -105,7 +105,6 @@
                           erc-hl-nicks
                           eshell-git-prompt
                           esup
-                          eterm-256color
                           exec-path-from-shell
                           expreg
                           flymake-aspell
@@ -1256,12 +1255,6 @@ Elisp code explicitly in arbitrary buffers.")
   ;; :config
   ;; Match the default Bash shell prompt
   ;; (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
-
-;; eterm-256color (customizable 256 colors for term)
-(use-package eterm-256color
-  :disabled
-  :after term
-  :hook (term-mode . eterm-256color-mode))
 
 ;; vterm (fully-featured terminal emulator)
 (use-package vterm
