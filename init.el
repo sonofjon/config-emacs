@@ -218,7 +218,6 @@
 
 ;; dimmer (visually highlight the selected buffer)
 (use-package dimmer
-  ;; :disabled
   :custom
   ;; What to dim
   ;; (dimmer-adjustment-mode ':both)
@@ -354,7 +353,6 @@
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
   :after (consult eglot))
-  ;; :disabled)
 
 ;; flymake-aspell (Aspell checker for Flycheck)
 (use-package flymake-aspell
@@ -373,7 +371,6 @@
 
 ;; flymake-json (a Flymake handler for json using jsonlint)
 (use-package flymake-json
-  ;; :disabled
   :ensure-system-package jsonlint
   :hook (json-mode . flymake-json-load))
 
@@ -1081,7 +1078,6 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; helpful (a better *help* buffer)
 (use-package helpful
-  ;; :disabled
   ;; :demand t
   :commands (helpful-key helpful-function helpful-symbol
              helpful-variable helpful-command)
@@ -1338,7 +1334,6 @@ Elisp code explicitly in arbitrary buffers.")
   ;;   `ef-themes-load-random'
   ;;   `ef-themes-preview-colors'
   ;;   `ef-themes-preview-colors-current'
-  ;; :disabled
   :if (eq system-type 'darwin)   ; macOS
   :bind ("<f5>" . ef-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
