@@ -34,6 +34,7 @@
 
       (t (user-error "Unexpected system-name: %s" system-name)))
 
+
 ;;;;; PACKAGES
 
 ;;;; Setup
@@ -421,7 +422,7 @@
          ("M-g I" . consult-imenu-multi)
          ;; M-s bindings (search-map)
          ("M-s d" . consult-find)
-         ("M-s R" . consult-recent-file)   ; TODO: Emacs 29 has recentf-open
+         ("M-s R" . consult-recent-file)
          ("M-s D" . consult-locate)
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
