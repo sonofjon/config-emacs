@@ -365,9 +365,7 @@
 (use-package flymake-ruff
   :disabled
   :ensure-system-package ruff
-  ;; :hook (python-base-mode . flymake-ruff-load))   ; without eglot
-  :hook (eglot-managed-mode . flymake-ruff-load))   ; with eglot
-                       ; TODO: should only activate python-mode!
+  :hook (python-base-mode . flymake-ruff-load))   ; without eglot
 
 ;; ruff-format (Ruff format Python source)
 (use-package ruff-format
