@@ -134,7 +134,6 @@
                           osx-trash
                           outline-minor-faces
                           pet
-                          php-mode
                           popper
                           powershell
                           repeat-help
@@ -258,10 +257,6 @@
 (use-package markdown-mode
   :mode ("\\.md$"))
   ;; :mode ("\\.md$" . markdown-view-mode))
-
-;; php-mode (major-mode for editing PHP files)
-(use-package php-mode
-  :mode "\\.php$")
 
 ;; powershell (major-mode for editing PowerShell scripts)
 (use-package powershell
