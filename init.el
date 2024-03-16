@@ -34,13 +34,6 @@
 
       (t (user-error "Unexpected system-name: %s" system-name)))
 
-;; Fixes
-
-;; Make GnuPG work with Emacs 29.1 (and GnuPG 2.4.3)
-;;   REFERENCE: https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
-;;   TODO: Remove fix when source is fixed
-(fset 'epg-wait-for-status 'ignore)
-
 ;;;;; PACKAGES
 
 ;;;; Setup
