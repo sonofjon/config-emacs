@@ -327,13 +327,6 @@
   ;; Prefer ruff-lsp for Python
   (add-to-list 'eglot-server-programs
                '(python-base-mode . ("ruff-lsp")))
-  ;; Enable Flymake backend for json-mode
-  (add-hook 'eglot-managed-mode-hook
-            (lambda ()
-              (when (or (derived-mode-p 'json-mode)
-                        (derived-mode-p 'json-ts-mode))
-                (add-hook 'flymake-diagnostic-functions
-                          'json-flymake nil t))))   ; TODO: doesn't work
   ;; Use Orderless for Eglot (default is Flex)
   (setq completion-category-overrides '((eglot (styles orderless))))
   ;; Don't manage ELDoc
