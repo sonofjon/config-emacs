@@ -2601,12 +2601,12 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Toggle outline-minor-mode
 (keymap-global-set "C-c O" #'outline-minor-mode)
 
-;; Toggle outline-minor-mode
+;; Toggle outline-minor-moderepeat
 (keymap-global-set "C-c F" #'hs-minor-mode)
-(keymap-global-set "C-c <left>" #'hs-hide-block)
-(keymap-global-set "C-c <right>" #'hs-show-block)
-(keymap-global-set "C-c C-<left>" #'hs-hide-all)
-(keymap-global-set "C-c C-<right>" #'hs-show-all)
+(keymap-global-set "C-c @ <left>" #'hs-hide-block)
+(keymap-global-set "C-c @ <right>" #'hs-show-block)
+(keymap-global-set "C-c @ <up>" #'hs-hide-all)
+(keymap-global-set "C-c @ <down>" #'hs-show-all)
 
 ;;; Search
 
