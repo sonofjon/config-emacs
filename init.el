@@ -2247,6 +2247,7 @@ Elisp code explicitly in arbitrary buffers.")
                                (mode-line-format . none))))))
 
 ;; Obey display actions when switching buffers
+;;   Only for switch-to-buffer,  not used by switch-to-prev/next-buffer
 (setq switch-to-buffer-obey-display-actions t)
 
 ;;; Other
