@@ -92,6 +92,17 @@ If the current window is a side window use the regular
     (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
       (switch-to-prev-buffer))))
 
+(defun aj8/prev-buffer ()
+  "Switch to the previously selected buffer, and skip irrelevant buffers.
+
+If the current window is a side window use the regular
+`previous-buffer'."
+  (interactive)
+  (if (window-parameter nil 'window-side)
+      (previous-buffer)
+    (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+      (previous-buffer))))
+
 (defun aj8/switch-to-next-buffer ()
   "Switch to the next selected buffer, and skip irrelevant buffers.
 
@@ -102,6 +113,17 @@ If the current window is a side window use the regular
       (switch-to-next-buffer)
     (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
       (switch-to-next-buffer))))
+
+(defun aj8/next-buffer ()
+  "Switch to the next selected buffer, and skip irrelevant buffers.
+
+If the current window is a side window use the regular
+`next-buffer'."
+  (interactive)
+  (if (window-parameter nil 'window-side)
+      (next-buffer)
+    (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+      (next-buffer))))
 
 ;;; Project buffer switching
 ;;;   (imported from projectile and adapted for project.el)
