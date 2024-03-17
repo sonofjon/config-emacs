@@ -186,7 +186,7 @@
   (advice-add 'benchmark-init/tabulated-mode :after #'aj8/benchmark-init-list-format))
 
 ;; esup (the Emacs StartUp Profiler (ESUP))
-;;   TODO: Full of bugs and inactive maintainer
+;;   MAYBE: Full of bugs and inactive maintainer
 (use-package esup
   :disabled)
 
@@ -1090,11 +1090,11 @@ Elisp code explicitly in arbitrary buffers.")
   (marginalia-mode 1))
 
 ;; which-key (display available keybindings in popup)
-;;   TODO: which-key buffer overlaps with bottom side-window buffer
-;;           (which might be OK?)
-;;         When doing so, which-key fails to
-;;           1) display a complete list of commands
-;;           2) grow window to respect the height defined below
+;;   MAYBE: which-key buffer overlaps with bottom side-window buffer
+;;          (which might be OK?)
+;;          When doing so, which-key fails to
+;;            1) grow window to respect the height defined below
+;;            2) display a complete list of commands
 (use-package which-key
   :diminish
   :custom
@@ -1576,7 +1576,7 @@ Elisp code explicitly in arbitrary buffers.")
   (global-diff-hl-mode 1))
 
 ;; ztree (text mode directory tree)
-;;   TODO: Alternative package: diffed
+;;   MAYBE: Alternative package: diffed
 (use-package ztree
   :defer
   :custom
@@ -1877,8 +1877,8 @@ Elisp code explicitly in arbitrary buffers.")
 (setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
 
 ;; Ignore some buffers with hippie-expand
-;;   TODO: only consider buffers with the same mode (see
-;;         dabbrev-friend-buffer-function)
+;;   MAYBE: only consider buffers with the same mode (see
+;;          dabbrev-friend-buffer-function)
 (with-eval-after-load "hippie-exp"
   (add-to-list 'hippie-expand-ignore-buffers "^\\*.*\\*$")
   (add-to-list 'hippie-expand-ignore-buffers "magit:.*")
@@ -2019,7 +2019,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; (setq-default truncate-lines t)
 
 ;; Show context around the opening paren if it is offscreen
-;;   TODO: Make the text in the echo area persist until key press
+;;   MAYBE: Make the text in the echo area persist until key press
 (setq show-paren-context-when-offscreen t)
 
 ;;; Version control
@@ -2172,7 +2172,7 @@ Elisp code explicitly in arbitrary buffers.")
         ;;
         ;;   Browser
         ;;
-        ;; TODO: doesn't work initially
+        ;; MAYBE: doesn't work initially
         ("\\*eww:.*\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
@@ -2449,9 +2449,9 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;;;; KEYBINDINGS
 
-;;   TODO: Use minor-mode for keybindings?
-;;           (https://stackoverflow.com/a/683575/1610035)
-;;           (https://emacs.stackexchange.com/a/358/33325)
+;;   MAYBE: Use minor-mode for keybindings?
+;;          (https://stackoverflow.com/a/683575/1610035)
+;;          (https://emacs.stackexchange.com/a/358/33325)
 
 ;;;; Escape codes
 
@@ -2695,7 +2695,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;;;; Hooks
 
 ;; ediff-mode
-;;   TODO: check functionality
+;;   MAYBE: check functionality
 (add-hook 'ediff-keymap-setup-hook
           ;; Use both versions with ediff
           (lambda () (keymap-set ediff-mode-map "d" #'my/ediff-copy-both-to-C)))
