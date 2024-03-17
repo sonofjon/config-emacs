@@ -38,6 +38,26 @@ Emacs session."
 
 ;;; Buffer switching
 
+(defun aj8/switch-to-buffer-prev ()
+  "Switch to the previous buffer.
+
+If `switch-to-buffer-obey-display-actions' is non-nil, switch to
+any window."
+  (interactive)
+  (let ((prev-buffer (nth 1 (buffer-list (selected-window)))))
+    (when prev-buffer
+      (switch-to-buffer prev-buffer))))
+
+(defun aj8/switch-to-buffer-next ()
+  "Switch to the next buffer.
+
+If `switch-to-buffer-obey-display-actions' is non-nil, switch to
+any window."
+  (interactive)
+  (let ((next-buffer (nth 1 (buffer-list (selected-window)))))
+    (when next-buffer
+      (switch-to-buffer next-buffer))))
+
 (defcustom aj8/buffer-skip-regexp
   (rx bos (or (or "*Messages*" "*scratch*" "*Warnings*")
               (seq "magit-diff" (zero-or-more anything))
