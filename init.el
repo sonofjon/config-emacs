@@ -2617,6 +2617,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Spelling
 
 ;;; Terminal
+
 ;;; Theme
 
 ;; Display column number

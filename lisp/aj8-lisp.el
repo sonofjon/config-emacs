@@ -108,7 +108,7 @@ If the current window is a side window use the regular
 
 ;; Switch to next project buffer
 (defun my/project-next-buffer ()
-  "In selected window switch to the next project buffer.
+  "In the selected window switch to the next project buffer.
 If the current buffer does not belong to a project, call `next-buffer'."
   (interactive)
   ;; (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
@@ -117,7 +117,7 @@ If the current buffer does not belong to a project, call `next-buffer'."
 
 ;; Switch to previous project buffer
 (defun my/project-previous-buffer ()
-  "In selected window switch to the previous project buffer.
+  "In the selected window switch to the previous project buffer.
 If the current buffer does not belong to a project, call `previous-buffer'."
   (interactive)
   ;; (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
