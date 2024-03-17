@@ -77,9 +77,9 @@ buffers that are displayed in side-windows.s"
 (defun aj8/buffer-skip-p (window buffer bury-or-kill)
   "Return t if BUFFER should be skipped."
   ;; Buffer name matches `aj8/buffer-skip-regexp'
-  ;; (string-match-p aj8/buffer-skip-regexp (buffer-name buffer)))
+  (string-match-p aj8/buffer-skip-regexp (buffer-name buffer)))
   ;; Buffer is displayed in a side window
-  (aj8/buffer-side-window-p buffer))
+  ;; (aj8/buffer-side-window-p buffer))
 
 (defun aj8/switch-to-prev-buffer-no-side-window ()
   "Switch to the previously selected buffer, skipping side windows.
