@@ -517,7 +517,7 @@
   ;; (corfu-auto-prefix 3)          ; min. length of prefix for auto completion."
   ;; (corfu-separator ?\s)          ; orderless field separator
   ;; (corfu-quit-at-boundary t)     ; automatically quit at word boundary
-  ;; (corfu-quit-no-match t)        ; automatically quit if there is no match
+  (corfu-quit-no-match t)        ; automatically quit if there is no match
   ;; (corfu-preview-current nil)    ; disable current candidate preview
   ;; (corfu-preselect-first nil)    ; disable candidate preselection
   ;; (corfu-on-exact-match 'insert) ; configure handling of exact matches
