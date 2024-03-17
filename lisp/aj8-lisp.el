@@ -59,14 +59,12 @@ any window."
       (switch-to-buffer next-buffer))))
 
 (defcustom aj8/buffer-skip-regexp
-  (rx bos (or (or "*Messages*" "*scratch*" "*Warnings*")
-              (seq "magit-diff" (zero-or-more anything))
-              (seq "magit-process" (zero-or-more anything))
-              (seq "magit-revision" (zero-or-more anything))
-              (seq "magit-stash" (zero-or-more anything)))
+  (rx bos (or (or "*scratch*")
+              (seq "magit-process" (zero-or-more anything)))
       eos)
   "Regular expression matching buffers ignored by `next-buffer'
-and `previous-buffer'."
+and `previous-buffer'. Note that there is no need to specify
+buffers that are displayed in side-windows.s"
   :type 'regexp
   :group 'aj8-lisp)
 
