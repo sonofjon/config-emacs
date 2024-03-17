@@ -59,7 +59,8 @@ any window."
       (switch-to-buffer next-buffer))))
 
 (defcustom aj8/buffer-skip-regexp
-  (rx bos (or (or "*scratch*")
+  (rx bos (or (or "*scratch*" "*gptel-curl*")
+              (seq "*info*" (zero-or-more anything))
               (seq "magit-process" (zero-or-more anything)))
       eos)
   "Regular expression matching buffers ignored by `next-buffer'
