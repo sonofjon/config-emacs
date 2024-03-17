@@ -718,13 +718,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Hide some actions
   (embark-verbose-indicator-excluded-actions
    '("\\(local\\|global\\)-set-key" ".*debug-.*" "elp-.*" ".*trace-.*"
-     embark-history-remove))
-  :config
-  ;; Hide the mode line of the embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
+     embark-history-remove)))
 
 ;; embark-consult (Consult integration for Embark)
 (use-package embark-consult
