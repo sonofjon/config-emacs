@@ -1819,6 +1819,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Skip some buffers when switching buffers
 ;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
 
+;; Skip some buffers when switching buffers
+;; (setq switch-to-prev-buffer-skip-regexp regex)
+
 ;; Allow minibuffer commands while in the minibuffer
 (setq enable-recursive-minibuffers t)
 
