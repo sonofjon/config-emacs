@@ -136,6 +136,7 @@
                           smartparens
                           ssh-agency
                           standard-themes
+                          string-inflection
                           syntax-subword
                           transpose-frame
                           treesit-auto
