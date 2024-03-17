@@ -2495,8 +2495,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Buffers
 
 ;; Buffer navigation
-(keymap-global-set "C-x <right>" #'aj8/switch-to-next-buffer-no-side-window)
-(keymap-global-set "C-x <left>" #'aj8/switch-to-prev-buffer-no-side-window)
+(keymap-global-set "C-x <right>" #'aj8/next-buffer)
+(keymap-global-set "C-x <left>" #'aj8/prev-buffer)
 (keymap-global-set "C-x C-<right>" #'my/project-next-buffer)
 (keymap-global-set "C-x C-<left>" #'my/project-previous-buffer)
 
