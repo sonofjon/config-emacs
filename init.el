@@ -1559,6 +1559,9 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                                    (hydra-smerge/body)))))
 
 ;; magit-todos (show source file TODOs in Magit)
+;;   Available keywords: "HOLD", "TODO", NEXT","THEM", "PROG", "OKAY",
+;;   "DONT", "FAIL", "DONE", "NOTE", "MAYBE" "KLUDGE, "HACK", "TEMP",
+;;   "FIXME" "XXXX*"
 (use-package magit-todos
   :after magit
   :hook (magit-mode . magit-todos-mode))
