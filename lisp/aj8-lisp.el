@@ -1200,22 +1200,30 @@ When called from an eww buffer, provide the current link as
   (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
 
 ;; Create repeat-map for drag-stuff
-(defvar aj8/drag-stuff-repeat-map
+(defvar aj8/drag-stuff-vertical-repeat-map
   (let ((map (make-sparse-keymap)))
     (keymap-set map "<up>" #'drag-stuff-up)
     (keymap-set map "<down>" #'drag-stuff-down)
-    (keymap-set map "<left>" #'drag-stuff-left)
-    (keymap-set map "<right>" #'drag-stuff-right)
     (keymap-set map "C-<down>" #'duplicate-dwim)
     map))
 
 ;; Add repeat-map property to drag-stuff commands
 (dolist (cmd '(drag-stuff-up
                drag-stuff-down
-               drag-stuff-left
-               drag-stuff-right
                duplicate-dwim))
-  (put cmd 'repeat-map 'aj8/drag-stuff-repeat-map))
+  (put cmd 'repeat-map 'aj8/drag-stuff-vertical-repeat-map))
+
+;; Create repeat-map for drag-stuff
+(defvar aj8/drag-stuff-repeat-horizontal-map
+  (let ((map (make-sparse-keymap)))
+    (keymap-set map "<left>" #'drag-stuff-left)
+    (keymap-set map "<right>" #'drag-stuff-right)
+    map))
+
+;; Add repeat-map property to drag-stuff commands
+(dolist (cmd '(drag-stuff-left
+               drag-stuff-right))
+  (put cmd 'repeat-map 'aj8/drag-stuff-repeat-horizontal-map))
 
 ;; Add "/" to undo-repeat-map
 ;;   TODO: Disable undo-repeat-map
