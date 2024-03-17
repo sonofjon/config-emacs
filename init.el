@@ -77,7 +77,6 @@
                           ansible
                           auto-package-update
                           benchmark-init
-                          bufler
                           cape
                           circadian
                           consult
@@ -211,15 +210,6 @@
   (auto-package-update-maybe))
 
 ;;; Buffers
-
-;; bufler (group buffers into workspaces with programmable rules)
-(use-package bufler
-  :bind ("C-x M-b" . bufler-switch-buffer)
-  :custom
-  ;; Don't include recent buffers
-  (bufler-switch-buffer-include-recent-buffers nil)
-  :config
-  (bufler-mode 1))
 
 ;; dimmer (visually highlight the selected buffer)
 (use-package dimmer
