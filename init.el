@@ -1733,7 +1733,8 @@ Elisp code explicitly in arbitrary buffers.")
   :bind (("C-c t" . gptel)
          ("C-c T" . gptel-menu))
   :custom
-  ;; ;; Set model
+  (gptel-default-mode 'text-mode)   ; defauilt: markdown-mode
+  ;; Set model
   ;; (gptel-model "gpt-3.5-turbo")   ; default
   (gptel-model "gpt-4")
   :config
