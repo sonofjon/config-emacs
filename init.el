@@ -2077,6 +2077,9 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Windows
 
+;; Set minimum window height
+;; (setq window-min-height 16)
+
 ;; Don't bind keys for winner
 (setq winner-dont-bind-my-keys t)
 
