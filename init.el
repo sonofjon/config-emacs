@@ -1043,7 +1043,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Don't delete dired-sidebar window
   (dired-sidebar-no-delete-other-windows t)
   ;; Refresh sidebar to match current file
-  ;; (dired-sidebar-should-follow-file t)   ; TODO: what does this do?
+  (dired-sidebar-should-follow-file t)
   ;; Center cursor when updating tui interface
   ;; (dired-sidebar-recenter-cursor-on-tui-update t)   ; TODO: what does this do?
   ;; The tree style to display
