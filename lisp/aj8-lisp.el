@@ -81,8 +81,8 @@ buffers that are displayed in side-windows.s"
   ;; Buffer is displayed in a side window
   ;; (aj8/buffer-side-window-p buffer))
 
-(defun aj8/switch-to-prev-buffer-no-side-window ()
-  "Switch to the previously selected buffer, skipping side windows.
+(defun aj8/switch-to-prev-buffer ()
+  "Switch to the previously selected buffer, and skip irrelevant buffers.
 
 If the current window is a side window use the regular
 `switch-to-prev-buffer'."
@@ -92,8 +92,8 @@ If the current window is a side window use the regular
     (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
       (switch-to-prev-buffer))))
 
-(defun aj8/switch-to-next-buffer-no-side-window ()
-  "Switch to the next selected buffer, skipping side windows.
+(defun aj8/switch-to-next-buffer ()
+  "Switch to the next selected buffer, and skip irrelevant buffers.
 
 If the current window is a side window use the regular
 `switch-to-next-buffer'."
