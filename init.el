@@ -2504,7 +2504,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Completion
 
 ;; Use hippie-expand
-(global-set-key [remap dabbrev-expand] 'hippie-expand)   ; TODO: use new keymap-... functionality
+(keymap-global-set "<remap> <dabbrev-expand>" #'hippie-expand)
 
 ;; Cycle through orderless matching styles on the fly
 (keymap-global-set "M-o" #'aj8/orderless-matching-style-cycle)
