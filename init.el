@@ -824,7 +824,8 @@ Elisp code explicitly in arbitrary buffers.")
   :defer)
 
 ;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
-;;   (TODO: this is partly replaced by duplicate-line and duplicate-dwim in Emacs 29)
+;;   TODO: This is partly replaced by duplicate-line and duplicate-dwim in Emacs 29
+;;         Return key should not delete duplicated region
 (use-package move-dup
   :bind (("C-c <up>" . move-dup-move-lines-up)
          ("C-c C-<up>" . move-dup-duplicate-up)
