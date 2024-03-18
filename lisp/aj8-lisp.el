@@ -59,9 +59,8 @@ any window."
       (switch-to-buffer next-buffer))))
 
 (defcustom aj8/buffer-skip-regexp
-  (rx bos (or (or "*scratch*" "*Async-native-compile-log*")
+  (rx bos (or (or "*scratch*" "*Async-native-compile-log*" "*Dired log*")
               (seq "*gptel-curl*" (zero-or-more anything))
-              (seq "*info*" (zero-or-more anything))
               (seq "magit-process" (zero-or-more anything))
               (seq "*EGLOT" (zero-or-more anything) "events*"))
       eos)
