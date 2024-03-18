@@ -449,6 +449,18 @@ delimited s-expressions."
                    (list beg end 'region))))
   (replace-regexp "\\(\\(^\\s-*$\\)\n\\)\\{2,\\}" "\n" nil beg end))
 
+;; Remove DOS ^M characters
+(defun aj8/dos2unix ()
+  "Convert the end-of-line format from DOS-style (CR LF) to
+Unix-style (LF) in active region or entire buffer."
+  (interactive)
+  (save-excursion
+    (let* ((region-active (region-active-p))
+           (start (if region-active (region-beginning) (point-min)))
+           (end   (if region-active (region-end) (point-max))))
+      (goto-char start)
+      (while (search-forward "\r" end t) (replace-match "")))))
+
 ;;;; Files
 
 ;; Rename file and buffer
