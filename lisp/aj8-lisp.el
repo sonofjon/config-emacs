@@ -189,6 +189,13 @@ major-modes."
 ;;; Buffer cleanup
 
 ;; Clean up Ediff buffers after use
+(defcustom aj8/ediff-cleanup-buffers nil
+  "If non-nil, clean up Ediff buffers on exit.
+
+See `aj8/ediff-cleanup-buffers' for details."
+  :type 'boolean
+  :group 'aj8-lisp)
+
 (defun aj8/ediff-cleanup-buffers ()
   "Kill all Ediff buffers."
   (interactive)
@@ -213,11 +220,6 @@ major-modes."
         (kill-buffer)
       (message "No other window to kill"))
     (select-window win)))
-
-(defcustom aj8/ediff-cleanup-buffers t
-  "Non-nil means kill all Ediff buffers on exit. nil means don't auto-kill."
-  :type 'boolean
-  :group 'aj8-lisp)
 
 ;;;; Coding
 
