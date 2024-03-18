@@ -2393,9 +2393,9 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'after-change-major-mode-hook 'aj8/treesit-mode-name)
 
 ;; messages-buffer-mode: auto-update *Messages* buffer
-;;   Note: Not needed, as *Messages* buffer tails automatically if cursor is
-;;         left at the end of the buffer
-;; (add-hook 'messages-buffer-mode-hook #'auto-revert-tail-mode)
+;;   Note: if the cursor is left at the end of the *Messages* buffer it
+;;         tails automatically
+(add-hook 'messages-buffer-mode-hook #'auto-revert-tail-mode)
 
 ;;; Modes
 
