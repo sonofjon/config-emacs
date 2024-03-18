@@ -1736,6 +1736,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Set model
   ;; (gptel-model "gpt-3.5-turbo")   ; default
   (gptel-model "gpt-4")
+  ;; Don't use Curl
+  ;; (gptel-use-curl nil)
   :config
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
