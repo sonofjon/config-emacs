@@ -186,6 +186,18 @@ major-modes."
 ;;   "Return non-nil if BUFFER belongs to a project."
 ;;   (with-current-buffer buffer (project-current nil)))
 
+;;; Buffer cleanup
+
+;; Clean up Ediff buffers after use
+(defun aj8/ediff-cleanup-buffers ()
+  "Kill all Ediff buffers."
+  (interactive)
+  (when aj8/ediff-cleanup-buffers
+    (dolist (buffer (buffer-list))
+      (when (string-match-p "\\*[Ee]diff.*\\*" (buffer-name buffer))
+        (kill-buffer buffer)))
+    (message "Killed all Ediff buffers")))
+
 ;;; Misc
 
 ;; Kill buffer in other window
@@ -206,16 +218,6 @@ major-modes."
   "Non-nil means kill all Ediff buffers on exit. nil means don't auto-kill."
   :type 'boolean
   :group 'ediff)
-
-;; Clean up Ediff buffers after use
-(defun aj8/ediff-cleanup-buffers ()
-  "Kill all Ediff buffers."
-  (interactive)
-  (when aj8/ediff-cleanup-buffers
-    (dolist (buffer (buffer-list))
-      (when (string-match-p "\\*[Ee]diff.*\\*" (buffer-name buffer))
-        (kill-buffer buffer)))
-    (message "Killed all Ediff buffers")))
 
 ;;;; Coding
 
