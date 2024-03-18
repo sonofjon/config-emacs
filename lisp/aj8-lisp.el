@@ -810,7 +810,7 @@ number of characters matched by `outline-regexp'."
 
 ;; Mark whole word (backward)
 (defun aj8/mark-word-backward (N)
-  "Like mark-word, but select entire word at point. 
+  "Like mark-word, but select entire word at point.
 Repeat command to select additional words backwards."
   (interactive "p")
   (when (and
