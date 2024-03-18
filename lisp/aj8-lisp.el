@@ -217,7 +217,7 @@ major-modes."
 (defcustom aj8/ediff-cleanup-buffers t
   "Non-nil means kill all Ediff buffers on exit. nil means don't auto-kill."
   :type 'boolean
-  :group 'ediff)
+  :group 'aj8-lisp)
 
 ;;;; Coding
 
@@ -1058,7 +1058,7 @@ than 160 characters set width to 80 characters."
   "Regexp matching buffer names for which prefix argument should
 not be inverted."
   :type 'regexp
-  :group 'my-config)
+  :group 'aj8-lisp)
 
 (defcustom my/quit-window-known-wrappers '(magit-mode-bury-buffer
                                            magit-log-bury-buffer
@@ -1066,7 +1066,7 @@ not be inverted."
   "List of commands that call `quit-window' for which prefix
 argument should be inverted. "
   :type 'sexp
-  :group 'my-config)
+  :group 'aj8-lisp)
 
 (defun my/advice--quit-window (args)
   "Advice function that makes `quit-window' quit window and kill
