@@ -188,7 +188,6 @@ major-modes."
 
 ;;; Buffer cleanup
 
-;; Clean up Ediff buffers after use
 (defcustom aj8/ediff-cleanup-buffers nil
   "If non-nil, clean up Ediff buffers on exit.
 
@@ -196,8 +195,11 @@ See `aj8/ediff-cleanup-buffers' for details."
   :type 'boolean
   :group 'aj8-lisp)
 
+;; Kill all Ediff buffers
 (defun aj8/ediff-cleanup-buffers ()
-  "Kill all Ediff buffers."
+  "Kill all Ediff buffers.
+
+See also `ediff-cleanup-mess'."
   (interactive)
   (when aj8/ediff-cleanup-buffers
     (dolist (buffer (buffer-list))
