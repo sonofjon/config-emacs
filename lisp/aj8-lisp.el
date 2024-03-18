@@ -208,6 +208,21 @@ major-modes."
       (message "No other window to kill"))
     (select-window win)))
 
+(defcustom aj8/ediff-cleanup-buffers t
+  "Non-nil means kill all Ediff buffers on exit. nil means don't auto-kill."
+  :type 'boolean
+  :group 'ediff)
+
+;; Clean up Ediff buffers after use
+(defun aj8/ediff-cleanup-buffers ()
+  "Kill all Ediff buffers."
+  (interactive)
+  (when aj8/ediff-cleanup-buffers
+    (dolist (buffer (buffer-list))
+      (when (string-match-p "\\*[Ee]diff.*\\*" (buffer-name buffer))
+        (kill-buffer buffer)))
+    (message "Killed all Ediff buffers")))
+
 ;;;; Coding
 
 ;; (defun aj8/python-mode-hook ()

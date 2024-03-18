@@ -2042,6 +2042,9 @@ Elisp code explicitly in arbitrary buffers.")
 (when (display-graphic-p)
   (setq ediff-window-setup-function 'ediff-setup-windows-plain))
 
+;; Kill all Ediff buffers on exit
+(setq aj8/ediff-cleanup-buffers t)
+
 ;;; Web
 
 ;; URL browser settings
@@ -2384,6 +2387,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; ediff-before-setup: disable side windows before Ediff
 (add-hook 'ediff-before-setup-hook 'window-toggle-side-windows)
 (add-hook 'ediff-quit-hook 'window-toggle-side-windows)
+
+;; ediff-quit-hook: Kill remaining Ediff buffers
+(add-hook 'ediff-quit-hook 'aj8/ediff-cleanup-buffers)
 
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
