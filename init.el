@@ -322,6 +322,8 @@
   (eglot-autoshutdown t)
   ;; Enable eglot in code external to project
   (eglot-extend-to-xref t)
+  ;; Disable events buffers
+  (setq eglot-events-buffer-size 0)
   :config
   ;; Add server for web-mode
   (add-to-list 'eglot-server-programs
