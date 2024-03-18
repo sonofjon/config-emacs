@@ -2381,6 +2381,9 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
+;; after-change-major-mode: add Treesitter indicator in the modeline
+(add-hook 'after-change-major-mode-hook 'aj8/treesit-mode-name)
+
 ;; dired-after-readin: tag dired buffer names
 ;; (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
 
@@ -2394,8 +2397,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 
-;; after-change-major-mode: add Treesitter indicator in the modeline
-(add-hook 'after-change-major-mode-hook 'aj8/treesit-mode-name)
 
 ;; messages-buffer-mode: auto-update *Messages* buffer
 ;;   Note: if the cursor is left at the end of the *Messages* buffer it
