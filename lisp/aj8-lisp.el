@@ -59,14 +59,9 @@ any window."
       (switch-to-buffer next-buffer))))
 
 (defcustom aj8/buffer-skip-regexp
-  (rx bos (or (or "*scratch*" "*Async-native-compile-log*" "*Dired log*")
-              (seq "*gptel-curl*" (zero-or-more anything))
-              (seq "magit-process" (zero-or-more anything))
-              (seq "*EGLOT" (zero-or-more anything) "events*"))
-      eos)
+    (rx bos "*")
   "Regular expression matching buffers ignored by `next-buffer'
-and `previous-buffer'. Note that there is no need to specify
-buffers that are displayed in side-windows."
+and `previous-buffer'."
   :type 'regexp
   :group 'aj8-lisp)
 
