@@ -1548,11 +1548,15 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Reduce log margin
   (setf (nth 4 magit-log-margin) 15)
   ;; Use abbreviated ages in log margin
-  (setf (nth 1 magit-log-margin) 'age-abbreviated))
+  (setf (nth 1 magit-log-margin) 'age-abbreviated)
   ;; Activate Smerge hydra on file visit in smerge-mode (TODO)
   ;; (add-hook 'magit-diff-visit-file-hook (lambda ()
   ;;                                  (when smerge-mode
   ;;                                    (hydra-smerge/body)))))
+  ;; Clean up process buffers automatically
+  (setq aj8/magit-cleanup-buffers t)
+  ;; Hook for buffer cleanup
+  (add-hook 'magit-mode-hook #'aj8/magit-start-buffer-cleanup-timer))
 
 ;; magit-todos (show source file TODOs in Magit)
 ;;   Available keywords: "HOLD", "TODO", NEXT","THEM", "PROG", "OKAY",

@@ -207,6 +207,43 @@ See also `ediff-cleanup-mess'."
         (kill-buffer buffer)))
     (message "Killed all Ediff buffers")))
 
+(defcustom aj8/magit-cleanup-buffers nil
+  "If non-nil, clean up Magit buffers regularly.
+
+See `aj8/magit-buffer-cleanup-timer' and
+`aj8/magit-kill-process-buffers' for details."
+  :type 'boolean
+  :group 'aj8-lisp)
+
+(defvar aj8/magit-buffer-cleanup-timer nil
+  "Timer for automatic cleanup of Magit buffers.")
+
+;; Kill Magit process buffers
+(defun aj8/magit-kill-process-buffers ()
+  "Kill all Magit process buffers."
+  (interactive)
+  (let ((killed-buffers 0))
+    (when aj8/magit-cleanup-buffers
+      (dolist (buffer (buffer-list))
+        (when (string-match-p "magit-process:" (buffer-name buffer))
+          (kill-buffer buffer)
+          (setq killed-buffers (+ 1 killed-buffers)))))
+    (if (> killed-buffers 0)
+        (message "Killed %s Magit process buffer(s)" killed-buffers))))
+
+(defun aj8/magit-start-buffer-cleanup-timer ()
+  "Start the timer to run `aj8/magit-kill-process-buffers' periodically."
+  (unless aj8/magit-buffer-cleanup-timer
+    (setq aj8/magit-buffer-cleanup-timer
+          ;; (run-with-timer 300 300 #'aj8/magit-kill-process-buffers))))
+          (run-with-idle-timer 60 t #'aj8/magit-kill-process-buffers))))
+
+(defun aj8/magit-stop-buffer-cleanup-timer ()
+  "Stop the `aj8/magit-buffer-cleanup-timer' timer."
+  (when aj8/magit-buffer-cleanup-timer
+    (cancel-timer aj8/magit-buffer-cleanup-timer)
+    (setq aj8/magit-buffer-cleanup-timer nil)))
+
 ;;; Misc
 
 ;; Kill buffer in other window
