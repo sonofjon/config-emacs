@@ -159,7 +159,6 @@ If the current window is a side window use the regular
 If the current buffer does not belong to a project, call `next-buffer'."
   (interactive)
   ;; (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
-  ;;   TODO: In Emacs 29 there is also switch-to-prev-buffer-skip-regexp
     (my/project--repeat-until-project-buffer #'next-buffer))
 
 ;; Switch to previous project buffer
