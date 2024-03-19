@@ -2519,7 +2519,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; Buffer navigation
 (keymap-global-set "C-x <right>" #'aj8/next-buffer)
-(keymap-global-set "C-x <left>" #'aj8/prev-buffer)
+(keymap-global-set "C-x <left>" #'aj8/previous-buffer)
 (keymap-global-set "C-x C-<right>" #'my/project-next-buffer)
 (keymap-global-set "C-x C-<left>" #'my/project-previous-buffer)
 

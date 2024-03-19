@@ -95,8 +95,8 @@ If the current window is a side window use the regular
     (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
       (switch-to-prev-buffer))))
 
-(defun aj8/prev-buffer ()
 ;; Custom previous-buffer function with skip
+(defun aj8/previous-buffer ()
   "Switch to the previously selected buffer, and skip irrelevant buffers.
 
 If the current window is a side window use the regular
@@ -1345,12 +1345,12 @@ When called from an eww buffer, provide the current link as
 ;; Create repeat-map for next/prev-buffer
 (defvar aj8/switch-buffer-map
   (let ((map (make-sparse-keymap)))
-    (keymap-set map "<left>" #'aj8/prev-buffer)
+    (keymap-set map "<left>" #'aj8/previous-buffer)
     (keymap-set map "<right>" #'aj8/next-buffer)
     map))
 
 ;; Add repeat-map property to next/prev-buffer commands
-(dolist (cmd '(aj8/prev-buffer
+(dolist (cmd '(aj8/previous-buffer
                aj8/next-buffer))
   (put cmd 'repeat-map 'aj8/switch-buffer-map))
 
