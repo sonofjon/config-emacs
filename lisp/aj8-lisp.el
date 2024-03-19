@@ -38,21 +38,25 @@ Emacs session."
 
 ;;; Buffer switching
 
+;; Alternative switch-to-prev-buffer
 (defun aj8/switch-to-buffer-prev ()
   "Switch to the previous buffer.
 
-If `switch-to-buffer-obey-display-actions' is non-nil, switch to
-any window."
+Alternative switch-to-prev-buffer based on switch-to-buffer.  If
+`switch-to-buffer-obey-display-actions' is non-nil, switch to any
+window."
   (interactive)
   (let ((prev-buffer (nth 1 (buffer-list (selected-window)))))
     (when prev-buffer
       (switch-to-buffer prev-buffer))))
 
+;; Alternative switch-to-next-buffer
 (defun aj8/switch-to-buffer-next ()
   "Switch to the next buffer.
 
-If `switch-to-buffer-obey-display-actions' is non-nil, switch to
-any window."
+Alternative switch-to-next-buffer based on switch-to-buffer.  If
+`switch-to-buffer-obey-display-actions' is non-nil, switch to any
+window."
   (interactive)
   (let ((next-buffer (nth 1 (buffer-list (selected-window)))))
     (when next-buffer
@@ -60,8 +64,10 @@ any window."
 
 (defcustom aj8/buffer-skip-regexp
     (rx bos "*")
-  "Regular expression matching buffers ignored by `next-buffer'
-and `previous-buffer'."
+  "Regular expression matching ignored buffers.
+
+The matching buffers are ignored by `next-buffer' and
+`previous-buffer'."
   :type 'regexp
   :group 'aj8-lisp)
 
@@ -77,6 +83,7 @@ and `previous-buffer'."
   ;; Buffer is displayed in a side window
   ;; (aj8/buffer-side-window-p buffer))
 
+;; Custom switch-to-prev-buffer with skip
 (defun aj8/switch-to-prev-buffer ()
   "Switch to the previously selected buffer, and skip irrelevant buffers.
 
@@ -89,6 +96,7 @@ If the current window is a side window use the regular
       (switch-to-prev-buffer))))
 
 (defun aj8/prev-buffer ()
+;; Custom previous-buffer function with skip
   "Switch to the previously selected buffer, and skip irrelevant buffers.
 
 If the current window is a side window use the regular
@@ -99,6 +107,7 @@ If the current window is a side window use the regular
     (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
       (previous-buffer))))
 
+;; Custom switch-to-next-buffer with skip
 (defun aj8/switch-to-next-buffer ()
   "Switch to the next selected buffer, and skip irrelevant buffers.
 
@@ -110,6 +119,7 @@ If the current window is a side window use the regular
     (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
       (switch-to-next-buffer))))
 
+;; Custom next-buffer function with skip
 (defun aj8/next-buffer ()
   "Switch to the next selected buffer, and skip irrelevant buffers.
 
