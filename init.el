@@ -1732,11 +1732,16 @@ Elisp code explicitly in arbitrary buffers.")
   :bind (("C-c t" . gptel)
          ("C-c T" . gptel-menu))
   :custom
+  ;; Gemini
+  (gptel-backend (gptel-make-gemini "Gemini"
+                   :key (gptel-api-key-from-auth-source)
+                   :models '("gemini-pro")
+                   :stream t))
+  ;; (gptel-model "gemini-pro")   ; default is gemini-pro
+  ;; ChatGPT
+  ;; (gptel-model "gpt-4")   ; default is gpt-3.5-turbo
   ;; Set mode
   ;; (gptel-default-mode 'text-mode)   ; defauilt: markdown-mode
-  ;; Set model
-  ;; (gptel-model "gpt-3.5-turbo")   ; default
-  (gptel-model "gpt-4")
   ;; Don't use Curl
   ;; (gptel-use-curl nil)
   :config
@@ -2237,7 +2242,7 @@ Elisp code explicitly in arbitrary buffers.")
          (side . right)
          (slot . -1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
+        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT\\|Embark Collect:.*\\|Gemini\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
