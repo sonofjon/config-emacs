@@ -1733,13 +1733,13 @@ Elisp code explicitly in arbitrary buffers.")
          ("C-c T" . gptel-menu))
   :custom
   ;; Gemini
-  (gptel-backend (gptel-make-gemini "Gemini"
-                   :key (gptel-api-key-from-auth-source)
-                   :models '("gemini-pro")
-                   :stream t))
+  ;; (gptel-backend (gptel-make-gemini "Gemini"
+  ;;                  :key (gptel-api-key-from-auth-source)
+  ;;                  :stream t))
   ;; (gptel-model "gemini-pro")   ; default is gemini-pro
   ;; ChatGPT
-  ;; (gptel-model "gpt-4")   ; default is gpt-3.5-turbo
+  ;; (gptel-backend (gptel-make-openai "OpenAI"))
+  (gptel-model "gpt-4")   ; default is gpt-3.5-turbo
   ;; Set mode
   ;; (gptel-default-mode 'text-mode)   ; defauilt: markdown-mode
   ;; Don't use Curl
