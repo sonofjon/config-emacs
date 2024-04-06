@@ -420,9 +420,12 @@
 (use-package treesit-auto
   :demand t
   :custom
+  ;; Prompt for install
   (treesit-auto-install 'prompt)
   :config
+  ;; Add tree-sitter modes to auto-mode-alist
   (treesit-auto-add-to-auto-mode-alist 'all)
+  ;; Enable globally
   (global-treesit-auto-mode))
 
 ;;; Completion
