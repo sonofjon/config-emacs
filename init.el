@@ -855,6 +855,7 @@ Elisp code explicitly in arbitrary buffers.")
   :defer)
 
 ;; drag-stuff (drag stuff (lines, words, region, etc...) around)
+;;   TODO: drag region moves first line after region
 (use-package drag-stuff
   :diminish
   :bind (("C-c <up>" . drag-stuff-up)
