@@ -93,6 +93,7 @@
                           diminish
                           dimmer
                           drag-stuff
+                          editorconfig
                           ef-themes
                           elfeed
                           embark
@@ -160,6 +161,7 @@
  `(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
    (combobulate :url "https://github.com/mickeynp/combobulate.git")
+   (copilot :url "https://github.com/copilot-emacs/copilot.el.git")
    (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el")))
                         ;; :branch "dev")
    ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
@@ -243,6 +245,29 @@
   :mode "\\.yml$"
   :hook (yaml-mode . (lambda () (ansible 1))))
 
+;; copilot (an unofficial Copilot plugin for Emacs)
+(use-package copilot
+  :bind (:map copilot-mode-map
+              ("C-c a" . copilot-complete)   ; FIXME
+              ("TAB" . 'copilot-accept-completion)
+              ("M-<right>" . 'copilot-accept-completion-by-word)   ; FIXME
+              ("M-<left>" . 'copilot-accept-completion-by-line)   ; FIXME
+              ("M-p" . 'copilot-previous-completion)
+              ("M-n" . 'copilot-next-completion)
+              :map copilot-completion-map
+              ("C-g" . 'copilot-clear-overlay))
+  ;; :hook (prog-mode . copilot-mode)
+  :custom
+  ;; Enable automatically
+  (copilot-enable-predicates '(copilot--buffer-changed))
+  ;; Don't show when Corfu is active
+  (copilot-disable-predicates #'corfu--active-p)   ; FIXME
+  :config
+  ;; Clear overlay
+  (add-hook 'post-command-hook #'copilot-clear-overlay))
+  ;; Enable Copilot globally
+  ;; (global-copilot-mode 1))
+
 ;; lua-mode (major-mode for editing Lua scripts)
 (use-package lua-mode
   :mode ("\\.lua$"))
@@ -285,6 +310,13 @@
   :mode "\\.yml$")
   ;; :bind (:map yaml-mode-map
   ;;             ("C-m" . newline-and-indent)))
+
+;; editorconfig (EditorConfig Emacs plugin)
+;;   Required by copilot
+(use-package editorconfig
+  :disabled
+  :config
+  (editorconfig-mode 1))
 
 ;; eglot (client for language server protocol servers)
 (use-package eglot
@@ -2156,7 +2188,7 @@ Elisp code explicitly in arbitrary buffers.")
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Native-compile-Log\\)\\*"
         ;; ("\\*\\(Async-native-compile-log\\|Native-compile-Log\\|EGLOT.*events\\|.*-ls\\(::.*\\)?\\|texlab\\(::stderr\\)?\\)\\*"
-        ("\\*\\(EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
+        ("\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
