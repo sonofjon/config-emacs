@@ -355,7 +355,7 @@
   ;; Enable eglot in code external to project
   (eglot-extend-to-xref t)
   ;; Disable events buffers
-  (setq eglot-events-buffer-size 0)
+  (eglot-events-buffer-size 0)
   :config
   ;; Add server for web-mode
   (add-to-list 'eglot-server-programs
@@ -859,6 +859,7 @@ Elisp code explicitly in arbitrary buffers.")
          ("C-c <left>" . drag-stuff-left)
          ("C-c <right>" . drag-stuff-right))
   :config
+  ;; Enable everywhere
   (drag-stuff-global-mode 1))
 
 ;; multiple-cursors (multiple cursors for Emacs)
@@ -1825,7 +1826,7 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Define vault location
   (obsidian-specify-path "~/Dropbox/Apps/Obsidian/obsidian-vault/"))
-  ;; Enable mode
+  ;; Enable mode globally
   ;; (global-obsidian-mode t))
 
 ;; obsidian-yaml-tools ()
