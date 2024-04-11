@@ -821,6 +821,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; drag-stuff (drag stuff (lines, words, region, etc...) around)
 (use-package drag-stuff
+  :diminish
   :bind (("C-c <up>" . drag-stuff-up)
          ("C-c <down>" . drag-stuff-down)
          ("C-c <left>" . drag-stuff-left)
