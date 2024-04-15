@@ -1732,20 +1732,20 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package gptel
   :bind (("C-c t" . gptel)
          ("C-c T" . gptel-menu))
-  :custom
-  ;; Gemini
-  ;; (gptel-backend (gptel-make-gemini "Gemini"
-  ;;                  :key (gptel-api-key-from-auth-source)
-  ;;                  :stream t))
-  ;; (gptel-model "gemini-pro")   ; default is gemini-pro
-  ;; ChatGPT
-  ;; (gptel-backend (gptel-make-openai "OpenAI"))
-  (gptel-model "gpt-4")   ; default is gpt-3.5-turbo
+  ;; :custom
   ;; Set mode
   ;; (gptel-default-mode 'text-mode)   ; defauilt: markdown-mode
   ;; Don't use Curl
   ;; (gptel-use-curl nil)
   :config
+  ;; Gemini
+  ;; (setq gptel-backend (gptel-make-gemini "Gemini"
+  ;;                       :key (gptel-api-key-from-auth-source)
+  ;;                       :stream t))
+  ;; (setq gptel-model "gemini-pro")   ; default is gemini-pro
+  ;; ChatGPT
+  ;; (setq gptel-backend (gptel-make-openai "OpenAI"))
+  (setq gptel-model "gpt-4")   ; default is gpt-3.5-turbo
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
