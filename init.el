@@ -1744,7 +1744,9 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                       :stream t))
   ;; (setq gptel-model "gemini-pro")   ; default is gemini-pro
   ;; ChatGPT
-  ;; (setq gptel-backend (gptel-make-openai "OpenAI"))
+  ;; (setq gptel-backend (gptel-make-openai "ChatGPT"
+  ;;                       :key (gptel-api-key-from-auth-source)
+  ;;                       :stream t))
   (setq gptel-model "gpt-4")   ; default is gpt-3.5-turbo
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
