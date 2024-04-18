@@ -249,7 +249,7 @@
 
 ;; markdown-mode (major-mode for editing Markdown files)
 (use-package markdown-mode
-  :mode ("\\.md$"))
+  :mode "\\.md$")
   ;; :mode ("\\.md$" . markdown-view-mode))
 
 ;; powershell (major-mode for editing PowerShell scripts)
