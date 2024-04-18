@@ -1742,7 +1742,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (setq gptel-backend (gptel-make-gemini "Gemini"
   ;;                       :key (gptel-api-key-from-auth-source)
   ;;                       :stream t))
-  ;; (setq gptel-model "gemini-pro")   ; default is gemini-pro
+  ;; (setq gptel-model "gemini-pro")
+  ;; (setq gptel-model "gemini-1.5-pro-latest")   ; default is gemini-pro
   ;; ChatGPT
   ;; (setq gptel-backend (gptel-make-openai "ChatGPT"
   ;;                       :key (gptel-api-key-from-auth-source)
