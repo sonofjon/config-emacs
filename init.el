@@ -2783,20 +2783,19 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Markdown
 (defhydra hydra-markdown (:hint nil :foreign-keys run)
   "
-Formatting:     _B_: bold           _I_: italic
+Format:         _B_: bold           _I_: italic
                 _Q_: quote          _C_: code           _P_: pre-formatted
 Headings:       _H_: automatic
                 _1_: h1       _2_: h2       _3_: h3       _4_: h4
-Lists:          _m_: new item       _<_: promote        _>_: demote
+Lists:          _m_: new item
+Outline:        _k_: move up        _j_: move down
+                _h_: promote        _l_: demote
 Tables:         _a_: align          _s_: sort           _t_: transpose
   Navigation    _n_: next row       _p_: previous row
                 _f_: forward cell   _b_: backward cell
   Rows          ___: insert         _-_: delete
   Columns       _|_: insert         _\\_: delete
-                _h_: move left      _l_: move right
-All:
-  Move          _k_: move up        _j_: move down
-
+                _<_: move left      _>_: move right
 "
   ("B" markdown-insert-bold)
   ("I" markdown-insert-italic)
@@ -2811,8 +2810,11 @@ All:
   ("4" markdown-insert-header-atx-4)
 
   ("m" markdown-insert-list-item)
-  ("<" markdown-promote)
-  (">" markdown-demote)
+
+  ("h" markdown-promote)
+  ("l" markdown-demote)
+  ("k" markdown-move-up)
+  ("j" markdown-move-down)
 
   ("a" markdown-table-align)
   ("s" markdown-table-sort-lines)
@@ -2825,11 +2827,8 @@ All:
   ("-" markdown-table-delete-row)
   ("|" markdown-table-insert-column)
   ("\\" markdown-table-delete-column)
-  ("h" markdown-table-move-column-left)
-  ("l" markdown-table-move-column-right)
-
-  ("k" markdown-move-up)
-  ("j" markdown-move-down)
+  ("<" markdown-table-move-column-left)
+  (">" markdown-table-move-column-right)
 
   ("q" nil "quit"))
 
