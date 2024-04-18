@@ -2781,7 +2781,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Editing
 
 ;; Markdown
-(defhydra hydra-markdown (:hint nil)
+(defhydra hydra-markdown (:hint nil :foreign-keys run)
   "
 Formatting:     _B_: bold           _I_: italic
                 _Q_: quote          _C_: code           _P_: pre-formatted
