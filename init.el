@@ -2829,7 +2829,9 @@ All:
   ("l" markdown-table-move-column-right)
 
   ("k" markdown-move-up)
-  ("j" markdown-move-down))
+  ("j" markdown-move-down)
+
+  ("q" nil "quit"))
 
 (keymap-global-set "C-c y m" #'hydra-markdown/body)
 
