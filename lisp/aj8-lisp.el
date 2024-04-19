@@ -155,19 +155,29 @@ If the current window is a side window use the regular
 
 ;; Switch to next project buffer
 (defun my/project-next-buffer ()
-  "In the selected window switch to the next project buffer.
-If the current buffer does not belong to a project, call `next-buffer'."
+  "Switch to the next project buffer, and skip irrelevant buffers.
+
+If the current window is a side window don't skip buffers."
   (interactive)
-  ;; (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
-    (my/project--repeat-until-project-buffer #'next-buffer))
+  (if (project-current)
+      (if (window-parameter nil 'window-side)
+          (my/project--repeat-until-project-buffer #'next-buffer)
+        (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+          (my/project--repeat-until-project-buffer #'next-buffer)))
+    (message "Warning: Current buffer is not a project buffer.")))
 
 ;; Switch to previous project buffer
 (defun my/project-previous-buffer ()
-  "In the selected window switch to the previous project buffer.
-If the current buffer does not belong to a project, call `previous-buffer'."
+  "Switch to the previous project buffer, and skip irrelevant buffers.
+
+If the current window is a side window don't skip buffers."
   (interactive)
-  ;; (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
-    (my/project--repeat-until-project-buffer #'previous-buffer))
+  (if (project-current)
+      (if (window-parameter nil 'window-side)
+          (my/project--repeat-until-project-buffer #'previous-buffer)
+        (let ((switch-to-prev-buffer-skip 'aj8/buffer-skip-p))
+          (my/project--repeat-until-project-buffer #'previous-buffer)))
+    (message "Warning: Current buffer is not a project buffer.")))
 
 ;;; Manipulate buffer names
 
