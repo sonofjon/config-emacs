@@ -118,6 +118,7 @@
                           lorem-ipsum
                           lua-mode
                           magit
+			  magit-gptcommit
 			  magit-todos
                           marginalia
                           markdown-mode
@@ -1599,6 +1600,21 @@ Elisp code explicitly in arbitrary buffers.")
   (setq aj8/magit-cleanup-buffers t)
   ;; Hook for buffer cleanup
   (add-hook 'magit-mode-hook #'aj8/magit-start-buffer-cleanup-timer))
+
+;; magit-gptcommit (Git commit with help of GPT)
+;;   TODO: does not work
+(use-package magit-gptcommit
+  :disabled
+  :demand t
+  :after (gptel magit)
+  :bind (:map git-commit-mode-map
+              ("C-c C-g" . magit-gptcommit-generate))
+  :config
+  ;; Add gptcommit transient commands to `magit-commit'
+  ;;   Eval (transient-remove-suffix 'magit-commit '(1 -1)) to remove gptcommit transient commands
+  (magit-gptcommit-status-buffer-setup))
+  ;; Generate commit message automatically in magit status buffer
+  ;; (magit-gptcommit-mode 1))
 
 ;; magit-todos (show source file TODOs in Magit)
 ;;   Available keywords: "HOLD", "TODO", NEXT","THEM", "PROG", "OKAY",
