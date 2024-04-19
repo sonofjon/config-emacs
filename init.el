@@ -254,7 +254,7 @@
               ("M-<left>" . 'copilot-accept-completion-by-line)   ; FIXME:
               ("M-p" . 'copilot-previous-completion)
               ("M-n" . 'copilot-next-completion)
-              :map copilot-completion-map
+         :map copilot-completion-map
               ("C-g" . 'copilot-clear-overlay))
   ;; :hook (prog-mode . copilot-mode)
   :custom
@@ -975,7 +975,7 @@ Elisp code explicitly in arbitrary buffers.")
               ("C-c \"" . wrap-with-double-quotes)
               ("C-c `"  . wrap-with-back-quotes)
               ;; Use standard C-w, M-d, M-<backspace> in strict mode
-              :map smartparens-strict-mode-map
+         :map smartparens-strict-mode-map
               ([remap kill-region] . nil))         ; unbind sp-kill-region
               ;; ([remap kill-word] . nil)           ; unbind sp-kill-word
               ;; ([remap backward-kill-word] . nil)) ; unbind sp-backward-kill-word
