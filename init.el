@@ -248,10 +248,10 @@
 ;; copilot (an unofficial Copilot plugin for Emacs)
 (use-package copilot
   :bind (:map copilot-mode-map
-              ("C-c a" . copilot-complete)   ; FIXME:
-              ("TAB" . 'copilot-accept-completion)
-              ("M-<right>" . 'copilot-accept-completion-by-word)   ; FIXME:
-              ("M-<left>" . 'copilot-accept-completion-by-line)   ; FIXME:
+              ("TAB" . copilot-complete)
+              ("<backtab>" . 'copilot-accept-completion)
+              ("M-<right>" . 'copilot-accept-completion-by-word)
+              ("M-<left>" . 'copilot-accept-completion-by-line)
               ("M-p" . 'copilot-previous-completion)
               ("M-n" . 'copilot-next-completion)
          :map copilot-completion-map
