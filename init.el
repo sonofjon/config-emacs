@@ -891,7 +891,7 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package multi-line
   ;; Demand multi-line to avoid failure to load mode specific strategies
   ;;   (https://github.com/IvanMalison/multi-line/issues/8)
-  :demand)
+  :demand t)
   ;; :bind (("C-c l" . multi-line)))   ; TODO: conflicts with eglot 
 
 ;; repeat-help (display keybindings for repeat-mode)
@@ -1093,7 +1093,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; dired-hide-dotfiles (hide dotfiles in dired)
 (use-package dired-hide-dotfiles
-  :demand
+  :demand t
   ;; :hook (dired-mode . dired-hide-dotfiles-mode)
   :bind (:map dired-mode-map
               ("." . dired-hide-dotfiles-mode)))   ; default: dired-clean-directory
