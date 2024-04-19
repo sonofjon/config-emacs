@@ -248,10 +248,10 @@
 ;; copilot (an unofficial Copilot plugin for Emacs)
 (use-package copilot
   :bind (:map copilot-mode-map
-              ("C-c a" . copilot-complete)   ; FIXME
+              ("C-c a" . copilot-complete)   ; FIXME:
               ("TAB" . 'copilot-accept-completion)
-              ("M-<right>" . 'copilot-accept-completion-by-word)   ; FIXME
-              ("M-<left>" . 'copilot-accept-completion-by-line)   ; FIXME
+              ("M-<right>" . 'copilot-accept-completion-by-word)   ; FIXME:
+              ("M-<left>" . 'copilot-accept-completion-by-line)   ; FIXME:
               ("M-p" . 'copilot-previous-completion)
               ("M-n" . 'copilot-next-completion)
               :map copilot-completion-map
@@ -261,7 +261,7 @@
   ;; Enable automatically
   (copilot-enable-predicates '(copilot--buffer-changed))
   ;; Don't show when Corfu is active
-  (copilot-disable-predicates #'corfu--active-p)   ; FIXME
+  (copilot-disable-predicates #'corfu--active-p)   ; FIXME:
   :config
   ;; Clear overlay
   (add-hook 'post-command-hook #'copilot-clear-overlay))
@@ -1587,7 +1587,7 @@ Elisp code explicitly in arbitrary buffers.")
   (setf (nth 4 magit-log-margin) 15)
   ;; Use abbreviated ages in log margin
   (setf (nth 1 magit-log-margin) 'age-abbreviated)
-  ;; Activate Smerge hydra on file visit in smerge-mode (TODO)
+  ;; TODO: Activate Smerge hydra on file visit in smerge-mode
   ;; (add-hook 'magit-diff-visit-file-hook (lambda ()
   ;;                                  (when smerge-mode
   ;;                                    (hydra-smerge/body)))))
