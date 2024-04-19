@@ -258,11 +258,15 @@
               ("C-g" . 'copilot-clear-overlay))
   ;; :hook (prog-mode . copilot-mode)
   :custom
-  ;; Enable automatically
+  ;; Show completions automatically
   (copilot-enable-predicates '(copilot--buffer-changed))
-  ;; Don't show when Corfu is active
-  (copilot-disable-predicates #'corfu--active-p)   ; FIXME:
+  ;; Don't show completions when Corfu is active
+  (copilot-disable-predicates '(corfu-popup-active-p))
   :config
+  (defun corfu-popup-active-p ()
+    "Return non-nil if a Corfu popup is active in terminal."
+    (when (boundp 'corfu-terminal--popup)
+      corfu-terminal--popup))
   ;; Clear overlay
   (add-hook 'post-command-hook #'copilot-clear-overlay))
   ;; Enable Copilot globally
