@@ -85,7 +85,7 @@ The matching buffers are ignored by `next-buffer' and
 
 ;; Custom switch-to-prev-buffer with skip
 (defun aj8/switch-to-prev-buffer ()
-  "Switch to the previously selected buffer, and skip irrelevant buffers.
+  "Switch to the previous buffer, and skip irrelevant buffers.
 
 If the current window is a side window use the regular
 `switch-to-prev-buffer'."
@@ -97,7 +97,7 @@ If the current window is a side window use the regular
 
 ;; Custom previous-buffer function with skip
 (defun aj8/previous-buffer ()
-  "Switch to the previously selected buffer, and skip irrelevant buffers.
+  "Switch to the previous buffer, and skip irrelevant buffers.
 
 If the current window is a side window use the regular
 `previous-buffer'."
@@ -109,7 +109,7 @@ If the current window is a side window use the regular
 
 ;; Custom switch-to-next-buffer with skip
 (defun aj8/switch-to-next-buffer ()
-  "Switch to the next selected buffer, and skip irrelevant buffers.
+  "Switch to the next buffer, and skip irrelevant buffers.
 
 If the current window is a side window use the regular
 `switch-to-next-buffer'."
@@ -121,7 +121,7 @@ If the current window is a side window use the regular
 
 ;; Custom next-buffer function with skip
 (defun aj8/next-buffer ()
-  "Switch to the next selected buffer, and skip irrelevant buffers.
+  "Switch to the next buffer, and skip irrelevant buffers.
 
 If the current window is a side window use the regular
 `next-buffer'."
