@@ -63,7 +63,12 @@ window."
       (switch-to-buffer next-buffer))))
 
 (defcustom aj8/buffer-skip-regexp
-    (rx bos "*")
+  ;; (rx (zero-or-more anychar))     ; match anything
+  ;; (rx bos (or "*scratch*") eos)   ; match a particular buffer
+  ;; (rx bos "*")                    ; match buffers starting with '*'
+  (rx bos (or (seq "*" (zero-or-more anything))
+              (seq "magit-process" (zero-or-more anything)))
+      eos)
   "Regular expression matching ignored buffers.
 
 The matching buffers are ignored by `next-buffer' and
