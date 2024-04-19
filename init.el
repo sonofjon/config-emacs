@@ -1603,6 +1603,9 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package magit-todos
   :after magit
   :hook (magit-mode . magit-todos-mode))
+  ;; :custom
+  ;; ;; Don't require a colon after keyword
+  ;; (magit-todos-keyword-suffix ""))
 
 ;; diff-hl (highlight uncommitted changes using VC)
 (use-package diff-hl
