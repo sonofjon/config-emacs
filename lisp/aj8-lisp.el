@@ -1357,16 +1357,16 @@ When called from an eww buffer, provide the current link as
   (put cmd 'repeat-map 'aj8/drag-stuff-repeat-horizontal-map))
 
 ;; Create repeat-map for next/prev-buffer
-(defvar aj8/switch-buffer-map
-  (let ((map (make-sparse-keymap)))
-    (keymap-set map "<left>" #'aj8/previous-buffer)
-    (keymap-set map "<right>" #'aj8/next-buffer)
-    map))
+;; (defvar aj8/switch-buffer-map
+;;   (let ((map (make-sparse-keymap)))
+;;     (keymap-set map "<left>" #'aj8/previous-buffer)
+;;     (keymap-set map "<right>" #'aj8/next-buffer)
+;;     map))
 
 ;; Add repeat-map property to next/prev-buffer commands
-(dolist (cmd '(aj8/previous-buffer
-               aj8/next-buffer))
-  (put cmd 'repeat-map 'aj8/switch-buffer-map))
+;; (dolist (cmd '(aj8/previous-buffer
+;;                aj8/next-buffer))
+;;   (put cmd 'repeat-map 'aj8/switch-buffer-map))
 
 ;; Add "/" to undo-repeat-map
 ;;   TODO: Disable undo-repeat-map
