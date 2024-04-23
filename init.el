@@ -242,9 +242,9 @@
   :mode "\\.ahk$")
 
 ;; ansible (minor-mode for editing Ansible (YAML) files)
-(use-package ansible
-  :mode "\\.yml$"
-  :hook (yaml-mode . (lambda () (ansible 1))))
+(use-package ansible)
+  ;; :mode "\\.yml$"
+  ;; :hook (yaml-mode . (lambda () (ansible 1))))
 
 ;; copilot (an unofficial Copilot plugin for Emacs)
 (use-package copilot
