@@ -1506,5 +1506,12 @@ reported by `frame-width'. See
   (when (string-match-p "ts" (symbol-name major-mode))
     (setq mode-name (concat mode-name "[TS]"))))
 
+(defun aj8/tramp-indicator ()
+  "Return a remote host name if the current buffer is using TRAMP."
+  (when (file-remote-p default-directory)
+    (let* ((dissected (tramp-dissect-file-name default-directory))
+           (host (tramp-file-name-host dissected)))
+      (concat " TRAMP:" host))))
+
 
 (provide 'aj8-lisp)

@@ -2537,6 +2537,9 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'sh-mode-hook
           #'outline-headers-for-hash-mark-buffers)
 
+;; tramp-mode: add mode line indicator
+(add-to-list 'global-mode-string '(:eval (aj8/tramp-indicator)) t)
+
 ;; visual-line-mode
 (add-hook 'help-mode-hook #'visual-line-mode)
 (add-hook 'helpful-mode-hook #'visual-line-mode)
