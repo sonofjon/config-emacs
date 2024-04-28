@@ -1810,8 +1810,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                       :stream t))
   ;; (setq gptel-model "gpt-4")   ; default is gpt-3.5-turbo
   ;; (setq gptel-model "gpt-4-turbo-preview")
-  ;; (setq gptel-model "gpt-4-turbo")
-  (setq gptel-model "gpt-4-0125-preview")
+  (setq gptel-model "gpt-4-turbo")
+  ;; (setq gptel-model "gpt-4-0125-preview")
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
