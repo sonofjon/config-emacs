@@ -279,8 +279,21 @@
 
 ;; markdown-mode (major-mode for editing Markdown files)
 (use-package markdown-mode
-  :mode "\\.md$")
-  ;; :mode ("\\.md$" . markdown-view-mode))
+  :mode "\\.md$"
+  ;; :mode ("\\.md$" . markdown-view-mode)
+  :bind (:map markdown-mode-map
+              ("M-n" . nil)         ; unbind markdown-next-link
+              ("M-p" . nil)     ; unbind markdown-previous-link
+              ("C-c <left>" . nil)     ; unbind markdown-promote
+              ("C-c <right>" . nil)     ; unbind markdown-demote
+              ("C-c C-<down>" . markdown-outline-next-same-level)
+              ("C-c <down>" . markdown-outline-next)
+              ("C-c C-<up>" . markdown-outline-previous-same-level)
+              ("C-c <up>" . markdown-outline-previous)
+              ("C-c C-M-n" . markdown-move-down)
+              ("C-c C-M-p" . markdown-move-up)
+              ("C-c C-M-<right>" . markdown-demote)
+              ("C-c C-M-<left>" . markdown-promote)))
 
 ;; powershell (major-mode for editing PowerShell scripts)
 (use-package powershell
