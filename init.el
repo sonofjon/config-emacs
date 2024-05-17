@@ -1813,10 +1813,12 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Gemini
   (gptel-make-gemini "Gemini"
-    :key "YOUR_GEMINI_API_KEY"
+    :key (gptel-api-key-from-auth-source
+          "generativelanguage.googleapis.com" "apikey")
     :stream t)   ; make available
   ;; (setq gptel-backend (gptel-make-gemini "Gemini"
-  ;;                       :key (gptel-api-key-from-auth-source)
+  ;;                       :key (gptel-api-key-from-auth-source
+  ;;                             "generativelanguage.googleapis.com" "apikey")
   ;;                       :stream t))   ; set default
   ;; (setq gptel-model "gemini-pro")
   ;; (setq gptel-model "gemini-1.5-pro-latest")   ; default is gemini-pro
