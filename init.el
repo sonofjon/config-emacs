@@ -1812,19 +1812,18 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (gptel-use-curl nil)
   :config
   ;; Gemini
+  (gptel-make-gemini "Gemini"
+    :key "YOUR_GEMINI_API_KEY"
+    :stream t)   ; make available
   ;; (setq gptel-backend (gptel-make-gemini "Gemini"
   ;;                       :key (gptel-api-key-from-auth-source)
-  ;;                       :stream t))
+  ;;                       :stream t))   ; set default
   ;; (setq gptel-model "gemini-pro")
   ;; (setq gptel-model "gemini-1.5-pro-latest")   ; default is gemini-pro
   ;; ChatGPT
-  ;; (setq gptel-backend (gptel-make-openai "ChatGPT"
-  ;;                       :key (gptel-api-key-from-auth-source)
-  ;;                       :stream t))
   ;; (setq gptel-model "gpt-4")   ; default is gpt-3.5-turbo
-  ;; (setq gptel-model "gpt-4-turbo-preview")
   (setq gptel-model "gpt-4-turbo")
-  ;; (setq gptel-model "gpt-4-0125-preview")
+  ;; (setq gptel-model "gpt-4o")
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
