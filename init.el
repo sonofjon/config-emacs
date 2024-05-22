@@ -1582,6 +1582,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;;   Clone with "gh:repository"
   (magit-clone-name-alist '(("\\`\\(?:github:\\|gh:\\)?\\([^:]+\\)\\'"
                              "github.com" "sonofjon")))
+  ;; Disable magit-wip-mode lighter
   (magit-wip-mode-lighter "")
   :config
   ;; Enable word-wrap
