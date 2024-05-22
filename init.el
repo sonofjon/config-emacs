@@ -1646,8 +1646,8 @@ Elisp code explicitly in arbitrary buffers.")
   :disabled
   :config
   ;; Integration with Magit
-  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
   ;; Put highlights in the margin in terminal
   (when (display-graphic-p)
     (setq diff-hl-margin-mode t))
@@ -1830,9 +1830,9 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
-  (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
+  (add-hook 'gptel-post-stream-hook #'gptel-auto-scroll)
   ;; Jump to next prompt after response
-  (add-hook 'gptel-post-response-functions 'gptel-end-of-response))
+  (add-hook 'gptel-post-response-functions #'gptel-end-of-response))
 
 ;; hydra (make bindings that stick around)
 (use-package hydra
