@@ -1073,6 +1073,13 @@ versa."
 
 ;;; Misc
 
+;; Disable magit-wip-mode for remote (Tramp) buffers
+(defun aj8/disable-magit-wip-mode-if-remote ()
+  "Disable magit-wip-mode for remote buffers."
+  (if (file-remote-p default-directory)
+      (magit-wip-mode -1)  ; disable in remote directory
+    (magit-wip-mode 1)))   ; enable otherwise
+
 ;; Enable concatenation in ediff
 ;;   (when merging, use both variants A and B, one after the other)
 (defun my/ediff-copy-both-to-C ()

@@ -1591,6 +1591,8 @@ Elisp code explicitly in arbitrary buffers.")
   (magit-wip-mode 1)
   ;; Disable hl-line-mode
   (add-hook 'magit-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
+  ;; Disable magit-wip-mode for Tramp buffers
+  (add-hook 'magit-mode-hook #'aj8/disable-magit-wip-mode-if-remote)
   ;; Add status flag to repository list
   (add-to-list 'magit-repolist-columns
                '("Flag" 4 magit-repolist-column-flag (:right-align t)))
