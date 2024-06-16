@@ -1103,6 +1103,42 @@ versa."
                     (ediff-get-region-contents ediff-current-difference
                                                'B ediff-control-buffer))))
 
+(defun aj8/ediff-buffers-ignore-regexp (buffer-A buffer-B regexp)
+  "Run ediff on two buffers, ignoring lines that match REGEXP.
+
+Note that matching lines, in either file, are hidden in the output."
+  (interactive
+   (list
+    (get-buffer (consult--read (mapcar #'buffer-name (buffer-list))
+                               :prompt "Select Buffer A: "
+                               :sort t))
+    (get-buffer (consult--read (mapcar #'buffer-name (buffer-list))
+                               :prompt "Select Buffer B: "
+                               :sort t))
+    (read-regexp "Ignore lines matching regexp: ")))
+;; Create temporary buffers and process contents
+  (let* ((temp-buffer-name-A (format "*%s*" (buffer-name buffer-A)))
+         (temp-buffer-name-B (format "*%s*" (buffer-name buffer-B)))
+         (temp-buffer-A (generate-new-buffer temp-buffer-name-A))
+         (temp-buffer-B (generate-new-buffer temp-buffer-name-B)))
+    ;; Load and preprocess file A
+    (with-current-buffer temp-buffer-A
+      (insert-buffer buffer-A)
+      (flush-lines regexp (point-min) (point-max)))
+    ;; Load and preprocess file B
+    (with-current-buffer temp-buffer-B
+      (insert-buffer buffer-B)
+      (flush-lines regexp (point-min) (point-max)))
+    ;; Define cleanup function to remove buffers
+    (defun cleanup-ediff-buffers ()
+      (kill-buffer temp-buffer-A)
+      (kill-buffer temp-buffer-B)
+      (remove-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers))
+    ;; Add cleanup hook for when ediff is done
+    (add-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers)
+    ;; Start ediff session between buffers
+    (ediff-buffers temp-buffer-A temp-buffer-B)))
+
 ;;;; Windows
 
 ;;; Side windows
