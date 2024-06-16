@@ -1116,16 +1116,16 @@ Note that matching lines, in either file, are hidden in the output."
                                :prompt "Select Buffer B: "
                                :sort t))
     (read-regexp "Ignore lines matching regexp: ")))
-;; Create temporary buffers and process contents
+  ;; Create temporary buffers
   (let* ((temp-buffer-name-A (format "*%s*" (buffer-name buffer-A)))
          (temp-buffer-name-B (format "*%s*" (buffer-name buffer-B)))
          (temp-buffer-A (generate-new-buffer temp-buffer-name-A))
          (temp-buffer-B (generate-new-buffer temp-buffer-name-B)))
-    ;; Load and preprocess file A
+    ;; Load and preprocess buffer A
     (with-current-buffer temp-buffer-A
       (insert-buffer buffer-A)
       (flush-lines regexp (point-min) (point-max)))
-    ;; Load and preprocess file B
+    ;; Load and preprocess buffer B
     (with-current-buffer temp-buffer-B
       (insert-buffer buffer-B)
       (flush-lines regexp (point-min) (point-max)))
