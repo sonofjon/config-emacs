@@ -292,6 +292,17 @@ See `aj8/magit-buffer-cleanup-timer' and
 ;;   ;;   Not needed: use M-s G
 ;;   (setq-local project-ignored-files '(".venv/*")))
 
+;; Format XML buffers
+;;   Requires: xmllint
+(defun aj8/xml-format-buffer ()
+  "Format current buffer using xmllint.
+
+Much faster than `sgml-pretty-print'."
+  (interactive)
+  (shell-command-on-region 1 (point-max)
+                           "xmllint --format -"
+                           (current-buffer) t))
+
 ;;;; Completion
 
 ;;; Corfu navigation
