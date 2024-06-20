@@ -1138,6 +1138,48 @@ Note that matching lines, in either file, are hidden in the output."
     ;; Start ediff session between buffers
     (ediff-buffers temp-buffer-A temp-buffer-B)))
 
+;; (defun aj8/ediff-regions-linewise-3 (buffer-A buffer-B buffer-C)
+(defun aj8/ediff-regions-linewise-3 ()
+  "Run Ediff on three regions in specified buffers.
+
+BUFFER-A, BUFFER-B and BUFFER-C are the buffers to be compared.
+Regions (i.e., point and mark) must be set in advance."
+  (interactive)
+  (let* ((buffer-A (get-buffer (read-buffer "Select first buffer: ")))
+         (buffer-B (get-buffer (read-buffer "Select second buffer: ")))
+         (buffer-C (get-buffer (read-buffer "Select third buffer: "))))
+    (when (and buffer-A buffer-B buffer-C) ;; Ensure all buffers are valid
+      (let* ((region-A (with-current-buffer buffer-A
+                     (if (use-region-p)
+                         (buffer-substring-no-properties (region-beginning) (region-end))
+                       (error "No region selected in first buffer"))))
+             (region-B (with-current-buffer buffer-B
+                     (if (use-region-p)
+                         (buffer-substring-no-properties (region-beginning) (region-end))
+                       (error "No region selected in second buffer"))))
+             (region-C (with-current-buffer buffer-C
+                     (if (use-region-p)
+                         (buffer-substring-no-properties (region-beginning) (region-end))
+                       (error "No region selected in third buffer"))))
+             (temp-buffer-A (generate-new-buffer (buffer-name buffer-A)))
+             (temp-buffer-B (generate-new-buffer (buffer-name buffer-B)))
+             (temp-buffer-C (generate-new-buffer (buffer-name buffer-C))))
+        ;; Fill temp buffers with the selected regions
+        (with-current-buffer temp-buffer-A (insert region-A))
+        (with-current-buffer temp-buffer-B (insert region-B))
+        (with-current-buffer temp-buffer-C (insert region-C))
+        ;; Define cleanup function to remove buffers
+        (defun cleanup-ediff-buffers ()
+          (kill-buffer temp-buffer-A)
+          (kill-buffer temp-buffer-B)
+          (kill-buffer temp-buffer-C)
+          (remove-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers))
+        ;; Add cleanup hook for when ediff is done
+        ;;   TODO: Fix error: cleanup-ediff-buffers: Symbol’s value as variable is void
+        (add-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers)
+        ;; Start ediff-buffers3 and cleanup when done
+        (ediff-buffers3 temp-buffer-A temp-buffer-B temp-buffer-C)))))
+
 ;;;; Windows
 
 ;;; Side windows
