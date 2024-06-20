@@ -1107,6 +1107,7 @@ versa."
   "Run ediff on two buffers, ignoring lines that match REGEXP.
 
 Note that matching lines, in either file, are hidden in the output."
+  ;; TODO: Make interactive section consistent with aj8/ediff-regions-linewise-3
   (interactive
    (list
     (get-buffer (consult--read (mapcar #'buffer-name (buffer-list))
