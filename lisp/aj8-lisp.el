@@ -1133,6 +1133,7 @@ Note that matching lines, in either file, are hidden in the output."
       (kill-buffer temp-buffer-B)
       (remove-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers))
     ;; Add cleanup hook for when ediff is done
+    ;;   TODO: Fix error: cleanup-ediff-buffers: Symbol’s value as variable is void
     (add-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers)
     ;; Start ediff session between buffers
     (ediff-buffers temp-buffer-A temp-buffer-B)))
