@@ -1117,10 +1117,8 @@ Note that matching lines, in either file, are hidden in the output."
                                :sort t))
     (read-regexp "Ignore lines matching regexp: ")))
   ;; Create temporary buffers
-  (let* ((temp-buffer-name-A (format "*%s*" (buffer-name buffer-A)))
-         (temp-buffer-name-B (format "*%s*" (buffer-name buffer-B)))
-         (temp-buffer-A (generate-new-buffer temp-buffer-name-A))
-         (temp-buffer-B (generate-new-buffer temp-buffer-name-B)))
+  (let* ((temp-buffer-A (generate-new-buffer (buffer-name buffer-A)))
+         (temp-buffer-B (generate-new-buffer (buffer-name buffer-B))))
     ;; Load and preprocess buffer A
     (with-current-buffer temp-buffer-A
       (insert-buffer buffer-A)
