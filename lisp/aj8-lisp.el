@@ -708,6 +708,13 @@ mosey points."
 
 ;;; Markdown
 
+;; Move to previous row
+;;   Complements the built-in markdown-table-next-row
+;;   TODO: implement
+(defun aj8/markdown-table-prev-row ()
+  "Go to the previous row (same column) in the table.
+Create new table lines if required.")
+
 (defun aj8/markdown-table-enter ()
   "Split the current table cell at point and place the remainder of the
 cell in a new cell below the current row."
