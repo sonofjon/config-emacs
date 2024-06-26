@@ -151,7 +151,6 @@
                           which-key
                           whole-line-or-region
                           xclip
-                          yaml-mode
                           yaml-pro
                           ztree))
 
@@ -323,12 +322,6 @@
   (web-mode-enable-auto-opening t)
   (web-mode-enable-auto-pairing t)
   (web-mode-enable-auto-quoting t))
-
-;; yaml-mode (major-mode for editing YAML files)
-(use-package yaml-mode
-  :mode "\\.yml$")
-  ;; :bind (:map yaml-mode-map
-  ;;             ("C-m" . newline-and-indent)))
 
 ;; editorconfig (EditorConfig Emacs plugin)
 ;;   Required by copilot
