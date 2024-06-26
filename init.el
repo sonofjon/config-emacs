@@ -2327,7 +2327,7 @@ Elisp code explicitly in arbitrary buffers.")
          (side . right)
          (slot . -1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT\\|Embark Collect:.*\\|Gemini\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
+        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
