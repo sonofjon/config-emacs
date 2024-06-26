@@ -1135,22 +1135,15 @@ versa."
                     (ediff-get-region-contents ediff-current-difference
                                                'B ediff-control-buffer))))
 
-(defun aj8/ediff-buffers-ignore-regexp (buffer-A buffer-B regexp)
+(defun aj8/ediff-buffers-ignore-regexp ()
   "Run ediff on two buffers, ignoring lines that match REGEXP.
 
 Note that matching lines, in either file, are hidden in the output."
-  ;; TODO: Make interactive section consistent with aj8/ediff-regions-linewise-3
-  (interactive
-   (list
-    (get-buffer (consult--read (mapcar #'buffer-name (buffer-list))
-                               :prompt "Select Buffer A: "
-                               :sort t))
-    (get-buffer (consult--read (mapcar #'buffer-name (buffer-list))
-                               :prompt "Select Buffer B: "
-                               :sort t))
-    (read-regexp "Ignore lines matching regexp: ")))
-  ;; Create temporary buffers
-  (let* ((temp-buffer-A (generate-new-buffer (buffer-name buffer-A)))
+  (interactive)
+  (let* ((buffer-A (get-buffer (read-buffer "Select buffer A: ")))
+         (buffer-B (get-buffer (read-buffer "Select buffer B: ")))
+         (regexp (read-regexp "Ignore lines matching regexp: "))
+         (temp-buffer-A (generate-new-buffer (buffer-name buffer-A)))
          (temp-buffer-B (generate-new-buffer (buffer-name buffer-B))))
     ;; Load and preprocess buffer A
     (with-current-buffer temp-buffer-A
