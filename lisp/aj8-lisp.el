@@ -1124,11 +1124,11 @@ Note that matching lines, in either file, are hidden in the output."
     ;; Load and preprocess buffer A
     (with-current-buffer temp-buffer-A
       (insert-buffer buffer-A)
-      (flush-lines regexp (point-min) (point-max)))
+      (flush-lines regexp))
     ;; Load and preprocess buffer B
     (with-current-buffer temp-buffer-B
       (insert-buffer buffer-B)
-      (flush-lines regexp (point-min) (point-max)))
+      (flush-lines regexp))
     ;; Define cleanup function to remove buffers
     (defun cleanup-ediff-buffers ()
       (kill-buffer temp-buffer-A)
