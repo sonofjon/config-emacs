@@ -1170,16 +1170,15 @@ Note that matching lines, in either file, are hidden in the output."
     ;; Start ediff session between buffers
     (ediff-buffers temp-buffer-A temp-buffer-B)))
 
-;; (defun aj8/ediff-regions-linewise-3 (buffer-A buffer-B buffer-C)
 (defun aj8/ediff-regions-linewise-3 ()
   "Run Ediff on three regions in specified buffers.
 
 BUFFER-A, BUFFER-B and BUFFER-C are the buffers to be compared.
 Regions (i.e., point and mark) must be set in advance."
   (interactive)
-  (let* ((buffer-A (get-buffer (read-buffer "Select first buffer: ")))
-         (buffer-B (get-buffer (read-buffer "Select second buffer: ")))
-         (buffer-C (get-buffer (read-buffer "Select third buffer: "))))
+  (let ((buffer-A (get-buffer (read-buffer "Select buffer A: ")))
+        (buffer-B (get-buffer (read-buffer "Select buffer B: ")))
+        (buffer-C (get-buffer (read-buffer "Select buffer C: "))))
     (when (and buffer-A buffer-B buffer-C) ;; Ensure all buffers are valid
       (let* ((region-A (with-current-buffer buffer-A
                      (if (use-region-p)
