@@ -152,6 +152,7 @@
                           whole-line-or-region
                           xclip
                           yaml-mode
+                          yaml-pro
                           ztree))
 
 ;;; Selected packages sources
@@ -335,6 +336,11 @@
   :disabled
   :config
   (editorconfig-mode 1))
+
+;; yaml-pro (parser-aided YAML editing features)
+(use-package yaml-pro
+  :disabled
+  :mode ("\\.yml$" . yaml-pro-ts-mode))
 
 ;; eglot (client for language server protocol servers)
 (use-package eglot
