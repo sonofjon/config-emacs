@@ -322,6 +322,7 @@ Much faster than `sgml-pretty-print'."
 ;;; Orderless matching styles
 
 ;; Cycle through orderless matching styles
+;;   TODO: does not work
 (defun aj8/orderless-matching-style-cycle ()
   "Cycle through orderless matching styles."
   (interactive)

@@ -2485,6 +2485,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
 
 ;; ediff-before-setup: disable side windows before Ediff
+;;   TODO: Should disable/enable rather than toggle
 (add-hook 'ediff-before-setup-hook 'window-toggle-side-windows)
 (add-hook 'ediff-quit-hook 'window-toggle-side-windows)
 
