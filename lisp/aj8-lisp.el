@@ -1162,11 +1162,10 @@ Note that matching lines, in either file, are hidden in the output."
       (flush-lines regexp))
     ;; Define cleanup function to remove buffers
     (defun cleanup-ediff-buffers ()
-      (kill-buffer temp-buffer-A)
-      (kill-buffer temp-buffer-B)
+      (kill-buffer ediff-buffer-A)
+      (kill-buffer ediff-buffer-B)
       (remove-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers))
     ;; Add cleanup hook for when ediff is done
-    ;;   TODO: Fix error: cleanup-ediff-buffers: Symbol’s value as variable is void
     (add-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers)
     ;; Start ediff session between buffers
     (ediff-buffers temp-buffer-A temp-buffer-B)))
@@ -1203,12 +1202,11 @@ Regions (i.e., point and mark) must be set in advance."
         (with-current-buffer temp-buffer-C (insert region-C))
         ;; Define cleanup function to remove buffers
         (defun cleanup-ediff-buffers ()
-          (kill-buffer temp-buffer-A)
-          (kill-buffer temp-buffer-B)
-          (kill-buffer temp-buffer-C)
+          (kill-buffer ediff-buffer-A)
+          (kill-buffer ediff-buffer-B)
+          (kill-buffer ediff-buffer-C)
           (remove-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers))
         ;; Add cleanup hook for when ediff is done
-        ;;   TODO: Fix error: cleanup-ediff-buffers: Symbol’s value as variable is void
         (add-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers)
         ;; Start ediff-buffers3 and cleanup when done
         (ediff-buffers3 temp-buffer-A temp-buffer-B temp-buffer-C)))))
