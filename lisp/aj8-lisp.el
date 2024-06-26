@@ -706,6 +706,30 @@ mosey points."
   (interactive "^p")
   (forward-whitespace (- arg)))
 
+;;; Markdown
+
+(defun aj8/markdown-table-enter ()
+  "Split the current table cell at point and place the remainder of the
+cell in a new cell below the current row."
+  (interactive)
+  (unless (markdown-table-at-point-p)
+    (user-error "Not at a table"))
+  (let ((col (markdown-table-get-column)))
+    (when (looking-at "[^|\r\n]*")
+      (let* ((pos (point))
+             (end (match-end 0))
+             (val (buffer-substring pos end))   ;  remainder of cell
+             (val (string-trim val))   ; trim whitespace
+             (space-fill (make-string (- end pos) ?\ )))
+
+        (delete-region pos end)   ; delete remainder
+        (insert space-fill)   ; maintain cell width
+        (markdown-table-insert-row 1)
+        (markdown-table-goto-column col)
+        (insert val)   ; insert remainder
+        (delete-char (length val))   ; maintain cell width
+        (markdown-table-goto-column col)))))  ; return to beginning of cell
+
 ;;;; Outline
 
 ;;; Set outline header format
