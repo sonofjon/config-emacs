@@ -1587,6 +1587,7 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Enable word-wrap
   (add-hook 'magit-status-mode-hook (lambda () (visual-line-mode 1)))
+  (add-hook 'magit-revision-mode-hook (lambda () (visual-line-mode 1)))
   ;; Back up uncommitted changes
   (magit-wip-mode 1)
   ;; Disable hl-line-mode
