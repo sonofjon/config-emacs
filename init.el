@@ -2581,13 +2581,14 @@ Elisp code explicitly in arbitrary buffers.")
   (define-key input-decode-map "\e[8;6u" (kbd "C-S-<backspace>"))
   (define-key input-decode-map "\e[8;7u" (kbd "C-M-<backspace>"))
   (define-key input-decode-map "\e[32;2u" (kbd "S-SPC"))
-  (define-key input-decode-map "\e[91;7u" (kbd "C-M-["))
+  ;; (define-key input-decode-map "\e[47;5u" (kbd "C-/"))
+  (define-key input-decode-map "\e[91;7u" (kbd "C-M-["))   ; fails
   (define-key input-decode-map "\e[93;7u" (kbd "C-M-]"))
   (define-key input-decode-map "\e[96;5u" (kbd "C-`"))
   (define-key input-decode-map "\e[96;7u" (kbd "C-M-`"))
-  (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))
-  (define-key input-decode-map "\e[113;4u" (kbd "M-S-q"))
-  (define-key input-decode-map "\e[113;8u" (kbd "C-M-S-q"))
+  (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))   ; fails
+  (define-key input-decode-map "\e[113;4u" (kbd "M-S-q"))   ; fails
+  (define-key input-decode-map "\e[113;8u" (kbd "C-M-S-q"))   ; fails
   (define-key input-decode-map "\e[118;8u" (kbd "C-M-S-v"))
   (define-key input-decode-map "\e[123;5u" (kbd "C-{"))
   (define-key input-decode-map "\e[125;5u" (kbd "C-}")))
