@@ -11,5 +11,6 @@
     ("ud" "Update dictionaries" nil :count 0)
     ("uhf" "Update history from:" nil :count 0)
     ("urm" "Update README" nil :count 0)
+    ("utd" "Update TODO" nil :count 0)
    ))
 
