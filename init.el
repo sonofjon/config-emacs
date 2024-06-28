@@ -163,6 +163,7 @@
    ;; (bar . nil)            ; any revision
    (combobulate :url "https://github.com/mickeynp/combobulate.git")
    (copilot :url "https://github.com/copilot-emacs/copilot.el.git")
+   (gptel-quick :url "https://github.com/karthink/gptel-quick.git")
    (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el")))
                         ;; :branch "dev")
    ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
@@ -1806,8 +1807,11 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; gptel (a simple ChatGPT client for Emacs)
 (use-package gptel
-  :bind (("C-c t" . gptel)
-         ("C-c T" . gptel-menu))
+  :bind (("C-c t c" . gptel)
+         ("C-c t m" . gptel-menu))
+  :init
+  (which-key-add-key-based-replacements "C-c t" "gptel")
+                                        ; add label for prefix key
   ;; :custom
   ;; Set mode
   ;; (gptel-default-mode 'text-mode)   ; defauilt: markdown-mode
@@ -1835,6 +1839,13 @@ Elisp code explicitly in arbitrary buffers.")
   (add-hook 'gptel-post-stream-hook #'gptel-auto-scroll)
   ;; Jump to next prompt after response
   (add-hook 'gptel-post-response-functions #'gptel-end-of-response))
+
+;; gptel-quick (quick LLM lookups in Emacs)
+(use-package gptel-quick
+  :bind ("C-c t h" . gptel-quick))
+  ;; :config
+  ;; ;; Set approximate word count of LLM summary
+  ;; (gptel-quick-word-count 12))
 
 ;; hydra (make bindings that stick around)
 (use-package hydra
