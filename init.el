@@ -1487,13 +1487,10 @@ Elisp code explicitly in arbitrary buffers.")
           (2 . (background))
           (3 . (background monochrome))
           (t . (monochrome))))
-  ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes)
-  :config
   ;; Load the theme
   (if (aj8/daytime-p)
-      (modus-themes-load-operandi)
-    (modus-themes-load-vivendi)))
+      (load-theme 'modus-operandi)
+    (load-theme 'modus-themes-load-vivendi)))
 
 ;; standard-themes (like the default theme but more consistent)
 (use-package standard-themes
