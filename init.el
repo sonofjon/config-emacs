@@ -1501,7 +1501,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Load the theme
   (if (aj8/daytime-p)
       (load-theme 'modus-operandi)
-    (load-theme 'modus-themes-load-vivendi)))
+    (load-theme 'modus-vivendi)))
 
 ;; standard-themes (like the default theme but more consistent)
 (use-package standard-themes
