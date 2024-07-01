@@ -1417,6 +1417,7 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package modus-themes
   :if (and (eq system-type 'gnu/linux)
            (not (getenv "WSLENV")))   ; Linux
+  :ensure nil   ; don't install built-in packages
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
