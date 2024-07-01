@@ -60,6 +60,12 @@
 ;;   (use with use-package-report)
 ;; (setq use-package-compute-statistics t)
 
+;; use-package-ensure-system-package (auto install system packages) - [built-in package]
+;;   Enables installation with :ensure-system-package
+(use-package use-package-ensure-system-package
+  :ensure nil)   ; don't install built-in packages
+
+
 ;;; Local
 
 (require 'aj8-lisp)
