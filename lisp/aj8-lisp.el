@@ -1449,7 +1449,7 @@ When called from an eww buffer, provide the current link as
 ;; Add repeat-map for Smartparens
 ;; (with-eval-after-load "smartparens" (my/repeatize 'smartparens-mode-map))
 
-;; Create repeat-map for window resizing
+;; Create repeat-map for move-splitter commands (window resizing)
 (defvar aj8/resize-window-repeat-map
   (let ((map (make-sparse-keymap)))
     (keymap-set map "{" #'my/move-splitter-up)
@@ -1458,14 +1458,14 @@ When called from an eww buffer, provide the current link as
     (keymap-set map "<" #'my/move-splitter-left)
     map))
 
-;; Add repeat-map property to window resizing commands
+;; Add repeat-map property to move-splitter map (window resizing)
 (dolist (cmd '(my/move-splitter-up
                my/move-splitter-down
                my/move-splitter-right
                my/move-splitter-left))
   (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
 
-;; Create repeat-map for drag-stuff
+;; Create repeat-map for drag-stuff commands
 (defvar aj8/drag-stuff-vertical-repeat-map
   (let ((map (make-sparse-keymap)))
     (keymap-set map "<up>" #'drag-stuff-up)
@@ -1473,23 +1473,33 @@ When called from an eww buffer, provide the current link as
     (keymap-set map "C-<down>" #'duplicate-dwim)
     map))
 
-;; Add repeat-map property to drag-stuff commands
+;; Add repeat-map property to drag-stuff map
 (dolist (cmd '(drag-stuff-up
                drag-stuff-down
                duplicate-dwim))
   (put cmd 'repeat-map 'aj8/drag-stuff-vertical-repeat-map))
 
-;; Create repeat-map for drag-stuff
+;; Create repeat-map for drag-stuff commands
 (defvar aj8/drag-stuff-repeat-horizontal-map
   (let ((map (make-sparse-keymap)))
     (keymap-set map "<left>" #'drag-stuff-left)
     (keymap-set map "<right>" #'drag-stuff-right)
     map))
 
-;; Add repeat-map property to drag-stuff commands
+;; Add repeat-map property to drag-stuff map
 (dolist (cmd '(drag-stuff-left
                drag-stuff-right))
   (put cmd 'repeat-map 'aj8/drag-stuff-repeat-horizontal-map))
+
+;; Create repeat-map for indent commands
+(defvar aj8/indent-repeat-map
+  (let ((map (make-sparse-keymap)))
+    (keymap-set map "TAB" #'indent-relative)
+    map))
+
+;; Add repeat-map property to indent map
+(dolist (cmd '(indent-relative))
+  (put cmd 'repeat-map 'aj8/indent-repeat-map))
 
 ;; Create repeat-map for next/prev-buffer
 ;; (defvar aj8/switch-buffer-map
@@ -1498,7 +1508,7 @@ When called from an eww buffer, provide the current link as
 ;;     (keymap-set map "<right>" #'aj8/next-buffer)
 ;;     map))
 
-;; Add repeat-map property to next/prev-buffer commands
+;; Add repeat-map property to next/prev-buffer map
 ;; (dolist (cmd '(aj8/previous-buffer
 ;;                aj8/next-buffer))
 ;;   (put cmd 'repeat-map 'aj8/switch-buffer-map))
