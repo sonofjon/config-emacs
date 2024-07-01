@@ -618,7 +618,6 @@
 
 ;; corfu-terminal (Corfu popup on terminal)
 (use-package corfu-terminal
-  ;; :ensure-system-package wamerican
   :if (not (display-graphic-p))
   :after corfu
   :config
@@ -630,6 +629,7 @@
 ;;         and cape-capf-inside-comment and commit:
 ;;         https://github.com/minad/cape/commit/9b97dbbc7624415ee25f79de9ea357feb1e2e547)
 (use-package cape
+  :ensure-system-package "/usr/share/dict/words"
   :after corfu
   :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
@@ -637,7 +637,8 @@
                                              ; see also dabbrev-capf on Emacs 29
          ("C-c u e" . my/cape-elisp)
          ("C-c u h" . cape-history)          ; only in shell or minibuffer?
-         ("C-c u w" . cape-dict)             ; requires wamerican
+         ("C-c u w" . cape-dict)             ; requires wamerican (Ubuntu)
+                                             ; or words (Fedora)
          ("C-c u f" . cape-file)
          ("C-c u k" . cape-keyword)
          ("C-c u l" . cape-line)
@@ -1071,11 +1072,13 @@ Elisp code explicitly in arbitrary buffers.")
 ;;   Requires: macOS: `pbpaste/pbcopy' - installed by default
 ;;             X11: `xclip' or `xsel'
 ;;             Wayland: `wl-clipboard'
-(use-package xclip
-  ;; :ensure-system-package ...
-  :config
-  ;; Enable xclip globally
-  (xclip-mode 1))
+(eval `(use-package xclip
+         ;; :disabled
+         ;; :ensure-system-package xclip
+         :ensure-system-package ,(aj8/system-package-name 'xclip)
+         :config
+         ;; Enable xclip globally
+         (xclip-mode 1)))
 
 ;;; Files
 
@@ -1298,12 +1301,13 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
 
 ;; vterm (fully-featured terminal emulator)
-(use-package vterm
-  :ensure-system-package (cmake libvterm-dev)
-  :commands vterm
-  :config
-  ;; Match the default Bash shell prompt
-  (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
+(eval `(use-package vterm
+         ;; :ensure-system-package (cmake libvterm-dev)
+         :ensure-system-package (cmake ,(aj8/system-package-name 'libvterm))
+         :commands vterm
+         :config
+         ;; Match the default Bash shell prompt
+         (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")))
 
 ;; eshell (the Emacs command shell) - [built-in package]
 (use-package eshell

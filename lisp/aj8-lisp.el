@@ -2,6 +2,23 @@
 
 ;;;; Admin
 
+;; System package names by system type
+(defun aj8/system-package-name (package)
+  "Return the appropriate system PACKAGE name based on the current system."
+  (let ((system-package-alist
+         '((xclip . ((darwin . pbcopy)
+                     (gnu/linux . wl-copy)
+                     (wsl . xclip)))
+           (libvterm . ((darwin . "libvterm.so")
+                        (gnu/linux . "/usr/lib64/libvterm.so")
+                        (wsl . "/usr/lib/x86_64-linux-gnu/libvterm.so"))))))
+    (let ((system-type (if (and (eq system-type 'gnu/linux) (getenv "WSLENV"))
+                           'wsl
+                         system-type))
+          (package-alist (cdr (assoc package system-package-alist))))
+      (or (cdr (assoc system-type package-alist))
+          (error "Package not found for the current system")))))
+
 ;;;; Buffers
 
 ;;; Undo for killed buffers
