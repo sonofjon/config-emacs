@@ -9,7 +9,7 @@
          '((xclip . ((darwin . pbcopy)
                      (gnu/linux . wl-copy)
                      (wsl . xclip)))
-           (libvterm . ((darwin . "libvterm.so")
+           (libvterm . ((darwin . "/opt/homebrew/lib/libvterm.dylib")
                         (gnu/linux . "/usr/lib64/libvterm.so")
                         (wsl . "/usr/lib/x86_64-linux-gnu/libvterm.so"))))))
     (let ((system-type (if (and (eq system-type 'gnu/linux) (getenv "WSLENV"))
