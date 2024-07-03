@@ -3142,10 +3142,6 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 
       ((and (eq system-type 'gnu/linux)
             (not (getenv "WSLENV")))      ; Linux
-       ;; Special settings for URxvt
-       (when (equal "rxvt-unicode-256color"
-                    (getenv-internal "TERM" initial-environment))
-         (rxvt-input-decode-map))
        (message "Late settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
