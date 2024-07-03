@@ -10,6 +10,13 @@
       ((eq system-type 'gnu/linux) 'linux)
       (t 'unknown)))
 
+;; Store current Linux OS
+(defvar aj8/my-linux-os
+     (cond
+      ((string-match "fedora" (shell-command-to-string "cat /etc/os-release")) 'fedora)
+      ((string-match "ubuntu" (shell-command-to-string "cat /etc/os-release")) 'ubuntu)
+      (t 'unknown)))
+
 ;; Store current termianl emulator
 (defvar aj8/my-terminal-emulator
      (cond
