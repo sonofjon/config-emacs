@@ -2,32 +2,6 @@
 
 ;;;; Admin
 
-;; Store current OS
-(defvar aj8/my-os
-     (cond
-      ((string-match "Microsoft" (shell-command-to-string "cat /proc/version")) 'wsl)
-      ((eq system-type 'darwin) 'macos)
-      ((eq system-type 'gnu/linux) 'linux)
-      (t 'unknown)))
-
-;; Store current Linux OS
-(defvar aj8/my-linux-os
-     (cond
-      ((string-match "fedora" (shell-command-to-string "cat /etc/os-release")) 'fedora)
-      ((string-match "ubuntu" (shell-command-to-string "cat /etc/os-release")) 'ubuntu)
-      (t 'unknown)))
-
-;; Store current termianl emulator
-(defvar aj8/my-terminal-emulator
-     (cond
-      ((getenv "KONSOLE_DBUS_SESSION") 'konsole)
-      ((getenv "GNOME_TERMINAL_SCREEN") 'gnome-terminal)
-      ((getenv "TERM_PROGRAM")
-       (cond
-        ((string-equal (getenv "TERM_PROGRAM") "Apple_Terminal") 'apple-terminal)
-        ((string-equal (getenv "TERM_PROGRAM") "iTerm.app") 'iterm2)))
-      (t 'unknown)))
-
 ;; System package names by system type
 (defun aj8/system-package-name (package)
   "Return the appropriate system PACKAGE name based on the current system."
