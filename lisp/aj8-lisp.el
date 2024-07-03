@@ -2,6 +2,14 @@
 
 ;;;; Admin
 
+;; Store current OS
+(defvar aj8/my-os
+     (cond
+      ((string-match "Microsoft" (shell-command-to-string "cat /proc/version")) 'wsl)
+      ((eq system-type 'darwin) 'macos)
+      ((eq system-type 'gnu/linux) 'linux)
+      (t 'unknown)))
+
 ;; System package names by system type
 (defun aj8/system-package-name (package)
   "Return the appropriate system PACKAGE name based on the current system."

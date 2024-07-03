@@ -17,19 +17,17 @@
 ;;;;; EARLY SETTINGS
 
 ;; System dependent settings
-(cond ((eq system-type 'darwin)          ; macOS
+(cond ((eq aj8/my-os 'macos)          ; macOS
        ;; GUI settings
        (when (display-graphic-p)
          ;; Import path from shell
          (exec-path-from-shell-initialize))
        (message "Early settings for macOS"))
 
-      ((and (eq system-type 'gnu/linux)
-            (getenv "WSLENV"))           ; WSL
+      ((eq aj8/my-os 'wsl)           ; WSL
        (message "Early settings WSL"))
 
-      ((and (eq system-type 'gnu/linux)
-            (not (getenv "WSLENV")))     ; Linux
+      ((eq aj8/my-os 'linux)     ; Linux
        (message "Early settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
@@ -202,7 +200,7 @@
   :disabled)
 
 (use-package exec-path-from-shell
-  :if (featurep 'ns))   ; macOS
+  :if (eq aj8/my-os 'macos))   ; macOS
 
 ;;; Admin
 
@@ -1122,7 +1120,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; osx-trash (system trash for OS X)
 (use-package osx-trash
-  :if (featurep 'ns)   ; macOS
+  :if (eq aj8/my-os 'macos)   ; macOS
   :config
   (osx-trash-setup)
   (setq delete-by-moving-to-trash t))   ; TODO: add this to all systems
@@ -1388,7 +1386,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;;   `ef-themes-load-random'
   ;;   `ef-themes-preview-colors'
   ;;   `ef-themes-preview-colors-current'
-  :if (eq system-type 'darwin)   ; macOS
+  :if (eq aj8/my-os 'macos)   ; macOS
   :bind ("<f5>" . ef-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
   :init
@@ -1415,8 +1413,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
-  :if (and (eq system-type 'gnu/linux)
-           (not (getenv "WSLENV")))   ; Linux
+  :if (eq aj8/my-os 'linux)   ; Linux
   :ensure nil   ; don't install built-in packages
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
@@ -1505,8 +1502,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; standard-themes (like the default theme but more consistent)
 (use-package standard-themes
-  :if (and (eq system-type 'gnu/linux)
-           (getenv "WSLENV"))   ; WSL
+  :if (eq aj8/my-os 'wsl)   ; WSL
   :bind ("<f5>" . standard-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
   :init
@@ -1548,7 +1544,7 @@ Elisp code explicitly in arbitrary buffers.")
   :defer 60
   :after (:any modus-themes ef-themes)
   :config
-  (if (and (eq system-type 'gnu/linux) (getenv "WSLENV"))   ; WSL
+  (if (eq aj8/my-os 'wsl)   ; WSL
       ;; (circadian-themes '(("8:00" . modus-operandi)
       ;;                     ("18:00"  . modus-vivendi)))
       (customize-set-variable 'circadian-themes '((:sunrise . modus-operandi)
@@ -3118,7 +3114,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
-(cond ((eq system-type 'darwin)           ; macOS
+(cond ((eq aj8/my-os 'macos)           ; macOS
        ;; Use left Option as Meta
        ;; (setq mac-option-modifier 'meta)
        ;; Use left Command as Super
@@ -3131,8 +3127,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
          (setq-default line-spacing 1))
        (message "Late settings macOS"))
 
-      ((and (eq system-type 'gnu/linux)
-            (getenv "WSLENV"))            ; WSL
+      ((eq aj8/my-os 'wsl)            ; WSL
        ;; Enable (default) web browser
        ;;   Requires: wslu
        (setq browse-url-generic-program "wslview")
@@ -3140,8 +3135,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
        (message "Late settings WSL"))
 
-      ((and (eq system-type 'gnu/linux)
-            (not (getenv "WSLENV")))      ; Linux
+      ((eq aj8/my-os 'linux)      ; Linux
        (message "Late settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
