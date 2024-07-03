@@ -3136,6 +3136,14 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
        (message "Late settings WSL"))
 
       ((eq aj8/my-os 'linux)      ; Linux
+       (cond
+        ((eq aj8/my-terminal-emulator 'konsole)
+         ;; Add some escape codes for Konsole
+         (define-key input-decode-map "\e[44;5u" (kbd "C-,"))
+         (define-key input-decode-map "\e[46;5u" (kbd "C-."))
+         (message "Late settings Fedora"))
+        ((eq aj8/my-linux-os 'ubuntu)
+         (message "Late settings Ubuntu")))
        (message "Late settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
