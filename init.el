@@ -2588,9 +2588,24 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;;; Escape codes
 
-;; TODO: Move (some of?) these to Late settings section for different
-;;       terminal emulators?
+;; Add some escape codes for different terminal emulators
 (when (not (display-graphic-p))   ; if using terminal
+  (cond
+   ;; ((eq aj8/my-terminal-emulator 'gnome-terminal)
+   ;;  ;; Add some escape codes for Gnome Terminal
+   ;;  (message "Define escape codes for Gnome Terminal"))
+   ((eq aj8/my-terminal-emulator 'iterm2)
+    ;; Add some escape codes for iTerm2
+    (message "Define escape codes for iTerm2"))
+   ((eq aj8/my-terminal-emulator 'konsole)
+    ;; Add some escape codes for Konsole
+    (define-key input-decode-map "\e[44;5u" (kbd "C-,"))
+    (define-key input-decode-map "\e[46;5u" (kbd "C-."))
+    (message "Define escape codes for Konsole"))
+   ((eq aj8/my-terminal-emulator 'windows-terminal)
+    ;; Add some escape codes for Windows Terminal
+    (message "Define escape codes for Windows Terminal")))
+
   ;; (define-key input-decode-map "\e[1;8A" [C-M-S-up])
   ;; (define-key input-decode-map "\e[1;8B" [C-M-S-down])
 
@@ -3139,10 +3154,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 
       ((eq aj8/my-os 'linux)      ; Linux
        (cond
-        ((eq aj8/my-terminal-emulator 'konsole)
-         ;; Add some escape codes for Konsole
-         (define-key input-decode-map "\e[44;5u" (kbd "C-,"))
-         (define-key input-decode-map "\e[46;5u" (kbd "C-."))
+        ((eq aj8/my-linux-os 'fedora)
          (message "Late settings Fedora"))
         ((eq aj8/my-linux-os 'ubuntu)
          (message "Late settings Ubuntu")))
