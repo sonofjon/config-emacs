@@ -22,6 +22,7 @@
      (cond
       ((getenv "KONSOLE_DBUS_SESSION") 'konsole)
       ((getenv "GNOME_TERMINAL_SCREEN") 'gnome-terminal)
+      ((getenv "WT_PROFILE_ID") 'windows-terminal)   ; TODO: test if this works
       ((getenv "TERM_PROGRAM")
        (cond
         ((string-equal (getenv "TERM_PROGRAM") "Apple_Terminal") 'apple-terminal)
