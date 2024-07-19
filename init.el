@@ -2597,40 +2597,45 @@ Elisp code explicitly in arbitrary buffers.")
    ((eq aj8/my-terminal-emulator 'iterm2)
     ;; Add some escape codes for iTerm2
     (message "Define escape codes for iTerm2"))
-   ((eq aj8/my-terminal-emulator 'konsole)
-    ;; Add some escape codes for Konsole
-    (define-key input-decode-map "\e[44;5u" (kbd "C-,"))
-    (define-key input-decode-map "\e[46;5u" (kbd "C-."))
-    (message "Define escape codes for Konsole"))
-   ((eq aj8/my-terminal-emulator 'windows-terminal)
+   ;; ((eq aj8/my-terminal-emulator 'konsole)
+   ;;  ;; Add some escape codes for Konsole
+   ;;  (message "Define escape codes for Konsole"))
+   ((or (eq aj8/my-terminal-emulator 'windows-terminal)
+       (eq aj8/my-terminal-emulator 'konsole))
     ;; Add some escape codes for Windows Terminal
-    (message "Define escape codes for Windows Terminal")))
+    (define-key input-decode-map "\e[8;5u" (kbd "C-<backspace>"))
+    (define-key input-decode-map "\e[8;6u" (kbd "C-S-<backspace>"))
+    (define-key input-decode-map "\e[8;7u" (kbd "C-M-<backspace>"))
+    (define-key input-decode-map "\e[32;2u" (kbd "S-SPC"))   ; fails in WSL
+    (define-key input-decode-map "\e[44;5u" (kbd "C-,"))
+    (define-key input-decode-map "\e[44;7u" (kbd "C-M-,"))
+    (define-key input-decode-map "\e[46;5u" (kbd "C-."))
+    (define-key input-decode-map "\e[46;7u" (kbd "C-M-."))
+    ;; (define-key input-decode-map "\e[47;5u" (kbd "C-/"))
+    ;; (define-key input-decode-map "\e[47;7u" (kbd "C-M-/"))
+    (define-key input-decode-map "\e[59;5u" (kbd "C-;"))   ; fails in WSL
+    (define-key input-decode-map "\e[59;7u" (kbd "C-M-;"))   ; fails in WSL
+    (define-key input-decode-map "\e[91;7u" (kbd "C-M-["))   ; fails in WSL
+    ;; (define-key input-decode-map "\e[93;7u" (kbd "C-M-]"))
+    (define-key input-decode-map "\e[96;5u" (kbd "C-`"))   ; fails in WSL
+    (define-key input-decode-map "\e[96;7u" (kbd "C-M-`"))   ; fails in WSL
+    (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))   ; fails in WSL
+    (define-key input-decode-map "\e[113;4u" (kbd "M-S-q"))
+    (define-key input-decode-map "\e[113;8u" (kbd "C-M-S-q"))
+    (define-key input-decode-map "\e[118;8u" (kbd "C-M-S-v"))
+    (define-key input-decode-map "\e[123;5u" (kbd "C-{"))   ; fails in WSL
+    (define-key input-decode-map "\e[125;5u" (kbd "C-}"))   ; fails in WSL
+    (message "Define escape codes for Windows Terminal"))))
 
   ;; (define-key input-decode-map "\e[1;8A" [C-M-S-up])
   ;; (define-key input-decode-map "\e[1;8B" [C-M-S-down])
 
-  ;; TODO: Put these where they belong above:
+  ;; TODO: Test escape codes for all terminal emulators:
   ;;   Test:
   ;;     [ ] Gnome Terminal
   ;;     [ ] iTerm2
-  ;;     [x] Konsole
-  ;;     [ ] Windows Terminal
-  ;; (define-key input-decode-map "\e[8;5u" (kbd "C-<backspace>"))   ; fails in Konsole
-  ;; (define-key input-decode-map "\e[8;6u" (kbd "C-S-<backspace>"))   ; fails in Konsole
-  ;; (define-key input-decode-map "\e[8;7u" (kbd "C-M-<backspace>"))   ; fails in Konsole
-  ;; (define-key input-decode-map "\e[32;2u" (kbd "S-SPC"))   ; ; fails in Konsole
-  ;; ;; (define-key input-decode-map "\e[47;5u" (kbd "C-/"))
-  ;; (define-key input-decode-map "\e[91;7u" (kbd "C-M-["))   ; fails in Konsole, WSL
-  ;; (define-key input-decode-map "\e[93;7u" (kbd "C-M-]"))
-  ;; (define-key input-decode-map "\e[96;5u" (kbd "C-`"))   ; fails in Konsole
-  ;; (define-key input-decode-map "\e[96;7u" (kbd "C-M-`"))   ; fails in Konsole
-  ;; (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))   ; fails in Konsole, WSL
-  ;; (define-key input-decode-map "\e[113;4u" (kbd "M-S-q"))   ; fails in Konsole, WSL
-  ;; (define-key input-decode-map "\e[113;8u" (kbd "C-M-S-q"))   ; fails in Konsole, WSL
-  ;; (define-key input-decode-map "\e[118;8u" (kbd "C-M-S-v"))   ; fails in Konsole
-  ;; (define-key input-decode-map "\e[123;5u" (kbd "C-{"))   ; fails in Konsole
-  ;; (define-key input-decode-map "\e[125;5u" (kbd "C-}"))   ; fails in Konsole
-  )
+  ;;     [ ] Konsole
+  ;;     [x] Windows Terminal
 
 ;;;; Translations
 
