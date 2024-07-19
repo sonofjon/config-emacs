@@ -2606,7 +2606,7 @@ Elisp code explicitly in arbitrary buffers.")
     (define-key input-decode-map "\e[8;5u" (kbd "C-<backspace>"))
     (define-key input-decode-map "\e[8;6u" (kbd "C-S-<backspace>"))
     (define-key input-decode-map "\e[8;7u" (kbd "C-M-<backspace>"))
-    (define-key input-decode-map "\e[32;2u" (kbd "S-SPC"))   ; fails in WSL
+    (define-key input-decode-map "\e[32;2u" (kbd "S-SPC"))   ; fails in Konsole, WSL
     (define-key input-decode-map "\e[44;5u" (kbd "C-,"))
     (define-key input-decode-map "\e[44;7u" (kbd "C-M-,"))
     (define-key input-decode-map "\e[46;5u" (kbd "C-."))
@@ -2615,11 +2615,11 @@ Elisp code explicitly in arbitrary buffers.")
     ;; (define-key input-decode-map "\e[47;7u" (kbd "C-M-/"))
     (define-key input-decode-map "\e[59;5u" (kbd "C-;"))   ; fails in WSL
     (define-key input-decode-map "\e[59;7u" (kbd "C-M-;"))   ; fails in WSL
-    (define-key input-decode-map "\e[91;7u" (kbd "C-M-["))   ; fails in WSL
+    (define-key input-decode-map "\e[91;7u" (kbd "C-M-["))   ; fails in Konsole, WSL
     ;; (define-key input-decode-map "\e[93;7u" (kbd "C-M-]"))
     (define-key input-decode-map "\e[96;5u" (kbd "C-`"))   ; fails in WSL
     (define-key input-decode-map "\e[96;7u" (kbd "C-M-`"))   ; fails in WSL
-    (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))   ; fails in WSL
+    (define-key input-decode-map "\e[107;6u" (kbd "C-S-k"))   ; fails in Konsole, WSL
     (define-key input-decode-map "\e[113;4u" (kbd "M-S-q"))
     (define-key input-decode-map "\e[113;8u" (kbd "C-M-S-q"))
     (define-key input-decode-map "\e[118;8u" (kbd "C-M-S-v"))
@@ -2634,7 +2634,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;;   Test:
   ;;     [ ] Gnome Terminal
   ;;     [ ] iTerm2
-  ;;     [ ] Konsole
+  ;;     [x] Konsole
   ;;     [x] Windows Terminal
 
 ;;;; Translations
