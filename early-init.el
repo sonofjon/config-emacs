@@ -73,14 +73,9 @@
 
 ;; Initialize package sources
 (require 'package)
-(if (version< emacs-version "27")
-    (package-initialize))
 
 ;; Add package-archives
-;;   Emacs 27.x has GNU ELPA as the default
-;;   Emacs 28.x adds the non-GNU ELPA to the list by default
-(when (version< emacs-version "28")
-  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
+;;   Emacs 28.x has GNU `and' non-GNU ELPA as default
 (add-to-list 'package-archives '("stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
