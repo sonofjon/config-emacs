@@ -1831,12 +1831,12 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                       :key (gptel-api-key-from-auth-source
   ;;                             "generativelanguage.googleapis.com" "apikey")
   ;;                       :stream t))   ; set default
-  ;; (setq gptel-model "gemini-pro")
-  ;; (setq gptel-model "gemini-1.5-pro-latest")   ; default is gemini-pro
+  ;; (setq gptel-model 'gemini-pro)
+  ;; (setq gptel-model 'gemini-1.5-pro-latest)   ; default is gemini-pro
   ;; ChatGPT
-  ;; (setq gptel-model "gpt-4")   ; default is gpt-3.5-turbo
-  ;; (setq gptel-model "gpt-4-turbo")
-  (setq gptel-model "gpt-4o")
+  ;; (setq gptel-model 'gpt-4)   ; default is gpt-3.5-turbo
+  ;; (setq gptel-model 'gpt-4-turbo)
+  (setq gptel-model 'gpt-4o)
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
