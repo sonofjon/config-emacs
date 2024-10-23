@@ -71,6 +71,11 @@
 ;; Prevent stale elisp bytecode from shadowing more up-to-date source files
 (setq load-prefer-newer t)
 
+;; Initialize package sources
+(require 'package)
+(if (version< emacs-version "27")
+    (package-initialize))
+
 ;; Add package-archives
 ;;   Emacs 27.x has GNU ELPA as the default
 ;;   Emacs 28.x adds the non-GNU ELPA to the list by default
