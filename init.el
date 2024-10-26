@@ -2613,7 +2613,7 @@ Elisp code explicitly in arbitrary buffers.")
     (define-key input-decode-map "\e[46;7u" (kbd "C-M-."))
     ;; (define-key input-decode-map "\e[47;5u" (kbd "C-/"))
     ;; (define-key input-decode-map "\e[47;7u" (kbd "C-M-/"))
-    (dkefine-key input-decode-map "\e[59;5u" (kbd "C-;"))   ; fails in WSL
+    (define-key input-decode-map "\e[59;5u" (kbd "C-;"))   ; fails in WSL
     (define-key input-decode-map "\e[59;7u" (kbd "C-M-;"))   ; fails in WSL
     (define-key input-decode-map "\e[91;7u" (kbd "C-M-["))   ; fails in iTerm2, Konsole, WSL
     ;; (define-key input-decode-map "\e[93;7u" (kbd "C-M-]"))
