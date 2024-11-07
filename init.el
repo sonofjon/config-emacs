@@ -1953,6 +1953,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Kill customize group windows
 (setq custom-buffer-done-kill t)
 
+;; Set default sort order in Ibuffer
+(setq ibuffer-default-sorting-mode 'filename/process)
+
 ;;; Coding
 
 ;; Open up the debugger on error
