@@ -2142,6 +2142,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;;   MAYBE: Make the text in the echo area persist until key press
 (setq show-paren-context-when-offscreen t)
 
+;; Show current project name on the mode line
+(setq project-mode-line t)
+
 ;;; Version control
 
 ;; Follow symlinks
