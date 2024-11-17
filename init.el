@@ -246,7 +246,8 @@
   :mode "\\.ahk$")
 
 ;; ansible (minor-mode for editing Ansible (YAML) files)
-(use-package ansible)
+(use-package ansible
+  :defer)
   ;; :mode "\\.yml$"
   ;; :hook (yaml-mode . (lambda () (ansible 1))))
 
