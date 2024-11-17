@@ -60,8 +60,7 @@
 
 ;; use-package-ensure-system-package (auto install system packages) - [built-in package]
 ;;   Enables installation with :ensure-system-package
-(use-package use-package-ensure-system-package
-  :ensure nil)   ; don't install built-in packages
+(use-package use-package-ensure-system-package)
 
 
 ;;; Local
@@ -1310,8 +1309,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; term (terminal-emulator) - [built-in package]
 (use-package term
   :disabled
-  :ensure nil   ; don't install built-in packages
-                ; see https://github.com/jwiegley/use-package/issues/977
   :commands term)
   ;; :config
   ;; Match the default Bash shell prompt
@@ -1328,7 +1325,6 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; eshell (the Emacs command shell) - [built-in package]
 (use-package eshell
-  :ensure nil   ; don't install built-in packages
   :hook (eshell-first-time-mode . efs/configure-eshell)
   :config
   ;; Set Eshell options here
@@ -1433,7 +1429,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
   :if (eq aj8/my-os 'linux)   ; Linux
-  :ensure nil   ; don't install built-in packages
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
@@ -1771,7 +1766,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; erc (an Emacs internet relay chat client) - [built-in package]
 (use-package erc
   :disabled
-  :ensure nil   ; don't install built-in packages
   :commands (erc erc-tls)
   :custom
   ;; Server settings
