@@ -2668,7 +2668,7 @@ Elisp code explicitly in arbitrary buffers.")
 (keymap-global-set "C-x C-<left>" #'my/project-previous-buffer)
 
 ;; Kill buffer
-(keymap-global-set "C-x k" #'kill-this-buffer)
+(keymap-global-set "C-x k" #'kill-current-buffer)
 
 ;; Kill buffer (other window)
 (keymap-global-set "C-c k" #'my/kill-buffer-other-window)
