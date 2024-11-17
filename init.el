@@ -1082,13 +1082,29 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package dired
   :ensure nil   ; don't install built-in packages
   :bind (:map dired-mode-map ("." . dired-omit-mode))
-  :hook (dired-mode . dired-omit-mode)
   :init
   ;; Enable Dired-X
   (with-eval-after-load 'dired (require 'dired-x))
   :custom
-  ;; Hide hidden (dot-) files
-  (dired-omit-files "^\\.[a-zA-Z0-9]+"))
+  ;; Set custom listing style
+  ;; (dired-listing-switches "-agho --group-directories-first")
+  (dired-listing-switches "-agho")   ; macOS version
+  ;; Guess target directory
+  (dired-dwim-target t)
+  ;; Don't display free disk space
+  (dired-free-space nil)
+  ;; Reuse Dired buffers
+  (dired-kill-when-opening-new-dired-buffer t)
+  ;; Omit hidden (dot-) files
+  (dired-omit-files "^\\.[a-zA-Z0-9]+")   ; with dired-omit-mode
+  :config
+  ;; Tag Dired buffer names
+  (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
+  ;; Hide details by default
+  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+  ;; Hide omitted files
+  (add-hook 'dired-mode-hook #'dired-omit-mode))
+
 
 ;; dired-sidebar (tree browser leveraging dired)
 (use-package dired-sidebar
@@ -1951,9 +1967,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Always select help window
 (setq help-window-select t)
 
-;; Reuse dired buffers
-(setf dired-kill-when-opening-new-dired-buffer t)
-
 ;; Kill customize group windows
 (setq custom-buffer-done-kill t)
 
@@ -2029,16 +2042,6 @@ Elisp code explicitly in arbitrary buffers.")
 (setq duplicate-line-final-position -1)
 
 ;;; Files
-
-;; Custom listing style in dired
-;; (setq dired-listing-switches "-agho --group-directories-first")
-(setq dired-listing-switches "-agho")   ; macOS version
-
-;; Guess target directory in dired
-(setq dired-dwim-target t)
-
-;; Don't display free disk space
-(setq dired-free-space nil)
 
 ;; Number of saved recent files
 (setq recentf-max-saved-items 100)
@@ -2500,9 +2503,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; after-change-major-mode: add Treesitter indicator in the modeline
 (add-hook 'after-change-major-mode-hook 'aj8/treesit-mode-name)
 
-;; dired-after-readin: tag dired buffer names
-;; (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
-
 ;; ediff-before-setup: disable side windows before Ediff
 ;;   TODO: Should disable/enable rather than toggle
 (add-hook 'ediff-before-setup-hook 'window-toggle-side-windows)
@@ -2529,12 +2529,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; conf-xdefaults-mode: outline settings
 (add-hook 'conf-xdefaults-mode-hook
           #'outline-headers-for-exclamation-mark-buffers)
-
-;; dired-mode: use dired-x
-(add-hook 'dired-mode-hook (lambda () (require 'dired-x)))
-
-;; dired-mode: hide details
-(add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
 ;; Info-mode: allow multiple Info buffers
 (add-hook 'Info-mode-hook #'rename-uniquely)
