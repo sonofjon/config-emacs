@@ -91,7 +91,6 @@
                           dashboard
                           devdocs
                           devdocs-browser
-                          dired-hide-dotfiles
                           dired-sidebar
                           diff-hl
                           diminish
@@ -1079,10 +1078,21 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Files
 
+;; dired (directory editor)  - [built-in package]
+(use-package dired
+  :ensure nil   ; don't install built-in packages
+  :bind (:map dired-mode-map ("." . dired-omit-mode))
+  :hook (dired-mode . dired-omit-mode)
+  :init
+  ;; Enable Dired-X
+  (with-eval-after-load 'dired (require 'dired-x))
+  :custom
+  ;; Hide hidden (dot-) files
+  (dired-omit-files "^\\.[a-zA-Z0-9]+"))
+
 ;; dired-sidebar (tree browser leveraging dired)
 (use-package dired-sidebar
   :bind (("C-c d" . dired-sidebar-toggle-sidebar))
-  :ensure t
   :commands (dired-sidebar-toggle-sidebar)
   :init
   (add-hook 'dired-sidebar-mode-hook
@@ -1109,13 +1119,6 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
   (push 'rotate-windows dired-sidebar-toggle-hidden-commands))
-
-;; dired-hide-dotfiles (hide dotfiles in dired)
-(use-package dired-hide-dotfiles
-  :demand t
-  ;; :hook (dired-mode . dired-hide-dotfiles-mode)
-  :bind (:map dired-mode-map
-              ("." . dired-hide-dotfiles-mode)))   ; default: dired-clean-directory
 
 ;; osx-trash (system trash for OS X)
 (use-package osx-trash
