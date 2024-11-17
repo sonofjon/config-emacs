@@ -150,7 +150,6 @@
                           vterm
                           vundo
                           web-mode
-                          which-key
                           whole-line-or-region
                           xclip
                           yaml-pro
@@ -1167,7 +1166,7 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   (marginalia-mode 1))
 
-;; which-key (display available keybindings in popup)
+;; which-key (display available keybindings in popup) - [built-in package]
 ;;   MAYBE: which-key buffer overlaps with bottom side-window buffer
 ;;          (which might be OK?)
 ;;          When doing so, which-key fails to
