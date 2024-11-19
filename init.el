@@ -2411,9 +2411,6 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Editing...
 
-;; Highlight current line
-(global-hl-line-mode 1)
-
 ;; Auto-insert closing parens, bracket and double-quotes
 ;; (electric-pair-mode 1)
 
@@ -2457,6 +2454,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Terminal
 
 ;;; Theme...
+
+;; Highlight current line
+(global-hl-line-mode 1)
 
 ;; Display continuation lines with prefixes
 (global-visual-wrap-prefix-mode 1)
