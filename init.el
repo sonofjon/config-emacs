@@ -2458,6 +2458,9 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Theme...
 
+;; Display continuation lines with prefixes
+(global-visual-wrap-prefix-mode 1)
+
 ;; Enable line numbers
 ;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
 
