@@ -95,7 +95,6 @@
                           diminish
                           dimmer
                           drag-stuff
-                          editorconfig
                           ef-themes
                           elfeed
                           embark
@@ -325,13 +324,6 @@
   (web-mode-enable-auto-opening t)
   (web-mode-enable-auto-pairing t)
   (web-mode-enable-auto-quoting t))
-
-;; editorconfig (EditorConfig Emacs plugin)
-;;   Required by copilot
-(use-package editorconfig
-  :disabled
-  :config
-  (editorconfig-mode 1))
 
 ;; yaml-pro (parser-aided YAML editing features)
 (use-package yaml-pro
