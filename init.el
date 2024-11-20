@@ -2397,6 +2397,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Persistent minibuffer history
 (savehist-mode 1)
 
+;; Restore desktop between sessions
+(desktop-save-mode 1)
+
 ;; Additional variables to persist between sessions
 (add-to-list 'savehist-additional-variables 'kill-ring)
 (add-to-list 'savehist-additional-variables 'global-mark-ring)
