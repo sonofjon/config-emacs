@@ -376,13 +376,13 @@
   ;; (add-to-list 'eglot-server-programs
   ;;              '((python-mode python-ts-mode) . ("ruff" "server")))   ; No completion, as Eglot only supports one server
   ;; Use Orderless for Eglot (default is Flex)
-  (setq completion-category-overrides '((eglot (styles orderless))))
+  (setq completion-category-overrides '((eglot (styles orderless)))))
   ;; Don't manage ELDoc
   ;; (add-to-list 'eglot-stay-out-of 'eldoc))
   ;; Limit ELDoc to a single line
   ;; (setq eldoc-echo-area-use-multiline-p nil))   ; doesn't work nicely
   ;; Don't auto-show documentation
-  (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1))))
+  ;; (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1))))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
