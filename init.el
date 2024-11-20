@@ -373,8 +373,8 @@
   (add-to-list 'eglot-server-programs
                '(web-mode . ("vscode-html-language-server" "--stdio")))
   ;; Prefer ruff-lsp for Python
-  (add-to-list 'eglot-server-programs
-               '(python-base-mode . ("ruff" "server")))   ; No completion, as Eglot only supports one server
+  ;; (add-to-list 'eglot-server-programs
+  ;;              '((python-mode python-ts-mode) . ("ruff" "server")))   ; No completion, as Eglot only supports one server
   ;; Use Orderless for Eglot (default is Flex)
   (setq completion-category-overrides '((eglot (styles orderless))))
   ;; Don't manage ELDoc
