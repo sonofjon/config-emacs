@@ -373,8 +373,6 @@
   (add-to-list 'eglot-server-programs
                '(web-mode . ("vscode-html-language-server" "--stdio")))
   ;; Prefer ruff-lsp for Python
-  ;; (add-to-list 'eglot-server-programs
-  ;;              '(python-base-mode . ("ruff-lsp")))
   (add-to-list 'eglot-server-programs
                '(python-base-mode . ("ruff" "server")))   ; No completion, as Eglot only supports one server
   ;; Use Orderless for Eglot (default is Flex)
