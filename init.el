@@ -60,8 +60,7 @@
 
 ;; use-package-ensure-system-package (auto install system packages) - [built-in package]
 ;;   Enables installation with :ensure-system-package
-(use-package use-package-ensure-system-package
-  :ensure nil)   ; don't install built-in packages
+(use-package use-package-ensure-system-package)
 
 
 ;;; Local
@@ -96,7 +95,6 @@
                           diminish
                           dimmer
                           drag-stuff
-                          editorconfig
                           ef-themes
                           elfeed
                           embark
@@ -151,7 +149,6 @@
                           vterm
                           vundo
                           web-mode
-                          which-key
                           whole-line-or-region
                           xclip
                           yaml-pro
@@ -328,13 +325,6 @@
   (web-mode-enable-auto-pairing t)
   (web-mode-enable-auto-quoting t))
 
-;; editorconfig (EditorConfig Emacs plugin)
-;;   Required by copilot
-(use-package editorconfig
-  :disabled
-  :config
-  (editorconfig-mode 1))
-
 ;; yaml-pro (parser-aided YAML editing features)
 (use-package yaml-pro
   :disabled
@@ -382,6 +372,9 @@
   ;; Add server for web-mode
   (add-to-list 'eglot-server-programs
                '(web-mode . ("vscode-html-language-server" "--stdio")))
+  ;; Prefer ruff-lsp for Python
+  ;; (add-to-list 'eglot-server-programs
+  ;;              '((python-mode python-ts-mode) . ("ruff" "server")))   ; No completion, as Eglot only supports one server
   ;; Use Orderless for Eglot (default is Flex)
   (setq completion-category-overrides '((eglot (styles orderless))))
   ;; Don't manage ELDoc
@@ -1168,7 +1161,7 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   (marginalia-mode 1))
 
-;; which-key (display available keybindings in popup)
+;; which-key (display available keybindings in popup) - [built-in package]
 ;;   MAYBE: which-key buffer overlaps with bottom side-window buffer
 ;;          (which might be OK?)
 ;;          When doing so, which-key fails to
@@ -1310,8 +1303,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; term (terminal-emulator) - [built-in package]
 (use-package term
   :disabled
-  :ensure nil   ; don't install built-in packages
-                ; see https://github.com/jwiegley/use-package/issues/977
   :commands term)
   ;; :config
   ;; Match the default Bash shell prompt
@@ -1328,7 +1319,6 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; eshell (the Emacs command shell) - [built-in package]
 (use-package eshell
-  :ensure nil   ; don't install built-in packages
   :hook (eshell-first-time-mode . efs/configure-eshell)
   :config
   ;; Set Eshell options here
@@ -1433,7 +1423,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
   :if (eq aj8/my-os 'linux)   ; Linux
-  :ensure nil   ; don't install built-in packages
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
@@ -1771,7 +1760,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; erc (an Emacs internet relay chat client) - [built-in package]
 (use-package erc
   :disabled
-  :ensure nil   ; don't install built-in packages
   :commands (erc erc-tls)
   :custom
   ;; Server settings
@@ -2149,6 +2137,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;;   MAYBE: Make the text in the echo area persist until key press
 (setq show-paren-context-when-offscreen t)
 
+;; Show current project name on the mode line
+(setq project-mode-line t)
+
 ;;; Version control
 
 ;; Follow symlinks
@@ -2423,9 +2414,6 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Editing...
 
-;; Highlight current line
-(global-hl-line-mode 1)
-
 ;; Auto-insert closing parens, bracket and double-quotes
 ;; (electric-pair-mode 1)
 
@@ -2469,6 +2457,12 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Terminal
 
 ;;; Theme...
+
+;; Highlight current line
+(global-hl-line-mode 1)
+
+;; Display continuation lines with prefixes
+(global-visual-wrap-prefix-mode 1)
 
 ;; Enable line numbers
 ;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
@@ -2668,7 +2662,7 @@ Elisp code explicitly in arbitrary buffers.")
 (keymap-global-set "C-x C-<left>" #'my/project-previous-buffer)
 
 ;; Kill buffer
-(keymap-global-set "C-x k" #'kill-this-buffer)
+(keymap-global-set "C-x k" #'kill-current-buffer)
 
 ;; Kill buffer (other window)
 (keymap-global-set "C-c k" #'my/kill-buffer-other-window)
