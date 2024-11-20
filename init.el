@@ -418,7 +418,7 @@
 
 ;; flymake-ruff (a Flymake plugin for python files using Ruff)
 (use-package flymake-ruff
-  :disabled
+  :disabled   ; already included with pylsp
   :ensure-system-package ruff
   ;; :hook (python-base-mode . flymake-ruff-load)   ; without eglot
   :hook (eglot-managed-mode . flymake-ruff-load))   ; with eglot
