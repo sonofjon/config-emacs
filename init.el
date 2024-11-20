@@ -2398,6 +2398,7 @@ Elisp code explicitly in arbitrary buffers.")
 (savehist-mode 1)
 
 ;; Restore desktop between sessions
+;;   TODO: doesn't restore side-windows
 (desktop-save-mode 1)
 
 ;; Additional variables to persist between sessions
