@@ -342,8 +342,6 @@
               ("C-c l F" . eglot-format-buffer)
               ("C-c l d" . flymake-show-buffer-diagnostics)
               ("C-c l D" . flymake-show-project-diagnostics)
-              ;; ("C-c l h" . eldoc)
-              ("C-c h" . eldoc)
               ("C-c l r" . eglot-rename))
   :hook ((sh-mode . eglot-ensure)
          ;; (html-mode . eglot-ensure)   ;  mhtml is default for HTML
@@ -2717,6 +2715,9 @@ Elisp code explicitly in arbitrary buffers.")
 (keymap-global-set "C-x p t" #'project-forget-project)
 
 ;;; Help
+
+;; Display Eldoc
+(keymap-global-set "C-c H e"  #'aj8/toggle-eldoc-buffer)
 
 ;; Display keymaps
 (keymap-global-set "C-c H k" #'describe-keymap)
