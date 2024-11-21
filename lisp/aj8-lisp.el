@@ -1273,13 +1273,20 @@ than 160 characters set width to 80 characters."
   :type 'integer
   :group 'aj8-lisp)
 
-;; TODO: finish this
 (defun aj8/make-not-side-window ()
-  "."
+  "Move the current buffer to a regular window if it's in a side window."
   (interactive)
-  (let ((buffer (current-buffer)))
-    (with-current-buffer buffer
-      (display-buffer-use-some-window buffer '()))))
+  (let ((original-window (selected-window))
+        (buffer (current-buffer)))
+    (if (window-parameter original-window 'window-side)
+        (let ((display-buffer-overriding-action
+               '((display-buffer-use-some-window
+                  display-buffer-pop-up-window)
+                 (inhibit-same-window . t)
+                 (inhibit-switch-frame . t))))
+          (display-buffer buffer)
+          (quit-window nil original-window))
+      (message "The buffer is not in a side window."))))
 
 (defun aj8/hide-side-windows ()
   "Hide side windows if they are visible; do nothing if they are not."
