@@ -21,34 +21,38 @@
 
 ;;;; Buffers
 
-;;; Undo for killed buffers
+;;; Undo for killed file buffers
 
-(defvar killed-file-list nil
+(defvar my/reopen-killed-file-list nil
   "List of recently killed files.")
 
-(defun reopen-killed-file--add-to-list ()
-  "If buffer is associated with a file name, add that file to the
-`killed-file-list' when killing the buffer."
+(defun my/reopen-killed-file-save ()
+  "Add the name of the current buffer to `my/reopen-killed-file-list'.
+
+Only save the name if the buffer is associated with a filename."
   (when buffer-file-name
-    (push buffer-file-name killed-file-list)))
+    (push buffer-file-name my/reopen-killed-file-list)))
 
 ;; Undo for killed buffers
 (defun my/reopen-killed-file ()
   "Reopen the most recently killed file, if one exists."
   (interactive)
-  (when killed-file-list
-    (find-file (pop killed-file-list))))
+  (when my/reopen-killed-file-list
+    (find-file (pop my/reopen-killed-file-list))))
 
 ;; Fancy undo for killed buffers
 (defun my/reopen-killed-file-fancy ()
   "Pick a file to revisit from a list of files killed during this
 Emacs session."
   (interactive)
-  (if killed-file-list
-      (let ((file (completing-read "Reopen killed file: " killed-file-list
-                                   nil nil nil nil (car killed-file-list))))
+  (if my/reopen-killed-file-list
+      (let ((file (completing-read "Reopen killed file: "
+                                   my/reopen-killed-file-list
+                                   nil nil nil nil
+                                   (car my/reopen-killed-file-list))))
         (when file
-          (setq killed-file-list (cl-delete file killed-file-list :test #'equal))
+          (setq my/reopen-killed-file-list
+                (cl-delete file my/reopen-killed-file-list :test #'equal))
           (find-file file)))
     (user-error "No recently-killed files to reopen")))
 

@@ -2515,8 +2515,8 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'ediff-before-setup-hook #'my-ediff-save-windows)
 (add-hook 'ediff-quit-hook #'my-ediff-restore-windows)
 
-(add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
 ;; kill-buffer: collect list of killed file and non-file buffers
+(add-hook 'kill-buffer-hook #'my/reopen-killed-file-save)
 (add-hook 'kill-buffer-hook #'aj8/reopen-killed-buffer-save)
 
 ;; messages-buffer-mode: auto-update *Messages* buffer
