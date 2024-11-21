@@ -2513,8 +2513,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;;    MAYBE: works well for ediff-buffers, but not for
 ;;    ediff-regions-linewise and ediff-regions-wordwise
 ;;    (https://emacs.stackexchange.com/a/80961/33325)
-(add-hook 'ediff-before-setup-hook #'my-store-pre-ediff-winconfig)
-(add-hook 'ediff-quit-hook #'my-restore-pre-ediff-winconfig)
+(add-hook 'ediff-before-setup-hook #'my-ediff-save-windows)
+(add-hook 'ediff-quit-hook #'my-ediff-restore-windows)
 
 ;; kill-buffer: collect list of killed buffers
 (add-hook 'kill-buffer-hook #'reopen-killed-file--add-to-list)
