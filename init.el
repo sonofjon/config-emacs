@@ -844,7 +844,7 @@ Elisp code explicitly in arbitrary buffers.")
               ("M-e" . combobulate-navigate-logical-next)
               ("M-a" . combobulate-navigate-logical-previous)
               ("M-<left>" . nil)
-              ("M-<rigth>" . nil)
+              ("M-<right>" . nil)
               ("M-p" . nil)
               ("M-n" . nil))
   :init
