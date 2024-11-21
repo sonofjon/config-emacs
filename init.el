@@ -2509,7 +2509,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;; ediff-quit-hook: Kill remaining Ediff buffers
 (add-hook 'ediff-quit-hook 'aj8/ediff-cleanup-buffers)
 
-;; ediff-before/quit-hook: store and restore window layout after use
+;; ediff-before/quit-hook: store and restore window layout after Ediff
+;;    MAYBE: works well for ediff-buffers, but not for
+;;    ediff-regions-linewise and ediff-regions-wordwise
+;;    (https://emacs.stackexchange.com/a/80961/33325)
 (add-hook 'ediff-before-setup-hook #'my-store-pre-ediff-winconfig)
 (add-hook 'ediff-quit-hook #'my-restore-pre-ediff-winconfig)
 
