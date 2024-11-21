@@ -1147,14 +1147,7 @@ versa."
 
 ;;;; Version control
 
-;;; Misc
-
-;; Disable magit-wip-mode for remote (Tramp) buffers
-(defun aj8/disable-magit-wip-mode-if-remote ()
-  "Disable magit-wip-mode for remote buffers."
-  (if (file-remote-p default-directory)
-      (magit-wip-mode -1)  ; disable in remote directory
-    (magit-wip-mode 1)))   ; enable otherwise
+;;; Ediff
 
 ;; Enable concatenation in ediff
 ;;   (when merging, use both variants A and B, one after the other)
@@ -1235,6 +1228,15 @@ Regions (i.e., point and mark) must be set in advance."
         (add-hook 'ediff-cleanup-hook 'cleanup-ediff-buffers)
         ;; Start ediff-buffers3 and cleanup when done
         (ediff-buffers3 temp-buffer-A temp-buffer-B temp-buffer-C)))))
+
+;;; Misc
+
+;; Disable magit-wip-mode for remote (Tramp) buffers
+(defun aj8/disable-magit-wip-mode-if-remote ()
+  "Disable magit-wip-mode for remote buffers."
+  (if (file-remote-p default-directory)
+      (magit-wip-mode -1)  ; disable in remote directory
+    (magit-wip-mode 1)))   ; enable otherwise
 
 ;;;; Windows
 
