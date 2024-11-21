@@ -34,7 +34,6 @@
 
 ;; Undo for killed buffers
 (defun my/reopen-killed-file ()
-  ;; TODO: make it work for all buffers, not just files
   "Reopen the most recently killed file, if one exists."
   (interactive)
   (when killed-file-list
@@ -52,6 +51,36 @@ Emacs session."
           (setq killed-file-list (cl-delete file killed-file-list :test #'equal))
           (find-file file)))
     (user-error "No recently-killed files to reopen")))
+
+;;; Undo for killed non-file buffers
+
+(defvar aj8/reopen-killed-buffer-content nil
+  "Name and contents of the last killed non-file buffer.")
+
+(defvar aj8/reopen-killed-buffer-max-size 50000
+  "Maximum size of non-file buffer (in characters) to store.")
+
+(defun aj8/reopen-killed-buffer-save ()
+  "Add the name and content of the current buffer to `my/reopen-killed-bufer-cintent'.
+
+Only save the name and content if the buffer is not associated with a filename."
+  (unless buffer-file-name
+    (when (<= (buffer-size) aj8/reopen-killed-buffer-max-size)
+      (setq aj8/reopen-killed-buffer-content
+            (cons (buffer-name) (buffer-string))))))
+
+(defun aj8/reopen-killed-buffer ()
+  "Reopen the last killed non-file buffer, restoring its contents.
+
+Note, this does not include window properties etc."
+  (interactive)
+  (if (null aj8/reopen-killed-buffer-content)
+      (user-error "No recently killed non-file buffer to reopen")
+    (let ((buffername (car aj8/reopen-killed-buffer-content))
+          (contents (cdr aj8/reopen-killed-buffer-content)))
+      (switch-to-buffer (get-buffer-create buffername))
+      (insert contents)
+      (setq laj8/reopen-killed-buffer-content nil))))
 
 ;;; Buffer switching
 
