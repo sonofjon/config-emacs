@@ -283,8 +283,8 @@
   :mode "\\.md$"
   ;; :mode ("\\.md$" . markdown-view-mode)
   :bind (:map markdown-mode-map
-              ("M-n" . nil)         ; unbind markdown-next-link
               ("M-p" . nil)     ; unbind markdown-previous-link
+              ("M-n" . nil)         ; unbind markdown-next-link
               ("C-c <left>" . nil)     ; unbind markdown-promote
               ("C-c <right>" . nil)     ; unbind markdown-demote
               ("C-c C-<down>" . markdown-outline-next-same-level)
@@ -845,8 +845,8 @@ Elisp code explicitly in arbitrary buffers.")
               ("M-a" . combobulate-navigate-logical-previous)
               ("M-<down>" . nil)
               ("M-<left>" . nil)
-              ("M-<right>" . nil)
-              ("M-<up>" . nil))
+              ("M-p" . nil)
+              ("M-n" . nil))
   :init
   (which-key-add-key-based-replacements "C-c o" "combobulate")
   (which-key-add-key-based-replacements "C-c o B" "builder")
