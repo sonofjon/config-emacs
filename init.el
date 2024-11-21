@@ -350,10 +350,11 @@
          (web-mode . eglot-ensure)       ; no linting
          (js-mode . eglot-ensure)
          (json-mode . eglot-ensure)      ; no linting
+         (latex-mode . eglot-ensure)
          (lua-mode . eglot-ensure)
          (markdown-mode . eglot-ensure)
          (python-mode . eglot-ensure)
-         (latex-mode . eglot-ensure)
+         (toml-ts-mode . eglot-ensure)
          (yaml-mode . eglot-ensure))
   :init
   (which-key-add-key-based-replacements "C-c l" "lsp")
