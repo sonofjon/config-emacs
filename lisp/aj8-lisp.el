@@ -1149,6 +1149,14 @@ versa."
 
 ;;; Ediff
 
+(defvar my-ediff-last-windows nil)
+
+(defun my-store-pre-ediff-winconfig ()
+  (setq my-ediff-last-windows (current-window-configuration)))
+
+(defun my-restore-pre-ediff-winconfig ()
+  (set-window-configuration my-ediff-last-windows))
+
 ;; Enable concatenation in ediff
 ;;   (when merging, use both variants A and B, one after the other)
 (defun my/ediff-copy-both-to-C ()
