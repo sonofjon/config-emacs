@@ -1149,12 +1149,15 @@ versa."
 
 ;;; Ediff
 
-(defvar my-ediff-last-windows nil)
+(defvar my-ediff-last-windows nil
+  "Saved window configuration.")
 
 (defun my-store-pre-ediff-winconfig ()
+  "Save current window configuration."
   (setq my-ediff-last-windows (current-window-configuration)))
 
 (defun my-restore-pre-ediff-winconfig ()
+  "Restore saved window configuration."
   (set-window-configuration my-ediff-last-windows))
 
 ;; Enable concatenation in ediff
