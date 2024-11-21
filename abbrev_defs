@@ -1,6 +1,7 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'text-mode-abbrev-table
   '(
+    ("ads" "Add docstring" nil :count 3)
     ("atd" "Add TODO" nil :count 3)
     ("aup" "Add use-package:" nil :count 0)
     ("anf" "Add new function:" nil :count 0)
