@@ -2500,13 +2500,13 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
 
 ;; after-change-major-mode: add Treesitter indicator in the modeline
-(add-hook 'after-change-major-mode-hook 'aj8/treesit-mode-name)
+(add-hook 'after-change-major-mode-hook #'aj8/treesit-mode-name)
 
 ;; ediff-before-setup: disable side windows before Ediff
 (add-hook 'ediff-before-setup-hook #'aj8/hide-side-windows)
 
 ;; ediff-quit-hook: Kill remaining Ediff buffers
-(add-hook 'ediff-quit-hook 'aj8/ediff-cleanup-buffers)
+(add-hook 'ediff-quit-hook #'aj8/ediff-cleanup-buffers)
 
 ;; ediff-before/quit-hook: store and restore window layout after Ediff
 ;;    MAYBE: works well for ediff-buffers, but not for
