@@ -2508,6 +2508,7 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'ediff-quit-hook 'window-toggle-side-windows)
 
 ;; ediff-quit-hook: Kill remaining Ediff buffers
+;;   TODO: restore window layout after use
 (add-hook 'ediff-quit-hook 'aj8/ediff-cleanup-buffers)
 
 ;; kill-buffer: collect list of killed buffers
