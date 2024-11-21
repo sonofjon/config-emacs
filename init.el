@@ -2503,8 +2503,7 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'after-change-major-mode-hook 'aj8/treesit-mode-name)
 
 ;; ediff-before-setup: disable side windows before Ediff
-;;   TODO: Should disable/enable rather than toggle
-(add-hook 'ediff-before-setup-hook 'window-toggle-side-windows)
+(add-hook 'ediff-before-setup-hook #'aj8/hide-side-windows)
 
 ;; ediff-quit-hook: Kill remaining Ediff buffers
 (add-hook 'ediff-quit-hook 'aj8/ediff-cleanup-buffers)

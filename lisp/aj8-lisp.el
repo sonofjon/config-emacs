@@ -1281,6 +1281,17 @@ than 160 characters set width to 80 characters."
     (with-current-buffer buffer
       (display-buffer-use-some-window buffer '()))))
 
+(defun aj8/hide-side-windows ()
+  "Hide side windows if they are visible; do nothing if they are not."
+  ;; (interactive)
+  (let ((found-side-window nil))
+    (walk-windows (lambda (w)
+                    (when (window-parameter w 'window-side)
+                      (setq found-side-window t)))
+                  'no-mini nil)
+    (when found-side-window
+      (window-toggle-side-windows))))
+
 ;;; Kill windows
 
 (defcustom my/quit-window-exceptions-regex "^\\*\\(Messages\\)"
