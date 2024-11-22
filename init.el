@@ -1941,6 +1941,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Skip some buffers when switching buffers
 ;; (setq switch-to-prev-buffer-skip-regexp regex)
 
+;; Don't clear any variables
+(setq desktop-globals-to-clear nil)
+
 ;; Increase history length
 (setq history-length 10000)
 
