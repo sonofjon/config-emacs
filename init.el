@@ -1941,6 +1941,12 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Skip some buffers when switching buffers
 ;; (setq switch-to-prev-buffer-skip-regexp regex)
 
+;; Increase history length
+(setq history-length 10000)
+
+;; Delete history duplicates
+(setq history-delete-duplicates nil)
+
 ;; Allow minibuffer commands while in the minibuffer
 (setq enable-recursive-minibuffers t)
 
