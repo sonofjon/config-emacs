@@ -42,11 +42,19 @@
 ;;; GUI
 
 ;; Remove unneeded UI elements
-;; (push '(tool-bar-lines . 0) initial-frame-alist)   ; disable tool bar
-;; (push '(menu-bar-lines . 0) initial-frame-alist)   ; disable menu bar
-(push '(tool-bar-lines . 0) default-frame-alist)   ; disable tool bar
-(push '(menu-bar-lines . 0) default-frame-alist)   ; disable menu bar
-(push '(vertical-scroll-bars . nil) default-frame-alist)   ; disable scroll bar
+;; (push '(tool-bar-lines . 0) default-frame-alist)   ; disable tool bar
+;; (push '(menu-bar-lines . 0) default-frame-alist)   ; disable menu bar
+;; (push '(vertical-scroll-bars . nil) default-frame-alist)   ; disable scroll bar
+
+;; Disable menu bar
+(menu-bar-mode -1)
+
+;; Disable toolbar (graphical Emacs)
+(tool-bar-mode -1)
+
+;; Disable scroll bar
+;; (with-eval-after-load "scroll-bar"   ; avoid error on some systems
+(scroll-bar-mode -1)
 
 ;; Disable welcome buffer
 ;; (setq inhibit-startup-screen t)
