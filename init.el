@@ -828,6 +828,7 @@ Elisp code explicitly in arbitrary buffers.")
          (json-ts-mode . combobulate-mode)
          ;; (markdown-ts-mode . combobulate-mode)   ; NA
          (python-ts-mode . combobulate-mode)
+         (toml-ts-mode . combobulate-mode)
          (yaml-ts-mode . combobulate-mode))
   :bind (:map combobulate-key-map
               ("C-M-n" . combobulate-navigate-down)   ; forward-list
