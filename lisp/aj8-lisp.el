@@ -249,6 +249,7 @@ If the current window is a side window don't skip buffers."
 ;;; Buffer matching functions
 
 ;; Make major-mode matching function
+;;   Use with display-buffer-alist
 (defun mp-make-display-buffer-matcher-function (major-modes)
   "Return a lambda function that matches against a list of
 major-modes."
