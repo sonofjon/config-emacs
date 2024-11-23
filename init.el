@@ -839,6 +839,7 @@ Elisp code explicitly in arbitrary buffers.")
               ("M-e" . combobulate-navigate-logical-next)
               ("C-M-u" . combobulate-navigate-sequence-previous)   ; backward-up-list
               ("C-M-d" . combobulate-navigate-sequence-next)   ; down-list
+              ;; ("?" . combobulate-mark-node-at-point)
               ("C-c o <up>" . combobulate-splice-up)
               ("C-c o <down>" . combobulate-splice-down)
               ("C-c o <right>" . combobulate-splice-self)
