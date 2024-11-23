@@ -859,6 +859,8 @@ Elisp code explicitly in arbitrary buffers.")
   :custom
   ;; Custom prefix key
   (combobulate-key-prefix "C-c o"))
+  ;; Disable display of syntax tree
+  ;; (combobulate-flash-node nil))
 
 ;; lingva (access Google Translate without tracking via lingva.ml)
 (use-package lingva
