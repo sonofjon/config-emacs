@@ -856,9 +856,9 @@ Elisp code explicitly in arbitrary buffers.")
   (which-key-add-key-based-replacements "C-c o t" "edit")
   (which-key-add-key-based-replacements "C-c o x" "xref")
                                         ; add label for prefix
-  :config
+  :custom
   ;; Custom prefix key
-  (setq combobulate-key-prefix "C-c o"))
+  (combobulate-key-prefix "C-c o"))
 
 ;; lingva (access Google Translate without tracking via lingva.ml)
 (use-package lingva
