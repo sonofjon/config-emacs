@@ -585,6 +585,33 @@ Unix-style (LF) in active region or entire buffer."
       (goto-char start)
       (while (search-forward "\r" end t) (replace-match "")))))
 
+;; Open line above
+(defun my/open-line-above (&optional arg)
+  "Open line above."
+  (interactive)
+  (beginning-of-line)
+  (open-line (or arg 1))
+  (indent-according-to-mode))
+
+;; Open line below
+(defun my/open-line-below (&optional arg)
+  "Open line below."
+  (interactive)
+  (end-of-line)
+  (open-line (or arg 1))
+  (forward-line)
+  (indent-according-to-mode))
+
+;; Wrapper for open line above/below
+(defun my/open-line (arg)
+  "Open a line above or below.
+
+If called with C-u, open a line above. Otherwise, open a line below."
+  (interactive "p")
+  (if (equal arg 4)  ;; C-u gives a prefix argument of 4
+      (my/open-line-above)
+    (my/open-line-below)))
+
 ;;;; Files
 
 ;; Rename file and buffer

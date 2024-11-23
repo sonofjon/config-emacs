@@ -2703,6 +2703,9 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Editing
 
+;; Open line above or below
+(keymap-global-set "C-o" #'my/open-line)
+
 ;; Kill line to the left
 (keymap-global-set "C-<backspace>" (lambda () (interactive) (kill-line 0)))
 
