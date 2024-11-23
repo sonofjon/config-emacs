@@ -823,7 +823,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; :load-path ("path-to-git-checkout-of-combobulate"))
   :hook (;; (bash-ts-mode . combobulate-mode)   ; NA
          (css-ts-mode . combobulate-mode)
-         ;; (html-ts-mode . combobulate-mode)   ; require Emacs 30
+         (html-ts-mode . combobulate-mode)
          (js-ts-mode . combobulate-mode)
          (json-ts-mode . combobulate-mode)
          ;; (markdown-ts-mode . combobulate-mode)   ; NA
