@@ -2040,6 +2040,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Move point to duplicated line
 (setq duplicate-line-final-position -1)
 
+;; Reduce delay for echoing multi-character keys
+(setq echo-keystrokes 0.01)
+
 ;;; Files
 
 ;; Number of saved recent files
