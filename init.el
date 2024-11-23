@@ -835,12 +835,12 @@ Elisp code explicitly in arbitrary buffers.")
               ("C-M-<right>" . combobulate-navigate-next)   ; forward-sexp
               ("C-M-<left>" . combobulate-navigate-previous)   ; backward-sexp
               ("C-M-p" . combobulate-navigate-up)   ; backward-list
+              ("C-M-u" . combobulate-navigate-sequence-previous)   ; backward-up-list
+              ("C-M-d" . combobulate-navigate-sequence-next)   ; down-list
               ("C-c o <up>" . combobulate-splice-up)
               ("C-c o <down>" . combobulate-splice-down)
               ("C-c o <right>" . combobulate-splice-self)
               ("C-c o <left>" . combobulate-splice-parent)
-              ("C-M-d" . combobulate-drag-down)   ; down-list
-              ("C-M-u" . combobulate-drag-up)   ; backward-up-list
               ("M-a" . combobulate-navigate-logical-previous)
               ("M-e" . combobulate-navigate-logical-next)
               ("M-a" . combobulate-navigate-logical-previous)
