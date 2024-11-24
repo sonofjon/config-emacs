@@ -3083,8 +3083,14 @@ Scroll by line or paragraph.
   ("q" nil "quit")
   ("<up>" scroll-down-line)
   ("<down>" scroll-up-line)
-  ("<left>" aj8/scroll-down-paragraph)
-  ("<right>" aj8/scroll-up-paragraph))
+  ;; ("<left>" aj8/scroll-down-paragraph)
+  ("<left>" (lambda ()
+              (interactive)
+              (aj8/scroll-down-paragraph 1)))
+  ;; ("<right>" aj8/scroll-up-paragraph))
+  ("<right>" (lambda ()
+               (interactive)
+               (aj8/scroll-up-paragraph 1))))
 
 (keymap-global-set "C-c y s" #'hydra-scroll/body)
 
