@@ -1071,7 +1071,6 @@ versa."
    (t
     (user-error "`ispell-program` must be either `aspell` or `hunspell`"))))
 
-
 ;;; Flyspell
 
 ;; Setup for web-mode
@@ -1395,7 +1394,7 @@ not be inverted."
                                            magit-log-bury-buffer
                                            Info-exit)
   "List of commands that call `quit-window' for which prefix
-argument should be inverted. "
+argument should be inverted."
   :type 'sexp
   :group 'aj8-lisp)
 
