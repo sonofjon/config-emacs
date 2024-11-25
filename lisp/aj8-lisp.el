@@ -1323,7 +1323,7 @@ Regions (i.e., point and mark) must be set in advance."
         ;; Start ediff-buffers3 and cleanup when done
         (ediff-buffers3 temp-buffer-A temp-buffer-B temp-buffer-C)))))
 
-;;; Misc
+;;; Magit
 
 ;; Disable magit-wip-mode for remote (Tramp) buffers
 (defun aj8/disable-magit-wip-mode-if-remote ()
@@ -1331,6 +1331,19 @@ Regions (i.e., point and mark) must be set in advance."
   (if (file-remote-p default-directory)
       (magit-wip-mode -1)  ; disable in remote directory
     (magit-wip-mode 1)))   ; enable otherwise
+
+;; Add filenames to Magit commit messages
+(defun aj8/magit-commit-add-files ()
+  "Insert staged filenames into the Magit commit message buffer."
+  (interactive)
+  ;; (when (derived-mode-p 'git-commit-mode)
+    (let* ((files (magit-staged-files))
+           (filenames (mapcar #'file-name-nondirectory files)))
+      (goto-char (point-min))
+      (insert (string-join filenames ", ") ":\n")))
+  ;; )
+
+(add-hook 'git-commit-setup-hook 'my-insert-staged-files-into-commit-message)
 
 ;;;; Windows
 
