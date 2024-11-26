@@ -62,7 +62,6 @@
 ;;   Enables installation with :ensure-system-package
 (use-package use-package-ensure-system-package)
 
-
 ;;; Local
 
 (require 'aj8-lisp)
