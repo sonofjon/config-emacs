@@ -2052,6 +2052,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Reduce delay for echoing multi-character keys
 (setq echo-keystrokes 0.01)
 
+;; Enable repeat mode time-out
+;;   Note, does not work with repeat-help
+;; (setq repeat-exit-timeout 5)
+
 ;;; Files
 
 ;; Number of saved recent files
