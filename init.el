@@ -2609,6 +2609,16 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'Info-mode-hook #'visual-line-mode)
 ;; (add-hook 'Man-mode-hook #'visual-line-mode)
 
+;; Enable Hideshow mode in XML buffers
+(add-to-list 'hs-special-modes-alist
+             (list 'nxml-mode
+                   "<!--\\|<[^/>]*[^/]>"
+                   "-->\\|</[^/>]*[^/]>"
+                   "<!--"
+                   'nxml-forward-element
+                   nil))
+
+(add-hook 'nxml-mode-hook 'hs-minor-mode)
 
 ;;;;; KEYBINDINGS
 
