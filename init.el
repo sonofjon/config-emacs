@@ -2447,6 +2447,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Auto-insert closing parens, bracket and double-quotes
 ;; (electric-pair-mode 1)
 
+;; Enable repeat mode
+(repeat-mode 1)
+
 ;;; Files...
 
 ;; Track recent files
@@ -2510,9 +2513,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; (global-goto-address-mode 1)
 
 ;;; Other...
-
-;; Enable repeat mode
-(repeat-mode 1)
 
 ;; Expand abbreviations
 (add-hook 'text-mode-hook #'abbrev-mode)
