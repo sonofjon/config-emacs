@@ -99,7 +99,6 @@
 ;;   (package-refresh-contents t))
 
 ;; Refresh packages database (on first install)
-;;   TODO: is this needed
 (defun my/package-install-refresh-contents (&rest args)
   "Refresh package database on first install."
   (package-refresh-contents)

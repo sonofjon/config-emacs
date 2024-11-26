@@ -987,7 +987,7 @@ Elisp code explicitly in arbitrary buffers.")
               ;; ("C-c ("  . wrap-with-parens)
               ;; ("C-c ["  . wrap-with-brackets)
               ;; ("C-c {"  . wrap-with-braces)
-              ("C-c '"  . wrap-with-single-quotes)   ; TODO: Fix
+              ("C-c '"  . wrap-with-single-quotes)
               ("C-c \"" . wrap-with-double-quotes)
               ("C-c `"  . wrap-with-back-quotes)
               ;; Use standard C-w, M-d, M-<backspace> in strict mode
@@ -1124,7 +1124,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Refresh sidebar to match current file
   (dired-sidebar-should-follow-file t)
   ;; Center cursor when updating tui interface
-  ;; (dired-sidebar-recenter-cursor-on-tui-update t)   ; TODO: what does this do?
+  ;; (dired-sidebar-recenter-cursor-on-tui-update t)
   ;; The tree style to display
   (dired-sidebar-theme 'ascii)   ; none, ascii, icons (all-the-icons) (default)
   :config
