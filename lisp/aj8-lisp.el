@@ -1344,7 +1344,8 @@ Regions (i.e., point and mark) must be set in advance."
     (let* ((files (magit-staged-files))
            (filenames (mapcar #'file-name-nondirectory files)))
       (goto-char (point-min))
-      (insert (string-join filenames ", ") ":\n")))
+      (insert (string-join filenames ", ") ": ")
+      (open-line 1)))
   ;; )
 
 ;;;; Windows
