@@ -1822,6 +1822,7 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package gptel
   :bind (("C-c t c" . gptel)
          ("C-c t m" . gptel-menu))
+  :commands (gptel gptel-send)
   :init
   (which-key-add-key-based-replacements "C-c t" "gptel")
                                         ; add label for prefix key
