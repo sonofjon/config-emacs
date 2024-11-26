@@ -1609,6 +1609,8 @@ Elisp code explicitly in arbitrary buffers.")
   (add-hook 'magit-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
   ;; Disable magit-wip-mode for Tramp buffers
   (add-hook 'magit-mode-hook #'aj8/disable-magit-wip-mode-if-remote)
+  ;; Add filenames to Magit commit messages
+  (add-hook 'git-commit-setup-hook #'aj8/magit-commit-add-files)
   ;; Add status flag to repository list
   (add-to-list 'magit-repolist-columns
                '("Flag" 4 magit-repolist-column-flag (:right-align t)))

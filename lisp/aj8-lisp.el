@@ -1347,8 +1347,6 @@ Regions (i.e., point and mark) must be set in advance."
       (insert (string-join filenames ", ") ":\n")))
   ;; )
 
-(add-hook 'git-commit-setup-hook 'my-insert-staged-files-into-commit-message)
-
 ;;;; Windows
 
 ;;; Side windows
