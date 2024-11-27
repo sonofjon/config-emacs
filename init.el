@@ -1110,7 +1110,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; dired-sidebar (tree browser leveraging dired)
 (use-package dired-sidebar
-  :bind (("C-c d" . dired-sidebar-toggle-sidebar))
+  :bind ("C-c d" . dired-sidebar-toggle-sidebar)
   :commands (dired-sidebar-toggle-sidebar)
   :init
   (add-hook 'dired-sidebar-mode-hook
