@@ -94,7 +94,6 @@
                           diff-hl
                           diminish
                           dimmer
-                          drag-stuff
                           ef-themes
                           elfeed
                           embark
@@ -124,6 +123,7 @@
                           marginalia
                           markdown-mode
                           mosey
+                          move-dup
                           multiple-cursors
                           multi-line
                           obsidian
@@ -871,17 +871,12 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package lorem-ipsum
   :defer)
 
-;; drag-stuff (drag stuff (lines, words, region, etc...) around)
-;;   TODO: drag region moves first line after region
-(use-package drag-stuff
-  :diminish
-  :bind (("C-c <up>" . drag-stuff-up)
-         ("C-c <down>" . drag-stuff-down)
-         ("C-c <left>" . drag-stuff-left)
-         ("C-c <right>" . drag-stuff-right))
-  :config
-  ;; Enable everywhere
-  (drag-stuff-global-mode 1))
+;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
+(use-package move-dup
+  :bind (("C-c <up>" . move-dup-move-lines-up)
+         ("C-c C-<up>" . move-dup-duplicate-up)
+         ("C-c <down>" . move-dup-move-lines-down)
+         ("C-c C-<down>" . move-dup-duplicate-down)))
 
 ;; multiple-cursors (multiple cursors for Emacs)
 (use-package multiple-cursors
@@ -2047,9 +2042,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Yank at point, not at pointer
 (setq mouse-yank-at-point t)
 
-;; Move point to duplicated line
-(setq duplicate-line-final-position -1)
-
 ;; Reduce delay for echoing multi-character keys
 (setq echo-keystrokes 0.01)
 
@@ -2746,9 +2738,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Exit recursive edit
 ;;   Default key C-M-c overridden by custom Smartparens key
 (keymap-global-set "C-c C-c" #'exit-recursive-edit)
-
-;; Duplicate line or region
-(keymap-global-set "C-c C-<down>" #'duplicate-dwim)
 
 ;;; Files
 

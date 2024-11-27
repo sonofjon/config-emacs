@@ -1608,26 +1608,21 @@ When called from an eww buffer, provide the current link as
                my/move-splitter-left))
   (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
 
-;; Create repeat-map for drag-stuff commands
-(defvar aj8/drag-stuff-vertical-repeat-map
+;; Create repeat-map for move-dup
+(defvar aj8/move-dup-repeat-map
   (let ((map (make-sparse-keymap)))
-    (keymap-set map "<up>" #'drag-stuff-up)
-    (keymap-set map "<down>" #'drag-stuff-down)
-    (keymap-set map "C-<down>" #'duplicate-dwim)
+    (keymap-set map "<up>" #'move-dup-move-lines-up)
+    (keymap-set map "C-<up>" #'move-dup-duplicate-up)
+    (keymap-set map "<down>" #'move-dup-move-lines-down)
+    (keymap-set map "C-<down>" #'move-dup-duplicate-down)
     map))
 
-;; Add repeat-map property to drag-stuff map
-(dolist (cmd '(drag-stuff-up
-               drag-stuff-down
-               duplicate-dwim))
-  (put cmd 'repeat-map 'aj8/drag-stuff-vertical-repeat-map))
-
-;; Create repeat-map for drag-stuff commands
-(defvar aj8/drag-stuff-repeat-horizontal-map
-  (let ((map (make-sparse-keymap)))
-    (keymap-set map "<left>" #'drag-stuff-left)
-    (keymap-set map "<right>" #'drag-stuff-right)
-    map))
+;; Add repeat-map property to move-dup commands
+(dolist (cmd '(move-dup-move-lines-up
+               move-dup-duplicate-up
+               move-dup-move-lines-down
+               move-dup-duplicate-down))
+  (put cmd 'repeat-map 'aj8/move-dup-repeat-map))
 
 ;; Add repeat-map property to drag-stuff map
 (dolist (cmd '(drag-stuff-left
