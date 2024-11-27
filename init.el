@@ -903,8 +903,8 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package multi-line
   ;; Demand multi-line to avoid failure to load mode specific strategies
   ;;   (https://github.com/IvanMalison/multi-line/issues/8)
-  :demand t)
-  ;; :bind (("C-c l" . multi-line)))   ; TODO: conflicts with eglot 
+  :demand t
+  :bind ("C-c n" . multi-line))
 
 ;; repeat-help (display keybindings for repeat-mode)
 (use-package repeat-help
