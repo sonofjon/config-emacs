@@ -2057,6 +2057,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;;   Note, does not work with repeat-help
 ;; (setq repeat-exit-timeout 5)
 
+;; Disable repeat-mode for undo
+(setq undo-repeat-map nil)
+
 ;;; Files
 
 ;; Number of saved recent files

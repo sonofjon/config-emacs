@@ -1657,8 +1657,7 @@ When called from an eww buffer, provide the current link as
 ;;   (put cmd 'repeat-map 'aj8/switch-buffer-map))
 
 ;; Add "/" to undo-repeat-map
-;;   TODO: Disable undo-repeat-map
-(keymap-set undo-repeat-map "/" #'undo)
+;; (keymap-set undo-repeat-map "/" #'undo)
 
 ;; Disable buffer-navigation-repeat-map
 ;;   TODO: This is a hack, should be a better way to disable (the whole map)
