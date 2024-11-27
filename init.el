@@ -908,11 +908,11 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; repeat-help (display keybindings for repeat-mode)
 (use-package repeat-help
-  :hook (repeat-mode . repeat-help-mode)
-  :custom
+  :hook (repeat-mode . repeat-help-mode))
+  ;; :custom
   ;; Custom repeat help key
   ;;   Default value interferes with access to the standard "C-h" map
-  (repeat-help-key "C-c H r"))   ; default: "C-h'"
+  ;; (repeat-help-key "C-c H r"))   ; default: "C-h'"
   ;; Show repeat-help automatically
   ;; (repeat-help-auto t)   ; default: nil
   ;; Popup type
