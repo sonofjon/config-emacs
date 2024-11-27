@@ -813,9 +813,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Editing
 
 ;; combobulate
-;;   TODO: Missing functionality: barf, slurp, forward/backward sexp (navigate
-;;         by parens), ...
-;;         Don't dump tree into *Messages*
+;;   Missing functionality: barf, slurp, forward/backward sexp (navigate
+;;   by parens), ...
+;;
+;;   TODO: Don't dump tree into *Messages*
 (use-package combobulate
   :vc (:url "https://github.com/mickeynp/combobulate.git"
        :rev :newest)
@@ -2802,7 +2803,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Toggle outline-minor-mode
 (keymap-global-set "C-c O" #'outline-minor-mode)
 
-;; Toggle outline-minor-moderepeat
+;; Toggle hs-minor-mode
 (keymap-global-set "C-c F" #'hs-minor-mode)
 (keymap-global-set "C-c @ <left>" #'hs-hide-block)
 (keymap-global-set "C-c @ <right>" #'hs-show-block)

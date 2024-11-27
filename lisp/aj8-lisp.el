@@ -1634,13 +1634,13 @@ When called from an eww buffer, provide the current link as
                drag-stuff-right))
   (put cmd 'repeat-map 'aj8/drag-stuff-repeat-horizontal-map))
 
-;; Create repeat-map for indent commands
+;; Create repeat-map for indent-relative commands
 (defvar aj8/indent-repeat-map
   (let ((map (make-sparse-keymap)))
     (keymap-set map "TAB" #'indent-relative)
     map))
 
-;; Add repeat-map property to indent map
+;; Add repeat-map property to indent-relative map
 (dolist (cmd '(indent-relative))
   (put cmd 'repeat-map 'aj8/indent-repeat-map))
 
@@ -1681,6 +1681,7 @@ When called from an eww buffer, provide the current link as
 ;; (setq prefix-help-command #'repeated-prefix-help-command)
 
 ;;; xterm key sequence mappings for rxvt
+
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
   "Add mappings for a given list of escape sequences and list of
 keys."
