@@ -1185,11 +1185,10 @@ versa."
 
 (require 'solar)
 
-(setq calendar-latitude 59.33)
-(setq calendar-longitude 18.07)
+(setq calendar-latitude 59.336)
+(setq calendar-longitude 18.08)
 
 (defun aj8/time-sunrise ()
-  ;; TODO: Should return fractional value
   "Get clean sunrise time string from `solar-sunset-sunrise'."
   (cl-first (cl-first (solar-sunrise-sunset (calendar-current-date)))))
 
@@ -1209,8 +1208,13 @@ versa."
 
 (defun aj8/daytime-p ()
   "Return t if current time is daytime, nil otherwise."
-  (and (> (decoded-time-hour (decode-time)) aj8/time-sunrise)
-       (< (decoded-time-hour (decode-time)) aj8/time-sunset)))
+  (let* ((time (decode-time))
+         (hours (decoded-time-hour time))
+         (minutes (/ (decoded-time-minute time) 60.0))
+         (seconds (/ (decoded-time-second time) 3600.0))
+         (current-time (+ hours minutes seconds)))
+    (and (> current-time aj8/time-sunrise)
+         (< current-time aj8/time-sunset))))
 
 ;;; Cursor
 
