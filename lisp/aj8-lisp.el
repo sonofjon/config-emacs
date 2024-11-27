@@ -1644,6 +1644,16 @@ When called from an eww buffer, provide the current link as
 (dolist (cmd '(indent-relative))
   (put cmd 'repeat-map 'aj8/indent-repeat-map))
 
+;; Create repeat-map for string-inflection commands
+(defvar aj8/string-inflection-repeat-map
+  (let ((map (make-sparse-keymap)))
+    (keymap-set map "x" #'string-inflection-all-cycle)
+    map))
+
+;; Add repeat-map property to string-inflection map
+(dolist (cmd '(string-inflection-all-cycle))
+  (put cmd 'repeat-map 'aj8/string-inflection-repeat-map))
+
 ;; Create repeat-map for next/prev-buffer
 ;; (defvar aj8/switch-buffer-map
 ;;   (let ((map (make-sparse-keymap)))
