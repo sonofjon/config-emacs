@@ -2049,6 +2049,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;;   Note, does not work with repeat-help
 ;; (setq repeat-exit-timeout 5)
 
+;; Disable buffer-navigation-repeat-map
+(setq buffer-navigation-repeat-map nil)
+
 ;; Disable repeat-mode for undo
 (setq undo-repeat-map nil)
 

@@ -1674,11 +1674,6 @@ When called from an eww buffer, provide the current link as
 ;; Add "/" to undo-repeat-map
 ;; (keymap-set undo-repeat-map "/" #'undo)
 
-;; Disable buffer-navigation-repeat-map
-;;   TODO: This is a hack, should be a better way to disable (the whole map)
-(keymap-set buffer-navigation-repeat-map "<left>" nil)
-(keymap-set buffer-navigation-repeat-map "<right>" nil)
-
 ;; Repeat state for arbitrary keymaps
 ;; (defun repeated-prefix-help-command ()
 ;;   TODO: Does not work
