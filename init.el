@@ -1242,6 +1242,17 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Navigation
 
+;; hideshow  - [built-in package]
+(use-package hideshow
+  :commands (hs-cycle
+             hs-global-cycle)
+  :bind (:map prog-mode-map
+              ("TAB" . hs-cycle)
+              ("<backtab>" . hs-global-cycle)))
+  ;; :custom
+  ;; ;; Hide the comments too
+  ;; (setq hs-hide-comments-when-hiding-all nil))
+
 ;; mosey (mosey around your buffers)
 (use-package mosey
   :bind (("C-a" . aj8/mosey-bol)
