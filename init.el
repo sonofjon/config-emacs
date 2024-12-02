@@ -1245,9 +1245,8 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; hideshow  - [built-in package]
 (use-package hideshow
-  :commands (hs-cycle
-             hs-global-cycle)
-  :bind (:map prog-mode-map
+  :commands (hs-cycle hs-global-cycle)
+  :bind (:map hs-minor-mode-map
               ("TAB" . hs-cycle)
               ("<backtab>" . hs-global-cycle)))
   ;; :custom
