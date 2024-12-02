@@ -814,14 +814,6 @@ mosey points."
       (mosey-bol-forward-cycle)
     (move-beginning-of-line nil)))
 
-;;; Misc
-
-;; Backward movement by whitespace
-;;   (complements the built-in forward-whitespace)
-(defun my/backward-whitespace (arg)
-  "Move point to the beginning of the current sequence of whitespace characters."
-  (interactive "^p")
-  (forward-whitespace (- arg)))
 ;;; Hideshow cycle
 ;;;   Reference: dotemacs-karthink
 (defun hs-cycle (&optional level)
@@ -886,6 +878,15 @@ cell in a new cell below the current row."
         (insert val)   ; insert remainder
         (delete-char (length val))   ; maintain cell width
         (markdown-table-goto-column col)))))  ; return to beginning of cell
+
+;;; Misc
+
+;; Backward movement by whitespace
+;;   (complements the built-in forward-whitespace)
+(defun my/backward-whitespace (arg)
+  "Move point to the beginning of the current sequence of whitespace characters."
+  (interactive "^p")
+  (forward-whitespace (- arg)))
 
 ;;;; Outline
 
