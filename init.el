@@ -343,7 +343,7 @@
               ("C-c l D" . flymake-show-project-diagnostics)
               ("C-c l r" . eglot-rename))
   :hook ((sh-mode . eglot-ensure)
-         ;; (html-mode . eglot-ensure)   ;  mhtml is default for HTML
+         (html-mode . eglot-ensure)
          (mhtml-mode . eglot-ensure)
          (css-mode . eglot-ensure)
          (web-mode . eglot-ensure)       ; no linting
