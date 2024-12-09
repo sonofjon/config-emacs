@@ -825,6 +825,7 @@ Elisp code explicitly in arbitrary buffers.")
   :hook (;; (bash-ts-mode . combobulate-mode)   ; NA
          (css-ts-mode . combobulate-mode)
          (html-ts-mode . combobulate-mode)
+         (mhtml-ts-mode . combobulate-mode)
          (js-ts-mode . combobulate-mode)
          (json-ts-mode . combobulate-mode)
          ;; (markdown-ts-mode . combobulate-mode)   ; NA
