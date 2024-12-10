@@ -822,6 +822,11 @@ expanding. If nil, cycle through all levels."
   :type '(choice (const :tag "Unlimited" nil) integer)
   :group 'hideshow)
 
+(defvar aj8/hs-cycle--depth nil
+  "Current depth level for `aj8/hs-cycle`.
+
+Tracks the current level of code folding.")
+
 ;; TODO: if nil, cycle through all levels
 (defun aj8/hs-cycle ()
   "Cycle folding in a block of code, progressively revealing deeper levels.
