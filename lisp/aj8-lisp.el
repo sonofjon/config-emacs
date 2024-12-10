@@ -1726,6 +1726,28 @@ When called from an eww buffer, provide the current link as
 
 ;; (setq prefix-help-command #'repeated-prefix-help-command)
 
+;;; Suppress messages with `advice'
+
+(defun aj8/add-suppress-messages-advice (functions)
+  "Add advice to suppress messages for the provided FUNCTIONS.
+FUNCTIONS can be a symbol or a list of symbols representing function names."
+  (let ((func-list (if (listp functions) functions (list functions))))
+    (dolist (fn func-list)
+      (advice-add fn :around #'aj8/suppress-messages))))
+
+(defun aj8/remove-suppress-messages-advice (functions)
+  "Remove advice that suppresses messages for the provided FUNCTIONS.
+FUNCTIONS can be a symbol or a list of symbols representing function names."
+  (let ((func-list (if (listp functions) functions (list functions))))
+    (dolist (fn func-list)
+      (advice-remove fn #'aj8/suppress-messages))))
+
+(defun aj8/suppress-messages (orig-fun &rest args)
+  "Suppress messages for the duration of the function call."
+  (let ((inhibit-message t)   ; disable messages in Echo area
+        (message-log-max nil))   ; disable messages in Messages buffer
+    (apply orig-fun args)))
+
 ;;; xterm key sequence mappings for rxvt
 
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
