@@ -2250,7 +2250,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;; (setq fit-window-to-buffer-horizontally t)
 
 ;; Resize window combinations proportionally
-(setq window-combination-resize t)
+;;   TODO: Message buffer grows on each Magit commit
+;; (setq window-combination-resize t)
 
 ;; Try to even window sizes vertically only
 (setq even-window-sizes 'height-only)
