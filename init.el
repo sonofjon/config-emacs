@@ -1247,8 +1247,8 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package hideshow
   :commands (hs-cycle hs-global-cycle)
   :bind (:map hs-minor-mode-map
-              ("TAB" . hs-cycle)
-              ("<backtab>" . hs-global-cycle)))
+              ("TAB" . aj8/hs-cycle)
+              ("<backtab>" . aj8/hs-global-cycle)))
   ;; :custom
   ;; ;; Hide the comments too
   ;; (setq hs-hide-comments-when-hiding-all nil))
