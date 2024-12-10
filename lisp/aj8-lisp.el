@@ -857,6 +857,7 @@ Utilizes the `hideshow` library functions to manage code folding."
            (t
             (hs-show-block)
             (setq this-command nil)
+            (setq aj8/hs-cycle--depth nil)
             (message "Depth: all"))))
       (aj8/remove-suppress-messages-advice hs-functions))))
 
