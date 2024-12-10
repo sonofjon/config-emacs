@@ -818,10 +818,11 @@ mosey points."
 (defun hs-global-cycle ()
 (defcustom aj8/hs-cycle-max-depth 3
   "The maximum depth level to reveal with `aj8/hs-cycle` before fully
-expanding."
-  :type 'integer
+expanding. If nil, cycle through all levels."
+  :type '(choice (const :tag "Unlimited" nil) integer)
   :group 'hideshow)
 
+;; TODO: if nil, cycle through all levels
 (defun aj8/hs-cycle ()
   "Cycle folding in a block of code, progressively revealing deeper levels.
 
