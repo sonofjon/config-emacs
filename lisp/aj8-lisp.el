@@ -815,7 +815,7 @@ mosey points."
     (move-beginning-of-line nil)))
 
 ;;; Hideshow cycle
-(defun hs-global-cycle ()
+
 (defcustom aj8/hs-cycle-max-depth 3
   "The maximum depth level to reveal with `aj8/hs-cycle` before fully
 expanding. If nil, cycle through all levels."
@@ -833,11 +833,6 @@ call.
 
 Utilizes the `hideshow` library functions to manage code folding."
   (interactive)
-  (pcase last-command
-    ('hs-global-cycle
-     (save-excursion (hs-show-all))
-     (setq this-command 'hs-global-show))
-    (_ (hs-hide-all))))
   (let ((hs-functions '(hs-hide-block hs-show-block hs-hide-level)))
     (aj8/add-suppress-messages-advice hs-functions)
     (unwind-protect
@@ -860,6 +855,16 @@ Utilizes the `hideshow` library functions to manage code folding."
             (setq aj8/hs-cycle--depth nil)
             (message "Depth: all"))))
       (aj8/remove-suppress-messages-advice hs-functions))))
+
+;; Reference: dotemacs-karthink
+(defun my/hs-global-cycle ()
+  "Toggle between hiding and showing all blocks with `hs-hide-all` and `hs-show-all`."
+  (interactive)
+  (pcase last-command
+    ('my/hs-global-cycle
+     (save-excursion (hs-show-all))
+     (setq this-command 'hs-global-show))
+    (_ (hs-hide-all))))
 
 ;;; Markdown
 
