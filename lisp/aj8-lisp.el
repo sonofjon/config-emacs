@@ -815,38 +815,49 @@ mosey points."
     (move-beginning-of-line nil)))
 
 ;;; Hideshow cycle
-;;;   Reference: dotemacs-karthink
-(defun hs-cycle (&optional level)
-  (interactive "p")
-  (save-excursion
-    (if (= level 1)
-        (pcase last-command
-          ('hs-cycle
-           (hs-hide-level 1)
-           (setq this-command 'hs-cycle-children))
-          ('hs-cycle-children
-           ;;TODO: Fix this case. `hs-show-block' needs to be called twice to
-           ;;open all folds of the parent block.
-           (hs-show-block)
-           (hs-show-block)
-           (setq this-command 'hs-cycle-subtree))
-          ('hs-cycle-subtree
-           (hs-hide-block))
-          (_
-           (if (not (hs-already-hidden-p))
-               (hs-hide-block)
-             (hs-hide-level 1)
-             (setq this-command 'hs-cycle-children))))
-      (hs-hide-level level)
-      (setq this-command 'hs-hide-level))))
-
 (defun hs-global-cycle ()
+(defcustom aj8/hs-cycle-max-depth 3
+  "The maximum depth level to reveal with `aj8/hs-cycle` before fully
+expanding."
+  :type 'integer
+  :group 'hideshow)
+
+(defun aj8/hs-cycle ()
+  "Cycle folding in a block of code, progressively revealing deeper levels.
+
+On the first call, hide the current block completely. On each subsequent
+call, show the next level within the block, up to `aj8/hs-cycle-max-depth`.
+After reaching `aj8/hs-cycle-max-depth`, fully expand the block on the next
+call.
+
+Utilizes the `hideshow` library functions to manage code folding."
   (interactive)
   (pcase last-command
     ('hs-global-cycle
      (save-excursion (hs-show-all))
      (setq this-command 'hs-global-show))
     (_ (hs-hide-all))))
+  (let ((hs-functions '(hs-hide-block hs-show-block hs-hide-level)))
+    (aj8/add-suppress-messages-advice hs-functions)
+    (unwind-protect
+        (save-excursion
+          (cond
+           ;; Initial call: hide entire block
+           ((not (eq last-command 'aj8/hs-cycle))
+            (hs-hide-block)
+            (setq aj8/hs-cycle--depth 0)
+            (message "Depth: 0"))
+           ;; Subsequent calls: show next level
+           ((< aj8/hs-cycle--depth aj8/hs-cycle-max-depth)
+            (setq aj8/hs-cycle--depth (1+ aj8/hs-cycle--depth))
+            (hs-hide-level aj8/hs-cycle--depth)
+            (message "Depth: %s" aj8/hs-cycle--depth))
+           ;; Last call: show entire block
+           (t
+            (hs-show-block)
+            (setq this-command nil)
+            (message "Depth: all"))))
+      (aj8/remove-suppress-messages-advice hs-functions))))
 
 ;;; Markdown
 
