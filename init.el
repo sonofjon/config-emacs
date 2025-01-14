@@ -87,6 +87,7 @@
                           consult-project-extra
                           corfu
                           corfu-terminal
+                          csv-mode
                           dashboard
                           devdocs
                           devdocs-browser
@@ -277,6 +278,17 @@
 ;; lua-mode (major-mode for editing Lua scripts)
 (use-package lua-mode
   :mode ("\\.lua$"))
+
+;; csv-mode (major mode for editing comma/char separated values)
+(use-package csv-mode
+  :mode ("\\.csv$")
+  :bind (:map csv-mode-map
+              ("C-c M-a" . my/csv-align-visible))
+  :config
+  (defun my/csv-align-visible (&optional arg)
+    "Align visible fields."
+    (interactive "P")
+    (csv-align-fields nil (window-start) (window-end))))
 
 ;; markdown-mode (major-mode for editing Markdown files)
 (use-package markdown-mode
