@@ -2107,6 +2107,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Preserve point position when scrolling
 (setq scroll-preserve-screen-position t)
 
+;; Smooth horizontal scrolling
+(setq hscroll-step 1)
+
 ;; Use "repeat-mode" for "pop-mark"
 (setq set-mark-command-repeat-pop t)
 
