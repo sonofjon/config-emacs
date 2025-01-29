@@ -283,7 +283,9 @@
 (use-package csv-mode
   :mode ("\\.csv$")
   :bind (:map csv-mode-map
-              ("C-c M-a" . my/csv-align-visible))
+              ("C-c M-a" . my/csv-align-visible)
+              ("C-M-<right>" . csv-forward-field)
+              ("C-M-<left>" . csv-backward-field))
   :config
   (defun my/csv-align-visible (&optional arg)
     "Align visible fields."
