@@ -2810,6 +2810,11 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Navigation
 
+;; Horizontal scrolling
+(put 'scroll-left 'disabled nil)   ; disable warning
+(keymap-global-set "C-c <left>" #'scroll-right)
+(keymap-global-set "C-c <right>" #'scroll-left)
+
 ;; Paragraph navigation
 (keymap-global-set "M-p" #'backward-paragraph)
 (keymap-global-set "M-n" #'forward-paragraph)
