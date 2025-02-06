@@ -1875,6 +1875,10 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (setq gptel-model 'gpt-4o)
   ;; (setq gptel-model 'gpt-o1-mini)   ; default
   ;; (setq gptel-model 'gpt-o3-mini)
+  ;; Set reasoning effort
+  ;;   OpenAI default: medium
+  ;; (put 'o1-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
+  ;; (put 'o3-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
