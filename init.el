@@ -1872,9 +1872,9 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (setq gptel-model 'gemini-pro)
   ;; (setq gptel-model 'gemini-1.5-pro-latest)   ; default is gemini-pro
   ;; ChatGPT
-  ;; (setq gptel-model 'gpt-4)   ; default is gpt-3.5-turbo
-  ;; (setq gptel-model 'gpt-4-turbo)
-  (setq gptel-model 'gpt-4o)
+  ;; (setq gptel-model 'gpt-4o)
+  ;; (setq gptel-model 'gpt-o1-mini)   ; default
+  ;; (setq gptel-model 'gpt-o3-mini)
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
