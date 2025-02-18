@@ -2204,6 +2204,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Follow symlinks
 (setq vc-follow-symlinks t)
 
+;; No context for diff output
+(setq diff-switches "--unified=0")
+
 ;; Use horizontal (side-by-side) view by default in ediff
 (setq ediff-split-window-function #'split-window-horizontally)
 (setq ediff-merge-split-window-function #'split-window-horizontally)
