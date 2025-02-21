@@ -162,7 +162,7 @@
  'package-vc-selected-packages
  `(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
-   (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el")))
+   (obsidian-yaml-tools :url "git@github.com:sonofjon/obsidian-yaml-tools.el.git")))
                         ;; :branch "dev")
    ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
    ;;                                   "/projects/obsidian-yaml-tools.el"))
@@ -248,7 +248,7 @@
 
 ;; copilot (an unofficial Copilot plugin for Emacs)
 (use-package copilot
-  :vc (:url "https://github.com/copilot-emacs/copilot.el.git"
+  :vc (:url "git@github.com:copilot-emacs/copilot.el.git"
             :rev :newest)
   :bind (:map copilot-mode-map
               ("TAB" . copilot-complete)
@@ -832,7 +832,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;;
 ;;   TODO: Don't dump tree into *Messages*
 (use-package combobulate
-  :vc (:url "https://github.com/mickeynp/combobulate.git"
+  :vc (:url "git@github.com:mickeynp/combobulate.git"
        :rev :newest)
   :after treesit
   ;; :load-path ("path-to-git-checkout-of-combobulate"))
@@ -1888,7 +1888,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; gptel-quick (quick LLM lookups in Emacs)
 (use-package gptel-quick
-  :vc (:url "https://github.com/karthink/gptel-quick.git"
+  :vc (:url "git@github.com:karthink/gptel-quick.git"
             :rev :newest)
   :bind ("C-c t h" . gptel-quick))
   ;; :config
