@@ -1339,10 +1339,13 @@ Elisp code explicitly in arbitrary buffers.")
          :bind (:map jinx-mode-map
                      ("M-$" . jinx-correct)
                      ("C-M-$" . jinx-languages)
-                     ("C-," . jinx-correct-all)
-                     ("C-." . jinx-correct-word)
+                     ("C-," . aj8/jinx-correct-previous)
+                     ("C-." . aj8/jinx-correct-next)
                      ("C-c ," . jinx-previous)
-                     ("C-c ." . jinx-next))))
+                     ("C-c ." . jinx-next)
+                :map jinx-correct-map
+                     ("C-," . aj8/jinx-correct-previous)
+                     ("C-." . aj8/jinx-correct-next))))
          ;; :config
          ;; ;; Better display with Vertico
          ;; ;;   TODO: must run this after Vertico is loaded

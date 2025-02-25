@@ -1261,6 +1261,26 @@ versa."
             (message "No more miss-spelled word!")
             (setq arg 0))))))
 
+;; Jinx
+
+(defun aj8/jinx-correct-previous (arg)
+  "Correct ARG:th previous spelling error."
+  (interactive "p")
+  (let ((count arg))
+    (while (> count 0)
+      (jinx-previous 1)
+      (setq count (1- count)))
+    (jinx-correct)))
+
+(defun aj8/jinx-correct-next (arg)
+  "Correct ARG:th next spelling error."
+  (interactive "p")
+  (let ((count arg))
+    (while (> count 0)
+      (jinx-next 1)
+      (setq count (1- count)))
+    (jinx-correct)))
+
 ;;;; Terminal
 
 ;; Setup for Eshell
