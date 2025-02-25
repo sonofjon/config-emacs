@@ -1560,6 +1560,27 @@ matching `my/quit-window-exceptions-regex'. Calls to
 
 (advice-add 'quit-window :filter-args 'my/advice--quit-window)
 
+;; Better focus handling with quit-windows
+;;   Adds winner-mode style behavior to quit-window
+;;   Reference: dotemacs-karthink/init.el
+
+(defun my/better-quit-window-save (window)
+  (push (window-parameter window 'quit-restore)
+        (window-parameter window 'quit-restore-stack))
+  window)
+
+(defun my/better-quit-window-restore (origfn &optional window bury-or-kill)
+  (let ((sw (or window (selected-window))))
+    (funcall origfn window bury-or-kill)
+    (when (eq sw (selected-window))
+      (pop (window-parameter nil 'quit-restore-stack))
+      (setf (window-parameter nil 'quit-restore)
+            (car (window-parameter nil 'quit-restore-stack))))))
+
+;; Uncoment to enable
+;; (advice-add 'display-buffer :filter-return #'my/better-quit-window-save)
+;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)
+
 ;;; Better shrink/enlarge window functions
 
 ;; Wrapper for shrink-window-horizontally
