@@ -805,23 +805,26 @@ Elisp code explicitly in arbitrary buffers.")
      aj8/orderless-dispatch-without-if-bang)))
 
 ;; vertico (VERTical Interactive COmpletion)
-;;   TODO: Set up vertico-repeat
-;;         Set up vertico-grid-mode (with vertico-multiform-mode?)?
+;;   TODO: Set up vertico-grid-mode (with vertico-multiform-mode?)?
 (use-package vertico
-  :bind (:map vertico-map
-              ("?" . minibuffer-completion-help)
-              ("C-c ?" . minibuffer-hide-completions)
-              ;; ("TAB" . vertico-insert)   ; default
-              ("<backtab>" . vertico-insert)
-              ("TAB" . minibuffer-complete))
-              ;; ("<backtab>" . minibuffer-force-complete))
+  :bind (("M-R" . #'vertico-repeat)
+         :map vertico-map
+         ("?" . minibuffer-completion-help)
+         ("C-c ?" . minibuffer-hide-completions)
+         ;; ("TAB" . vertico-insert)   ; default
+         ("<backtab>" . vertico-insert)
+         ("TAB" . minibuffer-complete)
+         ;; ("<backtab>" . minibuffer-force-complete)
+         ("M-P" . #'vertico-repeat-previous)   ; TODO: overlaps with S-M-p
+         ("M-N" . #'vertico-repeat-next))      ; TODO: overlaps with S-M-n
   :init
   (vertico-mode)
   :custom
   ;; Enable cycling
   (vertico-cycle t)
   :config
-  ;; Unbind default TAB binding
+  ;; Save repeat history across sessions
+  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
   ;; Enable M-x minibuffer-hide-completions (make function interactive)
   (put 'minibuffer-hide-completions 'interactive-form '(interactive)))
 
