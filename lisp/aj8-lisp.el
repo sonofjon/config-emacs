@@ -1524,6 +1524,8 @@ than 160 characters set width to 80 characters."
 
 ;;; Kill windows
 
+;; Kill buffers by defult with quit-window
+
 (defcustom my/quit-window-exceptions-regex "^\\*\\(Messages\\)"
   "Regexp matching buffer names for which prefix argument should
 not be inverted."
@@ -1556,7 +1558,6 @@ matching `my/quit-window-exceptions-regex'. Calls to
     (setf (car args) (not current-prefix-arg)))
   args)
 
-;; Quit window and kill its buffer
 (advice-add 'quit-window :filter-args 'my/advice--quit-window)
 
 ;;; Better shrink/enlarge window functions
