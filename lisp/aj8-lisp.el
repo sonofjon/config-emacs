@@ -1581,6 +1581,17 @@ matching `my/quit-window-exceptions-regex'. Calls to
 ;; (advice-add 'display-buffer :filter-return #'my/better-quit-window-save)
 ;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)
 
+(define-minor-mode my/better-quit-window-mode
+  "Toggle improved quit-window behavior similar to winner-mode."
+  :global t
+  :lighter " BetterQuit"
+  (if my-better-quit-window-mode
+      (progn
+        (advice-add 'display-buffer :filter-return #'my/better-quit-window-save)
+        (advice-add 'quit-restore-window :around #'my/better-quit-window-restore))
+    (advice-remove 'display-buffer #'my/better-quit-window-save)
+    (advice-remove 'quit-restore-window #'my/better-quit-window-restore)))
+
 ;;; Better shrink/enlarge window functions
 
 ;; Wrapper for shrink-window-horizontally
