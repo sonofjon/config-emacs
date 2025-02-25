@@ -113,6 +113,7 @@
                           gptel
                           helpful
                           hydra
+                          jinx
                           keychain-environment
                           keyfreq
                           lingva
@@ -1315,7 +1316,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Spelling
 
 ;; flyspell-correct (correcting words with Flyspell via custom interface)
+;;   TODO: Uninstall?
 (use-package flyspell-correct
+  :disabled
   :after flyspell
   :bind (:map flyspell-mode-map
               ;; ("C-;" . flyspell-auto-correct-word)
@@ -1325,6 +1328,28 @@ Elisp code explicitly in arbitrary buffers.")
               ("C-c ," . my/flyspell-goto-previous-error)
               ("C-c ." . flyspell-goto-next-error)
               ("C-c ;" . flyspell-auto-correct-word)))
+
+;; jinx (enchanted spell checker)
+(eval `(use-package jinx
+         ;; :disabled
+         ;; :after vertico
+         :ensure-system-package ,(aj8/system-package-name 'enchant)
+         :ensure-system-package ,(aj8/system-package-name 'pkgconf)
+         :hook (emacs-startup . global-jinx-mode)
+         :bind (:map jinx-mode-map
+                     ("M-$" . jinx-correct)
+                     ("C-M-$" . jinx-languages)
+                     ("C-," . jinx-correct-all)
+                     ("C-." . jinx-correct-word)
+                     ("C-c ," . jinx-previous)
+                     ("C-c ." . jinx-next))))
+         ;; :config
+         ;; ;; Better display with Vertico
+         ;; ;;   TODO: must run this after Vertico is loaded
+         ;; (when (featurep 'vertico)
+         ;;   (add-to-list 'vertico-multiform-categories
+         ;;                '(jinx grid (vertico-grid-annotate . 20)))
+         ;;   (vertico-multiform-mode 1))))
 
 ;;; Terminal
 
