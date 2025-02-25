@@ -1338,6 +1338,7 @@ Elisp code explicitly in arbitrary buffers.")
          ;; :after vertico
          :ensure-system-package ,(aj8/system-package-name 'enchant)
          :ensure-system-package ,(aj8/system-package-name 'pkgconf)
+         :diminish
          :hook (emacs-startup . global-jinx-mode)
          :bind (:map jinx-mode-map
                      ("M-$" . jinx-correct)
