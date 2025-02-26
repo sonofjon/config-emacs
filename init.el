@@ -2549,8 +2549,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Spelling...
 
 ;; On-the-fly spell checking
-(add-hook 'text-mode-hook #'flyspell-mode)
-(add-hook 'prog-mode-hook #'flyspell-prog-mode)
+;; (add-hook 'text-mode-hook #'flyspell-mode)
+;; (add-hook 'prog-mode-hook #'flyspell-prog-mode)
 
 ;;; Terminal
 
