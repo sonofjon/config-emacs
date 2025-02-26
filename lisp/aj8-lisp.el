@@ -3,21 +3,18 @@
 ;;;; Admin
 
 ;; System package names by system type
-;;   TODO: add data for wsl and gnu/linux (enchant and pkgconf)
+;;   TODO: Check data for gnu/linux (enchant and pkgconf)
 (defun aj8/system-package-name (package)
   "Return the appropriate system PACKAGE name based on the current system."
   (let ((system-package-alist
          '(
            ;; (enchant . ((darwin . "/opt/homebrew/lib/libenchant-2.dylib")
            (enchant . ((darwin . enchant-2)
-                       (gnu/linux . x)
-                       (wsl . x)))
+                       (gnu/linux . "/usr/lib/x86_64-linux-gnu/libenchant-2.so")
+                       (wsl . "/usr/lib/x86_64-linux-gnu/libenchant-2.so")))
            (libvterm . ((darwin . "/opt/homebrew/lib/libvterm.dylib")
                         (gnu/linux . "/usr/lib64/libvterm.so")
                         (wsl . "/usr/lib/x86_64-linux-gnu/libvterm.so")))
-           (pkgconf . ((darwin . pkgconf)
-                       (gnu/linux . x)
-                       (wsl . x)))
            (xclip . ((darwin . pbcopy)
                      (gnu/linux . wl-copy)
                      (wsl . xclip))))))
