@@ -53,8 +53,7 @@ Only save the name if the buffer is associated with a filename."
 
 ;; Fancy undo for killed buffers
 (defun my/reopen-killed-file-fancy ()
-  "Pick a file to revisit from a list of files killed during this
-Emacs session."
+  "Pick a file to revisit from a list of files killed during this Emacs session."
   (interactive)
   (if my/reopen-killed-file-list
       (let ((file (completing-read "Reopen killed file: "
@@ -262,8 +261,7 @@ If the current window is a side window don't skip buffers."
 ;; Make major-mode matching function
 ;;   Use with display-buffer-alist
 (defun mp-make-display-buffer-matcher-function (major-modes)
-  "Return a lambda function that matches against a list of
-major-modes."
+  "Return a lambda function that matches against a list of major-modes."
   (lambda (buffer-name action)
     (with-current-buffer buffer-name (apply #'derived-mode-p major-modes))))
 
@@ -597,8 +595,7 @@ delimited s-expressions."
 
 ;; Remove DOS ^M characters
 (defun aj8/dos2unix ()
-  "Convert the end-of-line format from DOS-style (CR LF) to
-Unix-style (LF) in active region or entire buffer."
+  "Convert the end-of-line format from DOS-style (CR LF) to Unix-style (LF) in active region or entire buffer."
   (interactive)
   (let* ((region-active (region-active-p))
          (start (if region-active (region-beginning) (point-min)))
@@ -786,8 +783,8 @@ With a negative MOVE-POINT, keep point centered on the window."
 
 ;; Move to beginning of comment
 (defun aj8/goto-beginning-of-comment ()
-  "Move point to beginning of comment on current line. See also
-`mosey-goto-beginning-of-comment-text'."
+  "Move point to beginning of comment on current line.
+See also `mosey-goto-beginning-of-comment-text'."
   (when (save-excursion
           (end-of-line)
           (re-search-backward (rx (syntax comment-start))
@@ -796,8 +793,7 @@ With a negative MOVE-POINT, keep point centered on the window."
 
 ;; Combine Mosey with regular move-end-of-line
 (defun aj8/mosey-eol ()
-  "Move point to end of line and then cycle backward between mosey
-points."
+  "Move point to end of line and then cycle backward between mosey points."
   (interactive)
   (if (or (eolp)
           (eq last-command 'aj8/mosey-eol))
@@ -966,8 +962,7 @@ call."
 Create new table lines if required.")
 
 (defun aj8/markdown-table-enter ()
-  "Split the current table cell at point and place the remainder of the
-cell in a new cell below the current row."
+  "Split the current table cell at point and place the remainder of the cell in a new cell below the current row."
   (interactive)
   (unless (markdown-table-at-point-p)
     (user-error "Not at a table"))
@@ -992,7 +987,7 @@ cell in a new cell below the current row."
 ;; Backward movement by whitespace
 ;;   (complements the built-in forward-whitespace)
 (defun my/backward-whitespace (arg)
-  "Move point to the beginning of the current sequence of whitespace characters."
+  "Move point to the beginning of the current sequence of white space characters."
   (interactive "^p")
   (forward-whitespace (- arg)))
 
@@ -1002,8 +997,7 @@ cell in a new cell below the current row."
 
 ;; Elisp files
 (defun outline-headers-for-semicolon-buffers ()
-  "Set outline header format for buffers using semicolon (\";\")
-for comments."
+  "Set outline header format for buffers using semicolon (\";\") for comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(;;+ \\)\\([^( ]\\)")
   (setq-local outline-heading-alist
@@ -1016,8 +1010,7 @@ for comments."
 
 ;; Shell-script files
 (defun outline-headers-for-hash-mark-buffers ()
-  "Set outline header format for buffers using hash mark (\"#\")
-for comments."
+  "Set outline header format for buffers using hash mark (\"#\") for comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(##+ \\)\\([^( ]\\)")
   (setq-local outline-heading-alist
@@ -1031,8 +1024,7 @@ for comments."
 ;; LaTeX files
 ;;   TODO: outline-cycle shows all sub-headings, not just one level down
 (defun outline-headers-for-percentage-buffers ()
-  "Set outline header format for buffers using hash mark (\"%\")
-for comments."
+  "Set outline header format for buffers using hash mark (\"%\") for comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(%+ \\)\\([^(\\ ]\\)")
   (setq-local outline-heading-alist
@@ -1046,8 +1038,7 @@ for comments."
 
 ;; Xresources files
 (defun outline-headers-for-exclamation-mark-buffers ()
-  "Set outline header format for buffers using exclamation
-mark (\"!\") for comments."
+  "Set outline header format for buffers using exclamation mark (\"!\") for comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(!!+ \\)\\([^( ]\\)")
   (setq-local outline-heading-alist
@@ -1563,10 +1554,10 @@ argument should be inverted."
   :group 'aj8-lisp)
 
 (defun my/advice--quit-window (args)
-  "Advice function that makes `quit-window' quit window and kill
-its buffer. With a prefix argument, the buffer is buried
-instead. This is the inverse of the default behavior
-`quit-window'.
+  "Advice function that makes `quit-window' quit window and kill its buffer.
+
+With a prefix argument, the buffer is buried instead. This is the
+inverse of the default behavior `quit-window'.
 
 This affects all calls to `quit-window' except in buffers
 matching `my/quit-window-exceptions-regex'. Calls to
@@ -1877,8 +1868,7 @@ FUNCTIONS can be a symbol or a list of symbols representing function names."
 ;;; xterm key sequence mappings for rxvt
 
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
-  "Add mappings for a given list of escape sequences and list of
-keys."
+  "Add mappings for a given list of escape sequences and list of keys."
   (while suffix-alist
     (let ((escape-suffix (car (car suffix-alist)))
           (key-suffix (cdr (car suffix-alist))))
@@ -1890,8 +1880,7 @@ keys."
 ;;   See also https://github.com/CyberShadow/term-keys for a more
 ;;   complete solution.
 (defun rxvt-input-decode-map ()
-  "Map each combination of modifier and up, down, left and right
-keys to the the respective xterm key sequence."
+  "Map each combination of modifier and up, down, left and right keys to the the respective xterm key sequence."
   (setq nav-key-pair-alist
         '(("A" . "<up>") ("B" . "<down>") ("C" . "<right>") ("D" . "<left>")
           ("H" . "<home>") ("F" . "<end>")))
@@ -1955,10 +1944,9 @@ will be applied."
 
 ;; Set up description widths for which-key
 (defun aj8/which-key-description-length (width)
-    "Return `which-key' description width for different frame
-widths. Note that the available width is slightly less than
-reported by `frame-width'. See
-`which-key--side-window-max-dimensions'"
+  "Return `which-key' description width for different frame widths.
+Note that the available width is slightly less than reported by
+`frame-width'. See `which-key--side-window-max-dimensions'"
     ;; (message "%s" width)
     (cond
      ((= width 142)   ; brain10-windows
@@ -1987,7 +1975,7 @@ reported by `frame-width'. See
 
 ;; Add indicator for Treesitter modes in the modeline
 (defun aj8/treesit-mode-name ()
-  "Set mode-name to 'Mode[TS]' if the current major mode has 'ts' in its name."
+  "Set `mode-name' to 'Mode[TS]' if the current major mode has 'ts' in its name."
   (when (string-match-p "ts" (symbol-name major-mode))
     (setq mode-name (concat mode-name "[TS]"))))
 
