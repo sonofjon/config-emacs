@@ -1347,23 +1347,6 @@ versa."
     (and (> current-time aj8/time-sunrise)
          (< current-time aj8/time-sunset))))
 
-;;; Cursor
-
-(defun aj8/set-cursor-color (color)
-  "Set cursor COLOR in terminal."
-  (unless (display-graphic-p)
-    (send-string-to-terminal (format "\033]12;%s\007" color))))
-
-(defun aj8/black-cursor ()
-  "Set cursor color to black."
-  (interactive)
-  (aj8/set-cursor-color "black"))
-
-(defun aj8/white-cursor ()
-  "Set cursor color to white."
-  (interactive)
-  (aj8/set-cursor-color "white"))
-
 ;;;; Version control
 
 ;;; Ediff
