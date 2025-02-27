@@ -1922,8 +1922,10 @@ will be applied."
 
 ;; Reload init-file
 (defun reload-init-file ()
+  "Reload the Emacs configuration from `user-init-file`."
   (interactive)
-  (load-file user-init-file))
+  (load-file user-init-file)
+  (message "Emacs configuration reloaded successfully."))
 
 ;; List parent modes
 (defun my/derived-modes (mode)
