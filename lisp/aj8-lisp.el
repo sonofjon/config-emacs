@@ -583,15 +583,12 @@ delimited s-expressions."
   (capitalize-word 1))
 
 ;; Delete blank lines in region
-(defun aj8/delete-blank-lines-region (beg end &optional region)
-  "Delete blank lines, leaving one, in region."
-  (interactive (progn
-                 (let ((beg (mark))
-                       (end (point)))
-                   (unless (and beg end)
-                     (user-error "The mark is not set now, so there is no region"))
-                   (list beg end 'region))))
-  (replace-regexp "\\(\\(^\\s-*$\\)\n\\)\\{2,\\}" "\n" nil beg end))
+(defun aj8/delete-blank-lines-region (beg end)
+  "Delete excess blank lines in region, leaving at most one."
+  (interactive "r")
+  (save-excursion
+    (goto-char beg)
+    (replace-regexp "\\(\\(^\\s-*$\\)\n\\)\\{2,\\}" "\n" nil beg end)))
 
 ;; Remove DOS ^M characters
 (defun aj8/dos2unix ()
