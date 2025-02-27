@@ -636,27 +636,6 @@ If called with C-u, open a line above. Otherwise, open a line below."
 
 ;;;; Files
 
-;; Rename file and buffer
-;;   TODO: Replaced in Emacs 29 by rename-visited-file
-(defun my/rename-file-and-buffer (new-name)
-  "Renames the current buffer and file to NEW-NAME."
-  (interactive "sNew name: ")
-  (let ((name (buffer-name))
-        (filename (buffer-file-name)))
-    (if (not filename)
-        (message "Buffer '%s' is not visiting a file!" name)
-      (if (get-buffer new-name)
-          (message "A buffer named '%s' already exists!" new-name)
-        (progn
-          (when (buffer-modified-p)
-            (if (y-or-n-p "File is modified. Would you like to save it now?")
-                (save-buffer)))
-          (rename-file filename new-name 1)
-          (rename-buffer new-name)
-          (set-visited-file-name new-name)
-          (set-buffer-modified-p nil)
-          (message "File successfully renamed to '%s'" new-name))))))
-
 ;;;; Help
 
 ;;; Misc
