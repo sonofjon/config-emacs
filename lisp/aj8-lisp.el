@@ -600,10 +600,10 @@ delimited s-expressions."
   "Convert the end-of-line format from DOS-style (CR LF) to
 Unix-style (LF) in active region or entire buffer."
   (interactive)
-  (save-excursion
-    (let* ((region-active (region-active-p))
-           (start (if region-active (region-beginning) (point-min)))
-           (end   (if region-active (region-end) (point-max))))
+  (let* ((region-active (region-active-p))
+         (start (if region-active (region-beginning) (point-min)))
+         (end   (if region-active (region-end) (point-max))))
+    (save-excursion
       (goto-char start)
       (while (search-forward "\r" end t) (replace-match "")))))
 
