@@ -1453,7 +1453,7 @@ Regions (i.e., point and mark) must be set in advance."
 
 ;; Disable magit-wip-mode for remote (Tramp) buffers
 (defun aj8/disable-magit-wip-mode-if-remote ()
-  "Disable magit-wip-mode for remote buffers."
+  "Disable `magit-wip-mode' for remote buffers."
   (if (file-remote-p default-directory)
       (magit-wip-mode -1)  ; disable in remote directory
     (magit-wip-mode 1)))   ; enable otherwise
@@ -1580,7 +1580,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
 ;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)
 
 (define-minor-mode my/better-quit-window-mode
-  "Toggle improved quit-window behavior similar to winner-mode."
+  "Toggle improved `quit-window' behavior similar to `winner-mode'."
   :global t
   :lighter " BetterQuit"
   (if my-better-quit-window-mode
