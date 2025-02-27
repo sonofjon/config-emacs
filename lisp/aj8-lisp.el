@@ -1781,11 +1781,6 @@ When called from an eww buffer, provide the current link as
                move-dup-duplicate-down))
   (put cmd 'repeat-map 'aj8/move-dup-repeat-map))
 
-;; Add repeat-map property to drag-stuff map
-(dolist (cmd '(drag-stuff-left
-               drag-stuff-right))
-  (put cmd 'repeat-map 'aj8/drag-stuff-repeat-horizontal-map))
-
 ;; Create repeat-map for indent-relative commands
 (defvar aj8/indent-repeat-map
   (let ((map (make-sparse-keymap)))
