@@ -341,6 +341,15 @@ See `aj8/magit-buffer-cleanup-timer' and
       (message "No other window to kill"))
     (select-window win)))
 
+;; Keep focus in side window when killing buffer
+(defun aj8/retain-side-window-focus ()
+  "Retain focus in the side window after killing its buffer."
+  (when-let* ((win (selected-window))
+              (side-window-p (window-parameter win 'window-side)))
+    (select-window win)))
+
+(advice-add 'kill-current-buffer :after #'aj8/retain-side-window-focus)
+
 ;;;; Coding
 
 ;; (defun aj8/python-mode-hook ()
