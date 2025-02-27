@@ -37,7 +37,6 @@
 
 (defun my/reopen-killed-file-save ()
   "Add the name of the current buffer to `my/reopen-killed-file-list'.
-
 Only save the name if the buffer is associated with a filename."
   (when buffer-file-name
     (push buffer-file-name my/reopen-killed-file-list)
@@ -76,7 +75,6 @@ Only save the name if the buffer is associated with a filename."
 
 (defun aj8/reopen-killed-buffer-save ()
   "Add the name and content of the current buffer to `my/reopen-killed-bufer-cintent'.
-
 Only save the name and content if the buffer is not associated with a filename."
   (unless buffer-file-name
     (when (<= (buffer-size) aj8/reopen-killed-buffer-max-size)
@@ -85,7 +83,6 @@ Only save the name and content if the buffer is not associated with a filename."
 
 (defun aj8/reopen-killed-buffer ()
   "Reopen the last killed non-file buffer, restoring its contents.
-
 Note, this does not include window properties etc."
   (interactive)
   (if (null aj8/reopen-killed-buffer-content)
@@ -101,8 +98,7 @@ Note, this does not include window properties etc."
 ;; Alternative switch-to-prev-buffer
 (defun aj8/switch-to-buffer-prev ()
   "Switch to the previous buffer.
-
-Alternative switch-to-prev-buffer based on switch-to-buffer.  If
+Alternative `switch-to-prev-buffer' based on `switch-to-buffer'.  If
 `switch-to-buffer-obey-display-actions' is non-nil, switch to any
 window."
   (interactive)
@@ -113,8 +109,7 @@ window."
 ;; Alternative switch-to-next-buffer
 (defun aj8/switch-to-buffer-next ()
   "Switch to the next buffer.
-
-Alternative switch-to-next-buffer based on switch-to-buffer.  If
+Alternative `switch-to-next-buffer' based on `switch-to-buffer'.  If
 `switch-to-buffer-obey-display-actions' is non-nil, switch to any
 window."
   (interactive)
@@ -151,7 +146,6 @@ The matching buffers are ignored by `next-buffer' and
 ;; Custom switch-to-prev-buffer with skip
 (defun aj8/switch-to-prev-buffer ()
   "Switch to the previous buffer, and skip irrelevant buffers.
-
 If the current window is a side window use the regular
 `switch-to-prev-buffer'."
   (interactive)
@@ -163,7 +157,6 @@ If the current window is a side window use the regular
 ;; Custom previous-buffer function with skip
 (defun aj8/previous-buffer ()
   "Switch to the previous buffer, and skip irrelevant buffers.
-
 If the current window is a side window use the regular
 `previous-buffer'."
   (interactive)
@@ -175,7 +168,6 @@ If the current window is a side window use the regular
 ;; Custom switch-to-next-buffer with skip
 (defun aj8/switch-to-next-buffer ()
   "Switch to the next buffer, and skip irrelevant buffers.
-
 If the current window is a side window use the regular
 `switch-to-next-buffer'."
   (interactive)
@@ -187,7 +179,6 @@ If the current window is a side window use the regular
 ;; Custom next-buffer function with skip
 (defun aj8/next-buffer ()
   "Switch to the next buffer, and skip irrelevant buffers.
-
 If the current window is a side window use the regular
 `next-buffer'."
   (interactive)
@@ -221,7 +212,6 @@ If the current window is a side window use the regular
 ;; Switch to next project buffer
 (defun my/project-next-buffer ()
   "Switch to the next project buffer, and skip irrelevant buffers.
-
 If the current window is a side window don't skip buffers."
   (interactive)
   (if (project-current)
@@ -234,7 +224,6 @@ If the current window is a side window don't skip buffers."
 ;; Switch to previous project buffer
 (defun my/project-previous-buffer ()
   "Switch to the previous project buffer, and skip irrelevant buffers.
-
 If the current window is a side window don't skip buffers."
   (interactive)
   (if (project-current)
@@ -282,7 +271,6 @@ See `aj8/ediff-cleanup-buffers' for details."
 ;; Kill all Ediff buffers
 (defun aj8/ediff-cleanup-buffers ()
   "Kill all Ediff buffers.
-
 See also `ediff-cleanup-mess'."
   (interactive)
   (when aj8/ediff-cleanup-buffers
@@ -365,7 +353,6 @@ See `aj8/magit-buffer-cleanup-timer' and
 ;;   Requires: xmllint
 (defun aj8/xml-format-buffer ()
   "Format current buffer using xmllint.
-
 Much faster than `sgml-pretty-print'."
   (interactive)
   (shell-command-on-region 1 (point-max)
@@ -624,7 +611,6 @@ delimited s-expressions."
 ;; Wrapper for open line above/below
 (defun my/open-line (arg)
   "Open a line above or below.
-
 If called with C-u, open a line above. Otherwise, open a line below."
   (interactive "p")
   (if (equal arg 4)  ;; C-u gives a prefix argument of 4
@@ -1426,7 +1412,6 @@ Note that matching lines, in either file, are hidden in the output."
 
 (defun aj8/ediff-regions-linewise-3 ()
   "Run Ediff on three regions in specified buffers.
-
 BUFFER-A, BUFFER-B and BUFFER-C are the buffers to be compared.
 Regions (i.e., point and mark) must be set in advance."
   (interactive)
