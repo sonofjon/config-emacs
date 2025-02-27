@@ -566,9 +566,13 @@ delimited s-expressions."
   (interactive)
   (let ((symbol (thing-at-point 'symbol))
         (bounds (bounds-of-thing-at-point 'symbol)))
-    (when symbol
-      (kill-new symbol)
-      (pulse-momentary-highlight-region (car bounds) (cdr bounds)))))
+    (if symbol
+        (progn
+          (kill-new symbol)
+          (if bounds
+              (pulse-momentary-highlight-region (car bounds) (cdr bounds))
+            (message "Copied: %s" symbol)))
+      (message "No symbol at point."))))
 
 ;; Capitalize word at point
 (defun aj8/capitalize-word-at-point ()
