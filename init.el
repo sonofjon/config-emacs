@@ -1896,6 +1896,8 @@ Elisp code explicitly in arbitrary buffers.")
   (eww-download-directory (expand-file-name "~/Downloads"))
   ;; Max history items
   (eww-history-limit 100)
+  ;; Auto rename eww buffers
+  (setq eww-auto-rename-buffer t)
   :config
   ;; Are these needed?
   ;; (setq shr-use-colors nil)             ; t is bad for accessibility

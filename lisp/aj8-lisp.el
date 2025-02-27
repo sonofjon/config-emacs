@@ -1718,20 +1718,6 @@ see `eww-follow-link' for details."
     (eww-follow-link '(4)))
    (t (user-error "Unexpected input arguments"))))
 
-;; More useful buffer names in eww
-;;   TODO: Emacs 29: Use eww-auto-rename-buffer instead
-(defun prot-eww--rename-buffer ()
-  "Rename EWW buffer using page title or URL.
-To be used by `eww-after-render-hook'."
-  (let ((name (if (eq "" (plist-get eww-data :title))
-                  (plist-get eww-data :url)
-                (plist-get eww-data :title))))
-    (rename-buffer (format "*eww: %s*" name) t)))
-
-(add-hook 'eww-after-render-hook #'prot-eww--rename-buffer)
-(advice-add 'eww-back-url :after #'prot-eww--rename-buffer)
-(advice-add 'eww-forward-url :after #'prot-eww--rename-buffer)
-
 (defun prot-eww--get-current-url ()
   "Return the current-page's URL."
   (cond ((eq major-mode 'eww-mode)
