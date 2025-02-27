@@ -2969,7 +2969,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Other
 
 ;; Reload init.el
-(keymap-global-set "C-c x r" #'reload-init-file)
+(keymap-global-set "C-c x r" #'aj8/reload-init-file)
 
 ;; Evaluate next sexp
 (keymap-global-set "C-x M-e" #'my/eval-next-sexp)

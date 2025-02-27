@@ -1921,7 +1921,7 @@ will be applied."
        (call-interactively fun))))
 
 ;; Reload init-file
-(defun reload-init-file ()
+(defun aj8/reload-init-file ()
   "Reload the Emacs configuration from `user-init-file`."
   (interactive)
   (load-file user-init-file)
