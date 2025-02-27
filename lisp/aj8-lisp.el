@@ -23,7 +23,7 @@
                          system-type))
           (package-alist (cdr (assoc package system-package-alist))))
       (or (cdr (assoc system-type package-alist))
-          (error "Package not found for the current system")))))
+          (error "Package '%s' not found for system type '%s'" package system-type)))))
 
 ;;;; Buffers
 
