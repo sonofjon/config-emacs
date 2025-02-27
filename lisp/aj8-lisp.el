@@ -90,7 +90,7 @@ Note, this does not include window properties etc."
           (contents (cdr aj8/reopen-killed-buffer-content)))
       (switch-to-buffer (get-buffer-create buffername))
       (insert contents)
-      (setq laj8/reopen-killed-buffer-content nil))))
+      (setq aj8/reopen-killed-buffer-content nil))))
 
 ;;; Buffer switching
 
