@@ -32,12 +32,17 @@
 (defvar my/reopen-killed-file-list nil
   "List of recently killed files.")
 
+(defconst my/reopen-killed-file-max 20
+  "Maximum number of killed files to store.")
+
 (defun my/reopen-killed-file-save ()
   "Add the name of the current buffer to `my/reopen-killed-file-list'.
 
 Only save the name if the buffer is associated with a filename."
   (when buffer-file-name
-    (push buffer-file-name my/reopen-killed-file-list)))
+    (push buffer-file-name my/reopen-killed-file-list)
+    (when (> (length my/reopen-killed-file-list) my/reopen-killed-file-max)
+      (setq my/reopen-killed-file-list (cl-subseq my/reopen-killed-file-list 0 my/reopen-killed-file-max)))))
 
 ;; Undo for killed buffers
 (defun my/reopen-killed-file ()
