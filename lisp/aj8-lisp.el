@@ -1349,19 +1349,20 @@ versa."
 
 ;;; Cursor
 
-;; Change cursor color (black)
-(defun aj8/black-cursor ()
-  "If in terminal, make cursor black."
-  (interactive)
-  (when (not (display-graphic-p))   ; if using terminal
-    (send-string-to-terminal "\033]12;black\007")))
+(defun aj8/set-cursor-color (color)
+  "Set cursor COLOR in terminal."
+  (unless (display-graphic-p)
+    (send-string-to-terminal (format "\033]12;%s\007" color))))
 
-;; Change cursor color (white)
-(defun aj8/white-cursor ()
-  "If in terminal, make cursor white."
+(defun aj8/black-cursor ()
+  "Set cursor color to black."
   (interactive)
-  (when (not (display-graphic-p))   ; if using terminal
-    (send-string-to-terminal "\033]12;white\007")))
+  (aj8/set-cursor-color "black"))
+
+(defun aj8/white-cursor ()
+  "Set cursor color to white."
+  (interactive)
+  (aj8/set-cursor-color "white"))
 
 ;;;; Version control
 
