@@ -451,7 +451,7 @@ Much faster than `sgml-pretty-print'."
 
 ;; Macro for Smartparens
 (defmacro my/def-pairs (pairs)
-  "Define functions for pairing. PAIRS is an alist of (NAME . STRING)
+  "Define functions for pairing.  PAIRS is an alist of (NAME . STRING)
 conses, where NAME is the function name that will be created and
 STRING is a single-character string that marks the opening character.
 
@@ -486,7 +486,7 @@ respectively."
 The function moves point in the direction that makes sense, i.e.
 in the forward direction if point is surrounded by left
 parentheses, and in the backward direction if surrounded by right
-parentheses. If point is between a right and a left parenthesis
+parentheses.  If point is between a right and a left parenthesis
 it chooses the closest direction to move down.
 
 Note that the logic in this function only considers parenthesis-
@@ -520,7 +520,7 @@ delimited s-expressions."
 The function moves point in the direction that makes sense, i.e.
 in the forward direction if point is surrounded by right
 parentheses, and in the backward direction if surrounded by left
-parentheses. If point is between a left and a right parenthesis
+parentheses.  If point is between a left and a right parenthesis
 it chooses the closest direction to move up.
 
 Note that the logic in this function only considers parenthesis-
@@ -896,7 +896,7 @@ Tracks the current level of code folding globally.")
 (defun aj8/hs-global-cycle ()
   "Cycle code folding globally, progressively revealing deeper levels.
 
-On the first call, hide all blocks. On each subsequent call, show the
+On the first call, hide all blocks.  On each subsequent call, show the
 next level across all blocks, up to `aj8/hs-cycle-max-depth`.  After
 reaching `aj8/hs-cycle-max-depth`, fully expand all blocks on the next
 call."
@@ -1885,8 +1885,8 @@ FUNCTIONS can be a symbol or a list of symbols representing function names."
 (defun my/toggle-prefix-arg (fun)
   "Toggle universal prefix argument for the function FUN.
 If called with a prefix argument, the prefix argument will be
-removed. If called without a prefix argument, a prefix argument
-will be applied. This only works for interactive \"P\"
+removed.  If called without a prefix argument, a prefix argument
+will be applied.  This only works for interactive \"P\"
 functions."
   (if (not (equal (interactive-form fun) '(interactive "P")))
       (error "Unexpected: must be interactive \"P\" function")
@@ -1901,7 +1901,7 @@ functions."
 (defun aj8/call-interactively-wih-prefix-toggle (fun)
   "Call the function FUN and toggle its universal prefix argument.
 If called with a prefix argument, the prefix argument will be
-removed. If called without a prefix argument, a prefix argument
+removed.  If called without a prefix argument, a prefix argument
 will be applied."
   (if (equal current-prefix-arg nil) ; no C-u
        ;; then
