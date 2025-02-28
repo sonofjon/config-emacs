@@ -833,20 +833,16 @@ mosey points."
 ;;; Hideshow cycle
 
 (defcustom aj8/hs-cycle-max-depth 3
-  "The maximum depth level to reveal with `aj8/hs-cycle` before fully
-expanding. If nil, cycle through all levels."
+  "Maximum depth to reveal with `aj8/hs-cycle` before fully expanding.
+If nil, cycle through all levels."
   :type '(choice (const :tag "Unlimited" nil) integer)
   :group 'hideshow)
 
 (defvar aj8/hs-cycle--depth nil
-  "Current depth level for `aj8/hs-cycle`.
-
-Tracks the current level of code folding.")
+  "Current depth level used by `aj8/hs-cycle`.")
 
 (defun aj8/hs-count-levels ()
-  "Count the number of nested block levels beneath the current point.
-The function assumes that `hs-minor-mode' is enabled and that
-block handling is properly configured for the buffer's syntax."
+  "Return the number of nested levels within the current block."
   (save-excursion
     (let ((level 0)
           (current-pos (point))
@@ -866,7 +862,7 @@ block handling is properly configured for the buffer's syntax."
       level)))
 
 (defun aj8/hs-already-hidden-any-p ()
-  "Return non-nil if any level beneath the current level is hidden."
+  "Return non-nil if any sub-level within the current block is hidden."
   (save-excursion
     (let ((current-pos (point))
           (end-pos (progn
@@ -888,10 +884,9 @@ block handling is properly configured for the buffer's syntax."
 (defun aj8/hs-cycle ()
   "Cycle code folding, progressively revealing deeper levels.
 
-On the first call, hide the current block. On each subsequent call, show
-the next level within the block, up to `aj8/hs-cycle-max-depth`. If the
-block is already folded, show one more level.  After reaching
-`aj8/hs-cycle-max-depth`, fully expand the block on the next call."
+Each invocation reveals one more nested level up to `aj8/hs-cycle-max-depth`.
+Once the maximum depth is reached, fully expand the block on the next call.
+If the block is fully visible, hide it entirely."
   (interactive)
   (let ((hs-functions '(hs-hide-block hs-show-block hs-hide-level))
         (max-depth (or aj8/hs-cycle-max-depth (aj8/hs-count-levels))))
