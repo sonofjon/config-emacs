@@ -847,17 +847,21 @@ If nil, cycle through all levels."
     (let ((level 0)
           (current-pos (point))
           (end-pos (progn
+                     ;; Find the end position of the current block
                      (when (hs-find-block-beginning)
                        (hs-forward-sexp (match-data t) 1))
                      (point))))
       (goto-char current-pos)
+      ;; Iterate through all sub-blocks within the current block
       (while (hs-find-next-block hs-block-start-regexp end-pos nil)
         (let ((start (point)))
+          ;; Move to the end of the sub-block
           (hs-forward-sexp (match-data t) 1)
           (let ((block-end (point)))
             (when (> block-end start)
               (goto-char start)
               (setq level (max level (1+ (count-nested-block-levels))))
+              ;; Recursively count nested levels and update the maximum level
               (goto-char block-end)))))
       level)))
 
