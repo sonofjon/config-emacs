@@ -1744,7 +1744,8 @@ When called from an eww buffer, provide the current link as
     (keymap-set map "}" #'my/move-splitter-down)
     (keymap-set map ">" #'my/move-splitter-right)
     (keymap-set map "<" #'my/move-splitter-left)
-    map))
+    map)
+  "Repeat map for window resizing commands.")
 
 ;; Add repeat-map property to move-splitter map (window resizing)
 (dolist (cmd '(my/move-splitter-up
@@ -1753,14 +1754,15 @@ When called from an eww buffer, provide the current link as
                my/move-splitter-left))
   (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
 
-;; Create repeat-map for move-dup
+;; Create repeat-map for duplication commands
 (defvar aj8/move-dup-repeat-map
   (let ((map (make-sparse-keymap)))
     (keymap-set map "<up>" #'move-dup-move-lines-up)
     (keymap-set map "C-<up>" #'move-dup-duplicate-up)
     (keymap-set map "<down>" #'move-dup-move-lines-down)
     (keymap-set map "C-<down>" #'move-dup-duplicate-down)
-    map))
+    map)
+  "Repeat map for duplication commands.")
 
 ;; Add repeat-map property to move-dup commands
 (dolist (cmd '(move-dup-move-lines-up
@@ -1773,7 +1775,8 @@ When called from an eww buffer, provide the current link as
 (defvar aj8/indent-repeat-map
   (let ((map (make-sparse-keymap)))
     (keymap-set map "TAB" #'indent-relative)
-    map))
+    map)
+  "Repeat map for indent-relative commands.")
 
 ;; Add repeat-map property to indent-relative map
 (dolist (cmd '(indent-relative))
@@ -1783,7 +1786,8 @@ When called from an eww buffer, provide the current link as
 (defvar aj8/string-inflection-repeat-map
   (let ((map (make-sparse-keymap)))
     (keymap-set map "x" #'string-inflection-all-cycle)
-    map))
+    map)
+  "Repeat map for string-inflection commands.")
 
 ;; Add repeat-map property to string-inflection map
 (dolist (cmd '(string-inflection-all-cycle))
@@ -1793,7 +1797,8 @@ When called from an eww buffer, provide the current link as
 (defvar aj8/multi-line-repeat-map
   (let ((map (make-sparse-keymap)))
     (keymap-set map "n" #'multi-line)
-    map))
+    map)
+  "Repeat map for multi-line commands.")
 
 ;; Add repeat-map property to multi-line map
 (dolist (cmd '(multi-line))
@@ -1804,7 +1809,8 @@ When called from an eww buffer, provide the current link as
 ;;   (let ((map (make-sparse-keymap)))
 ;;     (keymap-set map "<left>" #'aj8/previous-buffer)
 ;;     (keymap-set map "<right>" #'aj8/next-buffer)
-;;     map))
+;;     map)
+;;     "Repeat map for next/prev-buffer.")
 
 ;; Add repeat-map property to next/prev-buffer map
 ;; (dolist (cmd '(aj8/previous-buffer
