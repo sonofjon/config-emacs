@@ -860,7 +860,7 @@ If nil, cycle through all levels."
           (let ((block-end (point)))
             (when (> block-end start)
               (goto-char start)
-              (setq level (max level (1+ (count-nested-block-levels))))
+              (setq level (max level (1+ (aj8/hs-count-levels))))
               ;; Recursively count nested levels and update the maximum level
               (goto-char block-end)))))
       level)))
