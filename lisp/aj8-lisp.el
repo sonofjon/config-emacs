@@ -843,6 +843,28 @@ expanding. If nil, cycle through all levels."
 
 Tracks the current level of code folding.")
 
+(defun aj8/hs-count-levels ()
+  "Count the number of nested block levels beneath the current point.
+The function assumes that `hs-minor-mode' is enabled and that
+block handling is properly configured for the buffer's syntax."
+  (save-excursion
+    (let ((level 0)
+          (current-pos (point))
+          (end-pos (progn
+                     (when (hs-find-block-beginning)
+                       (hs-forward-sexp (match-data t) 1))
+                     (point))))
+      (goto-char current-pos)
+      (while (hs-find-next-block hs-block-start-regexp end-pos nil)
+        (let ((start (point)))
+          (hs-forward-sexp (match-data t) 1)
+          (let ((block-end (point)))
+            (when (> block-end start)
+              (goto-char start)
+              (setq level (max level (1+ (count-nested-block-levels))))
+              (goto-char block-end)))))
+      level)))
+
 (defun aj8/hs-already-hidden-any-p ()
   "Return non-nil if any level beneath the current level is hidden."
   (save-excursion
@@ -863,25 +885,23 @@ Tracks the current level of code folding.")
           (setq hidden-found t)))
       hidden-found)))
 
-;; TODO: if aj8/hs-cycle-max-depth is nil, cycle through all levels
 (defun aj8/hs-cycle ()
   "Cycle code folding, progressively revealing deeper levels.
 
 On the first call, hide the current block. On each subsequent call, show
 the next level within the block, up to `aj8/hs-cycle-max-depth`. If the
-block is already folded, show one more level instead of hiding it again.
-After reaching `aj8/hs-cycle-max-depth`, fully expand the block on the
-next call."
+block is already folded, show one more level.  After reaching
+`aj8/hs-cycle-max-depth`, fully expand the block on the next call."
   (interactive)
-  (let ((hs-functions '(hs-hide-block hs-show-block hs-hide-level)))
+  (let ((hs-functions '(hs-hide-block hs-show-block hs-hide-level))
+        (max-depth (or aj8/hs-cycle-max-depth (aj8/hs-count-levels))))
     (aj8/add-suppress-messages-advice hs-functions)
     (unwind-protect
         (save-excursion
           (if (aj8/hs-already-hidden-any-p)
               ;; A block is already hidden; show one more level
-              (if (and aj8/hs-cycle-max-depth
-                       (or (not aj8/hs-cycle--depth)
-                           (< aj8/hs-cycle--depth aj8/hs-cycle-max-depth)))
+              (if (or (not aj8/hs-cycle--depth)
+                      (< aj8/hs-cycle--depth max-depth))
                   (progn
                     (setq aj8/hs-cycle--depth (if aj8/hs-cycle--depth
                                                  (1+ aj8/hs-cycle--depth)
