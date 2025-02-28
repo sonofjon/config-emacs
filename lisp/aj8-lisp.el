@@ -832,7 +832,7 @@ mosey points."
 
 ;;; Hideshow cycle
 
-(defcustom aj8/hs-cycle-max-depth 3
+(defcustom aj8/hs-cycle-max-depth nil
   "Maximum depth to reveal with `aj8/hs-cycle` before fully expanding.
 If nil, cycle through all levels."
   :type '(choice (const :tag "Unlimited" nil) integer)
