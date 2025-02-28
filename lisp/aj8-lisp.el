@@ -841,6 +841,9 @@ If nil, cycle through all levels."
 (defvar aj8/hs-cycle--depth nil
   "Current depth level used by `aj8/hs-cycle`.")
 
+;; TODO:  Review that comments are accurate
+;; MAYBE: Reverse direction with Shift-Tab
+;;        Toggle `hide/show' completely with C-u
 (defun aj8/hs-count-levels ()
   "Return the number of nested levels within the current block."
   (save-excursion
@@ -923,6 +926,7 @@ If the block is fully visible, hide it entirely."
 
 Tracks the current level of code folding globally.")
 
+;; TODO: Adopt recent changes to non-global version
 (defun aj8/hs-global-cycle ()
   "Cycle code folding globally, progressively revealing deeper levels.
 
