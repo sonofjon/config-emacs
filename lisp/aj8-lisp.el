@@ -52,7 +52,7 @@ Only save the name if the buffer is associated with a filename."
 
 ;; Fancy undo for killed buffers
 (defun my/reopen-killed-file-fancy ()
-  "Pick a file to revisit from a list of files killed during this Emacs session."
+  "Pick a file to revisit from files killed during this session."
   (interactive)
   (if my/reopen-killed-file-list
       (let ((file (completing-read "Reopen killed file: "
@@ -582,7 +582,7 @@ delimited s-expressions."
 
 ;; Remove DOS ^M characters
 (defun aj8/dos2unix ()
-  "Convert the end-of-line format from DOS-style (CR LF) to Unix-style (LF) in active region or entire buffer."
+  "Convert the end-of-line format from DOS-style to Unix-style."
   (interactive)
   (let* ((region-active (region-active-p))
          (start (if region-active (region-beginning) (point-min)))
@@ -798,8 +798,8 @@ mosey points."
 
 ;;; Hideshow cycle
 
-(defcustom aj8/hs-cycle-max-depth nil
-  "Maximum depth to reveal with `aj8/hs-cycle` before fully expanding.
+(defcustom aj8/hs-cycle-max-depth 3
+  "The maximum depth level to reveal with `aj8/hs-cycle`.
 If nil, cycle through all levels."
   :type '(choice (const :tag "Unlimited" nil) integer)
   :group 'hideshow)
@@ -948,7 +948,8 @@ call."
 Create new table lines if required.")
 
 (defun aj8/markdown-table-enter ()
-  "Split the current table cell at point and place the remainder of the cell in a new cell below the current row."
+  "Split the current table cell at point.
+The remainder of the cell is placed in a new cell below the current row."
   (interactive)
   (unless (markdown-table-at-point-p)
     (user-error "Not at a table"))
@@ -973,7 +974,7 @@ Create new table lines if required.")
 ;; Backward movement by whitespace
 ;;   (complements the built-in forward-whitespace)
 (defun my/backward-whitespace (arg)
-  "Move point to the beginning of the current sequence of white space characters."
+  "Move point to the beginning of the current sequence of white space chars."
   (interactive "^p")
   (forward-whitespace (- arg)))
 
@@ -983,7 +984,7 @@ Create new table lines if required.")
 
 ;; Elisp files
 (defun outline-headers-for-semicolon-buffers ()
-  "Set outline header format for buffers using semicolon (\";\") for comments."
+  "Set outline header format for buffers with ';' comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(;;+ \\)\\([^( ]\\)")
   (setq-local outline-heading-alist
@@ -996,7 +997,7 @@ Create new table lines if required.")
 
 ;; Shell-script files
 (defun outline-headers-for-hash-mark-buffers ()
-  "Set outline header format for buffers using hash mark (\"#\") for comments."
+  "Set outline header format for buffers with '#' comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(##+ \\)\\([^( ]\\)")
   (setq-local outline-heading-alist
@@ -1010,7 +1011,7 @@ Create new table lines if required.")
 ;; LaTeX files
 ;;   TODO: outline-cycle shows all sub-headings, not just one level down
 (defun outline-headers-for-percentage-buffers ()
-  "Set outline header format for buffers using hash mark (\"%\") for comments."
+  "Set outline header format for buffers with '%' comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(%+ \\)\\([^(\\ ]\\)")
   (setq-local outline-heading-alist
@@ -1024,7 +1025,7 @@ Create new table lines if required.")
 
 ;; Xresources files
 (defun outline-headers-for-exclamation-mark-buffers ()
-  "Set outline header format for buffers using exclamation mark (\"!\") for comments."
+  "Set outline header format for buffers with '!' comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(!!+ \\)\\([^( ]\\)")
   (setq-local outline-heading-alist
@@ -1865,7 +1866,9 @@ FUNCTIONS can be a symbol or a list of symbols representing function names."
 ;;   See also https://github.com/CyberShadow/term-keys for a more
 ;;   complete solution.
 (defun rxvt-input-decode-map ()
-  "Map each combination of modifier and up, down, left and right keys to the the respective xterm key sequence."
+  "Map modifier and arrow keys to xterm sequences.
+Each combination of modifier and up, down, left, and right keys
+is mapped to the respective xterm key sequence."
   (setq nav-key-pair-alist
         '(("A" . "<up>") ("B" . "<down>") ("C" . "<right>") ("D" . "<left>")
           ("H" . "<home>") ("F" . "<end>")))
