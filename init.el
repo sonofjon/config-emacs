@@ -1691,6 +1691,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; magit-delta (use Delta when displaying diffs in Magit)
 (use-package magit-delta
+  :disabled
   :hook (magit-mode . magit-delta-mode)
   :custom
   ;; Default options
