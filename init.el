@@ -1095,7 +1095,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Files
 
-;; dired (directory editor)  - [built-in package]
+;; dired (directory editor) - [built-in package]
 (use-package dired
   :ensure nil   ; don't install built-in packages
   :bind (:map dired-mode-map ("." . dired-omit-mode))
@@ -1882,6 +1882,38 @@ Elisp code explicitly in arbitrary buffers.")
   (add-to-list 'erc-modules 'hl-nicks)
   (erc-update-modules))
 
+;; eww (the Emacs Web Wowser) - [built-in package]
+(use-package eww
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Default search engine
+  (eww-search-prefix "https://google.com/search?q=")   ; default is duckduckgo
+  ;; Restore Eww buffers
+  (eww-restore-desktop t)
+  ;; Don't remove duplicates in browsing history
+  ;; (eww-desktop-remove-duplicates nil)
+  ;; Download folder
+  (eww-download-directory (expand-file-name "~/Downloads"))
+  ;; Max history items
+  (eww-history-limit 100)
+  :config
+  ;; Are these needed?
+  ;; (setq shr-use-colors nil)             ; t is bad for accessibility
+  ;; (setq shr-use-fonts nil)
+  ;; Don't shadow default Eww keybindings
+  (with-eval-after-load "shr"
+    (keymap-set shr-map "u" nil)
+    (keymap-set shr-map "v" nil)
+    (keymap-set shr-map "w" nil))
+  ;; Open new Eww buffers in a new window (M-RET)
+  (with-eval-after-load "eww"
+    (define-key eww-mode-map
+                [remap eww-open-in-new-buffer] #'aj8/eww-open-in-new-buffer))
+  ;; Open new Eww buffers in a new window (C-u RET)
+  (with-eval-after-load "eww"
+    (define-key eww-mode-map
+                [remap eww-follow-link] #'aj8/eww-follow-link)))
+
 ;; google-this (a set of functions and bindings to google under point)
 (use-package google-this
   :diminish
@@ -2284,34 +2316,6 @@ Elisp code explicitly in arbitrary buffers.")
 (setq browse-url-handlers
       '(("\\.md$" . eww-browse-url)
         ("." . browse-url-default-browser)))
-
-;; Default search engine
-(setq eww-search-prefix "https://google.com/search?q=")   ; default is duckduckgo
-;; Restore eww buffers
-(setq eww-restore-desktop t)
-;; Don't remove duplicates in browsing history
-;; (setq eww-desktop-remove-duplicates nil)
-;; Download folder
-(setq eww-download-directory (expand-file-name "~/Downloads"))
-;; Max history items
-(setq eww-history-limit 100)
-;; Don't shadow default eww keybindings
-(with-eval-after-load "shr"
-  (keymap-set shr-map "u" nil)
-  (keymap-set shr-map "v" nil)
-  (keymap-set shr-map "w" nil))
-;; Open new eww buffers in a new window (M-RET)
-(with-eval-after-load "eww"
-  (define-key eww-mode-map
-    [remap eww-open-in-new-buffer] #'aj8/eww-open-in-new-buffer))
-;; Open new eww buffers in a new window (C-u RET)
-(with-eval-after-load "eww"
-  (define-key eww-mode-map
-    [remap eww-follow-link] #'aj8/eww-follow-link))
-
-;; Are these needed?
-;; (setq shr-use-colors nil)             ; t is bad for accessibility
-;; (setq shr-use-fonts nil)
 
 ;;; Windows
 
