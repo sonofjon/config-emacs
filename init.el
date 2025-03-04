@@ -1882,7 +1882,7 @@ Elisp code explicitly in arbitrary buffers.")
   (add-to-list 'erc-modules 'hl-nicks)
   (erc-update-modules))
 
-;; eww (the Emacs Web Wowser) - [built-in package]
+;; EWW (the Emacs Web Wowser) - [built-in package]
 (use-package eww
   :ensure nil   ; don't install built-in packages
   :custom
@@ -1900,16 +1900,16 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Are these needed?
   ;; (setq shr-use-colors nil)             ; t is bad for accessibility
   ;; (setq shr-use-fonts nil)
-  ;; Don't shadow default Eww keybindings
+  ;; Don't shadow default EWW keybindings
   (with-eval-after-load "shr"
     (keymap-set shr-map "u" nil)
     (keymap-set shr-map "v" nil)
     (keymap-set shr-map "w" nil))
-  ;; Open new Eww buffers in a new window (M-RET)
+  ;; Open new EWW buffers in a new window (M-RET)
   (with-eval-after-load "eww"
     (define-key eww-mode-map
                 [remap eww-open-in-new-buffer] #'aj8/eww-open-in-new-buffer))
-  ;; Open new Eww buffers in a new window (C-u RET)
+  ;; Open new EWW buffers in a new window (C-u RET)
   (with-eval-after-load "eww"
     (define-key eww-mode-map
                 [remap eww-follow-link] #'aj8/eww-follow-link)))
