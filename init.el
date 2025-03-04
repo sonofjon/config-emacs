@@ -1153,6 +1153,17 @@ Elisp code explicitly in arbitrary buffers.")
   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
   (push 'rotate-windows dired-sidebar-toggle-hidden-commands))
 
+
+;; tramp (Transparent Remote (file) Access, Multiple Protocol) - [built-in package]
+(use-package tramp
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Override the HISTFILE
+  (tramp-histfile-override t)
+  :config
+  ;; Add mode line indicator
+  (add-to-list 'global-mode-string '(:eval (aj8/tramp-indicator)) t))
+
 ;; osx-trash (system trash for OS X)
 (use-package osx-trash
   :if (eq aj8/my-os 'macos)   ; macOS
@@ -2682,9 +2693,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; shell-script-mode: outline settings
 (add-hook 'sh-mode-hook
           #'outline-headers-for-hash-mark-buffers)
-
-;; tramp-mode: add mode line indicator
-(add-to-list 'global-mode-string '(:eval (aj8/tramp-indicator)) t)
 
 ;; visual-line-mode
 (add-hook 'help-mode-hook #'visual-line-mode)
