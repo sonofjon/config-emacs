@@ -1497,9 +1497,10 @@ Regions (i.e., point and mark) must be set in advance."
   (if (>= (frame-width) 160)
       (floor (/ (frame-width) 2))
     (- (frame-width) 81))
-  "Right side window width. If the width of the frame is greater
-than or equal to 160 characters, split the frame in two, if less
-than 160 characters set width to 80 characters."
+  "Right side window width.
+If the width of the frame is greater than or equal to 160 characters,
+split the frame in two, if less than 160 characters set width to 80
+characters."
   :type 'integer
   :group 'aj8-lisp)
 
@@ -1534,16 +1535,14 @@ than 160 characters set width to 80 characters."
 ;; Kill buffers by defult with quit-window
 
 (defcustom my/quit-window-exceptions-regex "^\\*\\(Messages\\)"
-  "Regexp matching buffer names for which prefix argument should
-not be inverted."
+  "Regexp matching buffer names for which prefix argument should not be inverted."
   :type 'regexp
   :group 'aj8-lisp)
 
 (defcustom my/quit-window-known-wrappers '(magit-mode-bury-buffer
                                            magit-log-bury-buffer
                                            Info-exit)
-  "List of commands that call `quit-window' for which prefix
-argument should be inverted."
+  "List of commands that call `quit-window'."
   :type 'sexp
   :group 'aj8-lisp)
 
