@@ -633,11 +633,12 @@ If called with C-u, open a line above. Otherwise, open a line below."
 (defun aj8/toggle-eldoc-buffer ()
   "Toggle the Eldoc buffer on and off."
   (interactive)
-  (let ((eldoc-buffer nil))
+  (let ((eldoc-buffer nil)
+        (found nil))
     (dolist (buf (buffer-list))
-      (when (string-prefix-p "eldoc" (buffer-name buf))
+      (when (and (not found) (string-prefix-p "eldoc" (buffer-name buf)))
         (setq eldoc-buffer buf)
-        (return)))
+        (setq found t)))
     (if (and eldoc-buffer (get-buffer-window eldoc-buffer))
         ;; If the Eldoc buffer is visible, delete its window.
         (delete-window (get-buffer-window eldoc-buffer))
