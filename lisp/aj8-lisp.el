@@ -615,8 +615,9 @@ With optional prefix ARG, open ARG number of lines."
 
 ;; Wrapper for open line above/below
 (defun my/open-line (arg)
-  "Open a line above or below.
-If called with C-u, open a line above. Otherwise, open a line below."
+  "Open a line above or below the current one.
+ARG is the prefix argument. If called with C-u, open a line above.
+Otherwise, open a line below."
   (interactive "p")
   (if (equal arg 4)  ;; C-u gives a prefix argument of 4
       (my/open-line-above)
