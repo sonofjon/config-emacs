@@ -1715,16 +1715,18 @@ When called from an eww buffer, provide the current link as
 
 ;; Eval next sexp
 (defun my/eval-next-sexp ()
+  "Evaluate the next s-expression in the buffer."
   (interactive)
   (save-excursion
     (forward-sexp)
     (eval-last-sexp nil)))
 
 ;; Eval sexp at point
-(defun my/eval-sexp-at-point (levels)
-  (interactive "p")
+(defun my/eval-sexp-at-point ()
+  "Evaluate the s-expression at point."
+  (interactive)
   (save-excursion
-    (up-list (abs levels))
+    (up-list)
     (eval-last-sexp nil)))
 
 ;;; Custom repeat-maps
