@@ -252,7 +252,7 @@ If the current window is a side window don't skip buffers."
 ;; Make major-mode matching function
 ;;   Use with display-buffer-alist
 (defun mp-make-display-buffer-matcher-function (major-modes)
-  "Return a lambda function that matches against a list of major-modes."
+  "Return a lambda function that matches against a list of MAJOR-MODES."
   (lambda (buffer-name action)
     (with-current-buffer buffer-name (apply #'derived-mode-p major-modes))))
 
@@ -1948,7 +1948,7 @@ will be applied."
 
 ;; Set up description widths for which-key
 (defun aj8/which-key-description-length (width)
-  "Return `which-key' description width for different frame widths.
+  "Return `which-key' description width based on the given frame WIDTH.
 Note that the available width is slightly less than reported by
 `frame-width'. See `which-key--side-window-max-dimensions'"
     ;; (message "%s" width)
