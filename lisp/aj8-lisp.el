@@ -74,7 +74,7 @@ Only save the name if the buffer is associated with a filename."
   "Maximum size of non-file buffer (in characters) to store.")
 
 (defun aj8/reopen-killed-buffer-save ()
-  "Add the name and content of the current buffer to `my/reopen-killed-bufer-cintent'.
+  "Save buffer name and content to `my/reopen-killed-bufer-content'.
 Only save the name and content if the buffer is not associated with a filename."
   (unless buffer-file-name
     (when (<= (buffer-size) aj8/reopen-killed-buffer-max-size)
@@ -1576,7 +1576,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
       (setf (window-parameter nil 'quit-restore)
             (car (window-parameter nil 'quit-restore-stack))))))
 
-;; Uncoment to enable
+;; Uncomment to enable
 ;; (advice-add 'display-buffer :filter-return #'my/better-quit-window-save)
 ;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)
 
