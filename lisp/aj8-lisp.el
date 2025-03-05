@@ -325,14 +325,14 @@ See `aj8/magit-buffer-cleanup-timer' and
   "If there are multiple windows, then kill the buffer in the next window."
   (interactive)
   (unless (one-window-p)
-    (setq win (selected-window))
-    (other-window 1)
-    (while (window-parameter (selected-window) 'window-side) ; skip side windows
-      (other-window 1))
-    (if (not (eq (selected-window) win))   ; don't kill initial window
-        (kill-buffer)
-      (message "No other window to kill"))
-    (select-window win)))
+    (let ((win (selected-window)))
+      (other-window 1)
+      (while (window-parameter (selected-window) 'window-side) ; skip side windows
+        (other-window 1))
+      (if (not (eq (selected-window) win))   ; don't kill initial window
+          (kill-buffer)
+        (message "No other window to kill"))
+      (select-window win))))
 
 ;; Keep focus in side window when killing buffer
 (defun aj8/retain-side-window-focus ()
@@ -1885,17 +1885,17 @@ ARGS are the arguments to be passed to ORIG-FUN."
   "Map modifier and arrow keys to xterm sequences.
 Each combination of modifier and up, down, left, and right keys
 is mapped to the respective xterm key sequence."
-  (setq nav-key-pair-alist
-        '(("A" . "<up>") ("B" . "<down>") ("C" . "<right>") ("D" . "<left>")
-          ("H" . "<home>") ("F" . "<end>")))
+  (let ((nav-key-pair-alist
+         '(("A" . "<up>") ("B" . "<down>") ("C" . "<right>") ("D" . "<left>")
+           ("H" . "<home>") ("F" . "<end>"))))
+    (rxvt--add-escape-key-mapping-alist "\e[1;2" "S-" nav-key-pair-alist)
+    (rxvt--add-escape-key-mapping-alist "\e[1;3" "M-" nav-key-pair-alist)
+    (rxvt--add-escape-key-mapping-alist "\e[1;4" "M-S-" nav-key-pair-alist)
+    (rxvt--add-escape-key-mapping-alist "\e[1;5" "C-" nav-key-pair-alist)
+    (rxvt--add-escape-key-mapping-alist "\e[1;6" "C-S-" nav-key-pair-alist)
+    (rxvt--add-escape-key-mapping-alist "\e[1;7" "M-C-" nav-key-pair-alist)
+    (rxvt--add-escape-key-mapping-alist "\e[1;8" "M-C-S-" nav-key-pair-alist)))
 
-  (rxvt--add-escape-key-mapping-alist "\e[1;2" "S-" nav-key-pair-alist)
-  (rxvt--add-escape-key-mapping-alist "\e[1;3" "M-" nav-key-pair-alist)
-  (rxvt--add-escape-key-mapping-alist "\e[1;4" "M-S-" nav-key-pair-alist)
-  (rxvt--add-escape-key-mapping-alist "\e[1;5" "C-" nav-key-pair-alist)
-  (rxvt--add-escape-key-mapping-alist "\e[1;6" "C-S-" nav-key-pair-alist)
-  (rxvt--add-escape-key-mapping-alist "\e[1;7" "M-C-" nav-key-pair-alist)
-  (rxvt--add-escape-key-mapping-alist "\e[1;8" "M-C-S-" nav-key-pair-alist))
 
 ;;; Misc
 
