@@ -74,8 +74,8 @@ Only save the name if the buffer is associated with a filename."
   "Maximum size of non-file buffer (in characters) to store.")
 
 (defun aj8/reopen-killed-buffer-save ()
-  "Save buffer name and content to `my/reopen-killed-bufer-content'.
-Only save the name and content if the buffer is not associated with a filename."
+  "Save the content of the current buffer to `my/reopen-killed-bufer-content'.
+Only save content if the buffer is not associated with a filename."
   (unless buffer-file-name
     (when (<= (buffer-size) aj8/reopen-killed-buffer-max-size)
       (setq aj8/reopen-killed-buffer-content
@@ -137,9 +137,9 @@ The matching buffers are ignored by `next-buffer' and
     (and window (window-parameter window 'window-side))))
 
 (defun aj8/buffer-skip-p (window buffer bury-or-kill)
-  "Return t if BUFFER should be skipped.
-WINDOW is the current window.  BURY-OR-KILL determines whether to bury
-or kill the buffer after skipping."
+  "Return t if the BUFFER should be skipped.
+WINDOW is the window displaying the buffer.
+BURY-OR-KILL indicates whether to bury or kill the buffer."
   ;; Buffer name matches `aj8/buffer-skip-regexp'
   (string-match-p aj8/buffer-skip-regexp (buffer-name buffer)))
   ;; Buffer is displayed in a side window
@@ -810,7 +810,7 @@ If nil, cycle through all levels."
   :group 'hideshow)
 
 (defvar aj8/hs-cycle--depth nil
-  "Current depth level used by `aj8/hs-cycle'.")
+  "Current depth level for `aj8/hs-cycle'.
 
 (defun aj8/hs-count-levels ()
   "Return the number of nested levels within the current block."
@@ -894,7 +894,6 @@ If the block is fully visible, hide it entirely."
 
 (defvar aj8/hs-global-cycle--depth nil
   "Current depth level for `aj8/hs-global-cycle'.
-
 Tracks the current level of code folding globally.")
 
 ;; TODO: Adopt recent changes to non-global version
@@ -979,9 +978,8 @@ The remainder of the cell is placed in a new cell below the current row."
 ;; Backward movement by whitespace
 ;;   (complements the built-in forward-whitespace)
 (defun my/backward-whitespace (arg)
-  "Move point to the beginning of the current sequence of white space chars.
-With prefix argument ARG, do it ARG times if positive, or move forwards
-ARG times if negative."
+  "Move point to the start of the current sequence of whitespace chars.
+ARG specifies the number of times to move backward."
   (interactive "^p")
   (forward-whitespace (- arg)))
 
@@ -1126,7 +1124,7 @@ number of characters matched by `outline-regexp'."
 ;; Copy visible region
 ;;   Imported from org-mode
 (defun my/org-copy-visible (beg end)
-  "Copy the visible parts of the region from BEG to END."
+  "Copy the visible parts of the region between BEG and END."
   (interactive "r")
   (let ((result ""))
     (while (/= beg end)
@@ -1147,8 +1145,9 @@ number of characters matched by `outline-regexp'."
 
 ;; Mark whole word (forward)
 (defun aj8/mark-word-forward (arg)
-  "Set mark ARG words from point or move mark one word.
-Like `mark-word', but select entire word at point."
+  "Set mark ARG words forward from point.
+Repeat command to select additional words.  Like `mark-word', but select
+entire word at point."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
@@ -1160,9 +1159,9 @@ Like `mark-word', but select entire word at point."
 
 ;; Mark whole word (backward)
 (defun aj8/mark-word-backward (arg)
-  "Set mark ARG words backward from point or move mark one word backward.
-Repeat command to select additional words backwards.  Like `mark-word',
-but select entire word at point."
+  "Set mark ARG words backward from point.
+Repeat command to select additional words.  Like `mark-word', but select
+entire word at point."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
