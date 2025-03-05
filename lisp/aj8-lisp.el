@@ -595,21 +595,19 @@ BEG and END specify the region to operate on."
       (while (search-forward "\r" end t) (replace-match "")))))
 
 ;; Open line above
-(defun my/open-line-above (&optional arg)
-  "Open a new line above the current line.
-With optional ARG, open ARG number lines above."
+(defun my/open-line-above ()
+  "Open line above the current line."
   (interactive)
   (beginning-of-line)
-  (open-line (or arg 1))
+  (open-line 1)
   (indent-according-to-mode))
 
 ;; Open line below
-(defun my/open-line-below (&optional arg)
-  "Open a new line below the current line.
-With optional prefix ARG, open ARG number of lines."
+(defun my/open-line-below ()
+  "Open line below the current line."
   (interactive)
   (end-of-line)
-  (open-line (or arg 1))
+  (open-line 1)
   (forward-line)
   (indent-according-to-mode))
 
