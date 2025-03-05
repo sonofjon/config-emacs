@@ -641,7 +641,7 @@ If called with C-u, open a line above. Otherwise, open a line below."
     (if (and eldoc-buffer (get-buffer-window eldoc-buffer))
         ;; If the Eldoc buffer is visible, delete its window.
         (delete-window (get-buffer-window eldoc-buffer))
-      ;; Otherwise, call `eldoc-doc-buffer` to show the Eldoc buffer.
+      ;; Otherwise, call `eldoc-doc-buffer' to show the Eldoc buffer.
       (eldoc))))
 
 ;;;; Navigation
@@ -803,13 +803,13 @@ See also `mosey-goto-beginning-of-comment-text'."
 ;;; Hideshow cycle
 
 (defcustom aj8/hs-cycle-max-depth 3
-  "The maximum depth level to reveal with `aj8/hs-cycle`.
+  "The maximum depth level to reveal with `aj8/hs-cycle'.
 If nil, cycle through all levels."
   :type '(choice (const :tag "Unlimited" nil) integer)
   :group 'hideshow)
 
 (defvar aj8/hs-cycle--depth nil
-  "Current depth level used by `aj8/hs-cycle`.")
+  "Current depth level used by `aj8/hs-cycle'.")
 
 (defun aj8/hs-count-levels ()
   "Return the number of nested levels within the current block."
@@ -861,7 +861,7 @@ If nil, cycle through all levels."
 (defun aj8/hs-cycle ()
   "Cycle code folding, progressively revealing deeper levels.
 
-Each invocation reveals one more nested level up to `aj8/hs-cycle-max-depth`.
+Each invocation reveals one more nested level up to `aj8/hs-cycle-max-depth'.
 Once the maximum depth is reached, fully expand the block on the next call.
 If the block is fully visible, hide it entirely."
   (interactive)
@@ -892,7 +892,7 @@ If the block is fully visible, hide it entirely."
       (aj8/remove-suppress-messages-advice hs-functions))))
 
 (defvar aj8/hs-global-cycle--depth nil
-  "Current depth level for `aj8/hs-global-cycle`.
+  "Current depth level for `aj8/hs-global-cycle'.
 
 Tracks the current level of code folding globally.")
 
@@ -901,8 +901,8 @@ Tracks the current level of code folding globally.")
   "Cycle code folding globally, progressively revealing deeper levels.
 
 On the first call, hide all blocks.  On each subsequent call, show the
-next level across all blocks, up to `aj8/hs-cycle-max-depth`.  After
-reaching `aj8/hs-cycle-max-depth`, fully expand all blocks on the next
+next level across all blocks, up to `aj8/hs-cycle-max-depth'.  After
+reaching `aj8/hs-cycle-max-depth', fully expand all blocks on the next
 call."
   (interactive)
   (let ((hs-functions '(hs-hide-all hs-show-all hs-hide-level)))
@@ -1197,7 +1197,7 @@ versa."
     (unless (file-exists-p ispell-personal-dictionary)
       (with-temp-buffer (write-file ispell-personal-dictionary))))
    (t
-    (user-error "`ispell-program` must be either `aspell` or `hunspell`"))))
+    (user-error "`ispell-program' must be either `aspell' or `hunspell'"))))
 
 ;;; Flyspell
 
@@ -1784,7 +1784,7 @@ When called from an eww buffer, provide the current link as
   (let ((map (make-sparse-keymap)))
     (keymap-set map "TAB" #'indent-relative)
     map)
-  "Repeat map for indent-relative commands.")
+  "Repeat map for `indent-relative' commands.")
 
 ;; Add repeat-map property to indent-relative map
 (dolist (cmd '(indent-relative))
@@ -1806,7 +1806,7 @@ When called from an eww buffer, provide the current link as
   (let ((map (make-sparse-keymap)))
     (keymap-set map "n" #'multi-line)
     map)
-  "Repeat map for multi-line commands.")
+  "Repeat map for `multi-line' commands.")
 
 ;; Add repeat-map property to multi-line map
 (dolist (cmd '(multi-line))
@@ -1931,7 +1931,7 @@ will be applied."
 
 ;; Reload init-file
 (defun aj8/reload-init-file ()
-  "Reload the Emacs configuration from `user-init-file`."
+  "Reload the Emacs configuration from `user-init-file'."
   (interactive)
   (load-file user-init-file)
   (message "Emacs configuration reloaded successfully."))
