@@ -266,7 +266,7 @@ If the current window is a side window don't skip buffers."
 (defcustom aj8/ediff-cleanup-buffers nil
   "If non-nil, clean up Ediff buffers on exit.
 
-See `aj8/ediff-cleanup-buffers' for details."
+See function `aj8/ediff-cleanup-buffers' for details."
   :type 'boolean
   :group 'aj8-lisp)
 
@@ -793,8 +793,7 @@ See also `mosey-goto-beginning-of-comment-text'."
 
 ;; Combine Mosey with regular move-beginning-of-line
 (defun aj8/mosey-bol ()
-  "Move point to beginning of line and then cycle forward between
-mosey points."
+  "Move point to beginning of line and then cycle forward between Mosey points."
   (interactive)
   (if (or (bolp)
           (eq last-command 'aj8/mosey-eol))
