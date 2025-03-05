@@ -137,7 +137,9 @@ The matching buffers are ignored by `next-buffer' and
     (and window (window-parameter window 'window-side))))
 
 (defun aj8/buffer-skip-p (window buffer bury-or-kill)
-  "Return t if BUFFER should be skipped."
+  "Return t if BUFFER should be skipped.
+WINDOW is the current window.  BURY-OR-KILL determines whether to bury
+or kill the buffer after skipping."
   ;; Buffer name matches `aj8/buffer-skip-regexp'
   (string-match-p aj8/buffer-skip-regexp (buffer-name buffer)))
   ;; Buffer is displayed in a side window
@@ -574,7 +576,8 @@ delimited s-expressions."
 
 ;; Delete blank lines in region
 (defun aj8/delete-blank-lines-region (beg end)
-  "Delete excess blank lines in region, leaving at most one."
+  "Delete excess blank lines in region, leaving at most one.
+BEG and END specify the region to operate on."
   (interactive "r")
   (save-excursion
     (goto-char beg)
@@ -593,7 +596,8 @@ delimited s-expressions."
 
 ;; Open line above
 (defun my/open-line-above (&optional arg)
-  "Open line above."
+  "Open a new line above the current line.
+With optional ARG, open ARG number lines above."
   (interactive)
   (beginning-of-line)
   (open-line (or arg 1))
@@ -601,7 +605,8 @@ delimited s-expressions."
 
 ;; Open line below
 (defun my/open-line-below (&optional arg)
-  "Open line below."
+  "Open a new line below the current line.
+With optional prefix ARG, open ARG number of lines."
   (interactive)
   (end-of-line)
   (open-line (or arg 1))
@@ -974,7 +979,9 @@ The remainder of the cell is placed in a new cell below the current row."
 ;; Backward movement by whitespace
 ;;   (complements the built-in forward-whitespace)
 (defun my/backward-whitespace (arg)
-  "Move point to the beginning of the current sequence of white space chars."
+  "Move point to the beginning of the current sequence of white space chars.
+With prefix argument ARG, do it ARG times if positive, or move forwards
+ARG times if negative."
   (interactive "^p")
   (forward-whitespace (- arg)))
 
@@ -1119,7 +1126,7 @@ number of characters matched by `outline-regexp'."
 ;; Copy visible region
 ;;   Imported from org-mode
 (defun my/org-copy-visible (beg end)
-  "Copy the visible parts of the region."
+  "Copy the visible parts of the region from BEG to END."
   (interactive "r")
   (let ((result ""))
     (while (/= beg end)
@@ -1139,8 +1146,9 @@ number of characters matched by `outline-regexp'."
 ;;; Better mark-word
 
 ;; Mark whole word (forward)
-(defun aj8/mark-word-forward (N)
-  "Like mark-word, but select entire word at point."
+(defun aj8/mark-word-forward (arg)
+  "Set mark ARG words from point or move mark one word.
+Like `mark-word', but select entire word at point."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
@@ -1148,12 +1156,13 @@ number of characters matched by `outline-regexp'."
     (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
         (backward-word))
     (set-mark (point)))
-  (forward-word N))
+  (forward-word arg))
 
 ;; Mark whole word (backward)
-(defun aj8/mark-word-backward (N)
-  "Like mark-word, but select entire word at point.
-Repeat command to select additional words backwards."
+(defun aj8/mark-word-backward (arg)
+  "Set mark ARG words backward from point or move mark one word backward.
+Repeat command to select additional words backwards.  Like `mark-word',
+but select entire word at point."
   (interactive "p")
   (when (and
          (not (eq last-command this-command))
@@ -1161,7 +1170,7 @@ Repeat command to select additional words backwards."
     (if (and (looking-at "[[:alnum:]]") (looking-back "[[:alnum:]]"))
         (forward-word))
     (set-mark (point)))
-  (backward-word N))
+  (backward-word arg))
 
 ;;;; Spelling
 
@@ -1595,7 +1604,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
 
 ;; Wrapper for shrink-window-horizontally
 (defun my/move-splitter-left (arg)
-  "Move window splitter left."
+  "Move window splitter left by ARG columns."
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'right))
@@ -1604,7 +1613,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
 
 ;; Wrapper for enlarge-window-horizontally
 (defun my/move-splitter-right (arg)
-  "Move window splitter right."
+  "Move window splitter right by ARG columns."
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'right))
@@ -1613,7 +1622,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
 
 ;; Wrapper for enlarge-window
 (defun my/move-splitter-up (arg)
-  "Move window splitter up."
+  "Move window splitter up by ARG lines."
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'up))
@@ -1622,7 +1631,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
 
 ;; Wrapper for shrink-window
 (defun my/move-splitter-down (arg)
-  "Move window splitter down."
+  "Move window splitter down by ARG lines."
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'up))
@@ -1852,7 +1861,8 @@ FUNCTIONS can be a symbol or a list of symbols representing function names."
       (advice-remove fn #'aj8/suppress-messages))))
 
 (defun aj8/suppress-messages (orig-fun &rest args)
-  "Suppress messages for the duration of the function call."
+  "Suppress messages during call to function ORIG-FUN.
+ARGS are the arguments to be passed to ORIG-FUN."
   (let ((inhibit-message t)   ; disable messages in Echo area
         (message-log-max nil))   ; disable messages in Messages buffer
     (apply orig-fun args)))
