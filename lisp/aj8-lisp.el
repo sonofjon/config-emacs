@@ -808,8 +808,8 @@ If nil, cycle through all levels."
   :type '(choice (const :tag "Unlimited" nil) integer)
   :group 'hideshow)
 
-(defvar aj8/hs-cycle--depth nil
-  "Current depth level for `aj8/hs-cycle'.
+(defvar aj8/hs-cycle--depth :if-nil
+  "Current depth level for `aj8/hs-cycle'.")
 
 (defun aj8/hs-count-levels ()
   "Return the number of nested levels within the current block."
