@@ -50,11 +50,13 @@
 (menu-bar-mode -1)
 
 ;; Disable toolbar (graphical Emacs)
-(tool-bar-mode -1)
+(when (display-graphic-p)
+  (tool-bar-mode -1))
 
 ;; Disable scroll bar
 ;; (with-eval-after-load "scroll-bar"   ; avoid error on some systems
-(scroll-bar-mode -1)
+(when (display-graphic-p)
+  (scroll-bar-mode -1))
 
 ;; Disable welcome buffer
 ;; (setq inhibit-startup-screen t)
