@@ -29,6 +29,7 @@
         ((string-equal (getenv "TERM_PROGRAM") "iTerm.app") 'iterm2)))
       (t 'unknown)))
 
+
 ;;; STARTUP
 
 ;; Reduce garbage collection during startup
@@ -40,11 +41,6 @@
 
 
 ;;; GUI
-
-;; Remove unneeded UI elements
-;; (push '(tool-bar-lines . 0) default-frame-alist)   ; disable tool bar
-;; (push '(menu-bar-lines . 0) default-frame-alist)   ; disable menu bar
-;; (push '(vertical-scroll-bars . nil) default-frame-alist)   ; disable scroll bar
 
 ;; Disable menu bar
 (menu-bar-mode -1)
@@ -63,9 +59,6 @@
 
 ;; Display *Messages* buffer at startup
 ;; (setq initial-buffer-choice (lambda () (get-buffer "*Messages*")))
-
-;; Loads a nice blue theme, avoids the white screen flash on startup
-;; (load-theme 'deeper-blue t)
 
 ;; Set initial major mode to fundamental-mode
 ;;   (makes the initial buffer load faster)
@@ -107,22 +100,6 @@
   (advice-remove 'package-install #'my/package-install-refresh-contents))
 
 (advice-add 'package-install :before #'my/package-install-refresh-contents)
-
-;; Native compilation
-(when (featurep 'native-compile)
-  ;; Silence compiler warnings
-  ;; (setq native-comp-async-report-warnings-errors nil)
-  ;; Set directory to store native compilation cache
-  (when (fboundp 'startup-redirect-eln-cache)
-    (if (version< emacs-version "29")
-        (add-to-list 'native-comp-eln-load-path
-                     (convert-standard-filename
-                      (expand-file-name "var/eln-cache/" user-emacs-directory)))
-      (startup-redirect-eln-cache
-       (convert-standard-filename
-        (expand-file-name "var/eln-cache/" user-emacs-directory)))))
-  (add-to-list 'native-comp-eln-load-path
-               (expand-file-name "eln-cache/" user-emacs-directory)))
 
 
 ;;; CUSTOMIZATION
