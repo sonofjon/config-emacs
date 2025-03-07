@@ -706,9 +706,9 @@ Elisp code explicitly in arbitrary buffers.")
   ;;       "Add capf to current mode. This is a workaround for the fact
   ;;     that some modes fill the buffer-local capfs with exclusive
   ;;     completion functions, so that the global capfs don't get called."
-  ;;       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  ;;       (add-to-list 'completion-at-point-functions #'cape-file)
-  ;;       (add-to-list 'completion-at-point-functions #'cape-line))
+  ;;       (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  ;;       (add-hook 'completion-at-point-functions #'cape-file)
+  ;;       (add-hook 'completion-at-point-functions #'cape-line))
   ;;
   ;;     (add-hook 'emacs-lisp-mode #'my/register-default-caps)
   ;;
