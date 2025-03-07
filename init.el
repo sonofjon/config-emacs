@@ -1964,7 +1964,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (setq gptel-model 'gemini-pro)
   ;; (setq gptel-model 'gemini-1.5-pro-latest)   ; default is gemini-pro
   ;; ChatGPT
-  ;; (setq gptel-model 'gpt-4o)
+  (setq gptel-model 'gpt-4o)
   ;; (setq gptel-model 'gpt-o1-mini)   ; default
   ;; (setq gptel-model 'gpt-o3-mini)
   ;; Set reasoning effort
