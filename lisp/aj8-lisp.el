@@ -36,8 +36,8 @@
   "Maximum number of killed files to store.")
 
 (defun my/reopen-killed-file-save ()
-  "Add the name of the current buffer to `my/reopen-killed-file-list'.
-Only save the name if the buffer is associated with a filename."
+  "Save the content of the current buffer to `my/reopen-killed-bufer-content'.
++Only save content if the buffer is not associated with a filename."
   (when buffer-file-name
     (push buffer-file-name my/reopen-killed-file-list)
     (when (> (length my/reopen-killed-file-list) my/reopen-killed-file-max)
