@@ -784,7 +784,7 @@ See also `mosey-goto-beginning-of-comment-text'."
 
 ;; Combine Mosey with regular move-end-of-line
 (defun aj8/mosey-eol ()
-  "Move point to end of line and then cycle backward between mosey points."
+  "Move point to end of line and then cycle backward between Mosey points."
   (interactive)
   (if (or (eolp)
           (eq last-command 'aj8/mosey-eol))
