@@ -1622,17 +1622,19 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package circadian
   ;; :disabled  ; 0.3s startup time
   :defer 60
-  :after (:any modus-themes ef-themes)
+  :after (:any modus-themes ef-themes standard-themes)
   :config
-  (if (eq aj8/my-os 'wsl)   ; WSL
-      ;; (circadian-themes '(("8:00" . modus-operandi)
-      ;;                     ("18:00"  . modus-vivendi)))
-      (customize-set-variable 'circadian-themes '((:sunrise . modus-operandi)
-                                                 (:sunset  . modus-vivendi)))
-    ;; (customize-set-variable 'circadian-themes '((:sunrise . ef-light)
-    ;;                                            (:sunset  . ef-dark)))
-    (customize-set-variable 'circadian-themes '((:sunrise . ef-duo-light)
-                                               (:sunset  . ef-duo-dark))))
+  (cond ((eq aj8/my-os 'macos)   ; macOS
+         (customize-set-variable 'circadian-themes '((:sunrise . ef-duo-light)
+                                                     (:sunset  . ef-duo-dark))))
+        ((eq aj8/my-os 'wsl)     ; WSL
+         (customize-set-variable 'circadian-themes '((:sunrise . standard-light)
+                                                     (:sunset  . standard-dark))))
+        ((eq aj8/my-os 'linux)   ; Linux
+
+         (customize-set-variable 'circadian-themes '((:sunrise . modus-operandi)
+                                                     (:sunset  . modus-vivendi))))
+      (t (user-error "Unexpected system-name: %s" system-name)))
   (circadian-setup))
 
 ;;; Version control
