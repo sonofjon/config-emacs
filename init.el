@@ -17,17 +17,17 @@
 ;;;;; EARLY SETTINGS
 
 ;; System dependent settings
-(cond ((eq aj8/my-os 'macos)          ; macOS
+(cond ((eq aj8/my-os 'macos)   ; macOS
        ;; GUI settings
        (when (display-graphic-p)
          ;; Import path from shell
          (exec-path-from-shell-initialize))
        (message "Early settings for macOS"))
 
-      ((eq aj8/my-os 'wsl)           ; WSL
+      ((eq aj8/my-os 'wsl)     ; WSL
        (message "Early settings WSL"))
 
-      ((eq aj8/my-os 'linux)     ; Linux
+      ((eq aj8/my-os 'linux)   ; Linux
        (message "Early settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" system-name)))
@@ -3305,7 +3305,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
-(cond ((eq aj8/my-os 'macos)           ; macOS
+(cond ((eq aj8/my-os 'macos)   ; macOS
        ;; Use left Option as Meta
        ;; (setq mac-option-modifier 'meta)
        ;; Use left Command as Super
@@ -3318,7 +3318,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
          (setq-default line-spacing 1))
        (message "Late settings macOS"))
 
-      ((eq aj8/my-os 'wsl)            ; WSL
+      ((eq aj8/my-os 'wsl)     ; WSL
        ;; Enable (default) web browser
        ;;   Requires: wslu
        (setq browse-url-generic-program "wslview")
@@ -3326,7 +3326,7 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
        (message "Late settings WSL"))
 
-      ((eq aj8/my-os 'linux)      ; Linux
+      ((eq aj8/my-os 'linux)   ; Linux
        (cond
         ((eq aj8/my-linux-os 'fedora)
          (message "Late settings Fedora"))
