@@ -1910,6 +1910,7 @@ Elisp code explicitly in arbitrary buffers.")
     (keymap-set shr-map "v" nil)
     (keymap-set shr-map "w" nil))
   ;; Open new EWW buffers in a new window (M-RET)
+  ;;   TODO: Emacs 30 introduces eww-open-in-new-buffer
   (with-eval-after-load "eww"
     (define-key eww-mode-map
                 [remap eww-open-in-new-buffer] #'aj8/eww-open-in-new-buffer))
