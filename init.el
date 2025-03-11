@@ -2522,6 +2522,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Fill gpg passwords in the minibuffer
 (setq epg-pinentry-mode 'loopback)
 
+;; Select keys in the minibuffer
+(setq epa-keys-select-method 'minibuffer)
+
 ;;;; Modes
 
 ;;; Admin...
