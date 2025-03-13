@@ -1594,7 +1594,7 @@ matching `my/quit-window-exceptions-regex'. Calls to
     (setf (car args) (not current-prefix-arg)))
   args)
 
-(advice-add 'quit-window :filter-args 'my/advice--quit-window)
+(advice-add 'quit-window :filter-args #'my/advice--quit-window)
 
 ;; Better focus handling with quit-windows
 ;;   Adds winner-mode style behavior to quit-window
