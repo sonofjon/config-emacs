@@ -1318,16 +1318,24 @@ versa."
 ;; Jinx
 
 (defun aj8/jinx-correct-previous ()
-  "Correct the previous spelling error."
+  "Correct the previous visible spelling error.
+The function repeatedly jumps to each previous error, corrects it,
+and continues checking. When done, the point is restored to its
+original position."
   (interactive)
-  (jinx-previous 1)
-  (jinx-correct))
+  (save-excursion
+    (while (ignore-errors (jinx-previous 1) t)
+      (jinx-correct))))
 
 (defun aj8/jinx-correct-next ()
-  "Correct the next spelling error."
+  "Correct next visible spelling error.
+The function repeatedly jumps to each next error, corrects it,
+and continues checking. When done, the point is restored to its
+original position."
   (interactive)
-  (jinx-next 1)
-  (jinx-correct))
+  (save-excursion
+    (while (ignore-errors (jinx-next 1) t)
+      (jinx-correct))))
 
 ;;;; Terminal
 
