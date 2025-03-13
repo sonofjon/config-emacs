@@ -1954,6 +1954,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (gptel-default-mode 'text-mode)   ; defauilt: markdown-mode
   ;; Don't use Curl
   ;; (gptel-use-curl nil)
+  ;; Don't show reasoning
+  ;; (gptel-include-reasoning nil)
   :config
   ;; Gemini
   (gptel-make-gemini "Gemini"
