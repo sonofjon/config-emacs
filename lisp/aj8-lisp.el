@@ -1317,23 +1317,17 @@ versa."
 
 ;; Jinx
 
-(defun aj8/jinx-correct-previous (arg)
-  "Correct ARG:th previous spelling error."
-  (interactive "p")
-  (let ((count arg))
-    (while (> count 0)
-      (jinx-previous 1)
-      (setq count (1- count)))
-    (jinx-correct)))
+(defun aj8/jinx-correct-previous ()
+  "Correct the previous spelling error."
+  (interactive)
+  (jinx-previous 1)
+  (jinx-correct))
 
-(defun aj8/jinx-correct-next (arg)
-  "Correct ARG:th next spelling error."
-  (interactive "p")
-  (let ((count arg))
-    (while (> count 0)
-      (jinx-next 1)
-      (setq count (1- count)))
-    (jinx-correct)))
+(defun aj8/jinx-correct-next ()
+  "Correct the next spelling error."
+  (interactive)
+  (jinx-next 1)
+  (jinx-correct))
 
 ;;;; Terminal
 
