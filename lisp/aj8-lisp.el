@@ -343,6 +343,37 @@ See `aj8/magit-buffer-cleanup-timer' and
 
 (advice-add 'kill-current-buffer :after #'aj8/retain-side-window-focus)
 
+;; Save gptel buffers
+(defun aj8/gptel-write-buffer (orig-fun &rest args)
+  "Advice function to save the chat buffer when starting gptel.
+
+This function saves the chat to the current project's root directory.
+If no project is detected, it prompts the user to choose a directory for
+saving.  It constructs a filename based on the current timestamp and the
+major mode of the buffer (with support for `org-mode' and
+`markdown-mode').  This function is intended to be used as advice for
+the gptel function."
+  (let ((chat-buf (apply orig-fun args)))
+    (with-current-buffer chat-buf
+      (unless (buffer-file-name)
+        (let* ((project (project-current))
+               (directory (if project
+                              (project-root project)
+                            (read-directory-name "No project found. Choose where to save the chat: "
+                                                 default-directory nil t)))
+               (suffix (format-time-string "%Y%m%dT%H%M" (current-time)))
+               (extension (pcase major-mode
+                            ('org-mode "org")
+                            ('markdown-mode "md")
+                            (_ (user-error "Unsupported major mode"))))
+               (filename (expand-file-name
+                          (concat "gptel-" suffix "." extension) directory)))
+          (write-file filename 'confirm))))
+    chat-buf))
+
+(advice-add 'gptel :around #'aj8/gptel-write-buffer)
+
+
 ;;;; Coding
 
 ;; (defun aj8/python-mode-hook ()
