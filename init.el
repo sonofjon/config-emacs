@@ -2479,6 +2479,12 @@ Elisp code explicitly in arbitrary buffers.")
          (side . right)
          (slot . -1)
          (window-parameters . ((no-delete-other-windows . t))))
+        ("\\(gptel-.*\\)"
+         (display-buffer-in-side-window)
+         (window-width . ,aj8/side-window-width-dynamic)
+         (side . right)
+         (slot . -1)
+         (window-parameters . ((no-delete-other-windows . t))))
         ;;
         ;; Bottom side window
         ;;
