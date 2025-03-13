@@ -1958,7 +1958,7 @@ Elisp code explicitly in arbitrary buffers.")
                                         ; add label for prefix key
   ;; :custom
   ;; Set mode
-  ;; (gptel-default-mode 'text-mode)   ; defauilt: markdown-mode
+  ;; (gptel-default-mode 'text-mode)   ; default: markdown-mode
   ;; Don't use Curl
   ;; (gptel-use-curl nil)
   ;; Don't show reasoning
