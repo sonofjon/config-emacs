@@ -1962,7 +1962,7 @@ The function removes newline characters that appear to split a sentence
 into separate lines."
   (save-excursion
     (goto-char beg)
-    ;; For debugging
+    ;; For debugging:
     ;; (insert "<s>")
     ;; Match newline characters surrounded by a non‑space character
     ;; immediately before and after
