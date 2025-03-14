@@ -1944,7 +1944,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;; gptel (a simple ChatGPT client for Emacs)
 (use-package gptel
   :bind (("C-c t c" . gptel)
-         ("C-c t m" . gptel-menu))
+         ("C-c t m" . gptel-menu)
+         ("C-c t q" . gptel-abort))
   :commands (gptel gptel-send)
   :init
   (which-key-add-key-based-replacements "C-c t" "gptel")
