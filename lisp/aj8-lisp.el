@@ -1928,6 +1928,75 @@ is mapped to the respective xterm key sequence."
     (rxvt--add-escape-key-mapping-alist "\e[1;7" "M-C-" nav-key-pair-alist)
     (rxvt--add-escape-key-mapping-alist "\e[1;8" "M-C-S-" nav-key-pair-alist)))
 
+;;; Reflow Info buffers
+
+;; Return t if the region from BEG to END appears to be a “regular”
+;; text paragraph—that is, one that is likely meant to be reflowed.
+(defun my-info-regular-paragraph-p (beg end)
+  "Return non-nil if the text between BEG and END appears to be regular text.
+Regular text in this sense starts with an uppercase letter (after any whitespace)
+and does not begin any line with bullet markers, numbering, or excessive indentation."
+  (save-excursion
+    (goto-char beg)
+    (let ((first-line (buffer-substring-no-properties (line-beginning-position)
+                                                       (line-end-position)))
+          (regular t))
+      ;; First, require that the paragraph begins (after whitespace) with an uppercase letter.
+      (when (not (string-match-p "^[ \t]*[A-Z]" first-line))
+        (setq regular nil))
+      ;; Then scan each line in the paragraph.
+      (while (and regular (< (point) end))
+        (let ((line (buffer-substring-no-properties (line-beginning-position)
+                                                    (line-end-position))))
+          ;; If a line starts with a bullet or numbered list marker, or is indented by 8+ spaces,
+          ;; consider this not a “regular” text paragraph.
+          (when (or (string-match-p "^[ \t]*\\(?:[*+-]\\|[0-9]+[.)]\\)[ \t]" line)
+                    (string-match-p "^[ \t]\\{8,\\}" line))
+            (setq regular nil))
+          (forward-line 1)))
+      regular)))
+
+;; This function tries to join hard-wrapped lines in a region.
+(defun my-join-lines-in-region (beg end)
+  "Within the region from BEG to END, replace hard line breaks inside paragraphs with a space.
+This version ignores trailing whitespace before the newline."
+  (save-excursion
+    (goto-char beg)
+    ;; (insert "<s>")
+    (while (re-search-forward "\\([^ \n]\\)\n\\([^ \n]\\)" end t)
+      (replace-match "\\1 \\2" nil nil))))
+
+;; Reflow a single Info node by joining lines inside paragraphs that
+;; are identified as “regular” text.
+(defun my-info-reflow-node ()
+  "Reflow the text of the current Info node by removing hard line breaks
+from paragraphs that appear to be regular text."
+  (interactive)
+  (with-demoted-errors "Error reflowing text: %S"
+    (let ((inhibit-read-only t))
+      (save-excursion
+        (goto-char (point-min))
+        (while (< (point) (point-max))
+          (let ((p-beg (point)))
+            (forward-paragraph)
+            (let ((p-end (point)))
+              ;; (save-excursion
+              ;;   (goto-char p-beg)
+              ;;   (insert "<S>")
+              ;;   ;; (goto-char p-end)
+              ;;   (goto-char (+ p-end 2))
+              ;;   (insert "<E>"))
+              (when (my-info-regular-paragraph-p p-beg p-end)
+                (my-join-lines-in-region p-beg p-end))))
+          (forward-char 1))))))
+
+;; Advise the function that displays a node.
+(defun my-info-select-node-advice (orig-fun &rest args)
+  "After selecting an Info node, reflow text in it as regular paragraphs."
+  (let ((res (apply orig-fun args)))
+    (my-info-reflow-node)
+    res))
+(advice-add 'Info-select-node :around #'my-info-select-node-advice)
 
 ;;; Misc
 
