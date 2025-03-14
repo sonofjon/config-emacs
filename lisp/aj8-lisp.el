@@ -1964,9 +1964,15 @@ into separate lines."
     (goto-char beg)
     ;; For debugging:
     ;; (insert "<s>")
+    ;; Remove all newline characters
+    ;; (while (re-search-forward "\n" end t)
+    ;;   (replace-match "" nil nil))))
     ;; Match newline characters surrounded by a non‑space character
     ;; immediately before and after
-    (while (re-search-forward "\\([^ \n]\\)\n\\([^ \n]\\)" end t)
+    ;; (while (re-search-forward "\\([^ \n]\\)\n\\([^ \n]\\)" end t)
+    ;;   (replace-match "\\1 \\2" nil nil))))
+    ;; Allow for withspace around newline character
+    (while (re-search-forward "\\([^ \n]\\)[ \t]*\n[ \t]*\\([^ \n]\\)" end t)
       (replace-match "\\1 \\2" nil nil))))
 
 (defun aj8/info-reflow-node ()
