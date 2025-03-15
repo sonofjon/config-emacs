@@ -1930,7 +1930,7 @@ is mapped to the respective xterm key sequence."
 
 ;;; Re-flow buffers
 
-(defun aj8/join-lines-in-region (beg end)
+(defun aj8/reflow-join-lines-in-region (beg end)
   "Join lines between BEG and END.
 The function removes hard line breaks (newline characters) that split a
 text into separate lines."
@@ -1941,7 +1941,7 @@ text into separate lines."
     (while (re-search-forward "\\([^ \n]\\)[ \t]*\n[ \t]*\\([^ \n]\\)" end t)
       (replace-match "\\1 \\2" nil nil))))
 
-(defun aj8/first-line-valid-p (beg)
+(defun aj8/reflow-first-line-valid-p (beg)
   "Return t if the first non-blank character of the line at BEG is uppercase."
   (save-excursion
     (goto-char beg)
@@ -1953,17 +1953,17 @@ text into separate lines."
       (string-match-p "^[ \t]*[A-Z]" first-line))))
 
 ;; For Debugging
-;; (defun my-first-line-valid-advice (orig-fun beg)
-;;   "Advice for `aj8/first-line-valid-p' that messages \"OK\" when the first-line test succeeds."
+;; (defun aj8/reflow-first-line-valid-p-advice (orig-fun beg)
+;;   "Advice for `aj8/reflow-first-line-valid-p' that messages \"OK\" when the first-line test succeeds."
 ;;   (let ((result (funcall orig-fun beg)))
 ;;     (if result
 ;;         (message "First line matched!")
 ;;       (message "No match!"))
 ;;     result))
 
-;; (advice-add 'aj8/first-line-valid-p :around #'my-first-line-valid-advice)
+;; (advice-add 'aj8/reflow-first-line-valid-p :around #'aj8/reflow-first-line-valid-p-advice)
 
-(defun aj8/paragraph-no-forbidden-lines-p (beg end forbidden-regexps)
+(defun aj8/reflow-paragraph-valid-p (beg end forbidden-regexps)
   "Check if lines between BEG and END match forbidden regexps.
 Return t if no line between BEG and END matches any regexp in FORBIDDEN-REGEXPS."
   (save-excursion
@@ -2005,51 +2005,51 @@ FORBIDDEN-REGEXPS is a list of regexps that should not match any line in the par
               ;; Debug
               ;; (message "Paragraph from %d to %d:\n%s" p-beg p-end
               ;;          (buffer-substring-no-properties p-beg p-end))
-              (when (and (aj8/first-line-valid-p p-beg)
-                         (aj8/paragraph-no-forbidden-lines-p p-beg p-end forbidden-regexps))
-                (aj8/join-lines-in-region p-beg p-end)))
+              (when (and (aj8/reflow-first-line-valid-p p-beg)
+                         (aj8/reflow-paragraph-valid-p p-beg p-end forbidden-regexps))
+                (aj8/reflow-join-lines-in-region p-beg p-end)))
             (when (< (point) (point-max))
               (forward-char 1))))))))
 
-(defconst aj8/forbidden-regexps-info
+(defconst aj8/reflow-forbidden-regexps-info
   '("^[ \t]*\\(?:[*+-]\\|[0-9]+[.)]\\)[ \t]"  ; e.g. bullet markers or numbered lists.
     "^[ \t]\\{8,\\}")                         ; e.g. excessive indentation.
   "Forbidden line regexps for Info buffers.")
 
-(defconst aj8/forbidden-regexps-helpful
+(defconst aj8/reflow-forbidden-regexps-helpful
   '("^[ \t]*\\(?:[*+-]\\|[0-9]+[.)]\\)[ \t]"
     "^[ \t]\\{8,\\}")
   "Forbidden line regexps for helpful buffers.")
 
-(defun aj8/info-reflow-node ()
+(defun aj8/reflow-info-buffer ()
   "Re-flow the current Info node, joining lines where appropriate.
 Uses a common first-line rule (first non-blank character must be uppercase)
 and Info-specific forbidden regexps."
   (interactive)
-  (aj8/reflow-buffer aj8/forbidden-regexps-info))
+  (aj8/reflow-buffer aj8/reflow-forbidden-regexps-info))
 
-(defun aj8/info-reflow-node-advice (orig-fun &rest args)
+(defun aj8/reflow-info-buffer-advice (orig-fun &rest args)
   "Advice function to re-flow an Info node after it is selected."
   (let ((result (apply orig-fun args)))
-    (aj8/info-reflow-node)
+    (aj8/reflow-info-buffer)
     result))
 
-(advice-add 'Info-select-node :around #'aj8/info-reflow-node-advice)
+(advice-add 'Info-select-node :around #'aj8/reflow-info-buffer-advice)
 
-(defun aj8/helpful-reflow-node ()
+(defun aj8/reflow-helpful-buffer ()
   "Re-flow the current Helpful buffer, joining lines where appropriate.
 Uses a common first-line rule (first non-blank character must be uppercase)
 and Helpful-specific forbidden regexps."
   (interactive)
-  (aj8/reflow-buffer aj8/forbidden-regexps-helpful))
+  (aj8/reflow-buffer aj8/reflow-forbidden-regexps-helpful))
 
-(defun aj8/helpful-reflow-node-advice (orig-fun &rest args)
+(defun aj8/reflow-helpful-buffer-advice (orig-fun &rest args)
   "Advice function to re-flow a Helpful buffer."
   (let ((result (apply orig-fun args)))
-    (aj8/helpful-reflow-node)
+    (aj8/reflow-helpful-buffer)
     result))
 
-(advice-add 'helpful-update :around #'aj8/helpful-reflow-node-advice)
+(advice-add 'helpful-update :around #'aj8/reflow-helpful-buffer-advice)
 
 ;;; Misc
 
