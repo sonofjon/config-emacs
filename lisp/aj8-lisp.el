@@ -1928,57 +1928,72 @@ is mapped to the respective xterm key sequence."
     (rxvt--add-escape-key-mapping-alist "\e[1;7" "M-C-" nav-key-pair-alist)
     (rxvt--add-escape-key-mapping-alist "\e[1;8" "M-C-S-" nav-key-pair-alist)))
 
-;;; Re-flow Info buffers
-
-(defun aj8/regular-text-p (beg end)
-  "Return t if the text between BEG and END appears to be regular text.
-Regular text in this sense starts with an uppercase letter (after any
-whitespace) and does not begin any line with bullet markers, numbering,
-or excessive indentation."
-  (save-excursion
-    (goto-char beg)
-    (let ((first-line (buffer-substring-no-properties (line-beginning-position)
-                                                      (line-end-position)))
-          (regular t))
-      ;; First, require that the first line begins (after whitespace) with
-      ;; an uppercase letter
-      (when (not (string-match-p "^[ \t]*[A-Z]" first-line))
-        (setq regular nil))
-      ;; Then scan each line in the paragraph
-      (while (and regular (< (point) end))
-        (let ((line (buffer-substring-no-properties (line-beginning-position)
-                                                    (line-end-position))))
-          ;; If a line starts with a bullet or numbered list marker, or is
-          ;; indented by 8+ spaces, don't consider this as “regular” text
-          (when (or (string-match-p "^[ \t]*\\(?:[*+-]\\|[0-9]+[.)]\\)[ \t]" line)
-                    (string-match-p "^[ \t]\\{8,\\}" line))
-            (setq regular nil))
-          (forward-line 1)))
-      regular)))
+;;; Re-flow buffers
 
 (defun aj8/join-lines-in-region (beg end)
-  "Remove hard line breaks in the region from BEG to END.
-The function removes newline characters that appear to split a sentence
-into separate lines."
+  "Join lines between BEG and END.
+The function removes hard line breaks (newline characters) that split a
+text into separate lines."
   (save-excursion
     (goto-char beg)
-    ;; For debugging:
-    ;; (insert "<s>")
-    ;; Remove all newline characters
-    ;; (while (re-search-forward "\n" end t)
-    ;;   (replace-match "" nil nil))))
-    ;; Match newline characters surrounded by a non‑space character
-    ;; immediately before and after
-    ;; (while (re-search-forward "\\([^ \n]\\)\n\\([^ \n]\\)" end t)
-    ;;   (replace-match "\\1 \\2" nil nil))))
-    ;; Allow for withspace around newline character
+    ;; Debug
+    ;; (insert "<Start>")
     (while (re-search-forward "\\([^ \n]\\)[ \t]*\n[ \t]*\\([^ \n]\\)" end t)
       (replace-match "\\1 \\2" nil nil))))
 
-(defun aj8/info-reflow-node ()
-  "Re-flow the text in the current Info node by removing hard line breaks.
-Only paragraphs that appear to be regular text are processed."
-  (interactive)
+(defun aj8/first-line-valid-p (beg)
+  "Return t if the first non-blank character of the line at BEG is uppercase."
+  (save-excursion
+    (goto-char beg)
+    (let ((first-line (buffer-substring-no-properties
+                       (line-beginning-position)
+                       (line-end-position))))
+      ;; Debug
+      ;; (message "\nFirst line:\n%s" first-line)
+      (string-match-p "^[ \t]*[A-Z]" first-line))))
+
+;; For Debugging
+;; (defun my-first-line-valid-advice (orig-fun beg)
+;;   "Advice for `aj8/first-line-valid-p' that messages \"OK\" when the first-line test succeeds."
+;;   (let ((result (funcall orig-fun beg)))
+;;     (if result
+;;         (message "First line matched!")
+;;       (message "No match!"))
+;;     result))
+
+;; (advice-add 'aj8/first-line-valid-p :around #'my-first-line-valid-advice)
+
+(defun aj8/paragraph-no-forbidden-lines-p (beg end forbidden-regexps)
+  "Check if lines between BEG and END match forbidden regexps.
+Return t if no line between BEG and END matches any regexp in FORBIDDEN-REGEXPS."
+  (save-excursion
+    (goto-char beg)
+    (catch 'forbidden
+      (while (< (point) end)
+        (let ((line (buffer-substring-no-properties
+                     (line-beginning-position)
+                     (line-end-position))))
+          ;; Debug
+          ;; (message "\nLine:\n%s" line)
+          (dolist (rx forbidden-regexps)
+            (if (string-match-p rx line)
+                (progn
+                  ;; Debug
+                  ;; (message "Line matched!")
+                  (throw 'forbidden nil))
+              ;; Debug
+              ;; (message "No match!")
+              )))
+        (forward-line 1))
+      t)))
+
+(defun aj8/reflow-buffer (forbidden-regexps)
+  "Re-flow the current buffer by joining lines in each paragraph.
+For each paragraph, if:
+  (1) the first non-blank character of its first line is uppercase, and
+  (2) no line in the paragraph matches any regexp in FORBIDDEN-REGEXPS,
+then the paragraph is re-flowed by joining its lines.
+FORBIDDEN-REGEXPS is a list of regexps that should not match any line in the paragraph."
   (with-demoted-errors "Error re-flowing text: %S"
     (let ((inhibit-read-only t))
       (save-excursion
@@ -1987,24 +2002,54 @@ Only paragraphs that appear to be regular text are processed."
           (let ((p-beg (point)))
             (forward-paragraph)
             (let ((p-end (point)))
-              ;; For debugging: insert start and end markers
-              ;; (save-excursion
-              ;;   (goto-char p-beg)
-              ;;   (insert "<S>")
-              ;;   ;; (goto-char p-end)
-              ;;   (goto-char (+ p-end 2))
-              ;;   (insert "<E>"))
-              (when (aj8/regular-text-p p-beg p-end)
-                (aj8/join-lines-in-region p-beg p-end))))
-          (forward-char 1))))))
+              ;; Debug
+              ;; (message "Paragraph from %d to %d:\n%s" p-beg p-end
+              ;;          (buffer-substring-no-properties p-beg p-end))
+              (when (and (aj8/first-line-valid-p p-beg)
+                         (aj8/paragraph-no-forbidden-lines-p p-beg p-end forbidden-regexps))
+                (aj8/join-lines-in-region p-beg p-end)))
+            (when (< (point) (point-max))
+              (forward-char 1))))))))
+
+(defconst aj8/forbidden-regexps-info
+  '("^[ \t]*\\(?:[*+-]\\|[0-9]+[.)]\\)[ \t]"  ; e.g. bullet markers or numbered lists.
+    "^[ \t]\\{8,\\}")                         ; e.g. excessive indentation.
+  "Forbidden line regexps for Info buffers.")
+
+(defconst aj8/forbidden-regexps-helpful
+  '("^[ \t]*\\(?:[*+-]\\|[0-9]+[.)]\\)[ \t]"
+    "^[ \t]\\{8,\\}")
+  "Forbidden line regexps for helpful buffers.")
+
+(defun aj8/info-reflow-node ()
+  "Re-flow the current Info node, joining lines where appropriate.
+Uses a common first-line rule (first non-blank character must be uppercase)
+and Info-specific forbidden regexps."
+  (interactive)
+  (aj8/reflow-buffer aj8/forbidden-regexps-info))
 
 (defun aj8/info-reflow-node-advice (orig-fun &rest args)
-  "Advice function to re-flow text in Info nodes."
-  (let ((res (apply orig-fun args)))
+  "Advice function to re-flow an Info node after it is selected."
+  (let ((result (apply orig-fun args)))
     (aj8/info-reflow-node)
-    res))
+    result))
 
 (advice-add 'Info-select-node :around #'aj8/info-reflow-node-advice)
+
+(defun aj8/helpful-reflow-node ()
+  "Re-flow the current Helpful buffer, joining lines where appropriate.
+Uses a common first-line rule (first non-blank character must be uppercase)
+and Helpful-specific forbidden regexps."
+  (interactive)
+  (aj8/reflow-buffer aj8/forbidden-regexps-helpful))
+
+(defun aj8/helpful-reflow-node-advice (orig-fun &rest args)
+  "Advice function to re-flow a Helpful buffer."
+  (let ((result (apply orig-fun args)))
+    (aj8/helpful-reflow-node)
+    result))
+
+(advice-add 'helpful-update :around #'aj8/helpful-reflow-node-advice)
 
 ;;; Misc
 
