@@ -2017,8 +2017,10 @@ FORBIDDEN-REGEXPS is a list of regexps that should not match any line in the par
   "Forbidden line regexps for Info buffers.")
 
 (defconst aj8/reflow-forbidden-regexps-helpful
-  '("^[ \t]*\\(?:[*+-]\\|[0-9]+[.)]\\)[ \t]"
-    "^[ \t]\\{8,\\}")
+  '(
+    "^[ \t]*\\(Signature\\|Documentation\\|References\\|Debugging\\|Source Code\\|Symbol Properties\\)[ \t]*$"
+    ;; "^\\(Signature\\|Documentation\\|References\\|Debugging\\|Source Code\\|Symbol Properties\\)$"
+    )
   "Forbidden line regexps for helpful buffers.")
 
 (defun aj8/reflow-info-buffer ()
