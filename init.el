@@ -1192,7 +1192,7 @@ Elisp code explicitly in arbitrary buffers.")
   (helpful-max-buffers nil)
   :config
   ;; Re-flow Helpful buffers
-  (add-hook 'helpful-mode-hook #'aj8/reflow-helpful-mode))
+  (aj8/reflow-helpful-mode 1))
 
 ;; marginalia (enrich existing commands with completion annotations)
 (use-package marginalia
@@ -2560,6 +2560,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Show recursion depth in the minibuffer prompt
 (minibuffer-depth-indicate-mode 1)
 
+;; Re-flow Info buffers
+(aj8/reflow-info-mode 1)
+
 ;;; Coding...
 
 ;;; Completion...
@@ -2684,9 +2687,6 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; Info-mode: allow multiple Info buffers
 (add-hook 'Info-mode-hook #'rename-uniquely)
-
-;; Info-mode: Re-flow Info buffers
-(add-hook 'Info-mode-hook #'aj8/reflow-info-mode)
 
 ;; outline-mode: remove form-feed character (^L) from regexp
 (add-hook 'outline-mode-hook

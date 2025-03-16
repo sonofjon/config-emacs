@@ -2041,10 +2041,9 @@ and Info-specific forbidden regexps."
 (define-minor-mode aj8/reflow-info-mode
   "Minor mode that toggles automatic re-flowing of Info nodes.
 When enabled, Info-select-node is advised so that after a node is
-selected, the buffer’s text is re-flowed.  This minor mode is
-buffer-local."
+selected, the buffer’s text is re-flowed."
   :init-value nil
-  ;; :global t
+  :global t
   :lighter " RF"
   (if aj8/reflow-info-mode
       (advice-add 'Info-select-node :around #'aj8/reflow-info-buffer-advice)
@@ -2068,10 +2067,9 @@ uppercase) and Helpful-specific forbidden regexps."
 (define-minor-mode aj8/reflow-helpful-mode
   "Minor mode that toggles automatic re-flowing of Helpful buffers.
 When enabled, helpful-update is advised so that after a Helpful buffer
-is updated, the buffer’s text is re-flowed.  This minor mode is
-buffer-local."
+is updated, the buffer’s text is re-flowed."
   :init-value nil
-  ;; :global t
+  :global t
   :lighter " RF"
   (if aj8/reflow-helpful-mode
       (advice-add 'helpful-update :around #'aj8/reflow-helpful-buffer-advice)
