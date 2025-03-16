@@ -62,6 +62,9 @@
 ;;   Enables installation with :ensure-system-package
 (use-package use-package-ensure-system-package)
 
+;; Prefer the newest commit over the latest release
+;; (setq use-package-vc-prefer-newest t)
+
 ;;; Local
 
 (require 'aj8-lisp)
