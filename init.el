@@ -1186,7 +1186,10 @@ Elisp code explicitly in arbitrary buffers.")
          ("C-c h" . helpful-at-point))
   :custom
   ;; Maximum number of *helpful* buffers
-  (helpful-max-buffers nil))
+  (helpful-max-buffers nil)
+  :config
+  ;; Re-flow Helpful buffers
+  (add-hook 'helpful-mode-hook #'aj8/reflow-helpful-mode))
 
 ;; marginalia (enrich existing commands with completion annotations)
 (use-package marginalia
@@ -2678,6 +2681,9 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; Info-mode: allow multiple Info buffers
 (add-hook 'Info-mode-hook #'rename-uniquely)
+
+;; Info-mode: Re-flow Info buffers
+(add-hook 'Info-mode-hook #'aj8/reflow-info-mode)
 
 ;; outline-mode: remove form-feed character (^L) from regexp
 (add-hook 'outline-mode-hook
