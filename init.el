@@ -2110,7 +2110,9 @@ Elisp code explicitly in arbitrary buffers.")
 (setq custom-buffer-done-kill t)
 
 ;; Set default sort order in Ibuffer
-(setq ibuffer-default-sorting-mode 'filename/process)
+(require 'ibuf-ext)   ; initiate ibuffer-sorting-functions-alist
+                      ; https://lists.gnu.org/archive/html/help-gnu-emacs/2008-11/msg00694.html
+(setq-default ibuffer-default-sorting-mode 'filename/process)
 
 ;;; Coding
 
