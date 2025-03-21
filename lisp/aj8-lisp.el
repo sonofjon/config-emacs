@@ -2066,6 +2066,7 @@ the paragraph."
             (when (< (point) (point-max))
               (forward-char 1))))))))
 
+;; TODO: Match bullet: '•' (\\u2022)
 (defconst aj8/reflow-forbidden-regexps-info
   '(
     "^[ \t]*[-+*=—]\\{2,\\}"  ; Multiple markers
