@@ -2067,8 +2067,14 @@ the paragraph."
               (forward-char 1))))))))
 
 (defconst aj8/reflow-forbidden-regexps-info
-  '("^[ \t]*\\(?:[*+-]\\|[0-9]+[.)]\\)[ \t]"  ; e.g. bullet markers or numbered lists.
-    "^[ \t]\\{8,\\}")                         ; e.g. excessive indentation.
+  '(
+    "^[ \t]*[-+*=—]\\{2,\\}"  ; Multiple markers
+    "^[ \t]*\\([*]\\|[(]?[0-9]+[.)]\\|[(]?[a-z][.)]\\)[ \t]"
+                              ; Bullet lists or numbered lists
+    ;; "^[ \t]*\\(;;\\|[(][^‘A-Z]\\)"   ; Elisp code and comments
+    "^[ \t]*\\(;;\\|[(][^‘A-Z]*$\\)"   ; Elisp code and comments
+    "^[ \t]\\{8,\\}"          ; Excessive indentation
+    )
   "Forbidden line regexps for Info buffers.")
 
 (defconst aj8/reflow-forbidden-regexps-helpful
