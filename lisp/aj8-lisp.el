@@ -1963,29 +1963,83 @@ text into separate lines."
 
 ;; (advice-add 'aj8/reflow-first-line-valid-p :around #'aj8/reflow-first-line-valid-p-advice)
 
-(defun aj8/reflow-paragraph-valid-p (beg end forbidden-regexps)
-  "Check if lines between BEG and END match forbidden regexps.
-Return t if no line between BEG and END matches any regexp in FORBIDDEN-REGEXPS."
+;; (defun aj8/reflow-paragraph-valid-p (beg end forbidden-regexps)
+;;   "Check if lines between BEG and END match forbidden regexps.
+;; Return t if no line between BEG and END matches any regexp in FORBIDDEN-REGEXPS."
+;;   (save-excursion
+;;     (goto-char beg)
+;;     (catch 'forbidden
+;;       (while (< (point) end)
+;;         (let ((line (buffer-substring-no-properties
+;;                      (line-beginning-position)
+;;                      (line-end-position))))
+;;           ;; Debug
+;;           ;; (message "\nLine:\n%s" line)
+;;           (dolist (rx forbidden-regexps)
+;;             (if (string-match-p rx line)
+;;                 (progn
+;;                   ;; Debug
+;;                   ;; (message "Line matched!")
+;;                   (throw 'forbidden nil))
+;;               ;; Debug
+;;               ;; (message "No match!")
+;;               )))
+;;         (forward-line 1))
+;;       t)))
+
+(defun aj8/reflow-paragraph-match-p (beg end regexp mode)
+  "Return t if the paragraph between BEG and END satisfies a regexp check.
+REGEXP is applied to each line. MODE determines how the results are combined:
+  'all  : returns t if every line matches REGEXP
+  'any  : returns t if at least one line matches REGEXP
+  'none : returns t if no line matches REGEXP"
   (save-excursion
     (goto-char beg)
-    (catch 'forbidden
-      (while (< (point) end)
-        (let ((line (buffer-substring-no-properties
-                     (line-beginning-position)
-                     (line-end-position))))
-          ;; Debug
-          ;; (message "\nLine:\n%s" line)
-          (dolist (rx forbidden-regexps)
-            (if (string-match-p rx line)
-                (progn
-                  ;; Debug
-                  ;; (message "Line matched!")
-                  (throw 'forbidden nil))
-              ;; Debug
-              ;; (message "No match!")
-              )))
-        (forward-line 1))
-      t)))
+    (cond
+     ((eq mode 'all)
+      (catch 'fail
+        (while (< (point) end)
+          (let ((line (thing-at-point 'line t)))
+            ;; Debug
+            (message "\nLine:\n%s" line)
+            (unless (string-match-p regexp line)
+              (progn
+                ;; Debug
+                (message "No match: %s" regexp)
+                (throw 'fail nil))))
+          (forward-line 1))
+        t))
+     ((eq mode 'any)
+      (catch 'match
+        (while (< (point) end)
+          (let ((line (thing-at-point 'line t)))
+            ;; Debug
+            (message "\nLine:\n%s" line)
+            (when (string-match-p regexp line)
+              (progn
+                ;; Debug
+                (message "Line matched: %s" regexp)
+                (throw 'match t))))
+          (forward-line 1))
+        nil))
+     ((eq mode 'none)
+      ;; 'none is just the inverse of 'any
+      (not (aj8/reflow-paragraph-match-p beg end regexp 'any)))
+     (t
+      (error "Invalid mode: %s (must be 'all, 'any, or 'none)" mode)))))
+
+;; Optional wrappers for convenience:
+(defun aj8/reflow-paragraph-match-all-p (beg end regexp)
+  "Return t if every line in the paragraph between BEG and END matches REGEXP."
+  (aj8/reflow-paragraph-match-p beg end regexp 'all))
+
+(defun aj8/reflow-paragraph-match-any-p (beg end regexp)
+  "Return t if any line in the paragraph between BEG and END matches REGEXP."
+  (aj8/reflow-paragraph-match-p beg end regexp 'any))
+
+(defun aj8/reflow-paragraph-match-none-p (beg end regexp)
+  "Return t if no line in the paragraph between BEG and END matches REGEXP."
+  (aj8/reflow-paragraph-match-p beg end regexp 'none))
 
 (defun aj8/reflow-buffer (forbidden-regexps)
   "Re-flow the current buffer by joining lines in each paragraph.
