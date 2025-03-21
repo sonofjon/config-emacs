@@ -2057,10 +2057,12 @@ FORBIDDEN-REGEXPS is a list of regexps that should not match any line in the par
             (forward-paragraph)
             (let ((p-end (point)))
               ;; Debug
-              ;; (message "Paragraph from %d to %d:\n%s" p-beg p-end
-              ;;          (buffer-substring-no-properties p-beg p-end))
-              (when (and (aj8/reflow-first-line-valid-p p-beg)
-                         (aj8/reflow-paragraph-valid-p p-beg p-end forbidden-regexps))
+              (message "Paragraph from %d to %d:\n%s" p-beg p-end
+                       (buffer-substring-no-properties p-beg p-end))
+              (unless (catch 'match
+                        (dolist (rx forbidden-regexps)
+                          (when (aj8/reflow-paragraph-match-any-p p-beg p-end rx)
+                            (throw 'match t))))
                 (aj8/reflow-join-lines-in-region p-beg p-end)))
             (when (< (point) (point-max))
               (forward-char 1))))))))
