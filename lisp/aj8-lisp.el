@@ -2043,11 +2043,10 @@ REGEXP is applied to each line. MODE determines how the results are combined:
 
 (defun aj8/reflow-buffer (forbidden-regexps)
   "Re-flow the current buffer by joining lines in each paragraph.
-For each paragraph, if:
-  (1) the first non-blank character of its first line is uppercase, and
-  (2) no line in the paragraph matches any regexp in FORBIDDEN-REGEXPS,
-then the paragraph is re-flowed by joining its lines.
-FORBIDDEN-REGEXPS is a list of regexps that should not match any line in the paragraph."
+For each paragraph, if no line in the paragraph matches any regexp in
+FORBIDDEN-REGEXPS, then the paragraph is re-flowed by joining its lines.
+FORBIDDEN-REGEXPS is a list of regexps that should not match any line in
+the paragraph."
   (with-demoted-errors "Error re-flowing text: %S"
     (let ((inhibit-read-only t))
       (save-excursion
