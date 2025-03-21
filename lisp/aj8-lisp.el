@@ -1930,6 +1930,51 @@ is mapped to the respective xterm key sequence."
 
 ;;; Re-flow buffers
 
+(defconst aj8/reflow-bullet-regexp
+  "^[ \t]*\\(•\\|[*]\\|[(]?[0-9]+[.)]\\|[(]?[a-z][.)]\\)[ \t]"
+  "Regular expression matching a bullet or numbered-list marker at the start of a line.")
+
+(defun aj8/reflow-paragraph-core-match-p (text)
+  "Return t if TEXT (assumed trimmed) starts with an uppercase letter and ends with a dot."
+  (and (string-match-p "^[[:upper:]]" text)
+       (string-match-p "[.:]$" text)))
+
+(defun aj8/count-matches (regexp text)
+  "Return the number of non-overlapping occurrences of REGEXP in TEXT."
+  (let ((count 0)
+        (pos 0))
+    (while (string-match regexp text pos)
+      (setq count (1+ count))
+      (setq pos (1+ (match-beginning 0))))
+    count))
+
+(defun aj8/reflow-paragraph-structure-match-p (beg end)
+  "Return t if the paragraph between BEG and END should be reflowed.
+A paragraph is reflowed if its trimmed text meets these criteria:
+  • If the text starts with a bullet or numbered-list marker,
+    then there must be no more than one such marker and—after removing the marker
+    and any following whitespace—the remaining text must start with an uppercase letter
+    and end with a dot.
+  • Otherwise, the text itself must start with an uppercase letter and end with a dot.
+This function uses `aj8/reflow-bullet-regexp' to detect bullet markers."
+  (let* ((text (string-trim (buffer-substring-no-properties beg end)))
+         (candidate (if (string-match-p aj8/reflow-bullet-regexp text)
+                        (and (<= (aj8/count-matches aj8/reflow-bullet-regexp text) 1)
+                             (string-trim (replace-regexp-in-string aj8/reflow-bullet-regexp "" text)))
+                      text)))
+    (and candidate (aj8/reflow-paragraph-core-match-p candidate))))
+
+(defun aj8/reflow-paragraph-forbidden-p (beg end forbidden-regexps)
+  "Return t if any of the FORBIDDEN-REGEXPS matches the text of the paragraph
+between BEG and END. The check is done on the entire paragraph (after trimming),
+so that exceptions (eg bullet paragraphs) are handled at the paragraph level."
+  (let ((text (string-trim (buffer-substring-no-properties beg end))))
+    (catch 'match
+      (dolist (rx forbidden-regexps)
+        (when (string-match-p rx text)
+          (throw 'match t)))
+      nil)))
+
 (defun aj8/reflow-join-lines-in-region (beg end)
   "Join lines between BEG and END.
 The function removes hard line breaks (newline characters) that split a
@@ -2041,6 +2086,10 @@ REGEXP is applied to each line. MODE determines how the results are combined:
   "Return t if no line in the paragraph between BEG and END matches REGEXP."
   (aj8/reflow-paragraph-match-p beg end regexp 'none))
 
+;; TODO: Simplify: simply match paragraphs that start with an upper case
+;; letter and ends with a dot. And then add some exceptions, e.g. paragraphs
+;; that start with a bullet, a `, --, or whatever. I.e. don't operate by
+;; line.
 (defun aj8/reflow-buffer (forbidden-regexps)
   "Re-flow the current buffer by joining lines in each paragraph.
 For each paragraph, if no line in the paragraph matches any regexp in
@@ -2055,13 +2104,13 @@ the paragraph."
           (let ((p-beg (point)))
             (forward-paragraph)
             (let ((p-end (point)))
-              ;; Debug
+              ;; Debug:
               (message "Paragraph from %d to %d:\n%s" p-beg p-end
                        (buffer-substring-no-properties p-beg p-end))
-              (unless (catch 'match
-                        (dolist (rx forbidden-regexps)
-                          (when (aj8/reflow-paragraph-match-any-p p-beg p-end rx)
-                            (throw 'match t))))
+              (when (and
+                     (aj8/reflow-paragraph-structure-match-p p-beg p-end)
+                     (not (aj8/reflow-paragraph-forbidden-p p-beg p-end forbidden-regexps))
+                     )
                 (aj8/reflow-join-lines-in-region p-beg p-end)))
             (when (< (point) (point-max))
               (forward-char 1))))))))
