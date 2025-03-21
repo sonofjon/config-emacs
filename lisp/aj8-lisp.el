@@ -1941,16 +1941,16 @@ text into separate lines."
     (while (re-search-forward "\\([^ \n]\\)[ \t]*\n[ \t]*\\([^ \n]\\)" end t)
       (replace-match "\\1 \\2" nil nil))))
 
-(defun aj8/reflow-first-line-valid-p (beg)
-  "Return t if the first non-blank character of the line at BEG is uppercase."
-  (save-excursion
-    (goto-char beg)
-    (let ((first-line (buffer-substring-no-properties
-                       (line-beginning-position)
-                       (line-end-position))))
-      ;; Debug
-      ;; (message "\nFirst line:\n%s" first-line)
-      (string-match-p "^[ \t]*[A-Z]" first-line))))
+;; (defun aj8/reflow-first-line-valid-p (beg)
+;;   "Return t if the first non-blank character of the line at BEG is uppercase."
+;;   (save-excursion
+;;     (goto-char beg)
+;;     (let ((first-line (thing-at-point 'line t)))
+;;       ;; Debug
+;;       ;; (message "\nFirst line:\n%s" first-line)
+;;       (string-match-p "^[ \t]*[A-Z]" first-line)
+;;       ;; (string-match-p "^[ \t]*\\([A-Z]\\|\"\\|\\•\\|--\\)" first-line)
+;;       )))
 
 ;; For Debugging
 ;; (defun aj8/reflow-first-line-valid-p-advice (orig-fun beg)
