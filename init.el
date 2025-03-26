@@ -1956,13 +1956,15 @@ Elisp code explicitly in arbitrary buffers.")
   :init
   (which-key-add-key-based-replacements "C-c t" "gptel")
                                         ; add label for prefix key
-  ;; :custom
+  :custom
   ;; Set mode
   ;; (gptel-default-mode 'text-mode)   ; default: markdown-mode
   ;; Don't use Curl
   ;; (gptel-use-curl nil)
   ;; Don't show reasoning
   ;; (gptel-include-reasoning nil)
+  ;; Dispatch rewrite menu
+  (gptel-rewrite-default-action 'dispatch)
   :config
   ;; Gemini
   (gptel-make-gemini "Gemini"
