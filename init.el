@@ -1965,6 +1965,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (gptel-include-reasoning nil)
   ;; Dispatch rewrite menu
   (gptel-rewrite-default-action 'dispatch)
+  ;; Single line separator
+  (gptel-response-separator "\n")   ; default: "\n\n"
   :config
   ;; Gemini
   (gptel-make-gemini "Gemini"
