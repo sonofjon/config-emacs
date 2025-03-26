@@ -2080,6 +2080,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Do not switch to buffers already shown
 (setq switch-to-prev-buffer-skip 'this)
 
+;; Uniquify buffer name using project
+(setq uniquify-dirname-transform 'project-uniquify-dirname-transform)
+                                        ; default is 'identity
+
 ;; Skip some buffers when switching buffers
 ;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
 
