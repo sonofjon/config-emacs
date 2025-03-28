@@ -1934,11 +1934,21 @@ is mapped to the respective xterm key sequence."
   "^[ \t]*\\(•\\|[*]\\|[(]?[0-9]+[.)]\\|[(]?[a-z][.)]\\)[ \t]"
   "Regular expression matching a bullet or numbered-list marker at the start of a line.")
 
-(defun aj8/reflow-sentence-match-p (text)
-  "Return t if TEXT starts and ends like a sentence."
-  (and (string-match-p "^[[:upper:]]" text)   ; “‘
-       (string-match-p "[.:)\"”]$" text)))
-       ;; (string-match-p "[.:]$" text)))   ; ”
+(defconst aj8/reflow-forbidden-regexps-info
+  '(
+    "^[ \t]*[-+*=—]\\{2,\\}"            ; Multiple markers
+    ;; "^[ \t]*\\(;;\\|[(][^‘A-Z]\\)"   ; Elisp code and comments
+    "^[ \t]*\\(;;\\|[(][^‘A-Z]*$\\)"    ; Elisp code and comments
+    "^[ \t]\\{8,\\}"                    ; Excessive indentation
+    )
+  "Forbidden line regexps for Info buffers.")
+
+(defconst aj8/reflow-forbidden-regexps-helpful
+  '(
+    "^[ \t]*\\(Signature\\|Documentation\\|References\\|Debugging\\|Source Code\\|Symbol Properties\\)[ \t]*$"
+    ;; "^\\(Signature\\|Documentation\\|References\\|Debugging\\|Source Code\\|Symbol Properties\\)$"
+    )
+  "Forbidden line regexps for helpful buffers.")
 
 (defun aj8/reflow-count-matches (regexp text)
   "Return the number of non-overlapping occurrences of REGEXP in TEXT."
@@ -1948,6 +1958,12 @@ is mapped to the respective xterm key sequence."
       (setq count (1+ count))
       (setq pos (1+ (match-beginning 0))))
     count))
+
+(defun aj8/reflow-sentence-match-p (text)
+  "Return t if TEXT starts and ends like a sentence."
+  (and (string-match-p "^[[:upper:]]" text)   ; “‘
+       (string-match-p "[.:)\"”]$" text)))
+       ;; (string-match-p "[.:]$" text)))   ; ”
 
 (defun aj8/reflow-structure-match-p (beg end)
   "Return t if the text between BEG and END has a paragraph-like structure.
@@ -1982,17 +1998,7 @@ This function uses `aj8/reflow-bullet-regexp' to detect bullet markers."
         (forward-line 1))
       found)))
 
-(defun aj8/reflow-join-lines-in-region (beg end)
-  "Join lines between BEG and END.
-The function removes hard line breaks (newline characters) that split a
-text into separate lines."
-  (save-excursion
-    (goto-char beg)
-    ;; Debug
-    ;; (insert "<Start>")
-    (while (re-search-forward "\\([^ \n]\\)[ \t]*\n[ \t]*\\([^ \n]\\)" end t)
-      (replace-match "\\1 \\2" nil nil))))
-
+;; Unused function
 (defun aj8/reflow-paragraph-match-p (beg end regexp mode)
   "Return t if the paragraph between BEG and END satisfies a regexp check.
 REGEXP is applied to each line. MODE determines how the results are combined:
@@ -2047,6 +2053,17 @@ REGEXP is applied to each line. MODE determines how the results are combined:
   "Return t if no line in the paragraph between BEG and END matches REGEXP."
   (aj8/reflow-paragraph-match-p beg end regexp 'none))
 
+(defun aj8/reflow-join-lines-in-region (beg end)
+  "Join lines between BEG and END.
+The function removes hard line breaks (newline characters) that split a
+text into separate lines."
+  (save-excursion
+    (goto-char beg)
+    ;; Debug
+    ;; (insert "<Start>")
+    (while (re-search-forward "\\([^ \n]\\)[ \t]*\n[ \t]*\\([^ \n]\\)" end t)
+      (replace-match "\\1 \\2" nil nil))))
+
 (defun aj8/reflow-buffer (forbidden-regexps)
   "Re-flow the current buffer by joining lines in each paragraph.
 For paragraphs to be re-flowed, individual lines must not match any
@@ -2068,22 +2085,6 @@ regexp in FORBIDDEN-REGEXPS, and a structure criteria must be met.  See
                   (aj8/reflow-join-lines-in-region p-beg p-end))))
             (when (< (point) (point-max))
               (forward-char 1))))))))
-
-(defconst aj8/reflow-forbidden-regexps-info
-  '(
-    "^[ \t]*[-+*=—]\\{2,\\}"            ; Multiple markers
-    ;; "^[ \t]*\\(;;\\|[(][^‘A-Z]\\)"   ; Elisp code and comments
-    "^[ \t]*\\(;;\\|[(][^‘A-Z]*$\\)"    ; Elisp code and comments
-    "^[ \t]\\{8,\\}"                    ; Excessive indentation
-    )
-  "Forbidden line regexps for Info buffers.")
-
-(defconst aj8/reflow-forbidden-regexps-helpful
-  '(
-    "^[ \t]*\\(Signature\\|Documentation\\|References\\|Debugging\\|Source Code\\|Symbol Properties\\)[ \t]*$"
-    ;; "^\\(Signature\\|Documentation\\|References\\|Debugging\\|Source Code\\|Symbol Properties\\)$"
-    )
-  "Forbidden line regexps for helpful buffers.")
 
 (defun aj8/reflow-info-buffer ()
   "Re-flow the current Info node, joining lines where appropriate.
