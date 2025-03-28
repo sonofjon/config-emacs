@@ -1934,10 +1934,11 @@ is mapped to the respective xterm key sequence."
   "^[ \t]*\\(•\\|[*]\\|[(]?[0-9]+[.)]\\|[(]?[a-z][.)]\\)[ \t]"
   "Regular expression matching a bullet or numbered-list marker at the start of a line.")
 
-  (and (string-match-p "^[[:upper:]]" text)
-       (string-match-p "[.:]$" text)))
 (defun aj8/reflow-sentence-match-p (text)
   "Return t if TEXT starts and ends like a sentence."
+  (and (string-match-p "^[[:upper:]]" text)   ; “‘
+       (string-match-p "[.:)\"”]$" text)))
+       ;; (string-match-p "[.:]$" text)))   ; ”
 
 (defun aj8/reflow-count-matches (regexp text)
   "Return the number of non-overlapping occurrences of REGEXP in TEXT."
