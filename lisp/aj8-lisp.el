@@ -1967,17 +1967,32 @@ This function uses `aj8/reflow-bullet-regexp' to detect bullet markers."
                         (and (<= (aj8/reflow-count-matches aj8/reflow-bullet-regexp text) 1)
                              (string-trim (replace-regexp-in-string aj8/reflow-bullet-regexp "" text)))
                       text)))
-
-  (let ((text (string-trim (buffer-substring-no-properties beg end))))
-    (catch 'match
-      (dolist (rx forbidden-regexps)
-        (when (string-match-p rx text)
-          (throw 'match t)))
-      nil)))
     (and candidate (aj8/reflow-sentence-match-p candidate))))
+
+;; (defun aj8/reflow-forbidden-match-p (beg end regexps)
+;;   "Return t if any of the REGEXPS matches the text between BEG and END.
+;; The check is done on the entire paragraph (after trimming), so that
+;; exceptions (eg bullet paragraphs) are handled at the paragraph level."
+;;   (let ((text (string-trim (buffer-substring-no-properties beg end))))
+;;     (catch 'match
+;;       (dolist (rx regexps)
+;;         (when (string-match-p rx text)
+;;           (throw 'match t)))
+;;       nil)))
 
 (defun aj8/reflow-forbidden-match-p (beg end regexps)
   "Return t if any of the REGEXPS matches any line between BEG and END."
+  (save-excursion
+    (goto-char beg)
+    (let ((found nil))
+      (while (and (< (point) end) (not found))
+        (let ((line (thing-at-point 'line t)))
+          (dolist (rx regexps)
+            (when (string-match-p rx line)
+              (setq found t))))
+        (forward-line 1))
+      found)))
+
 (defun aj8/reflow-join-lines-in-region (beg end)
   "Join lines between BEG and END.
 The function removes hard line breaks (newline characters) that split a
