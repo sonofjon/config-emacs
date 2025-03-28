@@ -1959,6 +1959,9 @@ is mapped to the respective xterm key sequence."
       (setq pos (1+ (match-beginning 0))))
     count))
 
+;; TODO
+;;   Convert this to a defconst regexp for consistency with other regexps above
+;;   Use `sentence-end' instead
 (defun aj8/reflow-sentence-match-p (text)
   "Return t if TEXT starts and ends like a sentence."
   (and (string-match-p "^[[:upper:]]" text)   ; “‘
