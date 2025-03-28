@@ -2118,12 +2118,10 @@ regexp in FORBIDDEN-REGEXPS, and a structure criteria must be met.  See
 ;; TODO: Match bullet: '•' (\\u2022)
 (defconst aj8/reflow-forbidden-regexps-info
   '(
-    "^[ \t]*[-+*=—]\\{2,\\}"  ; Multiple markers
-    "^[ \t]*\\([*]\\|[(]?[0-9]+[.)]\\|[(]?[a-z][.)]\\)[ \t]"
-                              ; Bullet lists or numbered lists
+    "^[ \t]*[-+*=—]\\{2,\\}"            ; Multiple markers
     ;; "^[ \t]*\\(;;\\|[(][^‘A-Z]\\)"   ; Elisp code and comments
-    "^[ \t]*\\(;;\\|[(][^‘A-Z]*$\\)"   ; Elisp code and comments
-    "^[ \t]\\{8,\\}"          ; Excessive indentation
+    "^[ \t]*\\(;;\\|[(][^‘A-Z]*$\\)"    ; Elisp code and comments
+    "^[ \t]\\{8,\\}"                    ; Excessive indentation
     )
   "Forbidden line regexps for Info buffers.")
 
