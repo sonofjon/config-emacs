@@ -1934,12 +1934,12 @@ is mapped to the respective xterm key sequence."
   "^[ \t]*\\(•\\|[*]\\|[(]?[0-9]+[.)]\\|[(]?[a-z][.)]\\)[ \t]"
   "Regular expression matching a bullet or numbered-list marker at the start of a line.")
 
-(defun aj8/reflow-paragraph-core-match-p (text)
   (and (string-match-p "^[[:upper:]]" text)
        (string-match-p "[.:]$" text)))
+(defun aj8/reflow-sentence-match-p (text)
   "Return t if TEXT starts and ends like a sentence."
 
-(defun aj8/count-matches (regexp text)
+(defun aj8/reflow-count-matches (regexp text)
   "Return the number of non-overlapping occurrences of REGEXP in TEXT."
   (let ((count 0)
         (pos 0))
@@ -1948,7 +1948,6 @@ is mapped to the respective xterm key sequence."
       (setq pos (1+ (match-beginning 0))))
     count))
 
-(defun aj8/reflow-paragraph-structure-match-p (beg end)
   "Return t if the paragraph between BEG and END should be reflowed.
 A paragraph is reflowed if its trimmed text meets these criteria:
   • If the text starts with a bullet or numbered-list marker,
@@ -1956,15 +1955,14 @@ A paragraph is reflowed if its trimmed text meets these criteria:
     and any following whitespace—the remaining text must start with an uppercase letter
     and end with a dot.
   • Otherwise, the text itself must start with an uppercase letter and end with a dot.
+(defun aj8/reflow-structure-match-p (beg end)
 This function uses `aj8/reflow-bullet-regexp' to detect bullet markers."
   (let* ((text (string-trim (buffer-substring-no-properties beg end)))
          (candidate (if (string-match-p aj8/reflow-bullet-regexp text)
-                        (and (<= (aj8/count-matches aj8/reflow-bullet-regexp text) 1)
+                        (and (<= (aj8/reflow-count-matches aj8/reflow-bullet-regexp text) 1)
                              (string-trim (replace-regexp-in-string aj8/reflow-bullet-regexp "" text)))
                       text)))
-    (and candidate (aj8/reflow-paragraph-core-match-p candidate))))
 
-(defun aj8/reflow-paragraph-forbidden-p (beg end forbidden-regexps)
   "Return t if any of the FORBIDDEN-REGEXPS matches the text of the paragraph
 between BEG and END. The check is done on the entire paragraph (after trimming),
 so that exceptions (eg bullet paragraphs) are handled at the paragraph level."
@@ -1974,7 +1972,9 @@ so that exceptions (eg bullet paragraphs) are handled at the paragraph level."
         (when (string-match-p rx text)
           (throw 'match t)))
       nil)))
+    (and candidate (aj8/reflow-sentence-match-p candidate))))
 
+(defun aj8/reflow-forbidden-match-p (beg end regexps)
 (defun aj8/reflow-join-lines-in-region (beg end)
   "Join lines between BEG and END.
 The function removes hard line breaks (newline characters) that split a
@@ -2105,13 +2105,11 @@ the paragraph."
             (forward-paragraph)
             (let ((p-end (point)))
               ;; Debug:
-              (message "Paragraph from %d to %d:\n%s" p-beg p-end
-                       (buffer-substring-no-properties p-beg p-end))
-              (when (and
-                     (aj8/reflow-paragraph-structure-match-p p-beg p-end)
-                     (not (aj8/reflow-paragraph-forbidden-p p-beg p-end forbidden-regexps))
-                     )
-                (aj8/reflow-join-lines-in-region p-beg p-end)))
+              ;; (message "Paragraph from %d to %d:\n%s" p-beg p-end
+              ;;          (buffer-substring-no-properties p-beg p-end))
+              (unless (aj8/reflow-forbidden-match-p p-beg p-end forbidden-regexps)
+                (when (aj8/reflow-structure-match-p p-beg p-end)
+                  (aj8/reflow-join-lines-in-region p-beg p-end))))
             (when (< (point) (point-max))
               (forward-char 1))))))))
 
