@@ -1969,17 +1969,6 @@ This function uses `aj8/reflow-bullet-regexp' to detect bullet markers."
                       text)))
     (and candidate (aj8/reflow-sentence-match-p candidate))))
 
-;; (defun aj8/reflow-forbidden-match-p (beg end regexps)
-;;   "Return t if any of the REGEXPS matches the text between BEG and END.
-;; The check is done on the entire paragraph (after trimming), so that
-;; exceptions (eg bullet paragraphs) are handled at the paragraph level."
-;;   (let ((text (string-trim (buffer-substring-no-properties beg end))))
-;;     (catch 'match
-;;       (dolist (rx regexps)
-;;         (when (string-match-p rx text)
-;;           (throw 'match t)))
-;;       nil)))
-
 (defun aj8/reflow-forbidden-match-p (beg end regexps)
   "Return t if any of the REGEXPS matches any line between BEG and END."
   (save-excursion
@@ -2003,52 +1992,6 @@ text into separate lines."
     ;; (insert "<Start>")
     (while (re-search-forward "\\([^ \n]\\)[ \t]*\n[ \t]*\\([^ \n]\\)" end t)
       (replace-match "\\1 \\2" nil nil))))
-
-;; (defun aj8/reflow-first-line-valid-p (beg)
-;;   "Return t if the first non-blank character of the line at BEG is uppercase."
-;;   (save-excursion
-;;     (goto-char beg)
-;;     (let ((first-line (thing-at-point 'line t)))
-;;       ;; Debug
-;;       ;; (message "\nFirst line:\n%s" first-line)
-;;       (string-match-p "^[ \t]*[A-Z]" first-line)
-;;       ;; (string-match-p "^[ \t]*\\([A-Z]\\|\"\\|\\•\\|--\\)" first-line)
-;;       )))
-
-;; For Debugging
-;; (defun aj8/reflow-first-line-valid-p-advice (orig-fun beg)
-;;   "Advice for `aj8/reflow-first-line-valid-p' that messages \"OK\" when the first-line test succeeds."
-;;   (let ((result (funcall orig-fun beg)))
-;;     (if result
-;;         (message "First line matched!")
-;;       (message "No match!"))
-;;     result))
-
-;; (advice-add 'aj8/reflow-first-line-valid-p :around #'aj8/reflow-first-line-valid-p-advice)
-
-;; (defun aj8/reflow-paragraph-valid-p (beg end forbidden-regexps)
-;;   "Check if lines between BEG and END match forbidden regexps.
-;; Return t if no line between BEG and END matches any regexp in FORBIDDEN-REGEXPS."
-;;   (save-excursion
-;;     (goto-char beg)
-;;     (catch 'forbidden
-;;       (while (< (point) end)
-;;         (let ((line (buffer-substring-no-properties
-;;                      (line-beginning-position)
-;;                      (line-end-position))))
-;;           ;; Debug
-;;           ;; (message "\nLine:\n%s" line)
-;;           (dolist (rx forbidden-regexps)
-;;             (if (string-match-p rx line)
-;;                 (progn
-;;                   ;; Debug
-;;                   ;; (message "Line matched!")
-;;                   (throw 'forbidden nil))
-;;               ;; Debug
-;;               ;; (message "No match!")
-;;               )))
-;;         (forward-line 1))
-;;       t)))
 
 (defun aj8/reflow-paragraph-match-p (beg end regexp mode)
   "Return t if the paragraph between BEG and END satisfies a regexp check.
@@ -2104,10 +2047,6 @@ REGEXP is applied to each line. MODE determines how the results are combined:
   "Return t if no line in the paragraph between BEG and END matches REGEXP."
   (aj8/reflow-paragraph-match-p beg end regexp 'none))
 
-;; TODO: Simplify: simply match paragraphs that start with an upper case
-;; letter and ends with a dot. And then add some exceptions, e.g. paragraphs
-;; that start with a bullet, a `, --, or whatever. I.e. don't operate by
-;; line.
 (defun aj8/reflow-buffer (forbidden-regexps)
   "Re-flow the current buffer by joining lines in each paragraph.
 For paragraphs to be re-flowed, individual lines must not match any
@@ -2130,7 +2069,6 @@ regexp in FORBIDDEN-REGEXPS, and a structure criteria must be met.  See
             (when (< (point) (point-max))
               (forward-char 1))))))))
 
-;; TODO: Match bullet: '•' (\\u2022)
 (defconst aj8/reflow-forbidden-regexps-info
   '(
     "^[ \t]*[-+*=—]\\{2,\\}"            ; Multiple markers
