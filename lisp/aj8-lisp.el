@@ -1935,9 +1935,9 @@ is mapped to the respective xterm key sequence."
   "Regular expression matching a bullet or numbered-list marker at the start of a line.")
 
 (defun aj8/reflow-paragraph-core-match-p (text)
-  "Return t if TEXT (assumed trimmed) starts with an uppercase letter and ends with a dot."
   (and (string-match-p "^[[:upper:]]" text)
        (string-match-p "[.:]$" text)))
+  "Return t if TEXT starts and ends like a sentence."
 
 (defun aj8/count-matches (regexp text)
   "Return the number of non-overlapping occurrences of REGEXP in TEXT."
