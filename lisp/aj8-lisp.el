@@ -1946,7 +1946,7 @@ is mapped to the respective xterm key sequence."
 (defconst aj8/reflow-forbidden-regexps-helpful
   '(
     "^[ \t]*\\(Signature\\|Documentation\\|References\\|Debugging\\|Source Code\\|Symbol Properties\\)[ \t]*$"
-    ;; "^\\(Signature\\|Documentation\\|References\\|Debugging\\|Source Code\\|Symbol Properties\\)$"
+    "^[ \t]*\\(;;\\|[(][^‘A-Z]*$\\)"    ; Elisp code and comments
     )
   "Forbidden line regexps for helpful buffers.")
 
