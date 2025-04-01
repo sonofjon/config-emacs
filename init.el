@@ -1963,6 +1963,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (gptel-use-curl nil)
   ;; Don't show reasoning
   ;; (gptel-include-reasoning nil)
+  ;; Automatic diff after rewrite
+  ;; (gptel-rewrite-default-action 'ediff)
   ;; Dispatch rewrite menu
   (gptel-rewrite-default-action 'dispatch)
   ;; Single line separator
