@@ -652,6 +652,34 @@ Otherwise, open a line below."
       (my/open-line-above)
     (my/open-line-below)))
 
+;; Sort lines with files and directories
+(defun aj8/sort-lines-custom-group (beg end)
+  "Sort lines in region by custom groups.
+Groups include:
+1. Directories (ends with \"/\")
+2. Regular files (no \"/\" or \"*\" anywhere)
+3. Regular files in directories (contains \"/\" but doesn’t end with \"/\" and no \"*\")
+4. Wildcards (contains \"*\")"
+  (interactive "r")
+  (let* ((lines (split-string (buffer-substring-no-properties beg end) "\n" t))
+         (group-of
+          (lambda (line)
+            (cond
+             ((string-match-p "\\*" line) 4)
+             ((string-suffix-p "/" line) 1)
+             ((string-match-p "/" line) 3)
+             (t 2))))
+         (sorted (sort lines
+                       (lambda (a b)
+                         (let ((ga (funcall group-of a))
+                               (gb (funcall group-of b)))
+                           (if (= ga gb)
+                               (string< a b)
+                             (< ga gb)))))))
+    (delete-region beg end)
+    (goto-char beg)
+    (insert (mapconcat 'identity sorted "\n"))))
+
 ;;;; Files
 
 ;;;; Help
