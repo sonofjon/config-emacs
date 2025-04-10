@@ -240,12 +240,12 @@ If the current window is a side window don't skip buffers."
 ;; Tag buffer name
 (defun aj8/tag-buffer-name (tag)
   "Add TAG to buffer name."
-  (rename-buffer (format "%s # %s" (buffer-name) tag)))
+  (rename-buffer (format "%s # %s" (buffer-name) tag) t))
 
 ;; Prefix buffer name
 (defun aj8/prefix-buffer-name (prefix)
   "Add PREFIX to buffer name."
-  (rename-buffer (format "%s: %s" prefix (buffer-name))))
+  (rename-buffer (format "%s: %s" prefix (buffer-name)) t))
 
 ;;; Buffer matching functions
 
