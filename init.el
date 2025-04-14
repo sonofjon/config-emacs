@@ -2713,7 +2713,7 @@ Elisp code explicitly in arbitrary buffers.")
           #'outline-headers-for-hash-mark-buffers)
 
 ;; python-mode: other settings
-;; (add-hook 'python-base-mode-hook 'aj8/python-mode-hook)
+(add-hook 'python-base-mode-hook 'aj8/python-mode-hook)
 
 ;; sh-mode: for non-standard bash config files
 (add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . bash-ts-mode))
