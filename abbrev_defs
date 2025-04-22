@@ -2,6 +2,7 @@
 (define-abbrev-table 'text-mode-abbrev-table
   '(
     ("ads" "Add docstring" nil :count 3)
+    ("afc" "Auto-format code" nil :count 0)
     ("atd" "Add TODO" nil :count 3)
     ("atf" "Add template for" nil :count 3)
     ("aup" "Add use-package:" nil :count 0)
