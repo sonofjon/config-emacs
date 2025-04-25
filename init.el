@@ -819,8 +819,8 @@ Elisp code explicitly in arbitrary buffers.")
          ("<backtab>" . vertico-insert)
          ("TAB" . minibuffer-complete)
          ;; ("<backtab>" . minibuffer-force-complete)
-         ("C-n" . vertico-previous-group)
-         ("C-p" . vertico-next-group)
+         ("C-p" . vertico-previous-group)
+         ("C-n" . vertico-next-group)
          ("M-P" . #'vertico-repeat-previous)   ; TODO: overlaps with S-M-p
          ("M-N" . #'vertico-repeat-next))      ; TODO: overlaps with S-M-n
   :init
