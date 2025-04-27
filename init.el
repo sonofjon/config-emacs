@@ -1971,6 +1971,8 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-rewrite-default-action 'dispatch)
   ;; Single line separator
   ;; (gptel-response-separator "\n")   ; default: "\n\n"
+  ;; Pass context in user prompt
+  (gptel-use-context 'user)   ; default: 'system
   :config
   ;; Gemini
   (gptel-make-gemini "Gemini"
