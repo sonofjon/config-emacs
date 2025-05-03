@@ -1974,6 +1974,23 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Pass context in user prompt
   (gptel-use-context 'user)   ; default: 'system
   :config
+  ;; ChatGPT
+  (setq gptel-model 'gpt-4.1)
+  ;; (setq gptel-model 'gpt-o4-mini)
+  ;; Set reasoning effort
+  ;;   OpenAI default: medium
+  ;; (put 'o1-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
+  ;; (put 'o3-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
+  ;; Claude
+  (gptel-make-anthropic "Claude"
+    :key (gptel-api-key-from-auth-source
+          "api.anthropic.com" "apikey")
+    :stream t)   ; make available
+  ;; (setq gptel-backend (gptel-make-anthropic "Claude"
+  ;;                       :key (gptel-api-key-from-auth-source
+  ;;                             "api.anthropic.com" "apikey")
+  ;;                       :stream t))   ; set default
+  ;; (setq gptel-model 'claude-3-7-sonnet-20250219)
   ;; Gemini
   (gptel-make-gemini "Gemini"
     :key (gptel-api-key-from-auth-source
@@ -1985,14 +2002,6 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                       :stream t))   ; set default
   ;; (setq gptel-model 'gemini-pro)
   ;; (setq gptel-model 'gemini-1.5-pro-latest)   ; default is gemini-pro
-  ;; ChatGPT
-  (setq gptel-model 'gpt-4o)
-  ;; (setq gptel-model 'gpt-o1-mini)   ; default
-  ;; (setq gptel-model 'gpt-o3-mini)
-  ;; Set reasoning effort
-  ;;   OpenAI default: medium
-  ;; (put 'o1-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
-  ;; (put 'o3-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
@@ -2496,7 +2505,7 @@ Elisp code explicitly in arbitrary buffers.")
          (side . right)
          (slot . -1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
+        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
