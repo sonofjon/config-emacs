@@ -2007,7 +2007,16 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Scroll window automatically
   (add-hook 'gptel-post-stream-hook #'gptel-auto-scroll)
   ;; Jump to next prompt after response
-  (add-hook 'gptel-post-response-functions #'gptel-end-of-response))
+  (add-hook 'gptel-post-response-functions #'gptel-end-of-response)
+  ;; Add directives
+  (add-to-list 'gptel-directives
+             '(coder . "You are a large language model and a careful code assistant.")
+             t)
+  (add-to-list 'gptel-directives
+             '(debug . "You are a large language model and a debugger. Diagnose issues and suggest fixes.")
+             t
+
+             ))
 
 ;; gptel-quick (quick LLM lookups in Emacs)
 (use-package gptel-quick
