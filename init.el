@@ -2226,6 +2226,9 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Files
 
+;; Increase maximum file size that can be opened without a warning
+(setq large-file-warning-threshold 50000000)
+
 ;; Number of saved recent files
 (setq recentf-max-saved-items 100)
 
