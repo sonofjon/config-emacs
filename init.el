@@ -2234,6 +2234,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Number of saved recent files
 (setq recentf-max-saved-items 100)
 
+;; Share file history between projects
+;; (setq project-file-history-behavior 'relativize)
+
 ;;; Help
 
 ;; More extensive apropos commands
