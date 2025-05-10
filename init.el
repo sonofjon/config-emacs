@@ -1961,6 +1961,8 @@ Elisp code explicitly in arbitrary buffers.")
   :custom
   ;; Set mode
   ;; (gptel-default-mode 'text-mode)   ; default: markdown-mode
+  ;; Track media
+  ;; (gptel-track-media t)
   ;; Don't use Curl
   ;; (gptel-use-curl nil)
   ;; Don't show reasoning
