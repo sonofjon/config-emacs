@@ -1740,6 +1740,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (require 'llm-gemini)
   (require 'llm-openai)
   :custom
+  (magit-gptcommit-prompt "You are an expert programmer writing a Git commit message.\n- You have carefully reviewed every file diff included in this commit.\n- Keep it to a single line, no more than 50 characters\n- Use the imperative tense (e.g., 'Add logging' not 'Added logging')\n- Ensure the message reflects a clear and cohesive change\n- Do not end the summary with a period\n- Do not use backticks (`) anywhere in the response\n\nTHE FILE DIFFS:\n```\n%s\n```\nNow, write the commit message")
   (magit-gptcommit-llm-provider
    (make-llm-openai :key (auth-info-password
                           (car (auth-source-search
