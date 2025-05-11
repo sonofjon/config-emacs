@@ -608,6 +608,24 @@
   ;; (corfu-history-mode 1)   ; requires savehist-mode
   ;; (savehist-mode 1)
   ;; (add-to-list 'savehist-additional-variables 'corfu-history))
+  ;;
+  ;; (defun my/corfu-comp-style ()
+  ;;   "Set/unset a fast completion style for corfu"
+  ;;   (if corfu-mode
+  ;;       ;; (setq-local completion-styles '(basic))
+  ;;       (setq-local orderless-matching-styles '(orderless-literal-prefix))
+  ;;     ;; (kill-local-variable 'completion-styles))))
+  ;;     (kill-local-variable 'orderless-matching-styles)))
+
+  ;; (defun enable-regexp-style-for-corfu ()
+  ;;   (setq-local orderless-matching-styles '(orderless-literal orderless-regexp)))
+
+  ;; (defun disable-regexp-style-for-corfu ()
+  ;;   ;; Restore previous global value for orderless-matching-styles
+  ;;   (kill-local-variable 'orderless-matching-styles))
+
+  ;; (add-hook 'corfu-show-hook #'enable-regexp-style-for-corfu)
+  ;; (add-hook 'corfu-quit-hook #'disable-regexp-style-for-corfu)
 
 ;; corfu-echo (show Corfu candidate documentation in echo area)
 ;;   Note, this is an extension included in the Corfu package
