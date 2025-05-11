@@ -147,6 +147,7 @@
                           standard-themes
                           string-inflection
                           syntax-subword
+                          system-packages
                           transpose-frame
                           treesit-auto
                           undo-fu
