@@ -602,7 +602,7 @@
       (setq-local corfu-echo-delay nil) ; disable automatic echo and popup
                   ;; corfu-popupinfo-delay nil)
       (corfu-mode 1)))
-  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1))
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1))   ; TODO: remove 1?
   ;; :config
   ;; Sort candidates by history
   ;; (corfu-history-mode 1)   ; requires savehist-mode
