@@ -2080,6 +2080,7 @@ Elisp code explicitly in arbitrary buffers.")
                                     vertico-next
                                     isearch-printing-char
                                     backward-delete-char-untabify
+                                    markdown-outdent-or-delete
                                     mwheel-scroll))
   :config
   (keyfreq-mode 1)
