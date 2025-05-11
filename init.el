@@ -1752,7 +1752,6 @@ Elisp code explicitly in arbitrary buffers.")
    ;;                  :chat-model "gemini-2.5-flash-preview-04-17"))
   :config
   ;; Add gptcommit transient commands to `magit-commit'
-  ;;   Eval (transient-remove-suffix 'magit-commit '(1 -1)) to remove gptcommit transient commands
   (magit-gptcommit-status-buffer-setup)
   ;; Generate commit message automatically in magit status buffer
   (magit-gptcommit-mode 1))
