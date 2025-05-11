@@ -1733,9 +1733,7 @@ Elisp code explicitly in arbitrary buffers.")
   :demand t
   :after (gptel magit)
   :bind (:map git-commit-mode-map
-              ("C-c C-g" . magit-gptcommit-generate)
-              ;; ("C-c C-g" . magit-gptcommit-commit-accept)
-              )
+              ("C-c C-g" . magit-gptcommit-commit-accept))
   :init
   ;; (require 'llm-gemini)
   (require 'llm-openai)
