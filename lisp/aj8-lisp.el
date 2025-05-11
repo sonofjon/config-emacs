@@ -381,6 +381,9 @@ the gptel function."
   ;; Exclude virtual environment directories from project
   ;;   Not needed: use M-s G
   ;; (setq-local project-ignored-files '(".venv/*"))
+  ;; Use Ruff linter with Flymake
+  ;;   Reference: https://www.reddit.com/r/emacs/comments/10yzhmn/flymake_just_works_with_ruff/
+  ;; (setq python-flymake-command '("ruff" "--quiet" "--stdin-filename=stdin" "-"))
   (keymap-set python-mode-map "C-c <" nil)
   (keymap-set python-ts-mode-map "C-c <" nil))   ; unbind python-indent-shift-left
 
