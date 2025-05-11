@@ -2173,7 +2173,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Completion
 
 ;; Select completion styles
-(setq completion-styles '(substring orderless basic))
+;; (setq completion-styles '(substring orderless basic))
+(setq completion-styles '(orderless basic))
                                        ; substring: needed for partial completion
                                        ; orderless: space-separated components
                                        ; basic: fallback
