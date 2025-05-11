@@ -434,24 +434,28 @@ Much faster than `sgml-pretty-print'."
   "Components match flexy for the rest of the session."
   (setq-local orderless-matching-styles '(orderless-flex))
   (minibuffer-message "[flex]"))
+  ;; (vertico--update 'interruptible))   ; TODO: What is this?
 
 ;; Literal
 (defun aj8/orderless-matching-style--literal ()
   "Components match literally for the rest of the session."
   (setq-local orderless-matching-styles '(orderless-literal))
   (minibuffer-message "[literal]"))
+  ;; (vertico--update 'interruptible))
 
 ;; Prefixes
 (defun aj8/orderless-matching-style--prefixes ()
   "Components match prefixes for the rest of the session."
   (setq-local orderless-matching-styles '(orderless-prefixes))
   (minibuffer-message "[prefixes]"))
+  ;; (vertico--update 'interruptible))
 
 ;; Regexp
 (defun aj8/orderless-matching-style--regexp ()
   "Components match regexp for the rest of the session."
   (setq-local orderless-matching-styles '(orderless-regexp))
   (minibuffer-message "[regexp]"))
+  ;; (vertico--update 'interruptible))
 
 ;;; Orderless style dispatchers
 
