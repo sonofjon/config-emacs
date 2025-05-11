@@ -414,7 +414,6 @@
 
 ;; flymake-eslint (a Flymake backend for Javascript using eslint)
 (use-package flymake-eslint
-  :disabled
   :ensure-system-package eslint
   :disabled
   :hook (js-base-mode . flymake-eslint-enable))
