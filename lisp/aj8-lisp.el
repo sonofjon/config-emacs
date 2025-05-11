@@ -1999,8 +1999,7 @@ is mapped to the respective xterm key sequence."
 (defun aj8/reflow-sentence-match-p (text)
   "Return t if TEXT starts and ends like a sentence."
   (and (string-match-p "^[[:upper:]]" text)   ; “‘
-       (string-match-p "[.:)\"”]$" text)))
-       ;; (string-match-p "[.:]$" text)))   ; ”
+       (string-match-p "[.:)\"”]$" text)))   ; ”
 
 (defun aj8/reflow-structure-match-p (beg end)
   "Return t if the text between BEG and END has a paragraph-like structure.
@@ -2136,8 +2135,6 @@ and Info-specific forbidden regexps."
     (aj8/reflow-info-buffer)
     result))
 
-;; (advice-add 'Info-select-node :around #'aj8/reflow-info-buffer-advice)
-
 (define-minor-mode aj8/reflow-info-mode
   "Minor mode that toggles automatic re-flowing of Info nodes.
 When enabled, Info-select-node is advised so that after a node is
@@ -2161,8 +2158,6 @@ uppercase) and Helpful-specific forbidden regexps."
   (let ((result (apply orig-fun args)))
     (aj8/reflow-helpful-buffer)
     result))
-
-;; (advice-add 'helpful-update :around #'aj8/reflow-helpful-buffer-advice)
 
 (define-minor-mode aj8/reflow-helpful-mode
   "Minor mode that toggles automatic re-flowing of Helpful buffers.
