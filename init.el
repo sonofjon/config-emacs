@@ -1737,14 +1737,20 @@ Elisp code explicitly in arbitrary buffers.")
               ;; ("C-c C-g" . magit-gptcommit-commit-accept)
               )
   :init
-  (require 'llm-gemini)
+  ;; (require 'llm-gemini)
+  (require 'llm-openai)
   :custom
   (magit-gptcommit-llm-provider
-   (make-llm-gemini :key (auth-info-password
+   (make-llm-openai :key (auth-info-password
                           (car (auth-source-search
-                                :host "generativelanguage.googleapis.com"
+                                :host "api.openai.com"
                                 :user "apikey")))
-                    :chat-model "gemini-2.5-flash-preview-04-17"))
+                    :chat-model "gpt-4.1"))
+   ;; (make-llm-gemini :key (auth-info-password
+   ;;                        (car (auth-source-search
+   ;;                              :host "generativelanguage.googleapis.com"
+   ;;                              :user "apikey")))
+   ;;                  :chat-model "gemini-2.5-flash-preview-04-17"))
   :config
   ;; Add gptcommit transient commands to `magit-commit'
   ;;   Eval (transient-remove-suffix 'magit-commit '(1 -1)) to remove gptcommit transient commands
