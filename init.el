@@ -398,13 +398,6 @@
   ;; (setq eldoc-echo-area-use-multiline-p nil))   ; doesn't work nicely
   ;; Don't auto-show documentation
   ;; (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1)))
-  ;; Add Flymake backend for Python
-  ;;   See also: `aj8/python-mode-hook'
-  ;; (add-hook 'eglot-managed-mode-hook
-  ;;           (lambda () (cond ((derived-mode-p 'python-base-mode)
-  ;;                             (add-hook 'flymake-diagnostic-functions 'python-flymake nil t))
-  ;;                            ;; if not adding diagnostic functions to other modes just use an if
-  ;;                            (t nil)))))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
