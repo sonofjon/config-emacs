@@ -1753,9 +1753,9 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Add gptcommit transient commands to `magit-commit'
   ;;   Eval (transient-remove-suffix 'magit-commit '(1 -1)) to remove gptcommit transient commands
-  (magit-gptcommit-status-buffer-setup))
+  (magit-gptcommit-status-buffer-setup)
   ;; Generate commit message automatically in magit status buffer
-  ;; (magit-gptcommit-mode 1))
+  (magit-gptcommit-mode 1))
 
 ;; magit-todos (show source file TODOs in Magit)
 ;;   Available keywords: "HOLD", "TODO", NEXT","THEM", "PROG", "OKAY",
