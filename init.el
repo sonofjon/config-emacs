@@ -1775,9 +1775,9 @@ Elisp code explicitly in arbitrary buffers.")
    ;;                  :chat-model "gemini-2.5-flash-preview-04-17"))
   :config
   ;; Add gptcommit transient commands to `magit-commit'
-  (magit-gptcommit-status-buffer-setup)
+  (magit-gptcommit-status-buffer-setup))
   ;; Generate commit message automatically in magit status buffer
-  (magit-gptcommit-mode 1))
+  ;; (magit-gptcommit-mode 1))
 
 ;; magit-todos (show source file TODOs in Magit)
 ;;   Available keywords: "HOLD", "TODO", NEXT","THEM", "PROG", "OKAY",
