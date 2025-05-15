@@ -2277,6 +2277,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Share file history between projects
 ;; (setq project-file-history-behavior 'relativize)
 
+;; Exclude some dirs from projects
+;;   Or use a dir-local file!
+;; (add-to-list 'project-vc-ignores "archive/")
+
 ;;; Help
 
 ;; More extensive apropos commands
