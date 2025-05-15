@@ -1787,10 +1787,13 @@ Elisp code explicitly in arbitrary buffers.")
 ;;   "FIXME" "XXXX*"
 (use-package magit-todos
   :after magit
-  :hook (magit-mode . magit-todos-mode))
+  :hook (magit-mode . magit-todos-mode)
   ;; :custom
   ;; ;; Don't require a colon after keyword
   ;; (magit-todos-keyword-suffix ""))
+  :config
+  ;; Exclude some dirs from search
+  (add-to-list 'magit-todos-exclude-globs "**/archive/*"))
 
 ;; diff-hl (highlight uncommitted changes using VC)
 (use-package diff-hl
