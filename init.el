@@ -293,6 +293,8 @@
               ("C-M-<right>" . csv-forward-field)
               ("C-M-<left>" . csv-backward-field))
   :config
+  ;; Enable modeline linenumber for wide files
+  (setq line-number-display-limit-width 500)   ; default is 200
   (defun my/csv-align-visible (&optional arg)
     "Align visible fields."
     (interactive "P")
