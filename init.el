@@ -2054,9 +2054,7 @@ Elisp code explicitly in arbitrary buffers.")
              t)
   (add-to-list 'gptel-directives
              '(debug . "You are a large language model and a debugger. Diagnose issues and suggest fixes.")
-             t
-
-             ))
+             t))
 
 ;; gptel-quick (quick LLM lookups in Emacs)
 (use-package gptel-quick
