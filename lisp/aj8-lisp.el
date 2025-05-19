@@ -1235,6 +1235,17 @@ entire word at point."
     (set-mark (point)))
   (backward-word arg))
 
+;; Select code block
+(defun aj8/select-code-block ()
+  "Selects the current code block delimited by triple backticks."
+  (interactive)
+    (when (re-search-backward "^```\\w+\n" nil t)
+      (let ((content-start (match-end 0)))
+        (goto-char content-start)
+        (when (re-search-forward "^```" nil t)
+          (set-mark (match-beginning 0))
+          (goto-char content-start)))))
+
 ;;;; Spelling
 
 ;;; ispell
