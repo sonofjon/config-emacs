@@ -394,6 +394,30 @@ Much faster than `sgml-pretty-print'."
                            "xmllint --format -"
                            (current-buffer) t))
 
+;; Open Ruff docs from Flymake
+(defun aj8/flymake-ruff-goto-doc ()
+"Open the documentation for the Ruff rule on a Flymake diagnostic line.
+
+Scan the Flymake diagnostic at point for a “[F821]”-style code
+and browse to its anchor at https://docs.astral.sh/ruff/rules."
+(interactive)
+  (unless (derived-mode-p 'flymake-diagnostics-buffer-mode)
+    (user-error "Not in a Flymake diagnostics buffer"))
+  (let* ((id (tabulated-list-get-id))
+         (diag (or (plist-get id :diagnostic)
+                   (user-error "Bad Flymake ID: %S" id)))
+         (msg (flymake-diagnostic-text diag)))
+    (unless (string-match (rx "[" (group (1+ upper-case) (1+ digit)) "]")
+                          msg)
+      (user-error "No Ruff rule (like [F821]) in diagnostic: %s" msg))
+    (browse-url
+     (format "https://docs.astral.sh/ruff/rules#%s"
+             (match-string 1 msg)))))
+
+(with-eval-after-load 'flymake
+  (define-key flymake-diagnostics-buffer-mode-map (kbd "M-RET")
+    #'aj8/flymake-ruff-goto-doc))
+
 ;;;; Completion
 
 ;;; Corfu navigation
