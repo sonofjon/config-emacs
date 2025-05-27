@@ -552,7 +552,7 @@
    consult-recent-file consult-xref consult--source-bookmark
    consult--source-file-register consult--source-recent-file
    consult--source-project-recent-file
-   :preview-key "M-`")
+   :preview-key "C-c M-p")
 
   ;; Completion
   ;; (consult-customize
