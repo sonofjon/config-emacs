@@ -2008,6 +2008,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (gptel-use-curl nil)
   ;; Don't show reasoning
   ;; (gptel-include-reasoning nil)
+  ;; Ignore reasoning in requests
+  ;; (gptel-include-reasoning 'ignore)
   ;; Automatic diff after rewrite
   ;; (gptel-rewrite-default-action 'ediff)
   ;; Dispatch rewrite menu
