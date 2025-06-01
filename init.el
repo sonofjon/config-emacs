@@ -406,7 +406,7 @@
 (use-package consult-eglot
   :after (consult eglot))
 
-;; flymake-aspell (Aspell checker for Flycheck)
+;; flymake-aspell (Aspell checker for Flymake)
 (use-package flymake-aspell
   :disabled
   :ensure-system-package aspell
