@@ -2036,7 +2036,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                       :key (gptel-api-key-from-auth-source
   ;;                             "api.anthropic.com" "apikey")
   ;;                       :stream t))   ; set default
-  ;; (setq gptel-model 'claude-3-7-sonnet-20250219)
+  ;; (setq gptel-model 'claude-sonnet-4-20250514)
   ;; Gemini
   (gptel-make-gemini "Gemini"
     :key (gptel-api-key-from-auth-source
