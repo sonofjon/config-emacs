@@ -2019,6 +2019,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Cache request content
   ;;   Only for Anthropic
   (gptel-cache t)
+  ;; Enable experimental options
+  (gptel-expert-commands t)
   :config
   ;; ChatGPT
   (setq gptel-model 'gpt-4.1)
