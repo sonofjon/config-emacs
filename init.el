@@ -2016,6 +2016,9 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (gptel-response-separator "\n")   ; default: "\n\n"
   ;; Pass context in user prompt
   (gptel-use-context 'user)   ; default: 'system
+  ;; Cache request content
+  ;;   Only for Anthropic
+  (gptel-cache t)
   :config
   ;; ChatGPT
   (setq gptel-model 'gpt-4.1)
