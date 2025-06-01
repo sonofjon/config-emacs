@@ -2058,6 +2058,11 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                       :stream t))   ; set default
   ;; (setq gptel-model 'gemini-pro)
   ;; (setq gptel-model 'gemini-1.5-pro-latest)   ; default is gemini-pro
+  ;; Deepseek
+  (gptel-make-deepseek "Deepseek"
+    :key (gptel-api-key-from-auth-source
+          "api.deepseek.com" "apikey")
+    :stream t)
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
@@ -2580,7 +2585,7 @@ Elisp code explicitly in arbitrary buffers.")
          (side . right)
          (slot . -1)
          (window-parameters . ((no-delete-other-windows . t))))
-        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
+        ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
          (display-buffer-in-side-window)
          (window-width . ,aj8/side-window-width-dynamic)
          (side . right)
