@@ -1871,6 +1871,18 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package transpose-frame
   :defer)
 
+;; sinister (split-window-left superiority)
+(use-package sinister
+  :vc (:url "https://github.com/positron-solutions/sinister")
+  :custom
+  ;; Number of lines to protect from incidental scrolling
+  (sinister-stillness-margin 20)   ; default 12
+  :config
+  ;; Disable automatic scrolling with minibuffer use
+  (sinister-stillness-mode 1))
+  ;; Split window defaults
+  ;; (sinister-misc-settings))
+
 ;;; Web
 
 ;; elfeed (an Emacs Atom/RSS feed reader)
