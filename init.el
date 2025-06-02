@@ -2087,7 +2087,26 @@ Elisp code explicitly in arbitrary buffers.")
              t)
   (add-to-list 'gptel-directives
              '(debug . "You are a large language model and a debugger. Diagnose issues and suggest fixes.")
-             t))
+             t)
+  ;; Preset: chat
+  (gptel-make-preset 'chat
+  :description "Preset for chat"
+  ;; :system (alist-get 'chat gptel-directives)
+  :system 'chat
+  :temperature 1.0
+  :use-context nil
+  :include-reasoning 'ignore
+  :use-tools nil)
+  ;; Preset: coding
+  (gptel-make-preset 'coding
+  :description "Preset for coding"
+  ;; :system (alist-get 'coder gptel-directives)
+  :system 'coder
+  :temperature 0.1
+  :use-context 'user
+  :include-reasoning "*gptel-reasoning*"
+  :use-tools t)
+  ;; :tools '("read_buffer" "modify_buffer")
 
 ;; gptel-quick (quick LLM lookups in Emacs)
 (use-package gptel-quick
