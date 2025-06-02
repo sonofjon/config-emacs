@@ -2166,6 +2166,15 @@ Elisp code explicitly in arbitrary buffers.")
   ;; ;; Set approximate word count of LLM summary
   ;; (gptel-quick-word-count 12))
 
+;; llm-tool-collection (a crowdsourced collection of tools to empower Large Language Models in Emacs)
+(use-package llm-tool-collection
+  :vc (:url "git@github.com:skissue/llm-tool-collection.git"
+            :rev :newest)
+  :after gptel
+  :config
+  (mapcar (apply-partially #'apply #'gptel-make-tool)
+        (llm-tool-collection-get-all)))
+
 ;; hydra (make bindings that stick around)
 (use-package hydra
   :defer)
