@@ -2107,6 +2107,55 @@ Elisp code explicitly in arbitrary buffers.")
   :include-reasoning "*gptel-reasoning*"
   :use-tools t)
   ;; :tools '("read_buffer" "modify_buffer")
+  (gptel-make-tool
+   :name "read_buffer"
+   :function (lambda (buffer)
+               (unless (buffer-live-p (get-buffer buffer))
+                 (error "error: buffer %s is not live." buffer))
+               (with-current-buffer  buffer
+                 (buffer-substring-no-properties (point-min) (point-max))))
+   :description "return the contents of an emacs buffer"
+   :args (list '(:name "buffer"
+                       :type string
+                       :description "The name of the buffer whose contents are to be retrieved"))
+   :category "emacs")
+  (gptel-make-tool
+   :name "modify_buffer"
+   :function (lambda (buffer content)
+               (let ((buf (get-buffer buffer)))
+                 (unless buf
+                   (error "Buffer %s does not exist" buffer))
+                 (with-current-buffer buf
+                   (erase-buffer)
+                   (insert content)
+                   (message "Buffer %s modified successfully" buffer))))
+   :description "replace the entire contents of an emacs buffer"
+   :args (list '(:name "buffer"
+                       :type string
+                       :description "The name of the buffer to modify")
+               '(:name "content"
+                       :type string
+                       :description "The new content for the buffer"))
+   :category "emacs")
+  (gptel-make-tool
+   :name "create_file"
+   :function (lambda (path filename content)
+               (let ((full-path (expand-file-name filename path)))
+                 (with-temp-buffer
+                   (insert content)
+                   (write-file full-path))
+                 (format "Created file %s in %s" filename path)))
+   :description "Create a new file with the specified content"
+   :args (list '(:name "path"
+	               :type string
+	               :description "The directory where to create the file")
+               '(:name "filename"
+	               :type string
+	               :description "The name of the file to create")
+               '(:name "content"
+	               :type string
+	               :description "The content to write to the file"))
+   :category "emacs"))
 
 ;; gptel-quick (quick LLM lookups in Emacs)
 (use-package gptel-quick
