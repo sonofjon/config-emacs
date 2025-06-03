@@ -2172,8 +2172,14 @@ Elisp code explicitly in arbitrary buffers.")
             :rev :newest)
   :after gptel
   :config
+  ;; Register all tools
   (mapcar (apply-partially #'apply #'gptel-make-tool)
-        (llm-tool-collection-get-all)))
+          (llm-tool-collection-get-all)))
+  ;; ;; Register one tool
+  ;; (apply #'gptel-make-tool llm-tc/list-directory)
+  ;; ;; Register one category
+  ;; (mapcar (apply-partially #'apply #'gptel-make-tool)
+  ;;       (llm-tool-collection-get-category "filesystem")))
 
 ;; hydra (make bindings that stick around)
 (use-package hydra
