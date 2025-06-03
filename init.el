@@ -2006,7 +2006,13 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package gptel
   :bind (("C-c t c" . gptel)
          ("C-c t m" . gptel-menu)
-         ("C-c t q" . gptel-abort))
+         ("C-c t q" . gptel-tabort)
+         ("C-c RET" . gptel-send)
+         ("C-c C-<return>" . gptel-menu)
+         ("C-c C-g" . gptel-abort)
+         :map gptel-mode-map
+         ("C-c M-n" . gptel-end-of-response)
+         ("C-c M-p" . gptel-beginning-of-response))
   :commands (gptel gptel-send)
   :init
   (which-key-add-key-based-replacements "C-c t" "gptel")
