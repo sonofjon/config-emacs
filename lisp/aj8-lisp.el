@@ -2176,7 +2176,7 @@ When enabled, Info-select-node is advised so that after a node is
 selected, the buffer’s text is re-flowed."
   :init-value nil
   :global t
-  :lighter " RF"
+  :lighter (:eval (when (derived-mode-p 'Info-mode) " RF"))
   (if aj8/reflow-info-mode
       (advice-add 'Info-select-node :around #'aj8/reflow-info-buffer-advice)
     (advice-remove 'Info-select-node #'aj8/reflow-info-buffer-advice)))
@@ -2200,7 +2200,7 @@ When enabled, helpful-update is advised so that after a Helpful buffer
 is updated, the buffer’s text is re-flowed."
   :init-value nil
   :global t
-  :lighter " RF"
+  :lighter (:eval (when (derived-mode-p 'helpful-mode) " RF"))
   (if aj8/reflow-helpful-mode
       (advice-add 'helpful-update :around #'aj8/reflow-helpful-buffer-advice)
     (advice-remove 'helpful-update #'aj8/reflow-helpful-buffer-advice)))
