@@ -2045,7 +2045,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-expert-commands t)
   :config
   ;; ChatGPT
-  (setq gptel-model 'gpt-4.1)
+  (setq-default gptel-model 'gpt-4.1)
   ;; (setq gptel-model 'gpt-o4-mini)
   ;; Set reasoning effort
   ;;   OpenAI default: medium
