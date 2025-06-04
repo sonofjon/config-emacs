@@ -316,7 +316,9 @@
               ("C-c C-M-n" . markdown-move-down)
               ("C-c C-M-p" . markdown-move-up)
               ("C-c C-M-<right>" . markdown-demote)
-              ("C-c C-M-<left>" . markdown-promote)))
+              ("C-c C-M-<left>" . markdown-promote)
+              ("C-c C-a b" . #'aj8/markdown-insert-link-from-buffers)
+              ("C-c C-a f" . #'aj8/markdown-insert-link-from-files)))
 
 ;; powershell (major-mode for editing PowerShell scripts)
 (use-package powershell

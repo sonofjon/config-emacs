@@ -2295,5 +2295,26 @@ Note that the available width is slightly less than reported by
            (host (tramp-file-name-host dissected)))
       (concat " TRAMP:" host))))
 
+;; Insert Mardown link to a file of an open buffer
+(defun aj8/markdown-insert-link-from-buffers ()
+  "Insert a Markdown link to a buffer using `completing-read'.
+
+Selects a buffer from all open buffers and inserts its filename as a
+link."
+  (interactive)
+  (let* ((buffers (delq nil (mapcar #'buffer-file-name (buffer-list))))
+         (file (completing-read "Insert link to buffer file: " buffers nil t))
+         (text (file-name-nondirectory file)))
+    ;; (markdown-insert-uri file)))
+    (markdown-insert-inline-link text file)))
+
+;; Insert Mardown link to a file
+(defun aj8/markdown-insert-link-from-files ()
+  "Insert a Markdown link to a file using `read-file-name'."
+  (interactive)
+  (let* ((file (read-file-name "Insert link to file: "))
+         (text (file-name-nondirectory file)))
+    (insert (format "[%s](%s)" text file))))
+
 
 (provide 'aj8-lisp)
