@@ -2947,6 +2947,20 @@ Elisp code explicitly in arbitrary buffers.")
 
 (add-hook 'nxml-mode-hook 'hs-minor-mode)
 
+;; Treesitter: copy standard mode hooks to their Treesitter equivalents
+(dolist (hook '((bash-ts-mode-hook . sh-mode-hook)
+                (css-ts-mode-hook . css-mode-hook)
+                (html-ts-mode-hook . html-mode-hook)
+                (js-ts-mode-hook . js-mode-hook)
+                (json-ts-mode-hook . json-mode-hook)
+                (lua-ts-mode-hook . lua-mode-hook)
+                (markdown-ts-mode-hook . markdown-mode-hook)
+                (python-ts-mode-hook . python-mode-hook)
+                ;; (latex-ts-mode-hook . latex-mode-hook) ; NA
+                (yaml-ts-mode-hook . yaml-mode-hook)))
+  (dolist (func (symbol-value (cdr hook)))
+    (add-hook (car hook) func)))
+
 ;;;;; KEYBINDINGS
 
 ;;   MAYBE: Use minor-mode for keybindings?
@@ -3275,21 +3289,6 @@ Elisp code explicitly in arbitrary buffers.")
             (keymap-local-unset "C-c <")
             (keymap-local-unset "C-c >")
             (keymap-local-unset "C-c ?")))
-
-;; Treesitter
-;;   Copy standard mode hooks to their Treesitter equivalents
-(dolist (hook '((bash-ts-mode-hook . sh-mode-hook)
-                (css-ts-mode-hook . css-mode-hook)
-                (html-ts-mode-hook . html-mode-hook)
-                (js-ts-mode-hook . js-mode-hook)
-                (json-ts-mode-hook . json-mode-hook)
-                (lua-ts-mode-hook . lua-mode-hook)
-                (markdown-ts-mode-hook . markdown-mode-hook)
-                (python-ts-mode-hook . python-mode-hook)
-                ;; (latex-ts-mode-hook . latex-mode-hook) ; NA
-                (yaml-ts-mode-hook . yaml-mode-hook)))
-  (dolist (func (symbol-value (cdr hook)))
-    (add-hook (car hook) func)))
 
 ;;;; Hydras
 
