@@ -415,12 +415,6 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
      (format "https://docs.astral.sh/ruff/rules/%s"
              (match-string 1 msg)))))
 
-(with-eval-after-load 'flymake
-  (define-key flymake-diagnostics-buffer-mode-map
-              (kbd "C-c a") #'aj8/flymake-ruff-goto-doc)
-  (define-key flymake-project-diagnostics-mode-map
-              (kbd "C-c a") #'aj8/flymake-ruff-goto-doc))
-
 ;;;; Completion
 
 ;;; Corfu navigation

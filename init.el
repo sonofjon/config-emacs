@@ -406,6 +406,13 @@
 (use-package consult-eglot
   :after (consult eglot))
 
+;; flymake (minor mode for on-the-fly syntax checking) - [built-in package]
+(use-package flymake
+  :bind (:map flymake-diagnostics-buffer-mode-map
+              ("h" . #'aj8/flymake-ruff-goto-doc)
+         :map flymake-project-diagnostics-mode-map
+              ("h" . #'aj8/flymake-ruff-goto-doc)))
+
 ;; flymake-aspell (Aspell checker for Flymake)
 (use-package flymake-aspell
   :disabled
