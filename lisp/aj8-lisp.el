@@ -401,7 +401,8 @@ Much faster than `sgml-pretty-print'."
 Scans the Flymake diagnostic at point for a “[RULE123]”-style code and
 browses to its documentation at https://docs.astral.sh/ruff/rules."
 (interactive)
-  (unless (derived-mode-p 'flymake-diagnostics-buffer-mode)
+(unless (or (derived-mode-p 'flymake-diagnostics-buffer-mode)
+            (derived-mode-p 'flymake-project-diagnostics-mode))
     (user-error "Not in a Flymake diagnostics buffer"))
   (let* ((id (tabulated-list-get-id))
          (diag (or (plist-get id :diagnostic)
@@ -415,8 +416,10 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
              (match-string 1 msg)))))
 
 (with-eval-after-load 'flymake
-  (define-key flymake-diagnostics-buffer-mode-map (kbd "M-RET")
-    #'aj8/flymake-ruff-goto-doc))
+  (define-key flymake-diagnostics-buffer-mode-map
+              (kbd "C-c a") #'aj8/flymake-ruff-goto-doc)
+  (define-key flymake-project-diagnostics-mode-map
+              (kbd "C-c a") #'aj8/flymake-ruff-goto-doc))
 
 ;;;; Completion
 
