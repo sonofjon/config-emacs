@@ -2936,7 +2936,7 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'Info-mode-hook #'visual-line-mode)
 ;; (add-hook 'Man-mode-hook #'visual-line-mode)
 
-;; Enable Hideshow mode in XML buffers
+;; nxml-mode: enable Hideshow mode
 (add-to-list 'hs-special-modes-alist
              (list 'nxml-mode
                    "<!--\\|<[^/>]*[^/]>"
