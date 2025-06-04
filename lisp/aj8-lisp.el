@@ -411,7 +411,7 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
                           msg)
       (user-error "No Ruff rule (like [RULE123]) in diagnostic: %s" msg))
     (browse-url
-     (format "https://docs.astral.sh/ruff/rules#%s"
+     (format "https://docs.astral.sh/ruff/rules/%s"
              (match-string 1 msg)))))
 
 (with-eval-after-load 'flymake
