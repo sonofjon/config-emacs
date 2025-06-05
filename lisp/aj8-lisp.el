@@ -709,6 +709,22 @@ Groups include:
 
 ;;;; Files
 
+;;; Selective backup inibition
+
+(defconst aj8/no-backup-regexp
+  "\\`gptel-.*\\.md\\'"
+  "Regexp matching file names for which we do *not* want backups.")
+
+(defun aj8/backup-enable-predicate (file)
+  "Decide whether to do backups for FILE.
+We defer to `normal-backup-enable-predicate`, then skip any name
+matching `aj8/no-backup-regexp`."
+  (and (normal-backup-enable-predicate file)
+       (not (string-match-p aj8/no-backup-regexp
+                            (file-name-nondirectory file)))))
+
+(setq backup-enable-predicate #'aj8/backup-enable-predicate)
+
 ;;;; Help
 
 ;;; Misc
