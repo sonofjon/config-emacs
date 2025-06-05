@@ -114,6 +114,7 @@
                           flyspell-correct
                           google-this
                           gptel
+                          gptel-magit
                           helpful
                           hydra
                           jinx
@@ -1764,6 +1765,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; magit-gptcommit (Git commit with help of GPT)
 (use-package magit-gptcommit
+  ;; :disabled
   :demand t
   :after (gptel magit)
   :bind (:map git-commit-mode-map
@@ -1787,8 +1789,15 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Add gptcommit transient commands to `magit-commit'
   (magit-gptcommit-status-buffer-setup))
-  ;; Generate commit message automatically in magit status buffer
+  ;; Generate commit message automatically in Magit status buffer
   ;; (magit-gptcommit-mode 1))
+
+;; gptel-magit (generate commit messages for Magit using gptel)
+;;   MAYBE: try this package
+(use-package gptel-magit
+  :disabled
+  :after (gptel magit)
+  :hook (magit-mode . gptel-magit-install))
 
 ;; magit-todos (show source file TODOs in Magit)
 ;;   Available keywords: "HOLD", "TODO", NEXT","THEM", "PROG", "OKAY",
