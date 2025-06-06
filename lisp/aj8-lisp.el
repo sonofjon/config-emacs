@@ -2222,10 +2222,9 @@ is updated, the buffer’s text is re-flowed."
 
 (defun aj8/markdown-insert-links (files &optional buffer newline)
   "Insert Markdown links for each element of FILES.
-
-FILES is a list of full paths.  In each link the link text is the
-filename (basename of the path).  If BUFFER is non-nil, insert the link
-in that buffer, otherwise in the current buffer.  If NEWLINE is non-nil,
+FILES is a list of absolute file paths.  For each link, the link text is
+the filename (basename of the path).  If BUFFER is non-nil, insert into
+that buffer, otherwise into `current-buffer`.  If NEWLINE is non-nil,
 insert a newline after each link."
   (with-current-buffer (or buffer (current-buffer))
     (dolist (f files)
@@ -2266,7 +2265,7 @@ link."
 
 ;; Insert Mardown links from Git
 (defun aj8/markdown-insert-link-from-git ()
-  "Insert Markdown links for all files tracked by Git."
+  "Insert Markdown links for all files tracked by Git in this repo."
   (interactive)
   (let ((root (vc-git-root default-directory)))
     (unless root
@@ -2284,10 +2283,8 @@ link."
 ;; Insert Mardown links from Dired
 (defun aj8/markdown-insert-link-from-dired ()
   "In Dired, insert Markdown links for marked files (or file at point).
-
-If any marked item is a directory, optionally recurse into it.  Then
-prompt for a target buffer and insert the links at the end of that
-buffer."
+If any marked item is a directory, optionally recurse into it.
+Then prompt for a target buffer and insert links at point."
   (interactive)
   (unless (derived-mode-p 'dired-mode)
     (user-error "Must be in Dired"))
