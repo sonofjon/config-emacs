@@ -2269,7 +2269,7 @@ link."
   (interactive)
   (let ((root (vc-git-root default-directory)))
     (unless root
-      (user-error "Not inside a Git repo"))
+      (user-error "Not inside a Git repository"))
     (let ((default-directory root)
           (all (split-string
                 (shell-command-to-string "git ls-files")
