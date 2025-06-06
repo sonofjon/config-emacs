@@ -2220,13 +2220,26 @@ is updated, the buffer’s text is re-flowed."
 
 ;;; Insert Markdown links
 
+(defun aj8/markdown-insert-links (files &optional buffer newline)
+  "Insert Markdown links for each element of FILES.
+
+FILES is a list of full paths.  In each link the link text is the
+filename (basename of the path).  If BUFFER is non-nil, insert the link
+in that buffer, otherwise in the current buffer.  If NEWLINE is non-nil,
+insert a newline after each link."
+  (with-current-buffer (or buffer (current-buffer))
+    (dolist (f files)
+      (let ((text (file-name-nondirectory f)))
+        (markdown-insert-inline-link text f))
+      (when newline
+        (insert "\n")))))
+
 ;; Insert Mardown link from files
 (defun aj8/markdown-insert-link-from-files ()
   "Insert a Markdown link to a file using `read-file-name'."
   (interactive)
-  (let* ((file (read-file-name "Insert link to file: "))
-         (text (file-name-nondirectory file)))
-    (insert (format "[%s](%s)" text file))))
+  (let ((file (read-file-name "Insert link to file: ")))
+    (aj8/markdown-insert-links (list file))))
 
 ;; Insert Mardown link from buffers
 (defun aj8/markdown-insert-link-from-buffers ()
@@ -2235,10 +2248,9 @@ Selects a buffer from all open buffers and inserts its filename as a
 link."
   (interactive)
   (let* ((buffers (delq nil (mapcar #'buffer-file-name (buffer-list))))
-         (file (completing-read "Insert link to buffer file: " buffers nil t))
-         (text (file-name-nondirectory file)))
-    ;; (markdown-insert-uri file)))
-    (markdown-insert-inline-link text file)))
+         (file    (completing-read "Insert link to buffer file: "
+                                   buffers nil t)))
+    (aj8/markdown-insert-links (list file))))
 
 ;; Insert Mardown links from project
 (defun aj8/markdown-insert-link-from-project ()
@@ -2246,12 +2258,11 @@ link."
   (interactive)
   (let ((proj (project-current t)))
     (unless proj
-      (user-error "No project detected here"))
-    (let ((files (project-files proj)))
-      (dolist (f files)
-        (let ((name (file-name-nondirectory f)))
-          (markdown-insert-inline-link name f))
-        (insert "\n")))))
+      (user-error "No project detected"))
+    (aj8/markdown-insert-links
+     (project-files proj)
+     nil
+     t)))  ; newline after each
 
 ;; Insert Mardown links from Git
 (defun aj8/markdown-insert-link-from-git ()
@@ -2260,18 +2271,23 @@ link."
   (let ((root (vc-git-root default-directory)))
     (unless root
       (user-error "Not inside a Git repo"))
-    (let ((default-directory root))
-      (dolist (rel (split-string (shell-command-to-string "git ls-files") "\n" t))
-        (markdown-insert-inline-link
-         (file-name-nondirectory rel)
-         (expand-file-name rel root))
-        (insert "\n")))))
+    (let ((default-directory root)
+          (all (split-string
+                (shell-command-to-string "git ls-files")
+                "\n" t)))
+      (aj8/markdown-insert-links
+       (mapcar (lambda (f) (expand-file-name f root))
+               all)
+       nil
+       t))))
 
 ;; Insert Mardown links from Dired
 (defun aj8/markdown-insert-link-from-dired ()
   "In Dired, insert Markdown links for marked files (or file at point).
-If any marked item is a directory, prompt to recurse into it and include
-all files under that directory."
+
+If any marked item is a directory, optionally recurse into it.  Then
+prompt for a target buffer and insert the links at the end of that
+buffer."
   (interactive)
   (unless (derived-mode-p 'dired-mode)
     (user-error "Must be in Dired"))
@@ -2282,21 +2298,18 @@ all files under that directory."
                          (format "Recurse into %d director%s? "
                                  (length dirs)
                                  (if (= (length dirs) 1) "" "ies")))))
-         (all      (apply #'append
-                          (mapcar (lambda (f)
-                                    (if (and recurse (file-directory-p f))
-                                        (directory-files-recursively f ".*")
-                                      (list f)))
-                                  files)))
-         (target   (read-buffer "Insert links into buffer: "
-                                (other-buffer (current-buffer) t))))
+         (all-files
+          (apply #'append
+                 (mapcar (lambda (f)
+                           (if (and recurse (file-directory-p f))
+                               (directory-files-recursively f ".*")
+                             (list f)))
+                         files)))
+         (target (read-buffer "Insert links into buffer: "
+                              (other-buffer (current-buffer) t))))
     (with-current-buffer target
-      (save-excursion
-        ;; you could prompt for a position or insert at point:
-        (goto-char (point-max))
-        (dolist (f all)
-          (markdown-insert-inline-link (file-name-nondirectory f) f)
-          (insert "\n"))))))
+      (aj8/markdown-insert-links all-files nil t))))
+
 
 ;;; Misc
 
