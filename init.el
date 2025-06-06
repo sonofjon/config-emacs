@@ -317,11 +317,25 @@
               ("C-c C-M-n" . markdown-move-down)
               ("C-c C-M-p" . markdown-move-up)
               ("C-c C-M-<right>" . markdown-demote)
-              ("C-c C-M-<left>" . markdown-promote)
-              ("C-c C-a b" . #'aj8/markdown-insert-link-from-buffers)
-              ("C-c C-a f" . #'aj8/markdown-insert-link-from-files)
-              ("C-c C-a g" . #'aj8/markdown-insert-link-from-git)
-              ("C-c C-a p" . #'aj8/markdown-insert-link-from-project)))
+              ("C-c C-M-<left>" . markdown-promote)))
+
+;; markdown-links (insert Markdown links from various sources)
+(use-package markdown-links
+  :after markdown-mode
+  :vc (:url "https://github.com/sonofjon/markdown-links.el"
+           :rev :newest)
+  :commands (markdown-links-insert-from-files
+             markdown-links-insert-from-buffers
+             markdown-links-insert-from-project
+             markdown-links-insert-from-git
+             markdown-links-insert-from-dired)
+  :bind (:map markdown-mode-map
+         ("C-c C-a f" . markdown-links-insert-from-files)
+         ("C-c C-a b" . markdown-links-insert-from-buffers)
+         ("C-c C-a p" . markdown-links-insert-from-project)
+         ("C-c C-a g" . markdown-links-insert-from-git)
+         :map dired-mode-map
+         ("C-c C-a d" . markdown-links-insert-from-dired)))
 
 ;; powershell (major-mode for editing PowerShell scripts)
 (use-package powershell
