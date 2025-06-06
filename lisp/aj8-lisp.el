@@ -2241,6 +2241,19 @@ link."
     ;; (markdown-insert-uri file)))
     (markdown-insert-inline-link text file)))
 
+;; Insert Mardown links from project
+(defun aj8/markdown-insert-link-from-project ()
+  "Insert Markdown links for all files in the current project."
+  (interactive)
+  (let ((proj (project-current t)))
+    (unless proj
+      (user-error "No project detected here"))
+    (let ((files (project-files proj)))
+      (dolist (f files)
+        (let ((name (file-name-nondirectory f)))
+          (markdown-insert-inline-link name f))
+        (insert "\n")))))
+
 ;; Insert Mardown links from Dired
 (defun aj8/markdown-insert-link-from-dired ()
   "Like aj8/markdown-insert-link-from-dired, but insert into any buffer."
