@@ -2218,6 +2218,58 @@ is updated, the buffer’s text is re-flowed."
       (advice-add 'helpful-update :around #'aj8/reflow-helpful-buffer-advice)
     (advice-remove 'helpful-update #'aj8/reflow-helpful-buffer-advice)))
 
+;;; Insert Markdown links
+
+;; Insert Mardown link to a file
+(defun aj8/markdown-insert-link-from-files ()
+  "Insert a Markdown link to a file using `read-file-name'."
+  (interactive)
+  (let* ((file (read-file-name "Insert link to file: "))
+         (text (file-name-nondirectory file)))
+    (insert (format "[%s](%s)" text file))))
+
+;; Insert Mardown link to a file of an open buffer
+(defun aj8/markdown-insert-link-from-buffers ()
+  "Insert a Markdown link to a buffer using `completing-read'.
+
+Selects a buffer from all open buffers and inserts its filename as a
+link."
+  (interactive)
+  (let* ((buffers (delq nil (mapcar #'buffer-file-name (buffer-list))))
+         (file (completing-read "Insert link to buffer file: " buffers nil t))
+         (text (file-name-nondirectory file)))
+    ;; (markdown-insert-uri file)))
+    (markdown-insert-inline-link text file)))
+
+;; Insert Mardown links from Dired
+(defun aj8/markdown-insert-link-from-dired ()
+  "Like aj8/markdown-insert-link-from-dired, but insert into any buffer."
+  (interactive)
+  (unless (derived-mode-p 'dired-mode)
+    (user-error "Must be in Dired"))
+  (let* ((files    (dired-get-marked-files))
+         (dirs     (seq-filter #'file-directory-p files))
+         (recurse  (and dirs
+                        (y-or-n-p
+                         (format "Recurse into %d director%s? "
+                                 (length dirs)
+                                 (if (= (length dirs) 1) "" "ies")))))
+         (all      (apply #'append
+                          (mapcar (lambda (f)
+                                    (if (and recurse (file-directory-p f))
+                                        (directory-files-recursively f ".*")
+                                      (list f)))
+                                  files)))
+         (target   (read-buffer "Insert links into buffer: "
+                                (other-buffer (current-buffer) t))))
+    (with-current-buffer target
+      (save-excursion
+        ;; you could prompt for a position or insert at point:
+        (goto-char (point-max))
+        (dolist (f all)
+          (markdown-insert-inline-link (file-name-nondirectory f) f)
+          (insert "\n"))))))
+
 ;;; Misc
 
 ;; Swap universal prefix argument for functions
@@ -2310,27 +2362,6 @@ Note that the available width is slightly less than reported by
     (let* ((dissected (tramp-dissect-file-name default-directory))
            (host (tramp-file-name-host dissected)))
       (concat " TRAMP:" host))))
-
-;; Insert Mardown link to a file of an open buffer
-(defun aj8/markdown-insert-link-from-buffers ()
-  "Insert a Markdown link to a buffer using `completing-read'.
-
-Selects a buffer from all open buffers and inserts its filename as a
-link."
-  (interactive)
-  (let* ((buffers (delq nil (mapcar #'buffer-file-name (buffer-list))))
-         (file (completing-read "Insert link to buffer file: " buffers nil t))
-         (text (file-name-nondirectory file)))
-    ;; (markdown-insert-uri file)))
-    (markdown-insert-inline-link text file)))
-
-;; Insert Mardown link to a file
-(defun aj8/markdown-insert-link-from-files ()
-  "Insert a Markdown link to a file using `read-file-name'."
-  (interactive)
-  (let* ((file (read-file-name "Insert link to file: "))
-         (text (file-name-nondirectory file)))
-    (insert (format "[%s](%s)" text file))))
 
 
 (provide 'aj8-lisp)
