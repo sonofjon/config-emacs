@@ -2271,14 +2271,11 @@ link."
     (unless root
       (user-error "Not inside a Git repository"))
     (let ((default-directory root)
-          (all (split-string
-                (shell-command-to-string "git ls-files")
-                "\n" t)))
-      (aj8/markdown-insert-links
-       (mapcar (lambda (f) (expand-file-name f root))
-               all)
-       nil
-       t))))
+          (files (split-string
+                  (shell-command-to-string "git ls-files")
+                  "\n" t))
+          (paths (mapcar (lambda (f) (expand-file-name f root)) files)))
+      (markdown-links-insert-links paths nil t))))
 
 ;; Insert Mardown links from Dired
 (defun aj8/markdown-insert-link-from-dired ()
