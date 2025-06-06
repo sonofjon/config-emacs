@@ -2254,6 +2254,20 @@ link."
           (markdown-insert-inline-link name f))
         (insert "\n")))))
 
+;; Insert Mardown links from Git
+(defun aj8/markdown-insert-link-from-git ()
+  "Insert Markdown links for all files tracked by Git."
+  (interactive)
+  (let ((root (vc-git-root default-directory)))
+    (unless root
+      (user-error "Not inside a Git repo"))
+    (let ((default-directory root))
+      (dolist (rel (split-string (shell-command-to-string "git ls-files") "\n" t))
+        (markdown-insert-inline-link
+         (file-name-nondirectory rel)
+         (expand-file-name rel root))
+        (insert "\n")))))
+
 ;; Insert Mardown links from Dired
 (defun aj8/markdown-insert-link-from-dired ()
   "Like aj8/markdown-insert-link-from-dired, but insert into any buffer."
