@@ -2220,7 +2220,7 @@ is updated, the buffer’s text is re-flowed."
 
 ;;; Insert Markdown links
 
-;; Insert Mardown link to a file
+;; Insert Mardown link from files
 (defun aj8/markdown-insert-link-from-files ()
   "Insert a Markdown link to a file using `read-file-name'."
   (interactive)
@@ -2228,10 +2228,9 @@ is updated, the buffer’s text is re-flowed."
          (text (file-name-nondirectory file)))
     (insert (format "[%s](%s)" text file))))
 
-;; Insert Mardown link to a file of an open buffer
+;; Insert Mardown link from buffers
 (defun aj8/markdown-insert-link-from-buffers ()
   "Insert a Markdown link to a buffer using `completing-read'.
-
 Selects a buffer from all open buffers and inserts its filename as a
 link."
   (interactive)
@@ -2270,7 +2269,9 @@ link."
 
 ;; Insert Mardown links from Dired
 (defun aj8/markdown-insert-link-from-dired ()
-  "Like aj8/markdown-insert-link-from-dired, but insert into any buffer."
+  "In Dired, insert Markdown links for marked files (or file at point).
+If any marked item is a directory, prompt to recurse into it and include
+all files under that directory."
   (interactive)
   (unless (derived-mode-p 'dired-mode)
     (user-error "Must be in Dired"))
