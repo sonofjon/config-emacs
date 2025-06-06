@@ -890,7 +890,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;;   TODO: Don't dump tree into *Messages*
 (use-package combobulate
   :vc (:url "git@github.com:mickeynp/combobulate.git"
-       :rev :newest)
+            :rev :newest)
   :after treesit
   ;; :load-path ("path-to-git-checkout-of-combobulate"))
   :hook (;; (bash-ts-mode . combobulate-mode)   ; NA
@@ -1907,7 +1907,8 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; sinister (split-window-left superiority)
 (use-package sinister
-  :vc (:url "https://github.com/positron-solutions/sinister")
+  :vc (:url "https://github.com/positron-solutions/sinister"
+            :rev :newest)
   :custom
   ;; Number of lines to protect from incidental scrolling
   (sinister-stillness-margin 20)   ; default 12
