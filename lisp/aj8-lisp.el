@@ -943,7 +943,7 @@ See also `mosey-goto-beginning-of-comment-text'."
   "The maximum depth level to reveal with `aj8/hs-cycle'.
 If nil, cycle through all levels."
   :type '(choice (const :tag "Unlimited" nil) integer)
-  :group 'hideshow)
+  :group 'aj8-lisp)
 
 (defvar aj8/hs-cycle--depth :if-nil
   "Current depth level for `aj8/hs-cycle'.")
