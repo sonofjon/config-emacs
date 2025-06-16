@@ -1,3 +1,5 @@
+;;; aj8-lisp.el -*- lexical-binding: t; -*-
+
 ;;;;; FUNCTIONS
 
 ;;;; Admin
