@@ -587,7 +587,11 @@
   ;;  ;; :require-match t)
 
   ;; Narrowing key
-  (setq consult-narrow-key "<"))
+  (setq consult-narrow-key "<")
+
+  ;; Exclude some dirs from consult-git-grep
+  (advice-add 'consult--git-grep-make-builder :around
+              #'aj8/consult-git-grep-advice))
 
 ;; consult-project-extra (consult integration for project.el)
 (use-package consult-project-extra

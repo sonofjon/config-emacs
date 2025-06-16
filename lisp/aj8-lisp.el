@@ -419,6 +419,39 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
 
 ;;;; Completion
 
+;;; Consult git grep exclusions
+
+(defcustom aj8/consult-git-grep-excludes
+  '("**/archive/**"       ;; exclude any archive/ tree
+    "**/build/**")        ;; exclude any build/ tree
+  "List of Git pathspec globs to exclude from `consult-git-grep'."
+  :type '(repeat string)
+  :group 'aj8-lisp)
+
+;; Exclude some dirs from consult-git-grep
+;;   `consult--git-grep-make-builder' returns a builder function which
+;;   produces: (COMMAND-LIST . HIGHLIGHT-FN), where COMMAND-LIST is the list
+;;   of args to call git grep with and HIGHLIGHT-FN is the function Consult
+;;   will use to fontify matches.
+(defun aj8/consult-git-grep-advice (orig-fun paths)
+  "Advice function to exclude directories from consult-git-grep."
+  ;; Call the original function to get its builder
+  (let ((orig-builder (funcall orig-fun paths)))
+    ;; Return a new builder that wraps the old one:
+    (lambda (input)
+      (let* ((res (funcall orig-builder input))
+             (cmd (car res))
+             (hl-fn (cdr res))
+             ;; Strip off the trailing PATHS
+             (fixed (butlast cmd (length paths)))
+             ;; Assemble: flags, "--", each exclude, then the paths again
+             (new-cmd (append fixed
+                              (list "--")
+                              (mapcar (lambda (g) (concat ":(exclude)" g))
+                                      aj8/consult-git-grep-excludes)
+                              paths)))
+        (cons new-cmd hl-fn)))))
+
 ;;; Corfu navigation
 
 (defun my/corfu-beginning-of-prompt ()
