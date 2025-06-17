@@ -1558,6 +1558,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; modus-themes (elegant, highly legible and customizable themes) - [built-in package]
 (use-package modus-themes
   :if (eq aj8/my-os 'linux)   ; Linux
+  :ensure nil   ; don't install built-in packages
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
