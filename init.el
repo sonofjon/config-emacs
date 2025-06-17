@@ -2045,7 +2045,7 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package gptel
   :bind (("C-c t c" . gptel)
          ("C-c t m" . gptel-menu)
-         ("C-c t q" . gptel-tabort)
+         ("C-c t q" . gptel-abort)
          ("C-c RET" . gptel-send)
          ("C-c C-<return>" . gptel-menu)
          ("C-c C-g" . gptel-abort)
