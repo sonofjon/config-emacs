@@ -34,8 +34,10 @@
 (defvar my/reopen-killed-file-list nil
   "List of recently killed files.")
 
-(defconst my/reopen-killed-file-max 20
-  "Maximum number of killed files to store.")
+(defcustom my/reopen-killed-file-max 20
+  "Maximum number of killed files to store."
+  :type 'integer
+  :group 'aj8-lisp)
 
 (defun my/reopen-killed-file-save ()
   "Save the content of the current buffer to `my/reopen-killed-bufer-content'.
@@ -72,8 +74,10 @@
 (defvar aj8/reopen-killed-buffer-content nil
   "Name and contents of the last killed non-file buffer.")
 
-(defvar aj8/reopen-killed-buffer-max-size 50000
-  "Maximum size of non-file buffer (in characters) to store.")
+(defcustom aj8/reopen-killed-buffer-max-size 50000
+  "Maximum size of non-file buffer (in characters) to store."
+  :type 'integer
+  :group 'aj8-lisp)
 
 (defun aj8/reopen-killed-buffer-save ()
   "Save the content of the current buffer to `my/reopen-killed-bufer-content'.
