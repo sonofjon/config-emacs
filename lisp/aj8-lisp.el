@@ -324,30 +324,7 @@ See `aj8/magit-buffer-cleanup-timer' and
     (cancel-timer aj8/magit-buffer-cleanup-timer)
     (setq aj8/magit-buffer-cleanup-timer nil)))
 
-;;; Misc
-
-;; Kill buffer in other window
-(defun my/kill-buffer-other-window ()
-  "If there are multiple windows, then kill the buffer in the next window."
-  (interactive)
-  (unless (one-window-p)
-    (let ((win (selected-window)))
-      (other-window 1)
-      (while (window-parameter (selected-window) 'window-side) ; skip side windows
-        (other-window 1))
-      (if (not (eq (selected-window) win))   ; don't kill initial window
-          (kill-buffer)
-        (message "No other window to kill"))
-      (select-window win))))
-
-;; Keep focus in side window when killing buffer
-(defun aj8/retain-side-window-focus ()
-  "Retain focus in the side window after killing its buffer."
-  (when-let* ((win (selected-window))
-              (side-window-p (window-parameter win 'window-side)))
-    (select-window win)))
-
-(advice-add 'kill-current-buffer :after #'aj8/retain-side-window-focus)
+;;; Saving
 
 ;; Save gptel buffers
 (defun aj8/gptel-write-buffer (orig-fun &rest args)
@@ -379,6 +356,47 @@ the gptel function."
 
 (advice-add 'gptel :around #'aj8/gptel-write-buffer)
 
+;; Auto-save gptel buffers
+(defun aj8/gptel-auto-save-chat-buffer (beg end)
+  "Auto-save gptel chat buffer after LLM response.
+
+Only saves if the current buffer is a modified gptel chat buffer with a
+file name.  This function is meant to be used with
+`gptel-post-response-functions'.  BEG and END are the response beginning
+and end positions, which are required by
+`gptel-post-response-functions'."
+  (when (and (bound-and-true-p gptel-mode)
+             (buffer-file-name)
+             (buffer-modified-p))
+        (save-buffer)
+    (message "Auto-saved gptel buffer")))
+
+;; Also see aj8/no-backup-regexp
+
+;;; Misc
+
+;; Kill buffer in other window
+(defun my/kill-buffer-other-window ()
+  "If there are multiple windows, then kill the buffer in the next window."
+  (interactive)
+  (unless (one-window-p)
+    (let ((win (selected-window)))
+      (other-window 1)
+      (while (window-parameter (selected-window) 'window-side) ; skip side windows
+        (other-window 1))
+      (if (not (eq (selected-window) win))   ; don't kill initial window
+          (kill-buffer)
+        (message "No other window to kill"))
+      (select-window win))))
+
+;; Keep focus in side window when killing buffer
+(defun aj8/retain-side-window-focus ()
+  "Retain focus in the side window after killing its buffer."
+  (when-let* ((win (selected-window))
+              (side-window-p (window-parameter win 'window-side)))
+    (select-window win)))
+
+(advice-add 'kill-current-buffer :after #'aj8/retain-side-window-focus)
 
 ;;;; Coding
 

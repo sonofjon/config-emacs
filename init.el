@@ -2126,6 +2126,8 @@ Elisp code explicitly in arbitrary buffers.")
   (add-hook 'gptel-post-stream-hook #'gptel-auto-scroll)
   ;; Jump to next prompt after response
   (add-hook 'gptel-post-response-functions #'gptel-end-of-response)
+  ;; Auto-save
+  (add-hook 'gptel-post-response-functions #'aj8/gptel-auto-save-chat-buffer)
   ;; Add directives
   (add-to-list 'gptel-directives
              '(coder . "You are a large language model and a careful code assistant.")
