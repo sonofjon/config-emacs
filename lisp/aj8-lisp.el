@@ -949,7 +949,7 @@ If nil, cycle through all levels."
   :type '(choice (const :tag "Unlimited" nil) integer)
   :group 'aj8-lisp)
 
-(defvar aj8/hs-cycle--depth :if-nil
+(defvar aj8/hs-cycle--depth nil
   "Current depth level for `aj8/hs-cycle'.")
 
 (defun aj8/hs-count-levels ()
