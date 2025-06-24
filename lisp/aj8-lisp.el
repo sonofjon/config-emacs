@@ -1923,7 +1923,9 @@ or a keymap object itself."
 (with-eval-after-load "smerge" (my/repeatize 'smerge-basic-map))
 
 ;; Add repeat-map for Smartparens
-;; (with-eval-after-load "smartparens" (my/repeatize 'smartparens-mode-map))
+(with-eval-after-load "smartparens"
+  (let ((map (keymap-lookup smartparens-mode-map "C-c s")))
+    (my/repeatize map)))
 
 ;; Add repeat-map for Hideshow
 (with-eval-after-load "hideshow"
