@@ -1979,19 +1979,29 @@ or a keymap object itself."
 ;; (keymap-set undo-repeat-map "/" #'undo)
 
 ;; Repeat state for arbitrary keymaps
-;; (defun repeated-prefix-help-command ()
-;;   TODO: Does not work
-;;   (interactive)
-;;   (when-let* ((keys (this-command-keys-vector))
-;;               (prefix (seq-take keys (1- (length keys))))
-;;               (orig-keymap (key-binding prefix 'accept-default))
-;;               (keymap (copy-keymap orig-keymap))
-;;               (exit-func (set-transient-map keymap t #'which-key-abort)))
-;;     (define-key keymap [remap keyboard-quit]
-;;       (lambda () (interactive) (funcall exit-func)))
-;;     (which-key--create-buffer-and-show nil keymap)))
+(defun repeated-prefix-help-command ()
+  "Show which-key help for the current prefix in a transient map.
 
-;; (setq prefix-help-command #'repeated-prefix-help-command)
+When invoked (typically as `prefix-help-command`), this command captures
+the keys typed so far as a prefix, looks up the corresponding keymap,
+copies it, and installs the copy as a transient map that remains active
+until you quit with `C-g` or select a real command.  During the
+transient session, which-key pops up a buffer listing all available
+bindings, allowing you to repeat the prefix without retyping it.
+
+This function is an alternative to `repeat-mode', so it won’t work with
+it, or with `repeat-help-mode' enabled."
+  (interactive)
+  (when-let* ((keys (this-command-keys-vector))
+              (prefix (seq-take keys (1- (length keys))))
+              (orig-keymap (key-binding prefix 'accept-default))
+              (keymap (copy-keymap orig-keymap))
+              (exit-func (set-transient-map keymap t #'which-key-abort)))
+    (define-key keymap [remap keyboard-quit]
+      (lambda () (interactive) (funcall exit-func)))
+    (which-key--create-buffer-and-show nil keymap)))
+
+(setq prefix-help-command #'repeated-prefix-help-command)
 
 ;;; Suppress messages with `advice'
 
