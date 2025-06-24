@@ -328,14 +328,16 @@ See `aj8/magit-buffer-cleanup-timer' and
 
 ;; Save gptel buffers
 (defun aj8/gptel-write-buffer (orig-fun &rest args)
-  "Advice function to save the chat buffer when starting gptel.
+  "Advice function to save the gptel chat buffer.
 
-This function saves the chat to the current project's root directory.
-If no project is detected, it prompts the user to choose a directory for
-saving.  It constructs a filename based on the current timestamp and the
-major mode of the buffer (with support for `org-mode' and
-`markdown-mode').  This function is intended to be used as advice for
-the gptel function."
+This function saves the chat buffer to the current project's root
+directory.  If no project is detected, it prompts the user to choose a
+directory for saving.  It constructs a filename based on the current
+timestamp and the major mode of the buffer (with support for `org-mode'
+and `markdown-mode').
+
+This function is intended to be used as advice for the gptel
+function.  ORIG-FUN should be `gptel'."
   (let ((chat-buf (apply orig-fun args)))
     (with-current-buffer chat-buf
       (unless (buffer-file-name)
@@ -456,7 +458,8 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
 ;;   of args to call git grep with and HIGHLIGHT-FN is the function Consult
 ;;   will use to fontify matches.
 (defun aj8/consult-git-grep-advice (orig-fun paths)
-  "Advice function to exclude directories from consult-git-grep."
+  "Advice function to exclude directories from `consult-git-grep'.
+ORIG-FUN should be the original `consult--git-grep-make-builder' function."
   ;; Call the original function to get its builder
   (let ((orig-builder (funcall orig-fun paths)))
     ;; Return a new builder that wraps the old one:
@@ -729,8 +732,9 @@ BEG and END specify the region to operate on."
 ;; Wrapper for open line above/below
 (defun my/open-line (arg)
   "Open a line above or below the current one.
-ARG is the prefix argument. If called with C-u, open a line above.
-Otherwise, open a line below."
+ARG is the prefix argument.  With prefix argument
+\\<global-map>\\[universal-argument], open a line above; otherwise open
+a line below."
   (interactive "p")
   (if (equal arg 4)  ;; C-u gives a prefix argument of 4
       (my/open-line-above)
@@ -738,7 +742,7 @@ Otherwise, open a line below."
 
 ;; Sort lines with files and directories
 (defun aj8/sort-lines-custom-group (beg end)
-  "Sort lines in region by custom groups.
+  "Sort lines in region between BEG and END by custom groups.
 Groups include:
 1. Directories (ends with \"/\")
 2. Regular files (no \"/\" or \"*\" anywhere)
@@ -1331,7 +1335,7 @@ entire word at point."
 
 ;; Select code block
 (defun aj8/select-code-block ()
-  "Selects the current code block delimited by triple backticks."
+  "Select the current code block delimited by triple backticks."
   (interactive)
     (when (re-search-backward "^```\\w+\n" nil t)
       (let ((content-start (match-end 0)))
@@ -1459,7 +1463,7 @@ versa."
 (defun aj8/jinx-correct-previous ()
   "Correct the previous visible spelling error.
 The function repeatedly jumps to each previous error, corrects it,
-and continues checking. When done, the point is restored to its
+and continues checking.  When done, the point is restored to its
 original position."
   (interactive)
   (save-excursion
@@ -1469,7 +1473,7 @@ original position."
 (defun aj8/jinx-correct-next ()
   "Correct next visible spelling error.
 The function repeatedly jumps to each next error, corrects it,
-and continues checking. When done, the point is restored to its
+and continues checking.  When done, the point is restored to its
 original position."
   (interactive)
   (save-excursion
@@ -1720,13 +1724,12 @@ characters."
 (defun my/advice--quit-window (args)
   "Advice function that makes `quit-window' quit window and kill its buffer.
 
-With a prefix argument, the buffer is buried instead. This is the
+With a prefix argument, the buffer is buried instead.  This is the
 inverse of the default behavior `quit-window'.
 
-This affects all calls to `quit-window' except in buffers
-matching `my/quit-window-exceptions-regex'. Calls to
-`quit-window' from wrapper functions defined by
-`my/quit-window-known-wrappers' are also affected."
+This affects all calls to `quit-window' except in buffers matching
+`my/quit-window-exceptions-regex'.  Calls to `quit-window' from wrapper
+functions defined by `my/quit-window-known-wrappers' are also affected."
   (when (and (or (eq this-command 'quit-window)
                  (member this-command my/quit-window-known-wrappers))
              (not (string-match-p my/quit-window-exceptions-regex (buffer-name))))
@@ -2142,7 +2145,7 @@ This function uses `aj8/reflow-bullet-regexp' to detect bullet markers."
 ;; Unused function
 (defun aj8/reflow-paragraph-match-p (beg end regexp mode)
   "Return t if the paragraph between BEG and END satisfies a regexp check.
-REGEXP is applied to each line. MODE determines how the results are combined:
+REGEXP is applied to each line.  MODE determines how the results are combined:
   'all  : returns t if every line matches REGEXP
   'any  : returns t if at least one line matches REGEXP
   'none : returns t if no line matches REGEXP"
@@ -2235,14 +2238,15 @@ and Info-specific forbidden regexps."
   (aj8/reflow-buffer aj8/reflow-forbidden-regexps-info))
 
 (defun aj8/reflow-info-buffer-advice (orig-fun &rest args)
-  "Advice function to re-flow an Info node after it is selected."
+  "Advice function to re-flow an Info node after it is selected.
+ORIG-FUN should be `Info-select-node'."
   (let ((result (apply orig-fun args)))
     (aj8/reflow-info-buffer)
     result))
 
 (define-minor-mode aj8/reflow-info-mode
   "Minor mode that toggles automatic re-flowing of Info nodes.
-When enabled, Info-select-node is advised so that after a node is
+When enabled, `Info-select-node' is advised so that after a node is
 selected, the buffer’s text is re-flowed."
   :init-value nil
   :global t
@@ -2259,14 +2263,15 @@ uppercase) and Helpful-specific forbidden regexps."
   (aj8/reflow-buffer aj8/reflow-forbidden-regexps-helpful))
 
 (defun aj8/reflow-helpful-buffer-advice (orig-fun &rest args)
-  "Advice function to re-flow a Helpful buffer."
+  "Advice function to re-flow a Helpful buffer.
+ORIG-FUN should be `helpful-update'."
   (let ((result (apply orig-fun args)))
     (aj8/reflow-helpful-buffer)
     result))
 
 (define-minor-mode aj8/reflow-helpful-mode
   "Minor mode that toggles automatic re-flowing of Helpful buffers.
-When enabled, helpful-update is advised so that after a Helpful buffer
+When enabled, `helpful-update' is advised so that after a Helpful buffer
 is updated, the buffer’s text is re-flowed."
   :init-value nil
   :global t
@@ -2328,7 +2333,7 @@ will be applied."
 (defun aj8/which-key-description-length (width)
   "Return `which-key' description width based on the given frame WIDTH.
 Note that the available width is slightly less than reported by
-`frame-width'. See `which-key--side-window-max-dimensions'"
+`frame-width'.  See `which-key--side-window-max-dimensions'"
     ;; (message "%s" width)
     (cond
      ((= width 142)   ; brain10-windows
@@ -2345,6 +2350,7 @@ Note that the available width is slightly less than reported by
 
 ;; Configure benchmark-init list format
 (defun aj8/benchmark-init-list-format ()
+  "Configure benchmark-init list format."
   (setq-local tabulated-list-format
               (quote [("Module" 50 t)
                       ("Type" 7 t)
