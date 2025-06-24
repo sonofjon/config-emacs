@@ -137,6 +137,7 @@
                           orderless
                           osx-trash
                           outline-minor-faces
+                          package-lint
                           pet
                           popper
                           powershell
@@ -484,6 +485,10 @@
   (treesit-auto-add-to-auto-mode-alist 'all)
   ;; Enable globally
   (global-treesit-auto-mode))
+
+;; package-lint (a linting library for elisp package authors)
+(use-package package-lint
+  :defer)
 
 ;;; Completion
 
