@@ -2137,8 +2137,12 @@ Elisp code explicitly in arbitrary buffers.")
   (add-hook 'gptel-post-response-functions #'aj8/gptel-auto-save-chat-buffer)
   ;; Add directives
   (add-to-list 'gptel-directives
-             '(coder . "You are a large language model and a careful code assistant.")
-             t)
+               `(coder . ,(with-temp-buffer
+                            (insert-file-contents
+                             (expand-file-name "data/gptel-directive.txt"
+                                               user-emacs-directory))
+                            (string-trim (buffer-string))))
+               t)
   (add-to-list 'gptel-directives
              '(debug . "You are a large language model and a debugger. Diagnose issues and suggest fixes.")
              t)
