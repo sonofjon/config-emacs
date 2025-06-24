@@ -1979,39 +1979,50 @@ or a keymap object itself."
 ;; (keymap-set undo-repeat-map "/" #'undo)
 
 ;; Repeat state for arbitrary keymaps
+
+(defvar repeated-prefix--active-keymap nil
+  "Keymap currently active in repeated prefix session.")
+
+(defun repeated-prefix--refresh-display ()
+  "Refresh which-key display during transient session."
+  (when repeated-prefix--active-keymap
+    (which-key--create-buffer-and-show nil repeated-prefix--active-keymap)))
+
 (defun repeated-prefix-help-command ()
   "Enable repeatable prefix commands with persistent help display.
 
 When invoked (typically as `prefix-help-command'), this command captures
 the keys typed so far as a prefix, looks up the corresponding keymap,
 copies it, and installs the copy as a transient map that remains active
-until you quit with `C-g' or execute a command outside the prefix map.
-During the transient session, available bindings are shown in the
-minibuffer.
+until you quit with `C-g` or execute a command outside the prefix map.
+During the transient session, which-key displays available bindings in
+a persistent popup, allowing you to execute commands from the prefix
+repeatedly without retyping the prefix sequence.
 
 This function is an alternative to `repeat-mode', so it doesn't work with
 `repeat-mode' or `repeat-help-mode' enabled."
   (interactive)
   (when-let* ((keys (this-command-keys-vector))
               (prefix (seq-take keys (1- (length keys))))
-              (keymap (copy-keymap (key-binding prefix 'accept-default)))
-              (message (repeated-prefix-format-message keymap prefix)))
-    (let ((exit-func (set-transient-map keymap t nil message)))
+              (keymap (copy-keymap (key-binding prefix 'accept-default))))
+
+    ;; Set up persistent display
+    (setq repeated-prefix--active-keymap keymap)
+    (add-hook 'post-command-hook #'repeated-prefix--refresh-display)
+
+    ;; Show initial which-key buffer
+    (which-key--create-buffer-and-show nil keymap)
+
+    (let ((exit-func (set-transient-map keymap t
+                       (lambda ()
+                         ;; Clean up when exiting
+                         (setq repeated-prefix--active-keymap nil)
+                         (remove-hook 'post-command-hook #'repeated-prefix--refresh-display)
+                         (which-key--hide-popup-ignore-command)))))
+
+      ;; Remap C-g to properly exit
       (define-key keymap [remap keyboard-quit]
-                  (lambda () (interactive) (funcall exit-func))))))
-
-(defun repeated-prefix-format-message (keymap prefix)
-  "Format available bindings using logic fro `which-key'.
-
-KEYMAP is the keymap to extract bindings from.
-PREFIX is the key sequence that activated this keymap."
-  (let* ((bindings (which-key--get-keymap-bindings keymap))
-         (formatted-bindings (which-key--format-and-replace bindings))
-         (pages-obj (which-key--create-pages formatted-bindings prefix))
-         (page-content (car (which-key--pages-pages pages-obj))))
-    (format "Transient map [%s] (C-g to quit):\n%s"
-            (key-description prefix)
-            page-content)))
+        (lambda () (interactive) (funcall exit-func))))))
 
 (setq prefix-help-command #'repeated-prefix-help-command)
 
