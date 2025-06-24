@@ -1920,85 +1920,51 @@ When called from an eww buffer, provide the current link as
 ;; Add repeat-map for Smartparens
 ;; (with-eval-after-load "smartparens" (my/repeatize 'smartparens-mode-map))
 
-;; Create repeat-map for move-splitter commands (window resizing)
-(defvar aj8/resize-window-repeat-map
-  (let ((map (make-sparse-keymap)))
-    (keymap-set map "{" #'my/move-splitter-up)
-    (keymap-set map "}" #'my/move-splitter-down)
-    (keymap-set map ">" #'my/move-splitter-right)
-    (keymap-set map "<" #'my/move-splitter-left)
-    map)
-  "Repeat map for window resizing commands.")
+;; Add repeat-map for Hideshow
+(with-eval-after-load "hideshow" (my/repeatize 'hs-minor-mode-map))
 
-;; Add repeat-map property to move-splitter map (window resizing)
-(dolist (cmd '(my/move-splitter-up
-               my/move-splitter-down
-               my/move-splitter-right
-               my/move-splitter-left))
-  (put cmd 'repeat-map 'aj8/resize-window-repeat-map))
+;; Create repeat-map for window resizing commands
+(defvar-keymap aj8/resize-window-repeat-map
+  :repeat t
+  :doc "Repeat map for window resizing commands."
+  "{" #'my/move-splitter-up
+  "}" #'my/move-splitter-down
+  ">" #'my/move-splitter-right
+  "<" #'my/move-splitter-left)
 
-;; Create repeat-map for duplication commands
-(defvar aj8/move-dup-repeat-map
-  (let ((map (make-sparse-keymap)))
-    (keymap-set map "<up>" #'move-dup-move-lines-up)
-    (keymap-set map "C-<up>" #'move-dup-duplicate-up)
-    (keymap-set map "<down>" #'move-dup-move-lines-down)
-    (keymap-set map "C-<down>" #'move-dup-duplicate-down)
-    map)
-  "Repeat map for duplication commands.")
-
-;; Add repeat-map property to move-dup commands
-(dolist (cmd '(move-dup-move-lines-up
-               move-dup-duplicate-up
-               move-dup-move-lines-down
-               move-dup-duplicate-down))
-  (put cmd 'repeat-map 'aj8/move-dup-repeat-map))
+;; Create repeat-map for line duplication commands
+(defvar-keymap aj8/move-dup-repeat-map
+  :repeat t
+  :doc "Repeat map for duplication commands."
+  "<up>"   #'move-dup-move-lines-up
+  "C-<up>" #'move-dup-duplicate-up
+  "<down>" #'move-dup-move-lines-down
+  "C-<down>" #'move-dup-duplicate-down)
 
 ;; Create repeat-map for indent-relative commands
-(defvar aj8/indent-repeat-map
-  (let ((map (make-sparse-keymap)))
-    (keymap-set map "TAB" #'indent-relative)
-    map)
-  "Repeat map for `indent-relative' commands.")
-
-;; Add repeat-map property to indent-relative map
-(dolist (cmd '(indent-relative))
-  (put cmd 'repeat-map 'aj8/indent-repeat-map))
+(defvar-keymap aj8/indent-repeat-map
+  :repeat t
+  :doc "Repeat map for `indent-relative'."
+  "TAB" #'indent-relative)
 
 ;; Create repeat-map for string-inflection commands
-(defvar aj8/string-inflection-repeat-map
-  (let ((map (make-sparse-keymap)))
-    (keymap-set map "x" #'string-inflection-all-cycle)
-    map)
-  "Repeat map for string-inflection commands.")
-
-;; Add repeat-map property to string-inflection map
-(dolist (cmd '(string-inflection-all-cycle))
-  (put cmd 'repeat-map 'aj8/string-inflection-repeat-map))
+(defvar-keymap aj8/string-inflection-repeat-map
+  :repeat t
+  :doc "Repeat map for string-inflection commands."
+  "x" #'string-inflection-all-cycle)
 
 ;; Create repeat-map for multi-line commands
-(defvar aj8/multi-line-repeat-map
-  (let ((map (make-sparse-keymap)))
-    (keymap-set map "n" #'multi-line)
-    map)
-  "Repeat map for `multi-line' commands.")
-
-;; Add repeat-map property to multi-line map
-(dolist (cmd '(multi-line))
-  (put cmd 'repeat-map 'aj8/multi-line-repeat-map))
+(defvar-keymap aj8/multi-line-repeat-map
+  :repeat t
+  :doc "Repeat map for `multi-line'."
+  "n" #'multi-line)
 
 ;; Create repeat-map for next/prev-buffer
-;; (defvar aj8/switch-buffer-map
-;;   (let ((map (make-sparse-keymap)))
-;;     (keymap-set map "<left>" #'aj8/previous-buffer)
-;;     (keymap-set map "<right>" #'aj8/next-buffer)
-;;     map)
-;;     "Repeat map for next/prev-buffer.")
-
-;; Add repeat-map property to next/prev-buffer map
-;; (dolist (cmd '(aj8/previous-buffer
-;;                aj8/next-buffer))
-;;   (put cmd 'repeat-map 'aj8/switch-buffer-map))
+;; (defvar-keymap aj8/switch-buffer-map
+;;   :repeat t
+;;   :doc "Repeat map for next/prev-buffer."
+;;   "<left>"  #'aj8/previous-buffer
+;;   "<right>" #'aj8/next-buffer)
 
 ;; Add "/" to undo-repeat-map
 ;; (keymap-set undo-repeat-map "/" #'undo)
