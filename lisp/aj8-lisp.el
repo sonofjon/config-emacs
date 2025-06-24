@@ -2348,19 +2348,6 @@ Note that the available width is slightly less than reported by
      (t
       27)))   ; default value
 
-;; Configure benchmark-init list format
-(defun aj8/benchmark-init-list-format ()
-  "Configure benchmark-init list format."
-  (setq-local tabulated-list-format
-              (quote [("Module" 50 t)
-                      ("Type" 7 t)
-                      ("ms" 7 (lambda (a b) (< (string-to-number (aref (cadr a) 2))
-                                               (string-to-number (aref (cadr b) 2))))
-                       :right-align t)
-                      ("total" 7 (lambda (a b) (< (string-to-number (aref (cadr a) 3))
-                                                  (string-to-number (aref (cadr b) 3))))
-                       :right-align t)])))
-
 ;; Add indicator for Treesitter modes in the modeline
 (defun aj8/treesit-mode-name ()
   "Set `mode-name' to 'Mode[TS]' if the current major mode has 'ts' in its name."

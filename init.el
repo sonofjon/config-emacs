@@ -190,11 +190,12 @@
   :init
   ;; Start benchmark
   (benchmark-init/activate)
+  ;; Reduce "Module" column width
+  (with-eval-after-load 'benchmark-init-modes
+    (setf (cadr (aref benchmark-init/list-format 0)) 30))   ; default is 65
   :config
   ;; Disable collection of benchmark data after init
-  (add-hook 'after-init-hook #'benchmark-init/deactivate)
-  ;; Configure list format
-  (advice-add 'benchmark-init/tabulated-mode :after #'aj8/benchmark-init-list-format))
+  (add-hook 'after-init-hook #'benchmark-init/deactivate))
 
 ;; esup (the Emacs StartUp Profiler (ESUP))
 ;;   MAYBE: Full of bugs and inactive maintainer
