@@ -30,7 +30,7 @@
       ((eq aj8/my-os 'linux)   ; Linux
        (message "Early settings Linux"))
 
-      (t (user-error "Unexpected system-name: %s" system-name)))
+      (t (user-error "Unexpected system-name: %s" (system-name))))
 
 
 ;;;;; PACKAGES
@@ -1698,7 +1698,7 @@ Elisp code explicitly in arbitrary buffers.")
 
          (customize-set-variable 'circadian-themes '((:sunrise . modus-operandi)
                                                      (:sunset  . modus-vivendi))))
-      (t (user-error "Unexpected system-name: %s" system-name)))
+        (t (user-error "Unexpected system-name: %s" (system-name))))
   (circadian-setup))
 
 ;;; Version control
@@ -3605,14 +3605,14 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
          (message "Late settings Ubuntu")))
        (message "Late settings Linux"))
 
-      (t (user-error "Unexpected system-name: %s" system-name)))
+      (t (user-error "Unexpected system-name: %s" (system-name))))
 
 ;; Display messages buffer
 (display-buffer "*Messages*")
 
 ;; Conditionally load host specific stuff
-;; (let ((host-specific-files (concat (make-load-path-base) system-name ".el")))
+;; (let ((host-specific-files (concat (make-load-path-base) (system-name) ".el")))
 ;;   (if (file-exists-p host-specific-files)
 ;;       (load host-specific-files)
-;;     (message (concat "No host specific customizations for " system-name))
+;;     (message (concat "No host specific customizations for " (system-name)))
 ;;     ))
