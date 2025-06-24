@@ -2152,6 +2152,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; :system (alist-get 'chat gptel-directives)
   :system 'chat
   :temperature 1.0
+  :model 'gpt-4.1
   :use-context nil
   :include-reasoning 'ignore
   :use-tools nil)
@@ -2160,6 +2161,7 @@ Elisp code explicitly in arbitrary buffers.")
   :description "Preset for coding"
   ;; :system (alist-get 'coder gptel-directives)
   :system 'coder
+  :model 'o4-mini
   :temperature 0.1
   :use-context 'user
   :include-reasoning "*gptel-reasoning*"
