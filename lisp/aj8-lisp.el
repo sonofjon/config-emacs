@@ -1980,26 +1980,38 @@ or a keymap object itself."
 
 ;; Repeat state for arbitrary keymaps
 (defun repeated-prefix-help-command ()
-  "Show which-key help for the current prefix in a transient map.
+  "Enable repeatable prefix commands with persistent help display.
 
-When invoked (typically as `prefix-help-command`), this command captures
+When invoked (typically as `prefix-help-command'), this command captures
 the keys typed so far as a prefix, looks up the corresponding keymap,
 copies it, and installs the copy as a transient map that remains active
-until you quit with `C-g` or select a real command.  During the
-transient session, which-key pops up a buffer listing all available
-bindings, allowing you to repeat the prefix without retyping it.
+until you quit with `C-g' or execute a command outside the prefix map.
+During the transient session, available bindings are shown in the
+minibuffer.
 
-This function is an alternative to `repeat-mode', so it won’t work with
-it, or with `repeat-help-mode' enabled."
+This function is an alternative to `repeat-mode', so it doesn't work with
+`repeat-mode' or `repeat-help-mode' enabled."
   (interactive)
   (when-let* ((keys (this-command-keys-vector))
               (prefix (seq-take keys (1- (length keys))))
-              (orig-keymap (key-binding prefix 'accept-default))
-              (keymap (copy-keymap orig-keymap))
-              (exit-func (set-transient-map keymap t #'which-key-abort)))
-    (define-key keymap [remap keyboard-quit]
-      (lambda () (interactive) (funcall exit-func)))
-    (which-key--create-buffer-and-show nil keymap)))
+              (keymap (copy-keymap (key-binding prefix 'accept-default)))
+              (message (repeated-prefix-format-message keymap prefix)))
+    (let ((exit-func (set-transient-map keymap t nil message)))
+      (define-key keymap [remap keyboard-quit]
+                  (lambda () (interactive) (funcall exit-func))))))
+
+(defun repeated-prefix-format-message (keymap prefix)
+  "Format available bindings using logic fro `which-key'.
+
+KEYMAP is the keymap to extract bindings from.
+PREFIX is the key sequence that activated this keymap."
+  (let* ((bindings (which-key--get-keymap-bindings keymap))
+         (formatted-bindings (which-key--format-and-replace bindings))
+         (pages-obj (which-key--create-pages formatted-bindings prefix))
+         (page-content (car (which-key--pages-pages pages-obj))))
+    (format "Transient map [%s] (C-g to quit):\n%s"
+            (key-description prefix)
+            page-content)))
 
 (setq prefix-help-command #'repeated-prefix-help-command)
 
