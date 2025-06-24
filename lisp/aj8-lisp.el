@@ -1906,13 +1906,18 @@ When called from an eww buffer, provide the current link as
 ;;; Custom repeat-maps
 
 ;; Add repeat-mode support for any keymap
-(defun my/repeatize (keymap)
-  "Add `repeat-mode' support to a KEYMAP."
-  (map-keymap
-   (lambda (_key cmd)
-     (when (symbolp cmd)
-       (put cmd 'repeat-map keymap)))
-   (symbol-value keymap)))
+(defun my/repeatize (keymap-or-symbol)
+  "Add `repeat-mode' support to a KEYMAP.
+KEYMAP-OR-SYMBOL may be either a symbol (whose value is a keymap)
+or a keymap object itself."
+  (let ((map (if (symbolp keymap-or-symbol)
+                 (symbol-value keymap-or-symbol)
+               keymap-or-symbol)))
+    (map-keymap
+     (lambda (_key cmd)
+       (when (and cmd (symbolp cmd))
+         (put cmd 'repeat-map map)))
+     map)))
 
 ;; Add repeat-map for Smerge
 (with-eval-after-load "smerge" (my/repeatize 'smerge-basic-map))
@@ -1921,7 +1926,9 @@ When called from an eww buffer, provide the current link as
 ;; (with-eval-after-load "smartparens" (my/repeatize 'smartparens-mode-map))
 
 ;; Add repeat-map for Hideshow
-(with-eval-after-load "hideshow" (my/repeatize 'hs-minor-mode-map))
+(with-eval-after-load "hideshow"
+  (let ((map (keymap-lookup hs-minor-mode-map "C-c @")))
+    (my/repeatize map)))
 
 ;; Create repeat-map for window resizing commands
 (defvar-keymap aj8/resize-window-repeat-map
