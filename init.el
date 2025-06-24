@@ -2159,7 +2159,7 @@ Elisp code explicitly in arbitrary buffers.")
    :name "read_buffer"
    :function (lambda (buffer)
                (unless (buffer-live-p (get-buffer buffer))
-                 (error "error: buffer %s is not live." buffer))
+                 (error "error: Buffer %s is not live" buffer))
                (with-current-buffer  buffer
                  (buffer-substring-no-properties (point-min) (point-max))))
    :description "return the contents of an emacs buffer"
