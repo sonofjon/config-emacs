@@ -746,7 +746,8 @@ a line below."
 Groups include:
 1. Directories (ends with \"/\")
 2. Regular files (no \"/\" or \"*\" anywhere)
-3. Regular files in directories (contains \"/\" but doesn’t end with \"/\" and no \"*\")
+3. Regular files in directories (contains \"/\" but doesn’t end with \"/\"
+   and no \"*\")
 4. Wildcards (contains \"*\")"
   (interactive "r")
   (let* ((lines (split-string (buffer-substring-no-properties beg end) "\n" t))
