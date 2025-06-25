@@ -335,9 +335,7 @@
          ("C-c C-a f" . markdown-links-insert-from-files)
          ("C-c C-a b" . markdown-links-insert-from-buffers)
          ("C-c C-a p" . markdown-links-insert-from-project)
-         ("C-c C-a g" . markdown-links-insert-from-git)
-         :map dired-mode-map
-         ("C-c C-a d" . markdown-links-insert-from-dired)))
+         ("C-c C-a g" . markdown-links-insert-from-git)))
 
 ;; powershell (major-mode for editing PowerShell scripts)
 (use-package powershell
@@ -1160,7 +1158,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;; dired (directory editor) - [built-in package]
 (use-package dired
   :ensure nil   ; don't install built-in packages
-  :bind (:map dired-mode-map ("." . dired-omit-mode))
+  :bind (:map dired-mode-map
+              ("." . dired-omit-mode)
+         :map dired-mode-map
+              ("C-c C-a d" . markdown-links-insert-from-dired))
   :init
   ;; Enable Dired-X
   (with-eval-after-load 'dired (require 'dired-x))
