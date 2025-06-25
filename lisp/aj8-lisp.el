@@ -1981,32 +1981,46 @@ or a keymap object itself."
 ;; Repeat state for arbitrary keymaps
 ;;   Reference: https://karthinks.com/software/persistent-prefix-keymaps-in-emacs/
 
-(defvar repeated-prefix-help-exit-func nil)
-(defvar repeated-prefix-help-keymap nil)
+(defvar repeated-prefix-help--keymap nil
+  "Keymap for the current repeated prefix help session.")
 
-(defun repeated-prefix-help-show ()
-  (if (equal (keymap-global-lookup "C-g") #'repeated-prefix-help-quit)
-      (which-key--create-buffer-and-show nil repeated-prefix-help-keymap)
-    (remove-hook 'post-command-hook #'repeated-prefix-help-show)))
+(defun repeated-prefix-help--refresh ()
+  "Refresh which-key display during transient session."
+  (when repeated-prefix-help--keymap
+    ;; (which-key--create-buffer-and-show nil repeated-prefix-help--keymap)
+    ;; Fix for initial call (on C-h key press)
+    (run-with-idle-timer 0 nil #'which-key--create-buffer-and-show nil repeated-prefix-help--keymap)))
 
-(defun repeated-prefix-help-quit ()
-  (interactive)
-  (remove-hook 'post-command-hook #'repeated-prefix-help-show)
-  (funcall repeated-prefix-help-exit-func))
+(defun repeated-prefix-help--quit ()
+  "Clean up and quit the repeated prefix help session."
+  (when repeated-prefix-help--keymap
+    (setq repeated-prefix-help--keymap nil)
+    (remove-hook 'post-command-hook #'repeated-prefix-help--refresh)))
 
 (defun repeated-prefix-help-command ()
+  "Enable repeatable prefix commands with persistent help display.
+
+When invoked (typically as `prefix-help-command'), this captures the
+current key prefix, creates a transient keymap that stays active until
+you quit with \\[keyboard-quit] or execute a command outside the prefix.
+A help popup shows available bindings and refreshes after each command,
+allowing you to execute prefix commands repeatedly without retyping the
+prefix sequence.
+
+For example, after pressing `C-x' and then the help key, you can
+repeatedly press `b', `s', `u', etc. to execute `switch-to-buffer',
+`save-som-buffers', `undo', etc. without pressing `C-x' again."
   (interactive)
   (when-let* ((keys (this-command-keys-vector))
               (prefix (seq-take keys (1- (length keys))))
               (orig-keymap (key-binding prefix 'accept-default))
-              (keymap (copy-keymap orig-keymap))
-              (exit-func (set-transient-map keymap t #'which-key-abort)))
-    (setq repeated-prefix-help-exit-func exit-func)
-    (define-key keymap [remap keyboard-quit] #'repeated-prefix-help-quit)
-    (define-key keymap "C-g" #'repeated-prefix-help-quit)
-    (setq repeated-prefix-help-keymap keymap)
-    ;; (notify "" (format "C-g is binded to %s" (keymap-global-lookup "C-g")))
-    (add-hook 'post-command-hook #'repeated-prefix-help-show)))
+              (keymap (copy-keymap orig-keymap)))
+    ;; Store keymap
+    (setq repeated-prefix-help--keymap keymap)
+    ;; Set up refresh mechanism
+    (add-hook 'post-command-hook #'repeated-prefix-help--refresh)
+    ;; Activate transient map with cleanup on exit
+    (set-transient-map keymap t #'repeated-prefix-help--quit)))
 
 (setq prefix-help-command #'repeated-prefix-help-command)
 
