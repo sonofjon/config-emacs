@@ -1101,6 +1101,7 @@ Elisp code explicitly in arbitrary buffers.")
   :bind (("C-c i c" . string-inflection-lower-camelcase)
          ("C-c i k" . string-inflection-kebab-case)
          ("C-c i s" . string-inflection-underscore)
+         ("C-c i p" . string-inflection-python-style-cycle)
          ("C-c i x" . string-inflection-all-cycle))
   :init
   (which-key-add-key-based-replacements "C-c i" "inflection"))
