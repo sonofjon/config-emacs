@@ -2122,8 +2122,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                       :key (gptel-api-key-from-auth-source
   ;;                             "generativelanguage.googleapis.com" "apikey")
   ;;                       :stream t))   ; set default
-  ;; (setq gptel-model 'gemini-pro)
-  ;; (setq gptel-model 'gemini-1.5-pro-latest)   ; default is gemini-pro
+  ;; (setq gptel-model 'gemini-2.5-pro)
   ;; Deepseek
   (gptel-make-deepseek "Deepseek"
     :key (gptel-api-key-from-auth-source
