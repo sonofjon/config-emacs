@@ -20,7 +20,8 @@ Always obey these rules:
 
 # Tools
 
-1. If tools are available, use them to apply changes in the code.
+1. If tools are available, use them to apply changes in the relevant buffer or fil.
+2. If file/buffer contents have already been provided to you don't ask to read the file/buffer again.
 
 # Programming languages
 
