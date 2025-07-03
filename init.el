@@ -81,7 +81,6 @@
                           all-the-icons
                           all-the-icons-dired
                           ansible
-                          auto-package-update
                           benchmark-init
                           cape
                           circadian
@@ -206,19 +205,6 @@
   :if (eq aj8/my-os 'macos))   ; macOS
 
 ;;; Admin
-
-;; auto-package-update (automatically update Emacs packages)
-(use-package auto-package-update
-  :defer 60
-  :custom
-  ;; Prompt before update
-  (auto-package-update-prompt-before-update t)
-  ;; Delete old versions
-  (auto-package-update-delete-old-versions t)
-  ;; Don't show update results
-  ;; (auto-package-update-hide-results t)
-  :config
-  (auto-package-update-maybe))
 
 ;;; Buffers
 
