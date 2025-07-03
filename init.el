@@ -73,9 +73,9 @@
 ;;;; Packages
 
 ;;; Selected packages
-;;;   Install packages with (package-install-selected-packages)
-;;;   Remove packages with (package-autoremove)
-;;;   Use use-package for configuration only
+;;;   Install packages with `package-install-selected-packages'
+;;;   Remove packages with `package-autoremove'
+;;;   `use-package' is used for configuration only
 (customize-set-variable 'package-selected-packages
                         '(ahk-mode
                           all-the-icons
@@ -164,18 +164,23 @@
 
 ;;; Selected packages sources
 ;;;   Install packages with (package-vc-install-selected-packages)
-;;;   Use use-package for configuration only
 (customize-set-variable
  'package-vc-selected-packages
  `(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
-   (obsidian-yaml-tools :url "git@github.com:sonofjon/obsidian-yaml-tools.el.git")))
+   (combobulate :url "git@github.com:mickeynp/combobulate.git" :rev :newest)
+   (copilot :url "git@github.com:copilot-emacs/copilot.el.git" :rev :newest)
+   (gptel-quick :url "git@github.com:karthink/gptel-quick.git" :rev :newest)
+   (llm-tool-collection :url "git@github.com:skissue/llm-tool-collection.git" :rev :newest)
+   (markdown-links :url "https://github.com/sonofjon/markdown-links.el" :rev :newest)
+   (obsidian-yaml-tools :url "git@github.com:sonofjon/obsidian-yaml-tools.el.git")
                         ;; :branch "dev")
    ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
    ;;                                   "/projects/obsidian-yaml-tools.el"))
    ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
    ;;                                    "/projects/obsidian-yaml-tools.el")
    ;;                      :branch "dev")))
+   (sinister :url "https://github.com/positron-solutions/sinister" :rev :newest)))
 
 ;; Install selected packages
 (package-install-selected-packages)
@@ -241,10 +246,8 @@
   ;; :mode "\\.yml$"
   ;; :hook (yaml-mode . (lambda () (ansible 1))))
 
-;; copilot (an unofficial Copilot plugin for Emacs)
+;; copilot (an unofficial Copilot plugin for Emacs) - [source package]
 (use-package copilot
-  :vc (:url "git@github.com:copilot-emacs/copilot.el.git"
-            :rev :newest)
   :bind (:map copilot-mode-map
               ("TAB" . copilot-complete)
               ("<backtab>" . 'copilot-accept-completion)
@@ -307,11 +310,9 @@
               ("C-c C-M-<right>" . markdown-demote)
               ("C-c C-M-<left>" . markdown-promote)))
 
-;; markdown-links (insert Markdown links from various sources)
+;; markdown-links (insert Markdown links from various sources) - [source package]
 (use-package markdown-links
   :after markdown-mode
-  :vc (:url "https://github.com/sonofjon/markdown-links.el"
-           :rev :newest)
   :commands (markdown-links-insert-from-files
              markdown-links-insert-from-buffers
              markdown-links-insert-from-project
@@ -877,14 +878,12 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Editing
 
-;; combobulate
+;; combobulate (structured editing and navigation in Emacs with Tree-Sitter) - [source package]
 ;;   Missing functionality: barf, slurp, forward/backward sexp (navigate
 ;;   by parens), ...
 ;;
 ;;   TODO: Don't dump tree into *Messages*
 (use-package combobulate
-  :vc (:url "git@github.com:mickeynp/combobulate.git"
-            :rev :newest)
   :after treesit
   ;; :load-path ("path-to-git-checkout-of-combobulate"))
   :hook (;; (bash-ts-mode . combobulate-mode)   ; NA
@@ -1904,10 +1903,8 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package transpose-frame
   :defer)
 
-;; sinister (split-window-left superiority)
+;; sinister (split-window-left superiority) - [source package]
 (use-package sinister
-  :vc (:url "https://github.com/positron-solutions/sinister"
-            :rev :newest)
   :custom
   ;; Number of lines to protect from incidental scrolling
   (sinister-stillness-margin 20)   ; default 12
@@ -2204,19 +2201,15 @@ Elisp code explicitly in arbitrary buffers.")
 	               :description "The content to write to the file"))
    :category "emacs"))
 
-;; gptel-quick (quick LLM lookups in Emacs)
+;; gptel-quick (quick LLM lookups in Emacs) - [source package]
 (use-package gptel-quick
-  :vc (:url "git@github.com:karthink/gptel-quick.git"
-            :rev :newest)
   :bind ("C-c t h" . gptel-quick))
   ;; :config
   ;; ;; Set approximate word count of LLM summary
   ;; (gptel-quick-word-count 12))
 
-;; llm-tool-collection (a crowdsourced collection of tools to empower Large Language Models in Emacs)
+;; llm-tool-collection (a crowdsourced collection of tools to empower Large Language Models in Emacs) - [source package]
 (use-package llm-tool-collection
-  :vc (:url "git@github.com:skissue/llm-tool-collection.git"
-            :rev :newest)
   :after gptel
   :config
   ;; Register all tools
