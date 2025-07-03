@@ -1840,6 +1840,17 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
     (switch-to-buffer nil)))   ; restore the original window
                                ; in this part of the window
 
+;; Display gptel reasoning buffer
+(defun aj8/gptel-display-reasoning-buffer (beg end)
+  "Display the gptel reasoning buffer.
+Use with any of gptel's built-in hooks.  BEG and END are the response
+beginning and end positions, which are required by
+`gptel-post-response-functions'."
+  (when (stringp gptel-include-reasoning)
+    (let ((buf (get-buffer gptel-include-reasoning)))
+      (when (and buf (> (buffer-size buf) 0))
+        (display-buffer buf nil)))))
+
 ;;;; Web
 
 ;;; eww

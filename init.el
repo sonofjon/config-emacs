@@ -2119,6 +2119,8 @@ Elisp code explicitly in arbitrary buffers.")
   (add-hook 'gptel-post-response-functions #'gptel-end-of-response)
   ;; Auto-save
   (add-hook 'gptel-post-response-functions #'aj8/gptel-auto-save-chat-buffer)
+  ;; Display reasoning buffer automatically
+  (add-hook 'gptel-post-response-functions #'aj8/gptel-display-reasoning-buffer)
   ;; Add directives
   (add-to-list 'gptel-directives
                `(coder . ,(with-temp-buffer
@@ -2630,7 +2632,7 @@ Elisp code explicitly in arbitrary buffers.")
          (window-parameters . ((no-delete-other-windows . t))))
         ;; ("\\*\\(Native-compile-Log\\)\\*"
         ;; ("\\*\\(Async-native-compile-log\\|Native-compile-Log\\|EGLOT.*events\\|.*-ls\\(::.*\\)?\\|texlab\\(::stderr\\)?\\)\\*"
-        ("\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
+        ("\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|gptel-reasoning\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
          (display-buffer-in-side-window)
          (window-height . ,aj8/side-window-height)
          (side . top)
