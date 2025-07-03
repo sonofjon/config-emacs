@@ -27,6 +27,19 @@
       (or (cdr (assoc system-type package-alist))
           (error "Package '%s' not found for system type '%s'" package system-type)))))
 
+(defun aj8/package-autoremove-no-vc (orig-fun &rest args)
+  "Advice function for `package-autoremove to not remove VC packages'.
+This function temporarily adds packages from
+`package-vc-selected-packages' to `package-selected-packages' before
+calling the `package-autoremove'. ORIG-FUN should be
+`package-autoremove'."
+  (let ((package-selected-packages
+         (append (mapcar #'car package-vc-selected-packages)
+                 package-selected-packages)))
+    (apply orig-fun args)))
+
+(advice-add #'package-autoremove :around #'aj8/package-autoremove-no-vc)
+
 ;;;; Buffers
 
 ;;; Undo for killed file buffers
