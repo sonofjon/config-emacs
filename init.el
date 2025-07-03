@@ -2912,10 +2912,15 @@ Elisp code explicitly in arbitrary buffers.")
 (add-hook 'kill-buffer-hook #'my/reopen-killed-file-save)
 (add-hook 'kill-buffer-hook #'aj8/reopen-killed-buffer-save)
 
-;; messages-buffer-mode: auto-update *Messages* buffer
-;;   Note: if the cursor is left at the end of the *Messages* buffer it
-;;         tails automatically
-(add-hook 'messages-buffer-mode-hook #'auto-revert-tail-mode)
+;; messages-buffer-mode: auto-scroll *Messages* buffer
+;;   The *Messages* buffer is created early during startup (before this hook
+;;   is set), so this only applies to newly created *Messages* buffers.
+;; (add-hook 'messages-buffer-mode-hook
+;;           (lambda () (add-hook 'after-change-functions #'aj8/tail-buffer-window nil t)))
+
+;; messages-buffer-mode: auto-scroll *Messages* buffer
+(with-current-buffer "*Messages*"
+  (add-hook 'after-change-functions #'aj8/tail-buffer-window nil t))
 
 ;;; Modes
 

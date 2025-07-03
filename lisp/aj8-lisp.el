@@ -413,6 +413,15 @@ and end positions, which are required by
 
 (advice-add 'kill-current-buffer :after #'aj8/retain-side-window-focus)
 
+(defun aj8/tail-buffer-window (beg end len)
+  "Keep the current buffer's window scrolled to the end on any change.
+This function is intended for use in `after-change-functions'.
+It ignores its arguments BEG, END, and LEN."
+  (let ((win (get-buffer-window (current-buffer) 'visible)))
+    (when win
+      (with-selected-window win
+        (goto-char (point-max))))))
+
 ;;;; Coding
 
 (defun aj8/python-mode-hook ()
