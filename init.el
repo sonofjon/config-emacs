@@ -2184,7 +2184,7 @@ Elisp code explicitly in arbitrary buffers.")
                        :description "The new content for the buffer"))
    :category "emacs")
   (gptel-make-tool
-   :name "create_file"
+   :name "make_file"
    :function (lambda (path filename content)
                (let ((full-path (expand-file-name filename path)))
                  (with-temp-buffer
