@@ -339,28 +339,45 @@ See `aj8/magit-buffer-cleanup-timer' and
 
 ;;; Buffer auto scroll
 
-(defvar aj8/messages-buffer-scroll--last-tick nil
+(defvar aj8/messages-scroll--timer nil
+  "The timer object used by `aj8/messages-scroll-mode'.")
+
+(defvar aj8/messages-scroll--last-tick nil
   "Internal variable to store the last known modification tick of `*Messages*'.")
 
-(defun aj8/messages-buffer-scroll-buffer ()
-  "If `*Messages*' buffer has changed, scroll its window to the end.
-This function is intended to be run from an idle timer."
+(defun aj8/messages-scroll--check-and-scroll ()
+  "If the `*Messages*' buffer has changed, scroll its window to the end.
+This function is intended for use in the `aj8/messages-scroll-mode' timer."
   (let ((msg-buf (get-buffer "*Messages*")))
     (when msg-buf
       (let ((current-tick (buffer-modified-tick msg-buf)))
-        (unless (equal current-tick aj8/messages-buffer-scroll--last-tick)
+        (unless (equal current-tick aj8/messages-scroll--last-tick)
           ;; Buffer has changed, so scroll it.
           (let ((win (get-buffer-window msg-buf 'visible)))
             (when win
               (with-selected-window win
                 (goto-char (point-max)))))
           ;; Update the tick to the new value.
-          (setq aj8/messages-buffer-scroll--last-tick current-tick))))))
+          (setq aj8/messages-scroll--last-tick current-tick))))))
 
-(defun aj8/messages-buffer-scroll-start-timer ()
-  "Start the idle timer to auto-scroll the `*Messages*' buffer."
-  (interactive)
-  (run-with-idle-timer 0.2 'repeat #'aj8/messages-buffer-scroll-buffer))
+(define-minor-mode aj8/messages-scroll-mode
+  "A global minor mode to make the *Messages* buffer auto-scroll.
+When enabled, a timer periodically checks for changes in the `*Messages*'
+buffer and scrolls its window to the end."
+  :init-value nil
+  :global t
+  :lighter " MsgScr"
+  (if aj8/messages-scroll-mode
+      ;; --- Code to run when TURNING ON ---
+      (unless aj8/messages-scroll--timer
+        (setq aj8/messages-scroll--timer
+              (run-with-idle-timer 0.2 'repeat #'aj8/messages-scroll--check-and-scroll))
+        (message "Messages Scroll mode enabled."))
+    ;; --- Code to run when TURNING OFF ---
+    (when aj8/messages-scroll--timer
+      (cancel-timer aj8/messages-scroll--timer)
+      (setq aj8/messages-scroll--timer nil)
+      (message "Messages Scroll mode disabled."))))
 
 ;;; Saving
 

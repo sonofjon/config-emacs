@@ -13,8 +13,6 @@
 
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
-;;Initiate messages buffer timer
-(add-hook 'emacs-startup-hook #'aj8/messages-buffer-scroll-start-timer)
 
 ;;;;; EARLY SETTINGS
 
@@ -2806,6 +2804,9 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; Re-flow Info buffers
 (aj8/reflow-info-mode 1)
+
+;; Enable automatic scrolling for the *Messages* buffer
+(aj8/messages-scroll-mode 1)
 
 ;;; Coding...
 
