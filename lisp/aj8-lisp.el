@@ -1884,19 +1884,29 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
     (switch-to-buffer nil)))   ; restore the original window
                                ; in this part of the window
 
+(defvar-local aj8/buffer-tail-mode-initialized nil
+  "A buffer-local flag to ensure tail mode setup runs only once per buffer.")
+
 ;; Display gptel reasoning buffer
 (defun aj8/gptel-display-reasoning-buffer (beg end)
-  "Display the gptel reasoning buffer and scroll to the end.
-Use with any of gptel's built-in hooks.  BEG and END are the response
-beginning and end positions, which are required by
-`gptel-post-response-functions'."
+  "Display the gptel reasoning buffer.
+
+This function displays the gptel reasoning buffer and enables
+`aj8/buffer-tail-mode' (on first display only).  Use with any of gptel's
+built-in hooks. The arguments BEG and END are ignored but required by
+the hook."
   (when (stringp gptel-include-reasoning)
     (let ((buf (get-buffer gptel-include-reasoning)))
-      (when (and buf (> (buffer-size buf) 0))
-        (let ((win (display-buffer buf nil)))
-          (when win
-            (with-selected-window win
-              (goto-char (point-max)))))))))
+      (when buf
+        ;; Perform one-time setup for the reasoning buffer.
+        (with-current-buffer buf
+          (unless aj8/buffer-tail-mode-initialized
+            ;; This block runs only once for this buffer.
+            (aj8/buffer-tail-mode 1)
+            (setq aj8/buffer-tail-mode-initialized t)))
+        ;; Now, display the buffer if it's not empty.
+        (when (> (buffer-size buf) 0)
+          (display-buffer buf nil))))))
 
 ;;;; Web
 
