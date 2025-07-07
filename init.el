@@ -2805,8 +2805,14 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Re-flow Info buffers
 (aj8/reflow-info-mode 1)
 
-;; Enable automatic scrolling for the *Messages* buffer
-(aj8/messages-scroll-mode 1)
+;; Enable auto-scrolling for the *Messages* buffer
+;;   Note that the *Messages* buffer is created early during startup (before
+;;   this hook is set), so this hook only applies to newly created
+;;   *Messages* buffers.  The `with-current-buffer' statement applies the
+;;   mode to the current *Messages* buffer.
+(add-hook 'messages-buffer-mode-hook (lambda () (aj8/buffer-tail-mode 1)))
+(with-current-buffer "*Messages*"
+  (aj8/buffer-tail-mode 1))
 
 ;;; Coding...
 

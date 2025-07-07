@@ -339,45 +339,47 @@ See `aj8/magit-buffer-cleanup-timer' and
 
 ;;; Buffer auto scroll
 
-(defvar aj8/messages-scroll--timer nil
-  "The timer object used by `aj8/messages-scroll-mode'.")
+(defvar-local aj8/buffer-tail-mode--timer nil
+  "Buffer-local timer object used by `aj8/buffer-tail-mode'.")
 
-(defvar aj8/messages-scroll--last-tick nil
-  "Internal variable to store the last known modification tick of `*Messages*'.")
+(defvar-local aj8/buffer-tail-mode--last-tick nil
+  "Buffer-local variable to store the last known modification tick.")
 
-(defun aj8/messages-scroll--check-and-scroll ()
-  "If the `*Messages*' buffer has changed, scroll its window to the end.
-This function is intended for use in the `aj8/messages-scroll-mode' timer."
-  (let ((msg-buf (get-buffer "*Messages*")))
-    (when msg-buf
-      (let ((current-tick (buffer-modified-tick msg-buf)))
-        (unless (equal current-tick aj8/messages-scroll--last-tick)
+(defun aj8/buffer-tail-mode--check-and-scroll (buffer)
+  "If BUFFER has changed, scroll its window to the end.
+This function is intended to be run from an idle timer."
+  (when (buffer-live-p buffer)   ; make sure the buffer has not been killed
+    (with-current-buffer buffer
+      (let ((current-tick (buffer-modified-tick)))
+        (unless (equal current-tick aj8/buffer-tail-mode--last-tick)
           ;; Buffer has changed, so scroll it.
-          (let ((win (get-buffer-window msg-buf 'visible)))
+          (let ((win (get-buffer-window buffer 'visible)))
             (when win
               (with-selected-window win
                 (goto-char (point-max)))))
           ;; Update the tick to the new value.
-          (setq aj8/messages-scroll--last-tick current-tick))))))
+          (setq aj8/buffer-tail-mode--last-tick current-tick))))))
 
-(define-minor-mode aj8/messages-scroll-mode
-  "A global minor mode to make the *Messages* buffer auto-scroll.
-When enabled, a timer periodically checks for changes in the `*Messages*'
+(define-minor-mode aj8/buffer-tail-mode
+  "A buffer-local minor mode to make the current buffer auto-scroll.
+
+When enabled in a buffer, a timer periodically checks for changes in that
 buffer and scrolls its window to the end."
   :init-value nil
-  :global t
-  :lighter " MsgScr"
-  (if aj8/messages-scroll-mode
+  :lighter " Tail"
+  (if aj8/buffer-tail-mode
       ;; --- Code to run when TURNING ON ---
-      (unless aj8/messages-scroll--timer
-        (setq aj8/messages-scroll--timer
-              (run-with-idle-timer 0.2 'repeat #'aj8/messages-scroll--check-and-scroll))
-        (message "Messages Scroll mode enabled."))
+      (unless aj8/buffer-tail-mode--timer
+        ;; Initialize the tick value to the current state.
+        (setq aj8/buffer-tail-mode--last-tick (buffer-modified-tick))
+        (setq aj8/buffer-tail-mode--timer
+              (run-with-idle-timer 0.2 'repeat
+                                   #'aj8/buffer-tail-mode--check-and-scroll
+                                   (current-buffer))))
     ;; --- Code to run when TURNING OFF ---
-    (when aj8/messages-scroll--timer
-      (cancel-timer aj8/messages-scroll--timer)
-      (setq aj8/messages-scroll--timer nil)
-      (message "Messages Scroll mode disabled."))))
+    (when aj8/buffer-tail-mode--timer
+      (cancel-timer aj8/buffer-tail-mode--timer)
+      (setq aj8/buffer-tail-mode--timer nil))))
 
 ;;; Saving
 
