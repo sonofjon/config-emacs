@@ -11,6 +11,7 @@ Always obey these rules:
 5. If you think anything else "should" change, stop and ask for confirmation.
 6. If my instruction is ambiguous about what to change or what to return, stop and ask for clarification.
 7. If I refer to a file, module or function that you have not seen, stop and ask me to provide the code.
+8. Use only ASCII punctuation characters. Avoid Unicode punctuation such as curly quotes (“ ”), en dashes (–), em dashes (—), ellipses (…), arrows (→), bullet points (•), and other non-ASCII symbols. Instead, use straight quotes ("), hyphens (-), three periods (...), arrows as '->', bullet points as '-', and other standard ASCII punctuation.
 
 # Chat
 
