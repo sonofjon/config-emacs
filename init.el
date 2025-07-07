@@ -13,6 +13,8 @@
 
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
+;;Initiate messages buffer timer
+(add-hook 'emacs-startup-hook #'aj8/messages-buffer-scroll-start-timer)
 
 ;;;;; EARLY SETTINGS
 
@@ -2911,16 +2913,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; kill-buffer: collect list of killed file and non-file buffers
 (add-hook 'kill-buffer-hook #'my/reopen-killed-file-save)
 (add-hook 'kill-buffer-hook #'aj8/reopen-killed-buffer-save)
-
-;; messages-buffer-mode: auto-scroll *Messages* buffer
-;;   The *Messages* buffer is created early during startup (before this hook
-;;   is set), so this only applies to newly created *Messages* buffers.
-;; (add-hook 'messages-buffer-mode-hook
-;;           (lambda () (add-hook 'after-change-functions #'aj8/tail-buffer-window nil t)))
-
-;; messages-buffer-mode: auto-scroll *Messages* buffer
-(with-current-buffer "*Messages*"
-  (add-hook 'after-change-functions #'aj8/tail-buffer-window nil t))
 
 ;;; Modes
 

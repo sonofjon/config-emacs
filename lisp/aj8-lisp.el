@@ -337,6 +337,31 @@ See `aj8/magit-buffer-cleanup-timer' and
     (cancel-timer aj8/magit-buffer-cleanup-timer)
     (setq aj8/magit-buffer-cleanup-timer nil)))
 
+;;; Buffer auto scroll
+
+(defvar aj8/messages-buffer-scroll--last-tick nil
+  "Internal variable to store the last known modification tick of `*Messages*'.")
+
+(defun aj8/messages-buffer-scroll-buffer ()
+  "If `*Messages*' buffer has changed, scroll its window to the end.
+This function is intended to be run from an idle timer."
+  (let ((msg-buf (get-buffer "*Messages*")))
+    (when msg-buf
+      (let ((current-tick (buffer-modified-tick msg-buf)))
+        (unless (equal current-tick aj8/messages-buffer-scroll--last-tick)
+          ;; Buffer has changed, so scroll it.
+          (let ((win (get-buffer-window msg-buf 'visible)))
+            (when win
+              (with-selected-window win
+                (goto-char (point-max)))))
+          ;; Update the tick to the new value.
+          (setq aj8/messages-buffer-scroll--last-tick current-tick))))))
+
+(defun aj8/messages-buffer-scroll-start-timer ()
+  "Start the idle timer to auto-scroll the `*Messages*' buffer."
+  (interactive)
+  (run-with-idle-timer 0.2 'repeat #'aj8/messages-buffer-scroll-buffer))
+
 ;;; Saving
 
 ;; Save gptel buffers
@@ -412,15 +437,6 @@ and end positions, which are required by
     (select-window win)))
 
 (advice-add 'kill-current-buffer :after #'aj8/retain-side-window-focus)
-
-(defun aj8/tail-buffer-window (beg end len)
-  "Keep the current buffer's window scrolled to the end on any change.
-This function is intended for use in `after-change-functions'.
-It ignores its arguments BEG, END, and LEN."
-  (let ((win (get-buffer-window (current-buffer) 'visible)))
-    (when win
-      (with-selected-window win
-        (goto-char (point-max))))))
 
 ;;;; Coding
 
