@@ -2156,6 +2156,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-make-tool
    :name "my_read_buffer"
    :function (lambda (buffer)
+               "Return the contents of a BUFFER."
                (unless (buffer-live-p (get-buffer buffer))
                  (error "error: Buffer %s is not live" buffer))
                (with-current-buffer  buffer
@@ -2168,6 +2169,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-make-tool
    :name "my_modify_buffer"
    :function (lambda (buffer content)
+               "Completely replace contents of BUFFER-NAME with CONTENT."
                (let ((buf (get-buffer buffer)))
                  (unless buf
                    (error "Buffer %s does not exist" buffer))
@@ -2186,6 +2188,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-make-tool
    :name "my_create_file"
    :function (lambda (path filename content)
+               "Create FILENAME at PATH and insert CONTENT."
                (let ((full-path (expand-file-name filename path)))
                  (with-temp-buffer
                    (insert content)
