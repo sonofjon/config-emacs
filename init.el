@@ -2154,7 +2154,7 @@ Elisp code explicitly in arbitrary buffers.")
   :use-tools t)
   ;; :tools '("read_buffer" "modify_buffer")
   (gptel-make-tool
-   :name "read_buffer"
+   :name "my_read_buffer"
    :function (lambda (buffer)
                (unless (buffer-live-p (get-buffer buffer))
                  (error "error: Buffer %s is not live" buffer))
@@ -2164,9 +2164,9 @@ Elisp code explicitly in arbitrary buffers.")
    :args (list '(:name "buffer"
                        :type string
                        :description "The name of the buffer whose contents are to be retrieved"))
-   :category "emacs")
+   :category "buffers")
   (gptel-make-tool
-   :name "modify_buffer"
+   :name "my_modify_buffer"
    :function (lambda (buffer content)
                (let ((buf (get-buffer buffer)))
                  (unless buf
@@ -2182,9 +2182,9 @@ Elisp code explicitly in arbitrary buffers.")
                '(:name "content"
                        :type string
                        :description "The new content for the buffer"))
-   :category "emacs")
+   :category "buffers")
   (gptel-make-tool
-   :name "make_file"
+   :name "my_create_file"
    :function (lambda (path filename content)
                (let ((full-path (expand-file-name filename path)))
                  (with-temp-buffer
