@@ -2158,8 +2158,8 @@ Elisp code explicitly in arbitrary buffers.")
    :function (lambda (buffer)
                "Return the contents of a BUFFER."
                (unless (buffer-live-p (get-buffer buffer))
-                 (error "error: Buffer %s is not live" buffer))
-               (with-current-buffer  buffer
+                 (error "Error: buffer %s is not live." buffer))
+               (with-current-buffer buffer
                  (buffer-substring-no-properties (point-min) (point-max))))
    :description "Return the contents of a buffer"
    :args (list '(:name "buffer"
