@@ -2239,6 +2239,7 @@ Elisp code explicitly in arbitrary buffers.")
 	               :description "The content to write to the file"))
    :category "filesystem")
   (gptel-make-tool
+   :name "my_edit_file"
    :function (lambda (file-path file-edits)
                "In FILE-PATH, apply FILE-EDITS with pattern matching and replacing."
                (if (and file-path (not (string= file-path "")) file-edits)
@@ -2268,7 +2269,6 @@ Elisp code explicitly in arbitrary buffers.")
                              (format "Successfully edited %s" file-name))
                          (format "Failed to edited %s" file-name))))
                  (format "Failed to edited %s" file-path)))
-   :name "my_edit_file"
    :description "Edit file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string will replace old-string at the specified line."
    :args (list '(:name "file-path"
                        :type string
