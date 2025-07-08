@@ -2204,6 +2204,54 @@ Elisp code explicitly in arbitrary buffers.")
                '(:name "content"
 	               :type string
 	               :description "The content to write to the file"))
+  (defun my-gptel--edit_file (file-path file-edits)
+  "In FILE-PATH, apply FILE-EDITS with pattern matching and replacing."
+  (if (and file-path (not (string= file-path "")) file-edits)
+      (with-current-buffer (get-buffer-create "*edit-file*")
+        (erase-buffer)
+        (insert-file-contents (expand-file-name file-path))
+        (let ((inhibit-read-only t)
+              (case-fold-search nil)
+              (file-name (expand-file-name file-path))
+              (edit-success nil))
+          ;; apply changes
+          (dolist (file-edit (seq-into file-edits 'list))
+            (when-let ((line-number (plist-get file-edit :line_number))
+                       (old-string (plist-get file-edit :old_string))
+                       (new-string (plist-get file-edit :new_string))
+                       (is-valid-old-string (not (string= old-string ""))))
+              (goto-char (point-min))
+              (forward-line (1- line-number))
+              (when (search-forward old-string nil t)
+                (replace-match new-string t t)
+                (setq edit-success t))))
+          ;; return result to gptel
+          (if edit-success
+              (progn
+                ;; show diffs
+                (ediff-buffers (find-file-noselect file-name) (current-buffer))
+                (format "Successfully edited %s" file-name))
+            (format "Failed to edited %s" file-name))))
+            (format "Failed to edited %s" file-path)))
+  (gptel-make-tool
+   :function #'my-gptel--edit_file
+   :name "my_edit_file"
+   :description "Edit file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string will replace old-string at the specified line."
+   :args (list '(:name "file-path"
+                       :type string
+                       :description "The full path of the file to edit")
+               '(:name "file-edits"
+                       :type array
+                       :items (:type object
+                                     :properties
+                                     (:line_number
+                                      (:type integer :description "The line number of the file where edit starts.")
+                                      :old_string
+                                      (:type string :description "The string to be replaced by new_string.")
+                                      :new_string
+                                      (:type string :description "The string to replace old_string.")))
+                       :description "The list of edits to apply to the file"))
+   :category "filesystem")
    :category "emacs"))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
