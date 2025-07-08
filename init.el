@@ -2161,10 +2161,10 @@ Elisp code explicitly in arbitrary buffers.")
                  (error "error: Buffer %s is not live" buffer))
                (with-current-buffer  buffer
                  (buffer-substring-no-properties (point-min) (point-max))))
-   :description "return the contents of an emacs buffer"
+   :description "Return the contents of a buffer"
    :args (list '(:name "buffer"
                        :type string
-                       :description "The name of the buffer whose contents are to be retrieved"))
+                       :description "The name of the buffer whose contents are to be read"))
    :category "buffers")
   (gptel-make-tool
    :name "my_modify_buffer"
@@ -2177,13 +2177,13 @@ Elisp code explicitly in arbitrary buffers.")
                    (erase-buffer)
                    (insert content)
                    (message "Buffer %s modified successfully" buffer))))
-   :description "replace the entire contents of an emacs buffer"
+   :description "Completely overwrite the contents of a buffer"
    :args (list '(:name "buffer"
                        :type string
-                       :description "The name of the buffer to modify")
+                       :description "Name of the buffer to overwrite")
                '(:name "content"
                        :type string
-                       :description "The new content for the buffer"))
+                       :description "Content to write to the buffer"))
    :category "buffers")
   (gptel-make-tool
    :name "my_create_file"
