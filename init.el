@@ -2153,19 +2153,19 @@ Elisp code explicitly in arbitrary buffers.")
   :include-reasoning "*gptel-reasoning*"
   :use-tools t)
   ;; :tools '("read_buffer" "modify_buffer")
-  (gptel-make-tool
-   :name "my_read_buffer"
-   :function (lambda (buffer)
-               "Return the contents of a BUFFER."
-               (unless (buffer-live-p (get-buffer buffer))
-                 (error "Error: buffer %s is not live." buffer))
-               (with-current-buffer buffer
-                 (buffer-substring-no-properties (point-min) (point-max))))
-   :description "Return the contents of a buffer"
-   :args (list '(:name "buffer"
-                       :type string
-                       :description "The name of the buffer whose contents are to be read"))
-   :category "buffers")
+  ;; (gptel-make-tool
+  ;;  :name "my_read_buffer"
+  ;;  :function (lambda (buffer)
+  ;;              "Return the contents of a BUFFER."
+  ;;              (unless (buffer-live-p (get-buffer buffer))
+  ;;                (error "Error: buffer %s is not live." buffer))
+  ;;              (with-current-buffer buffer
+  ;;                (buffer-substring-no-properties (point-min) (point-max))))
+  ;;  :description "Return the contents of a buffer"
+  ;;  :args (list '(:name "buffer"
+  ;;                      :type string
+  ;;                      :description "The name of the buffer whose contents are to be read"))
+  ;;  :category "buffers")
   (gptel-make-tool
    :name "my_modify_buffer"
    :function (lambda (buffer content)
@@ -2185,59 +2185,59 @@ Elisp code explicitly in arbitrary buffers.")
                        :type string
                        :description "Content to write to the buffer"))
    :category "buffers")
-  (gptel-make-tool
-   :name "codel_edit_buffer"
-   :function (lambda (buffer-name old-string new-string)
-               "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
-               (with-current-buffer buffer-name
-                 (let ((case-fold-search nil))  ;; Case-sensitive search
-                   (save-excursion
-                     (goto-char (point-min))
-                     (let ((count 0))
-                       (while (search-forward old-string nil t)
-                         (setq count (1+ count)))
-                       (if (= count 0)
-                           (format "Error: Could not find text to replace in buffer %s" buffer-name)
-                         (if (> count 1)
-                             (format "Error: Found %d matches for the text to replace in buffer %s" count buffer-name)
-                           (goto-char (point-min))
-                           (search-forward old-string)
-                           (replace-match new-string t t)
-                           (format "Successfully edited buffer %s" buffer-name))))))))
-   :description "Edit buffer"
-   :args '((:name "buffer_name"
-                  :type string
-                  :description "Name of the buffer to modify"
-                  :required t)
-           (:name "old_string"
-                  :type string
-                  :description "Text to be replaced by new_string"
-                  :required t)
-           (:name "new_string"
-                  :type string
-                  :description "Text to replace old_string with"
-                  :required t))
-   :category "buffers")
-  (gptel-make-tool
-   :name "my_create_file"
-   :function (lambda (path filename content)
-               "Create FILENAME at PATH and insert CONTENT."
-               (let ((full-path (expand-file-name filename path)))
-                 (with-temp-buffer
-                   (insert content)
-                   (write-file full-path))
-                 (format "Created file %s in %s" filename path)))
-   :description "Create a new file with the specified content"
-   :args (list '(:name "path"
-	               :type string
-	               :description "The directory where to create the file")
-               '(:name "filename"
-	               :type string
-	               :description "The name of the file to create")
-               '(:name "content"
-	               :type string
-	               :description "The content to write to the file"))
-   :category "filesystem")
+  ;; (gptel-make-tool
+  ;;  :name "my_edit_buffer"
+  ;;  :function (lambda (buffer-name old-string new-string)
+  ;;              "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
+  ;;              (with-current-buffer buffer-name
+  ;;                (let ((case-fold-search nil))  ;; Case-sensitive search
+  ;;                  (save-excursion
+  ;;                    (goto-char (point-min))
+  ;;                    (let ((count 0))
+  ;;                      (while (search-forward old-string nil t)
+  ;;                        (setq count (1+ count)))
+  ;;                      (if (= count 0)
+  ;;                          (format "Error: Could not find text to replace in buffer %s" buffer-name)
+  ;;                        (if (> count 1)
+  ;;                            (format "Error: Found %d matches for the text to replace in buffer %s" count buffer-name)
+  ;;                          (goto-char (point-min))
+  ;;                          (search-forward old-string)
+  ;;                          (replace-match new-string t t)
+  ;;                          (format "Successfully edited buffer %s" buffer-name))))))))
+  ;;  :description "Edit buffer"
+  ;;  :args '((:name "buffer_name"
+  ;;                 :type string
+  ;;                 :description "Name of the buffer to modify"
+  ;;                 :required t)
+  ;;          (:name "old_string"
+  ;;                 :type string
+  ;;                 :description "Text to be replaced by new_string"
+  ;;                 :required t)
+  ;;          (:name "new_string"
+  ;;                 :type string
+  ;;                 :description "Text to replace old_string with"
+  ;;                 :required t))
+  ;;  :category "buffers")
+  ;; (gptel-make-tool
+  ;;  :name "my_create_file"
+  ;;  :function (lambda (path filename content)
+  ;;              "Create FILENAME at PATH and insert CONTENT."
+  ;;              (let ((full-path (expand-file-name filename path)))
+  ;;                (with-temp-buffer
+  ;;                  (insert content)
+  ;;                  (write-file full-path))
+  ;;                (format "Created file %s in %s" filename path)))
+  ;;  :description "Create a new file with the specified content"
+  ;;  :args (list '(:name "path"
+  ;;                      :type string
+  ;;                      :description "The directory where to create the file")
+  ;;              '(:name "filename"
+  ;;                      :type string
+  ;;                      :description "The name of the file to create")
+  ;;              '(:name "content"
+  ;;                      :type string
+  ;;                      :description "The content to write to the file"))
+  ;;  :category "filesystem")
   (gptel-make-tool
    :name "my_edit_file"
    :function (lambda (file-path file-edits)
