@@ -2204,6 +2204,7 @@ Elisp code explicitly in arbitrary buffers.")
                '(:name "content"
 	               :type string
 	               :description "The content to write to the file"))
+   :category "filesystem")
   (defun my-gptel--edit_file (file-path file-edits)
   "In FILE-PATH, apply FILE-EDITS with pattern matching and replacing."
   (if (and file-path (not (string= file-path "")) file-edits)
