@@ -2205,37 +2205,36 @@ Elisp code explicitly in arbitrary buffers.")
 	               :type string
 	               :description "The content to write to the file"))
    :category "filesystem")
-  (defun my-gptel--edit_file (file-path file-edits)
-  "In FILE-PATH, apply FILE-EDITS with pattern matching and replacing."
-  (if (and file-path (not (string= file-path "")) file-edits)
-      (with-current-buffer (get-buffer-create "*edit-file*")
-        (erase-buffer)
-        (insert-file-contents (expand-file-name file-path))
-        (let ((inhibit-read-only t)
-              (case-fold-search nil)
-              (file-name (expand-file-name file-path))
-              (edit-success nil))
-          ;; apply changes
-          (dolist (file-edit (seq-into file-edits 'list))
-            (when-let ((line-number (plist-get file-edit :line_number))
-                       (old-string (plist-get file-edit :old_string))
-                       (new-string (plist-get file-edit :new_string))
-                       (is-valid-old-string (not (string= old-string ""))))
-              (goto-char (point-min))
-              (forward-line (1- line-number))
-              (when (search-forward old-string nil t)
-                (replace-match new-string t t)
-                (setq edit-success t))))
-          ;; return result to gptel
-          (if edit-success
-              (progn
-                ;; show diffs
-                (ediff-buffers (find-file-noselect file-name) (current-buffer))
-                (format "Successfully edited %s" file-name))
-            (format "Failed to edited %s" file-name))))
-            (format "Failed to edited %s" file-path)))
   (gptel-make-tool
-   :function #'my-gptel--edit_file
+   :function (lambda (file-path file-edits)
+               "In FILE-PATH, apply FILE-EDITS with pattern matching and replacing."
+               (if (and file-path (not (string= file-path "")) file-edits)
+                   (with-current-buffer (get-buffer-create "*edit-file*")
+                     (erase-buffer)
+                     (insert-file-contents (expand-file-name file-path))
+                     (let ((inhibit-read-only t)
+                           (case-fold-search nil)
+                           (file-name (expand-file-name file-path))
+                           (edit-success nil))
+                       ;; apply changes
+                       (dolist (file-edit (seq-into file-edits 'list))
+                         (when-let ((line-number (plist-get file-edit :line_number))
+                                    (old-string (plist-get file-edit :old_string))
+                                    (new-string (plist-get file-edit :new_string))
+                                    (is-valid-old-string (not (string= old-string ""))))
+                           (goto-char (point-min))
+                           (forward-line (1- line-number))
+                           (when (search-forward old-string nil t)
+                             (replace-match new-string t t)
+                             (setq edit-success t))))
+                       ;; return result to gptel
+                       (if edit-success
+                           (progn
+                             ;; show diffs
+                             (ediff-buffers (find-file-noselect file-name) (current-buffer))
+                             (format "Successfully edited %s" file-name))
+                         (format "Failed to edited %s" file-name))))
+                 (format "Failed to edited %s" file-path)))
    :name "my_edit_file"
    :description "Edit file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string will replace old-string at the specified line."
    :args (list '(:name "file-path"
@@ -2253,26 +2252,25 @@ Elisp code explicitly in arbitrary buffers.")
                                       (:type string :description "The string to replace old_string.")))
                        :description "The list of edits to apply to the file"))
    :category "filesystem")
-  (defun codel-edit-buffer (buffer-name old-string new-string)
-    "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
-    (with-current-buffer buffer-name
-      (let ((case-fold-search nil))  ;; Case-sensitive search
-        (save-excursion
-          (goto-char (point-min))
-          (let ((count 0))
-            (while (search-forward old-string nil t)
-              (setq count (1+ count)))
-            (if (= count 0)
-                (format "Error: Could not find text to replace in buffer %s" buffer-name)
-              (if (> count 1)
-                  (format "Error: Found %d matches for the text to replace in buffer %s" count buffer-name)
-                (goto-char (point-min))
-                (search-forward old-string)
-                (replace-match new-string t t)
-                (format "Successfully edited buffer %s" buffer-name))))))))
   (gptel-make-tool
    :name "codel_edit_buffer"
-   :function #'codel-edit-buffer
+   :function (lambda (buffer-name old-string new-string)
+               "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
+               (with-current-buffer buffer-name
+                 (let ((case-fold-search nil))  ;; Case-sensitive search
+                   (save-excursion
+                     (goto-char (point-min))
+                     (let ((count 0))
+                       (while (search-forward old-string nil t)
+                         (setq count (1+ count)))
+                       (if (= count 0)
+                           (format "Error: Could not find text to replace in buffer %s" buffer-name)
+                         (if (> count 1)
+                             (format "Error: Found %d matches for the text to replace in buffer %s" count buffer-name)
+                           (goto-char (point-min))
+                           (search-forward old-string)
+                           (replace-match new-string t t)
+                           (format "Successfully edited buffer %s" buffer-name))))))))
    :description "Edit buffer"
    :args '((:name "buffer_name"
                   :type string
@@ -2287,19 +2285,18 @@ Elisp code explicitly in arbitrary buffers.")
                   :description "Text to replace old_string with"
                   :required t))
    :category "buffers")
-  (defun gptel-read-documentation (symbol)
-  "Read the documentation for SYMBOL, which can be a function or variable."
-  (let ((sym (intern symbol)))
-    (cond
-     ((fboundp sym)
-      (documentation sym))
-     ((boundp sym)
-      (documentation-property sym 'variable-documentation))
-     (t
-      (format "No documentation found for %s" symbol)))))
   (gptel-make-tool
    :name "my_read_documentation"
-   :function #'gptel-read-documentation
+   :function (lambda (symbol)
+               "Read the documentation for SYMBOL, which can be a function or variable."
+               (let ((sym (intern symbol)))
+                 (cond
+                  ((fboundp sym)
+                   (documentation sym))
+                  ((boundp sym)
+                   (documentation-property sym 'variable-documentation))
+                  (t
+                   (format "No documentation found for %s" symbol)))))
    :description "Read the documentation for a given function or variable"
    :args (list '(:name "name"
                        :type string
