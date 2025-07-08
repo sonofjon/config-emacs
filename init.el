@@ -2286,6 +2286,23 @@ Elisp code explicitly in arbitrary buffers.")
                   :description "Text to replace old_string with"
                   :required t))
    :category "buffers")
+  (defun gptel-read-documentation (symbol)
+  "Read the documentation for SYMBOL, which can be a function or variable."
+  (let ((sym (intern symbol)))
+    (cond
+     ((fboundp sym)
+      (documentation sym))
+     ((boundp sym)
+      (documentation-property sym 'variable-documentation))
+     (t
+      (format "No documentation found for %s" symbol)))))
+  (gptel-make-tool
+   :name "my_read_documentation"
+   :function #'gptel-read-documentation
+   :description "Read the documentation for a given function or variable"
+   :args (list '(:name "name"
+                       :type string
+                       :description "The name of the function or variable whose documentation is to be read"))
    :category "emacs"))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
