@@ -2186,6 +2186,39 @@ Elisp code explicitly in arbitrary buffers.")
                        :description "Content to write to the buffer"))
    :category "buffers")
   (gptel-make-tool
+   :name "codel_edit_buffer"
+   :function (lambda (buffer-name old-string new-string)
+               "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
+               (with-current-buffer buffer-name
+                 (let ((case-fold-search nil))  ;; Case-sensitive search
+                   (save-excursion
+                     (goto-char (point-min))
+                     (let ((count 0))
+                       (while (search-forward old-string nil t)
+                         (setq count (1+ count)))
+                       (if (= count 0)
+                           (format "Error: Could not find text to replace in buffer %s" buffer-name)
+                         (if (> count 1)
+                             (format "Error: Found %d matches for the text to replace in buffer %s" count buffer-name)
+                           (goto-char (point-min))
+                           (search-forward old-string)
+                           (replace-match new-string t t)
+                           (format "Successfully edited buffer %s" buffer-name))))))))
+   :description "Edit buffer"
+   :args '((:name "buffer_name"
+                  :type string
+                  :description "Name of the buffer to modify"
+                  :required t)
+           (:name "old_string"
+                  :type string
+                  :description "Text to be replaced by new_string"
+                  :required t)
+           (:name "new_string"
+                  :type string
+                  :description "Text to replace old_string with"
+                  :required t))
+   :category "buffers")
+  (gptel-make-tool
    :name "my_create_file"
    :function (lambda (path filename content)
                "Create FILENAME at PATH and insert CONTENT."
@@ -2252,39 +2285,6 @@ Elisp code explicitly in arbitrary buffers.")
                                       (:type string :description "The string to replace old_string.")))
                        :description "The list of edits to apply to the file"))
    :category "filesystem")
-  (gptel-make-tool
-   :name "codel_edit_buffer"
-   :function (lambda (buffer-name old-string new-string)
-               "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
-               (with-current-buffer buffer-name
-                 (let ((case-fold-search nil))  ;; Case-sensitive search
-                   (save-excursion
-                     (goto-char (point-min))
-                     (let ((count 0))
-                       (while (search-forward old-string nil t)
-                         (setq count (1+ count)))
-                       (if (= count 0)
-                           (format "Error: Could not find text to replace in buffer %s" buffer-name)
-                         (if (> count 1)
-                             (format "Error: Found %d matches for the text to replace in buffer %s" count buffer-name)
-                           (goto-char (point-min))
-                           (search-forward old-string)
-                           (replace-match new-string t t)
-                           (format "Successfully edited buffer %s" buffer-name))))))))
-   :description "Edit buffer"
-   :args '((:name "buffer_name"
-                  :type string
-                  :description "Name of the buffer to modify"
-                  :required t)
-           (:name "old_string"
-                  :type string
-                  :description "Text to be replaced by new_string"
-                  :required t)
-           (:name "new_string"
-                  :type string
-                  :description "Text to replace old_string with"
-                  :required t))
-   :category "buffers")
   (gptel-make-tool
    :name "my_read_documentation"
    :function (lambda (symbol)
