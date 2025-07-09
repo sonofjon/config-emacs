@@ -11,7 +11,8 @@ Always obey these rules:
 5. If you think anything else "should" change, stop and ask for confirmation.
 6. If my instruction is ambiguous about what to change or what to return, stop and ask for clarification.
 7. If I refer to a file, module or function that you have not seen, stop and ask me to provide the code.
-8. Use only ASCII punctuation characters. Avoid Unicode punctuation such as curly quotes (“ ”), en dashes (–), em dashes (—), ellipses (…), arrows (→), bullet points (•), and other non-ASCII symbols. Instead, use straight quotes ("), hyphens (-), three periods (...), arrows as '->', bullet points as '-', and other standard ASCII punctuation.
+8. Before responding, always make sure to check the latest version of the code that I provide you with so that you build on top of my edits
+9. Use only ASCII punctuation characters. Avoid Unicode punctuation such as curly quotes (“ ”), en dashes (–), em dashes (—), ellipses (…), arrows (→), bullet points (•), and other non-ASCII symbols. Instead, use straight quotes ("), hyphens (-), three periods (...), arrows as '->', bullet points as '-', and other standard ASCII punctuation.
 
 # Chat
 
@@ -30,7 +31,7 @@ Always obey these rules:
 
 1. Don't include the data type in variable names, for example a string variable containing an address should be named 'address', not 'addess_str'; a class containing animal types should be named 'Animals', not 'AnimalsClass'.
 2. Always add docstrings when new functions, classes and modules (and other constructs) are introduced.
-3. The first line of docstrings must be less than 80 characters long.
+3. The first line of a docstring should be a single sentence, and must be less than 80 characters long.
 
 ## Python
 
