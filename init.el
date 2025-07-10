@@ -2301,7 +2301,46 @@ Elisp code explicitly in arbitrary buffers.")
    :args (list '(:name "name"
                        :type string
                        :description "The name of the function or variable whose documentation is to be read"))
-   :category "emacs"))
+   :category "emacs")
+  (gptel-make-tool
+   :name "aj8_list_buffers"
+   :function (lambda ()
+               "Return a list of names for buffers visiting a file."
+               (seq-map #'buffer-name
+                        (seq-filter #'buffer-file-name
+                                    (buffer-list))))
+   :description "List the names of all currently open buffers that are associated with a file."
+   :args nil
+   :category "buffers")
+  (gptel-make-tool
+   :name "aj8_buffer_to_file"
+   :function (lambda (buffer-name)
+               "Return the file path for a given BUFFER-NAME."
+               (let* ((buffer (get-buffer buffer-name))
+                      (file-name (and buffer (buffer-file-name buffer))))
+                 (unless file-name
+                   (error "Buffer '%s' is not visiting a file or does not exist" buffer-name))
+                 file-name))
+   :description "Return the file path for a given buffer."
+   :args (list '(:name "buffer_name"
+                       :type string
+                       :description "The name of the buffer."))
+   :category "buffers")
+
+  (gptel-make-tool
+   :name "aj8_file_to_buffer"
+   :function (lambda (file-path)
+               "Return the buffer name for a given FILE-PATH."
+               (let* ((path (expand-file-name file-path))
+                      (buffer (get-file-buffer path)))
+                 (unless buffer
+                   (error "No buffer is visiting file '%s'" path))
+                 (buffer-name buffer)))
+   :description "Return the buffer name for a given file path."
+   :args (list '(:name "file_path"
+                       :type string
+                       :description "The path to the file."))
+   :category "buffers"))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
 (use-package gptel-quick
