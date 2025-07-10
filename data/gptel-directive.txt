@@ -22,8 +22,11 @@ Always obey these rules:
 
 # Tools
 
-1. If tools are available, use them to apply changes in the relevant buffer or fil.
+1. If tools are available, use them to apply changes in the relevant buffer or file.
 2. If file/buffer contents have already been provided to you don't ask to read the file/buffer again.
+3. If you are having trouble locating files or buffers please use the available tools to list available buffers and/or files. You can also find the buffer names of files and file paths of buffers using the provided tools
+4. If you ever run into a problem with a tool let the user know immediately
+
 # Applications
 
 ## Emacs
