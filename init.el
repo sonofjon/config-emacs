@@ -2409,11 +2409,15 @@ Elisp code explicitly in arbitrary buffers.")
                   :type integer
                   :description "The last line to read from"))
    :category "filesystem")
-  (defun munen-gptel--edit-file-interactive (file-path file-edits)
-    "Edit FILE-PATH by applying FILE-EDITS with interactive review using ediff.
+  ;; TODO: do we need this (possible duplication)?
+  (gptel-make-tool
+   :function (lambda (file-path file-edits)
+               "Edit FILE-PATH with FILE-EDITS and review with ediff.
 
-This function applies the specified edits to the file and then opens an ediff
-session to review changes before saving. Each edit in FILE-EDITS should specify:
+This function applies the specified edits to the file and then opens an
+ediff session to review changes before saving. Each edit in FILE-EDITS
+should specify:
+
 - :line_number - The 1-based line number where the edit occurs
 - :old_string - The exact string to find and replace
 - :new_string - The replacement string
@@ -2424,48 +2428,49 @@ EDITING RULES:
 - Keep edits concise and focused on the specific change requested
 - Do not include long runs of unchanged lines
 
-After applying edits, opens ediff to compare original vs modified versions,
-allowing user to review and selectively apply changes before saving.
-Returns a success/failure message indicating whether edits were applied."
-    (if (and file-path (not (string= file-path "")) file-edits)
-        (with-current-buffer (get-buffer-create "*edit-file*")
-          (erase-buffer)
-          (insert-file-contents (expand-file-name file-path))
-          (let ((inhibit-read-only t)
-                (case-fold-search nil)
-                (file-name (expand-file-name file-path))
-                (edit-success nil))
-            ;; apply changes
-            (dolist (file-edit (seq-into file-edits 'list))
-              (when-let ((line-number (plist-get file-edit :line_number))
-                         (old-string (plist-get file-edit :old_string))
-                         (new-string (plist-get file-edit :new_string))
-                         (is-valid-old-string (not (string= old-string ""))))
-                (goto-char (point-min))
-                (forward-line (1- line-number))
-                (when (search-forward old-string nil t)
-                  (replace-match new-string t t)
-                  (setq edit-success t))))
-            ;; return result to gptel
-            (if edit-success
-                (progn
-                  ;; show diffs
-                  (ediff-buffers (find-file-noselect file-name) (current-buffer))
-                  (format "Successfully edited %s" file-name))
-              (format "Failed to edited %s" file-name))))
-      (format "Failed to edited %s" file-path)))
-  ;; TODO: do we need this (possible duplication)?
-  (gptel-make-tool
-   :function #'munen-gptel--edit-file-interactive
+After applying edits, opens ediff to compare original vs modified
+versions, allowing user to review and selectively apply changes before
+saving.  Returns a success/failure message indicating whether edits were
+applied."
+               (with-temp-message (format "Running tool: %s" "my_edit_file_interactive")
+                 (if (and file-path (not (string= file-path "")) file-edits)
+                     (with-current-buffer (get-buffer-create "*edit-file*")
+                       (erase-buffer)
+                       (insert-file-contents (expand-file-name file-path))
+                       (let ((inhibit-read-only t)
+                             (case-fold-search nil)
+                             (file-name (expand-file-name file-path))
+                             (edit-success nil))
+                         ;; apply changes
+                         (dolist (file-edit (seq-into file-edits 'list))
+                           (when-let ((line-number (plist-get file-edit :line_number))
+                                      (old-string (plist-get file-edit :old_string))
+                                      (new-string (plist-get file-edit :new_string))
+                                      (is-valid-old-string (not (string= old-string ""))))
+                             (goto-char (point-min))
+                             (forward-line (1- line-number))
+                             (when (search-forward old-string nil t)
+                               (replace-match new-string t t)
+                               (setq edit-success t))))
+                         ;; return result to gptel
+                         (if edit-success
+                             (progn
+                               ;; show diffs
+                               (ediff-buffers (find-file-noselect file-name) (current-buffer))
+                               (format "Successfully edited %s" file-name))
+                           (format "Failed to edited %s" file-name))))
+                   (format "Failed to edited %s" file-path))))
    :name "my_edit_file_interactive"
    :description "Edit a file interactively by applying a list of edits with review via ediff.
 
-This tool applies the specified edits and opens an ediff session for review.
-Each edit specifies a line number, old string to find, and new string replacement.
+This tool applies the specified edits and opens an ediff session for
+review.  Each edit specifies a line number, old string to find, and new
+string replacement.
 
-After applying edits, ediff opens to compare original vs modified versions,
-allowing interactive review and selective application of changes before saving.
-This provides a safe way to review changes before committing them to disk."
+After applying edits, ediff opens to compare original vs modified
+versions, allowing interactive review and selective application of
+changes before saving.  This provides a safe way to review changes
+before committing them to disk."
    :args (list '(:name "file-path"
                        :type string
                        :description "The full path of the file to edit")
