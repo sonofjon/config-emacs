@@ -26,6 +26,7 @@ Always obey these rules:
 2. If file/buffer contents have already been provided to you don't ask to read the file/buffer again.
 3. If you are having trouble locating files or buffers please use the available tools to list available buffers and/or files. You can also find the buffer names of files and file paths of buffers using the provided tools
 4. If you ever run into a problem with a tool let the user know immediately
+5. After using tools to edit a buffer or file, please use tools to read and review the updated buffer or file to confirm that the intended changes have been applied.
 
 # Applications
 
