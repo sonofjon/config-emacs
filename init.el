@@ -2326,7 +2326,6 @@ Elisp code explicitly in arbitrary buffers.")
                        :type string
                        :description "The name of the buffer."))
    :category "buffers")
-
   (gptel-make-tool
    :name "aj8_file_to_buffer"
    :function (lambda (file-path)
@@ -2340,7 +2339,137 @@ Elisp code explicitly in arbitrary buffers.")
    :args (list '(:name "file_path"
                        :type string
                        :description "The path to the file."))
-   :category "buffers"))
+   :category "buffers")
+  (gptel-make-tool
+   :function
+   (lambda ()
+     (if-let* ((proj (project-current))
+               (root (project-root proj)))
+         (let ((root-path (expand-file-name root)))
+           (format "Project root directory: %s\nDirectory exists: %s\nIs directory: %s"
+                   root-path
+                   (file-exists-p root-path)
+                   (file-directory-p root-path)))
+       "No project found in the current context."))
+   :name "my_get_project_root"
+   :description "Get the root directory of the current project. This is useful for understanding the project structure and performing operations relative to the project root."
+   :args nil
+   :category "project")
+  (gptel-make-tool
+   :function (lambda ()
+               (with-temp-message "Listing Project Buffers"
+                 (cl-reduce #'concat (mapcar (lambda (buf)
+                                               (with-current-buffer buf
+                                                 (format "%s %s %s\n" (buffer-name buf)  major-mode (buffer-file-name buf))))
+                                             (project-buffers (project-current))))))
+   :name "my_project_buffers"
+   :description (concat "List all project related buffers indicating the buffer name, buffer's current mode file path. If no file is associated with a buffer then it is nil. This is expected for compilation windows for example. compilation-mode is the mode used for compiling code.")
+   :args nil
+   :category "buffers")
+  (gptel-make-tool
+   :function (lambda (filepath)
+               (with-temp-message (format "Finding File %s" filepath)
+                 (let ((dir (expand-file-name
+                             (project-root (project-current)))))
+                   (shell-command-to-string
+                    (format "find %s -type f -iname %s" dir (concat "*" filepath "*"))))))
+   :name "my_search_for_file"
+   :description (concat "Recursively search for files and directories matching a pattern. Searches through all subdirectories from the starting path. The search is case-insensitive and matches partial names. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.")
+   :args (list '(:name "filepath"
+                       :type string
+                       :description "Path to the file to read. Supports relative paths and ~."))
+   :category "filesystem")
+  ;; TODO: do we need this (possible duplication)?
+  (gptel-make-tool
+   :function (lambda (filepath start end)
+               (with-temp-message (format "Reading file %s" filepath)
+                 (with-temp-buffer
+                   (insert-file-contents (expand-file-name filepath))
+                   (buffer-substring (goto-line start) (goto-line end)))))
+   :name "my_read_file_section"
+   :description (concat "Read a region of a file rather than the entire thing. Prefer this over read_buffer and read_file as it is more efficient.")
+   :args (list '( :name "file"
+                  :type string
+                  :description "The name of the emacs file to read the contents of. ")
+               '( :name "start"
+                  :type integer
+                  :description "The first line to read from")
+               '( :name "end"
+                  :type integer
+                  :description "The last line to read from"))
+   :category "filesystem")
+  (defun munen-gptel--edit-file-interactive (file-path file-edits)
+    "Edit FILE-PATH by applying FILE-EDITS with interactive review using ediff.
+
+This function applies the specified edits to the file and then opens an ediff
+session to review changes before saving. Each edit in FILE-EDITS should specify:
+- :line_number - The 1-based line number where the edit occurs
+- :old_string - The exact string to find and replace
+- :new_string - The replacement string
+
+EDITING RULES:
+- The old_string must EXACTLY MATCH the existing file content at the specified line
+- Include enough context in old_string to uniquely identify the location
+- Keep edits concise and focused on the specific change requested
+- Do not include long runs of unchanged lines
+
+After applying edits, opens ediff to compare original vs modified versions,
+allowing user to review and selectively apply changes before saving.
+Returns a success/failure message indicating whether edits were applied."
+    (if (and file-path (not (string= file-path "")) file-edits)
+        (with-current-buffer (get-buffer-create "*edit-file*")
+          (erase-buffer)
+          (insert-file-contents (expand-file-name file-path))
+          (let ((inhibit-read-only t)
+                (case-fold-search nil)
+                (file-name (expand-file-name file-path))
+                (edit-success nil))
+            ;; apply changes
+            (dolist (file-edit (seq-into file-edits 'list))
+              (when-let ((line-number (plist-get file-edit :line_number))
+                         (old-string (plist-get file-edit :old_string))
+                         (new-string (plist-get file-edit :new_string))
+                         (is-valid-old-string (not (string= old-string ""))))
+                (goto-char (point-min))
+                (forward-line (1- line-number))
+                (when (search-forward old-string nil t)
+                  (replace-match new-string t t)
+                  (setq edit-success t))))
+            ;; return result to gptel
+            (if edit-success
+                (progn
+                  ;; show diffs
+                  (ediff-buffers (find-file-noselect file-name) (current-buffer))
+                  (format "Successfully edited %s" file-name))
+              (format "Failed to edited %s" file-name))))
+      (format "Failed to edited %s" file-path)))
+  ;; TODO: do we need this (possible duplication)?
+(gptel-make-tool
+   :function #'munen-gptel--edit-file-interactive
+   :name "my_edit_file_interactive"
+   :description "Edit a file interactively by applying a list of edits with review via ediff.
+
+This tool applies the specified edits and opens an ediff session for review.
+Each edit specifies a line number, old string to find, and new string replacement.
+
+After applying edits, ediff opens to compare original vs modified versions,
+allowing interactive review and selective application of changes before saving.
+This provides a safe way to review changes before committing them to disk."
+   :args (list '(:name "file-path"
+                       :type string
+                       :description "The full path of the file to edit")
+               '(:name "file-edits"
+                       :type array
+                       :items (:type object
+                                     :properties
+                                     (:line_number
+                                      (:type integer :description "The line number of the file where edit starts.")
+                                      :old_string
+                                      (:type string :description "The old-string to be replaced.")
+                                      :new_string
+                                      (:type string :description "The new-string to replace old-string.")))
+                       :description "The list of edits to apply on the file"))
+   :category "emacs"))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
 (use-package gptel-quick
