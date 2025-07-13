@@ -2152,31 +2152,32 @@ Elisp code explicitly in arbitrary buffers.")
   :use-context 'user
   :include-reasoning "*gptel-reasoning*"
   :use-tools t)
-  ;; :tools '("read_buffer" "modify_buffer")
   ;; (gptel-make-tool
-  ;;  :name "my_read_buffer"
   ;;  :function (lambda (buffer)
-  ;;              "Return the contents of a BUFFER."
-  ;;              (unless (buffer-live-p (get-buffer buffer))
-  ;;                (error "Error: buffer %s is not live." buffer))
-  ;;              (with-current-buffer buffer
-  ;;                (buffer-substring-no-properties (point-min) (point-max))))
-  ;;  :description "Return the contents of a buffer"
+  ;;              "Return the contents of BUFFER.
+  ;;              (with-temp-message (format "Running tool: %s" "my_read_buffer")
+  ;;                (unless (buffer-live-p (get-buffer buffer))
+  ;;                  (error "Error: buffer %s is not live." buffer))
+  ;;                (with-current-buffer buffer
+  ;;                  (buffer-substring-no-properties (point-min) (point-max)))))
+  ;;  :name "my_read_buffer"
+  ;;  :description "Return the contents of a buffer."
   ;;  :args (list '(:name "buffer"
-  ;;                      :type string
-  ;;                      :description "The name of the buffer whose contents are to be read"))
+  ;;                       :type string
+  ;;                       :description "The name of the buffer to read."))
   ;;  :category "buffers")
   (gptel-make-tool
-   :name "my_modify_buffer"
    :function (lambda (buffer content)
-               "Completely replace contents of BUFFER-NAME with CONTENT."
-               (let ((buf (get-buffer buffer)))
-                 (unless buf
-                   (error "Buffer %s does not exist" buffer))
-                 (with-current-buffer buf
-                   (erase-buffer)
-                   (insert content)
-                   (message "Buffer %s modified successfully" buffer))))
+               "Completely replace contents of BUFFER with CONTENT."
+               (with-temp-message (format "Running tool: %s" "my_modify_buffer")
+                 (let ((buf (get-buffer buffer)))
+                   (unless buf
+                     (error "Buffer %s does not exist" buffer))
+                   (with-current-buffer buf
+                     (erase-buffer)
+                     (insert content)
+                     (message "Buffer %s modified successfully" buffer)))))
+   :name "my_modify_buffer"
    :description "Completely overwrite the contents of a buffer"
    :args (list '(:name "buffer"
                        :type string
@@ -2185,49 +2186,50 @@ Elisp code explicitly in arbitrary buffers.")
                        :type string
                        :description "Content to write to the buffer"))
    :category "buffers")
+  (gptel-make-tool
+   :function (lambda (buffer-name old-string new-string)
+               "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
+               (with-temp-message (format "Running tool: %s" "my_edit_buffer")
+                 (with-current-buffer buffer-name
+                   (let ((case-fold-search nil)) ; Case-sensitive search
+                     (save-excursion
+                       (goto-char (point-min))
+                       (let ((count 0))
+                         (while (search-forward old-string nil t)
+                           (setq count (1+ count)))
+                         (cond
+                          ((= count 0)
+                           (format "Error: Could not find text to replace in buffer %s" buffer-name))
+                          ((> count 1)
+                           (format "Error: Found %d matches for the text to replace in buffer %s" count buffer-name))
+                          (t
+                           (goto-char (point-min))
+                           (search-forward old-string nil t)
+                           (replace-match new-string t t)
+                           (format "Successfully edited buffer %s" buffer-name)))))))))
+   :name "my_edit_buffer"
+   :description "Edit buffer by replacing an exact string match."
+   :args '((:name "buffer_name"
+                  :type string
+                  :description "Name of the buffer to modify")
+           (:name "old_string"
+                  :type string
+                  :description "Text to be replaced by new_string")
+           (:name "new_string"
+                  :type string
+                  :description "Text to replace old_string with"))
+   :category "buffers")
   ;; (gptel-make-tool
-  ;;  :name "my_edit_buffer"
-  ;;  :function (lambda (buffer-name old-string new-string)
-  ;;              "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
-  ;;              (with-current-buffer buffer-name
-  ;;                (let ((case-fold-search nil))  ;; Case-sensitive search
-  ;;                  (save-excursion
-  ;;                    (goto-char (point-min))
-  ;;                    (let ((count 0))
-  ;;                      (while (search-forward old-string nil t)
-  ;;                        (setq count (1+ count)))
-  ;;                      (if (= count 0)
-  ;;                          (format "Error: Could not find text to replace in buffer %s" buffer-name)
-  ;;                        (if (> count 1)
-  ;;                            (format "Error: Found %d matches for the text to replace in buffer %s" count buffer-name)
-  ;;                          (goto-char (point-min))
-  ;;                          (search-forward old-string)
-  ;;                          (replace-match new-string t t)
-  ;;                          (format "Successfully edited buffer %s" buffer-name))))))))
-  ;;  :description "Edit buffer"
-  ;;  :args '((:name "buffer_name"
-  ;;                 :type string
-  ;;                 :description "Name of the buffer to modify"
-  ;;                 :required t)
-  ;;          (:name "old_string"
-  ;;                 :type string
-  ;;                 :description "Text to be replaced by new_string"
-  ;;                 :required t)
-  ;;          (:name "new_string"
-  ;;                 :type string
-  ;;                 :description "Text to replace old_string with"
-  ;;                 :required t))
-  ;;  :category "buffers")
-  ;; (gptel-make-tool
-  ;;  :name "my_create_file"
   ;;  :function (lambda (path filename content)
-  ;;              "Create FILENAME at PATH and insert CONTENT."
-  ;;              (let ((full-path (expand-file-name filename path)))
-  ;;                (with-temp-buffer
-  ;;                  (insert content)
-  ;;                  (write-file full-path))
-  ;;                (format "Created file %s in %s" filename path)))
-  ;;  :description "Create a new file with the specified content"
+  ;;              "Create FILENAME in PATH with CONTENT."
+  ;;              (with-temp-message (format "Running tool: %s" "my_create_file")
+  ;;                (let ((full (expand-file-name filename path)))
+  ;;                  (with-temp-buffer
+  ;;                    (insert content)
+  ;;                    (write-file full))
+  ;;                  (format "Created %s in %s" filename path))))
+  ;;  :name "my_create_file"
+  ;;  :description "Create a new file with the specified content."
   ;;  :args (list '(:name "path"
   ;;                      :type string
   ;;                      :description "The directory where to create the file")
@@ -2239,36 +2241,37 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                      :description "The content to write to the file"))
   ;;  :category "filesystem")
   (gptel-make-tool
-   :name "my_edit_file"
    :function (lambda (file-path file-edits)
                "In FILE-PATH, apply FILE-EDITS with pattern matching and replacing."
-               (if (and file-path (not (string= file-path "")) file-edits)
-                   (with-current-buffer (get-buffer-create "*edit-file*")
-                     (erase-buffer)
-                     (insert-file-contents (expand-file-name file-path))
-                     (let ((inhibit-read-only t)
-                           (case-fold-search nil)
-                           (file-name (expand-file-name file-path))
-                           (edit-success nil))
-                       ;; apply changes
-                       (dolist (file-edit (seq-into file-edits 'list))
-                         (when-let ((line-number (plist-get file-edit :line_number))
-                                    (old-string (plist-get file-edit :old_string))
-                                    (new-string (plist-get file-edit :new_string))
-                                    (is-valid-old-string (not (string= old-string ""))))
-                           (goto-char (point-min))
-                           (forward-line (1- line-number))
-                           (when (search-forward old-string nil t)
-                             (replace-match new-string t t)
-                             (setq edit-success t))))
-                       ;; return result to gptel
-                       (if edit-success
-                           (progn
-                             ;; show diffs
-                             (ediff-buffers (find-file-noselect file-name) (current-buffer))
-                             (format "Successfully edited %s" file-name))
-                         (format "Failed to edited %s" file-name))))
-                 (format "Failed to edited %s" file-path)))
+               (with-temp-message (format "Running tool: %s" "my_edit_file")
+                 (if (and file-path (not (string= file-path "")) file-edits)
+                     (with-current-buffer (get-buffer-create "*edit-file*")
+                       (erase-buffer)
+                       (insert-file-contents (expand-file-name file-path))
+                       (let ((inhibit-read-only t)
+                             (case-fold-search nil)
+                             (file-name (expand-file-name file-path))
+                             (edit-success nil))
+                         ;; apply changes
+                         (dolist (file-edit (seq-into file-edits 'list))
+                           (when-let ((line-number (plist-get file-edit :line_number))
+                                      (old-string (plist-get file-edit :old_string))
+                                      (new-string (plist-get file-edit :new_string))
+                                      (is-valid-old-string (not (string= old-string ""))))
+                             (goto-char (point-min))
+                             (forward-line (1- line-number))
+                             (when (search-forward old-string nil t)
+                               (replace-match new-string t t)
+                               (setq edit-success t))))
+                         ;; return result to gptel
+                         (if edit-success
+                             (progn
+                               ;; show diffs
+                               (ediff-buffers (find-file-noselect file-name) (current-buffer))
+                               (format "Successfully edited %s" file-name))
+                           (format "Failed to edited %s" file-name))))
+                   (format "Failed to edited %s" file-path))))
+   :name "my_edit_file"
    :description "Edit file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string will replace old-string at the specified line."
    :args (list '(:name "file-path"
                        :type string
@@ -2285,96 +2288,103 @@ Elisp code explicitly in arbitrary buffers.")
                                       (:type string :description "The string to replace old_string.")))
                        :description "The list of edits to apply to the file"))
    :category "filesystem")
+   (gptel-make-tool
+    :function (lambda (symbol)
+                "Read the documentation for SYMBOL, which can be a function or variable."
+                (with-temp-message (format "Running tool: %s" "my_read_documentation")
+                  (let ((sym (intern symbol)))
+                    (cond
+                     ((fboundp sym)
+                      (documentation sym))
+                     ((boundp sym)
+                      (documentation-property sym 'variable-documentation))
+                     (t
+                      (format "No documentation found for %s" symbol))))))
+    :name "my_read_documentation"
+    :description "Read the documentation for a given function or variable"
+    :args (list '(:name "name"
+                        :type string
+                        :description "The name of the function or variable whose documentation is to be read"))
+    :category "emacs")
   (gptel-make-tool
-   :name "my_read_documentation"
-   :function (lambda (symbol)
-               "Read the documentation for SYMBOL, which can be a function or variable."
-               (let ((sym (intern symbol)))
-                 (cond
-                  ((fboundp sym)
-                   (documentation sym))
-                  ((boundp sym)
-                   (documentation-property sym 'variable-documentation))
-                  (t
-                   (format "No documentation found for %s" symbol)))))
-   :description "Read the documentation for a given function or variable"
-   :args (list '(:name "name"
-                       :type string
-                       :description "The name of the function or variable whose documentation is to be read"))
-   :category "emacs")
-  (gptel-make-tool
-   :name "aj8_list_buffers"
    :function (lambda ()
                "Return a list of names for buffers visiting a file."
-               (seq-map #'buffer-name
-                        (seq-filter #'buffer-file-name
-                                    (buffer-list))))
+               (with-temp-message (format "Running tool: %s" "aj8_list_buffers")
+                 (seq-map #'buffer-name
+                          (seq-filter #'buffer-file-name
+                                      (buffer-list)))))
+   :name "aj8_list_buffers"
    :description "List the names of all currently open buffers that are associated with a file."
    :args nil
    :category "buffers")
   (gptel-make-tool
-   :name "aj8_buffer_to_file"
    :function (lambda (buffer-name)
                "Return the file path for a given BUFFER-NAME."
-               (let* ((buffer (get-buffer buffer-name))
+               (with-temp-message (format "Running tool: %s" "aj8_buffer_to_file")
+                 (let* ((buffer (get-buffer buffer-name))
                       (file-name (and buffer (buffer-file-name buffer))))
                  (unless file-name
                    (error "Buffer '%s' is not visiting a file or does not exist" buffer-name))
-                 file-name))
+                 file-name)))
+   :name "aj8_buffer_to_file"
    :description "Return the file path for a given buffer."
    :args (list '(:name "buffer_name"
                        :type string
                        :description "The name of the buffer."))
    :category "buffers")
   (gptel-make-tool
-   :name "aj8_file_to_buffer"
    :function (lambda (file-path)
                "Return the buffer name for a given FILE-PATH."
-               (let* ((path (expand-file-name file-path))
-                      (buffer (get-file-buffer path)))
-                 (unless buffer
-                   (error "No buffer is visiting file '%s'" path))
-                 (buffer-name buffer)))
+               (with-temp-message (format "Running tool: %s" "aj8_file_to_buffer")
+                 (let* ((path (expand-file-name file-path))
+                        (buffer (get-file-buffer path)))
+                   (unless buffer
+                     (error "No buffer is visiting file '%s'" path))
+                   (buffer-name buffer))))
+   :name "aj8_file_to_buffer"
    :description "Return the buffer name for a given file path."
    :args (list '(:name "file_path"
                        :type string
                        :description "The path to the file."))
    :category "buffers")
   (gptel-make-tool
-   :function
-   (lambda ()
-     (if-let* ((proj (project-current))
-               (root (project-root proj)))
-         (let ((root-path (expand-file-name root)))
-           (format "Project root directory: %s\nDirectory exists: %s\nIs directory: %s"
-                   root-path
-                   (file-exists-p root-path)
-                   (file-directory-p root-path)))
-       "No project found in the current context."))
+   :function (lambda ()
+               "Get the root directory of the current project."
+               (with-temp-message (format "Running tool: %s" "my_get_project_root")
+                 (if-let* ((proj (project-current))
+                           (root (project-root proj)))
+                     (let ((root-path (expand-file-name root)))
+                       (format "Project root directory: %s\nDirectory exists: %s\nIs directory: %s"
+                               root-path
+                               (file-exists-p root-path)
+                               (file-directory-p root-path)))
+                   "No project found in the current context.")))
    :name "my_get_project_root"
    :description "Get the root directory of the current project. This is useful for understanding the project structure and performing operations relative to the project root."
    :args nil
    :category "project")
   (gptel-make-tool
    :function (lambda ()
-               (with-temp-message "Listing Project Buffers"
+               "List all project related buffers indicating buffer name, mode and file path."
+               (with-temp-message (format "Running tool: %s" "my_project_buffers")
                  (cl-reduce #'concat (mapcar (lambda (buf)
                                                (with-current-buffer buf
                                                  (format "%s %s %s\n" (buffer-name buf)  major-mode (buffer-file-name buf))))
                                              (project-buffers (project-current))))))
    :name "my_project_buffers"
-   :description (concat "List all project related buffers indicating the buffer name, buffer's current mode file path. If no file is associated with a buffer then it is nil. This is expected for compilation windows for example. compilation-mode is the mode used for compiling code.")
+   :description ("List all project related buffers indicating the buffer name, buffer's current mode file path. If no file is associated with a buffer then it is nil. This is expected for compilation windows for example. compilation-mode is the mode used for compiling code.")
    :args nil
    :category "buffers")
   (gptel-make-tool
    :function (lambda (filepath)
-               (with-temp-message (format "Finding File %s" filepath)
+               "Recursively search for files matching pattern in FILEPATH."
+               (with-temp-message (format "Running tool: %s" "my_search_for_file")
                  (let ((dir (expand-file-name
                              (project-root (project-current)))))
                    (shell-command-to-string
                     (format "find %s -type f -iname %s" dir (concat "*" filepath "*"))))))
    :name "my_search_for_file"
-   :description (concat "Recursively search for files and directories matching a pattern. Searches through all subdirectories from the starting path. The search is case-insensitive and matches partial names. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.")
+   :description ("Recursively search for files and directories matching a pattern. Searches through all subdirectories from the starting path. The search is case-insensitive and matches partial names. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.")
    :args (list '(:name "filepath"
                        :type string
                        :description "Path to the file to read. Supports relative paths and ~."))
@@ -2382,12 +2392,13 @@ Elisp code explicitly in arbitrary buffers.")
   ;; TODO: do we need this (possible duplication)?
   (gptel-make-tool
    :function (lambda (filepath start end)
-               (with-temp-message (format "Reading file %s" filepath)
+               "Read a region of a file rather than the entire thing."
+               (with-temp-message (format "Running tool: %s" "my_read_file_section")
                  (with-temp-buffer
                    (insert-file-contents (expand-file-name filepath))
                    (buffer-substring (goto-line start) (goto-line end)))))
    :name "my_read_file_section"
-   :description (concat "Read a region of a file rather than the entire thing. Prefer this over read_buffer and read_file as it is more efficient.")
+   :description ("Read a region of a file rather than the entire thing. Prefer this over read_buffer and read_file as it is more efficient.")
    :args (list '( :name "file"
                   :type string
                   :description "The name of the emacs file to read the contents of. ")
@@ -2444,7 +2455,7 @@ Returns a success/failure message indicating whether edits were applied."
               (format "Failed to edited %s" file-name))))
       (format "Failed to edited %s" file-path)))
   ;; TODO: do we need this (possible duplication)?
-(gptel-make-tool
+  (gptel-make-tool
    :function #'munen-gptel--edit-file-interactive
    :name "my_edit_file_interactive"
    :description "Edit a file interactively by applying a list of edits with review via ediff.
