@@ -2296,40 +2296,40 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                      :description "The content to write to the file"))
   ;;  :category "filesystem")
   (gptel-make-tool
- :name "my_edit_file"
- :function (lambda (filename old-string new-string)
-             "Edit FILENAME by replacing one instance of OLD-STRING with NEW-STRING."
-             (with-temp-message (format "Running tool: %s" "my_edit_file")
-               (let ((expanded-filename (expand-file-name filename)))
-                 (with-temp-buffer
-                   (insert-file-contents expanded-filename)
-                   (let ((case-fold-search nil))
-                     (goto-char (point-min))
-                     (let ((count 0))
-                       (while (search-forward old-string nil t)
-                         (setq count (1+ count)))
-                       (cond
-                        ((= count 0)
-                         (error "Could not find text to replace in file %s" expanded-filename))
-                        ((> count 1)
-                         (error "Found %d matches for the text to replace in file %s" count expanded-filename))
-                        (t
-                         (goto-char (point-min))
-                         (search-forward old-string nil t)
-                         (replace-match new-string t t)
-                         (write-region (point-min) (point-max) expanded-filename)
-                         (format "Successfully edited file %s" expanded-filename)))))))))
- :description "Edit a file by replacing a single instance of an exact string."
- :args '((:name "filename"
-                 :type string
-                 :description "The path to the file to edit.")
-        (:name "old-string"
-                 :type string
-                 :description "The exact string to be replaced.")
-        (:name "new-string"
-                 :type string
-                 :description "The string to replace old-string with."))
- :category "filesystem")
+   :function (lambda (filename old-string new-string)
+               "Edit FILENAME by replacing one instance of OLD-STRING with NEW-STRING."
+               (with-temp-message (format "Running tool: %s" "my_edit_file")
+                 (let ((expanded-filename (expand-file-name filename)))
+                   (with-temp-buffer
+                     (insert-file-contents expanded-filename)
+                     (let ((case-fold-search nil))
+                       (goto-char (point-min))
+                       (let ((count 0))
+                         (while (search-forward old-string nil t)
+                           (setq count (1+ count)))
+                         (cond
+                          ((= count 0)
+                           (error "Could not find text to replace in file %s" expanded-filename))
+                          ((> count 1)
+                           (error "Found %d matches for the text to replace in file %s" count expanded-filename))
+                          (t
+                           (goto-char (point-min))
+                           (search-forward old-string nil t)
+                           (replace-match new-string t t)
+                           (write-region (point-min) (point-max) expanded-filename)
+                           (format "Successfully edited file %s" expanded-filename)))))))))
+   :name "aj8_edit_file"
+   :description "Edit a file by replacing a single instance of an exact string."
+   :args '((:name "filename"
+                  :type string
+                  :description "The path to the file to edit.")
+           (:name "old-string"
+                  :type string
+                  :description "The exact string to be replaced.")
+           (:name "new-string"
+                  :type string
+                  :description "The string to replace old-string with."))
+   :category "filesystem")
   (gptel-make-tool
    :function (lambda (file-path file-edits)
                "Edit FILE-PATH with FILE-EDITS and save without review.
@@ -2360,13 +2360,13 @@ Each edit in FILE-EDITS should specify:
                                              (old-string (plist-get file-edit :old_string))
                                              (new-string (plist-get file-edit :new_string))
                                              (is-valid-old-string (and old-string (not (string-blank-p old-string)))))
-                                    (progn
-                                      (goto-char (point-min))
-                                      (forward-line (1- line-number))
-                                      (let ((end-of-line (line-end-position)))
-                                        (when (search-forward old-string end-of-line t)
-                                          (replace-match new-string t t)
-                                          t))))
+                                   (progn
+                                     (goto-char (point-min))
+                                     (forward-line (1- line-number))
+                                     (let ((end-of-line (line-end-position)))
+                                       (when (search-forward old-string end-of-line t)
+                                         (replace-match new-string t t)
+                                         t))))
                                  (setq successful-edits (1+ successful-edits))
                                (setq failed-edits (1+ failed-edits))))
                            ;; return result to gptel
@@ -2378,13 +2378,13 @@ Each edit in FILE-EDITS should specify:
                             (t
                              (error "Failed to apply any edits to %s. All %d edits failed because the text to replace was not found on the specified lines."
                                     file-name (length edits)))))))))))
-   :name "my_edit_file_direct"
+   :name "aj8_edit_file_direct"
    :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line."
-;; "Editing rules:
-;; - The old-string must match exactly the existing file content at the specified line
-;; - Include enough context in old-string to uniquely identify the location
-;; - Keep edits concise and focused on the specific change requested
-;; - Do not include long runs of unchanged lines"
+   ;; "Editing rules:
+   ;; - The old-string must match exactly the existing file content at the specified line
+   ;; - Include enough context in old-string to uniquely identify the location
+   ;; - Keep edits concise and focused on the specific change requested
+   ;; - Do not include long runs of unchanged lines"
    :args (list '(:name "file-path"
                        :type string
                        :description "The full path of the file to edit")
@@ -2435,13 +2435,13 @@ changes before saving."
                                              (old-string (plist-get file-edit :old_string))
                                              (new-string (plist-get file-edit :new_string))
                                              (is-valid-old-string (and old-string (not (string-blank-p old-string)))))
-                                    (progn
-                                      (goto-char (point-min))
-                                      (forward-line (1- line-number))
-                                      (let ((end-of-line (line-end-position)))
-                                        (when (search-forward old-string end-of-line t)
-                                          (replace-match new-string t t)
-                                          t))))
+                                   (progn
+                                     (goto-char (point-min))
+                                     (forward-line (1- line-number))
+                                     (let ((end-of-line (line-end-position)))
+                                       (when (search-forward old-string end-of-line t)
+                                         (replace-match new-string t t)
+                                         t))))
                                  (setq successful-edits (1+ successful-edits))
                                (setq failed-edits (1+ failed-edits))))
                            ;; return result to gptel
@@ -2455,11 +2455,11 @@ changes before saving."
                                     file-name (length edits)))))))))))
    :name "my_edit_file_interactive"
    :description "Edit a file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Please wait for a successful message from this tool before proceeding."
-;; "Editing rules:
-;; - The old-string must match exactly the existing file content at the specified line
-;; - Include enough context in old-string to uniquely identify the location
-;; - Keep edits concise and focused on the specific change requested
-;; - Do not include long runs of unchanged lines"
+   ;; "Editing rules:
+   ;; - The old-string must match exactly the existing file content at the specified line
+   ;; - Include enough context in old-string to uniquely identify the location
+   ;; - Keep edits concise and focused on the specific change requested
+   ;; - Do not include long runs of unchanged lines"
    :args (list '(:name "file-path"
                        :type string
                        :description "The full path of the file to edit")
