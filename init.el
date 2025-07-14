@@ -2478,25 +2478,9 @@ This action requires manual user review. After calling this tool, you must stop 
                        :description "The list of edits to apply to the file"))
    :category "filesystem")
   (gptel-make-tool
-   :name "my_search_for_file"
-   :function (lambda (pattern)
-               "In the current project, find files whose filenames match PATTERN.
-
-This search respects the project's .gitignore file and other standard ignores.  It does not return directories."
-               (with-temp-message (format "Running tool: %s" "my_search_for_file")
-                 (let ((proj (project-current)))
-                   (if (not proj)
-                       (error "No project found in the current context.")
-                     (let ((all-files (project-files proj)))
-                       (seq-filter (lambda (file) (string-search pattern (file-name-nondirectory file))) all-files))))))
-   :description "In the current project, recursively find files whose filenames contain PATTERN. This search is case-sensitive and respects .gitignore. It does not find directories."
-   :args '((:name "pattern"
-                  :type string
-                  :description "A pattern to match against the filenames in the project."))
-   :category "project")
-  (gptel-make-tool
    :function (lambda (filepath &optional start end)
-               "Read a region of a file rather than the entire thing."
+               "Read a section of FILEPATH, optionally between lines START and END.
+If START and END are omitted, the entire file is read."
                (with-temp-message (format "Running tool: %s" "my_read_file_section")
                  (with-temp-buffer
                    (insert-file-contents (expand-file-name filepath))
@@ -2568,6 +2552,39 @@ Each line contains a buffer name and its associated file path."
    :description "Return a string listing all open buffers in the current project. Each line contains a buffer name followed by its associated file path."
    :args nil
    :category "project")
+;;   (gptel-make-tool
+;;    :function (lambda (pattern)
+;;                "In the current project, find files whose filenames contain PATTERN.
+
+;; This search respects the project's .gitignore file and other standard ignores.  It does not return directories."
+;;                (with-temp-message (format "Running tool: %s" "my_project_find_files")
+;;                  (let ((proj (project-current)))
+;;                    (if (not proj)
+;;                        (error "No project found in the current context.")
+;;                      (let ((all-files (project-files proj)))
+;;                        (seq-filter (lambda (file) (string-search pattern (file-name-nondirectory file))) all-files))))))
+;;    :name "my_project_find_files"
+;;    :description "In the current project, recursively find files whose filenames contain pattern. This search is case-sensitive and respects .gitignore. It does not find directories."
+;;    :args '((:name "pattern"
+;;                   :type string
+;;                   :description "A pattern to match against the filenames in the project."))
+;;    :category "project")
+  (gptel-make-tool
+   :function (lambda (pattern)
+               "In the current project, find files whose filenames match the glob PATTERN.
+
+This search respects the project's .gitignore file and other standard ignores.  It does not return directories."
+               (with-temp-message (format "Running tool: %s" "my_project_find_files_glob")
+                 (let ((proj (project-current)))
+                   (if (not proj)
+                       (error "No project found in the current context.")
+                     (let ((all-files (project-files proj)))
+                       (seq-filter (lambda (file) (file-name-match-p pattern (file-name-nondirectory file))) all-files))))))
+   :name "my_project_find_files_glob"
+   :description "In the current project, recursively find files whose filenames match the glob pattern. This search is case-sensitive and respects .gitignore. It does not find directories. For example, a pattern of '*.el' finds all Emacs Lisp files."
+   :args '((:name "pattern"
+                  :type string
+                  :description "A glob pattern to match against the filenames in the project."))
    :category "project"))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
