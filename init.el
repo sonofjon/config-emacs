@@ -2432,7 +2432,7 @@ changes before saving."
                            (format "Failed to apply edits to %s" file-name))))
                    (format "Failed to edit %s. File path or edits not provided." file-path))))
    :name "my_edit_file_interactive"
-   :description "Edit a file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line."
+   :description "Edit a file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Please wait for a successful message from this tool before proceeding."
 ;; "Editing rules:
 ;; - The old-string must match exactly the existing file content at the specified line
 ;; - Include enough context in old-string to uniquely identify the location
