@@ -2540,7 +2540,7 @@ This search respects the project's .gitignore file and other standard ignores.  
   (gptel-make-tool
    :function (lambda ()
                "Get the root directory of the current project."
-               (with-temp-message (format "Running tool: %s" "my_get_project_root")
+               (with-temp-message (format "Running tool: %s" "my_project_get_root")
                  (if-let* ((proj (project-current))
                            (root (project-root proj)))
                      (let ((root-path (expand-file-name root)))
@@ -2549,8 +2549,10 @@ This search respects the project's .gitignore file and other standard ignores.  
                                (file-exists-p root-path)
                                (file-directory-p root-path)))
                    (error "No project found in the current context."))))
-   :name "my_get_project_root"
-   :description "Get the root directory of the current project. This is useful for understanding the project structure and performing operations relative to the project root."
+   :name "my_project_get_root"
+   :description "Get the root directory of the current project."
+   :args nil
+   :category "project")
   (gptel-make-tool
    :function (lambda ()
                "Return a string listing open buffers in the current project.
