@@ -2187,6 +2187,47 @@ Elisp code explicitly in arbitrary buffers.")
                        :description "Content to write to the buffer"))
    :category "buffers")
   (gptel-make-tool
+   :function (lambda ()
+               "Return a list of names for buffers visiting a file."
+               (with-temp-message (format "Running tool: %s" "aj8_list_buffers")
+                 (seq-map #'buffer-name
+                          (seq-filter #'buffer-file-name
+                                      (buffer-list)))))
+   :name "aj8_list_buffers"
+   :description "List the names of all currently open buffers that are associated with a file."
+   :args nil
+   :category "buffers")
+  (gptel-make-tool
+   :function (lambda (buffer-name)
+               "Return the file path for a given BUFFER-NAME."
+               (with-temp-message (format "Running tool: %s" "aj8_buffer_to_file")
+                 (let* ((buffer (get-buffer buffer-name))
+                      (file-name (and buffer (buffer-file-name buffer))))
+                 (unless file-name
+                   (error "Buffer '%s' is not visiting a file or does not exist" buffer-name))
+                 file-name)))
+   :name "aj8_buffer_to_file"
+   :description "Return the file path for a given buffer."
+   :args (list '(:name "buffer-name"
+                       :type string
+                       :description "The name of the buffer."))
+   :category "buffers")
+  (gptel-make-tool
+   :function (lambda (file-path)
+               "Return the buffer name for a given FILE-PATH."
+               (with-temp-message (format "Running tool: %s" "aj8_file_to_buffer")
+                 (let* ((path (expand-file-name file-path))
+                        (buffer (get-file-buffer path)))
+                   (unless buffer
+                     (error "No buffer is visiting file '%s'" path))
+                   (buffer-name buffer))))
+   :name "aj8_file_to_buffer"
+   :description "Return the buffer name for a given file path."
+   :args (list '(:name "file-path"
+                       :type string
+                       :description "The path to the file."))
+   :category "buffers")
+  (gptel-make-tool
    :function (lambda (buffer-name old-string new-string)
                "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
                (with-temp-message (format "Running tool: %s" "my_edit_buffer")
@@ -2218,6 +2259,18 @@ Elisp code explicitly in arbitrary buffers.")
            (:name "new-string"
                   :type string
                   :description "Text to replace old-string with"))
+   :category "buffers")
+  (gptel-make-tool
+   :function (lambda ()
+               "List all project related buffers indicating buffer name, mode and file path."
+               (with-temp-message (format "Running tool: %s" "my_project_buffers")
+                 (cl-reduce #'concat (mapcar (lambda (buf)
+                                               (with-current-buffer buf
+                                                 (format "%s %s %s\n" (buffer-name buf)  major-mode (buffer-file-name buf))))
+                                             (project-buffers (project-current))))))
+   :name "my_project_buffers"
+   :description ("List all project related buffers indicating the buffer name, buffer's current mode file path. If no file is associated with a buffer then it is nil. This is expected for compilation windows for example. compilation-mode is the mode used for compiling code.")
+   :args nil
    :category "buffers")
   ;; (gptel-make-tool
   ;;  :function (lambda (path filename content)
@@ -2287,127 +2340,6 @@ Elisp code explicitly in arbitrary buffers.")
                                       :new-string
                                       (:type string :description "The string to replace old-string.")))
                        :description "The list of edits to apply to the file"))
-   :category "filesystem")
-   (gptel-make-tool
-    :function (lambda (symbol)
-                "Read the documentation for SYMBOL, which can be a function or variable."
-                (with-temp-message (format "Running tool: %s" "my_read_documentation")
-                  (let ((sym (intern symbol)))
-                    (cond
-                     ((fboundp sym)
-                      (documentation sym))
-                     ((boundp sym)
-                      (documentation-property sym 'variable-documentation))
-                     (t
-                      (format "No documentation found for %s" symbol))))))
-    :name "my_read_documentation"
-    :description "Read the documentation for a given function or variable"
-    :args (list '(:name "name"
-                        :type string
-                        :description "The name of the function or variable whose documentation is to be read"))
-    :category "emacs")
-  (gptel-make-tool
-   :function (lambda ()
-               "Return a list of names for buffers visiting a file."
-               (with-temp-message (format "Running tool: %s" "aj8_list_buffers")
-                 (seq-map #'buffer-name
-                          (seq-filter #'buffer-file-name
-                                      (buffer-list)))))
-   :name "aj8_list_buffers"
-   :description "List the names of all currently open buffers that are associated with a file."
-   :args nil
-   :category "buffers")
-  (gptel-make-tool
-   :function (lambda (buffer-name)
-               "Return the file path for a given BUFFER-NAME."
-               (with-temp-message (format "Running tool: %s" "aj8_buffer_to_file")
-                 (let* ((buffer (get-buffer buffer-name))
-                      (file-name (and buffer (buffer-file-name buffer))))
-                 (unless file-name
-                   (error "Buffer '%s' is not visiting a file or does not exist" buffer-name))
-                 file-name)))
-   :name "aj8_buffer_to_file"
-   :description "Return the file path for a given buffer."
-   :args (list '(:name "buffer_name"
-                       :type string
-                       :description "The name of the buffer."))
-   :category "buffers")
-  (gptel-make-tool
-   :function (lambda (file-path)
-               "Return the buffer name for a given FILE-PATH."
-               (with-temp-message (format "Running tool: %s" "aj8_file_to_buffer")
-                 (let* ((path (expand-file-name file-path))
-                        (buffer (get-file-buffer path)))
-                   (unless buffer
-                     (error "No buffer is visiting file '%s'" path))
-                   (buffer-name buffer))))
-   :name "aj8_file_to_buffer"
-   :description "Return the buffer name for a given file path."
-   :args (list '(:name "file_path"
-                       :type string
-                       :description "The path to the file."))
-   :category "buffers")
-  (gptel-make-tool
-   :function (lambda ()
-               "Get the root directory of the current project."
-               (with-temp-message (format "Running tool: %s" "my_get_project_root")
-                 (if-let* ((proj (project-current))
-                           (root (project-root proj)))
-                     (let ((root-path (expand-file-name root)))
-                       (format "Project root directory: %s\nDirectory exists: %s\nIs directory: %s"
-                               root-path
-                               (file-exists-p root-path)
-                               (file-directory-p root-path)))
-                   "No project found in the current context.")))
-   :name "my_get_project_root"
-   :description "Get the root directory of the current project. This is useful for understanding the project structure and performing operations relative to the project root."
-   :args nil
-   :category "project")
-  (gptel-make-tool
-   :function (lambda ()
-               "List all project related buffers indicating buffer name, mode and file path."
-               (with-temp-message (format "Running tool: %s" "my_project_buffers")
-                 (cl-reduce #'concat (mapcar (lambda (buf)
-                                               (with-current-buffer buf
-                                                 (format "%s %s %s\n" (buffer-name buf)  major-mode (buffer-file-name buf))))
-                                             (project-buffers (project-current))))))
-   :name "my_project_buffers"
-   :description ("List all project related buffers indicating the buffer name, buffer's current mode file path. If no file is associated with a buffer then it is nil. This is expected for compilation windows for example. compilation-mode is the mode used for compiling code.")
-   :args nil
-   :category "buffers")
-  (gptel-make-tool
-   :function (lambda (filepath)
-               "Recursively search for files matching pattern in FILEPATH."
-               (with-temp-message (format "Running tool: %s" "my_search_for_file")
-                 (let ((dir (expand-file-name
-                             (project-root (project-current)))))
-                   (shell-command-to-string
-                    (format "find %s -type f -iname %s" dir (concat "*" filepath "*"))))))
-   :name "my_search_for_file"
-   :description ("Recursively search for files and directories matching a pattern. Searches through all subdirectories from the starting path. The search is case-insensitive and matches partial names. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.")
-   :args (list '(:name "filepath"
-                       :type string
-                       :description "Path to the file to read. Supports relative paths and ~."))
-   :category "filesystem")
-  ;; TODO: do we need this (possible duplication)?
-  (gptel-make-tool
-   :function (lambda (filepath start end)
-               "Read a region of a file rather than the entire thing."
-               (with-temp-message (format "Running tool: %s" "my_read_file_section")
-                 (with-temp-buffer
-                   (insert-file-contents (expand-file-name filepath))
-                   (buffer-substring (goto-line start) (goto-line end)))))
-   :name "my_read_file_section"
-   :description ("Read a region of a file rather than the entire thing. Prefer this over read_buffer and read_file as it is more efficient.")
-   :args (list '( :name "file"
-                  :type string
-                  :description "The name of the emacs file to read the contents of. ")
-               '( :name "start"
-                  :type integer
-                  :description "The first line to read from")
-               '( :name "end"
-                  :type integer
-                  :description "The last line to read from"))
    :category "filesystem")
   ;; TODO: do we need this (possible duplication)?
   (gptel-make-tool
@@ -2485,7 +2417,75 @@ before committing them to disk."
                                       :new_string
                                       (:type string :description "The new-string to replace old-string.")))
                        :description "The list of edits to apply on the file"))
-   :category "emacs"))
+   :category "filesystem")
+  (gptel-make-tool
+   :function (lambda (filepath)
+               "Recursively search for files matching pattern in FILEPATH."
+               (with-temp-message (format "Running tool: %s" "my_search_for_file")
+                 (let ((dir (expand-file-name
+                             (project-root (project-current)))))
+                   (shell-command-to-string
+                    (format "find %s -type f -iname %s" dir (concat "*" filepath "*"))))))
+   :name "my_search_for_file"
+   :description ("Recursively search for files and directories matching a pattern. Searches through all subdirectories from the starting path. The search is case-insensitive and matches partial names. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.")
+   :args (list '(:name "filepath"
+                       :type string
+                       :description "Path to the file to read. Supports relative paths and ~."))
+   :category "filesystem")
+  ;; TODO: do we need this (possible duplication)?
+  (gptel-make-tool
+   :function (lambda (filepath start end)
+               "Read a region of a file rather than the entire thing."
+               (with-temp-message (format "Running tool: %s" "my_read_file_section")
+                 (with-temp-buffer
+                   (insert-file-contents (expand-file-name filepath))
+                   (buffer-substring (goto-line start) (goto-line end)))))
+   :name "my_read_file_section"
+   :description ("Read a region of a file rather than the entire thing. Prefer this over read_buffer and read_file as it is more efficient.")
+   :args (list '( :name "file"
+                  :type string
+                  :description "The name of the emacs file to read the contents of. ")
+               '( :name "start"
+                  :type integer
+                  :description "The first line to read from")
+               '( :name "end"
+                  :type integer
+                  :description "The last line to read from"))
+   :category "filesystem")
+   (gptel-make-tool
+    :function (lambda (symbol)
+                "Read the documentation for SYMBOL, which can be a function or variable."
+                (with-temp-message (format "Running tool: %s" "my_read_documentation")
+                  (let ((sym (intern symbol)))
+                    (cond
+                     ((fboundp sym)
+                      (documentation sym))
+                     ((boundp sym)
+                      (documentation-property sym 'variable-documentation))
+                     (t
+                      (format "No documentation found for %s" symbol))))))
+    :name "my_read_documentation"
+    :description "Read the documentation for a given function or variable"
+    :args (list '(:name "symbol"
+                        :type string
+                        :description "The name of the function or variable whose documentation is to be read"))
+    :category "emacs")
+  (gptel-make-tool
+   :function (lambda ()
+               "Get the root directory of the current project."
+               (with-temp-message (format "Running tool: %s" "my_get_project_root")
+                 (if-let* ((proj (project-current))
+                           (root (project-root proj)))
+                     (let ((root-path (expand-file-name root)))
+                       (format "Project root directory: %s\nDirectory exists: %s\nIs directory: %s"
+                               root-path
+                               (file-exists-p root-path)
+                               (file-directory-p root-path)))
+                   "No project found in the current context.")))
+   :name "my_get_project_root"
+   :description "Get the root directory of the current project. This is useful for understanding the project structure and performing operations relative to the project root."
+   :args nil
+   :category "project"))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
 (use-package gptel-quick
