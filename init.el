@@ -2335,7 +2335,9 @@ Elisp code explicitly in arbitrary buffers.")
                "Edit FILE-PATH with FILE-EDITS and save without review.
 
 This function applies the specified edits to the file and then saves it.
-Each edit in FILE-EDITS should specify:
+Edits are applied in reverse line-number order to prevent line shifts
+from affecting subsequent edits.  Each edit in FILE-EDITS should
+specify:
 
 - :line-number - The 1-based line number where the edit occurs
 - :old-string - The string to find and replace
@@ -2350,36 +2352,45 @@ Each edit in FILE-EDITS should specify:
                        (with-current-buffer (get-buffer-create "*edit-file-direct*")
                          (erase-buffer)
                          (insert-file-contents file-name)
-                         (let ((inhibit-read-only t)
-                               (case-fold-search nil)
-                               (successful-edits 0)
-                               (failed-edits 0))
-                           ;; Apply changes
-                           (dolist (file-edit edits)
-                             (if (when-let* ((line-number (plist-get file-edit :line_number))
-                                             (old-string (plist-get file-edit :old_string))
-                                             (new-string (plist-get file-edit :new_string))
-                                             (is-valid-old-string (and old-string (not (string-blank-p old-string)))))
-                                   (progn
-                                     (goto-char (point-min))
-                                     (forward-line (1- line-number))
-                                     (let ((end-of-line (line-end-position)))
-                                       (when (search-forward old-string end-of-line t)
-                                         (replace-match new-string t t)
-                                         t))))
-                                 (setq successful-edits (1+ successful-edits))
-                               (setq failed-edits (1+ failed-edits))))
-                           ;; Return result to gptel
-                           (cond
-                            ((> successful-edits 0)
-                             (write-region (point-min) (point-max) file-name)
-                             (format "Successfully applied %d edits to %s. %d edits failed."
-                                     successful-edits file-name failed-edits))
-                            (t
-                             (error "Failed to apply any edits to %s. All %d edits failed because the text to replace was not found on the specified line."
-                                    file-name (length edits)))))))))))
+                         (let* ((case-fold-search nil)
+                                (failed-edits 0)
+                                (first-failed-edit nil)
+                                (edits (seq-into file-edits 'list))
+                                ;; Sort edits by line number in descending order
+                                (sorted-edits (sort edits (lambda (a b) (> (plist-get a :line_number) (plist-get b :line_number))))))
+                           ;; Apply changes in reverse order
+                           (dolist (file-edit sorted-edits)
+                             (if (when-let ((line-number (plist-get file-edit :line_number))
+                                            (old-string (plist-get file-edit :old_string))
+                                            (new-string (plist-get file-edit :new_string))
+                                            (is-valid-old-string (not (string= old-string ""))))
+                                   (goto-char (point-min))
+                                   (forward-line (1- line-number))
+                                   (let ((end-of-line (line-end-position)))
+                                     (when (search-forward old-string end-of-line t)
+                                       (replace-match new-string t t)
+                                       t)))
+                                 nil ;; Do nothing on success
+                               (progn
+                                 (setq failed-edits (1+ failed-edits))
+                                 (unless first-failed-edit
+                                   (setq first-failed-edit file-edit)))))
+                           ;; Check if any edits failed and handle results atomically.
+                           (let ((total-edits (length sorted-edits)))
+                             (cond
+                              ;; Case 1: Failure - at least one edit failed. Abort all changes.
+                              ((> failed-edits 0)
+                               (let* ((line-number (plist-get first-failed-edit :line_number))
+                                      (old-string (plist-get first-failed-edit :old_string)))
+                                 (error "Failed to apply all edits to %s. %d out of %d edits failed. The first failure encountered was on line %d ('%s'). No changes were saved."
+                                        file-name failed-edits total-edits line-number old-string)))
+                              ;; Case 2: Total success - all edits were applied.
+                              (t
+                               (write-region (point-min) (point-max) file-name)
+                               (format "Successfully applied all %d edits to %s."
+                                       total-edits file-name)))))))))))
    :name "aj8_edit_file_direct"
-   :description "Edit a file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line."
+   :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly."
    ;; "Editing rules:
    ;; - The old-string must match exactly the existing file content at the specified line
    ;; - Include enough context in old-string to uniquely identify the location
@@ -2402,19 +2413,16 @@ Each edit in FILE-EDITS should specify:
    :category "filesystem")
   (gptel-make-tool
    :function (lambda (file-path file-edits)
-               "Edit FILE-PATH with FILE-EDITS and review with ediff.
+               "Edit FILE-PATH with FILE-EDITS and review with Ediff.
 
-This function applies the specified edits to the file and then opens an
-ediff session to review changes before saving. Each edit in FILE-EDITS
-should specify:
+This function applies the specified edits to a temporary buffer and
+starts an Ediff session to review the changes. Edits are applied in
+reverse line-number order to prevent line shifts from affecting
+subsequent edits.  Each edit in FILE-EDITS should specify:
 
 - :line-number - The 1-based line number where the edit occurs
 - :old-string - The string to find and replace
-- :new-string - The replacement string
-
-After applying edits, it opens ediff to compare the original and
-modified versions, allowing the user to review and selectively apply
-changes before saving."
+- :new-string - The replacement string"
                (with-temp-message (format "Running tool: %s" "my_edit_file_interactive")
                  (if (not (and file-path (not (string-blank-p file-path))))
                      (error "File path was not provided or is empty.")
@@ -2425,36 +2433,45 @@ changes before saving."
                        (with-current-buffer (get-buffer-create "*edit-file-interactive*")
                          (erase-buffer)
                          (insert-file-contents file-name)
-                         (let ((inhibit-read-only t)
-                               (case-fold-search nil)
-                               (successful-edits 0)
-                               (failed-edits 0))
-                           ;; Apply changes
-                           (dolist (file-edit edits)
-                             (if (when-let* ((line-number (plist-get file-edit :line_number))
-                                             (old-string (plist-get file-edit :old_string))
-                                             (new-string (plist-get file-edit :new_string))
-                                             (is-valid-old-string (and old-string (not (string-blank-p old-string)))))
-                                   (progn
-                                     (goto-char (point-min))
-                                     (forward-line (1- line-number))
-                                     (let ((end-of-line (line-end-position)))
-                                       (when (search-forward old-string end-of-line t)
-                                         (replace-match new-string t t)
-                                         t))))
-                                 (setq successful-edits (1+ successful-edits))
-                               (setq failed-edits (1+ failed-edits))))
-                           ;; Return result to gptel
-                           (cond
-                            ((> successful-edits 0)
-                             (ediff-buffers (find-file-noselect file-name) (current-buffer))
-                             (format "Successfully applied %d edits to %s. %d edits failed."
-                                     successful-edits file-name failed-edits))
-                            (t
-                             (error "Failed to apply any edits to %s. All %d edits failed because the text to replace was not found on the specified line."
-                                    file-name (length edits)))))))))))
+                         (let* ((case-fold-search nil)
+                                (failed-edits 0)
+                                (first-failed-edit nil)
+                                (edits (seq-into file-edits 'list))
+                                ;; Sort edits by line number in descending order
+                                (sorted-edits (sort edits (lambda (a b) (> (plist-get a :line_number) (plist-get b :line_number))))))
+                           ;; Apply changes in reverse order
+                           (dolist (file-edit sorted-edits)
+                             (if (when-let ((line-number (plist-get file-edit :line_number))
+                                            (old-string (plist-get file-edit :old_string))
+                                            (new-string (plist-get file-edit :new_string))
+                                            (is-valid-old-string (not (string= old-string ""))))
+                                   (goto-char (point-min))
+                                   (forward-line (1- line-number))
+                                   (let ((end-of-line (line-end-position)))
+                                     (when (search-forward old-string end-of-line t)
+                                       (replace-match new-string t t)
+                                       t)))
+                                 nil ;; Do nothing on success
+                               (progn
+                                 (setq failed-edits (1+ failed-edits))
+                                 (unless first-failed-edit
+                                   (setq first-failed-edit file-edit)))))
+                           ;; Check if any edits failed and handle results atomically.
+                           (let ((total-edits (length sorted-edits)))
+                             (cond
+                              ;; Case 1: Failure - at least one edit failed. Abort all changes.
+                              ((> failed-edits 0)
+                               (let* ((line-number (plist-get first-failed-edit :line_number))
+                                      (old-string (plist-get first-failed-edit :old_string)))
+                                 (error "Failed to apply all edits to %s. %d out of %d edits failed. The first failure encountered was on line %d ('%s'). Ediff session will not be started."
+                                        file-name failed-edits total-edits line-number old-string)))
+                              ;; Case 2: Total success - all edits were applied.
+                              (t
+                               (ediff-buffers (find-file-noselect file-name) (current-buffer))
+                               (format "Successfully applied all %d edits. Please review them in the Ediff session."
+                                       total-edits)))))))))))
    :name "my_edit_file_interactive"
-   :description "Edit a file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Please wait for a successful message from this tool before proceeding."
+   :description "Edit a file with a list of edits and start an Ediff session for review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Please wait for a successful message from this tool before proceeding."
    ;; "Editing rules:
    ;; - The old-string must match exactly the existing file content at the specified line
    ;; - Include enough context in old-string to uniquely identify the location
