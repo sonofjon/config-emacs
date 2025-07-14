@@ -2396,9 +2396,9 @@ This function applies the specified edits to the file and then opens an
 ediff session to review changes before saving. Each edit in FILE-EDITS
 should specify:
 
-- :line_number - The 1-based line number where the edit occurs
-- :old_string - The string to find and replace
-- :new_string - The replacement string
+- :line-number - The 1-based line number where the edit occurs
+- :old-string - The string to find and replace
+- :new-string - The replacement string
 
 After applying edits, it opens ediff to compare the original and
 modified versions, allowing the user to review and selectively apply
