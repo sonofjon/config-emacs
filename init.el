@@ -2508,16 +2508,16 @@ This search respects the project's .gitignore file and other standard ignores.  
                                    (point-max))))
                      (buffer-substring-no-properties p-start p-end)))))
    :name "my_read_file_section"
-   :description ("Read a region of a file rather than the entire thing. Prefer this over read_buffer and read_file as it is more efficient.")
+   :description "Read a section of a file. To read the entire file, omit the optional start and end arguments."
    :args (list '( :name "filepath"
                   :type string
-                  :description "The name of the emacs file to read the contents of. ")
+                  :description "The name of the file to read the contents of. ")
                '( :name "start"
                   :type integer
                   :description "The optional first line to read from")
                '( :name "end"
                   :type integer
-                  :description "The optional last line to read from"))
+                  :description "The optional last line to read to"))
    :category "filesystem")
    (gptel-make-tool
     :function (lambda (symbol)
