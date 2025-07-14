@@ -2530,7 +2530,7 @@ This search respects the project's .gitignore file and other standard ignores.  
                      ((boundp sym)
                       (documentation-property sym 'variable-documentation))
                      (t
-                      (error "No documentation found for %s" symbol))))))
+                      (format "No documentation found for %s" symbol))))))
     :name "my_read_documentation"
     :description "Read the documentation for a given function or variable"
     :args (list '(:name "symbol"
