@@ -2264,10 +2264,12 @@ Elisp code explicitly in arbitrary buffers.")
    :function (lambda ()
                "List all project related buffers indicating buffer name, mode and file path."
                (with-temp-message (format "Running tool: %s" "my_project_buffers")
-                 (cl-reduce #'concat (mapcar (lambda (buf)
-                                               (with-current-buffer buf
-                                                 (format "%s %s %s\n" (buffer-name buf)  major-mode (buffer-file-name buf))))
-                                             (project-buffers (project-current))))))
+                 (if-let ((project (project-current)))
+                     (cl-reduce #'concat (mapcar (lambda (buf)
+                                                   (with-current-buffer buf
+                                                     (format "%s %s %s\n" (buffer-name buf) major-mode (buffer-file-name buf))))
+                                                 (project-buffers project)))
+                   (error "No project found in the current context."))))
    :name "my_project_buffers"
    :description ("List all project related buffers indicating the buffer name, buffer's current mode file path. If no file is associated with a buffer then it is nil. This is expected for compilation windows for example. compilation-mode is the mode used for compiling code.")
    :args nil
@@ -2310,7 +2312,7 @@ Elisp code explicitly in arbitrary buffers.")
                         ((= count 0)
                          (error "Could not find text to replace in file %s" expanded-filename))
                         ((> count 1)
-                         (error "Error: Found %d matches for the text to replace in file %s." count expanded-filename))
+                         (error "Found %d matches for the text to replace in file %s" count expanded-filename))
                         (t
                          (goto-char (point-min))
                          (search-forward old-string nil t)
@@ -2339,33 +2341,43 @@ Each edit in FILE-EDITS should specify:
 - :old-string - The string to find and replace
 - :new-string - The replacement string"
                (with-temp-message (format "Running tool: %s" "my_edit_file_direct")
-                 (if (and file-path (not (string= file-path "")) file-edits)
-                     (with-current-buffer (get-buffer-create "*edit-file-direct*")
-                       (erase-buffer)
-                       (insert-file-contents (expand-file-name file-path))
-                       (let ((inhibit-read-only t)
-                             (case-fold-search nil)
-                             (file-name (expand-file-name file-path))
-                             (edit-success nil))
-                         ;; apply changes
-                         (dolist (file-edit (seq-into file-edits 'list))
-                           (when-let ((line-number (plist-get file-edit :line_number))
-                                      (old-string (plist-get file-edit :old_string))
-                                      (new-string (plist-get file-edit :new_string))
-                                      (is-valid-old-string (not (string= old-string ""))))
-                             (goto-char (point-min))
-                             (forward-line (1- line-number))
-                             (when (search-forward old-string nil t)
-                               (replace-match new-string t t)
-                               (setq edit-success t))))
-                         ;; return result to gptel
-                         (if edit-success
-                             (progn
-                               ;; write changes to file
-                               (write-region (point-min) (point-max) file-name)
-                               (format "Successfully edited %s" file-name))
-                           (error "Failed to apply edits to %s" file-name))))
-                   (error "Failed to edit. File path or edits not provided."))))
+                 (if (not (and file-path (not (string-blank-p file-path))))
+                     (error "File path was not provided or is empty.")
+                   (let ((file-name (expand-file-name file-path))
+                         (edits (if file-edits (seq-into file-edits 'list) nil)))
+                     (if (not edits)
+                         (format "No edits were provided. File '%s' remains unchanged." file-name)
+                       (with-current-buffer (get-buffer-create "*edit-file-direct*")
+                         (erase-buffer)
+                         (insert-file-contents file-name)
+                         (let ((inhibit-read-only t)
+                               (case-fold-search nil)
+                               (successful-edits 0)
+                               (failed-edits 0))
+                           ;; apply changes
+                           (dolist (file-edit edits)
+                             (if (when-let* ((line-number (plist-get file-edit :line_number))
+                                             (old-string (plist-get file-edit :old_string))
+                                             (new-string (plist-get file-edit :new_string))
+                                             (is-valid-old-string (and old-string (not (string-blank-p old-string)))))
+                                    (progn
+                                      (goto-char (point-min))
+                                      (forward-line (1- line-number))
+                                      (let ((end-of-line (line-end-position)))
+                                        (when (search-forward old-string end-of-line t)
+                                          (replace-match new-string t t)
+                                          t))))
+                                 (setq successful-edits (1+ successful-edits))
+                               (setq failed-edits (1+ failed-edits))))
+                           ;; return result to gptel
+                           (cond
+                            ((> successful-edits 0)
+                             (write-region (point-min) (point-max) file-name)
+                             (format "Successfully applied %d edits to %s. %d edits failed."
+                                     successful-edits file-name failed-edits))
+                            (t
+                             (error "Failed to apply any edits to %s. All %d edits failed because the text to replace was not found on the specified lines."
+                                    file-name (length edits)))))))))))
    :name "my_edit_file_direct"
    :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line."
 ;; "Editing rules:
@@ -2404,33 +2416,43 @@ After applying edits, it opens ediff to compare the original and
 modified versions, allowing the user to review and selectively apply
 changes before saving."
                (with-temp-message (format "Running tool: %s" "my_edit_file_interactive")
-                 (if (and file-path (not (string= file-path "")) file-edits)
-                     (with-current-buffer (get-buffer-create "*edit-file-interactive*")
-                       (erase-buffer)
-                       (insert-file-contents (expand-file-name file-path))
-                       (let ((inhibit-read-only t)
-                             (case-fold-search nil)
-                             (file-name (expand-file-name file-path))
-                             (edit-success nil))
-                         ;; apply changes
-                         (dolist (file-edit (seq-into file-edits 'list))
-                           (when-let ((line-number (plist-get file-edit :line_number))
-                                      (old-string (plist-get file-edit :old_string))
-                                      (new-string (plist-get file-edit :new_string))
-                                      (is-valid-old-string (not (string= old-string ""))))
-                             (goto-char (point-min))
-                             (forward-line (1- line-number))
-                             (when (search-forward old-string nil t)
-                               (replace-match new-string t t)
-                               (setq edit-success t))))
-                         ;; return result to gptel
-                         (if edit-success
-                             (progn
-                               ;; show diffs
-                               (ediff-buffers (find-file-noselect file-name) (current-buffer))
-                               (format "Successfully edited %s" file-name))
-                           (error "Failed to apply edits to %s" file-name))))
-                   (error "Failed to edit. File path or edits not provided."))))
+                 (if (not (and file-path (not (string-blank-p file-path))))
+                     (error "File path was not provided or is empty.")
+                   (let ((file-name (expand-file-name file-path))
+                         (edits (if file-edits (seq-into file-edits 'list) nil)))
+                     (if (not edits)
+                         (format "No edits were provided. File '%s' remains unchanged." file-name)
+                       (with-current-buffer (get-buffer-create "*edit-file-interactive*")
+                         (erase-buffer)
+                         (insert-file-contents file-name)
+                         (let ((inhibit-read-only t)
+                               (case-fold-search nil)
+                               (successful-edits 0)
+                               (failed-edits 0))
+                           ;; apply changes
+                           (dolist (file-edit edits)
+                             (if (when-let* ((line-number (plist-get file-edit :line_number))
+                                             (old-string (plist-get file-edit :old_string))
+                                             (new-string (plist-get file-edit :new_string))
+                                             (is-valid-old-string (and old-string (not (string-blank-p old-string)))))
+                                    (progn
+                                      (goto-char (point-min))
+                                      (forward-line (1- line-number))
+                                      (let ((end-of-line (line-end-position)))
+                                        (when (search-forward old-string end-of-line t)
+                                          (replace-match new-string t t)
+                                          t))))
+                                 (setq successful-edits (1+ successful-edits))
+                               (setq failed-edits (1+ failed-edits))))
+                           ;; return result to gptel
+                           (cond
+                            ((> successful-edits 0)
+                             (ediff-buffers (find-file-noselect file-name) (current-buffer))
+                             (format "Successfully applied %d edits to %s. %d edits failed."
+                                     successful-edits file-name failed-edits))
+                            (t
+                             (error "Failed to apply any edits to %s. All %d edits failed because the text to replace was not found on the specified lines."
+                                    file-name (length edits)))))))))))
    :name "my_edit_file_interactive"
    :description "Edit a file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Please wait for a successful message from this tool before proceeding."
 ;; "Editing rules:
@@ -2457,10 +2479,11 @@ changes before saving."
    :function (lambda (filepath)
                "Recursively search for files matching pattern in FILEPATH."
                (with-temp-message (format "Running tool: %s" "my_search_for_file")
-                 (let ((dir (expand-file-name
-                             (project-root (project-current)))))
-                   (shell-command-to-string
-                    (format "find %s -type f -iname %s" dir (concat "*" filepath "*"))))))
+                 (if-let* ((project (project-current))
+                           (dir (expand-file-name (project-root project))))
+                     (shell-command-to-string
+                      (format "find %s -type f -iname %s" dir (concat "*" filepath "*")))
+                   (error "No project found in the current context."))))
    :name "my_search_for_file"
    :description ("Recursively search for files and directories matching a pattern. Searches through all subdirectories from the starting path. The search is case-insensitive and matches partial names. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.")
    :args (list '(:name "filepath"
