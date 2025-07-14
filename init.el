@@ -2176,7 +2176,7 @@ Elisp code explicitly in arbitrary buffers.")
                    (with-current-buffer buf
                      (erase-buffer)
                      (insert content)
-                     (message "Buffer %s modified successfully" buffer)))))
+                     (format "Buffer %s modified successfully" buffer)))))
    :name "my_modify_buffer"
    :description "Completely overwrite the contents of a buffer"
    :args (list '(:name "buffer"
