@@ -2209,15 +2209,15 @@ Elisp code explicitly in arbitrary buffers.")
                            (format "Successfully edited buffer %s" buffer-name)))))))))
    :name "my_edit_buffer"
    :description "Edit buffer by replacing an exact string match."
-   :args '((:name "buffer_name"
+   :args '((:name "buffer-name"
                   :type string
                   :description "Name of the buffer to modify")
-           (:name "old_string"
+           (:name "old-string"
                   :type string
-                  :description "Text to be replaced by new_string")
-           (:name "new_string"
+                  :description "Text to be replaced by new-string")
+           (:name "new-string"
                   :type string
-                  :description "Text to replace old_string with"))
+                  :description "Text to replace old-string with"))
    :category "buffers")
   ;; (gptel-make-tool
   ;;  :function (lambda (path filename content)
@@ -2280,12 +2280,12 @@ Elisp code explicitly in arbitrary buffers.")
                        :type array
                        :items (:type object
                                      :properties
-                                     (:line_number
+                                     (:line-number
                                       (:type integer :description "The line number of the file where edit starts.")
-                                      :old_string
-                                      (:type string :description "The string to be replaced by new_string.")
-                                      :new_string
-                                      (:type string :description "The string to replace old_string.")))
+                                      :old-string
+                                      (:type string :description "The string to be replaced by new-string.")
+                                      :new-string
+                                      (:type string :description "The string to replace old-string.")))
                        :description "The list of edits to apply to the file"))
    :category "filesystem")
    (gptel-make-tool
