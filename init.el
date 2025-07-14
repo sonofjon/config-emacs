@@ -2199,7 +2199,7 @@ Elisp code explicitly in arbitrary buffers.")
    :category "buffers")
   (gptel-make-tool
    :function (lambda (buffer-name)
-               "Return the file path for a given BUFFER-NAME."
+               "Return the file path for BUFFER-NAME."
                (with-temp-message (format "Running tool: %s" "aj8_buffer_to_file")
                  (let* ((buffer (get-buffer buffer-name))
                       (file-name (and buffer (buffer-file-name buffer))))
@@ -2214,7 +2214,7 @@ Elisp code explicitly in arbitrary buffers.")
    :category "buffers")
   (gptel-make-tool
    :function (lambda (file-path)
-               "Return the buffer name for a given FILE-PATH."
+               "Return the buffer name for FILE-PATH."
                (with-temp-message (format "Running tool: %s" "aj8_file_to_buffer")
                  (let* ((path (expand-file-name file-path))
                         (buffer (get-file-buffer path)))
@@ -2249,7 +2249,7 @@ Elisp code explicitly in arbitrary buffers.")
                            (replace-match new-string t t)
                            (format "Successfully edited buffer %s" buffer-name)))))))))
    :name "my_edit_buffer"
-   :description "Edit buffer by replacing an exact string match."
+   :description "Edit a buffer by replacing a single instance of an exact string."
    :args '((:name "buffer-name"
                   :type string
                   :description "Name of the buffer to modify")
@@ -2262,7 +2262,7 @@ Elisp code explicitly in arbitrary buffers.")
    :category "buffers")
   (gptel-make-tool
    :function (lambda ()
-               "List all project related buffers indicating buffer name, mode and file path."
+               "List all project related buffers, indicating buffer name, mode and file path."
                (with-temp-message (format "Running tool: %s" "my_project_buffers")
                  (if-let ((project (project-current)))
                      (cl-reduce #'concat (mapcar (lambda (buf)
@@ -2271,7 +2271,7 @@ Elisp code explicitly in arbitrary buffers.")
                                                  (project-buffers project)))
                    (error "No project found in the current context."))))
    :name "my_project_buffers"
-   :description ("List all project related buffers indicating the buffer name, buffer's current mode file path. If no file is associated with a buffer then it is nil. This is expected for compilation windows for example. compilation-mode is the mode used for compiling code.")
+   :description ("List all project related buffers, indicating the buffer name and file path.")
    :args nil
    :category "buffers")
   ;; (gptel-make-tool
@@ -2325,10 +2325,10 @@ Elisp code explicitly in arbitrary buffers.")
                   :description "The path to the file to edit.")
            (:name "old-string"
                   :type string
-                  :description "The exact string to be replaced.")
+                  :description "Text to be replaced by new-string.")
            (:name "new-string"
                   :type string
-                  :description "The string to replace old-string with."))
+                  :description "Text to replace old-string with."))
    :category "filesystem")
   (gptel-make-tool
    :function (lambda (file-path file-edits)
@@ -2354,7 +2354,7 @@ Each edit in FILE-EDITS should specify:
                                (case-fold-search nil)
                                (successful-edits 0)
                                (failed-edits 0))
-                           ;; apply changes
+                           ;; Apply changes
                            (dolist (file-edit edits)
                              (if (when-let* ((line-number (plist-get file-edit :line_number))
                                              (old-string (plist-get file-edit :old_string))
@@ -2369,17 +2369,17 @@ Each edit in FILE-EDITS should specify:
                                          t))))
                                  (setq successful-edits (1+ successful-edits))
                                (setq failed-edits (1+ failed-edits))))
-                           ;; return result to gptel
+                           ;; Return result to gptel
                            (cond
                             ((> successful-edits 0)
                              (write-region (point-min) (point-max) file-name)
                              (format "Successfully applied %d edits to %s. %d edits failed."
                                      successful-edits file-name failed-edits))
                             (t
-                             (error "Failed to apply any edits to %s. All %d edits failed because the text to replace was not found on the specified lines."
+                             (error "Failed to apply any edits to %s. All %d edits failed because the text to replace was not found on the specified line."
                                     file-name (length edits)))))))))))
    :name "aj8_edit_file_direct"
-   :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line."
+   :description "Edit a file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line."
    ;; "Editing rules:
    ;; - The old-string must match exactly the existing file content at the specified line
    ;; - Include enough context in old-string to uniquely identify the location
@@ -2387,7 +2387,7 @@ Each edit in FILE-EDITS should specify:
    ;; - Do not include long runs of unchanged lines"
    :args (list '(:name "file-path"
                        :type string
-                       :description "The full path of the file to edit")
+                       :description "The path of the file to edit")
                '(:name "file-edits"
                        :type array
                        :items (:type object
@@ -2429,7 +2429,7 @@ changes before saving."
                                (case-fold-search nil)
                                (successful-edits 0)
                                (failed-edits 0))
-                           ;; apply changes
+                           ;; Apply changes
                            (dolist (file-edit edits)
                              (if (when-let* ((line-number (plist-get file-edit :line_number))
                                              (old-string (plist-get file-edit :old_string))
@@ -2444,14 +2444,14 @@ changes before saving."
                                          t))))
                                  (setq successful-edits (1+ successful-edits))
                                (setq failed-edits (1+ failed-edits))))
-                           ;; return result to gptel
+                           ;; Return result to gptel
                            (cond
                             ((> successful-edits 0)
                              (ediff-buffers (find-file-noselect file-name) (current-buffer))
                              (format "Successfully applied %d edits to %s. %d edits failed."
                                      successful-edits file-name failed-edits))
                             (t
-                             (error "Failed to apply any edits to %s. All %d edits failed because the text to replace was not found on the specified lines."
+                             (error "Failed to apply any edits to %s. All %d edits failed because the text to replace was not found on the specified line."
                                     file-name (length edits)))))))))))
    :name "my_edit_file_interactive"
    :description "Edit a file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Please wait for a successful message from this tool before proceeding."
@@ -2462,7 +2462,7 @@ changes before saving."
    ;; - Do not include long runs of unchanged lines"
    :args (list '(:name "file-path"
                        :type string
-                       :description "The full path of the file to edit")
+                       :description "The path of the file to edit")
                '(:name "file-edits"
                        :type array
                        :items (:type object
