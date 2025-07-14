@@ -2448,7 +2448,7 @@ before committing them to disk."
                      (buffer-substring-no-properties p-start p-end)))))
    :name "my_read_file_section"
    :description ("Read a region of a file rather than the entire thing. Prefer this over read_buffer and read_file as it is more efficient.")
-   :args (list '( :name "file"
+   :args (list '( :name "filepath"
                   :type string
                   :description "The name of the emacs file to read the contents of. ")
                '( :name "start"
