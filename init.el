@@ -2260,20 +2260,6 @@ Elisp code explicitly in arbitrary buffers.")
                   :type string
                   :description "Text to replace old-string with"))
    :category "buffers")
-  (gptel-make-tool
-   :function (lambda ()
-               "List all project related buffers, indicating buffer name, mode and file path."
-               (with-temp-message (format "Running tool: %s" "my_project_buffers")
-                 (if-let ((project (project-current)))
-                     (cl-reduce #'concat (mapcar (lambda (buf)
-                                                   (with-current-buffer buf
-                                                     (format "%s %s\n" (buffer-name buf) (buffer-file-name buf))))
-                                                 (project-buffers project)))
-                   (error "No project found in the current context."))))
-   :name "my_project_buffers"
-   :description ("List all project related buffers, indicating the buffer name and file path.")
-   :args nil
-   :category "buffers")
   ;; (gptel-make-tool
   ;;  :function (lambda (path filename content)
   ;;              "Create FILENAME in PATH with CONTENT."
@@ -2566,7 +2552,21 @@ This search respects the project's .gitignore file and other standard ignores.  
                    (error "No project found in the current context."))))
    :name "my_get_project_root"
    :description "Get the root directory of the current project. This is useful for understanding the project structure and performing operations relative to the project root."
+  (gptel-make-tool
+   :function (lambda ()
+               "Return a string listing open buffers in the current project.
+Each line contains a buffer name and its associated file path."
+               (with-temp-message (format "Running tool: %s" "my_project_get_open_buffers")
+                 (if-let ((project (project-current)))
+                     (cl-reduce #'concat (mapcar (lambda (buf)
+                                                   (with-current-buffer buf
+                                                     (format "%s %s\n" (buffer-name buf) (buffer-file-name buf))))
+                                                 (project-buffers project)))
+                   (error "No project found in the current context."))))
+   :name "my_project_get_open_buffers"
+   :description "Return a string listing all open buffers in the current project. Each line contains a buffer name followed by its associated file path."
    :args nil
+   :category "project")
    :category "project"))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
