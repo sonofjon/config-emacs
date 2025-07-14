@@ -2325,7 +2325,7 @@ specify:
 - :line-number - The 1-based line number where the edit occurs
 - :old-string - The string to find and replace
 - :new-string - The replacement string"
-               (with-temp-message (format "Running tool: %s" "my_edit_file_direct")
+               (with-temp-message (format "Running tool: %s" "aj8_apply_file_edits")
                  (if (not (and file-path (not (string-blank-p file-path))))
                      (error "File path was not provided or is empty.")
                    (let ((file-name (expand-file-name file-path))
@@ -2372,8 +2372,8 @@ specify:
                                (write-region (point-min) (point-max) file-name)
                                (format "Successfully applied all %d edits to %s."
                                        total-edits file-name)))))))))))
-   :name "aj8_edit_file_direct"
-   :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly."
+   :name "aj8_apply_file_edits"
+   :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Note: The old-string must be found entirely on the specified line-number."
    ;; "Editing rules:
    ;; - The old-string must match exactly the existing file content at the specified line
    ;; - Include enough context in old-string to uniquely identify the location
@@ -2406,7 +2406,7 @@ subsequent edits.  Each edit in FILE-EDITS should specify:
 - :line-number - The 1-based line number where the edit occurs
 - :old-string - The string to find and replace
 - :new-string - The replacement string"
-               (with-temp-message (format "Running tool: %s" "my_edit_file_interactive")
+               (with-temp-message (format "Running tool: %s" "aj8_apply_file_edits_with_review")
                  (if (not (and file-path (not (string-blank-p file-path))))
                      (error "File path was not provided or is empty.")
                    (let ((file-name (expand-file-name file-path))
@@ -2453,8 +2453,10 @@ subsequent edits.  Each edit in FILE-EDITS should specify:
                                (ediff-buffers (find-file-noselect file-name) (current-buffer))
                                (format "Successfully applied all %d edits. Please review them in the Ediff session."
                                        total-edits)))))))))))
-   :name "my_edit_file_interactive"
-   :description "Edit a file with a list of edits and start an Ediff session for review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Please wait for a successful message from this tool before proceeding."
+   :name "aj8_apply_file_edits_with_review"
+   :description "Edit a file with a list of edits and start an Ediff session for review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly.  Note: The old-string must be found entirely on the specified line-number.
+
+This action requires manual user review. After calling this tool, you must stop and instruct the user to complete the review in the Ediff session and to notify you when they are finished. Do not proceed with any other tools or actions until you receive confirmation from the user."
    ;; "Editing rules:
    ;; - The old-string must match exactly the existing file content at the specified line
    ;; - Include enough context in old-string to uniquely identify the location
