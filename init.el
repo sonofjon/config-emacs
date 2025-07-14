@@ -2261,25 +2261,22 @@ Elisp code explicitly in arbitrary buffers.")
                   :description "Text to replace old-string with"))
    :category "buffers")
   ;; (gptel-make-tool
-  ;;  :function (lambda (path filename content)
-  ;;              "Create FILENAME in PATH with CONTENT."
-  ;;              (with-temp-message (format "Running tool: %s" "my_create_file")
-  ;;                (let ((full (expand-file-name filename path)))
+  ;;  :function (lambda (filepath content)
+  ;;              "Create a new file at FILEPATH with CONTENT."
+  ;;              (with-temp-message (format "Running tool: %s" "aj8_create_file")
+  ;;                (let ((full-path (expand-file-name filepath)))
   ;;                  (with-temp-buffer
   ;;                    (insert content)
-  ;;                    (write-file full))
-  ;;                  (format "Created %s in %s" filename path))))
-  ;;  :name "my_create_file"
-  ;;  :description "Create a new file with the specified content."
-  ;;  :args (list '(:name "path"
-  ;;                      :type string
-  ;;                      :description "The directory where to create the file")
-  ;;              '(:name "filename"
-  ;;                      :type string
-  ;;                      :description "The name of the file to create")
-  ;;              '(:name "content"
-  ;;                      :type string
-  ;;                      :description "The content to write to the file"))
+  ;;                    (write-file full-path t)) ; The 't' arg prevents confirmation prompts
+  ;;                  (format "Successfully created file: %s" full-path))))
+  ;;  :name "aj8_create_file"
+  ;;  :description "Create a new file with the specified content. Overwrites the file if it already exists."
+  ;;  :args '((:name "filepath"
+  ;;                 :type string
+  ;;                 :description "The path of the file to create.")
+  ;;          (:name "content"
+  ;;                 :type string
+  ;;                 :description "The content to write to the new file."))
   ;;  :category "filesystem")
   (gptel-make-tool
    :function (lambda (filename old-string new-string)
