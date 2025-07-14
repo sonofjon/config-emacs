@@ -2240,9 +2240,9 @@ Elisp code explicitly in arbitrary buffers.")
                            (setq count (1+ count)))
                          (cond
                           ((= count 0)
-                           (format "Error: Could not find text to replace in buffer %s" buffer-name))
+                           (error "Could not find text to replace in buffer %s" buffer-name))
                           ((> count 1)
-                           (format "Error: Found %d matches for the text to replace in buffer %s" count buffer-name))
+                           (error "Found %d matches for the text to replace in buffer %s" count buffer-name))
                           (t
                            (goto-char (point-min))
                            (search-forward old-string nil t)
@@ -2364,8 +2364,8 @@ Each edit in FILE-EDITS should specify:
                                ;; write changes to file
                                (write-region (point-min) (point-max) file-name)
                                (format "Successfully edited %s" file-name))
-                           (format "Failed to apply edits to %s" file-name))))
-                   (format "Failed to edit %s. File path or edits not provided." file-path))))
+                           (error "Failed to apply edits to %s" file-name))))
+                   (error "Failed to edit. File path or edits not provided."))))
    :name "my_edit_file_direct"
    :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line."
 ;; "Editing rules:
@@ -2429,8 +2429,8 @@ changes before saving."
                                ;; show diffs
                                (ediff-buffers (find-file-noselect file-name) (current-buffer))
                                (format "Successfully edited %s" file-name))
-                           (format "Failed to apply edits to %s" file-name))))
-                   (format "Failed to edit %s. File path or edits not provided." file-path))))
+                           (error "Failed to apply edits to %s" file-name))))
+                   (error "Failed to edit. File path or edits not provided."))))
    :name "my_edit_file_interactive"
    :description "Edit a file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Please wait for a successful message from this tool before proceeding."
 ;; "Editing rules:
@@ -2503,7 +2503,7 @@ changes before saving."
                      ((boundp sym)
                       (documentation-property sym 'variable-documentation))
                      (t
-                      (format "No documentation found for %s" symbol))))))
+                      (error "No documentation found for %s" symbol))))))
     :name "my_read_documentation"
     :description "Read the documentation for a given function or variable"
     :args (list '(:name "symbol"
@@ -2521,7 +2521,7 @@ changes before saving."
                                root-path
                                (file-exists-p root-path)
                                (file-directory-p root-path)))
-                   "No project found in the current context.")))
+                   (error "No project found in the current context."))))
    :name "my_get_project_root"
    :description "Get the root directory of the current project. This is useful for understanding the project structure and performing operations relative to the project root."
    :args nil
