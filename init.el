@@ -2476,20 +2476,22 @@ changes before saving."
                        :description "The list of edits to apply to the file"))
    :category "filesystem")
   (gptel-make-tool
-   :function (lambda (filepath)
-               "Recursively search for files matching pattern in FILEPATH."
-               (with-temp-message (format "Running tool: %s" "my_search_for_file")
-                 (if-let* ((project (project-current))
-                           (dir (expand-file-name (project-root project))))
-                     (shell-command-to-string
-                      (format "find %s -type f -iname %s" dir (concat "*" filepath "*")))
-                   (error "No project found in the current context."))))
    :name "my_search_for_file"
-   :description ("Recursively search for files and directories matching a pattern. Searches through all subdirectories from the starting path. The search is case-insensitive and matches partial names. Returns full paths to all matching items. Great for finding files when you don't know their exact location. Only searches within allowed directories.")
-   :args (list '(:name "filepath"
-                       :type string
-                       :description "Path to the file to read. Supports relative paths and ~."))
-   :category "filesystem")
+   :function (lambda (pattern)
+               "In the current project, find files whose filenames match PATTERN.
+
+This search respects the project's .gitignore file and other standard ignores.  It does not return directories."
+               (with-temp-message (format "Running tool: %s" "my_search_for_file")
+                 (let ((proj (project-current)))
+                   (if (not proj)
+                       (error "No project found in the current context.")
+                     (let ((all-files (project-files proj)))
+                       (seq-filter (lambda (file) (string-search pattern (file-name-nondirectory file))) all-files))))))
+   :description "In the current project, recursively find files whose filenames contain PATTERN. This search is case-sensitive and respects .gitignore. It does not find directories."
+   :args '((:name "pattern"
+                  :type string
+                  :description "A pattern to match against the filenames in the project."))
+   :category "project")
   (gptel-make-tool
    :function (lambda (filepath &optional start end)
                "Read a region of a file rather than the entire thing."
