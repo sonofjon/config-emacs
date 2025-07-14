@@ -2328,6 +2328,67 @@ Elisp code explicitly in arbitrary buffers.")
                  :type string
                  :description "The string to replace old-string with."))
  :category "filesystem")
+  (gptel-make-tool
+   :function (lambda (file-path file-edits)
+               "Edit FILE-PATH with FILE-EDITS and save without review.
+
+This function applies the specified edits to the file and then saves it.
+Each edit in FILE-EDITS should specify:
+
+- :line-number - The 1-based line number where the edit occurs
+- :old-string - The string to find and replace
+- :new-string - The replacement string"
+               (with-temp-message (format "Running tool: %s" "my_edit_file_direct")
+                 (if (and file-path (not (string= file-path "")) file-edits)
+                     (with-current-buffer (get-buffer-create "*edit-file-direct*")
+                       (erase-buffer)
+                       (insert-file-contents (expand-file-name file-path))
+                       (let ((inhibit-read-only t)
+                             (case-fold-search nil)
+                             (file-name (expand-file-name file-path))
+                             (edit-success nil))
+                         ;; apply changes
+                         (dolist (file-edit (seq-into file-edits 'list))
+                           (when-let ((line-number (plist-get file-edit :line_number))
+                                      (old-string (plist-get file-edit :old_string))
+                                      (new-string (plist-get file-edit :new_string))
+                                      (is-valid-old-string (not (string= old-string ""))))
+                             (goto-char (point-min))
+                             (forward-line (1- line-number))
+                             (when (search-forward old-string nil t)
+                               (replace-match new-string t t)
+                               (setq edit-success t))))
+                         ;; return result to gptel
+                         (if edit-success
+                             (progn
+                               ;; write changes to file
+                               (write-region (point-min) (point-max) file-name)
+                               (format "Successfully edited %s" file-name))
+                           (format "Failed to apply edits to %s" file-name))))
+                   (format "Failed to edit %s. File path or edits not provided." file-path))))
+   :name "my_edit_file_direct"
+   :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line."
+;; "Editing rules:
+;; - The old-string must match exactly the existing file content at the specified line
+;; - Include enough context in old-string to uniquely identify the location
+;; - Keep edits concise and focused on the specific change requested
+;; - Do not include long runs of unchanged lines"
+   :args (list '(:name "file-path"
+                       :type string
+                       :description "The full path of the file to edit")
+               '(:name "file-edits"
+                       :type array
+                       :items (:type object
+                                     :properties
+                                     (:line-number
+                                      (:type integer :description "The line number of the file where edit starts.")
+                                      :old-string
+                                      (:type string :description "The old-string to be replaced by new-string.")
+                                      :new-string
+                                      (:type string :description "The new-string to replace old-string.")))
+                       :description "The list of edits to apply to the file"))
+   :category "filesystem")
+  (gptel-make-tool
    :function (lambda (file-path file-edits)
                "Edit FILE-PATH with FILE-EDITS and review with ediff.
 
@@ -2344,7 +2405,7 @@ modified versions, allowing the user to review and selectively apply
 changes before saving."
                (with-temp-message (format "Running tool: %s" "my_edit_file_interactive")
                  (if (and file-path (not (string= file-path "")) file-edits)
-                     (with-current-buffer (get-buffer-create "*edit-file*")
+                     (with-current-buffer (get-buffer-create "*edit-file-interactive*")
                        (erase-buffer)
                        (insert-file-contents (expand-file-name file-path))
                        (let ((inhibit-read-only t)
@@ -2368,8 +2429,8 @@ changes before saving."
                                ;; show diffs
                                (ediff-buffers (find-file-noselect file-name) (current-buffer))
                                (format "Successfully edited %s" file-name))
-                           (format "Failed to edited %s" file-name))))
-                   (format "Failed to edited %s" file-path))))
+                           (format "Failed to apply edits to %s" file-name))))
+                   (format "Failed to edit %s. File path or edits not provided." file-path))))
    :name "my_edit_file_interactive"
    :description "Edit a file with a list of edits. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line."
 ;; "Editing rules:
