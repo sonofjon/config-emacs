@@ -2294,6 +2294,40 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                      :description "The content to write to the file"))
   ;;  :category "filesystem")
   (gptel-make-tool
+ :name "my_edit_file"
+ :function (lambda (filename old-string new-string)
+             "Edit FILENAME by replacing one instance of OLD-STRING with NEW-STRING."
+             (with-temp-message (format "Running tool: %s" "my_edit_file")
+               (let ((expanded-filename (expand-file-name filename)))
+                 (with-temp-buffer
+                   (insert-file-contents expanded-filename)
+                   (let ((case-fold-search nil))
+                     (goto-char (point-min))
+                     (let ((count 0))
+                       (while (search-forward old-string nil t)
+                         (setq count (1+ count)))
+                       (cond
+                        ((= count 0)
+                         (error "Could not find text to replace in file %s" expanded-filename))
+                        ((> count 1)
+                         (error "Error: Found %d matches for the text to replace in file %s." count expanded-filename))
+                        (t
+                         (goto-char (point-min))
+                         (search-forward old-string nil t)
+                         (replace-match new-string t t)
+                         (write-region (point-min) (point-max) expanded-filename)
+                         (format "Successfully edited file %s" expanded-filename)))))))))
+ :description "Edit a file by replacing a single instance of an exact string."
+ :args '((:name "filename"
+                 :type string
+                 :description "The path to the file to edit.")
+        (:name "old-string"
+                 :type string
+                 :description "The exact string to be replaced.")
+        (:name "new-string"
+                 :type string
+                 :description "The string to replace old-string with."))
+ :category "filesystem")
    :function (lambda (file-path file-edits)
                "Edit FILE-PATH with FILE-EDITS and review with ediff.
 
