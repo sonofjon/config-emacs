@@ -2434,12 +2434,18 @@ before committing them to disk."
    :category "filesystem")
   ;; TODO: do we need this (possible duplication)?
   (gptel-make-tool
-   :function (lambda (filepath start end)
+   :function (lambda (filepath &optional start end)
                "Read a region of a file rather than the entire thing."
                (with-temp-message (format "Running tool: %s" "my_read_file_section")
                  (with-temp-buffer
                    (insert-file-contents (expand-file-name filepath))
-                   (buffer-substring (goto-line start) (goto-line end)))))
+                   (let* ((p-start (if start
+                                       (save-excursion (goto-line start) (point))
+                                     (point-min)))
+                          (p-end (if end
+                                     (save-excursion (goto-line end) (line-end-position))
+                                   (point-max))))
+                     (buffer-substring-no-properties p-start p-end)))))
    :name "my_read_file_section"
    :description ("Read a region of a file rather than the entire thing. Prefer this over read_buffer and read_file as it is more efficient.")
    :args (list '( :name "file"
@@ -2447,10 +2453,10 @@ before committing them to disk."
                   :description "The name of the emacs file to read the contents of. ")
                '( :name "start"
                   :type integer
-                  :description "The first line to read from")
+                  :description "The optional first line to read from")
                '( :name "end"
                   :type integer
-                  :description "The last line to read from"))
+                  :description "The optional last line to read from"))
    :category "filesystem")
    (gptel-make-tool
     :function (lambda (symbol)
