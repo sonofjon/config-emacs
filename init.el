@@ -2267,7 +2267,7 @@ Elisp code explicitly in arbitrary buffers.")
                  (if-let ((project (project-current)))
                      (cl-reduce #'concat (mapcar (lambda (buf)
                                                    (with-current-buffer buf
-                                                     (format "%s %s %s\n" (buffer-name buf) major-mode (buffer-file-name buf))))
+                                                     (format "%s %s\n" (buffer-name buf) (buffer-file-name buf))))
                                                  (project-buffers project)))
                    (error "No project found in the current context."))))
    :name "my_project_buffers"
