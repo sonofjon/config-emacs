@@ -2176,7 +2176,7 @@ Elisp code explicitly in arbitrary buffers.")
                    (with-current-buffer buf
                      (erase-buffer)
                      (insert content)
-                     (format "Buffer %s modified successfully" buffer)))))
+                     (format "successfully modified buffer %s" buffer)))))
    :name "my_modify_buffer"
    :description "Completely overwrite the contents of a buffer"
    :args (list '(:name "buffer"
@@ -2387,11 +2387,11 @@ specify:
                        :items (:type object
                                      :properties
                                      (:line-number
-                                      (:type integer :description "The line number of the file where edit starts.")
+                                      (:type integer :description "The 1-based line number where the edit starts.")
                                       :old-string
-                                      (:type string :description "The 'old-string' to be replaced by 'new-string'.")
+                                      (:type string :description "The string to be replaced by 'new-string'.")
                                       :new-string
-                                      (:type string :description "The 'new-string' to replace 'old-string'.")))
+                                      (:type string :description "The string to replace 'old-string'.")))
                        :description "The list of edits to apply to the file"))
    :category "filesystem")
   (gptel-make-tool
@@ -2470,11 +2470,11 @@ This action requires manual user review. After calling this tool, you must stop 
                        :items (:type object
                                      :properties
                                      (:line-number
-                                      (:type integer :description "The line number of the file where edit starts.")
+                                      (:type integer :description "The 1-based line number where the edit starts.")
                                       :old-string
-                                      (:type string :description "The 'old-string' to be replaced by 'new-string'.")
+                                      (:type string :description "The string to be replaced by 'new-string'.")
                                       :new-string
-                                      (:type string :description "The 'new-string' to replace 'old-string'.")))
+                                      (:type string :description "The string to replace 'old-string'.")))
                        :description "The list of edits to apply to the file"))
    :category "filesystem")
   (gptel-make-tool
