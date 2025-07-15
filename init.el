@@ -2228,6 +2228,51 @@ Elisp code explicitly in arbitrary buffers.")
                        :description "The path to the file."))
    :category "buffers")
   (gptel-make-tool
+   :function (lambda (buffer text)
+               "Append TEXT to BUFFER."
+               (with-temp-message "Running tool: my_append_to_buffer"
+                 (let ((buf (get-buffer buffer)))
+                   (unless buf
+                     (error "Buffer '%s' does not exist" buffer))
+                   (with-current-buffer buf
+                     (save-excursion
+                       (goto-line (point-max))
+                       (insert text))
+                     (format "Successfully appended text to buffer %s" buffer)))))
+   :name "my_append_to_buffer"
+   :description "Append text to a buffer."
+   :args (list '(:name "buffer"
+                       :type string
+                       :description "The name of the buffer to append text to.")
+               '(:name "text"
+                       :type string
+                       :description "The text to append to the buffer."))
+   :category "buffer")
+  (gptel-make-tool
+   :function (lambda (buffer text line-number)
+               "Insert TEXT into BUFFER at the beginning of LINE-NUMBER."
+               (with-temp-message "Running tool: my_insert_into_buffer"
+                 (let ((buf (get-buffer buffer)))
+                   (unless buf
+                     (error "Buffer '%s' does not exist" buffer))
+                   (with-current-buffer buf
+                     (save-excursion
+                       (goto-line line-number)
+                       (insert text))
+                     (format "Successfully inserted text into buffer %s at line %d" buffer line-number)))))
+   :name "my_insert_into_buffer"
+   :description "Insert text into a buffer at a specific line number. The text is inserted at the beginning of the specified line."
+   :args (list '(:name "buffer"
+                       :type string
+                       :description "The name of the buffer to insert text into.")
+               '(:name "text"
+                       :type string
+                       :description "The text to insert.")
+               '(:name "line-number"
+                       :type integer
+                       :description "The 1-based line number where the text should be inserted."))
+   :category "buffers")
+  (gptel-make-tool
    :function (lambda (buffer-name old-string new-string)
                "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
                (with-temp-message "Running tool: my_edit_buffer"
