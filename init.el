@@ -2255,10 +2255,10 @@ Elisp code explicitly in arbitrary buffers.")
                   :description "Name of the buffer to modify")
            (:name "old-string"
                   :type string
-                  :description "Text to be replaced by new-string")
+                  :description "Text to be replaced by 'new-string'")
            (:name "new-string"
                   :type string
-                  :description "Text to replace old-string with"))
+                  :description "Text to replace 'old-string' with"))
    :category "buffers")
   ;; (gptel-make-tool
   ;;  :function (lambda (filepath content)
@@ -2308,10 +2308,10 @@ Elisp code explicitly in arbitrary buffers.")
                   :description "The path to the file to edit.")
            (:name "old-string"
                   :type string
-                  :description "Text to be replaced by new-string.")
+                  :description "Text to be replaced by 'new-string'.")
            (:name "new-string"
                   :type string
-                  :description "Text to replace old-string with."))
+                  :description "Text to replace 'old-string' with."))
    :category "filesystem")
   (gptel-make-tool
    :function (lambda (file-path file-edits)
@@ -2373,7 +2373,7 @@ specify:
                                (format "Successfully applied all %d edits to %s."
                                        total-edits file-name)))))))))))
    :name "aj8_apply_file_edits"
-   :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Note: The old-string must be found entirely on the specified line-number."
+   :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the specified 'line-number'."
    ;; "Editing rules:
    ;; - The old-string must match exactly the existing file content at the specified line
    ;; - Include enough context in old-string to uniquely identify the location
@@ -2389,9 +2389,9 @@ specify:
                                      (:line-number
                                       (:type integer :description "The line number of the file where edit starts.")
                                       :old-string
-                                      (:type string :description "The old-string to be replaced by new-string.")
+                                      (:type string :description "The 'old-string' to be replaced by 'new-string'.")
                                       :new-string
-                                      (:type string :description "The new-string to replace old-string.")))
+                                      (:type string :description "The 'new-string' to replace 'old-string'.")))
                        :description "The list of edits to apply to the file"))
    :category "filesystem")
   (gptel-make-tool
@@ -2454,7 +2454,7 @@ subsequent edits.  Each edit in FILE-EDITS should specify:
                                (format "Successfully applied all %d edits. Please review them in the Ediff session."
                                        total-edits)))))))))))
    :name "aj8_apply_file_edits_with_review"
-   :description "Edit a file with a list of edits and start an Ediff session for review. Each edit contains a line-number, an old-string and a new-string. new-string should replace old-string at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly.  Note: The old-string must be found entirely on the specified line-number.
+   :description "Edit a file with a list of edits and start an Ediff session for review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the specified 'line-number'.
 
 This action requires manual user review. After calling this tool, you must stop and instruct the user to complete the review in the Ediff session and to notify you when they are finished. Do not proceed with any other tools or actions until you receive confirmation from the user."
    ;; "Editing rules:
@@ -2472,9 +2472,9 @@ This action requires manual user review. After calling this tool, you must stop 
                                      (:line-number
                                       (:type integer :description "The line number of the file where edit starts.")
                                       :old-string
-                                      (:type string :description "The old-string to be replaced by new-string.")
+                                      (:type string :description "The 'old-string' to be replaced by 'new-string'.")
                                       :new-string
-                                      (:type string :description "The new-string to replace old-string.")))
+                                      (:type string :description "The 'new-string' to replace 'old-string'.")))
                        :description "The list of edits to apply to the file"))
    :category "filesystem")
   (gptel-make-tool
@@ -2492,7 +2492,7 @@ If START and END are omitted, the entire file is read."
                                    (point-max))))
                      (buffer-substring-no-properties p-start p-end)))))
    :name "my_read_file_section"
-   :description "Read a section of a file. To read the entire file, omit the optional start and end arguments."
+   :description "Read a section of a file. To read the entire file, omit the optional 'start' and 'end' arguments."
    :args (list '( :name "filepath"
                   :type string
                   :description "The name of the file to read the contents of. ")
@@ -2516,7 +2516,7 @@ If START and END are omitted, the entire file is read."
                      (t
                       (format "No documentation found for %s" symbol))))))
     :name "my_read_documentation"
-    :description "Read the documentation for a given function or variable"
+    :description "Read the documentation for a given 'symbol', which can be a function or variable"
     :args (list '(:name "symbol"
                         :type string
                         :description "The name of the function or variable whose documentation is to be read"))
@@ -2581,7 +2581,7 @@ This search respects the project's .gitignore file and other standard ignores.  
                      (let ((all-files (project-files proj)))
                        (seq-filter (lambda (file) (file-name-match-p pattern (file-name-nondirectory file))) all-files))))))
    :name "my_project_find_files_glob"
-   :description "In the current project, recursively find files whose filenames match the glob pattern. This search is case-sensitive and respects .gitignore. It does not find directories. For example, a pattern of '*.el' finds all Emacs Lisp files."
+   :description "In the current project, recursively find files whose filenames match the glob 'pattern'. This search is case-sensitive and respects .gitignore. It does not find directories. For example, a 'pattern' of '*.el' finds all Emacs Lisp files."
    :args '((:name "pattern"
                   :type string
                   :description "A glob pattern to match against the filenames in the project."))
