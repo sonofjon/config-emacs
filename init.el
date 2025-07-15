@@ -2155,7 +2155,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (gptel-make-tool
   ;;  :function (lambda (buffer)
   ;;              "Return the contents of BUFFER.
-  ;;              (with-temp-message (format "Running tool: %s" "my_read_buffer")
+  ;;              (with-temp-message "Running tool: my_read_buffer"
   ;;                (unless (buffer-live-p (get-buffer buffer))
   ;;                  (error "Error: buffer %s is not live." buffer))
   ;;                (with-current-buffer buffer
@@ -2169,7 +2169,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-make-tool
    :function (lambda (buffer content)
                "Completely replace contents of BUFFER with CONTENT."
-               (with-temp-message (format "Running tool: %s" "my_modify_buffer")
+               (with-temp-message "Running tool: my_modify_buffer"
                  (let ((buf (get-buffer buffer)))
                    (unless buf
                      (error "Buffer %s does not exist" buffer))
@@ -2189,7 +2189,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-make-tool
    :function (lambda ()
                "Return a list of names for buffers visiting a file."
-               (with-temp-message (format "Running tool: %s" "aj8_list_buffers")
+               (with-temp-message "Running tool: aj8_list_buffers"
                  (seq-map #'buffer-name
                           (seq-filter #'buffer-file-name
                                       (buffer-list)))))
@@ -2200,7 +2200,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-make-tool
    :function (lambda (buffer-name)
                "Return the file path for BUFFER-NAME."
-               (with-temp-message (format "Running tool: %s" "aj8_buffer_to_file")
+               (with-temp-message "Running tool: aj8_buffer_to_file"
                  (let* ((buffer (get-buffer buffer-name))
                       (file-name (and buffer (buffer-file-name buffer))))
                  (unless file-name
@@ -2215,7 +2215,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-make-tool
    :function (lambda (file-path)
                "Return the buffer name for FILE-PATH."
-               (with-temp-message (format "Running tool: %s" "aj8_file_to_buffer")
+               (with-temp-message "Running tool: aj8_file_to_buffer"
                  (let* ((path (expand-file-name file-path))
                         (buffer (get-file-buffer path)))
                    (unless buffer
@@ -2230,7 +2230,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-make-tool
    :function (lambda (buffer-name old-string new-string)
                "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
-               (with-temp-message (format "Running tool: %s" "my_edit_buffer")
+               (with-temp-message "Running tool: my_edit_buffer"
                  (with-current-buffer buffer-name
                    (let ((case-fold-search nil)) ; Case-sensitive search
                      (save-excursion
@@ -2263,7 +2263,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (gptel-make-tool
   ;;  :function (lambda (filepath content)
   ;;              "Create a new file at FILEPATH with CONTENT."
-  ;;              (with-temp-message (format "Running tool: %s" "aj8_create_file")
+  ;;              (with-temp-message "Running tool: aj8_create_file"
   ;;                (let ((full-path (expand-file-name filepath)))
   ;;                  (with-temp-buffer
   ;;                    (insert content)
@@ -2281,7 +2281,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-make-tool
    :function (lambda (filename old-string new-string)
                "Edit FILENAME by replacing one instance of OLD-STRING with NEW-STRING."
-               (with-temp-message (format "Running tool: %s" "my_edit_file")
+               (with-temp-message "Running tool: my_edit_file"
                  (let ((expanded-filename (expand-file-name filename)))
                    (with-temp-buffer
                      (insert-file-contents expanded-filename)
@@ -2325,7 +2325,7 @@ specify:
 - :line-number - The 1-based line number where the edit occurs
 - :old-string - The string to find and replace
 - :new-string - The replacement string"
-               (with-temp-message (format "Running tool: %s" "aj8_apply_file_edits")
+               (with-temp-message "Running tool: aj8_apply_file_edits"
                  (if (not (and file-path (not (string-blank-p file-path))))
                      (error "File path was not provided or is empty.")
                    (let ((file-name (expand-file-name file-path))
@@ -2406,7 +2406,7 @@ subsequent edits.  Each edit in FILE-EDITS should specify:
 - :line-number - The 1-based line number where the edit occurs
 - :old-string - The string to find and replace
 - :new-string - The replacement string"
-               (with-temp-message (format "Running tool: %s" "aj8_apply_file_edits_with_review")
+               (with-temp-message "Running tool: aj8_apply_file_edits_with_review"
                  (if (not (and file-path (not (string-blank-p file-path))))
                      (error "File path was not provided or is empty.")
                    (let ((file-name (expand-file-name file-path))
@@ -2481,7 +2481,7 @@ This action requires manual user review. After calling this tool, you must stop 
    :function (lambda (filepath &optional start end)
                "Read a section of FILEPATH, optionally between lines START and END.
 If START and END are omitted, the entire file is read."
-               (with-temp-message (format "Running tool: %s" "my_read_file_section")
+               (with-temp-message "Running tool: my_read_file_section"
                  (with-temp-buffer
                    (insert-file-contents (expand-file-name filepath))
                    (let* ((p-start (if start
@@ -2506,7 +2506,7 @@ If START and END are omitted, the entire file is read."
    (gptel-make-tool
     :function (lambda (symbol)
                 "Read the documentation for SYMBOL, which can be a function or variable."
-                (with-temp-message (format "Running tool: %s" "my_read_documentation")
+                (with-temp-message "Running tool: my_read_documentation"
                   (let ((sym (intern symbol)))
                     (cond
                      ((fboundp sym)
@@ -2524,7 +2524,7 @@ If START and END are omitted, the entire file is read."
   (gptel-make-tool
    :function (lambda ()
                "Get the root directory of the current project."
-               (with-temp-message (format "Running tool: %s" "my_project_get_root")
+               (with-temp-message "Running tool: my_project_get_root"
                  (if-let* ((proj (project-current))
                            (root (project-root proj)))
                      (let ((root-path (expand-file-name root)))
@@ -2541,7 +2541,7 @@ If START and END are omitted, the entire file is read."
    :function (lambda ()
                "Return a string listing open buffers in the current project.
 Each line contains a buffer name and its associated file path."
-               (with-temp-message (format "Running tool: %s" "my_project_get_open_buffers")
+               (with-temp-message "Running tool: %s" "my_project_get_open_buffers"
                  (if-let ((project (project-current)))
                      (cl-reduce #'concat (mapcar (lambda (buf)
                                                    (with-current-buffer buf
@@ -2557,7 +2557,7 @@ Each line contains a buffer name and its associated file path."
 ;;                "In the current project, find files whose filenames contain PATTERN.
 
 ;; This search respects the project's .gitignore file and other standard ignores.  It does not return directories."
-;;                (with-temp-message (format "Running tool: %s" "my_project_find_files")
+;;                (with-temp-message "Running tool: my_project_find_files"
 ;;                  (let ((proj (project-current)))
 ;;                    (if (not proj)
 ;;                        (error "No project found in the current context.")
@@ -2574,7 +2574,7 @@ Each line contains a buffer name and its associated file path."
                "In the current project, find files whose filenames match the glob PATTERN.
 
 This search respects the project's .gitignore file and other standard ignores.  It does not return directories."
-               (with-temp-message (format "Running tool: %s" "my_project_find_files_glob")
+               (with-temp-message "Running tool: my_project_find_files_glob"
                  (let ((proj (project-current)))
                    (if (not proj)
                        (error "No project found in the current context.")
