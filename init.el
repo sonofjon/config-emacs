@@ -2630,6 +2630,34 @@ ignores.  It does not return directories."
    :args '((:name "pattern"
                   :type string
                   :description "A glob pattern to match against the filenames in the project."))
+   :category "project")
+  (gptel-make-tool
+   :function (lambda (regexp)
+               "Search for REGEXP in files of the current project.
+Uses `ripgrep' (rg) if available; otherwise, it uses `git grep' if the
+project is a git repository. Returns search results as a string."
+               (with-temp-message (format "Running tool: %s" "my_project_search_content")
+                 (let* ((project (project-current t))
+                        (root (when project (project-root project))))
+                   (unless root
+                     (error "Not in a project"))
+                   (let ((default-directory root))
+                     (cond
+                      ((executable-find "rg")
+                       (shell-command-to-string
+                        (format "rg --no-heading --line-number --color never -e %s ."
+                                (shell-quote-argument regexp))))
+                      ((and (executable-find "git") (file-directory-p ".git"))
+                       (shell-command-to-string
+                        (format "git grep --line-number --color=never -e %s"
+                                (shell-quote-argument regexp))))
+                      (t
+                       (error "Neither 'rg' (ripgrep) nor 'git grep' is available for search.")))))))
+   :name "my_project_search_content"
+   :description "In the current project, recursively search for content matching the regexp. This search respects .gitignore. It returns a list of matching lines, prefixed with file path and line number."
+   :args '((:name "regexp"
+                  :type string
+                  :description "A regexp to search for in the project files. The regexp should be compatible with ripgrep or git grep."))
    :category "project"))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
