@@ -2600,8 +2600,8 @@ Each line contains a buffer name and its associated file path."
 ;;   (gptel-make-tool
 ;;    :function (lambda (pattern)
 ;;                "In the current project, find files whose filenames contain PATTERN.
-
-;; This search respects the project's .gitignore file and other standard ignores.  It does not return directories."
+;; This search respects the project's .gitignore file and other standard
+;; ignores.  It does not return directories."
 ;;                (with-temp-message "Running tool: my_project_find_files"
 ;;                  (let ((proj (project-current)))
 ;;                    (if (not proj)
@@ -2617,8 +2617,8 @@ Each line contains a buffer name and its associated file path."
   (gptel-make-tool
    :function (lambda (pattern)
                "In the current project, find files whose filenames match the glob PATTERN.
-
-This search respects the project's .gitignore file and other standard ignores.  It does not return directories."
+This search respects the project's .gitignore file and other standard
+ignores.  It does not return directories."
                (with-temp-message "Running tool: my_project_find_files_glob"
                  (let ((proj (project-current)))
                    (if (not proj)
