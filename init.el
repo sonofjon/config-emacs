@@ -400,7 +400,7 @@
   ;; (add-to-list 'eglot-server-programs
   ;;              '((python-mode python-ts-mode) . ("ruff" "server")))   ; No completion, as Eglot only supports one server
   ;; Use Orderless for Eglot (default is Flex)
-  (setq completion-category-overrides '((eglot (styles orderless)))))
+  (add-to-list 'completion-category-overrides '((eglot (styles orderless)))))
   ;; Don't manage ELDoc
   ;; (add-to-list 'eglot-stay-out-of 'eldoc))
   ;; Limit ELDoc to a single line
@@ -2501,7 +2501,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; Use partial completion for files
 (setq completion-category-defaults nil)
-(setq completion-category-overrides '((file (styles basic partial-completion))))
+(add-to-list 'completion-category-overrides '((file (styles basic partial-completion))))
 
 ;; Use TAB for symbol completion (after indentation)
 (setq tab-always-indent 'complete)
