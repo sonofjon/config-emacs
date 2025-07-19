@@ -2509,7 +2509,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Show more details for completions
 (setq completions-detailed t)
 
-;; Hide commands which do not apply to the current mode
+;; Hide commands that do not apply to the current mode
 ;; (setq read-extended-command-predicate #'command-completion-default-include-p)
 
 ;; Let Dabbrev searches be case sensitive
