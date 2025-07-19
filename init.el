@@ -2515,6 +2515,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Let Dabbrev searches be case sensitive
 (setq dabbrev-case-fold-search nil)
 
+;; Don't let Dabbrev check authinfo buffers
+(with-eval-after-load 'dabbrev
+  (add-to-list 'dabbrev-ignored-buffer-modes 'authinfo-mode))
+
 ;; Let hippie-expand search for line expansions in all buffers
 ;; (add-to-list 'hippie-expand-try-functions-list 'try-expand-line-all-buffers t)
 (setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
