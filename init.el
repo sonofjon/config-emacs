@@ -2178,13 +2178,13 @@ Elisp code explicitly in arbitrary buffers.")
                      (insert content)
                      (format "successfully modified buffer %s" buffer)))))
    :name "my_modify_buffer"
-   :description "Completely overwrite the contents of a buffer"
+   :description "Completely overwrite the contents of a buffer."
    :args (list '(:name "buffer"
                        :type string
-                       :description "Name of the buffer to overwrite")
+                       :description "The name of the buffer to overwrite.")
                '(:name "content"
                        :type string
-                       :description "Content to write to the buffer"))
+                       :description "The content to write to the buffer."))
    :category "buffers")
   (gptel-make-tool
    :function (lambda ()
@@ -2297,13 +2297,13 @@ Elisp code explicitly in arbitrary buffers.")
    :description "Edit a buffer by replacing a single instance of an exact string."
    :args '((:name "buffer-name"
                   :type string
-                  :description "Name of the buffer to modify")
+                  :description "The name of the buffer to edit.")
            (:name "old-string"
                   :type string
-                  :description "Text to be replaced by 'new-string'")
+                  :description "The text to be replaced by 'new-string'.")
            (:name "new-string"
                   :type string
-                  :description "Text to replace 'old-string' with"))
+                  :description "The text to replace 'old-string' with."))
    :category "buffers")
   ;; (gptel-make-tool
   ;;  :function (lambda (filepath content)
@@ -2353,10 +2353,10 @@ Elisp code explicitly in arbitrary buffers.")
                   :description "The path to the file to edit.")
            (:name "old-string"
                   :type string
-                  :description "Text to be replaced by 'new-string'.")
+                  :description "The text to be replaced by 'new-string'.")
            (:name "new-string"
                   :type string
-                  :description "Text to replace 'old-string' with."))
+                  :description "The text to replace 'old-string' with."))
    :category "filesystem")
   (gptel-make-tool
    :function (lambda (file-path file-edits)
@@ -2426,7 +2426,7 @@ specify:
    ;; - Do not include long runs of unchanged lines"
    :args (list '(:name "file-path"
                        :type string
-                       :description "The path of the file to edit")
+                       :description "The path of the file to edit.")
                '(:name "file-edits"
                        :type array
                        :items (:type object
@@ -2437,7 +2437,7 @@ specify:
                                       (:type string :description "The string to be replaced by 'new-string'.")
                                       :new-string
                                       (:type string :description "The string to replace 'old-string'.")))
-                       :description "The list of edits to apply to the file"))
+                       :description "The list of edits to apply to the file."))
    :category "filesystem")
   (gptel-make-tool
    :function (lambda (file-path file-edits)
@@ -2509,7 +2509,7 @@ This action requires manual user review. After calling this tool, you must stop 
    ;; - Do not include long runs of unchanged lines"
    :args (list '(:name "file-path"
                        :type string
-                       :description "The path of the file to edit")
+                       :description "The path of the file to edit.")
                '(:name "file-edits"
                        :type array
                        :items (:type object
@@ -2520,7 +2520,7 @@ This action requires manual user review. After calling this tool, you must stop 
                                       (:type string :description "The string to be replaced by 'new-string'.")
                                       :new-string
                                       (:type string :description "The string to replace 'old-string'.")))
-                       :description "The list of edits to apply to the file"))
+                       :description "The list of edits to apply to the file."))
    :category "filesystem")
   (gptel-make-tool
    :function (lambda (filepath &optional start end)
@@ -2543,10 +2543,10 @@ If START and END are omitted, the entire file is read."
                   :description "The name of the file to read the contents of. ")
                '( :name "start"
                   :type integer
-                  :description "The optional first line to read from")
+                  :description "The optional first line to read from.")
                '( :name "end"
                   :type integer
-                  :description "The optional last line to read to"))
+                  :description "The optional last line to read to."))
    :category "filesystem")
    (gptel-make-tool
     :function (lambda (symbol)
@@ -2564,7 +2564,7 @@ If START and END are omitted, the entire file is read."
     :description "Read the documentation for a given 'symbol', which can be a function or variable"
     :args (list '(:name "symbol"
                         :type string
-                        :description "The name of the function or variable whose documentation is to be read"))
+                        :description "The name of the function or variable whose documentation is to be read."))
     :category "emacs")
   (gptel-make-tool
    :function (lambda ()
