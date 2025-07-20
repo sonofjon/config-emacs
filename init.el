@@ -2152,6 +2152,30 @@ Elisp code explicitly in arbitrary buffers.")
   :use-context 'user
   :include-reasoning "*gptel-reasoning*"
   :use-tools t)
+  (defun aj8/replace-string-in-buffer (buffer old-string new-string)
+    "In BUFFER, replace a single occurrence of OLD-STRING with NEW-STRING.
+
+This function performs a case-sensitive search for OLD-STRING and
+replaces it with NEW-STRING."
+    (with-current-buffer buffer
+      (let ((case-fold-search nil)
+            ;; For error messages, use file path if available, else buffer name
+            (target-name (or buffer-file-name (buffer-name))))
+        (save-excursion
+          (goto-char (point-min))
+          (let ((count 0))
+            (while (search-forward old-string nil t)
+              (setq count (1+ count)))
+            (cond
+             ((= count 0)
+              (error "Could not find text to replace in %s" target-name))
+             ((> count 1)
+              (error "Found %d matches for the text to replace in %s" count target-name))
+             (t
+              (goto-char (point-min))
+              (search-forward old-string nil t)
+              (replace-match new-string t t)
+              t)))))))
   ;; (gptel-make-tool
   ;;  :function (lambda (buffer)
   ;;              "Return the contents of BUFFER.
@@ -2276,24 +2300,12 @@ Elisp code explicitly in arbitrary buffers.")
    :function (lambda (buffer-name old-string new-string)
                "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
                (with-temp-message "Running tool: my_edit_buffer"
-                 (with-current-buffer buffer-name
-                   (let ((case-fold-search nil)) ; Case-sensitive search
-                     (save-excursion
-                       (goto-char (point-min))
-                       (let ((count 0))
-                         (while (search-forward old-string nil t)
-                           (setq count (1+ count)))
-                         (cond
-                          ((= count 0)
-                           (error "Could not find text to replace in buffer %s" buffer-name))
-                          ((> count 1)
-                           (error "Found %d matches for the text to replace in buffer %s" count buffer-name))
-                          (t
-                           (goto-char (point-min))
-                           (search-forward old-string nil t)
-                           (replace-match new-string t t)
-                           (format "Successfully edited buffer %s" buffer-name)))))))))
-   :name "my_edit_buffer"
+                 (let ((buffer (get-buffer buffer-name)))
+                   (unless buffer
+                     (error "Buffer '%s' does not exist" buffer-name))
+                   (aj8/replace-string-in-buffer buffer old-string new-string)
+                   (format "Successfully edited buffer %s" buffer-name))))
+   :name "aj8_edit_buffer"
    :description "Edit a buffer by replacing a single instance of an exact string."
    :args '((:name "buffer-name"
                   :type string
@@ -2325,27 +2337,16 @@ Elisp code explicitly in arbitrary buffers.")
   ;;  :category "filesystem")
   (gptel-make-tool
    :function (lambda (filename old-string new-string)
-               "Edit FILENAME by replacing one instance of OLD-STRING with NEW-STRING."
+               "In FILENAME, replace OLD-STRING with NEW-STRING."
                (with-temp-message "Running tool: my_edit_file"
                  (let ((expanded-filename (expand-file-name filename)))
                    (with-temp-buffer
+                     ;; Associate temp buffer with file
+                     (setq buffer-file-name expanded-filename)
                      (insert-file-contents expanded-filename)
-                     (let ((case-fold-search nil))
-                       (goto-char (point-min))
-                       (let ((count 0))
-                         (while (search-forward old-string nil t)
-                           (setq count (1+ count)))
-                         (cond
-                          ((= count 0)
-                           (error "Could not find text to replace in file %s" expanded-filename))
-                          ((> count 1)
-                           (error "Found %d matches for the text to replace in file %s" count expanded-filename))
-                          (t
-                           (goto-char (point-min))
-                           (search-forward old-string nil t)
-                           (replace-match new-string t t)
-                           (write-region (point-min) (point-max) expanded-filename)
-                           (format "Successfully edited file %s" expanded-filename)))))))))
+                     (aj8/replace-string-in-buffer (current-buffer) old-string new-string)
+                     (write-region (point-min) (point-max) expanded-filename)
+                     (format "Successfully edited file %s" expanded-filename)))))
    :name "aj8_edit_file"
    :description "Edit a file by replacing a single instance of an exact string."
    :args '((:name "filename"
