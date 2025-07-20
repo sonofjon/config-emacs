@@ -2393,6 +2393,11 @@ Elisp code explicitly in arbitrary buffers.")
 ;;   Or use a dir-local file!
 ;; (add-to-list 'project-vc-ignores "archive/")
 
+;; Add projects
+(project-remember-projects-under "~/git")
+(project-remember-projects-under "~/dotfiles")
+(project-remember-projects-under "~/projects" t)
+
 ;;; Help
 
 ;; More extensive apropos commands
