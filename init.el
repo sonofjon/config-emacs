@@ -2247,7 +2247,7 @@ Elisp code explicitly in arbitrary buffers.")
                '(:name "text"
                        :type string
                        :description "The text to append to the buffer."))
-   :category "buffer")
+   :category "buffers")
   (gptel-make-tool
    :function (lambda (buffer text line-number)
                "Insert TEXT into BUFFER at the beginning of LINE-NUMBER."
