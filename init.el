@@ -2176,6 +2176,73 @@ replaces it with NEW-STRING."
               (search-forward old-string nil t)
               (replace-match new-string t t)
               t)))))))
+  (defun aj8/apply-file-edits-in-temp-buffer (file-path file-edits success-fn)
+    "Edit FILE-PATH in a temporary buffer and run a success function.
+
+This function provides a robust way to programmatically apply a
+series of edits to a file. It loads the content of `file-path`
+into a temporary buffer and applies the edits there.
+
+`FILE-EDITS` should be a list where each element is a property
+list (plist) representing a single edit. Each plist must contain:
+- :line-number : The 1-based line number for the edit.
+- :old-string  : The exact string to find on that line.
+- :new-string  : The string to replace `old_string`.
+
+The function applies edits in reverse line-number order to
+ensure line number accuracy throughout the process.
+
+On success, it calls SUCCESS-FN with the file-name and total number of
+edits as arguments. The SUCCESS-FN is then responsible for saving the
+changes or presenting them for review. The call occurs while the
+temporary buffer is the current buffer, allowing functions like
+`write-region' and or `ediff-buffers' to work directly on the result.
+
+The function is used by GPT tools, such as: `aj8_apply_file_edits' and
+`aj8_apply_file_edits_with_review'."
+    (if (not (and file-path (not (string-blank-p file-path))))
+        (error "File path was not provided or is empty.")
+      (let ((file-name (expand-file-name file-path))
+            (edits (if file-edits (seq-into file-edits 'list) nil)))
+        (if (not edits)
+            (format "No edits were provided. File '%s' remains unchanged." file-name)
+          (with-current-buffer (get-buffer-create "*edit-buffer*")
+            (erase-buffer)
+            (insert-file-contents file-name)
+            (let* ((case-fold-search nil)
+                   (failed-edits 0)
+                   (first-failed-edit nil)
+                   ;; Sort edits by line number in descending order
+                   (sorted-edits (sort edits (lambda (a b) (> (plist-get a :line-number) (plist-get b :line-number))))))
+              ;; Apply changes in reverse order
+              (dolist (file-edit sorted-edits)
+                (if (when-let ((line-number (plist-get file-edit :line-number))
+                               (old-string (plist-get file-edit :old-string))
+                               (new-string (plist-get file-edit :new-string))
+                               (is-valid-old-string (not (string= old-string ""))))
+                      (goto-char (point-min))
+                      (forward-line (1- line-number))
+                      (let ((end-of-line (line-end-position)))
+                        (when (search-forward old-string end-of-line t)
+                          (replace-match new-string t t)
+                          t)))
+                    nil ;; Do nothing on success
+                  (progn
+                    (setq failed-edits (1+ failed-edits))
+                    (unless first-failed-edit
+                      (setq first-failed-edit file-edit)))))
+              ;; Check if any edits failed and handle results atomically.
+              (let ((total-edits (length sorted-edits)))
+                (cond
+                 ;; Case 1: Failure - at least one edit failed. Abort all changes.
+                 ((> failed-edits 0)
+                  (let* ((line-number (plist-get first-failed-edit :line-number))
+                         (old-string (plist-get first-failed-edit :old-string)))
+                    (error "Failed to apply all edits to %s. %d out of %d edits failed. The first failure encountered was on line %d ('%s')."
+                           file-name failed-edits total-edits line-number old-string)))
+                 ;; Case 2: Total success - all edits were applied.
+                 (t
+                  (funcall success-fn file-name total-edits))))))))))
   ;; (gptel-make-tool
   ;;  :function (lambda (buffer)
   ;;              "Return the contents of BUFFER.
@@ -2363,61 +2430,18 @@ replaces it with NEW-STRING."
    :function (lambda (file-path file-edits)
                "Edit FILE-PATH with FILE-EDITS and save without review.
 
-This function applies the specified edits to the file and then saves it.
-Edits are applied in reverse line-number order to prevent line shifts
-from affecting subsequent edits.  Each edit in FILE-EDITS should
-specify:
+Each edit in FILE-EDITS should specify:
 
 - :line-number - The 1-based line number where the edit occurs
 - :old-string - The string to find and replace
 - :new-string - The replacement string"
                (with-temp-message "Running tool: aj8_apply_file_edits"
-                 (if (not (and file-path (not (string-blank-p file-path))))
-                     (error "File path was not provided or is empty.")
-                   (let ((file-name (expand-file-name file-path))
-                         (edits (if file-edits (seq-into file-edits 'list) nil)))
-                     (if (not edits)
-                         (format "No edits were provided. File '%s' remains unchanged." file-name)
-                       (with-current-buffer (get-buffer-create "*edit-file-direct*")
-                         (erase-buffer)
-                         (insert-file-contents file-name)
-                         (let* ((case-fold-search nil)
-                                (failed-edits 0)
-                                (first-failed-edit nil)
-                                (edits (seq-into file-edits 'list))
-                                ;; Sort edits by line number in descending order
-                                (sorted-edits (sort edits (lambda (a b) (> (plist-get a :line_number) (plist-get b :line_number))))))
-                           ;; Apply changes in reverse order
-                           (dolist (file-edit sorted-edits)
-                             (if (when-let ((line-number (plist-get file-edit :line_number))
-                                            (old-string (plist-get file-edit :old_string))
-                                            (new-string (plist-get file-edit :new_string))
-                                            (is-valid-old-string (not (string= old-string ""))))
-                                   (goto-char (point-min))
-                                   (forward-line (1- line-number))
-                                   (let ((end-of-line (line-end-position)))
-                                     (when (search-forward old-string end-of-line t)
-                                       (replace-match new-string t t)
-                                       t)))
-                                 nil ;; Do nothing on success
-                               (progn
-                                 (setq failed-edits (1+ failed-edits))
-                                 (unless first-failed-edit
-                                   (setq first-failed-edit file-edit)))))
-                           ;; Check if any edits failed and handle results atomically.
-                           (let ((total-edits (length sorted-edits)))
-                             (cond
-                              ;; Case 1: Failure - at least one edit failed. Abort all changes.
-                              ((> failed-edits 0)
-                               (let* ((line-number (plist-get first-failed-edit :line_number))
-                                      (old-string (plist-get first-failed-edit :old_string)))
-                                 (error "Failed to apply all edits to %s. %d out of %d edits failed. The first failure encountered was on line %d ('%s'). No changes were saved."
-                                        file-name failed-edits total-edits line-number old-string)))
-                              ;; Case 2: Total success - all edits were applied.
-                              (t
-                               (write-region (point-min) (point-max) file-name)
-                               (format "Successfully applied all %d edits to %s."
-                                       total-edits file-name)))))))))))
+                 (aj8/apply-file-edits-in-temp-buffer
+                  file-path file-edits
+                  (lambda (file-name total-edits)
+                    (write-region (point-min) (point-max) file-name)
+                    (format "Successfully applied all %d edits to %s."
+                            total-edits file-name)))))
    :name "aj8_apply_file_edits"
    :description "Edit a file with a list of edits, saving changes directly without review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the specified 'line-number'."
    ;; "Editing rules:
@@ -2444,61 +2468,18 @@ specify:
    :function (lambda (file-path file-edits)
                "Edit FILE-PATH with FILE-EDITS and review with Ediff.
 
-This function applies the specified edits to a temporary buffer and
-starts an Ediff session to review the changes. Edits are applied in
-reverse line-number order to prevent line shifts from affecting
-subsequent edits.  Each edit in FILE-EDITS should specify:
+Each edit in FILE-EDITS should specify:
 
 - :line-number - The 1-based line number where the edit occurs
 - :old-string - The string to find and replace
 - :new-string - The replacement string"
                (with-temp-message "Running tool: aj8_apply_file_edits_with_review"
-                 (if (not (and file-path (not (string-blank-p file-path))))
-                     (error "File path was not provided or is empty.")
-                   (let ((file-name (expand-file-name file-path))
-                         (edits (if file-edits (seq-into file-edits 'list) nil)))
-                     (if (not edits)
-                         (format "No edits were provided. File '%s' remains unchanged." file-name)
-                       (with-current-buffer (get-buffer-create "*edit-file-interactive*")
-                         (erase-buffer)
-                         (insert-file-contents file-name)
-                         (let* ((case-fold-search nil)
-                                (failed-edits 0)
-                                (first-failed-edit nil)
-                                (edits (seq-into file-edits 'list))
-                                ;; Sort edits by line number in descending order
-                                (sorted-edits (sort edits (lambda (a b) (> (plist-get a :line_number) (plist-get b :line_number))))))
-                           ;; Apply changes in reverse order
-                           (dolist (file-edit sorted-edits)
-                             (if (when-let ((line-number (plist-get file-edit :line_number))
-                                            (old-string (plist-get file-edit :old_string))
-                                            (new-string (plist-get file-edit :new_string))
-                                            (is-valid-old-string (not (string= old-string ""))))
-                                   (goto-char (point-min))
-                                   (forward-line (1- line-number))
-                                   (let ((end-of-line (line-end-position)))
-                                     (when (search-forward old-string end-of-line t)
-                                       (replace-match new-string t t)
-                                       t)))
-                                 nil ;; Do nothing on success
-                               (progn
-                                 (setq failed-edits (1+ failed-edits))
-                                 (unless first-failed-edit
-                                   (setq first-failed-edit file-edit)))))
-                           ;; Check if any edits failed and handle results atomically.
-                           (let ((total-edits (length sorted-edits)))
-                             (cond
-                              ;; Case 1: Failure - at least one edit failed. Abort all changes.
-                              ((> failed-edits 0)
-                               (let* ((line-number (plist-get first-failed-edit :line_number))
-                                      (old-string (plist-get first-failed-edit :old_string)))
-                                 (error "Failed to apply all edits to %s. %d out of %d edits failed. The first failure encountered was on line %d ('%s'). Ediff session will not be started."
-                                        file-name failed-edits total-edits line-number old-string)))
-                              ;; Case 2: Total success - all edits were applied.
-                              (t
-                               (ediff-buffers (find-file-noselect file-name) (current-buffer))
-                               (format "Successfully applied all %d edits. Please review them in the Ediff session."
-                                       total-edits)))))))))))
+                 (aj8/apply-file-edits-in-temp-buffer
+                  file-path file-edits
+                  (lambda (file-name total-edits)
+                    (ediff-buffers (find-file-noselect file-name) (current-buffer))
+                    (format "Successfully applied all %d edits. Please review them in the Ediff session."
+                            total-edits)))))
    :name "aj8_apply_file_edits_with_review"
    :description "Edit a file with a list of edits and start an Ediff session for review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the specified 'line-number'.
 
