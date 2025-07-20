@@ -2554,9 +2554,9 @@ If START and END are omitted, the entire file is read."
                 (with-temp-message "Running tool: my_read_documentation"
                   (let ((sym (intern symbol)))
                     (cond
-                     ((fboundp sym)
+                     ((fboundp sym)   ; functions
                       (documentation sym))
-                     ((boundp sym)
+                     ((boundp sym)   ; variables
                       (documentation-property sym 'variable-documentation))
                      (t
                       (format "No documentation found for %s" symbol))))))
