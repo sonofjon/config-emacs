@@ -2540,7 +2540,7 @@ if none is found it then tries a case-insensitive match."
     (with-temp-message "Running tool: my_project_get_root"
       (if-let* ((proj (project-current))
                 (root (project-root proj)))
-          (let ((root-path (expand-file-name root)))
+          (let ((root-path (file-truename root)))
             (format "Project root directory: %s\nDirectory exists: %s\nIs directory: %s"
                     root-path
                     (file-exists-p root-path)
