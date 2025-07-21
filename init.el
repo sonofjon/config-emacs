@@ -2564,10 +2564,18 @@ This search respects the project's .gitignore file and other standard
 ignores.  It does not return directories."
     (with-temp-message "Running tool: my_project_find_files_glob"
       (let ((proj (project-current)))
-        (if (not proj)
-            (error "No project found in the current context.")
-          (let ((all-files (project-files proj)))
-            (seq-filter (lambda (file) (file-name-match-p pattern (file-name-nondirectory file))) all-files))))))
+        (unless proj
+          (error "No project found in the current context."))
+        (let* ((root (project-root proj))
+               ;; Get list of non-ignored files from project.el (absolute paths).
+               (project-file-list (project-files proj))
+               ;; Get list of files matching glob from filesystem (absolute paths).
+               (wildcard-file-list
+                (let ((default-directory root))
+                  ;; The 't' argument makes it return absolute paths.
+                  (file-expand-wildcards pattern t))))
+          ;; Return the files present in both lists.
+          (seq-intersection project-file-list wildcard-file-list #'string-equal)))))
 
   (defun aj8/gptel-tool-my-project-search-content (regexp)
     "Search for REGEXP in files of the current project.
