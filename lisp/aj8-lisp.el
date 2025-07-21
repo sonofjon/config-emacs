@@ -2372,6 +2372,485 @@ is updated, the buffer’s text is re-flowed."
       (advice-add 'helpful-update :around #'aj8/reflow-helpful-buffer-advice)
     (advice-remove 'helpful-update #'aj8/reflow-helpful-buffer-advice)))
 
+;;; Gptel tools
+
+;; (defun aj8/gptel-tool-read-buffer (buffer)
+;;   "Return the contents of BUFFER."
+;;   (with-temp-message "Running tool: my_read_buffer"
+;;     (unless (buffer-live-p (get-buffer buffer))
+;;       (error "Error: buffer %s is not live." buffer))
+;;     (with-current-buffer buffer
+;;       (buffer-substring-no-properties (point-min) (point-max)))))
+
+(defun aj8/replace-string-in-buffer (buffer old-string new-string)
+  "In BUFFER, replace a single occurrence of OLD-STRING with NEW-STRING.
+
+This function performs a case-sensitive search for OLD-STRING and
+replaces it with NEW-STRING."
+  (with-current-buffer buffer
+    (let ((case-fold-search nil)
+          ;; For error messages, use file path if available, else buffer name
+          (target-name (or buffer-file-name (buffer-name))))
+      (save-excursion
+        (goto-char (point-min))
+        (let ((count 0))
+          (while (search-forward old-string nil t)
+            (setq count (1+ count)))
+          (cond
+           ((= count 0)
+            (error "Could not find text to replace in %s" target-name))
+           ((> count 1)
+            (error "Found %d matches for the text to replace in %s" count target-name))
+           (t
+            (goto-char (point-min))
+            (search-forward old-string nil t)
+            (replace-match new-string t t)
+            t)))))))
+
+(defun aj8/apply-edits-to-current-buffer (edits)
+  "Apply EDITS to the current buffer and return status.
+
+This function provides the core logic for applying a series of
+programmatic edits. It operates on the current buffer.
+
+`EDITS` should be a list where each element is a property list
+(plist) representing a single edit. Each plist must contain:
+
+- :line-number : The 1-based line number for the edit.
+- :old-string  : The exact string to find on that line.
+- :new-string  : The string to replace `old_string`.
+
+The function applies edits in reverse line-number order to ensure line
+number accuracy throughout the process.
+
+On success, it returns `t`.
+
+On failure, it returns a plist containing details about the first failed
+edit, including `:failed-edit`, `:failed-count`, and `:total-count`.
+
+IMPORTANT: This function directly modifies the current buffer and does
+not handle undo. Callers are responsible for managing undo behavior and
+for restoring the buffer's state on failure if atomicity is required."
+  (let* ((case-fold-search nil)
+         (failed-edits 0)
+         (first-failed-edit nil)
+         ;; Sort edits by line number in descending order
+         (sorted-edits (sort edits (lambda (a b) (> (plist-get a :line-number) (plist-get b :line-number))))))
+    ;; Apply changes in reverse order
+    (dolist (file-edit sorted-edits)
+      (if (when-let ((line-number (plist-get file-edit :line-number))
+                     (old-string (plist-get file-edit :old-string))
+                     (new-string (plist-get file-edit :new-string))
+                     (is-valid-old-string (not (string= old-string ""))))
+            (goto-char (point-min))
+            (forward-line (1- line-number))
+            (let ((end-of-line (line-end-position)))
+              (when (search-forward old-string end-of-line t)
+                (replace-match new-string t t)
+                t)))
+          nil ;; Do nothing on success
+        (progn
+          (setq failed-edits (1+ failed-edits))
+          (unless first-failed-edit
+            (setq first-failed-edit file-edit)))))
+    ;; Check if any edits failed and return result.
+    (if (> failed-edits 0)
+        `(:failed-edit ,first-failed-edit :failed-count ,failed-edits :total-count ,(length sorted-edits))
+      t)))
+
+(defun aj8/apply-buffer-edits-in-temp-buffer (buffer-name buffer-edits success-fn)
+  "Edit BUFFER-NAME in a temporary buffer and run a success function.
+
+This function provides a robust way to programmatically apply a series
+of edits to a buffer. It copies the content of `buffer-name` into a
+temporary buffer and applies the edits there.
+
+`BUFFER-EDITS` is a list of plists, each with :line-number, :old-string,
+and :new-string.
+
+It uses `aj8/apply-edits-to-current-buffer' to perform the edits.
+
+On success, it calls SUCCESS-FN with the original buffer, the temporary
+edit buffer, and the total number of edits as arguments. The SUCCESS-FN
+is then responsible for merging the changes or presenting them for
+review.
+
+The function is used by GPT tools, such as: `aj8_apply_buffer_edits' and
+`aj8_apply_buffer_edits_with_review'."
+  (let ((source-buffer (get-buffer buffer-name)))
+    (unless source-buffer
+      (error "Buffer '%s' does not exist" buffer-name))
+    (let ((edits (if buffer-edits (seq-into buffer-edits 'list) nil)))
+      (if (not edits)
+          (format "No edits were provided. Buffer '%s' remains unchanged." buffer-name)
+        (let ((edit-buffer (get-buffer-create "*edit-buffer*")))
+          (with-current-buffer edit-buffer
+            (erase-buffer)
+            (insert-buffer-substring source-buffer)
+            (let ((result (aj8/apply-edits-to-current-buffer edits)))
+              (cond
+               ((eq result t)
+                (funcall success-fn source-buffer edit-buffer (length edits)))
+               (t
+                (kill-buffer edit-buffer)
+                (let* ((failed-edit (plist-get result :failed-edit))
+                       (failed-count (plist-get result :failed-count))
+                       (total-count (plist-get result :total-count))
+                       (line-number (plist-get failed-edit :line-number))
+                       (old-string (plist-get failed-edit :old-string)))
+                  (error "Failed to apply all edits to %s. %d out of %d edits failed. The first failure encountered was on line %d ('%s')."
+                         buffer-name failed-count total-count line-number old-string)))))))))))
+
+(defun aj8/gptel-tool-list-buffers ()
+  "Return a list of names for buffers visiting a file."
+  (with-temp-message "Running tool: aj8_list_buffers"
+    (seq-map #'buffer-name
+             (seq-filter #'buffer-file-name
+                         (buffer-list)))))
+
+(defun aj8/gptel-tool-buffer-to-file (buffer-name)
+  "Return the file path for BUFFER-NAME."
+  (with-temp-message "Running tool: aj8_buffer_to_file"
+    (let* ((buffer (get-buffer buffer-name))
+           (file-name (and buffer (buffer-file-name buffer))))
+      (unless file-name
+        (error "Buffer '%s' is not visiting a file or does not exist" buffer-name))
+      file-name)))
+
+(defun aj8/gptel-tool-file-to-buffer (file-path)
+  "Return the buffer name for FILE-PATH."
+  (with-temp-message "Running tool: aj8_file_to_buffer"
+    (let* ((path (expand-file-name file-path))
+           (buffer (get-file-buffer path)))
+      (unless buffer
+        (error "No buffer is visiting file '%s'" path))
+      (buffer-name buffer))))
+
+(defun aj8/gptel-tool-append-to-buffer (buffer text)
+  "Append TEXT to BUFFER."
+  (with-temp-message "Running tool: my_append_to_buffer"
+    (let ((buf (get-buffer buffer)))
+      (unless buf
+        (error "Buffer '%s' does not exist" buffer))
+      (with-current-buffer buf
+        (save-excursion
+          (goto-line (point-max))
+          (insert text))
+        (format "Successfully appended text to buffer %s" buffer)))))
+
+(defun aj8/gptel-tool-insert-into-buffer (buffer text line-number)
+  "Insert TEXT into BUFFER at the beginning of LINE-NUMBER."
+  (with-temp-message "Running tool: my_insert_into_buffer"
+    (let ((buf (get-buffer buffer)))
+      (unless buf
+        (error "Buffer '%s' does not exist" buffer))
+      (with-current-buffer buf
+        (save-excursion
+          (goto-line line-number)
+          (insert text))
+        (format "Successfully inserted text into buffer %s at line %d" buffer line-number)))))
+
+(defun aj8/gptel-tool-modify-buffer (buffer content)
+  "Completely replace contents of BUFFER with CONTENT."
+  (with-temp-message "Running tool: my_modify_buffer"
+    (let ((buf (get-buffer buffer)))
+      (unless buf
+        (error "Buffer %s does not exist" buffer))
+      (with-current-buffer buf
+        (erase-buffer)
+        (insert content)
+        (format "successfully modified buffer %s" buffer)))))
+
+(defun aj8/gptel-tool-edit-buffer (buffer-name old-string new-string)
+  "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
+  (with-temp-message "Running tool: aj8_edit_buffer"
+    (let ((buffer (get-buffer buffer-name)))
+      (unless buffer
+        (error "Buffer '%s' does not exist" buffer-name))
+      (aj8/replace-string-in-buffer buffer old-string new-string)
+      (format "Successfully edited buffer %s" buffer-name))))
+
+(defun aj8/gptel-tool-apply-buffer-edits (buffer-name buffer-edits)
+  "Edit BUFFER-NAME with BUFFER-EDITS and save without review.
+
+Each edit in BUFFER-EDITS should specify:
+
+- :line-number - The 1-based line number where the edit occurs
+- :old-string - The string to find and replace
+- :new-string - The replacement string"
+  (with-temp-message "Running tool: aj8_apply_buffer_edits"
+    (aj8/apply-buffer-edits-in-temp-buffer
+     buffer-name buffer-edits
+     (lambda (source-buffer edit-buffer total-edits)
+       (with-current-buffer source-buffer
+         (erase-buffer)
+         (insert-buffer-substring edit-buffer))
+       (kill-buffer edit-buffer)
+       (format "Successfully applied all %d edits to %s."
+               total-edits (buffer-name source-buffer))))))
+
+(defun aj8/gptel-tool-apply-buffer-edits-with-review (buffer-name buffer-edits)
+  "Edit BUFFER-NAME with BUFFER-EDITS and review with Ediff.
+
+Each edit in BUFFER-EDITS should specify:
+
+- :line-number - The 1-based line number where the edit occurs
+- :old-string - The string to find and replace
+- :new-string - The replacement string"
+  (with-temp-message "Running tool: aj8_apply_buffer_edits_with_review"
+    (aj8/apply-buffer-edits-in-temp-buffer
+     buffer-name buffer-edits
+     (lambda (source-buffer edit-buffer total-edits)
+       (ediff-buffers source-buffer edit-buffer)
+       (format "Successfully applied all %d edits. Please review them in the Ediff session."
+               total-edits)))))
+
+;; (defun aj8/gptel-tool-create-file (filepath content)
+;;   "Create a new file at FILEPATH with CONTENT."
+;;   (with-temp-message "Running tool: aj8_create_file"
+;;     (let ((full-path (expand-file-name filepath)))
+;;       (with-temp-buffer
+;;         (insert content)
+;;         (write-file full-path t)) ; The 't' arg prevents confirmation prompts
+;;       (format "Successfully created file: %s" full-path))))
+
+(defun aj8/gptel-tool-read-file-section (filepath &optional start end)
+  "Read a section of FILEPATH, optionally between lines START and END.
+If START and END are omitted, the entire file is read."
+  (with-temp-message "Running tool: my_read_file_section"
+    (with-temp-buffer
+      (insert-file-contents (expand-file-name filepath))
+      (let* ((p-start (if start
+                          (save-excursion (goto-line start) (point))
+                        (point-min)))
+             (p-end (if end
+                        (save-excursion (goto-line end) (line-end-position))
+                      (point-max))))
+        (buffer-substring-no-properties p-start p-end)))))
+
+(defun aj8/gptel-tool-append-to-file (filepath text)
+  "Append TEXT to FILEPATH."
+  (with-temp-message "Running tool: aj8_append_to_file"
+    (let* ((full-path (expand-file-name filepath))
+           (buffer (find-file-noselect full-path)))
+      (unless buffer
+        (error "Could not find or open file %s" filepath))
+      (with-current-buffer buffer
+        (save-excursion
+          (goto-char (point-max))
+          (insert text))
+        (save-buffer))
+      (format "Successfully appended text to file %s" full-path))))
+
+(defun aj8/gptel-tool-insert-into-file (filepath text line-number)
+  "Insert TEXT into FILEPATH at the beginning of LINE-NUMBER."
+  (with-temp-message "Running tool: aj8_insert_into_file"
+    (let* ((full-path (expand-file-name filepath))
+           (buffer (find-file-noselect full-path)))
+      (unless buffer
+        (error "Could not find or open file %s" filepath))
+      (with-current-buffer buffer
+        (save-excursion
+          (goto-line line-number)
+          (insert text))
+        (save-buffer))
+      (format "Successfully inserted text into file %s at line %d" full-path line-number))))
+
+(defun aj8/gptel-tool-edit-file (filename old-string new-string)
+  "In FILENAME, replace OLD-STRING with NEW-STRING."
+  (with-temp-message "Running tool: aj8_edit_file"
+    (let* ((full-path (expand-file-name filename))
+           (buffer (find-file-noselect full-path)))
+      (unless buffer
+        (error "Could not find or open file %s" filename))
+      (aj8/replace-string-in-buffer buffer old-string new-string)
+      (with-current-buffer buffer
+        (save-buffer))
+      (format "Successfully edited file %s" full-path))))
+
+(defun aj8/gptel-tool-apply-file-edits (file-path file-edits)
+  "Edit FILE-PATH with FILE-EDITS and save without review.
+
+Each edit in FILE-EDITS should specify:
+
+- :line-number - The 1-based line number where the edit occurs
+- :old-string - The string to find and replace
+- :new-string - The replacement string"
+  (with-temp-message "Running tool: aj8_apply_file_edits"
+    (let* ((full-path (expand-file-name file-path))
+           (buffer (find-file-noselect full-path)))
+      (unless buffer
+        (error "Could not find or open file %s" file-path))
+      (aj8/apply-buffer-edits-in-temp-buffer
+       (buffer-name buffer) file-edits
+       (lambda (source-buffer edit-buffer total-edits)
+         (with-current-buffer source-buffer
+           (erase-buffer)
+           (insert-buffer-substring edit-buffer)
+           (save-buffer))
+         (kill-buffer edit-buffer)
+         (format "Successfully applied all %d edits to %s."
+                 total-edits full-path))))))
+
+(defun aj8/gptel-tool-apply-file-edits-with-review (file-path file-edits)
+  "Edit FILE-PATH with FILE-EDITS and review with Ediff.
+
+Each edit in FILE-EDITS should specify:
+
+- :line-number - The 1-based line number where the edit occurs
+- :old-string - The string to find and replace
+- :new-string - The replacement string"
+  (with-temp-message "Running tool: aj8_apply_file_edits_with_review"
+    (let* ((full-path (expand-file-name file-path))
+           (buffer (find-file-noselect full-path)))
+      (unless buffer
+        (error "Could not find or open file %s" file-path))
+      (aj8/apply-buffer-edits-in-temp-buffer
+       (buffer-name buffer) file-edits
+       (lambda (source-buffer edit-buffer total-edits)
+         (ediff-buffers source-buffer edit-buffer)
+         (format "Successfully applied all %d edits. Please review them in the Ediff session."
+                 total-edits))))))
+
+(defun aj8/gptel-tool-read-documentation (symbol)
+  "Read the documentation for SYMBOL, which can be a function or variable."
+  (with-temp-message "Running tool: my_read_documentation"
+    (let ((sym (intern symbol)))
+      (cond
+       ((fboundp sym)   ; functions
+        (documentation sym))
+       ((boundp sym)   ; variables
+        (documentation-property sym 'variable-documentation))
+       (t
+        (format "No documentation found for %s" symbol))))))
+
+(defun aj8/gptel-tool-read-function (func)
+  "Return the code of the definition of the Emacs Lisp
+
+function FUNC, which can be either a symbol or a string.  Signal an
+error if no definition can be found."
+  (with-temp-message "Running tool: aj8_read_function"
+    (cl-check-type func (or symbol string))
+    (let* ((func-symbol (if (stringp func) (intern func) func))
+           (location (find-function-noselect func-symbol))
+           (buffer (if (consp location) (car location) location))
+           (beginning-position (if (consp location) (cdr location) nil)))
+      (unless buffer
+        (error "Cannot find source file for %s" func-symbol))
+      (unless beginning-position
+        (error "Cannot find position of %s in %s" func-symbol buffer))
+      (with-current-buffer buffer
+        (goto-char beginning-position)
+        (end-of-defun)
+        (buffer-substring-no-properties beginning-position (point))))))
+
+(defun aj8/gptel-tool-read-library (library-name)
+  "Return the source code of LIBRARY-NAME."
+  (with-temp-message "Running tool: aj8_read_library"
+    (when (locate-library library-name)
+      (save-window-excursion
+        (find-library library-name)
+        (buffer-string)))))
+
+(defun aj8/gptel-tool-read-info-symbol (symbol-name)
+  "Return the contents of the info node for SYMBOL-NAME as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
+  (with-temp-message "Running tool: aj8_read_info_symbol"
+    (when-let ((symbol (intern-soft symbol-name)))
+      (save-window-excursion
+        ;; TODO: This fails on macOS (info-lookup-symbol appears not to be able to find the info manual). Test other systems.
+        (info-lookup-symbol symbol 'emacs-lisp-mode)
+        (buffer-contents "*info*")))))
+
+(defun aj8/gptel-tool-read-info-node (nodename)
+  "Return the contents of a specific NODENAME from the Emacs Lisp manual.
+
+NODENAME should be a string, e.g., \"Interactive Evaluation\" or
+\"Defining Variables\".
+
+This function first looks for a case-sensitive match for NODENAME; if
+none is found it then tries a case-insensitive match."
+  (with-temp-message "Running tool: aj8_read_info_node"
+    (save-window-excursion
+      (Info-find-node "elisp" nodename)
+      (buffer-contents "*info*"))))
+
+(defun aj8/gptel-tool-project-get-root ()
+  "Get the root directory of the current project."
+  (with-temp-message "Running tool: my_project_get_root"
+    (if-let* ((proj (project-current))
+              (root (project-root proj)))
+        (let ((root-path (file-truename root)))
+          (format "Project root directory: %s\nDirectory exists: %s\nIs directory: %s"
+                  root-path
+                  (file-exists-p root-path)
+                  (file-directory-p root-path)))
+      (error "No project found in the current context."))))
+
+(defun aj8/gptel-tool-project-get-open-buffers ()
+  "Return a string listing open buffers in the current project.
+Each line contains a buffer name and its associated file path."
+  (with-temp-message "Running tool: my_project_get_open_buffers"
+    (if-let ((project (project-current)))
+        (cl-reduce #'concat (mapcar (lambda (buf)
+                                      (with-current-buffer buf
+                                        (format "%s %s\n" (buffer-name buf) (buffer-file-name buf))))
+                                    (project-buffers project)))
+      (error "No project found in the current context."))))
+
+;; (defun aj8/gptel-tool-project-find-files (pattern)
+;;   "In the current project, find files whose filenames contain PATTERN.
+;; This search respects the project's .gitignore file and other standard
+;; ignores.  It does not return directories."
+;;   (with-temp-message "Running tool: my_project_find_files"
+;;     (let ((proj (project-current)))
+;;       (if (not proj)
+;;           (error "No project found in the current context.")
+;;         (let ((all-files (project-files proj)))
+;;           (seq-filter (lambda (file) (string-search pattern (file-name-nondirectory file))) all-files))))))
+
+(defun aj8/gptel-tool-project-find-files-glob (pattern)
+  "In the current project, find files whose filenames match the glob PATTERN.
+
+This search respects the project's .gitignore file and other standard
+ignores.  It does not return directories."
+  (with-temp-message "Running tool: my_project_find_files_glob"
+    (let ((proj (project-current)))
+      (unless proj
+        (error "No project found in the current context."))
+      (let* ((root (project-root proj))
+             ;; Get list of non-ignored files from project.el (absolute paths).
+             (project-file-list (project-files proj))
+             ;; Get list of files matching glob from filesystem (absolute paths).
+             (wildcard-file-list
+              (let ((default-directory root))
+                ;; The 't' argument makes it return absolute paths.
+                (file-expand-wildcards pattern t))))
+        ;; Return the files present in both lists.
+        (seq-intersection project-file-list wildcard-file-list #'string-equal)))))
+
+(defun aj8/gptel-tool-project-search-content (regexp)
+  "Search for REGEXP in files of the current project.
+
+Uses `ripgrep' (rg) if available; otherwise, it uses `git grep' if the
+project is a git repository. Returns search results as a string."
+  (with-temp-message (format "Running tool: my_project_search_content")
+    (let* ((project (project-current t))
+           (root (when project (project-root project))))
+      (unless root
+        (error "Not in a project"))
+      (let ((default-directory root))
+        (cond
+         ((executable-find "rg")
+          (shell-command-to-string
+           (format "rg --no-heading --line-number --color never -e %s ."
+                   (shell-quote-argument regexp))))
+         ((and (executable-find "git") (file-directory-p ".git"))
+          (shell-command-to-string
+           (format "git grep --line-number --color=never -e %s"
+                   (shell-quote-argument regexp))))
+         (t
+          (error "Neither 'rg' (ripgrep) nor 'git grep' is available for search.")))))))
+
 ;;; Misc
 
 ;; Swap universal prefix argument for functions
