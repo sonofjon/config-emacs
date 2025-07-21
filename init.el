@@ -2284,26 +2284,6 @@ The function is used by GPT tools, such as: `aj8_apply_buffer_edits' and
     ;;                       :description "The name of the buffer to read."))
     ;;  :category "buffers")
     (gptel-make-tool
-     :function (lambda (buffer content)
-                 "Completely replace contents of BUFFER with CONTENT."
-                 (with-temp-message "Running tool: my_modify_buffer"
-                   (let ((buf (get-buffer buffer)))
-                     (unless buf
-                       (error "Buffer %s does not exist" buffer))
-                     (with-current-buffer buf
-                       (erase-buffer)
-                       (insert content)
-                       (format "successfully modified buffer %s" buffer)))))
-     :name "my_modify_buffer"
-     :description "Completely overwrite the contents of a buffer."
-     :args (list '(:name "buffer"
-                         :type string
-                         :description "The name of the buffer to overwrite.")
-                 '(:name "content"
-                         :type string
-                         :description "The content to write to the buffer."))
-     :category "buffers")
-    (gptel-make-tool
      :function (lambda ()
                  "Return a list of names for buffers visiting a file."
                  (with-temp-message "Running tool: aj8_list_buffers"
@@ -2388,6 +2368,26 @@ The function is used by GPT tools, such as: `aj8_apply_buffer_edits' and
                  '(:name "line-number"
                          :type integer
                          :description "The 1-based line number where the text should be inserted."))
+     :category "buffers")
+    (gptel-make-tool
+     :function (lambda (buffer content)
+                 "Completely replace contents of BUFFER with CONTENT."
+                 (with-temp-message "Running tool: my_modify_buffer"
+                   (let ((buf (get-buffer buffer)))
+                     (unless buf
+                       (error "Buffer %s does not exist" buffer))
+                     (with-current-buffer buf
+                       (erase-buffer)
+                       (insert content)
+                       (format "successfully modified buffer %s" buffer)))))
+     :name "my_modify_buffer"
+     :description "Completely overwrite the contents of a buffer."
+     :args (list '(:name "buffer"
+                         :type string
+                         :description "The name of the buffer to overwrite.")
+                 '(:name "content"
+                         :type string
+                         :description "The content to write to the buffer."))
      :category "buffers")
     (gptel-make-tool
      :function (lambda (buffer-name old-string new-string)
