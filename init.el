@@ -2520,6 +2520,7 @@ as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
     (with-temp-message "Running tool: aj8_info_elisp_symbol_contents"
       (when-let ((symbol (intern-soft symbol-name)))
         (save-window-excursion
+          ;; TODO: This fails on macOS (info-lookup-symbol appears not to be able to find the info manual). Test other systems.
           (info-lookup-symbol symbol 'emacs-lisp-mode)
           (buffer-contents "*info*")))))
 
