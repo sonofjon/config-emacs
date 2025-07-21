@@ -1,4 +1,4 @@
-;; First, require ERT, the Emacs Lisp Regression Testing tool.
+;; Require ERT, the Emacs Lisp Regression Testing tool
 (require 'ert)
 
 ;; --- Test Helper Macros ---
