@@ -37,9 +37,21 @@
            (call-process "git" nil nil nil "init")
            ;; Create dummy files
            (make-directory (expand-file-name "src" proj-dir))
-           (with-temp-file (expand-file-name "readme.md" proj-dir) (insert "Project Readme"))
-           (with-temp-file (expand-file-name "src/code.el" proj-dir) (insert "(defun hello () (message \"hello\"))"))
-           (with-temp-file (expand-file-name "data.txt" proj-dir) (insert "some text data"))
+           (with-temp-buffer
+             (insert "Project Readme")
+             (write-file (expand-file-name "readme.md" proj-dir)))
+           (with-temp-buffer
+             (insert "(defun hello () (message \"hello\"))")
+             (write-file (expand-file-name "src/code.el" proj-dir)))
+           (with-temp-buffer
+             (insert "some text data")
+             (write-file (expand-file-name "data.txt" proj-dir)))
+           ;; Add and commit files to make them part of the project
+           (call-process "git" nil nil nil "add" ".")
+           (call-process "git" nil nil nil
+                         "-c" "user.name=Test"
+                         "-c" "user.email=test@example.com"
+                         "commit" "-m" "Initial commit")
            ,@body)
        (when (file-directory-p proj-dir)
          (delete-directory proj-dir t)))))
