@@ -2153,6 +2153,14 @@ Elisp code explicitly in arbitrary buffers.")
     :include-reasoning "*gptel-reasoning*"
     :use-tools t)
 
+  ;; (defun aj8/gptel-tool-my-read-buffer (buffer)
+  ;;   "Return the contents of BUFFER."
+  ;;   (with-temp-message "Running tool: my_read_buffer"
+  ;;     (unless (buffer-live-p (get-buffer buffer))
+  ;;       (error "Error: buffer %s is not live." buffer))
+  ;;     (with-current-buffer buffer
+  ;;       (buffer-substring-no-properties (point-min) (point-max)))))
+
   (defun aj8/replace-string-in-buffer (buffer old-string new-string)
     "In BUFFER, replace a single occurrence of OLD-STRING with NEW-STRING.
 
@@ -2377,6 +2385,15 @@ Each edit in BUFFER-EDITS should specify:
          (format "Successfully applied all %d edits. Please review them in the Ediff session."
                  total-edits)))))
 
+  ;; (defun aj8/gptel-tool-aj8-create-file (filepath content)
+  ;;   "Create a new file at FILEPATH with CONTENT."
+  ;;   (with-temp-message "Running tool: aj8_create_file"
+  ;;     (let ((full-path (expand-file-name filepath)))
+  ;;       (with-temp-buffer
+  ;;         (insert content)
+  ;;         (write-file full-path t)) ; The 't' arg prevents confirmation prompts
+  ;;       (format "Successfully created file: %s" full-path))))
+
   (defun aj8/gptel-tool-my-read-file-section (filepath &optional start end)
     "Read a section of FILEPATH, optionally between lines START and END.
 If START and END are omitted, the entire file is read."
@@ -2559,6 +2576,17 @@ Each line contains a buffer name and its associated file path."
                                       (project-buffers project)))
         (error "No project found in the current context."))))
 
+  ;; (defun aj8/gptel-tool-my-project-find-files (pattern)
+  ;;   "In the current project, find files whose filenames contain PATTERN.
+  ;; This search respects the project's .gitignore file and other standard
+  ;; ignores.  It does not return directories."
+  ;;   (with-temp-message "Running tool: my_project_find_files"
+  ;;     (let ((proj (project-current)))
+  ;;       (if (not proj)
+  ;;           (error "No project found in the current context.")
+  ;;         (let ((all-files (project-files proj)))
+  ;;           (seq-filter (lambda (file) (string-search pattern (file-name-nondirectory file))) all-files))))))
+
   (defun aj8/gptel-tool-my-project-find-files-glob (pattern)
     "In the current project, find files whose filenames match the glob PATTERN.
 This search respects the project's .gitignore file and other standard
@@ -2601,13 +2629,7 @@ project is a git repository. Returns search results as a string."
             (error "Neither 'rg' (ripgrep) nor 'git grep' is available for search.")))))))
 
   ;; (gptel-make-tool
-  ;;  :function (lambda (buffer)
-  ;;              "Return the contents of BUFFER.
-  ;;              (with-temp-message "Running tool: my_read_buffer"
-  ;;                (unless (buffer-live-p (get-buffer buffer))
-  ;;                  (error "Error: buffer %s is not live." buffer))
-  ;;                (with-current-buffer buffer
-  ;;                  (buffer-substring-no-properties (point-min) (point-max)))))
+  ;;  :function #'aj8/gptel-tool-my-read-buffer
   ;;  :name "my_read_buffer"
   ;;  :description "Return the contents of a buffer."
   ;;  :args (list '(:name "buffer"
@@ -2727,14 +2749,7 @@ This action requires manual user review. After calling this tool, you must stop 
                        :description "The list of edits to apply to the buffer."))
    :category "buffers")
   ;; (gptel-make-tool
-  ;;  :function (lambda (filepath content)
-  ;;              "Create a new file at FILEPATH with CONTENT."
-  ;;              (with-temp-message "Running tool: aj8_create_file"
-  ;;                (let ((full-path (expand-file-name filepath)))
-  ;;                  (with-temp-buffer
-  ;;                    (insert content)
-  ;;                    (write-file full-path t)) ; The 't' arg prevents confirmation prompts
-  ;;                  (format "Successfully created file: %s" full-path))))
+  ;;  :function #'aj8/gptel-tool-aj8-create-file
   ;;  :name "aj8_create_file"
   ;;  :description "Create a new file with the specified content. Overwrites the file if it already exists."
   ;;  :args '((:name "filepath"
@@ -2893,16 +2908,7 @@ This action requires manual user review. After calling this tool, you must stop 
    :args nil
    :category "project")
   ;;   (gptel-make-tool
-  ;;    :function (lambda (pattern)
-  ;;                "In the current project, find files whose filenames contain PATTERN.
-  ;; This search respects the project's .gitignore file and other standard
-  ;; ignores.  It does not return directories."
-  ;;                (with-temp-message "Running tool: my_project_find_files"
-  ;;                  (let ((proj (project-current)))
-  ;;                    (if (not proj)
-  ;;                        (error "No project found in the current context.")
-  ;;                      (let ((all-files (project-files proj)))
-  ;;                        (seq-filter (lambda (file) (string-search pattern (file-name-nondirectory file))) all-files))))))
+  ;;    :function #'aj8/gptel-tool-my-project-find-files
   ;;    :name "my_project_find_files"
   ;;    :description "In the current project, recursively find files whose filenames contain pattern. This search is case-sensitive and respects .gitignore. It does not find directories."
   ;;    :args '((:name "pattern"
