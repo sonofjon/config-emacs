@@ -52,6 +52,7 @@
 
 (ert-deftest test-aj8-list-buffers ()
   "Test `aj8/gptel-tool-aj8-list-buffers`."
+  :tags '(test buffers)
   (let ((tmp-file (make-temp-file "test-list-buffers-")))
     (find-file-noselect tmp-file)
     (with-temp-buffer-with-content "*non-file-buffer*" "some content"
@@ -63,6 +64,7 @@
 
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test `aj8/gptel-tool-aj8-buffer-to-file` and `aj8/gptel-tool-aj8-file-to-buffer`."
+  :tags '(test buffers)
   (with-temp-file-with-content test-file "content"
     (let ((buffer (find-file-noselect test-file)))
       (unwind-protect
@@ -77,6 +79,7 @@
 
 (ert-deftest test-my-buffer-modification-tools ()
   "Test `my_append_to_buffer`, `my_insert_into_buffer`, and `my_modify_buffer`."
+  :tags '(test buffers)
   (with-temp-buffer-with-content "*test-modify*" "Line 1\nLine 3"
     ;; Append
     (aj8/gptel-tool-my-append-to-buffer "*test-modify*" "\nLine 4")
@@ -90,6 +93,7 @@
 
 (ert-deftest test-aj8-edit-buffer ()
   "Test `aj8/gptel-tool-aj8-edit-buffer`."
+  :tags '(test buffers)
   (with-temp-buffer-with-content "*test-edit*" "hello world\nhello universe"
     (aj8/gptel-tool-aj8-edit-buffer "*test-edit*" "world" "emacs")
     (should (string-equal (buffer-string) "hello emacs\nhello universe"))
@@ -98,6 +102,7 @@
 
 (ert-deftest test-aj8-apply-buffer-edits ()
   "Test `aj8/gptel-tool-aj8-apply-buffer-edits`."
+  :tags '(test buffers)
   (with-temp-buffer-with-content "*test-apply-edits*" "Line one.\nLine two.\nLine three."
     (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
                    (:line-number 1 :old-string "one" :new-string "ONE"))))
@@ -106,6 +111,7 @@
 
 (ert-deftest test-aj8-apply-buffer-edits-with-review ()
   "Test `aj8/gptel-tool-aj8-apply-buffer-edits-with-review`."
+  :tags '(test buffers review)
   (with-temp-buffer-with-content "*test-review*" "Line one.\nLine two."
     (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
           (ediff-called nil))
@@ -125,6 +131,7 @@
 
 (ert-deftest test-my-read-file-section ()
   "Test `aj8/gptel-tool-my-read-file-section`."
+  :tags '(test filesystem)
   (with-temp-file-with-content test-file "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
     ;; Read whole file
     (should (string-equal (aj8/gptel-tool-my-read-file-section test-file)
@@ -141,6 +148,7 @@
 
 (ert-deftest test-aj8-file-modification ()
   "Test `aj8_append_to_file`, `aj8_insert_into_file`, `aj8_edit_file`."
+  :tags '(test filesystem)
   (with-temp-file-with-content test-file "Line 1\nLine 3"
     ;; Append
     (aj8/gptel-tool-aj8-append-to-file test-file "\nLine 4")
@@ -157,6 +165,7 @@
 
 (ert-deftest test-aj8-apply-file-edits ()
   "Test `aj8/gptel-tool-aj8-apply-file-edits`."
+  :tags '(test filesystem)
   (with-temp-file-with-content test-file "Line one.\nLine two.\nLine three."
     (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
                    (:line-number 1 :old-string "one" :new-string "ONE"))))
@@ -166,6 +175,7 @@
 
 (ert-deftest test-aj8-apply-file-edits-with-review ()
   "Test `aj8/gptel-tool-aj8-apply-file-edits-with-review`."
+  :tags '(test filesystem review)
   (with-temp-file-with-content test-file "Line one.\nLine two."
     (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
           (ediff-called nil))
@@ -183,12 +193,14 @@
 
 (ert-deftest test-my-read-documentation ()
   "Test `aj8/gptel-tool-my-read-documentation`."
+  :tags '(test emacs)
   (should (string-match-p "Return the first element of LIST" (aj8/gptel-tool-my-read-documentation "car")))
   (should (string-match-p "List of directories to search for files to load" (aj8/gptel-tool-my-read-documentation "load-path")))
   (should (string-match-p "No documentation found" (aj8/gptel-tool-my-read-documentation "non-existent-symbol-xyz"))))
 
 (ert-deftest test-aj8-read-function-and-library ()
   "Test `aj8_read_function` and `aj8_read_library` tools."
+  :tags '(test emacs)
   ;; Test read function
   (should (string-match-p "(defun aj8/replace-string-in-buffer" (aj8/function-definition-code 'aj8/replace-string-in-buffer)))
   ;; Test read library
@@ -196,6 +208,7 @@
 
 (ert-deftest test-aj8-info-lookup ()
   "Test `aj8/info-elisp-symbol-contents` and `aj8/info-elisp-nodename-contents`."
+  :tags '(test emacs)
   (should (string-match-p "special form in `Lisp'" (aj8/info-elisp-symbol-contents "defun")))
   (should (string-match-p "A function definition has the form" (aj8/info-elisp-nodename-contents "Defining Functions"))))
 
@@ -206,6 +219,7 @@
 
 (ert-deftest test-aj8-project-root-and-buffers ()
   "Test `my_project_get_root` and `my_project_get_open_buffers`."
+  :tags '(test project)
   (with-temp-project
     (let ((root (file-truename default-directory)))
       ;; Test get root
@@ -220,6 +234,7 @@
 
 (ert-deftest test-aj8-project-find-and-search ()
   "Test `my_project_find_files_glob` and `my_project_search_content`."
+  :tags '(test project)
   (with-temp-project
     ;; Test find files glob
     (let ((files (aj8/gptel-tool-my-project-find-files-glob "*.el")))
@@ -235,8 +250,13 @@
 
 ;; --- Test Runner Function ---
 
-(defun aj8/run-all-gptel-tool-tests ()
+(defun aj8/run-all-gptel-tool-tests (&optional selector)
   "Run all ERT tests defined for gptel tools.
-The results will be displayed in a new buffer `*ert*`."
-  (interactive)
-  (ert-run-tests-interactively t))
+The results will be displayed in a new buffer `*ert*`.
+With a prefix argument, prompt for a test SELECTOR.
+The selector can be a tag like 'buffers or 'project."
+  (interactive "P")
+  (let ((test-selector (if selector
+                           (intern (completing-read "Run tests with selector: " '(test buffers filesystem emacs project review)))
+                         'test)))
+    (ert-run-tests-interactively `(and (tag ,test-selector) (not (tag excluded))))))
