@@ -68,14 +68,12 @@
 (ert-deftest test-aj8-list-buffers ()
   "Test `aj8/gptel-tool-aj8-list-buffers`."
   :tags '(test buffers)
-  (let ((tmp-file (make-temp-file "test-list-buffers-")))
+  (with-temp-file-with-content tmp-file "file content"
     (find-file-noselect tmp-file)
     (with-temp-buffer-with-content "*non-file-buffer*" "some content"
       (let ((buffers (aj8/gptel-tool-aj8-list-buffers)))
         (should (member (file-name-nondirectory tmp-file) buffers))
-        (should-not (member "*non-file-buffer*" buffers))))
-    (kill-buffer (file-name-nondirectory tmp-file))
-    (delete-file tmp-file)))
+        (should-not (member "*non-file-buffer*" buffers))))))
 
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test `aj8/gptel-tool-aj8-buffer-to-file` and `aj8/gptel-tool-aj8-file-to-buffer`."
