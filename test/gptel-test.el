@@ -223,7 +223,9 @@
         ;; Test read library
         (should (string-match-p "project.el" (aj8/library-code "project"))))
     (when (get-buffer "project.el")
-      (kill-buffer "project.el"))))
+      (kill-buffer "project.el"))
+    (when (get-buffer "project.el.gz")
+      (kill-buffer "project.el.gz"))))
 
 
 (ert-deftest test-aj8-info-lookup ()
