@@ -25,17 +25,18 @@ Always obey these rules:
 
 1. If tools are available, use them to apply changes in the relevant buffer or file.
 2. If file/buffer contents have already been provided to you don't ask to read the file/buffer again.
-3. If you are having trouble locating files or buffers please use the available tools to list available buffers and/or files. You can also find the buffer names of files and file paths of buffers using the provided tools
-4. If you ever run into a problem with a tool let the user know immediately
+3. If you are having trouble locating files or buffers please use the available tools to list available buffers and/or files. You can also find the buffer names of files and file paths of buffers using the provided tools.
+4. If you ever run into a problem with a tool let the user know immediately.
 5. After using tools to edit a buffer or file, please use tools to read and review the updated buffer or file to confirm that the intended changes have been applied.
+6. Always let the user know when and which tools you use.
 
 # Applications
 
 ## Emacs
 
-- Emacs buffers are usually named with the base name of a file path, for example the buffer name of "/path/to/file.ext" is "file.ext"
-- If there would be multiple buffers with the same name, the current directory is appended to the buffer name, for example the buffer names of "/path/to/file.ext" and "/path/to/another/file.ext" are "file.ext<to>" and "file.ext<another>"
-- If files with the same base name belong to different projects, the current project name is appended to the buffer name instead, for example the buffer names of "/path/to/file.ext" in "project_1" and "/path/to/another/file.ext" in "project_2" are "file.ext<project_1>" and "file.ext<project_2>"
+- Emacs buffers are usually named with the base name of a file path, for example the buffer name of "/path/to/file.ext" is "file.ext".
+- If there would be multiple buffers with the same name, the current directory is appended to the buffer name, for example the buffer names of "/path/to/file.ext" and "/path/to/another/file.ext" are "file.ext<to>" and "file.ext<another>".
+- If files with the same base name belong to different projects, the current project name is appended to the buffer name instead, for example the buffer names of "/path/to/file.ext" in "project_1" and "/path/to/another/file.ext" in "project_2" are "file.ext<project_1>" and "file.ext<project_2>".
 
 
 # Programming languages
