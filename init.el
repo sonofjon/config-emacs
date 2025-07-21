@@ -2526,6 +2526,55 @@ If START and END are omitted, the entire file is read."
                     :description "The optional last line to read to."))
      :category "filesystem")
     (gptel-make-tool
+     :function (lambda (filepath text)
+                 "Append TEXT to FILEPATH."
+                 (with-temp-message "Running tool: aj8_append_to_file"
+                   (let* ((full-path (expand-file-name filepath))
+                          (buffer (find-file-noselect full-path)))
+                     (unless buffer
+                       (error "Could not find or open file %s" filepath))
+                     (with-current-buffer buffer
+                       (save-excursion
+                         (goto-char (point-max))
+                         (insert text))
+                       (save-buffer))
+                     (format "Successfully appended text to file %s" full-path))))
+     :name "aj8_append_to_file"
+     :description "Append text to a file. This tool operates on the buffer visiting the file to avoid losing unsaved changes, and it saves the buffer after the edit."
+     :args (list '(:name "filepath"
+                         :type string
+                         :description "The path of the file to append text to.")
+                 '(:name "text"
+                         :type string
+                         :description "The text to append to the file."))
+     :category "filesystem")
+    (gptel-make-tool
+     :function (lambda (filepath text line-number)
+                 "Insert TEXT into FILEPATH at the beginning of LINE-NUMBER."
+                 (with-temp-message "Running tool: aj8_insert_into_file"
+                   (let* ((full-path (expand-file-name filepath))
+                          (buffer (find-file-noselect full-path)))
+                     (unless buffer
+                       (error "Could not find or open file %s" filepath))
+                     (with-current-buffer buffer
+                       (save-excursion
+                         (goto-line line-number)
+                         (insert text))
+                       (save-buffer))
+                     (format "Successfully inserted text into file %s at line %d" full-path line-number))))
+     :name "aj8_insert_into_file"
+     :description "Insert text into a file at a specific line number. The text is inserted at the beginning of the specified line. This tool operates on the buffer visiting the file to avoid losing unsaved changes, and it saves the buffer after the edit."
+     :args (list '(:name "filepath"
+                         :type string
+                         :description "The path of the file to insert text into.")
+                 '(:name "text"
+                         :type string
+                         :description "The text to insert.")
+                 '(:name "line-number"
+                         :type integer
+                         :description "The 1-based line number where the text should be inserted."))
+     :category "filesystem")
+    (gptel-make-tool
      :function (lambda (filename old-string new-string)
                  "In FILENAME, replace OLD-STRING with NEW-STRING."
                  (with-temp-message "Running tool: aj8_edit_file"
