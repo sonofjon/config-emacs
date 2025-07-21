@@ -2152,6 +2152,7 @@ Elisp code explicitly in arbitrary buffers.")
     :use-context 'user
     :include-reasoning "*gptel-reasoning*"
     :use-tools t)
+  ;; Tools:
   ;; (gptel-make-tool
   ;;  :function #'aj8/gptel-tool-read-buffer
   ;;  :name "aj8_read_buffer"
