@@ -23,6 +23,9 @@
              (insert ,content)
              (write-file ,file-var))
            ,@body)
+       (let ((buffer (get-file-buffer ,file-var)))
+         (when buffer
+           (kill-buffer buffer)))
        (when (file-exists-p ,file-var)
          (delete-file ,file-var)))))
 
