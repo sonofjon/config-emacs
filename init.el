@@ -2697,78 +2697,82 @@ This action requires manual user review. After calling this tool, you must stop 
                          :description "The name of the function or variable whose documentation is to be read."))
      :category "emacs")
 
-    (defun function-definition-code (func)
+    (defun aj8/function-definition-code (func)
       "Return the code of the definition of the Emacs Lisp
 function FUNC, which can be either a symbol or a string.  Signal
 an error if no definition can be found."
-      (cl-check-type func (or symbol string))
-      (let* ((func-symbol (if (stringp func) (intern func) func))
-             (location (find-function-noselect func-symbol))
-             (buffer (if (consp location) (car location) location))
-             (beginning-position (if (consp location) (cdr location) nil)))
-        (unless buffer
-          (error "Cannot find source file for %s" func-symbol))
-        (unless beginning-position
-          (error "Cannot find position of %s in %s" func-symbol buffer))
-        (with-current-buffer buffer
-          (goto-char beginning-position)
-          (end-of-defun)
-          (buffer-substring-no-properties beginning-position (point)))))
+      (with-temp-message "Running tool: aj8_read_function"
+        (cl-check-type func (or symbol string))
+        (let* ((func-symbol (if (stringp func) (intern func) func))
+               (location (find-function-noselect func-symbol))
+               (buffer (if (consp location) (car location) location))
+               (beginning-position (if (consp location) (cdr location) nil)))
+          (unless buffer
+            (error "Cannot find source file for %s" func-symbol))
+          (unless beginning-position
+            (error "Cannot find position of %s in %s" func-symbol buffer))
+          (with-current-buffer buffer
+            (goto-char beginning-position)
+            (end-of-defun)
+            (buffer-substring-no-properties beginning-position (point))))))
     (gptel-make-tool
-     :name "my_read_function"
-     :function #'function-definition-code
+     :name "aj8_read_function"
+     :function #'aj8/function-definition-code
      :description "Return the code of the definition of an Emacs Lisp function."
-     :args (list '( :name "function"
-                    :type "string"
-                    :description "The name of the function whose code is to be returned."))
+     :args (list '(:name "function"
+                         :type string
+                         :description "The name of the function whose code is to be returned."))
      :category "emacs")
 
-    (defun library-code (library-name)
+    (defun aj8/library-code (library-name)
       "Return the source code of LIBRARY-NAME."
-      (when (locate-library library-name)
-        (save-window-excursion
-          (find-library library-name)
-          (buffer-string))))
+      (with-temp-message "Running tool: aj8_read_library"
+        (when (locate-library library-name)
+          (save-window-excursion
+            (find-library library-name)
+            (buffer-string)))))
     (gptel-make-tool
-     :function #'library-code
-     :name "my_read_library"
+     :function #'aj8/library-code
+     :name "aj8_read_library"
      :description "Return the source code of a library or package in emacs."
-     :args (list '( :name "library name"
-                    :type string
-                    :description "The library name."))
+     :args (list '(:name "library-name"
+                         :type string
+                         :description "The library name."))
      :category "emacs")
 
-    (defun info-elisp-symbol-contents (symbol-name)
+    (defun aj8/info-elisp-symbol-contents (symbol-name)
       "Return the contents of the info node for SYMBOL-NAME
 as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
-      (when-let ((symbol (intern-soft symbol-name)))
-        (save-window-excursion
-          (info-lookup-symbol symbol 'emacs-lisp-mode)
-          (buffer-contents "*info*"))))
+      (with-temp-message "Running tool: aj8_info_elisp_symbol_contents"
+        (when-let ((symbol (intern-soft symbol-name)))
+          (save-window-excursion
+            (info-lookup-symbol symbol 'emacs-lisp-mode)
+            (buffer-contents "*info*")))))
     (gptel-make-tool
-     :name "info_elisp_symbol_contents"
-     :function #'info-elisp-symbol-contents
+     :name "aj8_info_elisp_symbol_contents"
+     :function #'aj8/info-elisp-symbol-contents
      :description "Return the contents of the info node for SYMBOL-NAME as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
      :args (list '(:name "symbol-name"
                          :type string
                          :description "The name of the Emacs Lisp symbol to look up."))
      :category "emacs")
 
-    (defun info-elisp-nodename-contents (nodename)
+    (defun aj8/info-elisp-nodename-contents (nodename)
       "Return the contents of a specific NODENAME from the Emacs Lisp manual.
 
 NODENAME should be a string, e.g., \"Interactive Evaluation\" or \"Defining Variables\".
 
 This function first looks for a case-sensitive match for NODENAME;
 if none is found it then tries a case-insensitive match."
-      (save-window-excursion
-        (Info-find-node "elisp" nodename)
-        (buffer-contents "*info*")))
+      (with-temp-message "Running tool: aj8_elisp_nodename_contents"
+        (save-window-excursion
+          (Info-find-node "elisp" nodename)
+          (buffer-contents "*info*"))))
     (gptel-make-tool
-     :name "elisp_nodename_contents"
-     :function #'info-elisp-nodename-contents
+     :name "aj8_elisp_nodename_contents"
+     :function #'aj8/info-elisp-nodename-contents
      :description "Return the contents of a specific NODENAME from the Emacs Lisp manual."
-     :args (list '(:name "nodename" :type "string" :description "The name of the node in the Emacs Lisp manual."))
+     :args (list '(:name "nodename" :type string :description "The name of the node in the Emacs Lisp manual."))
      :category "emacs")
 
     (gptel-make-tool
