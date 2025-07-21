@@ -2153,7 +2153,7 @@ Elisp code explicitly in arbitrary buffers.")
     :include-reasoning "*gptel-reasoning*"
     :use-tools t)
 
-  ;; (defun aj8/gptel-tool-my-read-buffer (buffer)
+  ;; (defun aj8/gptel-tool-read-buffer (buffer)
   ;;   "Return the contents of BUFFER."
   ;;   (with-temp-message "Running tool: my_read_buffer"
   ;;     (unless (buffer-live-p (get-buffer buffer))
@@ -2281,14 +2281,14 @@ The function is used by GPT tools, such as: `aj8_apply_buffer_edits' and
                     (error "Failed to apply all edits to %s. %d out of %d edits failed. The first failure encountered was on line %d ('%s')."
                            buffer-name failed-count total-count line-number old-string)))))))))))
 
-  (defun aj8/gptel-tool-aj8-list-buffers ()
+  (defun aj8/gptel-tool-list-buffers ()
     "Return a list of names for buffers visiting a file."
     (with-temp-message "Running tool: aj8_list_buffers"
       (seq-map #'buffer-name
                (seq-filter #'buffer-file-name
                            (buffer-list)))))
 
-  (defun aj8/gptel-tool-aj8-buffer-to-file (buffer-name)
+  (defun aj8/gptel-tool-buffer-to-file (buffer-name)
     "Return the file path for BUFFER-NAME."
     (with-temp-message "Running tool: aj8_buffer_to_file"
       (let* ((buffer (get-buffer buffer-name))
@@ -2297,7 +2297,7 @@ The function is used by GPT tools, such as: `aj8_apply_buffer_edits' and
           (error "Buffer '%s' is not visiting a file or does not exist" buffer-name))
         file-name)))
 
-  (defun aj8/gptel-tool-aj8-file-to-buffer (file-path)
+  (defun aj8/gptel-tool-file-to-buffer (file-path)
     "Return the buffer name for FILE-PATH."
     (with-temp-message "Running tool: aj8_file_to_buffer"
       (let* ((path (expand-file-name file-path))
@@ -2306,7 +2306,7 @@ The function is used by GPT tools, such as: `aj8_apply_buffer_edits' and
           (error "No buffer is visiting file '%s'" path))
         (buffer-name buffer))))
 
-  (defun aj8/gptel-tool-my-append-to-buffer (buffer text)
+  (defun aj8/gptel-tool-append-to-buffer (buffer text)
     "Append TEXT to BUFFER."
     (with-temp-message "Running tool: my_append_to_buffer"
       (let ((buf (get-buffer buffer)))
@@ -2318,7 +2318,7 @@ The function is used by GPT tools, such as: `aj8_apply_buffer_edits' and
             (insert text))
           (format "Successfully appended text to buffer %s" buffer)))))
 
-  (defun aj8/gptel-tool-my-insert-into-buffer (buffer text line-number)
+  (defun aj8/gptel-tool-insert-into-buffer (buffer text line-number)
     "Insert TEXT into BUFFER at the beginning of LINE-NUMBER."
     (with-temp-message "Running tool: my_insert_into_buffer"
       (let ((buf (get-buffer buffer)))
@@ -2330,7 +2330,7 @@ The function is used by GPT tools, such as: `aj8_apply_buffer_edits' and
             (insert text))
           (format "Successfully inserted text into buffer %s at line %d" buffer line-number)))))
 
-  (defun aj8/gptel-tool-my-modify-buffer (buffer content)
+  (defun aj8/gptel-tool-modify-buffer (buffer content)
     "Completely replace contents of BUFFER with CONTENT."
     (with-temp-message "Running tool: my_modify_buffer"
       (let ((buf (get-buffer buffer)))
@@ -2341,7 +2341,7 @@ The function is used by GPT tools, such as: `aj8_apply_buffer_edits' and
           (insert content)
           (format "successfully modified buffer %s" buffer)))))
 
-  (defun aj8/gptel-tool-aj8-edit-buffer (buffer-name old-string new-string)
+  (defun aj8/gptel-tool-edit-buffer (buffer-name old-string new-string)
     "In BUFFER-NAME, replace OLD-STRING with NEW-STRING."
     (with-temp-message "Running tool: aj8_edit_buffer"
       (let ((buffer (get-buffer buffer-name)))
@@ -2350,7 +2350,7 @@ The function is used by GPT tools, such as: `aj8_apply_buffer_edits' and
         (aj8/replace-string-in-buffer buffer old-string new-string)
         (format "Successfully edited buffer %s" buffer-name))))
 
-  (defun aj8/gptel-tool-aj8-apply-buffer-edits (buffer-name buffer-edits)
+  (defun aj8/gptel-tool-apply-buffer-edits (buffer-name buffer-edits)
     "Edit BUFFER-NAME with BUFFER-EDITS and save without review.
 
 Each edit in BUFFER-EDITS should specify:
@@ -2369,7 +2369,7 @@ Each edit in BUFFER-EDITS should specify:
          (format "Successfully applied all %d edits to %s."
                  total-edits (buffer-name source-buffer))))))
 
-  (defun aj8/gptel-tool-aj8-apply-buffer-edits-with-review (buffer-name buffer-edits)
+  (defun aj8/gptel-tool-apply-buffer-edits-with-review (buffer-name buffer-edits)
     "Edit BUFFER-NAME with BUFFER-EDITS and review with Ediff.
 
 Each edit in BUFFER-EDITS should specify:
@@ -2385,7 +2385,7 @@ Each edit in BUFFER-EDITS should specify:
          (format "Successfully applied all %d edits. Please review them in the Ediff session."
                  total-edits)))))
 
-  ;; (defun aj8/gptel-tool-aj8-create-file (filepath content)
+  ;; (defun aj8/gptel-tool-create-file (filepath content)
   ;;   "Create a new file at FILEPATH with CONTENT."
   ;;   (with-temp-message "Running tool: aj8_create_file"
   ;;     (let ((full-path (expand-file-name filepath)))
@@ -2394,7 +2394,7 @@ Each edit in BUFFER-EDITS should specify:
   ;;         (write-file full-path t)) ; The 't' arg prevents confirmation prompts
   ;;       (format "Successfully created file: %s" full-path))))
 
-  (defun aj8/gptel-tool-my-read-file-section (filepath &optional start end)
+  (defun aj8/gptel-tool-read-file-section (filepath &optional start end)
     "Read a section of FILEPATH, optionally between lines START and END.
 If START and END are omitted, the entire file is read."
     (with-temp-message "Running tool: my_read_file_section"
@@ -2408,7 +2408,7 @@ If START and END are omitted, the entire file is read."
                         (point-max))))
           (buffer-substring-no-properties p-start p-end)))))
 
-  (defun aj8/gptel-tool-aj8-append-to-file (filepath text)
+  (defun aj8/gptel-tool-append-to-file (filepath text)
     "Append TEXT to FILEPATH."
     (with-temp-message "Running tool: aj8_append_to_file"
       (let* ((full-path (expand-file-name filepath))
@@ -2422,7 +2422,7 @@ If START and END are omitted, the entire file is read."
           (save-buffer))
         (format "Successfully appended text to file %s" full-path))))
 
-  (defun aj8/gptel-tool-aj8-insert-into-file (filepath text line-number)
+  (defun aj8/gptel-tool-insert-into-file (filepath text line-number)
     "Insert TEXT into FILEPATH at the beginning of LINE-NUMBER."
     (with-temp-message "Running tool: aj8_insert_into_file"
       (let* ((full-path (expand-file-name filepath))
@@ -2436,7 +2436,7 @@ If START and END are omitted, the entire file is read."
           (save-buffer))
         (format "Successfully inserted text into file %s at line %d" full-path line-number))))
 
-  (defun aj8/gptel-tool-aj8-edit-file (filename old-string new-string)
+  (defun aj8/gptel-tool-edit-file (filename old-string new-string)
     "In FILENAME, replace OLD-STRING with NEW-STRING."
     (with-temp-message "Running tool: aj8_edit_file"
       (let* ((full-path (expand-file-name filename))
@@ -2448,7 +2448,7 @@ If START and END are omitted, the entire file is read."
           (save-buffer))
         (format "Successfully edited file %s" full-path))))
 
-  (defun aj8/gptel-tool-aj8-apply-file-edits (file-path file-edits)
+  (defun aj8/gptel-tool-apply-file-edits (file-path file-edits)
     "Edit FILE-PATH with FILE-EDITS and save without review.
 
 Each edit in FILE-EDITS should specify:
@@ -2472,7 +2472,7 @@ Each edit in FILE-EDITS should specify:
            (format "Successfully applied all %d edits to %s."
                    total-edits full-path))))))
 
-  (defun aj8/gptel-tool-aj8-apply-file-edits-with-review (file-path file-edits)
+  (defun aj8/gptel-tool-apply-file-edits-with-review (file-path file-edits)
     "Edit FILE-PATH with FILE-EDITS and review with Ediff.
 
 Each edit in FILE-EDITS should specify:
@@ -2492,7 +2492,7 @@ Each edit in FILE-EDITS should specify:
            (format "Successfully applied all %d edits. Please review them in the Ediff session."
                    total-edits))))))
 
-  (defun aj8/gptel-tool-my-read-documentation (symbol)
+  (defun aj8/gptel-tool-read-documentation (symbol)
     "Read the documentation for SYMBOL, which can be a function or variable."
     (with-temp-message "Running tool: my_read_documentation"
       (let ((sym (intern symbol)))
@@ -2504,7 +2504,7 @@ Each edit in FILE-EDITS should specify:
          (t
           (format "No documentation found for %s" symbol))))))
 
-  (defun aj8/gptel-tool-aj8-read-function (func)
+  (defun aj8/gptel-tool-read-function (func)
     "Return the code of the definition of the Emacs Lisp
 function FUNC, which can be either a symbol or a string.  Signal
 an error if no definition can be found."
@@ -2523,7 +2523,7 @@ an error if no definition can be found."
           (end-of-defun)
           (buffer-substring-no-properties beginning-position (point))))))
 
-  (defun aj8/gptel-tool-aj8-read-library (library-name)
+  (defun aj8/gptel-tool-read-library (library-name)
     "Return the source code of LIBRARY-NAME."
     (with-temp-message "Running tool: aj8_read_library"
       (when (locate-library library-name)
@@ -2531,7 +2531,7 @@ an error if no definition can be found."
           (find-library library-name)
           (buffer-string)))))
 
-  (defun aj8/gptel-tool-aj8-read-info-symbol (symbol-name)
+  (defun aj8/gptel-tool-read-info-symbol (symbol-name)
     "Return the contents of the info node for SYMBOL-NAME
 as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
     (with-temp-message "Running tool: aj8_read_info_symbol"
@@ -2541,7 +2541,7 @@ as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
           (info-lookup-symbol symbol 'emacs-lisp-mode)
           (buffer-contents "*info*")))))
 
-  (defun aj8/gptel-tool-aj8-read-info-node (nodename)
+  (defun aj8/gptel-tool-read-info-node (nodename)
     "Return the contents of a specific NODENAME from the Emacs Lisp manual.
 
 NODENAME should be a string, e.g., \"Interactive Evaluation\" or \"Defining Variables\".
@@ -2553,7 +2553,7 @@ if none is found it then tries a case-insensitive match."
         (Info-find-node "elisp" nodename)
         (buffer-contents "*info*"))))
 
-  (defun aj8/gptel-tool-my-project-get-root ()
+  (defun aj8/gptel-tool-project-get-root ()
     "Get the root directory of the current project."
     (with-temp-message "Running tool: my_project_get_root"
       (if-let* ((proj (project-current))
@@ -2565,7 +2565,7 @@ if none is found it then tries a case-insensitive match."
                     (file-directory-p root-path)))
         (error "No project found in the current context."))))
 
-  (defun aj8/gptel-tool-my-project-get-open-buffers ()
+  (defun aj8/gptel-tool-project-get-open-buffers ()
     "Return a string listing open buffers in the current project.
 Each line contains a buffer name and its associated file path."
     (with-temp-message "Running tool: my_project_get_open_buffers"
@@ -2576,7 +2576,7 @@ Each line contains a buffer name and its associated file path."
                                       (project-buffers project)))
         (error "No project found in the current context."))))
 
-  ;; (defun aj8/gptel-tool-my-project-find-files (pattern)
+  ;; (defun aj8/gptel-tool-project-find-files (pattern)
   ;;   "In the current project, find files whose filenames contain PATTERN.
   ;; This search respects the project's .gitignore file and other standard
   ;; ignores.  It does not return directories."
@@ -2587,7 +2587,7 @@ Each line contains a buffer name and its associated file path."
   ;;         (let ((all-files (project-files proj)))
   ;;           (seq-filter (lambda (file) (string-search pattern (file-name-nondirectory file))) all-files))))))
 
-  (defun aj8/gptel-tool-my-project-find-files-glob (pattern)
+  (defun aj8/gptel-tool-project-find-files-glob (pattern)
     "In the current project, find files whose filenames match the glob PATTERN.
 This search respects the project's .gitignore file and other standard
 ignores.  It does not return directories."
@@ -2606,7 +2606,7 @@ ignores.  It does not return directories."
           ;; Return the files present in both lists.
           (seq-intersection project-file-list wildcard-file-list #'string-equal)))))
 
-  (defun aj8/gptel-tool-my-project-search-content (regexp)
+  (defun aj8/gptel-tool-project-search-content (regexp)
     "Search for REGEXP in files of the current project.
 Uses `ripgrep' (rg) if available; otherwise, it uses `git grep' if the
 project is a git repository. Returns search results as a string."
@@ -2629,21 +2629,21 @@ project is a git repository. Returns search results as a string."
             (error "Neither 'rg' (ripgrep) nor 'git grep' is available for search.")))))))
 
   ;; (gptel-make-tool
-  ;;  :function #'aj8/gptel-tool-my-read-buffer
-  ;;  :name "my_read_buffer"
+  ;;  :function #'aj8/gptel-tool-read-buffer
+  ;;  :name "aj8_read_buffer"
   ;;  :description "Return the contents of a buffer."
   ;;  :args (list '(:name "buffer"
   ;;                       :type string
   ;;                       :description "The name of the buffer to read."))
   ;;  :category "buffers")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-list-buffers
+   :function #'aj8/gptel-tool-list-buffers
    :name "aj8_list_buffers"
    :description "List the names of all currently open buffers that are associated with a file."
    :args nil
    :category "buffers")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-buffer-to-file
+   :function #'aj8/gptel-tool-buffer-to-file
    :name "aj8_buffer_to_file"
    :description "Return the file path for a given buffer."
    :args (list '(:name "buffer-name"
@@ -2651,7 +2651,7 @@ project is a git repository. Returns search results as a string."
                        :description "The name of the buffer."))
    :category "buffers")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-file-to-buffer
+   :function #'aj8/gptel-tool-file-to-buffer
    :name "aj8_file_to_buffer"
    :description "Return the buffer name for a given file path."
    :args (list '(:name "file-path"
@@ -2659,8 +2659,8 @@ project is a git repository. Returns search results as a string."
                        :description "The path to the file."))
    :category "buffers")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-my-append-to-buffer
-   :name "my_append_to_buffer"
+   :function #'aj8/gptel-tool-append-to-buffer
+   :name "aj8_append_to_buffer"
    :description "Append text to a buffer."
    :args (list '(:name "buffer"
                        :type string
@@ -2670,8 +2670,8 @@ project is a git repository. Returns search results as a string."
                        :description "The text to append to the buffer."))
    :category "buffers")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-my-insert-into-buffer
-   :name "my_insert_into_buffer"
+   :function #'aj8/gptel-tool-insert-into-buffer
+   :name "aj8_insert_into_buffer"
    :description "Insert text into a buffer at a specific line number. The text is inserted at the beginning of the specified line."
    :args (list '(:name "buffer"
                        :type string
@@ -2684,8 +2684,8 @@ project is a git repository. Returns search results as a string."
                        :description "The 1-based line number where the text should be inserted."))
    :category "buffers")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-my-modify-buffer
-   :name "my_modify_buffer"
+   :function #'aj8/gptel-tool-modify-buffer
+   :name "aj8_modify_buffer"
    :description "Completely overwrite the contents of a buffer."
    :args (list '(:name "buffer"
                        :type string
@@ -2695,7 +2695,7 @@ project is a git repository. Returns search results as a string."
                        :description "The content to write to the buffer."))
    :category "buffers")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-edit-buffer
+   :function #'aj8/gptel-tool-edit-buffer
    :name "aj8_edit_buffer"
    :description "Edit a buffer by replacing a single instance of an exact string."
    :args '((:name "buffer-name"
@@ -2709,7 +2709,7 @@ project is a git repository. Returns search results as a string."
                   :description "The text to replace 'old-string' with."))
    :category "buffers")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-apply-buffer-edits
+   :function #'aj8/gptel-tool-apply-buffer-edits
    :name "aj8_apply_buffer_edits"
    :description "Edit a buffer with a list of edits, applying changes directly without review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the specified 'line-number'."
    :args (list '(:name "buffer-name"
@@ -2728,7 +2728,7 @@ project is a git repository. Returns search results as a string."
                        :description "The list of edits to apply to the buffer."))
    :category "buffers")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-apply-buffer-edits-with-review
+   :function #'aj8/gptel-tool-apply-buffer-edits-with-review
    :name "aj8_apply_buffer_edits_with_review"
    :description "Edit a buffer with a list of edits and start an Ediff session for review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the specified 'line-number'.
 
@@ -2749,7 +2749,7 @@ This action requires manual user review. After calling this tool, you must stop 
                        :description "The list of edits to apply to the buffer."))
    :category "buffers")
   ;; (gptel-make-tool
-  ;;  :function #'aj8/gptel-tool-aj8-create-file
+  ;;  :function #'aj8/gptel-tool-create-file
   ;;  :name "aj8_create_file"
   ;;  :description "Create a new file with the specified content. Overwrites the file if it already exists."
   ;;  :args '((:name "filepath"
@@ -2760,8 +2760,8 @@ This action requires manual user review. After calling this tool, you must stop 
   ;;                 :description "The content to write to the new file."))
   ;;  :category "filesystem")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-my-read-file-section
-   :name "my_read_file_section"
+   :function #'aj8/gptel-tool-read-file-section
+   :name "aj8_read_file_section"
    :description "Read a section of a file. To read the entire file, omit the optional 'start' and 'end' arguments."
    :args (list '( :name "filepath"
                   :type string
@@ -2774,7 +2774,7 @@ This action requires manual user review. After calling this tool, you must stop 
                   :description "The optional last line to read to."))
    :category "filesystem")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-append-to-file
+   :function #'aj8/gptel-tool-append-to-file
    :name "aj8_append_to_file"
    :description "Append text to a file. This tool operates on the buffer visiting the file to avoid losing unsaved changes, and it saves the buffer after the edit."
    :args (list '(:name "filepath"
@@ -2785,7 +2785,7 @@ This action requires manual user review. After calling this tool, you must stop 
                        :description "The text to append to the file."))
    :category "filesystem")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-insert-into-file
+   :function #'aj8/gptel-tool-insert-into-file
    :name "aj8_insert_into_file"
    :description "Insert text into a file at a specific line number. The text is inserted at the beginning of the specified line. This tool operates on the buffer visiting the file to avoid losing unsaved changes, and it saves the buffer after the edit."
    :args (list '(:name "filepath"
@@ -2799,7 +2799,7 @@ This action requires manual user review. After calling this tool, you must stop 
                        :description "The 1-based line number where the text should be inserted."))
    :category "filesystem")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-edit-file
+   :function #'aj8/gptel-tool-edit-file
    :name "aj8_edit_file"
    :description "Edit a file by replacing a single instance of an exact string. This tool operates on the buffer visiting the file to avoid losing unsaved changes, and it saves the buffer after the edit."
    :args '((:name "filename"
@@ -2813,7 +2813,7 @@ This action requires manual user review. After calling this tool, you must stop 
                   :description "The text to replace 'old-string' with."))
    :category "filesystem")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-apply-file-edits
+   :function #'aj8/gptel-tool-apply-file-edits
    :name "aj8_apply_file_edits"
    :description "Edit a file with a list of edits, saving changes directly without review. This tool operates on the buffer visiting the file to avoid losing unsaved changes. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the specified 'line-number'."
    :args (list '(:name "file-path"
@@ -2832,7 +2832,7 @@ This action requires manual user review. After calling this tool, you must stop 
                        :description "The list of edits to apply to the file."))
    :category "filesystem")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-apply-file-edits-with-review
+   :function #'aj8/gptel-tool-apply-file-edits-with-review
    :name "aj8_apply_file_edits_with_review"
    :description "Edit a file with a list of edits and start an Ediff session for review. This tool operates on the buffer visiting the file to avoid losing unsaved changes. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the specified 'line-number'.
 
@@ -2853,8 +2853,8 @@ This action requires manual user review. After calling this tool, you must stop 
                        :description "The list of edits to apply to the file."))
    :category "filesystem")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-my-read-documentation
-   :name "my_read_documentation"
+   :function #'aj8/gptel-tool-read-documentation
+   :name "aj8_read_documentation"
    :description "Read the documentation for a given 'symbol', which can be a function or variable"
    :args (list '(:name "symbol"
                        :type string
@@ -2862,7 +2862,7 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-read-function
+   :function #'aj8/gptel-tool-read-function
    :name "aj8_read_function"
    :description "Return the code of the definition of an Emacs Lisp function."
    :args (list '(:name "function"
@@ -2871,7 +2871,7 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-read-library
+   :function #'aj8/gptel-tool-read-library
    :name "aj8_read_library"
    :description "Return the source code of a library or package in emacs."
    :args (list '(:name "library-name"
@@ -2880,7 +2880,7 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-read-info-symbol
+   :function #'aj8/gptel-tool-read-info-symbol
    :name "aj8_read_info_symbol"
    :description "Return the contents of the info node for SYMBOL-NAME as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
    :args (list '(:name "symbol-name"
@@ -2889,43 +2889,43 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :function #'aj8/gptel-tool-aj8-read-info-node
+   :function #'aj8/gptel-tool-read-info-node
    :name "aj8_read_info_node"
    :description "Return the contents of a specific NODENAME from the Emacs Lisp manual."
    :args (list '(:name "nodename" :type string :description "The name of the node in the Emacs Lisp manual."))
    :category "emacs")
 
   (gptel-make-tool
-   :function #'aj8/gptel-tool-my-project-get-root
-   :name "my_project_get_root"
+   :function #'aj8/gptel-tool-project-get-root
+   :name "aj8_project_get_root"
    :description "Get the root directory of the current project."
    :args nil
    :category "project")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-my-project-get-open-buffers
-   :name "my_project_get_open_buffers"
+   :function #'aj8/gptel-tool-project-get-open-buffers
+   :name "aj8_project_get_open_buffers"
    :description "Return a string listing all open buffers in the current project. Each line contains a buffer name followed by its associated file path."
    :args nil
    :category "project")
   ;;   (gptel-make-tool
-  ;;    :function #'aj8/gptel-tool-my-project-find-files
-  ;;    :name "my_project_find_files"
+  ;;    :function #'aj8/gptel-tool-project-find-files
+  ;;    :name "aj8_project_find_files"
   ;;    :description "In the current project, recursively find files whose filenames contain pattern. This search is case-sensitive and respects .gitignore. It does not find directories."
   ;;    :args '((:name "pattern"
   ;;                   :type string
   ;;                   :description "A pattern to match against the filenames in the project."))
   ;;    :category "project")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-my-project-find-files-glob
-   :name "my_project_find_files_glob"
+   :function #'aj8/gptel-tool-project-find-files-glob
+   :name "aj8_project_find_files_glob"
    :description "In the current project, find files matching the glob PATTERN. This search respects .gitignore. The pattern is a standard file glob. To search recursively, use the '**/' prefix. For example, a PATTERN of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory."
    :args '((:name "pattern"
                   :type string
                   :description "A glob pattern to match against the filenames in the project."))
    :category "project")
   (gptel-make-tool
-   :function #'aj8/gptel-tool-my-project-search-content
-   :name "my_project_search_content"
+   :function #'aj8/gptel-tool-project-search-content
+   :name "aj8_project_search_content"
    :description "In the current project, recursively search for content matching the regexp. This search respects .gitignore. It returns a list of matching lines, prefixed with file path and line number."
    :args '((:name "regexp"
                   :type string
