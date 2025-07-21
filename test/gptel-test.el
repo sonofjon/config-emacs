@@ -194,7 +194,7 @@
 (ert-deftest test-my-read-documentation ()
   "Test `aj8/gptel-tool-my-read-documentation`."
   :tags '(test emacs)
-  (should (string-match-p "Return the first element of LIST" (aj8/gptel-tool-my-read-documentation "car")))
+  (should (string-match-p "Return the car of LIST" (aj8/gptel-tool-my-read-documentation "car")))
   (should (string-match-p "List of directories to search for files to load" (aj8/gptel-tool-my-read-documentation "load-path")))
   (should (string-match-p "No documentation found" (aj8/gptel-tool-my-read-documentation "non-existent-symbol-xyz"))))
 
@@ -202,7 +202,7 @@
   "Test `aj8_read_function` and `aj8_read_library` tools."
   :tags '(test emacs)
   ;; Test read function
-  (should (string-match-p "(defun aj8/replace-string-in-buffer" (aj8/function-definition-code 'aj8/replace-string-in-buffer)))
+  (should (string-match-p "(defun project-current" (aj8/function-definition-code 'project-current)))
   ;; Test read library
   (should (string-match-p "project.el" (aj8/library-code "project"))))
 
