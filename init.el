@@ -2911,7 +2911,7 @@ This action requires manual user review. After calling this tool, you must stop 
   (gptel-make-tool
    :function #'aj8/gptel-tool-my-project-find-files-glob
    :name "my_project_find_files_glob"
-   :description "In the current project, recursively find files whose filenames match the glob 'pattern'. This search is case-sensitive and respects .gitignore. It does not find directories. For example, a 'pattern' of '*.el' finds all Emacs Lisp files."
+   :description "In the current project, find files matching the glob PATTERN. This search respects .gitignore. The pattern is a standard file glob. To search recursively, use the '**/' prefix. For example, a PATTERN of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory."
    :args '((:name "pattern"
                   :type string
                   :description "A glob pattern to match against the filenames in the project."))
