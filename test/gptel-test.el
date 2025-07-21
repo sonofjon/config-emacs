@@ -213,10 +213,15 @@
 (ert-deftest test-aj8-read-function-and-library ()
   "Test `aj8_read_function` and `aj8_read_library` tools."
   :tags '(test emacs)
-  ;; Test read function
-  (should (string-match-p "(defun project-current" (aj8/function-definition-code 'project-current)))
-  ;; Test read library
-  (should (string-match-p "project.el" (aj8/library-code "project"))))
+  (unwind-protect
+      (progn
+        ;; Test read function
+        (should (string-match-p "(defun project-current" (aj8/function-definition-code 'project-current)))
+        ;; Test read library
+        (should (string-match-p "project.el" (aj8/library-code "project"))))
+    (when (get-buffer "project.el")
+      (kill-buffer "project.el"))))
+
 
 (ert-deftest test-aj8-info-lookup ()
   "Test `aj8/info-elisp-symbol-contents` and `aj8/info-elisp-nodename-contents`."
