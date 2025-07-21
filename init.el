@@ -2791,7 +2791,7 @@ if none is found it then tries a case-insensitive match."
      :function (lambda ()
                  "Return a string listing open buffers in the current project.
 Each line contains a buffer name and its associated file path."
-                 (with-temp-message "Running tool: %s" "my_project_get_open_buffers"
+                 (with-temp-message "Running tool: my_project_get_open_buffers"
                                     (if-let ((project (project-current)))
                                         (cl-reduce #'concat (mapcar (lambda (buf)
                                                                       (with-current-buffer buf
@@ -2841,7 +2841,7 @@ ignores.  It does not return directories."
                  "Search for REGEXP in files of the current project.
 Uses `ripgrep' (rg) if available; otherwise, it uses `git grep' if the
 project is a git repository. Returns search results as a string."
-                 (with-temp-message (format "Running tool: %s" "my_project_search_content")
+                 (with-temp-message (format "Running tool: my_project_search_content")
                    (let* ((project (project-current t))
                           (root (when project (project-root project))))
                      (unless root
