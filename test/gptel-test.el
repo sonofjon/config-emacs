@@ -237,7 +237,7 @@
   :tags '(test project)
   (with-temp-project
     ;; Test find files glob
-    (let ((files (aj8/gptel-tool-my-project-find-files-glob "*.el")))
+    (let ((files (aj8/gptel-tool-my-project-find-files-glob "**/*.el")))
       (should (= 1 (length files)))
       (should (string-match-p "src/code.el" (car files))))
     (let ((files (aj8/gptel-tool-my-project-find-files-glob "*.txt")))
