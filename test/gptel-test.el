@@ -217,9 +217,9 @@
   (unwind-protect
       (progn
         ;; Test read function
-        (should (string-match-p "(defun project-current" (aj8/function-definition-code 'project-current)))
+        (should (string-match-p "(defun project-current" (aj8/gptel-tool-aj8-read-function 'project-current)))
         ;; Test read library
-        (should (string-match-p "project.el" (aj8/library-code "project"))))
+        (should (string-match-p "project.el" (aj8/gptel-tool-aj8-read-library "project"))))
     (when (get-buffer "project.el")
       (kill-buffer "project.el"))
     (when (get-buffer "project.el.gz")
@@ -227,10 +227,10 @@
 
 
 (ert-deftest test-aj8-info-lookup ()
-  "Test `aj8/info-elisp-symbol-contents` and `aj8/info-elisp-nodename-contents`."
+  "Test `aj8_read_info_symbol` and `aj8_read_info_node` tools."
   :tags '(test emacs)
-  (should (string-match-p "special form in `Lisp'" (aj8/info-elisp-symbol-contents "defun")))
-  (should (string-match-p "A function definition has the form" (aj8/info-elisp-nodename-contents "Defining Functions"))))
+  (should (string-match-p "special form in `Lisp'" (aj8/gptel-tool-aj8-read-info-symbol "defun")))
+  (should (string-match-p "A function definition has the form" (aj8/gptel-tool-aj8-read-info-node "Defining Functions"))))
 
 
 ;;

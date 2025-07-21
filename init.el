@@ -2504,7 +2504,7 @@ Each edit in FILE-EDITS should specify:
          (t
           (format "No documentation found for %s" symbol))))))
 
-  (defun aj8/function-definition-code (func)
+  (defun aj8/gptel-tool-aj8-read-function (func)
     "Return the code of the definition of the Emacs Lisp
 function FUNC, which can be either a symbol or a string.  Signal
 an error if no definition can be found."
@@ -2523,7 +2523,7 @@ an error if no definition can be found."
           (end-of-defun)
           (buffer-substring-no-properties beginning-position (point))))))
 
-  (defun aj8/library-code (library-name)
+  (defun aj8/gptel-tool-aj8-read-library (library-name)
     "Return the source code of LIBRARY-NAME."
     (with-temp-message "Running tool: aj8_read_library"
       (when (locate-library library-name)
@@ -2531,24 +2531,24 @@ an error if no definition can be found."
           (find-library library-name)
           (buffer-string)))))
 
-  (defun aj8/info-elisp-symbol-contents (symbol-name)
+  (defun aj8/gptel-tool-aj8-read-info-symbol (symbol-name)
     "Return the contents of the info node for SYMBOL-NAME
 as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
-    (with-temp-message "Running tool: aj8_info_elisp_symbol_contents"
+    (with-temp-message "Running tool: aj8_read_info_symbol"
       (when-let ((symbol (intern-soft symbol-name)))
         (save-window-excursion
           ;; TODO: This fails on macOS (info-lookup-symbol appears not to be able to find the info manual). Test other systems.
           (info-lookup-symbol symbol 'emacs-lisp-mode)
           (buffer-contents "*info*")))))
 
-  (defun aj8/info-elisp-nodename-contents (nodename)
+  (defun aj8/gptel-tool-aj8-read-info-node (nodename)
     "Return the contents of a specific NODENAME from the Emacs Lisp manual.
 
 NODENAME should be a string, e.g., \"Interactive Evaluation\" or \"Defining Variables\".
 
 This function first looks for a case-sensitive match for NODENAME;
 if none is found it then tries a case-insensitive match."
-    (with-temp-message "Running tool: aj8_elisp_nodename_contents"
+    (with-temp-message "Running tool: aj8_read_info_node"
       (save-window-excursion
         (Info-find-node "elisp" nodename)
         (buffer-contents "*info*"))))
@@ -2862,7 +2862,7 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :function #'aj8/function-definition-code
+   :function #'aj8/gptel-tool-aj8-read-function
    :name "aj8_read_function"
    :description "Return the code of the definition of an Emacs Lisp function."
    :args (list '(:name "function"
@@ -2871,7 +2871,7 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :function #'aj8/library-code
+   :function #'aj8/gptel-tool-aj8-read-library
    :name "aj8_read_library"
    :description "Return the source code of a library or package in emacs."
    :args (list '(:name "library-name"
@@ -2880,7 +2880,7 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :function #'aj8/info-elisp-symbol-contents
+   :function #'aj8/gptel-tool-aj8-read-info-symbol
    :name "aj8_read_info_symbol"
    :description "Return the contents of the info node for SYMBOL-NAME as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
    :args (list '(:name "symbol-name"
@@ -2889,7 +2889,7 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :function #'aj8/info-elisp-nodename-contents
+   :function #'aj8/gptel-tool-aj8-read-info-node
    :name "aj8_read_info_node"
    :description "Return the contents of a specific NODENAME from the Emacs Lisp manual."
    :args (list '(:name "nodename" :type string :description "The name of the node in the Emacs Lisp manual."))
