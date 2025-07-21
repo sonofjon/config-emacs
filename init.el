@@ -2847,8 +2847,8 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :name "aj8_read_function"
    :function #'aj8/function-definition-code
+   :name "aj8_read_function"
    :description "Return the code of the definition of an Emacs Lisp function."
    :args (list '(:name "function"
                        :type string
@@ -2865,8 +2865,8 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :name "aj8_info_elisp_symbol_contents"
    :function #'aj8/info-elisp-symbol-contents
+   :name "aj8_info_elisp_symbol_contents"
    :description "Return the contents of the info node for SYMBOL-NAME as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
    :args (list '(:name "symbol-name"
                        :type string
@@ -2874,8 +2874,8 @@ This action requires manual user review. After calling this tool, you must stop 
    :category "emacs")
 
   (gptel-make-tool
-   :name "aj8_elisp_nodename_contents"
    :function #'aj8/info-elisp-nodename-contents
+   :name "aj8_elisp_nodename_contents"
    :description "Return the contents of a specific NODENAME from the Emacs Lisp manual."
    :args (list '(:name "nodename" :type string :description "The name of the node in the Emacs Lisp manual."))
    :category "emacs")
