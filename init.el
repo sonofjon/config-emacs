@@ -2881,7 +2881,7 @@ This action requires manual user review. After calling this tool, you must stop 
 
   (gptel-make-tool
    :function #'aj8/info-elisp-symbol-contents
-   :name "aj8_info_elisp_symbol_contents"
+   :name "aj8_read_info_symbol"
    :description "Return the contents of the info node for SYMBOL-NAME as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
    :args (list '(:name "symbol-name"
                        :type string
@@ -2890,7 +2890,7 @@ This action requires manual user review. After calling this tool, you must stop 
 
   (gptel-make-tool
    :function #'aj8/info-elisp-nodename-contents
-   :name "aj8_elisp_nodename_contents"
+   :name "aj8_read_info_node"
    :description "Return the contents of a specific NODENAME from the Emacs Lisp manual."
    :args (list '(:name "nodename" :type string :description "The name of the node in the Emacs Lisp manual."))
    :category "emacs")
