@@ -503,7 +503,7 @@ EXPECTED-PATTERN is a regexp that should match the result."
 ;;; 6. Manual Testing & Utility Functions (interactive)
 ;;
 
-(defun aj8/gptel-tool-test-run-direct (tool-name)
+(defun aj8/gptel-tool-run-tool (tool-name)
   "Directly invoke a Gptel tool chosen interactively by its name.
 
 This function prompts for a TOOL-NAME from a list of all registered
@@ -545,8 +545,8 @@ TOOL-NAME is the name of the tool to run (e.g., 'aj8_list_buffers')."
                          tool-name (error-message-string err))))
       (message "Tool function not found for %s" tool-name))))
 
+(defun aj8/gptel-tool-validate-definitions ()
 
-(defun aj8/gptel-tool-test-validate-schemas ()
   "Validate that all Gptel tool schemas are properly formatted.
 Returns a list of any validation errors found."
   (interactive)
@@ -589,9 +589,9 @@ Returns a list of any validation errors found."
       (message "All Gptel tools validated successfully!")
       nil)))
 
-(defun aj8/gptel-tool-test-create-scenario ()
   "Create a test scenario for manually testing Gptel tools with a real LLM.
 This sets up buffers and files that you can reference when testing with Gptel."
+(defun aj8/gptel-tool-create-scenario ()
   (interactive)
   (let ((test-dir (expand-file-name "gptel-tool-test/" temporary-file-directory)))
     ;; Create test directory
