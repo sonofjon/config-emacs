@@ -59,7 +59,6 @@ Always obey these rules:
 1. Use the "Google Python Style Guide" for programming style.
 2. Don't use type annotations in function definitions.
 
-
-### Emacs Lisp (elisp)
+## Emacs Lisp (elisp)
 
 1. All function arguments should be documented in the docstring.
