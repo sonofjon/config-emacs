@@ -453,7 +453,7 @@ path."
               (error (string-match-p "Buffer.*not found" (error-message-string err))))))
 
   ;; Test with invalid file path
-  (let* ((tool-def (cl-find "view_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+  (let* ((tool-def (cl-find "aj8_read_file_section" gptel-tools :key #'gptel-tool-name :test #'string-equal))
          (func (gptel-tool-function tool-def)))
     (should (condition-case err
                 (funcall func "/non/existent/file.txt")
