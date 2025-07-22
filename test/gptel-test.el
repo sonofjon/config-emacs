@@ -504,8 +504,17 @@ EXPECTED-PATTERN is a regexp that should match the result."
 ;;
 
 (defun aj8/gptel-tool-test-run-direct (tool-name)
-  "Test a Gptel tool directly by name.
-TOOL-NAME is the name of the tool to test (e.g., 'aj8_list_buffers')."
+  "Directly invoke a Gptel tool chosen interactively by its name.
+
+This function prompts for a TOOL-NAME from the list of registered
+gptel tools. It then attempts to call the underlying Lisp function.
+
+If the selected tool takes no arguments, it is executed and its
+return value is displayed as a message. If the tool requires
+arguments, it is not executed; instead, its argument list is
+displayed. This is useful for quick, manual inspection of tools.
+
+TOOL-NAME is the name of the tool to run (e.g., 'aj8_list_buffers')."
   (interactive
    (list (completing-read "Select tool: "
                          (mapcar #'gptel-tool-name gptel-tools)
