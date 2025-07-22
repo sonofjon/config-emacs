@@ -7,6 +7,10 @@
 ;; Require ERT, the Emacs Lisp Regression Testing tool
 (require 'ert)
 
+;; Load libraries required for these tests
+(require 'gptel)
+(require 'aj8-gptel)
+
 ;;
 ;;; 2. Test Helper Macros
 ;;
