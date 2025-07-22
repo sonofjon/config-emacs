@@ -94,12 +94,14 @@ directory."
 Ensures the function lists buffers associated with files and excludes
 those not associated with any file."
   :tags '(unit buffers)
-  (with-temp-file-with-content tmp-file "file content"
-    (find-file-noselect tmp-file)
-    (with-temp-buffer-with-content "*non-file-buffer*" "some content"
-      (let ((buffers (aj8/gptel-tool-list-buffers)))
-        (should (member (file-name-nondirectory tmp-file) buffers))
-        (should-not (member "*non-file-buffer*" buffers))))))
+  (with-temp-file-with-content
+   tmp-file "file content"
+   (find-file-noselect tmp-file)
+   (with-temp-buffer-with-content
+    "*non-file-buffer*" "some content"
+    (let ((buffers (aj8/gptel-tool-list-buffers)))
+      (should (member (file-name-nondirectory tmp-file) buffers))
+      (should-not (member "*non-file-buffer*" buffers))))))
 
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test buffer-file path conversions.
@@ -108,17 +110,18 @@ Verifies that `aj8/gptel-tool-buffer-to-file' and
 `aj8/gptel-tool-file-to-buffer' correctly convert between buffer names
 and file paths, and that they signal errors for invalid inputs."
   :tags '(unit buffers)
-  (with-temp-file-with-content test-file "content"
-    (let ((buffer (find-file-noselect test-file)))
-      (unwind-protect
-          (progn
-            (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer))
-                                  (expand-file-name test-file)))
-            (should (string-equal (aj8/gptel-tool-file-to-buffer test-file)
-                                  (buffer-name buffer)))
-            (should-error (aj8/gptel-tool-buffer-to-file "*scratch*") :type 'error)
-            (should-error (aj8/gptel-tool-file-to-buffer "/non/existent/file.tmp") :type 'error))
-        (kill-buffer buffer)))))
+  (with-temp-file-with-content
+   test-file "content"
+   (let ((buffer (find-file-noselect test-file)))
+     (unwind-protect
+         (progn
+           (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer))
+                                 (expand-file-name test-file)))
+           (should (string-equal (aj8/gptel-tool-file-to-buffer test-file)
+                                 (buffer-name buffer)))
+           (should-error (aj8/gptel-tool-buffer-to-file "*scratch*") :type 'error)
+           (should-error (aj8/gptel-tool-file-to-buffer "/non/existent/file.tmp") :type 'error))
+       (kill-buffer buffer)))))
 
 (ert-deftest test-aj8-buffer-modification-tools ()
   "Test buffer content modification functions.
@@ -127,16 +130,17 @@ This test covers `aj8/gptel-tool-append-to-buffer',
 `aj8/gptel-tool-insert-into-buffer', and `aj8/gptel-tool-modify-buffer',
 ensuring they alter the buffer content as expected."
   :tags '(unit buffers)
-  (with-temp-buffer-with-content "*test-modify*" "Line 1\nLine 3"
-    ;; Append
-    (aj8/gptel-tool-append-to-buffer "*test-modify*" "\nLine 4")
-    (should (string-equal (buffer-string) "Line 1\nLine 3\nLine 4"))
-    ;; Insert
-    (aj8/gptel-tool-insert-into-buffer "*test-modify*" "Line 2\n" 2)
-    (should (string-equal (buffer-string) "Line 1\nLine 2\nLine 3\nLine 4"))
-    ;; Modify
-    (aj8/gptel-tool-modify-buffer "*test-modify*" "New Content")
-    (should (string-equal (buffer-string) "New Content"))))
+  (with-temp-buffer-with-content
+   "*test-modify*" "Line 1\nLine 3"
+   ;; Append
+   (aj8/gptel-tool-append-to-buffer "*test-modify*" "\nLine 4")
+   (should (string-equal (buffer-string) "Line 1\nLine 3\nLine 4"))
+   ;; Insert
+   (aj8/gptel-tool-insert-into-buffer "*test-modify*" "Line 2\n" 2)
+   (should (string-equal (buffer-string) "Line 1\nLine 2\nLine 3\nLine 4"))
+   ;; Modify
+   (aj8/gptel-tool-modify-buffer "*test-modify*" "New Content")
+   (should (string-equal (buffer-string) "New Content"))))
 
 (ert-deftest test-aj8-edit-buffer ()
   "Test `aj8/gptel-tool-edit-buffer'.
@@ -145,22 +149,24 @@ Verifies that a single, unique string can be replaced in a buffer.  It
 also confirms that an error is signaled if the target string is not
 found or is not unique."
   :tags '(unit buffers)
-  (with-temp-buffer-with-content "*test-edit*" "hello world\nhello universe"
-    (aj8/gptel-tool-edit-buffer "*test-edit*" "world" "emacs")
-    (should (string-equal (buffer-string) "hello emacs\nhello universe"))
-    (should-error (aj8/gptel-tool-edit-buffer "*test-edit*" "non-existent" "foo") :type 'error)
-    (should-error (aj8/gptel-tool-edit-buffer "*test-edit*" "hello" "hi") :type 'error)))
+  (with-temp-buffer-with-content
+   "*test-edit*" "hello world\nhello universe"
+   (aj8/gptel-tool-edit-buffer "*test-edit*" "world" "emacs")
+   (should (string-equal (buffer-string) "hello emacs\nhello universe"))
+   (should-error (aj8/gptel-tool-edit-buffer "*test-edit*" "non-existent" "foo") :type 'error)
+   (should-error (aj8/gptel-tool-edit-buffer "*test-edit*" "hello" "hi") :type 'error)))
 
 (ert-deftest test-aj8-apply-buffer-edits ()
   "Test `aj8/gptel-tool-apply-buffer-edits'.
 
 Ensures that a list of edits is applied correctly to a buffer."
   :tags '(unit buffers)
-  (with-temp-buffer-with-content "*test-apply-edits*" "Line one.\nLine two.\nLine three."
-    (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
-                   (:line-number 1 :old-string "one" :new-string "ONE"))))
-      (aj8/gptel-tool-apply-buffer-edits "*test-apply-edits*" edits)
-      (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE.")))))
+  (with-temp-buffer-with-content
+   "*test-apply-edits*" "Line one.\nLine two.\nLine three."
+   (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
+                  (:line-number 1 :old-string "one" :new-string "ONE"))))
+     (aj8/gptel-tool-apply-buffer-edits "*test-apply-edits*" edits)
+     (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE.")))))
 
 (ert-deftest test-aj8-apply-buffer-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-edits-with-review'.
@@ -168,17 +174,18 @@ Ensures that a list of edits is applied correctly to a buffer."
 Verifies that the function prepares edits and invokes the Ediff review
 system, without altering the original buffer."
   :tags '(unit buffers review)
-  (with-temp-buffer-with-content "*test-review*" "Line one.\nLine two."
-    (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
-          (ediff-called nil))
-      ;; Temporarily advise `ediff-buffers' to check if it's called,
-      ;; without actually starting the interactive session.
-      (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2) (setq ediff-called t))))
-        (aj8/gptel-tool-apply-buffer-edits-with-review "*test-review*" edits))
-      (should ediff-called)
-      ;; Check that the original buffer is unchanged.
-      (with-current-buffer "*test-review*"
-        (should (string-equal (buffer-string) "Line one.\nLine two."))))))
+  (with-temp-buffer-with-content
+   "*test-review*" "Line one.\nLine two."
+   (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
+         (ediff-called nil))
+     ;; Temporarily advise `ediff-buffers' to check if it's called,
+     ;; without actually starting the interactive session.
+     (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2) (setq ediff-called t))))
+       (aj8/gptel-tool-apply-buffer-edits-with-review "*test-review*" edits))
+     (should ediff-called)
+     ;; Check that the original buffer is unchanged.
+     (with-current-buffer "*test-review*"
+       (should (string-equal (buffer-string) "Line one.\nLine two."))))))
 
 ;;; 3.2. Category: Filesystem
 
@@ -188,19 +195,20 @@ system, without altering the original buffer."
 Verifies that the function can read a whole file, a section from the
 middle, a section from the beginning, and a section to the end."
   :tags '(unit files)
-  (with-temp-file-with-content test-file "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
-    ;; Read whole file
-    (should (string-equal (aj8/gptel-tool-read-file-section test-file)
-                          "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
-    ;; Read a section
-    (should (string-equal (aj8/gptel-tool-read-file-section test-file 2 4)
-                          "Line 2\nLine 3\nLine 4"))
-    ;; Read from start
-    (should (string-equal (aj8/gptel-tool-read-file-section test-file nil 2)
-                          "Line 1\nLine 2"))
-    ;; Read to end
-    (should (string-equal (aj8/gptel-tool-read-file-section test-file 4)
-                          "Line 4\nLine 5"))))
+  (with-temp-file-with-content
+   test-file "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
+   ;; Read whole file
+   (should (string-equal (aj8/gptel-tool-read-file-section test-file)
+                         "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
+   ;; Read a section
+   (should (string-equal (aj8/gptel-tool-read-file-section test-file 2 4)
+                         "Line 2\nLine 3\nLine 4"))
+   ;; Read from start
+   (should (string-equal (aj8/gptel-tool-read-file-section test-file nil 2)
+                         "Line 1\nLine 2"))
+   ;; Read to end
+   (should (string-equal (aj8/gptel-tool-read-file-section test-file 4)
+                         "Line 4\nLine 5"))))
 
 (ert-deftest test-aj8-file-modification ()
   "Test file content modification functions.
@@ -209,31 +217,33 @@ This test covers `aj8/gptel-tool-append-to-file',
 `aj8/gptel-tool-insert-into-file', and `aj8/gptel-tool-edit-file',
 ensuring they alter file content on disk as expected."
   :tags '(unit files)
-  (with-temp-file-with-content test-file "Line 1\nLine 3"
-    ;; Append
-    (aj8/gptel-tool-append-to-file test-file "\nLine 4")
-    (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
-                          "Line 1\nLine 3\nLine 4"))
-    ;; Insert
-    (aj8/gptel-tool-insert-into-file test-file "Line 2\n" 2)
-    (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
-                          "Line 1\nLine 2\nLine 3\nLine 4"))
-    ;; Edit
-    (aj8/gptel-tool-edit-file test-file "Line 4" "Line FOUR")
-    (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
-                          "Line 1\nLine 2\nLine 3\nLine FOUR"))))
+  (with-temp-file-with-content
+   test-file "Line 1\nLine 3"
+   ;; Append
+   (aj8/gptel-tool-append-to-file test-file "\nLine 4")
+   (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
+                         "Line 1\nLine 3\nLine 4"))
+   ;; Insert
+   (aj8/gptel-tool-insert-into-file test-file "Line 2\n" 2)
+   (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
+                         "Line 1\nLine 2\nLine 3\nLine 4"))
+   ;; Edit
+   (aj8/gptel-tool-edit-file test-file "Line 4" "Line FOUR")
+   (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
+                         "Line 1\nLine 2\nLine 3\nLine FOUR"))))
 
 (ert-deftest test-aj8-apply-file-edits ()
   "Test `aj8/gptel-tool-apply-file-edits'.
 
 Ensures that a list of edits is applied correctly to a file on disk."
   :tags '(unit files)
-  (with-temp-file-with-content test-file "Line one.\nLine two.\nLine three."
-    (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
-                   (:line-number 1 :old-string "one" :new-string "ONE"))))
-      (aj8/gptel-tool-apply-file-edits test-file edits)
-      (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
-                            "Line ONE.\nLine two.\nLine THREE.")))))
+  (with-temp-file-with-content
+   test-file "Line one.\nLine two.\nLine three."
+   (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
+                  (:line-number 1 :old-string "one" :new-string "ONE"))))
+     (aj8/gptel-tool-apply-file-edits test-file edits)
+     (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
+                           "Line ONE.\nLine two.\nLine THREE.")))))
 
 (ert-deftest test-aj8-apply-file-edits-with-review ()
   "Test `aj8/gptel-tool-apply-file-edits-with-review'.
@@ -241,15 +251,16 @@ Ensures that a list of edits is applied correctly to a file on disk."
 Verifies that the function prepares file edits and invokes the Ediff
 review system, without altering the original file."
   :tags '(unit files review)
-  (with-temp-file-with-content test-file "Line one.\nLine two."
-    (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
-          (ediff-called nil))
-      (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2) (setq ediff-called t))))
-        (aj8/gptel-tool-apply-file-edits-with-review test-file edits))
-      (should ediff-called)
-      ;; Check that original file is unchanged.
-      (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
-                            "Line one.\nLine two.")))))
+  (with-temp-file-with-content
+   test-file "Line one.\nLine two."
+   (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
+         (ediff-called nil))
+     (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2) (setq ediff-called t))))
+       (aj8/gptel-tool-apply-file-edits-with-review test-file edits))
+     (should ediff-called)
+     ;; Check that original file is unchanged.
+     (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
+                           "Line one.\nLine two.")))))
 
 ;;; 3.3. Category: Emacs
 
@@ -300,16 +311,16 @@ Verifies `aj8/gptel-tool-project-get-root' and
 `aj8/gptel-tool-project-get-open-buffers' within a temporary project."
   :tags '(unit project)
   (with-temp-project
-    (let ((root (file-truename default-directory)))
-      ;; Test get root
-      (should (string-match-p (regexp-quote root) (aj8/gptel-tool-project-get-root)))
-      ;; Test get open buffers
-      (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
-        (unwind-protect
-            (let ((open-buffers (aj8/gptel-tool-project-get-open-buffers)))
-              (should (string-match-p "code.el" open-buffers))
-              (should (string-match-p "src/code.el" open-buffers)))
-          (kill-buffer buf))))))
+   (let ((root (file-truename default-directory)))
+     ;; Test get root
+     (should (string-match-p (regexp-quote root) (aj8/gptel-tool-project-get-root)))
+     ;; Test get open buffers
+     (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
+       (unwind-protect
+           (let ((open-buffers (aj8/gptel-tool-project-get-open-buffers)))
+             (should (string-match-p "code.el" open-buffers))
+             (should (string-match-p "src/code.el" open-buffers)))
+         (kill-buffer buf))))))
 
 (ert-deftest test-aj8-project-find-and-search ()
   "Test project file finding and content searching.
@@ -318,17 +329,17 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
 `aj8/gptel-tool-project-search-content' for content searching."
   :tags '(unit project)
   (with-temp-project
-    ;; Test find files glob
-    (let ((files (aj8/gptel-tool-project-find-files-glob "**/*.el")))
-      (should (= 1 (length files)))
-      (should (string-match-p "src/code.el" (car files))))
-    (let ((files (aj8/gptel-tool-project-find-files-glob "*.txt")))
-      (should (= 1 (length files)))
-      (should (string-match-p "data.txt" (car files))))
-    ;; Test search content
-    (when (or (executable-find "rg") (and (executable-find "git") (file-directory-p ".git")))
-      (let ((results (aj8/gptel-tool-project-search-content "some text data")))
-        (should (string-match-p "data.txt:1:some text data" results))))))
+   ;; Test find files glob
+   (let ((files (aj8/gptel-tool-project-find-files-glob "**/*.el")))
+     (should (= 1 (length files)))
+     (should (string-match-p "src/code.el" (car files))))
+   (let ((files (aj8/gptel-tool-project-find-files-glob "*.txt")))
+     (should (= 1 (length files)))
+     (should (string-match-p "data.txt" (car files))))
+   ;; Test search content
+   (when (or (executable-find "rg") (and (executable-find "git") (file-directory-p ".git")))
+     (let ((results (aj8/gptel-tool-project-search-content "some text data")))
+       (should (string-match-p "data.txt:1:some text data" results))))))
 
 ;;
 ;;; 4. Integration Tests (ert-deftest)
@@ -343,32 +354,33 @@ This test checks that a predefined list of essential tool names exists
 in the `gptel-tools' alist."
   :tags '(integration tools)
   (let ((expected-tools '("aj8_list_buffers"
-                         "aj8_buffer_to_file"
-                         "aj8_file_to_buffer"
-                         "aj8_append_to_buffer"
-                         "aj8_insert_into_buffer"
-                         "aj8_modify_buffer"
-                         "aj8_edit_buffer"
-                         "aj8_apply_buffer_edits"
-                         "aj8_apply_buffer_edits_with_review"
-                         "aj8_read_file_section"
-                         "aj8_append_to_file"
-                         "aj8_insert_into_file"
-                         "aj8_edit_file"
-                         "aj8_apply_file_edits"
-                         "aj8_apply_file_edits_with_review"
-                         "aj8_read_documentation"
-                         "aj8_read_function"
-                         "aj8_read_library"
-                         "aj8_read_info_symbol"
-                         "aj8_read_info_node"
-                         "aj8_project_get_root"
-                         "aj8_project_get_open_buffers"
-                         "aj8_project_find_files_glob"
-                         "aj8_project_search_content")))
+                          "aj8_buffer_to_file"
+                          "aj8_file_to_buffer"
+                          "aj8_append_to_buffer"
+                          "aj8_insert_into_buffer"
+                          "aj8_modify_buffer"
+                          "aj8_edit_buffer"
+                          "aj8_apply_buffer_edits"
+                          "aj8_apply_buffer_edits_with_review"
+                          "aj8_read_file_section"
+                          "aj8_append_to_file"
+                          "aj8_insert_into_file"
+                          "aj8_edit_file"
+                          "aj8_apply_file_edits"
+                          "aj8_apply_file_edits_with_review"
+                          "aj8_read_documentation"
+                          "aj8_read_function"
+                          "aj8_read_library"
+                          "aj8_read_info_symbol"
+                          "aj8_read_info_node"
+                          "aj8_project_get_root"
+                          "aj8_project_get_open_buffers"
+                          "aj8_project_find_files_glob"
+                          "aj8_project_search_content")))
     (dolist (tool-name expected-tools)
       (should (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools)))))
 
+;; TODO: duplication?
 (ert-deftest test-gptel-tool-json-schema-validation ()
   "Validate the structure of each `gptel-tool' definition.
 
@@ -410,20 +422,21 @@ This test mimics how a Large Language Model (LLM) would call the tools
 by invoking the tool's function with arguments directly. It verifies
 both a query and a buffer modification tool."
   :tags '(integration tools json)
-  (with-temp-buffer-with-content "*test-json-call*" "Hello World\nLine 2"
-    ;; Test list buffers tool
-    (let* ((tool-def (cl-find "aj8_list_buffers" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-           (func (gptel-tool-function tool-def))
-           (result (funcall func)))
-      (should (listp result))
-      (should (member "*test-json-call*" result)))
+  (with-temp-buffer-with-content
+   "*test-json-call*" "Hello World\nLine 2"
+   ;; Test list buffers tool
+   (let* ((tool-def (cl-find "aj8_list_buffers" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+          (func (gptel-tool-function tool-def))
+          (result (funcall func)))
+     (should (listp result))
+     (should (member "*test-json-call*" result)))
 
-    ;; Test edit buffer tool with JSON-like parameters
-    (let* ((tool-def (cl-find "aj8_edit_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-           (func (gptel-tool-function tool-def))
-           (result (funcall func "*test-json-call*" "World" "Gptel")))
-      (should (string-match-p "successfully" result))
-      (should (string-equal (buffer-string) "Hello Gptel\nLine 2")))))
+   ;; Test edit buffer tool with JSON-like parameters
+   (let* ((tool-def (cl-find "aj8_edit_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+          (func (gptel-tool-function tool-def))
+          (result (funcall func "*test-json-call*" "World" "Gptel")))
+     (should (string-match-p "successfully" result))
+     (should (string-equal (buffer-string) "Hello Gptel\nLine 2")))))
 
 (ert-deftest test-gptel-tool-error-handling ()
   "Test that Gptel tools handle common errors gracefully.
@@ -467,23 +480,24 @@ This test uses a helper function to simulate how an LLM might invoke
 various tools, checking for expected patterns in their output."
   :tags '(integration tools mock)
   (with-temp-project
-    (with-temp-buffer-with-content "*mock-test*" "Original content\nSecond line"
-      ;; Test buffer listing
-      (aj8/gptel-tool-test--run-with-mock-llm "aj8_list_buffers" nil "mock-test")
+   (with-temp-buffer-with-content
+    "*mock-test*" "Original content\nSecond line"
+    ;; Test buffer listing
+    (aj8/gptel-tool-test--run-with-mock-llm
+     "aj8_list_buffers" nil "mock-test")
 
-      ;; Test buffer editing
-      (aj8/gptel-tool-test--run-with-mock-llm "aj8_edit_buffer"
-                                        '("*mock-test*" "Original" "Modified")
-                                        "successfully")
-      (should (string-equal (buffer-string) "Modified content\nSecond line"))
+    ;; Test buffer editing
+    (aj8/gptel-tool-test--run-with-mock-llm
+     "aj8_edit_buffer" '("*mock-test*" "Original" "Modified") "successfully")
+    (should (string-equal (buffer-string) "Modified content\nSecond line"))
 
-      ;; Test project root
-      (aj8/gptel-tool-test--run-with-mock-llm "aj8_project_get_root" nil "ert-test-project")
+    ;; Test project root
+    (aj8/gptel-tool-test--run-with-mock-llm
+     "aj8_project_get_root" nil "ert-test-project")
 
-      ;; Test file search
-      (aj8/gptel-tool-test--run-with-mock-llm "aj8_project_find_files_glob"
-                                        '("**/*.el")
-                                        "code.el"))))
+    ;; Test file search
+    (aj8/gptel-tool-test--run-with-mock-llm
+     "aj8_project_find_files_glob" '("**/*.el") "code.el"))))
 
 (ert-deftest test-gptel-tool-workflow-simulation ()
   "Simulate a realistic workflow using multiple tools in sequence.
@@ -493,37 +507,38 @@ content, making an edit, and then verifying the change. It ensures that
 the tools work together to complete a complex operation."
   :tags '(integration workflow)
   (with-temp-project
-    (with-temp-file-with-content test-file "def hello():\n    print('Hello World')\n\ndef goodbye():\n    print('Goodbye')"
-      ;; Simulate LLM workflow:
-      ;; 1. List project files
-      ;; 2. Read a file
-      ;; 3. Edit the file
-      ;; 4. Verify changes
+   (with-temp-file-with-content
+    test-file "def hello():\n    print('Hello World')\n\ndef goodbye():\n    print('Goodbye')"
+    ;; Simulate LLM workflow:
+    ;; 1. List project files
+    ;; 2. Read a file
+    ;; 3. Edit the file
+    ;; 4. Verify changes
 
-      ;; Step 1: Find Python files
-      (let* ((find-tool (cl-find "aj8_project_find_files_glob" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-             (find-func (gptel-tool-function find-tool))
-             (py-files (funcall find-func "**/*.py")))
-        (should (> (length py-files) 0)))
+    ;; Step 1: Find Python files
+    (let* ((find-tool (cl-find "aj8_project_find_files_glob" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+           (find-func (gptel-tool-function find-tool))
+           (py-files (funcall find-func "**/*.py")))
+      (should (> (length py-files) 0)))
 
-      ;; Step 2: Read file content
-      (let* ((read-tool (cl-find "view_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-             (read-func (gptel-tool-function read-tool))
-             (content (funcall read-func test-file)))
-        (should (string-match-p "Hello World" content)))
+    ;; Step 2: Read file content
+    (let* ((read-tool (cl-find "aj8_read_file_section" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+           (read-func (gptel-tool-function read-tool))
+           (content (funcall read-func test-file)))
+      (should (string-match-p "Hello World" content)))
 
-      ;; Step 3: Edit the file
-      (let* ((edit-tool (cl-find "aj8_edit_file" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-             (edit-func (gptel-tool-function edit-tool))
-             (result (funcall edit-func test-file "Hello World" "Hello Gptel")))
-        (should (string-match-p "successfully" result)))
+    ;; Step 3: Edit the file
+    (let* ((edit-tool (cl-find "aj8_edit_file" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+           (edit-func (gptel-tool-function edit-tool))
+           (result (funcall edit-func test-file "Hello World" "Hello Gptel")))
+      (should (string-match-p "successfully" result)))
 
-      ;; Step 4: Verify changes
-      (let* ((read-tool (cl-find "view_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-             (read-func (gptel-tool-function read-tool))
-             (new-content (funcall read-func test-file)))
-        (should (string-match-p "Hello Gptel" new-content))
-        (should-not (string-match-p "Hello World" new-content))))))
+    ;; Step 4: Verify changes
+    (let* ((read-tool (cl-find "aj8_read_file_section" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+           (read-func (gptel-tool-function read-tool))
+           (new-content (funcall read-func test-file)))
+      (should (string-match-p "Hello Gptel" new-content))
+      (should-not (string-match-p "Hello World" new-content))))))
 
 (ert-deftest test-gptel-tool-complex-edits ()
   "Test complex, multi-part editing scenarios.
@@ -532,26 +547,27 @@ Simulates an LLM performing a refactoring task that requires making
 several related edits in a single buffer, using
 `aj8/gptel-tool-apply-buffer-edits' to apply them all at once."
   :tags '(integration edits)
-  (with-temp-buffer-with-content "*complex-edit-test*"
-    "function calculateSum(a, b) {\n    return a + b;\n}\n\nfunction calculateProduct(a, b) {\n    return a * b;\n}\n\nfunction main() {\n    console.log('Starting calculations');\n    let sum = calculateSum(5, 3);\n    let product = calculateProduct(4, 6);\n    console.log('Results:', sum, product);\n}"
+  (with-temp-buffer-with-content
+   "*complex-edit-test*"
+   "function calculateSum(a, b) {\n    return a + b;\n}\n\nfunction calculateProduct(a, b) {\n    return a * b;\n}\n\nfunction main() {\n    console.log('Starting calculations');\n    let sum = calculateSum(5, 3);\n    let product = calculateProduct(4, 6);\n    console.log('Results:', sum, product);\n}"
 
-    (let* ((edit-tool (cl-find "aj8_apply_buffer_edits" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-           (edit-func (gptel-tool-function edit-tool))
-           (edits '((:line-number 1 :old-string "calculateSum" :new-string "addNumbers")
-                    (:line-number 5 :old-string "calculateProduct" :new-string "multiplyNumbers")
-                    (:line-number 9 :old-string "calculateSum" :new-string "addNumbers")
-                    (:line-number 10 :old-string "calculateProduct" :new-string "multiplyNumbers"))))
+   (let* ((edit-tool (cl-find "aj8_apply_buffer_edits" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+          (edit-func (gptel-tool-function edit-tool))
+          (edits '((:line-number 1 :old-string "calculateSum" :new-string "addNumbers")
+                   (:line-number 5 :old-string "calculateProduct" :new-string "multiplyNumbers")
+                   (:line-number 9 :old-string "calculateSum" :new-string "addNumbers")
+                   (:line-number 10 :old-string "calculateProduct" :new-string "multiplyNumbers"))))
 
-      (funcall edit-func "*complex-edit-test*" edits)
+     (funcall edit-func "*complex-edit-test*" edits)
 
-      ;; Verify all changes were applied
-      (let ((content (buffer-string)))
-        (should (string-match-p "function addNumbers" content))
-        (should (string-match-p "function multiplyNumbers" content))
-        (should (string-match-p "addNumbers(5, 3)" content))
-        (should (string-match-p "multiplyNumbers(4, 6)" content))
-        (should-not (string-match-p "calculateSum" content))
-        (should-not (string-match-p "calculateProduct" content))))))
+     ;; Verify all changes were applied
+     (let ((content (buffer-string)))
+       (should (string-match-p "function addNumbers" content))
+       (should (string-match-p "function multiplyNumbers" content))
+       (should (string-match-p "addNumbers(5, 3)" content))
+       (should (string-match-p "multiplyNumbers(4, 6)" content))
+       (should-not (string-match-p "calculateSum" content))
+       (should-not (string-match-p "calculateProduct" content))))))
 
 ;;
 ;;; 5. Test Runner Functions (interactive)
@@ -653,7 +669,7 @@ TOOL-NAME is the name of the tool to run (e.g., 'aj8_list_buffers')."
               (message "Tool %s result: %S" tool-name result)
               result)
           (error (message "Error testing tool %s: %s"
-                         tool-name (error-message-string err))))
+                          tool-name (error-message-string err))))
       (message "Tool function not found for %s" tool-name))))
 
 (defun aj8/gptel-tool-validate-definitions ()
