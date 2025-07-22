@@ -477,7 +477,7 @@ EXPECTED-PATTERN is a regexp that should match the result."
 (defun aj8/gptel-tool-test-run-all ()
   "Run all ERT tests defined for gptel tools."
   (interactive)
-  (ert-run-tests-interactively t))
+  (ert t))
 
 (defun aj8/gptel-tool-test-run-by-tag (tag)
   "Run all Gptel tests with a specified TAG."
@@ -488,6 +488,11 @@ EXPECTED-PATTERN is a regexp that should match the result."
                            "presets" "mock" "workflow" "edits")
                          nil t)))
   (ert `(tag ,(intern tag))))
+
+(defun aj8/gptel-tool-test-run-unit ()
+  "Run all Gptel tool unit tests."
+  (interactive)
+  (ert '(tag unit)))
 
 (defun aj8/gptel-tool-test-run-integration ()
   "Run Gptel tool integration tests."
