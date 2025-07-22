@@ -137,7 +137,6 @@
       (with-current-buffer "*test-review*"
         (should (string-equal (buffer-string) "Line one.\nLine two."))))))
 
-
 ;;
 ;; Category: Filesystem
 ;;
@@ -199,7 +198,6 @@
       (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
                             "Line one.\nLine two.")))))
 
-
 ;;
 ;; Category: Emacs
 ;;
@@ -231,7 +229,6 @@
   :tags '(test emacs)
   (should (string-match-p "special form in `Lisp'" (aj8/gptel-tool-read-info-symbol "defun")))
   (should (string-match-p "A function definition has the form" (aj8/gptel-tool-read-info-node "Defining Functions"))))
-
 
 ;;
 ;; Category: Project
