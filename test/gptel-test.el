@@ -489,15 +489,10 @@ EXPECTED-PATTERN is a regexp that should match the result."
                          nil t)))
   (ert `(tag ,(intern tag))))
 
-(defun aj8/gptel-tool-test-run-integration (&optional selector)
-  "Run Gptel tool integration tests.
-With a prefix argument, prompt for a test SELECTOR."
-  (interactive "P")
-  (let ((test-selector-str (if selector
-                               (completing-read "Run tests with selector: "
-                                                '("integration" "tools" "json" "errors" "presets" "mock"))
-                             "integration")))
-    (ert `(tag ,(intern test-selector-str)))))
+(defun aj8/gptel-tool-test-run-integration ()
+  "Run Gptel tool integration tests."
+  (interactive)
+  (ert '(tag integration)))
 
 ;;
 ;;; 6. Manual Testing & Utility Functions (interactive)
