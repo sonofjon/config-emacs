@@ -474,22 +474,13 @@ EXPECTED-PATTERN is a regexp that should match the result."
 ;;; 5. Test Runner Functions (interactive)
 ;;
 
-(defun aj8/gptel-tool-test-run-all (&optional tag)
-  "Run all ERT tests defined for gptel tools.
-With optional TAG argument, run only tests with that tag.
-Without a tag, run all tests with the 'unit' tag."
-  (interactive
-   (list (intern (completing-read "Run tests with tag (default: unit): "
-                                 '("unit" "buffers" "files" "emacs" "project" "review"
-                                   "integration" "tools" "json" "errors"
-                                   "presets" "mock" "workflow" "edits")
-                                 nil t nil nil "unit"))))
-  (ert-run-tests-interactively (if tag
-                                  `(tag ,tag)
-                                '(tag unit))))
+(defun aj8/gptel-tool-test-run-all ()
+  "Run all ERT tests defined for gptel tools."
+  (interactive)
+  (ert-run-tests-interactively t))
 
 (defun aj8/gptel-tool-test-run-by-tag (tag)
-  "Run all Gptel tests with the specified TAG."
+  "Run all Gptel tests with a specified TAG."
   (interactive
    (list (completing-read "Select tag: "
                          '("unit" "buffers" "files" "emacs" "project" "review"
