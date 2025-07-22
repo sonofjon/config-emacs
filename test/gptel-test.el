@@ -506,27 +506,39 @@ EXPECTED-PATTERN is a regexp that should match the result."
 (defun aj8/gptel-tool-test-run-direct (tool-name)
   "Directly invoke a Gptel tool chosen interactively by its name.
 
-This function prompts for a TOOL-NAME from the list of registered
-gptel tools. It then attempts to call the underlying Lisp function.
+This function prompts for a TOOL-NAME from a list of all registered
+gptel tools.  If the tool requires arguments, you will be prompted to
+enter a value for each one. The tool is then executed with the provided
+arguments.
 
-If the selected tool takes no arguments, it is executed and its
-return value is displayed as a message. If the tool requires
-arguments, it is not executed; instead, its argument list is
-displayed. This is useful for quick, manual inspection of tools.
+The return value of the tool is displayed as a message. This is useful
+for quick, manual testing and inspection of any tool.
 
 TOOL-NAME is the name of the tool to run (e.g., 'aj8_list_buffers')."
   (interactive
-   (list (completing-read "Select tool: "
-                         (mapcar #'gptel-tool-name gptel-tools)
-                         nil t)))
+   (let* ((choices (mapcar (lambda (tool)
+                             (format "%s [%s]"
+                                     (gptel-tool-name tool)
+                                     (if (gptel-tool-args tool) "args" "no args")))
+                           gptel-tools))
+          (selection (completing-read "Select tool: " choices nil t)))
+     (list (car (split-string selection " ")))))
   (let* ((tool (cl-find-if (lambda (item) (string-equal (gptel-tool-name item) tool-name)) gptel-tools))
          (func (when tool (gptel-tool-function tool))))
     (if (and func (functionp func))
         (condition-case err
-            (let ((result (if (gptel-tool-args tool)
-                             (message "Tool requires arguments: %S"
-                                     (gptel-tool-args tool))
-                           (funcall func))))
+            (let* ((args-spec (gptel-tool-args tool))
+                   (result (if args-spec
+                               ;; If tool requires args, prompt for them
+                               (let ((collected-args '()))
+                                 (dolist (arg-def args-spec)
+                                   (let* ((arg-name (plist-get arg-def :name))
+                                          (arg-type (plist-get arg-def :type))
+                                          (prompt (format "Enter value for '%s' (type: %s): " arg-name arg-type)))
+                                     (push (read-from-minibuffer prompt) collected-args)))
+                                 (apply func (nreverse collected-args)))
+                             ;; Otherwise, just call it
+                             (funcall func))))
               (message "Tool %s result: %S" tool-name result)
               result)
           (error (message "Error testing tool %s: %s"
