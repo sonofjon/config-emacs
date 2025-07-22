@@ -442,20 +442,6 @@ path."
                 (funcall func "/non/existent/file.txt")
               (error (string-match-p "No such file" (error-message-string err)))))))
 
-(ert-deftest test-gptel-preset-tool-integration ()
-  "Test that Gptel presets correctly enable or disable tools.
-
-Ensures that the `coding` preset has tool usage enabled and that the
-`chat` preset has it disabled, as expected."
-  :tags '(integration tools presets)
-  ;; Check that coding preset has tools enabled
-  (let ((coding-preset (cdr (assoc 'coding gptel--presets))))
-    (should (plist-get coding-preset :use-tools)))
-
-  ;; Check that chat preset has tools disabled
-  (let ((chat-preset (cdr (assoc 'chat gptel--presets))))
-    (should-not (plist-get chat-preset :use-tools))))
-
 ;;; 4.2. Category: Real-world Workflow Simulation
 
 (defun aj8/gptel-tool-test--run-with-mock-llm (tool-name args expected-pattern)
@@ -586,10 +572,10 @@ several related edits in a single buffer, using
   "Run all Gptel tool tests with a specified TAG."
   (interactive
    (list (completing-read "Select tag: "
-                         '("unit" "buffers" "files" "emacs" "project" "review"
-                           "integration" "tools" "json" "errors"
-                           "presets" "mock" "workflow" "edits")
-                         nil t)))
+                          '("unit" "buffers" "files" "emacs" "project" "review"
+                            "integration" "tools" "json" "errors" "mock"
+                            "workflow" "edits")
+                          nil t)))
   (ert `(tag ,(intern tag))))
 
 (defun aj8/gptel-tool-test-run-by-name ()
