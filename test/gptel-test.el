@@ -479,16 +479,6 @@ EXPECTED-PATTERN is a regexp that should match the result."
   (interactive)
   (ert t))
 
-(defun aj8/gptel-tool-test-run-by-tag (tag)
-  "Run all Gptel tests with a specified TAG."
-  (interactive
-   (list (completing-read "Select tag: "
-                         '("unit" "buffers" "files" "emacs" "project" "review"
-                           "integration" "tools" "json" "errors"
-                           "presets" "mock" "workflow" "edits")
-                         nil t)))
-  (ert `(tag ,(intern tag))))
-
 (defun aj8/gptel-tool-test-run-unit ()
   "Run all Gptel tool unit tests."
   (interactive)
@@ -498,6 +488,16 @@ EXPECTED-PATTERN is a regexp that should match the result."
   "Run Gptel tool integration tests."
   (interactive)
   (ert '(tag integration)))
+
+(defun aj8/gptel-tool-test-run-by-tag (tag)
+  "Run all Gptel tests with a specified TAG."
+  (interactive
+   (list (completing-read "Select tag: "
+                         '("unit" "buffers" "files" "emacs" "project" "review"
+                           "integration" "tools" "json" "errors"
+                           "presets" "mock" "workflow" "edits")
+                         nil t)))
+  (ert `(tag ,(intern tag))))
 
 ;;
 ;;; 6. Manual Testing & Utility Functions (interactive)
