@@ -1,4 +1,4 @@
-;;; gptel-test.el --- Tests for GPtel tools
+;;; gptel-test.el --- Tests for Gptel tools
 
 ;;
 ;;; 1. Header & Requirements
@@ -270,10 +270,10 @@
 ;;; 4. Integration Tests (ert-deftest)
 ;;
 
-;;; 4.1. Category: GPtel Tool System Integration
+;;; 4.1. Category: Gptel Tool System Integration
 
 (ert-deftest test-gptel-tool-registration ()
-  "Test that all GPtel tools are properly registered."
+  "Test that all Gptel tools are properly registered."
   :tags '(integration gptel-tools)
   (let ((expected-tools '("aj8_list_buffers"
                          "aj8_buffer_to_file"
@@ -302,7 +302,7 @@
       (should (assoc tool-name gptel-tools)))))
 
 (ert-deftest test-gptel-tool-json-schema-validation ()
-  "Test that GPtel tools have valid JSON schema definitions."
+  "Test that Gptel tools have valid JSON schema definitions."
   :tags '(integration gptel-tools)
   (dolist (tool-def gptel-tools)
     (let ((tool-name (gptel-tool-name tool-def)))
@@ -314,7 +314,7 @@
       (should (listp (gptel-tool-args tool-def))))))
 
 (ert-deftest test-gptel-tool-function-callable ()
-  "Test that all GPtel tool functions are callable."
+  "Test that all Gptel tool functions are callable."
   :tags '(integration gptel-tools)
   (let ((no-arg-tools '("aj8_list_buffers"
                         "aj8_project_get_root"
@@ -329,7 +329,7 @@
                       (error t)))))))
 
 (ert-deftest test-gptel-tool-via-json-call ()
-  "Test calling GPtel tools via JSON-like interface (simulating LLM calls)."
+  "Test calling Gptel tools via JSON-like interface (simulating LLM calls)."
   :tags '(integration gptel-tools json)
   (with-temp-buffer-with-content "*test-json-call*" "Hello World\nLine 2"
     ;; Test list buffers tool
@@ -342,12 +342,12 @@
     ;; Test edit buffer tool with JSON-like parameters
     (let* ((tool-def (cdr (assoc "aj8_edit_buffer" gptel-tools)))
            (func (gptel-tool-function tool-def))
-           (result (funcall func "*test-json-call*" "World" "GPtel")))
+           (result (funcall func "*test-json-call*" "World" "Gptel")))
       (should (string-match-p "successfully" result))
-      (should (string-equal (buffer-string) "Hello GPtel\nLine 2")))))
+      (should (string-equal (buffer-string) "Hello Gptel\nLine 2")))))
 
 (ert-deftest test-gptel-tool-error-handling ()
-  "Test that GPtel tools handle errors gracefully."
+  "Test that Gptel tools handle errors gracefully."
   :tags '(integration gptel-tools error-handling)
   ;; Test with non-existent buffer
   (let* ((tool-def (cdr (assoc "aj8_edit_buffer" gptel-tools)))
@@ -364,7 +364,7 @@
               (error (string-match-p "No such file" (error-message-string err)))))))
 
 (ert-deftest test-gptel-preset-tool-integration ()
-  "Test that GPtel presets properly enable/disable tools."
+  "Test that Gptel presets properly enable/disable tools."
   :tags '(integration gptel-tools presets)
   ;; Check that coding preset has tools enabled
   (let ((coding-preset (cdr (assoc 'coding gptel--presets))))
@@ -377,7 +377,7 @@
 ;;; 4.2. Category: Real-world Workflow Simulation
 
 (defun aj8/test-gptel-tool-with-mock-llm (tool-name args expected-pattern)
-  "Helper function to test a GPtel tool by simulating LLM usage.
+  "Helper function to test a Gptel tool by simulating LLM usage.
 TOOL-NAME is the name of the tool to test.
 ARGS is a list of arguments to pass to the tool.
 EXPECTED-PATTERN is a regexp that should match the result."
@@ -388,7 +388,7 @@ EXPECTED-PATTERN is a regexp that should match the result."
     result))
 
 (ert-deftest test-gptel-tools-mock-llm-interaction ()
-  "Test GPtel tools as if called by an LLM."
+  "Test Gptel tools as if called by an LLM."
   :tags '(integration gptel-tools mock-llm)
   (with-temp-project
     (with-temp-buffer-with-content "*mock-test*" "Original content\nSecond line"
@@ -435,14 +435,14 @@ EXPECTED-PATTERN is a regexp that should match the result."
       ;; Step 3: Edit the file
       (let* ((edit-tool (cdr (assoc "aj8_edit_file" gptel-tools)))
              (edit-func (gptel-tool-function edit-tool))
-             (result (funcall edit-func test-file "Hello World" "Hello GPtel")))
+             (result (funcall edit-func test-file "Hello World" "Hello Gptel")))
         (should (string-match-p "successfully" result)))
 
       ;; Step 4: Verify changes
       (let* ((read-tool (cdr (assoc "aj8_read_file_section" gptel-tools)))
              (read-func (gptel-tool-function read-tool))
              (new-content (funcall read-func test-file)))
-        (should (string-match-p "Hello GPtel" new-content))
+        (should (string-match-p "Hello Gptel" new-content))
         (should-not (string-match-p "Hello World" new-content))))))
 
 (ert-deftest test-gptel-tool-complex-edits ()
@@ -489,7 +489,7 @@ Without a tag, run all tests with the 'test' tag."
                                 '(tag test))))
 
 (defun aj8/run-gptel-tests-by-tag (tag)
-  "Run all GPtel tests with the specified TAG."
+  "Run all Gptel tests with the specified TAG."
   (interactive
    (list (completing-read "Select tag: "
                          '("test" "buffers" "filesystem" "emacs" "project" "review"
@@ -499,7 +499,7 @@ Without a tag, run all tests with the 'test' tag."
   (ert (format "(tag %s)" tag)))
 
 (defun aj8/run-gptel-integration-tests (&optional selector)
-  "Run GPtel tool integration tests.
+  "Run Gptel tool integration tests.
 With a prefix argument, prompt for a test SELECTOR."
   (interactive "P")
   (let ((test-selector-str (if selector
@@ -513,7 +513,7 @@ With a prefix argument, prompt for a test SELECTOR."
 ;;
 
 (defun aj8/test-gptel-tool-direct (tool-name)
-  "Test a GPtel tool directly by name.
+  "Test a Gptel tool directly by name.
 TOOL-NAME is the name of the tool to test (e.g., 'aj8_list_buffers')."
   (interactive
    (list (completing-read "Select tool: "
@@ -534,14 +534,14 @@ TOOL-NAME is the name of the tool to test (e.g., 'aj8_list_buffers')."
       (message "Tool function not found for %s" tool-name))))
 
 (defun aj8/test-gptel-tools-interactively ()
-  "Interactively test GPtel tools by simulating LLM requests.
-This function creates a temporary GPtel buffer and demonstrates
+  "Interactively test Gptel tools by simulating LLM requests.
+This function creates a temporary Gptel buffer and demonstrates
 how tools would be called by an actual LLM."
   (interactive)
-  (let ((test-buffer (get-buffer-create "*GPtel Tool Test*")))
+  (let ((test-buffer (get-buffer-create "*Gptel Tool Test*")))
     (with-current-buffer test-buffer
       (erase-buffer)
-      (insert "=== GPtel Tool Integration Test ===\n\n")
+      (insert "=== Gptel Tool Integration Test ===\n\n")
 
       ;; Test 1: List available tools
       (insert "1. Available tools:\n")
@@ -570,7 +570,7 @@ how tools would be called by an actual LLM."
     (switch-to-buffer test-buffer)))
 
 (defun aj8/validate-gptel-tool-schemas ()
-  "Validate that all GPtel tool schemas are properly formatted.
+  "Validate that all Gptel tool schemas are properly formatted.
 Returns a list of any validation errors found."
   (interactive)
   (let ((errors '()))
@@ -605,15 +605,15 @@ Returns a list of any validation errors found."
 
     (if errors
         (progn
-          (message "GPtel tool validation errors found:")
+          (message "Gptel tool validation errors found:")
           (dolist (error errors)
             (message "  - %s" error))
           errors)
-      (message "All GPtel tools validated successfully!")
+      (message "All Gptel tools validated successfully!")
       nil)))
 
 (defun aj8/benchmark-gptel-tools ()
-  "Benchmark GPtel tool performance to ensure they're fast enough for LLM use."
+  "Benchmark Gptel tool performance to ensure they're fast enough for LLM use."
   (interactive)
   (let ((results '())
         (iterations 10))
@@ -643,9 +643,9 @@ Returns a list of any validation errors found."
       (error (push (cons "aj8_read_documentation" (format "ERROR: %s" (error-message-string err))) results)))
 
     ;; Display results
-    (with-current-buffer (get-buffer-create "*GPtel Tool Benchmark*")
+    (with-current-buffer (get-buffer-create "*Gptel Tool Benchmark*")
       (erase-buffer)
-      (insert "=== GPtel Tool Performance Benchmark ===\n\n")
+      (insert "=== Gptel Tool Performance Benchmark ===\n\n")
       (insert (format "Iterations per tool: %d\n\n" iterations))
       (dolist (result (reverse results))
         (let ((name (car result))
@@ -655,11 +655,11 @@ Returns a list of any validation errors found."
             (insert (format "%-30s: %s\n" name value)))))
       (insert "\n=== Benchmark Complete ===\n")
       (goto-char (point-min)))
-    (switch-to-buffer "*GPtel Tool Benchmark*")))
+    (switch-to-buffer "*Gptel Tool Benchmark*")))
 
 (defun aj8/create-gptel-tool-test-scenario ()
-  "Create a test scenario for manually testing GPtel tools with a real LLM.
-This sets up buffers and files that you can reference when testing with GPtel."
+  "Create a test scenario for manually testing Gptel tools with a real LLM.
+This sets up buffers and files that you can reference when testing with Gptel."
   (interactive)
   (let ((test-dir (expand-file-name "gptel-tool-test/" temporary-file-directory)))
     ;; Create test directory
@@ -667,7 +667,7 @@ This sets up buffers and files that you can reference when testing with GPtel."
 
     ;; Create test files
     (with-temp-buffer
-      (insert "# Test Project\n\nThis is a test project for GPtel tools.\n\n## Files\n- main.py: Python script\n- config.json: Configuration\n- README.md: This file")
+      (insert "# Test Project\n\nThis is a test project for Gptel tools.\n\n## Files\n- main.py: Python script\n- config.json: Configuration\n- README.md: This file")
       (write-file (expand-file-name "README.md" test-dir)))
 
     (with-temp-buffer
@@ -675,25 +675,25 @@ This sets up buffers and files that you can reference when testing with GPtel."
       (write-file (expand-file-name "main.py" test-dir)))
 
     (with-temp-buffer
-      (insert "{\n  \"app_name\": \"GPtel Test\",\n  \"version\": \"1.0.0\",\n  \"debug\": true\n}")
+      (insert "{\n  \"app_name\": \"Gptel Test\",\n  \"version\": \"1.0.0\",\n  \"debug\": true\n}")
       (write-file (expand-file-name "config.json" test-dir)))
 
     ;; Create test buffers
-    (with-current-buffer (get-buffer-create "*GPtel Test Buffer*")
+    (with-current-buffer (get-buffer-create "*Gptel Test Buffer*")
       (erase-buffer)
-      (insert "This is a test buffer for GPtel tools.\n\nYou can ask the LLM to:\n- Edit this content\n- Add new lines\n- Replace text\n- Apply multiple edits\n\nOriginal timestamp: " (current-time-string)))
+      (insert "This is a test buffer for Gptel tools.\n\nYou can ask the LLM to:\n- Edit this content\n- Add new lines\n- Replace text\n- Apply multiple edits\n\nOriginal timestamp: " (current-time-string)))
 
     ;; Open files in buffers
     (find-file (expand-file-name "main.py" test-dir))
     (find-file (expand-file-name "config.json" test-dir))
 
     ;; Display instructions
-    (with-current-buffer (get-buffer-create "*GPtel Tool Test Instructions*")
+    (with-current-buffer (get-buffer-create "*Gptel Tool Test Instructions*")
       (erase-buffer)
-      (insert "=== GPtel Tool Test Scenario Created ===\n\n")
+      (insert "=== Gptel Tool Test Scenario Created ===\n\n")
       (insert "Test files created in: " test-dir "\n\n")
       (insert "Available test buffers:\n")
-      (insert "- *GPtel Test Buffer*\n")
+      (insert "- *Gptel Test Buffer*\n")
       (insert "- main.py\n")
       (insert "- config.json\n\n")
       (insert "=== Suggested Test Prompts ===\n\n")
@@ -704,7 +704,7 @@ This sets up buffers and files that you can reference when testing with GPtel."
       (insert "5. \"Update the version in config.json to 2.0.0\"\n")
       (insert "6. \"Find all Python files in the current project\"\n")
       (insert "7. \"Search for the word 'greet' in all project files\"\n")
-      (insert "8. \"Add a comment to the *GPtel Test Buffer*\"\n\n")
+      (insert "8. \"Add a comment to the *Gptel Test Buffer*\"\n\n")
       (insert "=== Testing Tips ===\n\n")
       (insert "- Use the 'coding' preset for tool access\n")
       (insert "- Tools should work automatically when enabled\n")
@@ -712,5 +712,5 @@ This sets up buffers and files that you can reference when testing with GPtel."
       (insert "- Verify error handling with invalid requests\n")
       (goto-char (point-min)))
 
-    (switch-to-buffer "*GPtel Tool Test Instructions*")
-    (message "GPtel tool test scenario created! Check the instructions buffer.")))
+    (switch-to-buffer "*Gptel Tool Test Instructions*")
+    (message "Gptel tool test scenario created! Check the instructions buffer.")))
