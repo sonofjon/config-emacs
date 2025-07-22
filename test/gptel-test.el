@@ -1,7 +1,15 @@
+;;; gptel-test.el --- Tests for GPtel tools
+
+;;
+;;; 1. Header & Requirements
+;;
+
 ;; Require ERT, the Emacs Lisp Regression Testing tool
 (require 'ert)
 
-;; --- Test Helper Macros ---
+;;
+;;; 2. Test Helper Macros
+;;
 
 (defmacro with-temp-buffer-with-content (buffer-name content &rest body)
   "Create a temporary buffer BUFFER-NAME with CONTENT, execute BODY, and clean up."
@@ -59,11 +67,11 @@
        (when (file-directory-p proj-dir)
          (delete-directory proj-dir t)))))
 
-;; --- ERT Test Definitions (deftest) ---
+;;
+;;; 3. Unit Tests (ert-deftest)
+;;
 
-;;
-;; Category: Buffers
-;;
+;;; 3.1. Category: Buffers
 
 (ert-deftest test-aj8-list-buffers ()
   "Test `aj8/gptel-tool-list-buffers`."
@@ -137,9 +145,7 @@
       (with-current-buffer "*test-review*"
         (should (string-equal (buffer-string) "Line one.\nLine two."))))))
 
-;;
-;; Category: Filesystem
-;;
+;;; 3.2. Category: Filesystem
 
 (ert-deftest test-aj8-read-file-section ()
   "Test `aj8/gptel-tool-read-file-section`."
@@ -198,9 +204,7 @@
       (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
                             "Line one.\nLine two.")))))
 
-;;
-;; Category: Emacs
-;;
+;;; 3.3. Category: Emacs
 
 (ert-deftest test-aj8-read-documentation ()
   "Test `aj8/gptel-tool-read-documentation`."
@@ -223,16 +227,13 @@
     (when (get-buffer "project.el.gz")
       (kill-buffer "project.el.gz"))))
 
-
 (ert-deftest test-aj8-info-lookup ()
   "Test `aj8_read_info_symbol` and `aj8_read_info_node` tools."
   :tags '(test emacs)
   (should (string-match-p "special form in `Lisp'" (aj8/gptel-tool-read-info-symbol "defun")))
   (should (string-match-p "A function definition has the form" (aj8/gptel-tool-read-info-node "Defining Functions"))))
 
-;;
-;; Category: Project
-;;
+;;; 3.4. Category: Project
 
 (ert-deftest test-aj8-project-root-and-buffers ()
   "Test `aj8_project_get_root` and `aj8_project_get_open_buffers`."
@@ -265,56 +266,11 @@
       (let ((results (aj8/gptel-tool-project-search-content "some text data")))
         (should (string-match-p "data.txt:1:some text data" results))))))
 
-;; --- Test Runner Functions ---
-
-(defun aj8/run-all-gptel-tool-tests (&optional tag)
-  "Run all ERT tests defined for gptel tools.
-With optional TAG argument, run only tests with that tag.
-Without a tag, run all tests with the 'test' tag."
-  (interactive
-   (list (intern (completing-read "Run tests with tag (default: test): "
-                                 '("test" "buffers" "filesystem" "emacs" "project" "review"
-                                   "integration" "gptel-tools" "json" "error-handling"
-                                   "presets" "mock-llm" "workflow" "simulation" "complex-edits")
-                                 nil t nil nil "test"))))
-  (ert-run-tests-interactively (if tag
-                                  `(tag ,tag)
-                                '(tag test))))
-
-(defun aj8/run-gptel-tests-by-tag (tag)
-  "Run all GPtel tests with the specified TAG."
-  (interactive
-   (list (completing-read "Select tag: "
-                         '("test" "buffers" "filesystem" "emacs" "project" "review"
-                           "integration" "gptel-tools" "json" "error-handling"
-                           "presets" "mock-llm" "workflow" "simulation" "complex-edits")
-                         nil t)))
-  (ert (format "(tag %s)" tag)))
-
-(defun aj8/test-gptel-tool-direct (tool-name)
-  "Test a GPtel tool directly by name.
-TOOL-NAME is the name of the tool to test (e.g., 'aj8_list_buffers')."
-  (interactive
-   (list (completing-read "Select tool: "
-                         (mapcar #'gptel-tool-name gptel-tools)
-                         nil t)))
-  (let* ((tool (cl-find-if (lambda (item) (string-equal (gptel-tool-name item) tool-name)) gptel-tools))
-         (func (when tool (gptel-tool-function tool))))
-    (if (and func (functionp func))
-        (condition-case err
-            (let ((result (if (gptel-tool-args tool)
-                             (message "Tool requires arguments: %S"
-                                     (gptel-tool-args tool))
-                           (funcall func))))
-              (message "Tool %s result: %S" tool-name result)
-              result)
-          (error (message "Error testing tool %s: %s"
-                         tool-name (error-message-string err))))
-      (message "Tool function not found for %s" tool-name))))
-
 ;;
-;; Category: GPtel Tool Integration Tests
+;;; 4. Integration Tests (ert-deftest)
 ;;
+
+;;; 4.1. Category: GPtel Tool System Integration
 
 (ert-deftest test-gptel-tool-registration ()
   "Test that all GPtel tools are properly registered."
@@ -418,6 +374,8 @@ TOOL-NAME is the name of the tool to test (e.g., 'aj8_list_buffers')."
   (let ((chat-preset (cdr (assoc 'chat gptel--presets))))
     (should-not (plist-get chat-preset :use-tools))))
 
+;;; 4.2. Category: Real-world Workflow Simulation
+
 (defun aj8/test-gptel-tool-with-mock-llm (tool-name args expected-pattern)
   "Helper function to test a GPtel tool by simulating LLM usage.
 TOOL-NAME is the name of the tool to test.
@@ -451,7 +409,129 @@ EXPECTED-PATTERN is a regexp that should match the result."
                                         '("**/*.el")
                                         "code.el"))))
 
-;; --- Interactive Test Functions ---
+(ert-deftest test-gptel-tool-workflow-simulation ()
+  "Simulate a realistic workflow where an LLM uses multiple tools in sequence."
+  :tags '(integration workflow simulation)
+  (with-temp-project
+    (with-temp-file-with-content test-file "def hello():\n    print('Hello World')\n\ndef goodbye():\n    print('Goodbye')"
+      ;; Simulate LLM workflow:
+      ;; 1. List project files
+      ;; 2. Read a file
+      ;; 3. Edit the file
+      ;; 4. Verify changes
+
+      ;; Step 1: Find Python files
+      (let* ((find-tool (cdr (assoc "aj8_project_find_files_glob" gptel-tools)))
+             (find-func (gptel-tool-function find-tool))
+             (py-files (funcall find-func "**/*.py")))
+        (should (> (length py-files) 0)))
+
+      ;; Step 2: Read file content
+      (let* ((read-tool (cdr (assoc "aj8_read_file_section" gptel-tools)))
+             (read-func (gptel-tool-function read-tool))
+             (content (funcall read-func test-file)))
+        (should (string-match-p "Hello World" content)))
+
+      ;; Step 3: Edit the file
+      (let* ((edit-tool (cdr (assoc "aj8_edit_file" gptel-tools)))
+             (edit-func (gptel-tool-function edit-tool))
+             (result (funcall edit-func test-file "Hello World" "Hello GPtel")))
+        (should (string-match-p "successfully" result)))
+
+      ;; Step 4: Verify changes
+      (let* ((read-tool (cdr (assoc "aj8_read_file_section" gptel-tools)))
+             (read-func (gptel-tool-function read-tool))
+             (new-content (funcall read-func test-file)))
+        (should (string-match-p "Hello GPtel" new-content))
+        (should-not (string-match-p "Hello World" new-content))))))
+
+(ert-deftest test-gptel-tool-complex-edits ()
+  "Test complex editing scenarios that an LLM might perform."
+  :tags '(integration complex-edits)
+  (with-temp-buffer-with-content "*complex-edit-test*"
+    "function calculateSum(a, b) {\n    return a + b;\n}\n\nfunction calculateProduct(a, b) {\n    return a * b;\n}\n\nfunction main() {\n    console.log('Starting calculations');\n    let sum = calculateSum(5, 3);\n    let product = calculateProduct(4, 6);\n    console.log('Results:', sum, product);\n}"
+
+    ;; Simulate LLM making multiple related edits
+    (let* ((edit-tool (cdr (assoc "aj8_apply_buffer_edits" gptel-tools)))
+           (edit-func (gptel-tool-function edit-tool))
+           (edits '((:line-number 1 :old-string "calculateSum" :new-string "addNumbers")
+                   (:line-number 5 :old-string "calculateProduct" :new-string "multiplyNumbers")
+                   (:line-number 9 :old-string "calculateSum" :new-string "addNumbers")
+                   (:line-number 10 :old-string "calculateProduct" :new-string "multiplyNumbers"))))
+
+      (funcall edit-func "*complex-edit-test*" edits)
+
+      ;; Verify all changes were applied
+      (let ((content (buffer-string)))
+        (should (string-match-p "function addNumbers" content))
+        (should (string-match-p "function multiplyNumbers" content))
+        (should (string-match-p "addNumbers(5, 3)" content))
+        (should (string-match-p "multiplyNumbers(4, 6)" content))
+        (should-not (string-match-p "calculateSum" content))
+        (should-not (string-match-p "calculateProduct" content))))))
+
+;;
+;;; 5. Test Runner Functions (interactive)
+;;
+
+(defun aj8/run-all-gptel-tool-tests (&optional tag)
+  "Run all ERT tests defined for gptel tools.
+With optional TAG argument, run only tests with that tag.
+Without a tag, run all tests with the 'test' tag."
+  (interactive
+   (list (intern (completing-read "Run tests with tag (default: test): "
+                                 '("test" "buffers" "filesystem" "emacs" "project" "review"
+                                   "integration" "gptel-tools" "json" "error-handling"
+                                   "presets" "mock-llm" "workflow" "simulation" "complex-edits")
+                                 nil t nil nil "test"))))
+  (ert-run-tests-interactively (if tag
+                                  `(tag ,tag)
+                                '(tag test))))
+
+(defun aj8/run-gptel-tests-by-tag (tag)
+  "Run all GPtel tests with the specified TAG."
+  (interactive
+   (list (completing-read "Select tag: "
+                         '("test" "buffers" "filesystem" "emacs" "project" "review"
+                           "integration" "gptel-tools" "json" "error-handling"
+                           "presets" "mock-llm" "workflow" "simulation" "complex-edits")
+                         nil t)))
+  (ert (format "(tag %s)" tag)))
+
+(defun aj8/run-gptel-integration-tests (&optional selector)
+  "Run GPtel tool integration tests.
+With a prefix argument, prompt for a test SELECTOR."
+  (interactive "P")
+  (let ((test-selector-str (if selector
+                               (completing-read "Run tests with selector: "
+                                                '("integration" "gptel-tools" "json" "error-handling" "presets" "mock-llm"))
+                             "integration")))
+    (ert `(tag ,(intern test-selector-str)))))
+
+;;
+;;; 6. Manual Testing & Utility Functions (interactive)
+;;
+
+(defun aj8/test-gptel-tool-direct (tool-name)
+  "Test a GPtel tool directly by name.
+TOOL-NAME is the name of the tool to test (e.g., 'aj8_list_buffers')."
+  (interactive
+   (list (completing-read "Select tool: "
+                         (mapcar #'gptel-tool-name gptel-tools)
+                         nil t)))
+  (let* ((tool (cl-find-if (lambda (item) (string-equal (gptel-tool-name item) tool-name)) gptel-tools))
+         (func (when tool (gptel-tool-function tool))))
+    (if (and func (functionp func))
+        (condition-case err
+            (let ((result (if (gptel-tool-args tool)
+                             (message "Tool requires arguments: %S"
+                                     (gptel-tool-args tool))
+                           (funcall func))))
+              (message "Tool %s result: %S" tool-name result)
+              result)
+          (error (message "Error testing tool %s: %s"
+                         tool-name (error-message-string err))))
+      (message "Tool function not found for %s" tool-name))))
 
 (defun aj8/test-gptel-tools-interactively ()
   "Interactively test GPtel tools by simulating LLM requests.
@@ -532,82 +612,6 @@ Returns a list of any validation errors found."
       (message "All GPtel tools validated successfully!")
       nil)))
 
-;; --- Enhanced Test Runner ---
-
-(defun aj8/run-gptel-integration-tests (&optional selector)
-  "Run GPtel tool integration tests.
-With a prefix argument, prompt for a test SELECTOR."
-  (interactive "P")
-  (let ((test-selector-str (if selector
-                               (completing-read "Run tests with selector: "
-                                                '("integration" "gptel-tools" "json" "error-handling" "presets" "mock-llm"))
-                             "integration")))
-    (ert `(tag ,(intern test-selector-str)))))
-;;
-;; Category: Real-world LLM Interaction Simulation
-;;
-
-(ert-deftest test-gptel-tool-workflow-simulation ()
-  "Simulate a realistic workflow where an LLM uses multiple tools in sequence."
-  :tags '(integration workflow simulation)
-  (with-temp-project
-    (with-temp-file-with-content test-file "def hello():\n    print('Hello World')\n\ndef goodbye():\n    print('Goodbye')"
-      ;; Simulate LLM workflow:
-      ;; 1. List project files
-      ;; 2. Read a file
-      ;; 3. Edit the file
-      ;; 4. Verify changes
-
-      ;; Step 1: Find Python files
-      (let* ((find-tool (cdr (assoc "aj8_project_find_files_glob" gptel-tools)))
-             (find-func (gptel-tool-function find-tool))
-             (py-files (funcall find-func "**/*.py")))
-        (should (> (length py-files) 0)))
-
-      ;; Step 2: Read file content
-      (let* ((read-tool (cdr (assoc "aj8_read_file_section" gptel-tools)))
-             (read-func (gptel-tool-function read-tool))
-             (content (funcall read-func test-file)))
-        (should (string-match-p "Hello World" content)))
-
-      ;; Step 3: Edit the file
-      (let* ((edit-tool (cdr (assoc "aj8_edit_file" gptel-tools)))
-             (edit-func (gptel-tool-function edit-tool))
-             (result (funcall edit-func test-file "Hello World" "Hello GPtel")))
-        (should (string-match-p "successfully" result)))
-
-      ;; Step 4: Verify changes
-      (let* ((read-tool (cdr (assoc "aj8_read_file_section" gptel-tools)))
-             (read-func (gptel-tool-function read-tool))
-             (new-content (funcall read-func test-file)))
-        (should (string-match-p "Hello GPtel" new-content))
-        (should-not (string-match-p "Hello World" new-content))))))
-
-(ert-deftest test-gptel-tool-complex-edits ()
-  "Test complex editing scenarios that an LLM might perform."
-  :tags '(integration complex-edits)
-  (with-temp-buffer-with-content "*complex-edit-test*"
-    "function calculateSum(a, b) {\n    return a + b;\n}\n\nfunction calculateProduct(a, b) {\n    return a * b;\n}\n\nfunction main() {\n    console.log('Starting calculations');\n    let sum = calculateSum(5, 3);\n    let product = calculateProduct(4, 6);\n    console.log('Results:', sum, product);\n}"
-
-    ;; Simulate LLM making multiple related edits
-    (let* ((edit-tool (cdr (assoc "aj8_apply_buffer_edits" gptel-tools)))
-           (edit-func (gptel-tool-function edit-tool))
-           (edits '((:line-number 1 :old-string "calculateSum" :new-string "addNumbers")
-                   (:line-number 5 :old-string "calculateProduct" :new-string "multiplyNumbers")
-                   (:line-number 9 :old-string "calculateSum" :new-string "addNumbers")
-                   (:line-number 10 :old-string "calculateProduct" :new-string "multiplyNumbers"))))
-
-      (funcall edit-func "*complex-edit-test*" edits)
-
-      ;; Verify all changes were applied
-      (let ((content (buffer-string)))
-        (should (string-match-p "function addNumbers" content))
-        (should (string-match-p "function multiplyNumbers" content))
-        (should (string-match-p "addNumbers(5, 3)" content))
-        (should (string-match-p "multiplyNumbers(4, 6)" content))
-        (should-not (string-match-p "calculateSum" content))
-        (should-not (string-match-p "calculateProduct" content))))))
-
 (defun aj8/benchmark-gptel-tools ()
   "Benchmark GPtel tool performance to ensure they're fast enough for LLM use."
   (interactive)
@@ -652,8 +656,6 @@ With a prefix argument, prompt for a test SELECTOR."
       (insert "\n=== Benchmark Complete ===\n")
       (goto-char (point-min)))
     (switch-to-buffer "*GPtel Tool Benchmark*")))
-
-;; --- Manual Testing Helper ---
 
 (defun aj8/create-gptel-tool-test-scenario ()
   "Create a test scenario for manually testing GPtel tools with a real LLM.
