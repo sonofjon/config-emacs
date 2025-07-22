@@ -612,51 +612,6 @@ Returns a list of any validation errors found."
       (message "All Gptel tools validated successfully!")
       nil)))
 
-(defun aj8/benchmark-gptel-tools ()
-  "Benchmark Gptel tool performance to ensure they're fast enough for LLM use."
-  (interactive)
-  (let ((results '())
-        (iterations 10))
-
-    ;; Benchmark list buffers
-    (condition-case err
-        (let ((start-time (current-time)))
-          (dotimes (_ iterations)
-            (let* ((tool-def (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) "aj8_list_buffers")) gptel-tools))
-                   (func (gptel-tool-function tool-def)))
-              (when (functionp func)
-                (funcall func))))
-          (let ((elapsed (float-time (time-subtract (current-time) start-time))))
-            (push (cons "aj8_list_buffers" (/ elapsed iterations)) results)))
-      (error (push (cons "aj8_list_buffers" (format "ERROR: %s" (error-message-string err))) results)))
-
-    ;; Benchmark documentation lookup
-    (condition-case err
-        (let ((start-time (current-time)))
-          (dotimes (_ iterations)
-            (let* ((tool-def (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) "aj8_read_documentation")) gptel-tools))
-                   (func (gptel-tool-function tool-def)))
-              (when (functionp func)
-                (funcall func "car"))))
-          (let ((elapsed (float-time (time-subtract (current-time) start-time))))
-            (push (cons "aj8_read_documentation" (/ elapsed iterations)) results)))
-      (error (push (cons "aj8_read_documentation" (format "ERROR: %s" (error-message-string err))) results)))
-
-    ;; Display results
-    (with-current-buffer (get-buffer-create "*Gptel Tool Benchmark*")
-      (erase-buffer)
-      (insert "=== Gptel Tool Performance Benchmark ===\n\n")
-      (insert (format "Iterations per tool: %d\n\n" iterations))
-      (dolist (result (reverse results))
-        (let ((name (car result))
-              (value (cdr result)))
-          (if (numberp value)
-              (insert (format "%-30s: %.4f seconds\n" name value))
-            (insert (format "%-30s: %s\n" name value)))))
-      (insert "\n=== Benchmark Complete ===\n")
-      (goto-char (point-min)))
-    (switch-to-buffer "*Gptel Tool Benchmark*")))
-
 (defun aj8/create-gptel-tool-test-scenario ()
   "Create a test scenario for manually testing Gptel tools with a real LLM.
 This sets up buffers and files that you can reference when testing with Gptel."
