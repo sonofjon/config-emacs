@@ -100,9 +100,9 @@ those not associated with any file."
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test buffer-file path conversions.
 
-  Verifies that `aj8/gptel-tool-buffer-to-file' and
-  `aj8/gptel-tool-file-to-buffer' correctly convert between buffer names
-  and file paths, and that they signal errors for invalid inputs."
+Verifies that `aj8/gptel-tool-buffer-to-file' and
+`aj8/gptel-tool-file-to-buffer' correctly convert between buffer names
+and file paths, and that they signal errors for invalid inputs."
   :tags '(unit buffers)
   (with-temp-file-with-content test-file "content"
     (let ((buffer (find-file-noselect test-file)))
@@ -150,8 +150,7 @@ found or is not unique."
 (ert-deftest test-aj8-apply-buffer-edits ()
   "Test `aj8/gptel-tool-apply-buffer-edits'.
 
-Ensures that a list of edits is applied correctly to a buffer.  The
-edits are applied from bottom to top to preserve line numbers."
+Ensures that a list of edits is applied correctly to a buffer."
   :tags '(unit buffers)
   (with-temp-buffer-with-content "*test-apply-edits*" "Line one.\nLine two.\nLine three."
     (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
@@ -334,10 +333,10 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
 ;;; 4.1. Category: Gptel Tool System Integration
 
 (ert-deftest test-gptel-tool-registration ()
-  "Verify all Gptel tools are registered in `gptel-tools'.
+  "Verify that all Gptel tools are registered in `gptel-tools'.
 
 This test checks that a predefined list of essential tool names exists
-in the `gptel-tools' alist, ensuring none are accidentally removed."
+in the `gptel-tools' alist."
   :tags '(integration tools)
   (let ((expected-tools '("aj8_list_buffers"
                          "aj8_buffer_to_file"
@@ -569,7 +568,7 @@ several related edits in a single buffer, using
 ;;
 
 (defun aj8/gptel-tool-test-run-all ()
-  "Run all ERT tests defined for gptel tools."
+  "Run all ERT tests defined for Gptel tools."
   (interactive)
   (ert t))
 
@@ -584,7 +583,7 @@ several related edits in a single buffer, using
   (ert '(tag integration)))
 
 (defun aj8/gptel-tool-test-run-by-tag (tag)
-  "Run all Gptel tests with a specified TAG."
+  "Run all Gptel tool tests with a specified TAG."
   (interactive
    (list (completing-read "Select tag: "
                          '("unit" "buffers" "files" "emacs" "project" "review"
