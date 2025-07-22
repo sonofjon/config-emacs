@@ -362,7 +362,7 @@ in the `gptel-tools' alist."
                          "aj8_project_find_files_glob"
                          "aj8_project_search_content")))
     (dolist (tool-name expected-tools)
-      (should (assoc tool-name gptel-tools)))))
+      (should (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools)))))
 
 (ert-deftest test-gptel-tool-json-schema-validation ()
   "Validate the structure of each `gptel-tool' definition.
@@ -391,7 +391,7 @@ their associated functions can be called without error."
                         "aj8_project_get_open_buffers")))
     ;; Test tools that don't require arguments
     (dolist (tool-name no-arg-tools)
-      (let* ((tool-def (cdr (assoc tool-name gptel-tools)))
+      (let* ((tool-def (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools))
              (func (gptel-tool-function tool-def)))
         (should (functionp func))
         (should-not (condition-case nil
@@ -407,14 +407,14 @@ both a query and a buffer modification tool."
   :tags '(integration tools json)
   (with-temp-buffer-with-content "*test-json-call*" "Hello World\nLine 2"
     ;; Test list buffers tool
-    (let* ((tool-def (cdr (assoc "aj8_list_buffers" gptel-tools)))
+    (let* ((tool-def (cl-find "aj8_list_buffers" gptel-tools :key #'gptel-tool-name :test #'string-equal))
            (func (gptel-tool-function tool-def))
            (result (funcall func)))
       (should (listp result))
       (should (member "*test-json-call*" result)))
 
     ;; Test edit buffer tool with JSON-like parameters
-    (let* ((tool-def (cdr (assoc "aj8_edit_buffer" gptel-tools)))
+    (let* ((tool-def (cl-find "aj8_edit_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
            (func (gptel-tool-function tool-def))
            (result (funcall func "*test-json-call*" "World" "Gptel")))
       (should (string-match-p "successfully" result))
@@ -428,14 +428,14 @@ invalid arguments, such as a non-existent buffer name or an invalid file
 path."
   :tags '(integration tools errors)
   ;; Test with non-existent buffer
-  (let* ((tool-def (cdr (assoc "aj8_edit_buffer" gptel-tools)))
+  (let* ((tool-def (cl-find "aj8_edit_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
          (func (gptel-tool-function tool-def)))
     (should (condition-case err
                 (funcall func "*non-existent-buffer*" "old" "new")
               (error (string-match-p "Buffer.*not found" (error-message-string err))))))
 
   ;; Test with invalid file path
-  (let* ((tool-def (cdr (assoc "aj8_read_file_section" gptel-tools)))
+  (let* ((tool-def (cl-find "view_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
          (func (gptel-tool-function tool-def)))
     (should (condition-case err
                 (funcall func "/non/existent/file.txt")
@@ -463,7 +463,7 @@ Ensures that the `coding` preset has tool usage enabled and that the
 This helper function looks up TOOL-NAME in `gptel-tools', applies ARGS
 to its function, and asserts that the formatted result matches
 EXPECTED-PATTERN."
-  (let* ((tool-def (cdr (assoc tool-name gptel-tools)))
+  (let* ((tool-def (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools))
          (func (gptel-tool-function tool-def))
          (result (apply func args)))
     (should (string-match-p expected-pattern (format "%s" result)))
@@ -510,25 +510,25 @@ the tools work together to complete a complex operation."
       ;; 4. Verify changes
 
       ;; Step 1: Find Python files
-      (let* ((find-tool (cdr (assoc "aj8_project_find_files_glob" gptel-tools)))
+      (let* ((find-tool (cl-find "aj8_project_find_files_glob" gptel-tools :key #'gptel-tool-name :test #'string-equal))
              (find-func (gptel-tool-function find-tool))
              (py-files (funcall find-func "**/*.py")))
         (should (> (length py-files) 0)))
 
       ;; Step 2: Read file content
-      (let* ((read-tool (cdr (assoc "aj8_read_file_section" gptel-tools)))
+      (let* ((read-tool (cl-find "view_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
              (read-func (gptel-tool-function read-tool))
              (content (funcall read-func test-file)))
         (should (string-match-p "Hello World" content)))
 
       ;; Step 3: Edit the file
-      (let* ((edit-tool (cdr (assoc "aj8_edit_file" gptel-tools)))
+      (let* ((edit-tool (cl-find "aj8_edit_file" gptel-tools :key #'gptel-tool-name :test #'string-equal))
              (edit-func (gptel-tool-function edit-tool))
              (result (funcall edit-func test-file "Hello World" "Hello Gptel")))
         (should (string-match-p "successfully" result)))
 
       ;; Step 4: Verify changes
-      (let* ((read-tool (cdr (assoc "aj8_read_file_section" gptel-tools)))
+      (let* ((read-tool (cl-find "view_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
              (read-func (gptel-tool-function read-tool))
              (new-content (funcall read-func test-file)))
         (should (string-match-p "Hello Gptel" new-content))
@@ -544,24 +544,23 @@ several related edits in a single buffer, using
   (with-temp-buffer-with-content "*complex-edit-test*"
     "function calculateSum(a, b) {\n    return a + b;\n}\n\nfunction calculateProduct(a, b) {\n    return a * b;\n}\n\nfunction main() {\n    console.log('Starting calculations');\n    let sum = calculateSum(5, 3);\n    let product = calculateProduct(4, 6);\n    console.log('Results:', sum, product);\n}"
 
-  ;; Simulate LLM making multiple related edits
-  (let* ((edit-tool (cdr (assoc "aj8_apply_buffer_edits" gptel-tools)))
-         (edit-func (gptel-tool-function edit-tool))
-         (edits '((:line-number 1 :old-string "calculateSum" :new-string "addNumbers")
-                  (:line-number 5 :old-string "calculateProduct" :new-string "multiplyNumbers")
-                  (:line-number 9 :old-string "calculateSum" :new-string "addNumbers")
-                  (:line-number 10 :old-string "calculateProduct" :new-string "multiplyNumbers"))))
+    (let* ((edit-tool (cl-find "aj8_apply_buffer_edits" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+           (edit-func (gptel-tool-function edit-tool))
+           (edits '((:line-number 1 :old-string "calculateSum" :new-string "addNumbers")
+                    (:line-number 5 :old-string "calculateProduct" :new-string "multiplyNumbers")
+                    (:line-number 9 :old-string "calculateSum" :new-string "addNumbers")
+                    (:line-number 10 :old-string "calculateProduct" :new-string "multiplyNumbers"))))
 
-    (funcall edit-func "*complex-edit-test*" edits)
+      (funcall edit-func "*complex-edit-test*" edits)
 
-    ;; Verify all changes were applied
-    (let ((content (buffer-string)))
-      (should (string-match-p "function addNumbers" content))
-      (should (string-match-p "function multiplyNumbers" content))
-      (should (string-match-p "addNumbers(5, 3)" content))
-      (should (string-match-p "multiplyNumbers(4, 6)" content))
-      (should-not (string-match-p "calculateSum" content))
-      (should-not (string-match-p "calculateProduct" content))))))
+      ;; Verify all changes were applied
+      (let ((content (buffer-string)))
+        (should (string-match-p "function addNumbers" content))
+        (should (string-match-p "function multiplyNumbers" content))
+        (should (string-match-p "addNumbers(5, 3)" content))
+        (should (string-match-p "multiplyNumbers(4, 6)" content))
+        (should-not (string-match-p "calculateSum" content))
+        (should-not (string-match-p "calculateProduct" content))))))
 
 ;;
 ;;; 5. Test Runner Functions (interactive)
