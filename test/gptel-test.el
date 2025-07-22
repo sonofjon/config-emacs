@@ -592,6 +592,34 @@ several related edits in a single buffer, using
                          nil t)))
   (ert `(tag ,(intern tag))))
 
+(defun aj8/gptel-tool-test-run-by-name ()
+  "Run a single Gptel tool test selected by name."
+  (interactive)
+  (let* ((all-tests (ert-select-tests t t))
+         (test-choices
+          (mapcar (lambda (test)
+                    (let* ((test-name (ert-test-name test))
+                           (test-def (get test-name 'ert--test))
+                           (tags (when test-def (ert-test-tags test-def)))
+                           (doc (when test-def
+                                  (ert-test-documentation test-def)))
+                           (tag-string (if tags
+                                           (format " [%s]"
+                                                   (mapconcat #'symbol-name tags ", "))
+                                         ""))
+                           (doc-preview (if (and doc (> (length doc) 0))
+                                            (let ((first-line (car (split-string doc "\n" t))))
+                                              (format " - %s" first-line))
+                                          "")))
+                      (cons (format "%s%s%s" test-name tag-string doc-preview)
+                            test-name)))
+                  all-tests))
+         (selected-display (completing-read "Select test to run: " test-choices nil t))
+         (selected-test (cdr (assoc selected-display test-choices))))
+    (if selected-test
+        (ert selected-test)
+      (message "No test selected"))))
+
 ;;
 ;;; 6. Manual Testing & Utility Functions (interactive)
 ;;
