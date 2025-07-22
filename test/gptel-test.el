@@ -543,7 +543,7 @@ how tools would be called by an actual LLM."
       (erase-buffer)
       (insert "=== Gptel Tool Integration Test ===\n\n")
 
-      ;; Test 1: List available tools
+      ;; Test 1: Available tools
       (insert "1. Available tools:\n")
       (dolist (tool-struct gptel-tools)
         (insert (format "   - %s: %s\n"
