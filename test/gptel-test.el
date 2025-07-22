@@ -496,7 +496,7 @@ Without a tag, run all tests with the 'unit' tag."
                            "integration" "tools" "json" "errors"
                            "presets" "mock" "workflow" "edits")
                          nil t)))
-  (ert (format "(tag %s)" tag)))
+  (ert `(tag ,(intern tag))))
 
 (defun aj8/gptel-tool-test-run-integration (&optional selector)
   "Run Gptel tool integration tests.
