@@ -457,7 +457,7 @@ path."
          (func (gptel-tool-function tool-def)))
     (should (condition-case err
                 (funcall func "/non/existent/file.txt")
-              (error (string-match-p "No such file" (error-message-string err)))))))
+              (file-error (string-match-p "No such file" (error-message-string err)))))))
 
 ;;; 4.2. Category: Real-world Workflow Simulation
 
