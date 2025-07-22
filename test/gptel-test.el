@@ -85,7 +85,7 @@ directory."
 ;;; 3.1. Category: Buffers
 
 (ert-deftest test-aj8-list-buffers ()
-  "Test `aj8/gptel-tool-list-buffers`.
+  "Test `aj8/gptel-tool-list-buffers'.
 
 Ensures the function lists buffers associated with files and excludes
 those not associated with any file."
@@ -100,8 +100,8 @@ those not associated with any file."
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test buffer-file path conversions.
 
-  Verifies that `aj8/gptel-tool-buffer-to-file` and
-  `aj8/gptel-tool-file-to-buffer` correctly convert between buffer names
+  Verifies that `aj8/gptel-tool-buffer-to-file' and
+  `aj8/gptel-tool-file-to-buffer' correctly convert between buffer names
   and file paths, and that they signal errors for invalid inputs."
   :tags '(unit buffers)
   (with-temp-file-with-content test-file "content"
@@ -119,8 +119,8 @@ those not associated with any file."
 (ert-deftest test-aj8-buffer-modification-tools ()
   "Test buffer content modification functions.
 
-This test covers `aj8/gptel-tool-append-to-buffer`,
-`aj8/gptel-tool-insert-into-buffer`, and `aj8/gptel-tool-modify-buffer`,
+This test covers `aj8/gptel-tool-append-to-buffer',
+`aj8/gptel-tool-insert-into-buffer', and `aj8/gptel-tool-modify-buffer',
 ensuring they alter the buffer content as expected."
   :tags '(unit buffers)
   (with-temp-buffer-with-content "*test-modify*" "Line 1\nLine 3"
@@ -135,7 +135,7 @@ ensuring they alter the buffer content as expected."
     (should (string-equal (buffer-string) "New Content"))))
 
 (ert-deftest test-aj8-edit-buffer ()
-  "Test `aj8/gptel-tool-edit-buffer`.
+  "Test `aj8/gptel-tool-edit-buffer'.
 
 Verifies that a single, unique string can be replaced in a buffer.  It
 also confirms that an error is signaled if the target string is not
@@ -148,7 +148,7 @@ found or is not unique."
     (should-error (aj8/gptel-tool-edit-buffer "*test-edit*" "hello" "hi") :type 'error)))
 
 (ert-deftest test-aj8-apply-buffer-edits ()
-  "Test `aj8/gptel-tool-apply-buffer-edits`.
+  "Test `aj8/gptel-tool-apply-buffer-edits'.
 
 Ensures that a list of edits is applied correctly to a buffer.  The
 edits are applied from bottom to top to preserve line numbers."
@@ -160,7 +160,7 @@ edits are applied from bottom to top to preserve line numbers."
       (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE.")))))
 
 (ert-deftest test-aj8-apply-buffer-edits-with-review ()
-  "Test `aj8/gptel-tool-apply-buffer-edits-with-review`.
+  "Test `aj8/gptel-tool-apply-buffer-edits-with-review'.
 
 Verifies that the function prepares edits and invokes the Ediff review
 system, without altering the original buffer."
@@ -168,7 +168,7 @@ system, without altering the original buffer."
   (with-temp-buffer-with-content "*test-review*" "Line one.\nLine two."
     (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
           (ediff-called nil))
-      ;; Temporarily advise `ediff-buffers` to check if it's called,
+      ;; Temporarily advise `ediff-buffers' to check if it's called,
       ;; without actually starting the interactive session.
       (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2) (setq ediff-called t))))
         (aj8/gptel-tool-apply-buffer-edits-with-review "*test-review*" edits))
@@ -180,7 +180,7 @@ system, without altering the original buffer."
 ;;; 3.2. Category: Filesystem
 
 (ert-deftest test-aj8-read-file-section ()
-  "Test `aj8/gptel-tool-read-file-section`.
+  "Test `aj8/gptel-tool-read-file-section'.
 
 Verifies that the function can read a whole file, a section from the
 middle, a section from the beginning, and a section to the end."
@@ -202,8 +202,8 @@ middle, a section from the beginning, and a section to the end."
 (ert-deftest test-aj8-file-modification ()
   "Test file content modification functions.
 
-This test covers `aj8/gptel-tool-append-to-file`,
-`aj8/gptel-tool-insert-into-file`, and `aj8/gptel-tool-edit-file`,
+This test covers `aj8/gptel-tool-append-to-file',
+`aj8/gptel-tool-insert-into-file', and `aj8/gptel-tool-edit-file',
 ensuring they alter file content on disk as expected."
   :tags '(unit files)
   (with-temp-file-with-content test-file "Line 1\nLine 3"
@@ -221,7 +221,7 @@ ensuring they alter file content on disk as expected."
                           "Line 1\nLine 2\nLine 3\nLine FOUR"))))
 
 (ert-deftest test-aj8-apply-file-edits ()
-  "Test `aj8/gptel-tool-apply-file-edits`.
+  "Test `aj8/gptel-tool-apply-file-edits'.
 
 Ensures that a list of edits is applied correctly to a file on disk."
   :tags '(unit files)
@@ -233,7 +233,7 @@ Ensures that a list of edits is applied correctly to a file on disk."
                             "Line ONE.\nLine two.\nLine THREE.")))))
 
 (ert-deftest test-aj8-apply-file-edits-with-review ()
-  "Test `aj8/gptel-tool-apply-file-edits-with-review`.
+  "Test `aj8/gptel-tool-apply-file-edits-with-review'.
 
 Verifies that the function prepares file edits and invokes the Ediff
 review system, without altering the original file."
@@ -251,7 +251,7 @@ review system, without altering the original file."
 ;;; 3.3. Category: Emacs
 
 (ert-deftest test-aj8-read-documentation ()
-  "Test `aj8/gptel-tool-read-documentation`.
+  "Test `aj8/gptel-tool-read-documentation'.
 
 Verifies that documentation can be retrieved for both functions and
 variables, and that a meaningful message is returned for symbols with no
@@ -262,7 +262,7 @@ documentation."
   (should (string-match-p "No documentation found" (aj8/gptel-tool-read-documentation "non-existent-symbol-xyz"))))
 
 (ert-deftest test-aj8-read-function-and-library ()
-  "Test `aj8/gptel-tool-read-function` and `aj8/gptel-tool-read-library`.
+  "Test `aj8/gptel-tool-read-function' and `aj8/gptel-tool-read-library'.
 
 Ensures that the source code for both a specific function and an entire
 library can be retrieved."
@@ -281,8 +281,8 @@ library can be retrieved."
 (ert-deftest test-aj8-info-lookup ()
   "Test Info manual lookup tools.
 
-Verifies that `aj8/gptel-tool-read-info-symbol` and
-`aj8/gptel-tool-read-info-node` can retrieve content from the Emacs Lisp
+Verifies that `aj8/gptel-tool-read-info-symbol' and
+`aj8/gptel-tool-read-info-node' can retrieve content from the Emacs Lisp
 Info manual."
   :tags '(unit emacs)
   (should (string-match-p "special form in `Lisp'" (aj8/gptel-tool-read-info-symbol "defun")))
@@ -293,8 +293,8 @@ Info manual."
 (ert-deftest test-aj8-project-root-and-buffers ()
   "Test project root and buffer listing.
 
-Verifies `aj8/gptel-tool-project-get-root` and
-`aj8/gptel-tool-project-get-open-buffers` within a temporary project."
+Verifies `aj8/gptel-tool-project-get-root' and
+`aj8/gptel-tool-project-get-open-buffers' within a temporary project."
   :tags '(unit project)
   (with-temp-project
     (let ((root (file-truename default-directory)))
@@ -311,8 +311,8 @@ Verifies `aj8/gptel-tool-project-get-root` and
 (ert-deftest test-aj8-project-find-and-search ()
   "Test project file finding and content searching.
 
-Verifies `aj8/gptel-tool-project-find-files-glob` for file searching and
-`aj8/gptel-tool-project-search-content` for content searching."
+Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
+`aj8/gptel-tool-project-search-content' for content searching."
   :tags '(unit project)
   (with-temp-project
     ;; Test find files glob
@@ -334,10 +334,10 @@ Verifies `aj8/gptel-tool-project-find-files-glob` for file searching and
 ;;; 4.1. Category: Gptel Tool System Integration
 
 (ert-deftest test-gptel-tool-registration ()
-  "Verify all Gptel tools are registered in `gptel-tools`.
+  "Verify all Gptel tools are registered in `gptel-tools'.
 
 This test checks that a predefined list of essential tool names exists
-in the `gptel-tools` alist, ensuring none are accidentally removed."
+in the `gptel-tools' alist, ensuring none are accidentally removed."
   :tags '(integration tools)
   (let ((expected-tools '("aj8_list_buffers"
                          "aj8_buffer_to_file"
@@ -366,7 +366,7 @@ in the `gptel-tools` alist, ensuring none are accidentally removed."
       (should (assoc tool-name gptel-tools)))))
 
 (ert-deftest test-gptel-tool-json-schema-validation ()
-  "Validate the structure of each `gptel-tool` definition.
+  "Validate the structure of each `gptel-tool' definition.
 
 Ensures that every registered tool definition has the required
 properties, such as `:function` and `:description`, and that the
@@ -461,7 +461,7 @@ Ensures that the `coding` preset has tool usage enabled and that the
 (defun aj8/gptel-tool-test--run-with-mock-llm (tool-name args expected-pattern)
   "Simulate an LLM call to a Gptel tool and check the result.
 
-This helper function looks up TOOL-NAME in `gptel-tools`, applies ARGS
+This helper function looks up TOOL-NAME in `gptel-tools', applies ARGS
 to its function, and asserts that the formatted result matches
 EXPECTED-PATTERN."
   (let* ((tool-def (cdr (assoc tool-name gptel-tools)))
@@ -540,7 +540,7 @@ the tools work together to complete a complex operation."
 
 Simulates an LLM performing a refactoring task that requires making
 several related edits in a single buffer, using
-`aj8/gptel-tool-apply-buffer-edits` to apply them all at once."
+`aj8/gptel-tool-apply-buffer-edits' to apply them all at once."
   :tags '(integration edits)
   (with-temp-buffer-with-content "*complex-edit-test*"
     "function calculateSum(a, b) {\n    return a + b;\n}\n\nfunction calculateProduct(a, b) {\n    return a * b;\n}\n\nfunction main() {\n    console.log('Starting calculations');\n    let sum = calculateSum(5, 3);\n    let product = calculateProduct(4, 6);\n    console.log('Results:', sum, product);\n}"
@@ -640,7 +640,7 @@ TOOL-NAME is the name of the tool to run (e.g., 'aj8_list_buffers')."
       (message "Tool function not found for %s" tool-name))))
 
 (defun aj8/gptel-tool-validate-definitions ()
-  "Validate that all entries in `gptel-tools` are well-formed.
+  "Validate that all entries in `gptel-tools' are well-formed.
 
 This function checks that each tool is a valid `gptel-tool` struct and
 includes the required fields: a `:name`, a callable `:function`, and a
