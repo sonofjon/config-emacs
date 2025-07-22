@@ -75,7 +75,7 @@
 
 (ert-deftest test-aj8-list-buffers ()
   "Test `aj8/gptel-tool-list-buffers`."
-  :tags '(test buffers)
+  :tags '(unit buffers)
   (with-temp-file-with-content tmp-file "file content"
     (find-file-noselect tmp-file)
     (with-temp-buffer-with-content "*non-file-buffer*" "some content"
@@ -85,7 +85,7 @@
 
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test `aj8/gptel-tool-buffer-to-file` and `aj8/gptel-tool-file-to-buffer`."
-  :tags '(test buffers)
+  :tags '(unit buffers)
   (with-temp-file-with-content test-file "content"
     (let ((buffer (find-file-noselect test-file)))
       (unwind-protect
@@ -100,7 +100,7 @@
 
 (ert-deftest test-aj8-buffer-modification-tools ()
   "Test `aj8_append_to_buffer`, `aj8_insert_into_buffer`, and `aj8_modify_buffer`."
-  :tags '(test buffers)
+  :tags '(unit buffers)
   (with-temp-buffer-with-content "*test-modify*" "Line 1\nLine 3"
     ;; Append
     (aj8/gptel-tool-append-to-buffer "*test-modify*" "\nLine 4")
@@ -114,7 +114,7 @@
 
 (ert-deftest test-aj8-edit-buffer ()
   "Test `aj8/gptel-tool-edit-buffer`."
-  :tags '(test buffers)
+  :tags '(unit buffers)
   (with-temp-buffer-with-content "*test-edit*" "hello world\nhello universe"
     (aj8/gptel-tool-edit-buffer "*test-edit*" "world" "emacs")
     (should (string-equal (buffer-string) "hello emacs\nhello universe"))
@@ -123,7 +123,7 @@
 
 (ert-deftest test-aj8-apply-buffer-edits ()
   "Test `aj8/gptel-tool-apply-buffer-edits`."
-  :tags '(test buffers)
+  :tags '(unit buffers)
   (with-temp-buffer-with-content "*test-apply-edits*" "Line one.\nLine two.\nLine three."
     (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
                    (:line-number 1 :old-string "one" :new-string "ONE"))))
@@ -132,7 +132,7 @@
 
 (ert-deftest test-aj8-apply-buffer-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-edits-with-review`."
-  :tags '(test buffers review)
+  :tags '(unit buffers review)
   (with-temp-buffer-with-content "*test-review*" "Line one.\nLine two."
     (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
           (ediff-called nil))
@@ -149,7 +149,7 @@
 
 (ert-deftest test-aj8-read-file-section ()
   "Test `aj8/gptel-tool-read-file-section`."
-  :tags '(test filesystem)
+  :tags '(unit files)
   (with-temp-file-with-content test-file "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
     ;; Read whole file
     (should (string-equal (aj8/gptel-tool-read-file-section test-file)
@@ -166,7 +166,7 @@
 
 (ert-deftest test-aj8-file-modification ()
   "Test `aj8_append_to_file`, `aj8_insert_into_file`, `aj8_edit_file`."
-  :tags '(test filesystem)
+  :tags '(unit files)
   (with-temp-file-with-content test-file "Line 1\nLine 3"
     ;; Append
     (aj8/gptel-tool-append-to-file test-file "\nLine 4")
@@ -183,7 +183,7 @@
 
 (ert-deftest test-aj8-apply-file-edits ()
   "Test `aj8/gptel-tool-apply-file-edits`."
-  :tags '(test filesystem)
+  :tags '(unit files)
   (with-temp-file-with-content test-file "Line one.\nLine two.\nLine three."
     (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
                    (:line-number 1 :old-string "one" :new-string "ONE"))))
@@ -193,7 +193,7 @@
 
 (ert-deftest test-aj8-apply-file-edits-with-review ()
   "Test `aj8/gptel-tool-apply-file-edits-with-review`."
-  :tags '(test filesystem review)
+  :tags '(unit files review)
   (with-temp-file-with-content test-file "Line one.\nLine two."
     (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
           (ediff-called nil))
@@ -208,14 +208,14 @@
 
 (ert-deftest test-aj8-read-documentation ()
   "Test `aj8/gptel-tool-read-documentation`."
-  :tags '(test emacs)
+  :tags '(unit emacs)
   (should (string-match-p "Return the car of LIST" (aj8/gptel-tool-read-documentation "car")))
   (should (string-match-p "List of directories to search for files to load" (aj8/gptel-tool-read-documentation "load-path")))
   (should (string-match-p "No documentation found" (aj8/gptel-tool-read-documentation "non-existent-symbol-xyz"))))
 
 (ert-deftest test-aj8-read-function-and-library ()
   "Test `aj8_read_function` and `aj8_read_library` tools."
-  :tags '(test emacs)
+  :tags '(unit emacs)
   (unwind-protect
       (progn
         ;; Test read function
@@ -229,7 +229,7 @@
 
 (ert-deftest test-aj8-info-lookup ()
   "Test `aj8_read_info_symbol` and `aj8_read_info_node` tools."
-  :tags '(test emacs)
+  :tags '(unit emacs)
   (should (string-match-p "special form in `Lisp'" (aj8/gptel-tool-read-info-symbol "defun")))
   (should (string-match-p "A function definition has the form" (aj8/gptel-tool-read-info-node "Defining Functions"))))
 
@@ -237,7 +237,7 @@
 
 (ert-deftest test-aj8-project-root-and-buffers ()
   "Test `aj8_project_get_root` and `aj8_project_get_open_buffers`."
-  :tags '(test project)
+  :tags '(unit project)
   (with-temp-project
     (let ((root (file-truename default-directory)))
       ;; Test get root
@@ -252,7 +252,7 @@
 
 (ert-deftest test-aj8-project-find-and-search ()
   "Test `aj8_project_find_files_glob` and `aj8_project_search_content`."
-  :tags '(test project)
+  :tags '(unit project)
   (with-temp-project
     ;; Test find files glob
     (let ((files (aj8/gptel-tool-project-find-files-glob "**/*.el")))
@@ -274,7 +274,7 @@
 
 (ert-deftest test-gptel-tool-registration ()
   "Test that all Gptel tools are properly registered."
-  :tags '(integration gptel-tools)
+  :tags '(integration tools)
   (let ((expected-tools '("aj8_list_buffers"
                          "aj8_buffer_to_file"
                          "aj8_file_to_buffer"
@@ -303,7 +303,7 @@
 
 (ert-deftest test-gptel-tool-json-schema-validation ()
   "Test that Gptel tools have valid JSON schema definitions."
-  :tags '(integration gptel-tools)
+  :tags '(integration tools)
   (dolist (tool-def gptel-tools)
     (let ((tool-name (gptel-tool-name tool-def)))
       ;; Check that tool has required properties
@@ -315,7 +315,7 @@
 
 (ert-deftest test-gptel-tool-function-callable ()
   "Test that all Gptel tool functions are callable."
-  :tags '(integration gptel-tools)
+  :tags '(integration tools)
   (let ((no-arg-tools '("aj8_list_buffers"
                         "aj8_project_get_root"
                         "aj8_project_get_open_buffers")))
@@ -330,7 +330,7 @@
 
 (ert-deftest test-gptel-tool-via-json-call ()
   "Test calling Gptel tools via JSON-like interface (simulating LLM calls)."
-  :tags '(integration gptel-tools json)
+  :tags '(integration tools json)
   (with-temp-buffer-with-content "*test-json-call*" "Hello World\nLine 2"
     ;; Test list buffers tool
     (let* ((tool-def (cdr (assoc "aj8_list_buffers" gptel-tools)))
@@ -348,7 +348,7 @@
 
 (ert-deftest test-gptel-tool-error-handling ()
   "Test that Gptel tools handle errors gracefully."
-  :tags '(integration gptel-tools error-handling)
+  :tags '(integration tools errors)
   ;; Test with non-existent buffer
   (let* ((tool-def (cdr (assoc "aj8_edit_buffer" gptel-tools)))
          (func (gptel-tool-function tool-def)))
@@ -365,7 +365,7 @@
 
 (ert-deftest test-gptel-preset-tool-integration ()
   "Test that Gptel presets properly enable/disable tools."
-  :tags '(integration gptel-tools presets)
+  :tags '(integration tools presets)
   ;; Check that coding preset has tools enabled
   (let ((coding-preset (cdr (assoc 'coding gptel--presets))))
     (should (plist-get coding-preset :use-tools)))
@@ -389,7 +389,7 @@ EXPECTED-PATTERN is a regexp that should match the result."
 
 (ert-deftest test-gptel-tools-mock-llm-interaction ()
   "Test Gptel tools as if called by an LLM."
-  :tags '(integration gptel-tools mock-llm)
+  :tags '(integration tools mock)
   (with-temp-project
     (with-temp-buffer-with-content "*mock-test*" "Original content\nSecond line"
       ;; Test buffer listing
@@ -411,7 +411,7 @@ EXPECTED-PATTERN is a regexp that should match the result."
 
 (ert-deftest test-gptel-tool-workflow-simulation ()
   "Simulate a realistic workflow where an LLM uses multiple tools in sequence."
-  :tags '(integration workflow simulation)
+  :tags '(integration workflow)
   (with-temp-project
     (with-temp-file-with-content test-file "def hello():\n    print('Hello World')\n\ndef goodbye():\n    print('Goodbye')"
       ;; Simulate LLM workflow:
@@ -447,7 +447,7 @@ EXPECTED-PATTERN is a regexp that should match the result."
 
 (ert-deftest test-gptel-tool-complex-edits ()
   "Test complex editing scenarios that an LLM might perform."
-  :tags '(integration complex-edits)
+  :tags '(integration edits)
   (with-temp-buffer-with-content "*complex-edit-test*"
     "function calculateSum(a, b) {\n    return a + b;\n}\n\nfunction calculateProduct(a, b) {\n    return a * b;\n}\n\nfunction main() {\n    console.log('Starting calculations');\n    let sum = calculateSum(5, 3);\n    let product = calculateProduct(4, 6);\n    console.log('Results:', sum, product);\n}"
 
@@ -477,24 +477,24 @@ EXPECTED-PATTERN is a regexp that should match the result."
 (defun aj8/gptel-tool-test-run-all (&optional tag)
   "Run all ERT tests defined for gptel tools.
 With optional TAG argument, run only tests with that tag.
-Without a tag, run all tests with the 'test' tag."
+Without a tag, run all tests with the 'unit' tag."
   (interactive
-   (list (intern (completing-read "Run tests with tag (default: test): "
-                                 '("test" "buffers" "filesystem" "emacs" "project" "review"
-                                   "integration" "gptel-tools" "json" "error-handling"
-                                   "presets" "mock-llm" "workflow" "simulation" "complex-edits")
-                                 nil t nil nil "test"))))
+   (list (intern (completing-read "Run tests with tag (default: unit): "
+                                 '("unit" "buffers" "files" "emacs" "project" "review"
+                                   "integration" "tools" "json" "errors"
+                                   "presets" "mock" "workflow" "edits")
+                                 nil t nil nil "unit"))))
   (ert-run-tests-interactively (if tag
                                   `(tag ,tag)
-                                '(tag test))))
+                                '(tag unit))))
 
 (defun aj8/gptel-tool-test-run-by-tag (tag)
   "Run all Gptel tests with the specified TAG."
   (interactive
    (list (completing-read "Select tag: "
-                         '("test" "buffers" "filesystem" "emacs" "project" "review"
-                           "integration" "gptel-tools" "json" "error-handling"
-                           "presets" "mock-llm" "workflow" "simulation" "complex-edits")
+                         '("unit" "buffers" "files" "emacs" "project" "review"
+                           "integration" "tools" "json" "errors"
+                           "presets" "mock" "workflow" "edits")
                          nil t)))
   (ert (format "(tag %s)" tag)))
 
@@ -504,7 +504,7 @@ With a prefix argument, prompt for a test SELECTOR."
   (interactive "P")
   (let ((test-selector-str (if selector
                                (completing-read "Run tests with selector: "
-                                                '("integration" "gptel-tools" "json" "error-handling" "presets" "mock-llm"))
+                                                '("integration" "tools" "json" "errors" "presets" "mock"))
                              "integration")))
     (ert `(tag ,(intern test-selector-str)))))
 
