@@ -545,41 +545,6 @@ TOOL-NAME is the name of the tool to run (e.g., 'aj8_list_buffers')."
                          tool-name (error-message-string err))))
       (message "Tool function not found for %s" tool-name))))
 
-(defun aj8/gptel-tool-test-interactive-demo ()
-  "Interactively test Gptel tools by simulating LLM requests.
-This function creates a temporary Gptel buffer and demonstrates
-how tools would be called by an actual LLM."
-  (interactive)
-  (let ((test-buffer (get-buffer-create "*Gptel Tool Test*")))
-    (with-current-buffer test-buffer
-      (erase-buffer)
-      (insert "=== Gptel Tool Integration Test ===\n\n")
-
-      ;; Test 1: Available tools
-      (insert "1. Available tools:\n")
-      (dolist (tool-struct gptel-tools)
-        (insert (format "   - %s: %s\n"
-                        (gptel-tool-name tool-struct)
-                        (gptel-tool-description tool-struct))))
-      (insert "\n")
-
-      ;; Test 2: Test a simple tool
-      (insert "2. Testing aj8_list_buffers:\n")
-      (let* ((tool-struct (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) "aj8_list_buffers")) gptel-tools))
-             (func (when tool-struct (gptel-tool-function tool-struct)))
-             (result (if func (funcall func) "TOOL NOT FOUND")))
-        (insert (format "   Result: %s\n\n" result)))
-
-      ;; Test 3: Test documentation tool
-      (insert "3. Testing aj8_read_documentation for 'car':\n")
-      (let* ((tool-struct (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) "aj8_read_documentation")) gptel-tools))
-             (func (when tool-struct (gptel-tool-function tool-struct)))
-             (result (if func (funcall func "car") "TOOL NOT FOUND")))
-        (insert (format "   Result: %s\n\n" (substring (format "%s" result) 0 (min 200 (length (format "%s" result)))))))
-
-      (insert "=== Test Complete ===\n")
-      (goto-char (point-min)))
-    (switch-to-buffer test-buffer)))
 
 (defun aj8/gptel-tool-test-validate-schemas ()
   "Validate that all Gptel tool schemas are properly formatted.
