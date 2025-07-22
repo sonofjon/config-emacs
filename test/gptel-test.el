@@ -376,7 +376,7 @@
 
 ;;; 4.2. Category: Real-world Workflow Simulation
 
-(defun aj8/test-gptel-tool-with-mock-llm (tool-name args expected-pattern)
+(defun aj8/gptel-tool-test--run-with-mock-llm (tool-name args expected-pattern)
   "Helper function to test a Gptel tool by simulating LLM usage.
 TOOL-NAME is the name of the tool to test.
 ARGS is a list of arguments to pass to the tool.
@@ -393,19 +393,19 @@ EXPECTED-PATTERN is a regexp that should match the result."
   (with-temp-project
     (with-temp-buffer-with-content "*mock-test*" "Original content\nSecond line"
       ;; Test buffer listing
-      (aj8/test-gptel-tool-with-mock-llm "aj8_list_buffers" nil "mock-test")
+      (aj8/gptel-tool-test--run-with-mock-llm "aj8_list_buffers" nil "mock-test")
 
       ;; Test buffer editing
-      (aj8/test-gptel-tool-with-mock-llm "aj8_edit_buffer"
+      (aj8/gptel-tool-test--run-with-mock-llm "aj8_edit_buffer"
                                         '("*mock-test*" "Original" "Modified")
                                         "successfully")
       (should (string-equal (buffer-string) "Modified content\nSecond line"))
 
       ;; Test project root
-      (aj8/test-gptel-tool-with-mock-llm "aj8_project_get_root" nil "ert-test-project")
+      (aj8/gptel-tool-test--run-with-mock-llm "aj8_project_get_root" nil "ert-test-project")
 
       ;; Test file search
-      (aj8/test-gptel-tool-with-mock-llm "aj8_project_find_files_glob"
+      (aj8/gptel-tool-test--run-with-mock-llm "aj8_project_find_files_glob"
                                         '("**/*.el")
                                         "code.el"))))
 
@@ -474,7 +474,7 @@ EXPECTED-PATTERN is a regexp that should match the result."
 ;;; 5. Test Runner Functions (interactive)
 ;;
 
-(defun aj8/run-all-gptel-tool-tests (&optional tag)
+(defun aj8/gptel-tool-test-run-all (&optional tag)
   "Run all ERT tests defined for gptel tools.
 With optional TAG argument, run only tests with that tag.
 Without a tag, run all tests with the 'test' tag."
@@ -488,7 +488,7 @@ Without a tag, run all tests with the 'test' tag."
                                   `(tag ,tag)
                                 '(tag test))))
 
-(defun aj8/run-gptel-tests-by-tag (tag)
+(defun aj8/gptel-tool-test-run-by-tag (tag)
   "Run all Gptel tests with the specified TAG."
   (interactive
    (list (completing-read "Select tag: "
@@ -498,7 +498,7 @@ Without a tag, run all tests with the 'test' tag."
                          nil t)))
   (ert (format "(tag %s)" tag)))
 
-(defun aj8/run-gptel-integration-tests (&optional selector)
+(defun aj8/gptel-tool-test-run-integration (&optional selector)
   "Run Gptel tool integration tests.
 With a prefix argument, prompt for a test SELECTOR."
   (interactive "P")
@@ -512,7 +512,7 @@ With a prefix argument, prompt for a test SELECTOR."
 ;;; 6. Manual Testing & Utility Functions (interactive)
 ;;
 
-(defun aj8/test-gptel-tool-direct (tool-name)
+(defun aj8/gptel-tool-test-run-direct (tool-name)
   "Test a Gptel tool directly by name.
 TOOL-NAME is the name of the tool to test (e.g., 'aj8_list_buffers')."
   (interactive
@@ -533,7 +533,7 @@ TOOL-NAME is the name of the tool to test (e.g., 'aj8_list_buffers')."
                          tool-name (error-message-string err))))
       (message "Tool function not found for %s" tool-name))))
 
-(defun aj8/test-gptel-tools-interactively ()
+(defun aj8/gptel-tool-test-interactive-demo ()
   "Interactively test Gptel tools by simulating LLM requests.
 This function creates a temporary Gptel buffer and demonstrates
 how tools would be called by an actual LLM."
@@ -569,7 +569,7 @@ how tools would be called by an actual LLM."
       (goto-char (point-min)))
     (switch-to-buffer test-buffer)))
 
-(defun aj8/validate-gptel-tool-schemas ()
+(defun aj8/gptel-tool-test-validate-schemas ()
   "Validate that all Gptel tool schemas are properly formatted.
 Returns a list of any validation errors found."
   (interactive)
@@ -612,7 +612,7 @@ Returns a list of any validation errors found."
       (message "All Gptel tools validated successfully!")
       nil)))
 
-(defun aj8/create-gptel-tool-test-scenario ()
+(defun aj8/gptel-tool-test-create-scenario ()
   "Create a test scenario for manually testing Gptel tools with a real LLM.
 This sets up buffers and files that you can reference when testing with Gptel."
   (interactive)
