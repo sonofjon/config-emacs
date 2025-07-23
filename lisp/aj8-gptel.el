@@ -414,9 +414,11 @@ This action requires manual user review. After calling this tool, you must stop 
                 :description "The name of the file to read the contents of. ")
              '( :name "start"
                 :type integer
+                :optional t
                 :description "The optional first line to read from.")
              '( :name "end"
                 :type integer
+                :optional t
                 :description "The optional last line to read to."))
  :category "filesystem")
 
