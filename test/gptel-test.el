@@ -412,7 +412,7 @@ their associated functions can be called without error."
              (func (gptel-tool-function tool-def)))
         (should (functionp func))
         (should-not (condition-case nil
-                        (funcall func)
+                        (progn (funcall func) nil)
                       (error t)))))))
 
 (ert-deftest test-gptel-tool-via-json-call ()
