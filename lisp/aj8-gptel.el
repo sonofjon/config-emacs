@@ -363,12 +363,12 @@
                      :type array
                      :items (:type object
                                    :properties
-                                   ((:line-number
-                                     (:type integer :description "The 1-based line number where the edit starts."))
-                                    (:old-string
-                                     (:type string :description "The string to be replaced by 'new-string'."))
-                                    (:new-string
-                                     (:type string :description "The string to replace 'old-string'."))))
+                                   (:line-number
+                                    (:type integer :description "The 1-based line number where the edit starts.")
+                                    :old-string
+                                    (:type string :description "The string to be replaced by 'new-string'.")
+                                    :new-string
+                                    (:type string :description "The string to replace 'old-string'.")))
                      :description "The list of edits to apply to the buffer."))
  :category "buffers")
 
@@ -385,12 +385,12 @@ This action requires manual user review. After calling this tool, you must stop 
                      :type array
                      :items (:type object
                                    :properties
-                                   ((:line-number
-                                     (:type integer :description "The 1-based line number where the edit starts."))
-                                    (:old-string
-                                     (:type string :description "The string to be replaced by 'new-string'."))
-                                    (:new-string
-                                     (:type string :description "The string to replace 'old-string'."))))
+                                   (:line-number
+                                    (:type integer :description "The 1-based line number where the edit starts.")
+                                    :old-string
+                                    (:type string :description "The string to be replaced by 'new-string'.")
+                                    :new-string
+                                    (:type string :description "The string to replace 'old-string'.")))
                      :description "The list of edits to apply to the buffer."))
  :category "buffers")
 
@@ -475,12 +475,12 @@ This action requires manual user review. After calling this tool, you must stop 
                      :type array
                      :items (:type object
                                    :properties
-                                   ((:line-number
-                                     (:type integer :description "The 1-based line number where the edit starts."))
-                                    (:old-string
-                                     (:type string :description "The string to be replaced by 'new-string'."))
-                                    (:new-string
-                                     (:type string :description "The string to replace 'old-string'."))))
+                                   (:line-number
+                                    (:type integer :description "The 1-based line number where the edit starts.")
+                                    :old-string
+                                    (:type string :description "The string to be replaced by 'new-string'.")
+                                    :new-string
+                                    (:type string :description "The string to replace 'old-string'.")))
                      :description "The list of edits to apply to the file."))
  :category "filesystem")
 
@@ -497,12 +497,12 @@ This action requires manual user review. After calling this tool, you must stop 
                      :type array
                      :items (:type object
                                    :properties
-                                   ((:line-number
-                                     (:type integer :description "The 1-based line number where the edit starts."))
-                                    (:old-string
-                                     (:type string :description "The string to be replaced by 'new-string'."))
-                                    (:new-string
-                                     (:type string :description "The string to replace 'old-string'."))))
+                                   (:line-number
+                                    (:type integer :description "The 1-based line number where the edit starts.")
+                                    :old-string
+                                    (:type string :description "The string to be replaced by 'new-string'.")
+                                    :new-string
+                                    (:type string :description "The string to replace 'old-string'.")))
                      :description "The list of edits to apply to the file."))
  :category "filesystem")
 
