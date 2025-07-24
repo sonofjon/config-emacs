@@ -555,8 +555,8 @@ several related edits in a single buffer, using
           (edit-func (gptel-tool-function edit-tool))
           (edits '((:line-number 1 :old-string "calculateSum" :new-string "addNumbers")
                    (:line-number 5 :old-string "calculateProduct" :new-string "multiplyNumbers")
-                   (:line-number 9 :old-string "calculateSum" :new-string "addNumbers")
-                   (:line-number 10 :old-string "calculateProduct" :new-string "multiplyNumbers"))))
+                   (:line-number 11 :old-string "calculateSum" :new-string "addNumbers")
+                   (:line-number 12 :old-string "calculateProduct" :new-string "multiplyNumbers"))))
 
      (funcall edit-func "*complex-edit-test*" edits)
 
