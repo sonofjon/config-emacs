@@ -487,7 +487,7 @@ various tools, checking for expected patterns in their output."
     "*mock-test*" "Original content\nSecond line"
     ;; Test buffer listing
     (aj8/gptel-tool-test--run-with-mock-llm
-     "aj8_list_buffers" nil "mock-test")
+     "aj8_list_all_buffers" nil "mock-test")
 
     ;; Test buffer editing
     (aj8/gptel-tool-test--run-with-mock-llm
