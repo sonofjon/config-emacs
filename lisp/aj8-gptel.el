@@ -11,6 +11,11 @@
           (push (buffer-name buffer) file-buffers)))
       (nreverse file-buffers))))
 
+(defun aj8/gptel-tool-list-all-buffers ()
+  "List the names of all currently open buffers."
+  (with-temp-message "Running tool: aj8_list_all_buffers"
+    (mapcar #'buffer-name (buffer-list))))
+
 (defun aj8/gptel-tool-buffer-to-file (buffer-name)
   "Return the file path for a given buffer."
   (with-temp-message "Running tool: aj8_buffer_to_file"
@@ -277,6 +282,13 @@
  :function #'aj8/gptel-tool-list-buffers
  :name "aj8_list_buffers"
  :description "List the names of all currently open buffers that are associated with a file."
+ :args nil
+ :category "buffers")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-list-all-buffers
+ :name "aj8_list_all_buffers"
+ :description "List the names of all currently open buffers."
  :args nil
  :category "buffers")
 

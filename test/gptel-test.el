@@ -354,6 +354,7 @@ This test checks that a predefined list of essential tool names exists
 in the `gptel-tools' alist."
   :tags '(integration tools)
   (let ((expected-tools '("aj8_list_buffers"
+                          "aj8_list_all_buffers"
                           "aj8_buffer_to_file"
                           "aj8_file_to_buffer"
                           "aj8_append_to_buffer"
@@ -404,6 +405,7 @@ This test checks a subset of tools that require no arguments, ensuring
 their associated functions can be called without error."
   :tags '(integration tools)
   (let ((no-arg-tools '("aj8_list_buffers"
+                        "aj8_list_all_buffers"
                         "aj8_project_get_root"
                         "aj8_project_get_open_buffers")))
     ;; Test tools that don't require arguments
