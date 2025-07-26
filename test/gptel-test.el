@@ -571,6 +571,7 @@ several related edits in a single buffer, using
        (should-not (string-match-p "calculateSum" content))
        (should-not (string-match-p "calculateProduct" content))))))
 
+
 ;;
 ;;; 5. Test Runner Functions (interactive)
 ;;
