@@ -510,38 +510,37 @@ content, making an edit, and then verifying the change. It ensures that
 the tools work together to complete a complex operation."
   :tags '(integration workflow)
   (with-temp-project
-   (with-temp-file-with-content
-    test-file "def hello():\n    print('Hello World')\n\ndef goodbye():\n    print('Goodbye')"
-    ;; Simulate LLM workflow:
-    ;; 1. List project files
-    ;; 2. Read a file
-    ;; 3. Edit the file
-    ;; 4. Verify changes
+   ;; Simulate LLM workflow
+   ;; 1. Find the elisp file in the project.
+   ;; 2. Read its content.
+   ;; 3. Edit the file.
+   ;; 4. Verify the changes.
+   (let ((el-file-path nil))
+     ;; Step 1: Find Elisp files
+     (let* ((find-tool (cl-find "aj8_project_find_files_glob" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+            (find-func (gptel-tool-function find-tool))
+            (el-files (funcall find-func "**/*.el")))
+       (should (= 1 (length el-files)))
+       (setq el-file-path (car el-files)))
 
-    ;; Step 1: Find Python files
-    (let* ((find-tool (cl-find "aj8_project_find_files_glob" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-           (find-func (gptel-tool-function find-tool))
-           (py-files (funcall find-func "**/*.py")))
-      (should (> (length py-files) 0)))
+     ;; Step 2: Read file content
+     (let* ((read-tool (cl-find "aj8_read_file_section" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+            (read-func (gptel-tool-function read-tool))
+            (content (funcall read-func el-file-path)))
+       (should (string-match-p "message \"hello\"" content)))
 
-    ;; Step 2: Read file content
-    (let* ((read-tool (cl-find "aj8_read_file_section" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-           (read-func (gptel-tool-function read-tool))
-           (content (funcall read-func test-file)))
-      (should (string-match-p "Hello World" content)))
+     ;; Step 3: Edit the file
+     (let* ((edit-tool (cl-find "aj8_edit_file" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+            (edit-func (gptel-tool-function edit-tool))
+            (result (funcall edit-func el-file-path "\"hello\"" "\"howdy\"")))
+       (should (string-match-p "successfully" result)))
 
-    ;; Step 3: Edit the file
-    (let* ((edit-tool (cl-find "aj8_edit_file" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-           (edit-func (gptel-tool-function edit-tool))
-           (result (funcall edit-func test-file "Hello World" "Hello Gptel")))
-      (should (string-match-p "successfully" result)))
-
-    ;; Step 4: Verify changes
-    (let* ((read-tool (cl-find "aj8_read_file_section" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-           (read-func (gptel-tool-function read-tool))
-           (new-content (funcall read-func test-file)))
-      (should (string-match-p "Hello Gptel" new-content))
-      (should-not (string-match-p "Hello World" new-content))))))
+     ;; Step 4: Verify changes
+     (let* ((read-tool (cl-find "aj8_read_file_section" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+            (read-func (gptel-tool-function read-tool))
+            (new-content (funcall read-func el-file-path)))
+       (should (string-match-p "message \"howdy\"" new-content))
+       (should-not (string-match-p "message \"hello\"" new-content))))))
 
 (ert-deftest test-gptel-tool-complex-edits ()
   "Test complex, multi-part editing scenarios.
