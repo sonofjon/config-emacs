@@ -502,45 +502,103 @@ various tools, checking for expected patterns in their output."
     (aj8/gptel-tool-test--run-with-mock-llm
      "aj8_project_find_files_glob" '("**/*.el") "code.el"))))
 
-(ert-deftest test-gptel-tool-workflow-simulation ()
-  "Simulate a realistic workflow using multiple tools in sequence.
+(ert-deftest test-gptel-buffers-workflow ()
+  "Simulate a workflow using buffer tools."
+  :tags '(integration workflow buffers)
+  (with-temp-file-with-content test-file "Line 1"
+    (let ((buffer (find-file-noselect test-file)))
+      (unwind-protect
+          (progn
+            ;; list-all-buffers, list-buffers
+            (should (member (buffer-name buffer) (aj8/gptel-tool-list-all-buffers)))
+            (should (member (buffer-name buffer) (aj8/gptel-tool-list-buffers)))
+            (with-temp-buffer-with-content "*no-file*" "content"
+              (should (member "*no-file*" (aj8/gptel-tool-list-all-buffers)))
+              (should-not (member "*no-file*" (aj8/gptel-tool-list-buffers))))
 
-This test models a common task: finding a file in a project, reading its
-content, making an edit, and then verifying the change. It ensures that
-the tools work together to complete a complex operation."
-  :tags '(integration workflow)
+            ;; file-to-buffer, buffer-to-file
+            (should (string-equal (aj8/gptel-tool-file-to-buffer test-file) (buffer-name buffer)))
+            (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer)) (expand-file-name test-file)))
+
+            ;; append-to-buffer
+            (aj8/gptel-tool-append-to-buffer (buffer-name buffer) "\nLine 3")
+            (should (string-equal (with-current-buffer buffer (buffer-string)) "Line 1\nLine 3"))
+
+            ;; insert-into-buffer
+            (aj8/gptel-tool-insert-into-buffer (buffer-name buffer) "Line 2\n" 2)
+            (should (string-equal (with-current-buffer buffer (buffer-string)) "Line 1\nLine 2\nLine 3"))
+
+            ;; edit-buffer
+            (aj8/gptel-tool-edit-buffer (buffer-name buffer) "Line 2" "LINE TWO")
+            (should (string-equal (with-current-buffer buffer (buffer-string)) "Line 1\nLINE TWO\nLine 3"))
+
+            ;; modify-buffer
+            (aj8/gptel-tool-modify-buffer (buffer-name buffer) "all new content")
+            (should (string-equal (with-current-buffer buffer (buffer-string)) "all new content")))
+        (kill-buffer buffer)))))
+
+(ert-deftest test-gptel-files-workflow ()
+  "Simulate a workflow using file tools."
+  :tags '(integration workflow files)
+  (with-temp-file-with-content test-file "Line 1"
+    ;; read-file-section
+    (should (string-equal (aj8/gptel-tool-read-file-section test-file) "Line 1"))
+
+    ;; append-to-file
+    (aj8/gptel-tool-append-to-file test-file "\nLine 3")
+    (should (string-equal (aj8/gptel-tool-read-file-section test-file) "Line 1\nLine 3"))
+
+    ;; insert-into-file
+    (aj8/gptel-tool-insert-into-file test-file "Line 2\n" 2)
+    (should (string-equal (aj8/gptel-tool-read-file-section test-file) "Line 1\nLine 2\nLine 3"))
+
+    ;; edit-file
+    (aj8/gptel-tool-edit-file test-file "Line 2" "LINE TWO")
+    (should (string-equal (aj8/gptel-tool-read-file-section test-file) "Line 1\nLINE TWO\nLine 3"))))
+
+(ert-deftest test-gptel-project-workflow ()
+  "Simulate a workflow using project tools."
+  :tags '(integration workflow project)
   (with-temp-project
-   ;; Simulate LLM workflow
-   ;; 1. Find the elisp file in the project.
-   ;; 2. Read its content.
-   ;; 3. Edit the file.
-   ;; 4. Verify the changes.
-   (let ((el-file-path nil))
-     ;; Step 1: Find Elisp files
-     (let* ((find-tool (cl-find "aj8_project_find_files_glob" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-            (find-func (gptel-tool-function find-tool))
-            (el-files (funcall find-func "**/*.el")))
-       (should (= 1 (length el-files)))
-       (setq el-file-path (car el-files)))
+    ;; get-root
+    (let ((root (aj8/gptel-tool-project-get-root)))
+      (should (string-match-p "ert-test-project" root)))
 
-     ;; Step 2: Read file content
-     (let* ((read-tool (cl-find "aj8_read_file_section" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-            (read-func (gptel-tool-function read-tool))
-            (content (funcall read-func el-file-path)))
-       (should (string-match-p "message \"hello\"" content)))
+    ;; find-files-glob
+    (let ((files (aj8/gptel-tool-project-find-files-glob "**/*.el")))
+      (should (= 1 (length files)))
+      (should (string-match-p "src/code.el" (car files))))
 
-     ;; Step 3: Edit the file
-     (let* ((edit-tool (cl-find "aj8_edit_file" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-            (edit-func (gptel-tool-function edit-tool))
-            (result (funcall edit-func el-file-path "\"hello\"" "\"howdy\"")))
-       (should (string-match-p "successfully" result)))
+    ;; search-content
+    (when (or (executable-find "rg") (and (executable-find "git") (file-directory-p ".git")))
+      (let ((results (aj8/gptel-tool-project-search-content "hello")))
+        (should (string-match-p "src/code.el:1:.*hello" results))))
 
-     ;; Step 4: Verify changes
-     (let* ((read-tool (cl-find "aj8_read_file_section" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-            (read-func (gptel-tool-function read-tool))
-            (new-content (funcall read-func el-file-path)))
-       (should (string-match-p "message \"howdy\"" new-content))
-       (should-not (string-match-p "message \"hello\"" new-content))))))
+    ;; get-open-buffers
+    (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
+      (unwind-protect
+          (let ((open-buffers (aj8/gptel-tool-project-get-open-buffers)))
+            (should (string-match-p "code.el" open-buffers))
+            (should (string-match-p "src/code.el" open-buffers)))
+        (kill-buffer buf)))))
+
+(ert-deftest test-gptel-emacs-workflow ()
+  "Simulate a workflow using Emacs introspection tools."
+  :tags '(integration workflow emacs)
+  ;; read-documentation
+  (should (string-match-p "car of LIST" (aj8/gptel-tool-read-documentation "car")))
+
+  ;; read-function
+  (should (string-match-p "defun car" (aj8/gptel-tool-read-function "car")))
+
+  ;; read-library
+  (should (string-match-p "subr.el" (aj8/gptel-tool-read-library "subr")))
+
+  ;; read-info-symbol
+  (should (string-match-p "special form" (aj8/gptel-tool-read-info-symbol "defun")))
+
+  ;; read-info-node
+  (should (string-match-p "function definition" (aj8/gptel-tool-read-info-node "Defining Functions"))))
 
 (ert-deftest test-gptel-tool-complex-edits ()
   "Test complex, multi-part editing scenarios.
