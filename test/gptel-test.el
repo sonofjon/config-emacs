@@ -505,36 +505,38 @@ various tools, checking for expected patterns in their output."
 (ert-deftest test-gptel-buffers-workflow ()
   "Simulate a workflow using buffer tools."
   :tags '(integration workflow buffers)
-  (with-temp-file-with-content test-file "Line 1"
+  ;; Test on a buffer not visiting a file
+  (with-temp-buffer-with-content "*test-buffer*" "initial content"
+    (let ((buffer-name "*test-buffer*"))
+      ;; list-all-buffers, list-buffers
+      (should (member buffer-name (aj8/gptel-tool-list-all-buffers)))
+      (should-not (member buffer-name (aj8/gptel-tool-list-buffers)))
+      (should-error (aj8/gptel-tool-buffer-to-file buffer-name))
+
+      ;; append-to-buffer
+      (aj8/gptel-tool-append-to-buffer buffer-name "\nAppended")
+      (should (string-equal (with-current-buffer buffer-name (buffer-string)) "initial content\nAppended"))
+
+      ;; insert-into-buffer
+      (aj8/gptel-tool-insert-into-buffer buffer-name "Prepended\n" 1)
+      (should (string-equal (with-current-buffer buffer-name (buffer-string)) "Prepended\ninitial content\nAppended"))
+
+      ;; edit-buffer
+      (aj8/gptel-tool-edit-buffer buffer-name "initial" "original")
+      (should (string-equal (with-current-buffer buffer-name (buffer-string)) "Prepended\noriginal content\nAppended"))
+
+      ;; modify-buffer
+      (aj8/gptel-tool-modify-buffer buffer-name "new content")
+      (should (string-equal (with-current-buffer buffer-name (buffer-string)) "new content"))))
+
+  ;; Test on a buffer visiting a file
+  (with-temp-file-with-content test-file "file content"
     (let ((buffer (find-file-noselect test-file)))
       (unwind-protect
           (progn
-            ;; list-all-buffers, list-buffers
-            (should (member (buffer-name buffer) (aj8/gptel-tool-list-all-buffers)))
             (should (member (buffer-name buffer) (aj8/gptel-tool-list-buffers)))
-            (with-temp-buffer-with-content "*no-file*" "content"
-              (should (member "*no-file*" (aj8/gptel-tool-list-all-buffers)))
-              (should-not (member "*no-file*" (aj8/gptel-tool-list-buffers))))
-
-            ;; file-to-buffer, buffer-to-file
             (should (string-equal (aj8/gptel-tool-file-to-buffer test-file) (buffer-name buffer)))
-            (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer)) (expand-file-name test-file)))
-
-            ;; append-to-buffer
-            (aj8/gptel-tool-append-to-buffer (buffer-name buffer) "\nLine 3")
-            (should (string-equal (with-current-buffer buffer (buffer-string)) "Line 1\nLine 3"))
-
-            ;; insert-into-buffer
-            (aj8/gptel-tool-insert-into-buffer (buffer-name buffer) "Line 2\n" 2)
-            (should (string-equal (with-current-buffer buffer (buffer-string)) "Line 1\nLine 2\nLine 3"))
-
-            ;; edit-buffer
-            (aj8/gptel-tool-edit-buffer (buffer-name buffer) "Line 2" "LINE TWO")
-            (should (string-equal (with-current-buffer buffer (buffer-string)) "Line 1\nLINE TWO\nLine 3"))
-
-            ;; modify-buffer
-            (aj8/gptel-tool-modify-buffer (buffer-name buffer) "all new content")
-            (should (string-equal (with-current-buffer buffer (buffer-string)) "all new content")))
+            (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer)) (expand-file-name test-file))))
         (kill-buffer buffer)))))
 
 (ert-deftest test-gptel-files-workflow ()
