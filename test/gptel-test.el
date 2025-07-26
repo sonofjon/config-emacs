@@ -424,23 +424,22 @@ This test mimics how a Large Language Model (LLM) would call the tools
 by invoking the tool's function with arguments directly. It verifies
 both a query and a buffer modification tool."
   :tags '(integration tools json)
-  (with-temp-file-with-content
-   test-file "Hello World\nLine 2"
-   (let ((buffer-name (file-name-nondirectory test-file)))
-     ;; Test list buffers tool
-     (let* ((tool-def (cl-find "aj8_list_buffers" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-            (func (gptel-tool-function tool-def))
-            (result (funcall func)))
-       (should (listp result))
-       (should (member buffer-name result)))
+  (with-temp-buffer-with-content
+   "*test-json-call*" "Hello World\nLine 2"
+   ;; Test list all buffers tool
+   (let* ((tool-def (cl-find "aj8_list_all_buffers" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+          (func (gptel-tool-function tool-def))
+          (result (funcall func)))
+     (should (listp result))
+     (should (member "*test-json-call*" result)))
 
-     ;; Test edit buffer tool with JSON-like parameters
-     (let* ((tool-def (cl-find "aj8_edit_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
-            (func (gptel-tool-function tool-def))
-            (result (funcall func buffer-name "World" "Gptel")))
-       (should (string-match-p "successfully" result))
-       (with-current-buffer (get-buffer buffer-name)
-         (should (string-equal (buffer-string) "Hello Gptel\nLine 2")))))))
+   ;; Test edit buffer tool with JSON-like parameters
+   (let* ((tool-def (cl-find "aj8_edit_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+          (func (gptel-tool-function tool-def))
+          (result (funcall func "*test-json-call*" "World" "Gptel")))
+     (should (string-match-p "successfully" result))
+     (with-current-buffer (get-buffer "*test-json-call*")
+       (should (string-equal (buffer-string) "Hello Gptel\nLine 2"))))))
 
 (ert-deftest test-gptel-tool-error-handling ()
   "Test that Gptel tools handle common errors gracefully.
