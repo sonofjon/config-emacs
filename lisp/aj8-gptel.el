@@ -244,11 +244,21 @@
                    project-buffers "\n")))))
 
 (defun aj8/gptel-tool-project-find-files-glob (pattern)
-  "In the current project, find files matching the glob PATTERN."
+  "In the current project, find files whose filenames match the glob PATTERN."
   (with-temp-message "Running tool: aj8_project_find_files_glob"
-    (let ((project (project-current)))
-      (unless project (error "Not inside a project."))
-      (project-files project pattern))))
+    (let ((proj (project-current)))
+      (unless proj
+        (error "No project found in the current context."))
+      (let* ((root (project-root proj))
+             ;; Get list of non-ignored files from project.el (absolute paths).
+             (project-file-list (project-files proj))
+             ;; Get list of files matching glob from filesystem (absolute paths).
+             (wildcard-file-list
+              (let ((default-directory root))
+                ;; The 't' argument makes it return absolute paths.
+                (file-expand-wildcards pattern t))))
+        ;; Return the files present in both lists.
+        (seq-intersection project-file-list wildcard-file-list #'string-equal)))))
 
 (defun aj8/gptel-tool-project-search-content (regexp)
   "In the current project, recursively search for content matching the regexp."
