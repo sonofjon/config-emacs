@@ -464,43 +464,104 @@ path."
 
 ;;; 4.2. Category: Real-world Workflow Simulation
 
-(defun aj8/gptel-tool-test--run-with-mock-llm (tool-name args expected-pattern)
-  "Simulate an LLM call to a Gptel tool and check the result.
+;; (defun aj8/gptel-tool-test--run-with-mock-llm (tool-name args expected-pattern)
+;;   "Simulate an LLM call to a Gptel tool and check the result.
 
-This helper function looks up TOOL-NAME in `gptel-tools', applies ARGS
-to its function, and asserts that the formatted result matches
-EXPECTED-PATTERN."
-  (let* ((tool-def (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools))
-         (func (gptel-tool-function tool-def))
-         (result (apply func args)))
-    (should (string-match-p expected-pattern (format "%s" result)))
-    result))
+;; This helper function looks up TOOL-NAME in `gptel-tools', applies ARGS
+;; to its function, and asserts that the formatted result matches
+;; EXPECTED-PATTERN."
+;;   (let* ((tool-def (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools))
+;;          (func (gptel-tool-function tool-def))
+;;          (result (apply func args)))
+;;     (should (string-match-p expected-pattern (format "%s" result)))
+;;     result))
 
-(ert-deftest test-gptel-tools-mock-llm-interaction ()
-  "Test Gptel tools by simulating calls from an LLM.
+(defun test-gptel-tools--mock-response (response function)
+  "Mock `gptel--request' to return RESPONSE, and run FUNCTION.
+The response is processed by `gptel--streaming-done-callback'."
+  (let ((gptel-buffer (get-buffer-create "*gptel*")))
+    (with-current-buffer gptel-buffer
+      (let ((gptel-streaming nil))
+        (cl-letf (((symbol-function 'gptel--request)
+                   (lambda (&rest _)
+                     (funcall gptel--streaming-callback response)
+                     (funcall gptel--streaming-done-callback))))
+          (funcall function))))))
 
-This test uses a helper function to simulate how an LLM might invoke
-various tools, checking for expected patterns in their output."
-  :tags '(integration tools mock)
+(ert-deftest test-gptel-tools-buffers-llm-mock ()
+  "Test buffer tools by simulating calls from an LLM."
+  :tags '(integration tools mock buffers)
+  (with-temp-buffer-with-content "*mock-test*" "Original content"
+    (let ((gptel-buffer (get-buffer-create "*gptel*")))
+      (with-current-buffer gptel-buffer
+        ;; Test a read-only tool
+        (erase-buffer)
+        (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_list_all_buffers\", \"arguments\": {}}]}"))
+          (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
+          (should (string-match-p "mock-test" (buffer-string))))
+        ;; Test a modifying tool
+        (erase-buffer)
+        (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_edit_buffer\", \"arguments\": {\"buffer-name\": \"*mock-test*\", \"old-string\": \"Original\", \"new-string\": \"Modified\"}}]}"))
+          (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
+          ;; Check that the target buffer was modified
+          (with-current-buffer "*mock-test*"
+            (should (string-equal (buffer-string) "Modified content")))
+          ;; Check that the gptel buffer contains the tool result
+          (with-current-buffer gptel-buffer
+            (should (string-match-p "Tool `aj8_edit_buffer` returned: String replaced successfully." (buffer-string)))))))))
+
+(ert-deftest test-gptel-tools-files-llm-mock ()
+  "Test file tools by simulating calls from an LLM."
+  :tags '(integration tools mock files)
+  (with-temp-file-with-content temp-file "Line 1\nLine 2"
+    (let ((gptel-buffer (get-buffer-create "*gptel*")))
+      (with-current-buffer gptel-buffer
+        ;; Test append-to-file
+        (erase-buffer)
+        (let ((mock-response (format "{\"tool_calls\": [{\"name\": \"aj8_append_to_file\", \"arguments\": {\"filepath\": \"%s\", \"text\": \"\\nLine 3\"}}]}"
+                                     (json-encode-string temp-file))))
+          (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
+          (should (string-equal (with-temp-buffer (insert-file-contents temp-file) (buffer-string))
+                                "Line 1\nLine 2\nLine 3"))
+          (should (string-match-p "Appended text to file" (buffer-string))))
+        ;; Test read-file-section
+        (erase-buffer)
+        (let ((mock-response (format "{\"tool_calls\": [{\"name\": \"aj8_read_file_section\", \"arguments\": {\"filepath\": \"%s\"}}]}"
+                                     (json-encode-string temp-file))))
+          (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
+          (should (string-match-p "Line 1\nLine 2\nLine 3" (buffer-string))))))))
+
+(ert-deftest test-gptel-tools-project-llm-mock ()
+  "Test project tools by simulating calls from an LLM."
+  :tags '(integration tools mock project)
   (with-temp-project
-   (with-temp-buffer-with-content
-    "*mock-test*" "Original content\nSecond line"
-    ;; Test buffer listing
-    (aj8/gptel-tool-test--run-with-mock-llm
-     "aj8_list_all_buffers" nil "mock-test")
+    (let ((gptel-buffer (get-buffer-create "*gptel*")))
+      (with-current-buffer gptel-buffer
+        (erase-buffer)
+        (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_project_get_root\", \"arguments\": {}}]}"))
+          (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
+          (should (string-match-p "ert-test-project" (buffer-string))))
 
-    ;; Test buffer editing
-    (aj8/gptel-tool-test--run-with-mock-llm
-     "aj8_edit_buffer" '("*mock-test*" "Original" "Modified") "successfully")
-    (should (string-equal (buffer-string) "Modified content\nSecond line"))
+        (erase-buffer)
+        (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_project_find_files_glob\", \"arguments\": {\"pattern\": \"**/*.el\"}}]}"))
+          (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
+          (should (string-match-p "src/code.el" (buffer-string))))))))
 
-    ;; Test project root
-    (aj8/gptel-tool-test--run-with-mock-llm
-     "aj8_project_get_root" nil "ert-test-project")
-
-    ;; Test file search
-    (aj8/gptel-tool-test--run-with-mock-llm
-     "aj8_project_find_files_glob" '("**/*.el") "code.el"))))
+(ert-deftest test-gptel-tools-emacs-llm-mock ()
+  "Test Emacs introspection tools by simulating calls from an LLM."
+  :tags '(integration tools mock emacs)
+  (let ((gptel-buffer (get-buffer-create "*gptel*")))
+    (with-current-buffer gptel-buffer
+      (erase-buffer)
+      ;; Test read_documentation
+      (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_read_documentation\", \"arguments\": {\"symbol\": \"car\"}}]}"))
+        (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
+        (should (string-match-p "Return the car of LIST" (buffer-string))))
+      (erase-buffer)
+      ;; Test read_function
+      (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_read_function\", \"arguments\": {\"function\": \"gptel-send\"}}]}"))
+        (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
+        (should (string-match-p "(defun gptel-send" (buffer-string)))))))
 
 (ert-deftest test-gptel-buffers-workflow ()
   "Simulate a workflow using buffer tools."
