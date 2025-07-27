@@ -632,7 +632,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-search-content
  :name "aj8_project_search_content"
- :description "In the current project, recursively search for content matching the regexp. This search respects .gitignore. It returns a string of matching lines, where each line is prefixed with the file path, line number, and column number."
+ :description "In the current project, recursively search for content matching the regexp. This search respects .gitignore. It returns a string of matching lines, where each line is prefixed with the file path, 1-based line number, and 0-based column number."
  :args '((:name "regexp"
                 :type string
                 :description "A regexp to search for in the project files. The regexp should be compatible with ripgrep or git grep."))
