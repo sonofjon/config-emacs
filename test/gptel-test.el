@@ -311,16 +311,15 @@ Verifies `aj8/gptel-tool-project-get-root' and
 `aj8/gptel-tool-project-get-open-buffers' within a temporary project."
   :tags '(unit project)
   (with-temp-project
-   (let ((root (file-truename default-directory)))
+   (let ((root default-directory))
      ;; Test get root
-     (should (string-match-p (regexp-quote root) (aj8/gptel-tool-project-get-root)))
+     (should (string-equal (file-name-as-directory (aj8/gptel-tool-project-get-root))
+                           (file-name-as-directory root)))
      ;; Test get open buffers
      (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
-       (unwind-protect
-           (let ((open-buffers (aj8/gptel-tool-project-get-open-buffers)))
-             (should (string-match-p "code.el" open-buffers))
-             (should (string-match-p "src/code.el" open-buffers)))
-         (kill-buffer buf))))))
+       (with-current-buffer buf
+         (should (string-match-p "src/code.el" (aj8/gptel-tool-project-get-open-buffers))))
+       (kill-buffer buf)))))
 
 (ert-deftest test-aj8-project-find-and-search ()
   "Test project file finding and content searching.
