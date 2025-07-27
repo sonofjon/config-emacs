@@ -339,7 +339,7 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
    ;; Test search content
    (when (or (executable-find "rg") (and (executable-find "git") (file-directory-p ".git")))
      (let ((results (aj8/gptel-tool-project-search-content "some text data")))
-       (should (string-match-p "data.txt:1:some text data" results))))))
+       (should (string-match-p "data\\.txt:1:[0-9]+:some text data" results))))))
 
 ;;
 ;;;; 4. Integration Tests (ert-deftest)
