@@ -284,7 +284,7 @@ library can be retrieved."
   (unwind-protect
       (progn
         ;; Test read function
-        (should (string-match-p "(defun project-current" (aj8/gptel-tool-read-function 'project-current)))
+        (should (string-match-p "(defun project-current" (aj8/gptel-tool-read-function "project-current")))
         ;; Test read library
         (should (string-match-p "project.el" (aj8/gptel-tool-read-library "project"))))
     (when (get-buffer "project.el")
