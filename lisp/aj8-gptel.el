@@ -192,12 +192,38 @@
     (let ((func-symbol (intern-soft function)))
       (unless (and func-symbol (fboundp func-symbol))
         (error "Error: Function '%s' is not defined." function))
-      (let ((temp-buffer (generate-new-buffer "*temp-function-def*")))
-        (unwind-protect
-            (with-current-buffer temp-buffer
-              (insert (prin1-to-string (symbol-function func-symbol)))
-              (buffer-string))
-          (kill-buffer temp-buffer))))))
+      (let ((func-def (symbol-function func-symbol)))
+        (cond
+         ((subrp func-def)
+          (format "Function '%s' is a built-in primitive (subr); it has no Lisp source code." function))
+         ((or (byte-code-function-p func-def)
+              (and (listp func-def) (eq (car func-def) 'byte-code)))
+          (let* ((found-lib-pair (find-function-library func-symbol))
+                 (file-name (cdr found-lib-pair)))
+            (if file-name
+                (let* ((source-file
+                        (let ((base-name (file-name-sans-extension file-name)))
+                          ;; Handle cases like ".el.gz" -> ".el"
+                          (when (string-suffix-p ".el" base-name)
+                            (setq base-name (file-name-sans-extension base-name)))
+                          (or (locate-file (concat base-name ".el") load-path)
+                              (locate-file (concat base-name ".el.gz") load-path)))))
+                  (if source-file
+                      (with-temp-buffer
+                        (insert-file-contents source-file)
+                        (goto-char (point-min))
+                        (if (re-search-forward (format "^(def\\(?:un\\|macro\\) %s\\b" (regexp-quote function)) nil t)
+                            (save-excursion
+                              (goto-char (match-beginning 0))
+                              (let ((beg (point)))
+                                (forward-sexp 1)
+                                (buffer-substring-no-properties beg (point))))
+                          (format "Source file for '%s' found at '%s', but the function definition could not be located inside it."
+                                  function source-file)))
+                    (format "Function '%s' is byte-compiled, and its source code file could not be found." function)))
+              (format "Library for function '%s' not found." function))))
+         (t
+          (prin1-to-string func-def)))))))
 
 (defun aj8/gptel-tool-read-library (library-name)
   "Return the source code of a library or package in Emacs."

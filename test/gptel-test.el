@@ -588,19 +588,26 @@ various tools, checking for expected patterns in their output."
   "Simulate a workflow using Emacs introspection tools."
   :tags '(integration workflow emacs)
   ;; read-documentation
-  (should (string-match-p "car of LIST" (aj8/gptel-tool-read-documentation "car")))
+  (should (string-match-p "car of LIST"
+                          (aj8/gptel-tool-read-documentation "car")))
 
   ;; read-function
-  (should (string-match-p "defun car" (aj8/gptel-tool-read-function "car")))
+  (should (string-match-p "(defun project-current"
+                          (aj8/gptel-tool-read-function "project-current")))
+  (should (string-match-p "built-in primitive"
+                          (aj8/gptel-tool-read-function "car")))
 
   ;; read-library
-  (should (string-match-p "subr.el" (aj8/gptel-tool-read-library "subr")))
+  (should (string-match-p "subr.el"
+                          (aj8/gptel-tool-read-library "subr")))
 
   ;; read-info-symbol
-  (should (string-match-p "special form" (aj8/gptel-tool-read-info-symbol "defun")))
+  (should (string-match-p "special form"
+                          (aj8/gptel-tool-read-info-symbol "defun")))
 
   ;; read-info-node
-  (should (string-match-p "function definition" (aj8/gptel-tool-read-info-node "Defining Functions"))))
+  (should (string-match-p "function definition"
+                          (aj8/gptel-tool-read-info-node "Defining Functions"))))
 
 (ert-deftest test-gptel-tool-complex-edits ()
   "Test complex, multi-part editing scenarios.
