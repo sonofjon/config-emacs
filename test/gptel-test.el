@@ -1,7 +1,7 @@
 ;;; gptel-test.el --- Tests for Gptel tools
 
 ;;
-;;; 1. Header & Requirements
+;;;; 1. Requirements
 ;;
 
 ;; Require ERT, the Emacs Lisp Regression Testing tool
@@ -12,7 +12,7 @@
 (require 'aj8-gptel)
 
 ;;
-;;; 2. Test Helper Macros
+;;;; 2. Test Helper Macros
 ;;
 
 (defmacro with-temp-buffer-with-content (buffer-name content &rest body)
@@ -83,7 +83,7 @@ directory."
          (delete-directory proj-dir t)))))
 
 ;;
-;;; 3. Unit Tests (ert-deftest)
+;;;; 3. Unit Tests (ert-deftest)
 ;;
 
 ;;; 3.1. Category: Buffers
@@ -342,10 +342,10 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
        (should (string-match-p "data.txt:1:some text data" results))))))
 
 ;;
-;;; 4. Integration Tests (ert-deftest)
+;;;; 4. Integration Tests (ert-deftest)
 ;;
 
-;;; 4.1. Category: Gptel Tool System Integration
+;;; 4.1. Category: Tool Definition and Invocation
 
 (ert-deftest test-gptel-tools-registration ()
   "Verify that all Gptel tools are registered in `gptel-tools'.
@@ -462,7 +462,7 @@ path."
                 (funcall func "/non/existent/file.txt")
               (error (string-match-p "No such file" (error-message-string err)))))))
 
-;;; 4.2. Category: Real-world Workflow Simulation
+;;; 4.2. Category: LLM Tool Call Simulation
 
 ;; (defun aj8/gptel-tool-test--run-with-mock-llm (tool-name args expected-pattern)
 ;;   "Simulate an LLM call to a Gptel tool and check the result.
@@ -562,6 +562,8 @@ The response is processed by `gptel--streaming-done-callback'."
       (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_read_function\", \"arguments\": {\"function\": \"gptel-send\"}}]}"))
         (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
         (should (string-match-p "(defun gptel-send" (buffer-string)))))))
+
+;;; 4.3. Category: User Workflow Simulation
 
 (ert-deftest test-gptel-tools-workflow-buffers ()
   "Simulate a workflow using buffer tools."
@@ -701,7 +703,7 @@ several related edits in a single buffer, using
 
 
 ;;
-;;; 5. Test Runner Functions (interactive)
+;;;; 5. Test Runner Functions (interactive)
 ;;
 
 (defun aj8/gptel-tool-test-run-all ()
@@ -758,7 +760,7 @@ several related edits in a single buffer, using
       (message "No test selected"))))
 
 ;;
-;;; 6. Manual Testing & Utility Functions (interactive)
+;;;; 6. Manual Testing & Utility Functions (interactive)
 ;;
 
 (defun aj8/gptel-tool-run-tool (tool-name)
