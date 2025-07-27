@@ -347,7 +347,7 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
 
 ;;; 4.1. Category: Gptel Tool System Integration
 
-(ert-deftest test-gptel-tool-registration ()
+(ert-deftest test-gptel-tools-registration ()
   "Verify that all Gptel tools are registered in `gptel-tools'.
 
 This test checks that a predefined list of essential tool names exists
@@ -382,7 +382,7 @@ in the `gptel-tools' alist."
       (should (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools)))))
 
 ;; TODO: duplication?
-(ert-deftest test-gptel-tool-json-schema-validation ()
+(ert-deftest test-gptel-tools-json-schema-validation ()
   "Validate the structure of each `gptel-tool' definition.
 
 Ensures that every registered tool definition has the required
@@ -398,7 +398,7 @@ argument list `:args` is a valid list."
       ;; Check that args is a list (can be nil)
       (should (listp (gptel-tool-args tool-def))))))
 
-(ert-deftest test-gptel-tool-function-callable ()
+(ert-deftest test-gptel-tools-function-callable ()
   "Verify that tool functions are defined and callable.
 
 This test checks a subset of tools that require no arguments, ensuring
@@ -417,7 +417,7 @@ their associated functions can be called without error."
                         (progn (funcall func) nil)
                       (error t)))))))
 
-(ert-deftest test-gptel-tool-via-json-call ()
+(ert-deftest test-gptel-tools-via-json-call ()
   "Simulate calling Gptel tools via a JSON-like interface.
 
 This test mimics how a Large Language Model (LLM) would call the tools
@@ -441,7 +441,7 @@ both a query and a buffer modification tool."
      (with-current-buffer (get-buffer "*test-json-call*")
        (should (string-equal (buffer-string) "Hello Gptel\nLine 2"))))))
 
-(ert-deftest test-gptel-tool-error-handling ()
+(ert-deftest test-gptel-tools-error-handling ()
   "Test that Gptel tools handle common errors gracefully.
 
 Verifies that tools produce user-friendly error messages when given
@@ -488,7 +488,7 @@ The response is processed by `gptel--streaming-done-callback'."
                      (funcall gptel--streaming-done-callback))))
           (funcall function))))))
 
-(ert-deftest test-gptel-tools-buffers-llm-mock ()
+(ert-deftest test-gptel-tools-llm-mock-buffers ()
   "Test buffer tools by simulating calls from an LLM."
   :tags '(integration tools mock buffers)
   (with-temp-buffer-with-content "*mock-test*" "Original content"
@@ -510,7 +510,7 @@ The response is processed by `gptel--streaming-done-callback'."
           (with-current-buffer gptel-buffer
             (should (string-match-p "Tool `aj8_edit_buffer` returned: String replaced successfully." (buffer-string)))))))))
 
-(ert-deftest test-gptel-tools-files-llm-mock ()
+(ert-deftest test-gptel-tools-llm-mock-files ()
   "Test file tools by simulating calls from an LLM."
   :tags '(integration tools mock files)
   (with-temp-file-with-content temp-file "Line 1\nLine 2"
@@ -531,7 +531,7 @@ The response is processed by `gptel--streaming-done-callback'."
           (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
           (should (string-match-p "Line 1\nLine 2\nLine 3" (buffer-string))))))))
 
-(ert-deftest test-gptel-tools-project-llm-mock ()
+(ert-deftest test-gptel-tools-llm-mock-project ()
   "Test project tools by simulating calls from an LLM."
   :tags '(integration tools mock project)
   (with-temp-project
@@ -547,7 +547,7 @@ The response is processed by `gptel--streaming-done-callback'."
           (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
           (should (string-match-p "src/code.el" (buffer-string))))))))
 
-(ert-deftest test-gptel-tools-emacs-llm-mock ()
+(ert-deftest test-gptel-tools-llm-mock-emacs ()
   "Test Emacs introspection tools by simulating calls from an LLM."
   :tags '(integration tools mock emacs)
   (let ((gptel-buffer (get-buffer-create "*gptel*")))
@@ -563,7 +563,7 @@ The response is processed by `gptel--streaming-done-callback'."
         (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
         (should (string-match-p "(defun gptel-send" (buffer-string)))))))
 
-(ert-deftest test-gptel-buffers-workflow ()
+(ert-deftest test-gptel-tools-workflow-buffers ()
   "Simulate a workflow using buffer tools."
   :tags '(integration workflow buffers)
   ;; Test on a buffer not visiting a file
@@ -600,7 +600,7 @@ The response is processed by `gptel--streaming-done-callback'."
             (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer)) (expand-file-name test-file))))
         (kill-buffer buffer)))))
 
-(ert-deftest test-gptel-files-workflow ()
+(ert-deftest test-gptel-tools-workflow-files ()
   "Simulate a workflow using file tools."
   :tags '(integration workflow files)
   (with-temp-file-with-content test-file "Line 1"
@@ -619,7 +619,7 @@ The response is processed by `gptel--streaming-done-callback'."
     (aj8/gptel-tool-edit-file test-file "Line 2" "LINE TWO")
     (should (string-equal (aj8/gptel-tool-read-file-section test-file) "Line 1\nLINE TWO\nLine 3"))))
 
-(ert-deftest test-gptel-project-workflow ()
+(ert-deftest test-gptel-tools-workflow-project ()
   "Simulate a workflow using project tools."
   :tags '(integration workflow project)
   (with-temp-project
@@ -645,7 +645,7 @@ The response is processed by `gptel--streaming-done-callback'."
             (should (string-match-p "src/code.el" open-buffers)))
         (kill-buffer buf)))))
 
-(ert-deftest test-gptel-emacs-workflow ()
+(ert-deftest test-gptel-tools-workflow-emacs ()
   "Simulate a workflow using Emacs introspection tools."
   :tags '(integration workflow emacs)
   ;; read-documentation
@@ -670,7 +670,7 @@ The response is processed by `gptel--streaming-done-callback'."
   (should (string-match-p "function definition"
                           (aj8/gptel-tool-read-info-node "Defining Functions"))))
 
-(ert-deftest test-gptel-tool-complex-edits ()
+(ert-deftest test-gptel-tools-complex-edits ()
   "Test complex, multi-part editing scenarios.
 
 Simulates an LLM performing a refactoring task that requires making
