@@ -183,7 +183,12 @@
 (defun aj8/gptel-tool-read-documentation (symbol)
   "Read the documentation for a given 'symbol'."
   (with-temp-message "Running tool: aj8_read_documentation"
-    (let ((doc (documentation (intern-soft symbol))))
+    (let* ((sym (intern-soft symbol))
+           (doc (if (fboundp sym)
+                    ;; Functions
+                    (documentation sym)
+                  ;; Variables
+                  (documentation-property sym 'variable-documentation))))
       (or doc (format "No documentation found for symbol '%s'." symbol)))))
 
 (defun aj8/gptel-tool-read-function (function)
