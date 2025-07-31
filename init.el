@@ -2159,7 +2159,9 @@ Elisp code explicitly in arbitrary buffers.")
   (scroll-up-aggressively nil)     ; default: nil
   (scroll-down-aggressively nil)   ; default: nil
   ;; (scroll-margin 0)
+  ;; Preserve point position when scrolling
   (scroll-preserve-screen-position t)
+  ;; Smooth horizontal scrolling
   (hscroll-step 1)
   ;; Mark behavior
   (set-mark-command-repeat-pop t)
