@@ -2098,7 +2098,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Store and restore window layout after Ediff
   ;;   MAYBE: works well for ediff-buffers, but not for
   ;;   ediff-regions-linewise and ediff-regions-wordwise
-  ;;   (https://emacs.stackexchange.com/a/80961/33325)  (add-hook 'ediff-before-setup-hook #'my-ediff-save-windows)
+  ;;   (https://emacs.stackexchange.com/a/80961/33325)
   (add-hook 'ediff-before-setup-hook #'my-ediff-save-windows)
   (add-hook 'ediff-quit-hook #'my-ediff-restore-windows)
   ;; MAYBE: check functionality
