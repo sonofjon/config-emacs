@@ -162,6 +162,23 @@ found or is not unique."
    (should-error (aj8/gptel-tool-edit-buffer-string "*test-edit*" "non-existent" "foo") :type 'error)
    (should-error (aj8/gptel-tool-edit-buffer-string "*test-edit*" "hello" "hi") :type 'error)))
 
+(ert-deftest test-aj8-edit-buffer-region ()
+  "Test `aj8/gptel-tool-edit-buffer-region'.
+
+Ensures that a contiguous range of lines is replaced correctly in a buffer."
+  :tags '(unit buffers)
+  (with-temp-buffer-with-content
+   "*test-edit-buffer-region*" "Line A
+Line B
+Line C
+Line D"
+   (aj8/gptel-tool-edit-buffer-region "*test-edit-buffer-region*" 2 3 "X
+Y")
+   (should (string-equal (buffer-string) "Line A
+X
+Y
+Line D"))))
+
 (ert-deftest test-aj8-apply-buffer-string-edits ()
   "Test `aj8/gptel-tool-apply-buffer-string-edits'.
 
@@ -278,6 +295,27 @@ found or is not unique."
    (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string)) "hello emacs\nhello universe"))
    (should-error (aj8/gptel-tool-edit-file-string test-file "non-existent" "foo") :type 'error)
    (should-error (aj8/gptel-tool-edit-file-string test-file "hello" "hi") :type 'error)))
+
+(ert-deftest test-aj8-edit-file-section ()
+  "Test `aj8/gptel-tool-edit-file-section'.
+
+Ensures that a contiguous range of lines is replaced correctly in a file."
+  :tags '(unit files)
+  (with-temp-file-with-content
+   test-file "Line A
+Line B
+Line C
+Line D"
+   (aj8/gptel-tool-edit-file-section test-file 2 3 "X
+Y")
+   (should (string-equal
+            (with-temp-buffer
+              (insert-file-contents test-file)
+              (buffer-string))
+            "Line A
+X
+Y
+Line D"))))
 
 (ert-deftest test-aj8-apply-file-string-edits ()
   "Test `aj8/gptel-tool-apply-file-string-edits'.

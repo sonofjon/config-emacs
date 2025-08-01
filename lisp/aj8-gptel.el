@@ -83,6 +83,22 @@
             (replace-string old-string new-string)
             (format "String in buffer '%s' successfully replaced." buffer-name))))))))
 
+(defun aj8/gptel-tool-edit-buffer-region (buffer-name start-line end-line content)
+  "Replace lines START-LINE through END-LINE in BUFFER-NAME with CONTENT."
+  (with-temp-message "Running tool: aj8_replace_buffer_region"
+    (let ((buf (get-buffer buffer-name)))
+      (unless buf
+        (error "Error: Buffer '%s' not found." buffer-name))
+      (with-current-buffer buf
+        (goto-line start-line)
+        (let ((beg (point)))
+          (goto-line end-line)
+          (end-of-line)
+          (delete-region beg (point))
+          (insert content)))
+      (format "Region lines %d–%d in buffer '%s' replaced."
+              start-line end-line buffer-name))))
+
 (defun aj8/gptel-tool-apply-buffer-line-edits (buffer-name buffer-edits)
   "Edit a buffer with a list of line edits, applying changes directly without review."
   (with-temp-message "Running tool: aj8_apply_buffer_line_edits"
@@ -194,6 +210,20 @@
         (aj8/gptel-tool-edit-buffer-string (buffer-name) old-string new-string)
         (save-buffer))
       (format "String in file '%s' successfully replaced." filename))))
+
+(defun aj8/gptel-tool-edit-file-section (filepath start-line end-line content)
+  "Replace lines START-LINE through END-LINE in file FILEPATH with CONTENT."
+  (with-temp-message "Running tool: aj8_replace_file_region"
+    (unless (file-exists-p filepath)
+      (error "Error: File '%s' not found." filepath))
+    (let ((buf (find-file-noselect filepath)))
+      (with-current-buffer buf
+        ;; Delegate to the buffer‐based tool
+        (aj8/gptel-tool-edit-buffer-region
+         (buffer-name buf) start-line end-line content)
+        (save-buffer)))
+    (format "Region lines %d–%d in file '%s' replaced."
+            start-line end-line filepath)))
 
 (defun aj8/gptel-tool-apply-file-line-edits (file-path file-edits)
   "Edit a file with a list of line edits, saving changes directly without review."
@@ -465,6 +495,20 @@
  :category "buffers")
 
 (gptel-make-tool
+ :function #'aj8/gptel-tool-edit-buffer-region
+ :name "aj8_edit_buffer_region"
+ :description "Replace a range of lines (START-LINE through END-LINE) in a buffer BUFFER-NAME with CONTENT (possibly multi-line)."
+ :args (list '(:name "buffer-name" :type string
+                     :description "Name of the buffer to modify.")
+             '(:name "start-line" :type integer
+                     :description "First line of the region to replace.")
+             '(:name "end-line" :type integer
+                     :description "Last line of the region to replace.")
+             '(:name "content" :type string
+                     :description "Text to insert in place of the region."))
+ :category "buffers")
+
+(gptel-make-tool
  :function #'aj8/gptel-tool-apply-buffer-line-edits
  :name "aj8_apply_buffer_line_edits"
  :description "Edit a buffer with a list of edits, applying changes directly without review. Each edit replaces an entire line. Each edit must contain a 'line-number', an 'old-string' representing the entire original line content, and a 'new-string' representing the entire new line content. For an edit to be applied, the content of the line at 'line-number' must exactly match 'old-string'. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly."
@@ -616,6 +660,20 @@ This action requires manual user review. After calling this tool, you must stop 
          (:name "new-string"
                 :type string
                 :description "The text to replace 'old-string' with."))
+ :category "filesystem")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-edit-file-section
+ :name "aj8_edit_file_section"
+ :description "Replace a range of lines (START-LINE through END-LINE) in a file FILEPATH with CONTENT (possibly multi-line)."
+ :args (list '(:name "filepath" :type string
+                     :description "Path to the file to modify.")
+             '(:name "start-line" :type integer
+                     :description "First line of the region to replace.")
+             '(:name "end-line" :type integer
+                     :description "Last line of the region to replace.")
+             '(:name "content" :type string
+                     :description "Text to insert in place of the region."))
  :category "filesystem")
 
 (gptel-make-tool
