@@ -2148,6 +2148,8 @@ Elisp code explicitly in arbitrary buffers.")
   (indent-tabs-mode nil)
   ;; Delete trailing newline character with kill-line
   (kill-whole-line t)
+  ;; Set fill column
+  (fill-column 76)   ; default is 70
   ;; Save clipboard text into kill ring before kill
   ;; (save-interprogram-paste-before-kill t)
   ;; Yank at point, not at pointer
@@ -2295,12 +2297,6 @@ Elisp code explicitly in arbitrary buffers.")
   (with-eval-after-load "eww"
     (define-key eww-mode-map
                 [remap eww-follow-link] #'aj8/eww-follow-link)))
-
-;; fill (paragraph filling)
-(use-package fill
-  :ensure nil   ; don't install built-in packages
-  :custom
-  (fill-column 76))
 
 ;; find-func (find source code for functions and variables)
 (use-package find-func
