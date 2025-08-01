@@ -643,8 +643,13 @@ This action requires manual user review. After calling this tool, you must stop 
                 :description "A regexp to search for in the project files. The regexp should be compatible with ripgrep or git grep."))
  :category "project")
 
-;; Initialize gptel-tools with all registered tools
-;;   Needed primarily for the test suite
-(setq gptel-tools (mapcan (lambda (entry) (mapcar #'cdr (cdr entry))) gptel--known-tools))
+;; Initialize gptel-tools with all the registered tools
+;;   Only needed for the test suite, i.e.  when running the ERT
+;;   (so that tests that inspect `gptel-tools' will pass)
+(when (featurep 'ert)
+  (setq gptel-tools
+        (mapcan (lambda (entry)
+                  (mapcar #'cdr (cdr entry)))
+                gptel--known-tools)))
 
 (provide 'aj8-gptel)
