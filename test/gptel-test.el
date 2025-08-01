@@ -690,13 +690,13 @@ The response is processed by `gptel--streaming-done-callback'."
   (should (string-match-p "function definition"
                           (aj8/gptel-tool-read-info-node "Defining Functions"))))
 
-(ert-deftest test-gptel-tools-complex-edits ()
+(ert-deftest test-gptel-tools-multi-buffer-edits ()
   "Test complex, multi-part editing scenarios.
 
 Simulates an LLM performing a refactoring task that requires making
 several related edits in a single buffer, using
 `aj8/gptel-tool-apply-buffer-edits' to apply them all at once."
-  :tags '(integration edits)
+  :tags '(integration workflow buffer)
   (with-temp-buffer-with-content
    "*complex-edit-test*"
    "function calculateSum(a, b) {\n    return a + b;\n}\n\nfunction calculateProduct(a, b) {\n    return a * b;\n}\n\nfunction main() {\n    console.log('Starting calculations');\n    let sum = calculateSum(5, 3);\n    let product = calculateProduct(4, 6);\n    console.log('Results:', sum, product);\n}"
@@ -719,6 +719,34 @@ several related edits in a single buffer, using
        (should-not (string-match-p "calculateSum" content))
        (should-not (string-match-p "calculateProduct" content))))))
 
+(ert-deftest test-gptel-tools-multi-file-edits ()
+  "Test complex, multi-part editing scenarios on files.
+
+Simulates an LLM performing a refactoring task that requires making
+several related edits in a single file, using
+`aj8/gptel-tool-apply-file-edits' to apply them all at once."
+  :tags '(integration workflow files)
+  (with-temp-file-with-content
+   test-file
+   "function calculateSum(a, b) {\n    return a + b;\n}\n\nfunction calculateProduct(a, b) {\n    return a * b;\n}\n\nfunction main() {\n    console.log('Starting calculations');\n    let sum = calculateSum(5, 3);\n    let product = calculateProduct(4, 6);\n    console.log('Results:', sum, product);\n}"
+
+   (let* ((edit-tool (cl-find "aj8_apply_file_edits" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+          (edit-func (gptel-tool-function edit-tool))
+          (edits '((:line-number 1 :old-string "calculateSum" :new-string "addNumbers")
+                   (:line-number 5 :old-string "calculateProduct" :new-string "multiplyNumbers")
+                   (:line-number 11 :old-string "calculateSum" :new-string "addNumbers")
+                   (:line-number 12 :old-string "calculateProduct" :new-string "multiplyNumbers"))))
+
+     (funcall edit-func test-file edits)
+
+     ;; Verify all changes were applied
+     (let ((content (with-temp-buffer (insert-file-contents test-file) (buffer-string))))
+       (should (string-match-p "function addNumbers" content))
+       (should (string-match-p "function multiplyNumbers" content))
+       (should (string-match-p "addNumbers(5, 3)" content))
+       (should (string-match-p "multiplyNumbers(4, 6)" content))
+       (should-not (string-match-p "calculateSum" content))
+       (should-not (string-match-p "calculateProduct" content))))))
 
 ;;
 ;;;; 5. Test Runner Functions (interactive)
@@ -745,7 +773,7 @@ several related edits in a single buffer, using
    (list (completing-read "Select tag: "
                           '("unit" "buffers" "files" "emacs" "project" "review"
                             "integration" "tools" "json" "errors" "mock"
-                            "workflow" "edits")
+                            "workflow")
                           nil t)))
   (ert `(tag ,(intern tag))))
 
