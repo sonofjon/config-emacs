@@ -103,6 +103,21 @@ those not associated with any file."
       (should (member (file-name-nondirectory tmp-file) buffers))
       (should-not (member "*non-file-buffer*" buffers))))))
 
+(ert-deftest test-aj8-list-all-buffers ()
+  "Test `aj8/gptel-tool-list-all-buffers'.
+
+Ensures the function lists all buffers, including both file-backed
+and non-file-backed buffers."
+  :tags '(unit buffers)
+  (with-temp-file-with-content
+   tmp-file "file content"
+   (find-file-noselect tmp-file)
+   (with-temp-buffer-with-content
+    "*non-file-buffer*" "some content"
+    (let ((buffers (aj8/gptel-tool-list-all-buffers)))
+      (should (member (file-name-nondirectory tmp-file) buffers))
+      (should (member "*non-file-buffer*" buffers))))))
+
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test buffer-file path conversions.
 
