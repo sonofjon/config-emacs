@@ -467,7 +467,7 @@ path."
                 (funcall func "/non/existent/file.txt")
               (error (string-match-p "No such file" (error-message-string err)))))))
 
-;;; 4.2. Category: LLM Tool Call Simulation
+;;; 4.2. Category: LLM Tool Mock Simulation
 ;;
 ;; This section simulates the end-to-end process of an LLM calling a
 ;; tool. It uses mock LLM responses containing tool call requests to test if
