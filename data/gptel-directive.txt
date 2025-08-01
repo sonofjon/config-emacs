@@ -24,7 +24,7 @@ Always obey these rules:
 # Tools
 
 1. If tools are available, use them to apply changes in the relevant buffer or file.
-2. If file/buffer contents have already been provided to you don't attempt to read the file/buffer again.
+2. If file/buffer contents have already been provided to you don't attempt to read the file/buffer again. The provided content should be considered as a a source of truth.
 3. If you are having trouble locating files or buffers please use the available tools to list available buffers and/or files.
 
 ## Tool-Based Workflow
