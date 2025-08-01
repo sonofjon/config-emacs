@@ -83,9 +83,46 @@
             (replace-string old-string new-string)
             (format "String in buffer '%s' successfully replaced." buffer-name))))))))
 
-(defun aj8/gptel-tool-apply-buffer-edits (buffer-name buffer-edits)
-  "Edit a buffer with a list of edits, applying changes directly without review."
-  (with-temp-message "Running tool: aj8_apply_buffer_edits"
+(defun aj8/gptel-tool-apply-buffer-line-edits (buffer-name buffer-edits)
+  "Edit a buffer with a list of line edits, applying changes directly without review."
+  (with-temp-message "Running tool: aj8_apply_buffer_line_edits"
+    (let ((buffer (get-buffer buffer-name)))
+      (unless buffer
+        (error "Error: Buffer '%s' not found." buffer-name))
+      (with-current-buffer buffer
+        (dolist (edit (sort buffer-edits #'(lambda (a b) (> (plist-get a :line-number) (plist-get b :line-number)))))
+          (let ((line-number (plist-get edit :line-number))
+                (old-string (plist-get edit :old-string))
+                (new-string (plist-get edit :new-string)))
+            (goto-line line-number)
+            (let ((line-start (point)))
+              (when (string-equal (buffer-substring-no-properties line-start (line-end-position)) old-string)
+                (delete-region line-start (line-end-position))
+                (insert new-string)))))
+        (format "Line edits successfully applied to buffer %s." buffer-name)))))
+
+(defun aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer-edits)
+  "Edit a buffer with a list of line edits and start an Ediff session for review."
+  (with-temp-message "Running tool: aj8_apply_buffer_line_edits_with_review"
+    (let* ((original-buffer (get-buffer buffer-name))
+           (temp-buffer-name (format "*%s-edits*" buffer-name))
+           (temp-buffer (get-buffer-create temp-buffer-name)))
+      (unless original-buffer
+        (error "Error: Buffer '%s' not found." buffer-name))
+
+      ;; Prepare the edited version in a temporary buffer
+      (with-current-buffer temp-buffer
+        (erase-buffer)
+        (insert-buffer-substring original-buffer)
+        (aj8/gptel-tool-apply-buffer-line-edits temp-buffer-name buffer-edits))
+
+      ;; Start Ediff
+      (ediff-buffers original-buffer temp-buffer)
+      (format "Ediff session started for %s. Please complete the review." buffer-name))))
+
+(defun aj8/gptel-tool-apply-buffer-string-edits (buffer-name buffer-edits)
+  "Edit a buffer with a list of string edits, applying changes directly without review."
+  (with-temp-message "Running tool: aj8_apply_buffer_string_edits"
     (let ((buffer (get-buffer buffer-name)))
       (unless buffer
         (error "Error: Buffer '%s' not found." buffer-name))
@@ -97,11 +134,11 @@
             (goto-line line-number)
             (when (search-forward old-string (line-end-position) t)
               (replace-match new-string nil nil))))
-        (format "Edits successfully applied to buffer %s." buffer-name)))))
+        (format "String edits successfully applied to buffer %s." buffer-name)))))
 
-(defun aj8/gptel-tool-apply-buffer-edits-with-review (buffer-name buffer-edits)
-  "Edit a buffer with a list of edits and start an Ediff session for review."
-  (with-temp-message "Running tool: aj8_apply_buffer_edits_with_review"
+(defun aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer-edits)
+  "Edit a buffer with a list of string edits and start an Ediff session for review."
+  (with-temp-message "Running tool: aj8_apply_buffer_string_edits_with_review"
     (let* ((original-buffer (get-buffer buffer-name))
            (temp-buffer-name (format "*%s-edits*" buffer-name))
            (temp-buffer (get-buffer-create temp-buffer-name)))
@@ -112,7 +149,7 @@
       (with-current-buffer temp-buffer
         (erase-buffer)
         (insert-buffer-substring original-buffer)
-        (aj8/gptel-tool-apply-buffer-edits temp-buffer-name buffer-edits))
+        (aj8/gptel-tool-apply-buffer-string-edits temp-buffer-name buffer-edits))
 
       ;; Start Ediff
       (ediff-buffers original-buffer temp-buffer)
@@ -158,25 +195,47 @@
         (save-buffer))
       (format "String in file '%s' successfully replaced." filename))))
 
-(defun aj8/gptel-tool-apply-file-edits (file-path file-edits)
-  "Edit a file with a list of edits, saving changes directly without review."
-  (with-temp-message "Running tool: aj8_apply_file_edits"
+(defun aj8/gptel-tool-apply-file-line-edits (file-path file-edits)
+  "Edit a file with a list of line edits, saving changes directly without review."
+  (with-temp-message "Running tool: aj8_apply_file_line_edits"
     (let ((buffer (find-file-noselect file-path)))
       (with-current-buffer buffer
-        (aj8/gptel-tool-apply-buffer-edits (buffer-name) file-edits)
+        (aj8/gptel-tool-apply-buffer-line-edits (buffer-name) file-edits)
         (save-buffer))
-      (format "Edits successfully applied to file %s." file-path))))
+      (format "Line edits successfully applied to file %s." file-path))))
 
-(defun aj8/gptel-tool-apply-file-edits-with-review (file-path file-edits)
-  "Edit a file with a list of edits and start an Ediff session for review."
-  (with-temp-message "Running tool: aj8_apply_file_edits_with_review"
+(defun aj8/gptel-tool-apply-file-line-edits-with-review (file-path file-edits)
+  "Edit a file with a list of line edits and start an Ediff session for review."
+  (with-temp-message "Running tool: aj8_apply_file_line_edits_with_review"
     (let* ((buffer (find-file-noselect file-path))
            (temp-buffer-name (format "*%s-edits*" (buffer-name buffer)))
            (temp-buffer (get-buffer-create temp-buffer-name)))
       (with-current-buffer temp-buffer
         (erase-buffer)
         (insert-buffer-substring buffer)
-        (aj8/gptel-tool-apply-buffer-edits temp-buffer-name file-edits))
+        (aj8/gptel-tool-apply-buffer-line-edits temp-buffer-name file-edits))
+      (ediff-buffers buffer temp-buffer)
+      (format "Ediff session started for %s. Please complete the review." file-path))))
+
+(defun aj8/gptel-tool-apply-file-string-edits (file-path file-edits)
+  "Edit a file with a list of string edits, saving changes directly without review."
+  (with-temp-message "Running tool: aj8_apply_file_string_edits"
+    (let ((buffer (find-file-noselect file-path)))
+      (with-current-buffer buffer
+        (aj8/gptel-tool-apply-buffer-string-edits (buffer-name) file-edits)
+        (save-buffer))
+      (format "String edits successfully applied to file %s." file-path))))
+
+(defun aj8/gptel-tool-apply-file-string-edits-with-review (file-path file-edits)
+  "Edit a file with a list of string edits and start an Ediff session for review."
+  (with-temp-message "Running tool: aj8_apply_file_string_edits_with_review"
+    (let* ((buffer (find-file-noselect file-path))
+           (temp-buffer-name (format "*%s-edits*" (buffer-name buffer)))
+           (temp-buffer (get-buffer-create temp-buffer-name)))
+      (with-current-buffer temp-buffer
+        (erase-buffer)
+        (insert-buffer-substring buffer)
+        (aj8/gptel-tool-apply-buffer-string-edits temp-buffer-name file-edits))
       (ediff-buffers buffer temp-buffer)
       (format "Ediff session started for %s. Please complete the review." file-path))))
 
@@ -406,9 +465,51 @@
  :category "buffers")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-apply-buffer-edits
- :name "aj8_apply_buffer_edits"
- :description "Edit a buffer with a list of edits, applying changes directly without review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the specified 'line-number'."
+ :function #'aj8/gptel-tool-apply-buffer-line-edits
+ :name "aj8_apply_buffer_line_edits"
+ :description "Edit a buffer with a list of edits, applying changes directly without review. Each edit replaces an entire line. Each edit must contain a 'line-number', an 'old-string' representing the entire original line content, and a 'new-string' representing the entire new line content. For an edit to be applied, the content of the line at 'line-number' must exactly match 'old-string'. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly."
+ :args (list '(:name "buffer-name"
+                     :type string
+                     :description "The name of the buffer to edit.")
+             '(:name "buffer-edits"
+                     :type array
+                     :items (:type object
+                                   :properties
+                                   (:line-number
+                                    (:type integer :description "The 1-based line number where the edit starts.")
+                                    :old-string
+                                    (:type string :description "The entire original content of the line to be replaced.")
+                                    :new-string
+                                    (:type string :description "The entire new content of the line.")))
+                     :description "The list of edits to apply to the buffer."))
+ :category "buffers")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-apply-buffer-line-edits-with-review
+ :name "aj8_apply_buffer_line_edits_with_review"
+ :description "Edit a buffer with a list of edits and start an Ediff session for review. Each edit replaces an entire line. Each edit must contain a 'line-number', an 'old-string' representing the entire original line content, and a 'new-string' representing the entire new line content. For an edit to be applied, the content of the line at 'line-number' must exactly match 'old-string'. Edits are applied from the bottom of the buffer to the top.
+
+This action requires manual user review. After calling this tool, you must stop and instruct the user to complete the review in the Ediff session and to notify you when they are finished. Do not proceed with any other tools or actions until you receive confirmation from the user."
+ :args (list '(:name "buffer-name"
+                     :type string
+                     :description "The name of the buffer to edit.")
+             '(:name "buffer-edits"
+                     :type array
+                     :items (:type object
+                                   :properties
+                                   (:line-number
+                                    (:type integer :description "The 1-based line number where the edit starts.")
+                                    :old-string
+                                    (:type string :description "The entire original content of the line to be replaced.")
+                                    :new-string
+                                    (:type string :description "The entire new content of the line.")))
+                     :description "The list of edits to apply to the buffer."))
+ :category "buffers")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-apply-buffer-string-edits
+ :name "aj8_apply_buffer_string_edits"
+ :description "Edit a buffer with a list of string edits, applying changes directly without review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the specified 'line-number'."
  :args (list '(:name "buffer-name"
                      :type string
                      :description "The name of the buffer to edit.")
@@ -426,9 +527,9 @@
  :category "buffers")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-apply-buffer-edits-with-review
- :name "aj8_apply_buffer_edits_with_review"
- :description "Edit a buffer with a list of edits and start an Ediff session for review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the specified 'line-number'.
+ :function #'aj8/gptel-tool-apply-buffer-string-edits-with-review
+ :name "aj8_apply_buffer_string_edits_with_review"
+ :description "Edit a buffer with a list of string edits and start an Ediff session for review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the specified 'line-number'.
 
 This action requires manual user review. After calling this tool, you must stop and instruct the user to complete the review in the Ediff session and to notify you when they are finished. Do not proceed with any other tools or actions until you receive confirmation from the user."
  :args (list '(:name "buffer-name"
@@ -518,9 +619,51 @@ This action requires manual user review. After calling this tool, you must stop 
  :category "filesystem")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-apply-file-edits
- :name "aj8_apply_file_edits"
- :description "Edit a file with a list of edits, saving changes directly without review. This tool operates on the buffer visiting the file to avoid losing unsaved changes. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the specified 'line-number'."
+ :function #'aj8/gptel-tool-apply-file-line-edits
+ :name "aj8_apply_file_line_edits"
+ :description "Edit a file with a list of edits, saving changes directly without review. Each edit replaces an entire line. Each edit must contain a 'line-number', an 'old-string' representing the entire original line content, and a 'new-string' representing the entire new line content. For an edit to be applied, the content of the line at 'line-number' must exactly match 'old-string'. Edits are applied from the bottom of the file to the top. This tool operates on the buffer visiting the file and saves it after editing."
+ :args (list '(:name "file-path"
+                     :type string
+                     :description "The path of the file to edit.")
+             '(:name "file-edits"
+                     :type array
+                     :items (:type object
+                                   :properties
+                                   (:line-number
+                                    (:type integer :description "The 1-based line number where the edit starts.")
+                                    :old-string
+                                    (:type string :description "The entire original content of the line to be replaced.")
+                                    :new-string
+                                    (:type string :description "The entire new content of the line.")))
+                     :description "The list of edits to apply to the file."))
+ :category "filesystem")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-apply-file-line-edits-with-review
+ :name "aj8_apply_file_line_edits_with_review"
+ :description "Edit a file with a list of edits and start an Ediff session for review. Each edit replaces an entire line. Each edit must contain a 'line-number', an 'old-string' representing the entire original line content, and a 'new-string' representing the entire new line content. For an edit to be applied, the content of the line at 'line-number' must exactly match 'old-string'. Edits are applied from the bottom of the file to the top. This tool operates on the buffer visiting the file.
+
+This action requires manual user review. After calling this tool, you must stop and instruct the user to complete the review in the Ediff session and to notify you when they are finished. Do not proceed with any other tools or actions until you receive confirmation from the user."
+ :args (list '(:name "file-path"
+                     :type string
+                     :description "The path of the file to edit.")
+             '(:name "file-edits"
+                     :type array
+                     :items (:type object
+                                   :properties
+                                   (:line-number
+                                    (:type integer :description "The 1-based line number where the edit starts.")
+                                    :old-string
+                                    (:type string :description "The entire original content of the line to be replaced.")
+                                    :new-string
+                                    (:type string :description "The entire new content of the line.")))
+                     :description "The list of edits to apply to the file."))
+ :category "filesystem")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-apply-file-string-edits
+ :name "aj8_apply_file_string_edits"
+ :description "Edit a file with a list of string edits, saving changes directly without review. This tool operates on the buffer visiting the file to avoid losing unsaved changes. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the specified 'line-number'."
  :args (list '(:name "file-path"
                      :type string
                      :description "The path of the file to edit.")
@@ -538,9 +681,9 @@ This action requires manual user review. After calling this tool, you must stop 
  :category "filesystem")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-apply-file-edits-with-review
- :name "aj8_apply_file_edits_with_review"
- :description "Edit a file with a list of edits and start an Ediff session for review. This tool operates on the buffer visiting the file to avoid losing unsaved changes. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the specified 'line-number'.
+ :function #'aj8/gptel-tool-apply-file-string-edits-with-review
+ :name "aj8_apply_file_string_edits_with_review"
+ :description "Edit a file with a list of string edits and start an Ediff session for review. This tool operates on the buffer visiting the file to avoid losing unsaved changes. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the specified 'line-number'.
 
 This action requires manual user review. After calling this tool, you must stop and instruct the user to complete the review in the Ediff session and to notify you when they are finished. Do not proceed with any other tools or actions until you receive confirmation from the user."
  :args (list '(:name "file-path"
