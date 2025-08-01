@@ -2857,6 +2857,8 @@ Elisp code explicitly in arbitrary buffers.")
   (window-sides-vertical nil)
   ;; Left and right side windows occupy full frame height
   ;; (setq window-sides-vertical t)
+  ;; Obey display actions when switching buffers
+  (switch-to-buffer-obey-display-actions t)
   ;; Window rules
   (display-buffer-alist
    '(;;
@@ -2996,9 +2998,7 @@ Elisp code explicitly in arbitrary buffers.")
       (display-buffer-reuse-mode-window display-buffer-at-bottom)
       (window-height . fit-window-to-buffer)
       (window-parameters . ((no-other-window . t)
-                            (mode-line-format . none))))))
-  ;; Obey display actions when switching buffers
-  (switch-to-buffer-obey-display-actions t))
+                            (mode-line-format . none)))))))
 
 ;; xref (cross-referencing)
 (use-package xref
