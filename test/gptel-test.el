@@ -345,6 +345,12 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
 ;;
 
 ;;; 4.1. Category: Tool Definition and Invocation
+;;
+;; This section tests the fundamental integrity of the tool system. It
+;; ensures that all tools are correctly defined, registered, and can be
+;; invoked through their function pointers. It also verifies that the tool
+;; definitions meet the structural requirements and that error handling for
+;; invalid arguments is working as expected.
 
 (ert-deftest test-gptel-tools-registration ()
   "Verify that all Gptel tools are registered in `gptel-tools'.
@@ -462,6 +468,13 @@ path."
               (error (string-match-p "No such file" (error-message-string err)))))))
 
 ;;; 4.2. Category: LLM Tool Call Simulation
+;;
+;; This section simulates the end-to-end process of an LLM calling a
+;; tool. It uses mock LLM responses containing tool call requests to test if
+;; `gptel' correctly parses these requests, invokes the appropriate tool
+;; with the right arguments, and that the tools produce the expected side
+;; effects (e.g., modifying a buffer or file).
+
 
 ;; (defun aj8/gptel-tool-test--run-with-mock-llm (tool-name args expected-pattern)
 ;;   "Simulate an LLM call to a Gptel tool and check the result.
@@ -563,6 +576,12 @@ The response is processed by `gptel--streaming-done-callback'."
         (should (string-match-p "(defun gptel-send" (buffer-string)))))))
 
 ;;; 4.3. Category: User Workflow Simulation
+;;
+;; This section tests common sequences of tool calls that emulate a user's
+;; workflow for a specific task. Unlike the LLM simulations, these tests
+;; call the tool functions directly to verify that combinations of tools
+;; work together correctly to achieve a larger goal, such as refactoring
+;; code in a buffer or managing project files.
 
 (ert-deftest test-gptel-tools-workflow-buffers ()
   "Simulate a workflow using buffer tools."
