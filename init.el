@@ -359,17 +359,6 @@
 
 ;; eglot (client for language server protocol servers)
 (use-package eglot
-  :bind (:map eglot-mode-map
-              ("C-c l a o" . eglot-code-action-organize-imports)
-              ("C-c l a q" . eglot-code-action-quickfix)
-              ("C-c l a e" . eglot-code-action-extract)
-              ("C-c l a i" . eglot-code-action-inline)
-              ("C-c l a r" . eglot-code-action-rewrite)
-              ("C-c l f" . eglot-format)
-              ("C-c l F" . eglot-format-buffer)
-              ("C-c l d" . flymake-show-buffer-diagnostics)
-              ("C-c l D" . flymake-show-project-diagnostics)
-              ("C-c l r" . eglot-rename))
   :hook ((sh-mode . eglot-ensure)
          (html-mode . eglot-ensure)
          (mhtml-mode . eglot-ensure)
@@ -383,6 +372,17 @@
          (python-mode . eglot-ensure)
          (toml-ts-mode . eglot-ensure)
          (yaml-mode . eglot-ensure))
+  :bind (:map eglot-mode-map
+              ("C-c l a o" . eglot-code-action-organize-imports)
+              ("C-c l a q" . eglot-code-action-quickfix)
+              ("C-c l a e" . eglot-code-action-extract)
+              ("C-c l a i" . eglot-code-action-inline)
+              ("C-c l a r" . eglot-code-action-rewrite)
+              ("C-c l f" . eglot-format)
+              ("C-c l F" . eglot-format-buffer)
+              ("C-c l d" . flymake-show-buffer-diagnostics)
+              ("C-c l D" . flymake-show-project-diagnostics)
+              ("C-c l r" . eglot-rename))
   :init
   (which-key-add-key-based-replacements "C-c l" "lsp")
   (which-key-add-key-based-replacements "C-c l a" "action")
@@ -423,8 +423,8 @@
 
 ;; flymake-eslint (a Flymake backend for Javascript using eslint)
 (use-package flymake-eslint
-  :ensure-system-package eslint
   :disabled
+  :ensure-system-package eslint
   :hook (js-base-mode . flymake-eslint-enable))
 
 ;; flymake-json (a Flymake handler for json using jsonlint)
@@ -1136,8 +1136,8 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; dired-sidebar (tree browser leveraging dired)
 (use-package dired-sidebar
-  :bind ("C-c d" . dired-sidebar-toggle-sidebar)
   :commands (dired-sidebar-toggle-sidebar)
+  :bind ("C-c d" . dired-sidebar-toggle-sidebar)
   :init
   (add-hook 'dired-sidebar-mode-hook
             (lambda ()
@@ -1758,6 +1758,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; gptel (a simple ChatGPT client for Emacs)
 (use-package gptel
+  :commands (gptel gptel-send)
   :bind (("C-c t c" . gptel)
          ("C-c t m" . gptel-menu)
          ("C-c t q" . gptel-abort)
@@ -1767,7 +1768,6 @@ Elisp code explicitly in arbitrary buffers.")
          :map gptel-mode-map
          ("C-c M-n" . gptel-end-of-response)
          ("C-c M-p" . gptel-beginning-of-response))
-  :commands (gptel gptel-send)
   :init
   (which-key-add-key-based-replacements "C-c t" "gptel")
                                         ; add label for prefix key
@@ -2225,8 +2225,8 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; erc (an Emacs internet relay chat client)
 (use-package erc
-  :ensure nil   ; don't install built-in packages
   :disabled
+  :ensure nil   ; don't install built-in packages
   :commands (erc erc-tls)
   :custom
   ;; Server settings
@@ -2535,10 +2535,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;; outline (outline mode)
 (use-package outline
   :ensure nil   ; don't install built-in packages
+  :hook (outline-mode . (lambda () (setq outline-regexp "[*]+")))
   :bind (("C-c O" . outline-minor-mode))
   :init
   (which-key-add-key-based-replacements "C-c @" "outline")
-  :hook (outline-mode . (lambda () (setq outline-regexp "[*]+")))
   :custom
   ;; Use TAB and S-TAB for cycling
   ;;   See also outline-minor-faces.
