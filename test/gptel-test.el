@@ -489,12 +489,12 @@ path."
 ;;     result))
 
 (defun test-gptel-tools--mock-response (response function)
-  "Mock `gptel--request' to return RESPONSE, and run FUNCTION.
+  "Mock `gptel-request' to return RESPONSE, and run FUNCTION.
 The response is processed by `gptel--streaming-done-callback'."
   (let ((gptel-buffer (get-buffer-create "*gptel*")))
     (with-current-buffer gptel-buffer
       (let ((gptel-streaming nil))
-        (cl-letf (((symbol-function 'gptel--request)
+        (cl-letf (((symbol-function 'gptel-request)
                    (lambda (&rest _)
                      (funcall gptel--streaming-callback response)
                      (funcall gptel--streaming-done-callback))))
