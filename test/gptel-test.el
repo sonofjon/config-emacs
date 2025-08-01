@@ -250,9 +250,9 @@ middle, a section from the beginning, and a section to the end."
 (ert-deftest test-aj8-file-modification ()
   "Test file content modification functions.
 
-This test covers `aj8/gptel-tool-append-to-file',
-`aj8/gptel-tool-insert-into-file', and `aj8/gptel-tool-edit-file',
-ensuring they alter file content on disk as expected."
+This test covers `aj8/gptel-tool-append-to-file' and
+`aj8/gptel-tool-insert-into-file', ensuring they alter file content
+on disk as expected."
   :tags '(unit files)
   (with-temp-file-with-content
    test-file "Line 1\nLine 3"
@@ -263,11 +263,21 @@ ensuring they alter file content on disk as expected."
    ;; Insert
    (aj8/gptel-tool-insert-into-file test-file "Line 2\n" 2)
    (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
-                         "Line 1\nLine 2\nLine 3\nLine 4"))
-   ;; Edit
-   (aj8/gptel-tool-edit-file test-file "Line 4" "Line FOUR")
-   (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
-                         "Line 1\nLine 2\nLine 3\nLine FOUR"))))
+                         "Line 1\nLine 2\nLine 3\nLine 4"))))
+
+(ert-deftest test-aj8-edit-file ()
+  "Test `aj8/gptel-tool-edit-file'.
+
+Verifies that a single, unique string can be replaced in a file.  It
+also confirms that an error is signaled if the target string is not
+found or is not unique."
+  :tags '(unit files)
+  (with-temp-file-with-content
+   test-file "hello world\nhello universe"
+   (aj8/gptel-tool-edit-file test-file "world" "emacs")
+   (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string)) "hello emacs\nhello universe"))
+   (should-error (aj8/gptel-tool-edit-file test-file "non-existent" "foo") :type 'error)
+   (should-error (aj8/gptel-tool-edit-file test-file "hello" "hi") :type 'error)))
 
 (ert-deftest test-aj8-apply-file-string-edits ()
   "Test `aj8/gptel-tool-apply-file-string-edits'.
