@@ -65,9 +65,9 @@
         (insert content))
       (format "Buffer %s successfully modified." buffer))))
 
-(defun aj8/gptel-tool-edit-buffer (buffer-name old-string new-string)
+(defun aj8/gptel-tool-edit-buffer-string (buffer-name old-string new-string)
   "Edit a buffer by replacing a single instance of an exact string."
-  (with-temp-message "Running tool: aj8_edit_buffer"
+  (with-temp-message "Running tool: aj8_edit_buffer_string"
     (let ((buffer (get-buffer buffer-name)))
       (unless buffer
         (error "Error: Buffer '%s' not found." buffer-name))
@@ -186,12 +186,12 @@
         (save-buffer))
       (format "Text successfully inserted into %s at line %d." filepath line-number))))
 
-(defun aj8/gptel-tool-edit-file (filename old-string new-string)
+(defun aj8/gptel-tool-edit-file-string (filename old-string new-string)
   "Edit a file by replacing a single instance of an exact string."
-  (with-temp-message "Running tool: aj8_edit_file"
+  (with-temp-message "Running tool: aj8_edit_file_string"
     (let ((buffer (find-file-noselect filename)))
       (with-current-buffer buffer
-        (aj8/gptel-tool-edit-buffer (buffer-name) old-string new-string)
+        (aj8/gptel-tool-edit-buffer-string (buffer-name) old-string new-string)
         (save-buffer))
       (format "String in file '%s' successfully replaced." filename))))
 
@@ -450,8 +450,8 @@
  :category "buffers")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-edit-buffer
- :name "aj8_edit_buffer"
+ :function #'aj8/gptel-tool-edit-buffer-string
+ :name "aj8_edit_buffer_string"
  :description "Edit a buffer by replacing a single instance of an exact string."
  :args '((:name "buffer-name"
                 :type string
@@ -604,8 +604,8 @@ This action requires manual user review. After calling this tool, you must stop 
  :category "filesystem")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-edit-file
- :name "aj8_edit_file"
+ :function #'aj8/gptel-tool-edit-file-string
+ :name "aj8_edit_file_string"
  :description "Edit a file by replacing a single instance of an exact string. This tool operates on the buffer visiting the file to avoid losing unsaved changes, and it saves the buffer after the edit."
  :args '((:name "filename"
                 :type string

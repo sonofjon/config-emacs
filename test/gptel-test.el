@@ -148,8 +148,8 @@ ensuring they alter the buffer content as expected."
    (aj8/gptel-tool-modify-buffer "*test-modify*" "New Content")
    (should (string-equal (buffer-string) "New Content"))))
 
-(ert-deftest test-aj8-edit-buffer ()
-  "Test `aj8/gptel-tool-edit-buffer'.
+(ert-deftest test-aj8-edit-buffer-string ()
+  "Test `aj8/gptel-tool-edit-buffer-string'.
 
 Verifies that a single, unique string can be replaced in a buffer.  It
 also confirms that an error is signaled if the target string is not
@@ -157,10 +157,10 @@ found or is not unique."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-edit*" "hello world\nhello universe"
-   (aj8/gptel-tool-edit-buffer "*test-edit*" "world" "emacs")
+   (aj8/gptel-tool-edit-buffer-string "*test-edit*" "world" "emacs")
    (should (string-equal (buffer-string) "hello emacs\nhello universe"))
-   (should-error (aj8/gptel-tool-edit-buffer "*test-edit*" "non-existent" "foo") :type 'error)
-   (should-error (aj8/gptel-tool-edit-buffer "*test-edit*" "hello" "hi") :type 'error)))
+   (should-error (aj8/gptel-tool-edit-buffer-string "*test-edit*" "non-existent" "foo") :type 'error)
+   (should-error (aj8/gptel-tool-edit-buffer-string "*test-edit*" "hello" "hi") :type 'error)))
 
 (ert-deftest test-aj8-apply-buffer-string-edits ()
   "Test `aj8/gptel-tool-apply-buffer-string-edits'.
@@ -265,8 +265,8 @@ on disk as expected."
    (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string))
                          "Line 1\nLine 2\nLine 3\nLine 4"))))
 
-(ert-deftest test-aj8-edit-file ()
-  "Test `aj8/gptel-tool-edit-file'.
+(ert-deftest test-aj8-edit-file-string ()
+  "Test `aj8/gptel-tool-edit-file-string'.
 
 Verifies that a single, unique string can be replaced in a file.  It
 also confirms that an error is signaled if the target string is not
@@ -274,10 +274,10 @@ found or is not unique."
   :tags '(unit files)
   (with-temp-file-with-content
    test-file "hello world\nhello universe"
-   (aj8/gptel-tool-edit-file test-file "world" "emacs")
+   (aj8/gptel-tool-edit-file-string test-file "world" "emacs")
    (should (string-equal (with-temp-buffer (insert-file-contents test-file) (buffer-string)) "hello emacs\nhello universe"))
-   (should-error (aj8/gptel-tool-edit-file test-file "non-existent" "foo") :type 'error)
-   (should-error (aj8/gptel-tool-edit-file test-file "hello" "hi") :type 'error)))
+   (should-error (aj8/gptel-tool-edit-file-string test-file "non-existent" "foo") :type 'error)
+   (should-error (aj8/gptel-tool-edit-file-string test-file "hello" "hi") :type 'error)))
 
 (ert-deftest test-aj8-apply-file-string-edits ()
   "Test `aj8/gptel-tool-apply-file-string-edits'.
@@ -446,7 +446,7 @@ in the `gptel-tools' alist."
                           "aj8_append_to_buffer"
                           "aj8_insert_into_buffer"
                           "aj8_modify_buffer"
-                          "aj8_edit_buffer"
+                          "aj8_edit_buffer_string"
                           "aj8_apply_buffer_string_edits"
                           "aj8_apply_buffer_string_edits_with_review"
                           "aj8_apply_buffer_line_edits"
@@ -454,7 +454,7 @@ in the `gptel-tools' alist."
                           "aj8_read_file_section"
                           "aj8_append_to_file"
                           "aj8_insert_into_file"
-                          "aj8_edit_file"
+                          "aj8_edit_file_string"
                           "aj8_apply_file_string_edits"
                           "aj8_apply_file_string_edits_with_review"
                           "aj8_apply_file_line_edits"
@@ -524,7 +524,7 @@ both a query and a buffer modification tool."
      (should (member "*test-json-call*" result)))
 
    ;; Test edit buffer tool with JSON-like parameters
-   (let* ((tool-def (cl-find "aj8_edit_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+   (let* ((tool-def (cl-find "aj8_edit_buffer_string" gptel-tools :key #'gptel-tool-name :test #'string-equal))
           (func (gptel-tool-function tool-def))
           (result (funcall func "*test-json-call*" "World" "Gptel")))
      (should (string-match-p "successfully" result))
@@ -539,7 +539,7 @@ invalid arguments, such as a non-existent buffer name or an invalid file
 path."
   :tags '(integration tools errors)
   ;; Test with non-existent buffer
-  (let* ((tool-def (cl-find "aj8_edit_buffer" gptel-tools :key #'gptel-tool-name :test #'string-equal))
+  (let* ((tool-def (cl-find "aj8_edit_buffer_string" gptel-tools :key #'gptel-tool-name :test #'string-equal))
          (func (gptel-tool-function tool-def)))
     (should (condition-case err
                 (funcall func "*non-existent-buffer*" "old" "new")
@@ -598,14 +598,14 @@ The response is processed by `gptel--streaming-done-callback'."
           (should (string-match-p "mock-test" (buffer-string))))
         ;; Test a modifying tool
         (erase-buffer)
-        (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_edit_buffer\", \"arguments\": {\"buffer-name\": \"*mock-test*\", \"old-string\": \"Original\", \"new-string\": \"Modified\"}}]}"))
+        (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_edit_buffer_string\", \"arguments\": {\"buffer-name\": \"*mock-test*\", \"old-string\": \"Original\", \"new-string\": \"Modified\"}}]}"))
           (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
           ;; Check that the target buffer was modified
           (with-current-buffer "*mock-test*"
             (should (string-equal (buffer-string) "Modified content")))
           ;; Check that the gptel buffer contains the tool result
           (with-current-buffer gptel-buffer
-            (should (string-match-p "Tool `aj8_edit_buffer` returned: String replaced successfully." (buffer-string)))))))))
+            (should (string-match-p "Tool `aj8_edit_buffer_string` returned: String replaced successfully." (buffer-string)))))))))
 
 (ert-deftest test-gptel-tools-llm-mock-files ()
   "Test file tools by simulating calls from an LLM."
@@ -688,7 +688,7 @@ The response is processed by `gptel--streaming-done-callback'."
       (should (string-equal (with-current-buffer buffer-name (buffer-string)) "Prepended\ninitial content\nAppended"))
 
       ;; edit-buffer
-      (aj8/gptel-tool-edit-buffer buffer-name "initial" "original")
+      (aj8/gptel-tool-edit-buffer-string buffer-name "initial" "original")
       (should (string-equal (with-current-buffer buffer-name (buffer-string)) "Prepended\noriginal content\nAppended"))
 
       ;; modify-buffer
@@ -721,7 +721,7 @@ The response is processed by `gptel--streaming-done-callback'."
     (should (string-equal (aj8/gptel-tool-read-file-section test-file) "Line 1\nLine 2\nLine 3"))
 
     ;; edit-file
-    (aj8/gptel-tool-edit-file test-file "Line 2" "LINE TWO")
+    (aj8/gptel-tool-edit-file-string test-file "Line 2" "LINE TWO")
     (should (string-equal (aj8/gptel-tool-read-file-section test-file) "Line 1\nLINE TWO\nLine 3"))))
 
 (ert-deftest test-gptel-tools-workflow-project ()
