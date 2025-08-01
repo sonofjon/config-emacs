@@ -31,6 +31,87 @@
       (or (cdr (assoc system-type package-alist))
           (error "Package '%s' not found for system type '%s'" package system-type)))))
 
+;; List available package upgrades
+(defun aj8/package-list-upgrades (&optional verbose)
+  "List all packages that have upgrades available.
+
+With prefix argument (C-u), show detailed version information.  Excludes
+VC packages since they show as upgradeable even when up-to-date."
+  (interactive "P")
+  (package-refresh-contents)
+  (let* ((all-upgradable (package--upgradeable-packages))
+         (upgradable (cl-remove-if
+                      (lambda (pkg-name)
+                        (let ((pkg-desc (cadr (assq pkg-name package-alist))))
+                          (and pkg-desc
+                               (eq (package-desc-kind pkg-desc) 'vc))))
+                      all-upgradable)))
+    (if upgradable
+        (if verbose
+            ;; Verbose version with version details on one line
+            (let ((upgrade-info
+                   (mapconcat
+                    (lambda (pkg-name)
+                      (let* ((installed (cadr (assq pkg-name package-alist)))
+                             (available (cadr (assq pkg-name package-archive-contents))))
+                        (format "%s:%s->%s"
+                                pkg-name
+                                (if installed
+                                    (package-version-join (package-desc-version installed))
+                                    "?")
+                                (if available
+                                    (package-version-join (package-desc-version available))
+                                    "?"))))
+                    upgradable ", ")))
+              (message "Upgrades (%d): %s" (length upgradable) upgrade-info))
+          ;; Simple version with just package names
+          (message "Upgrades (%d): %s"
+                   (length upgradable)
+                   (mapconcat 'symbol-name upgradable ", ")))
+      (message "All packages are up to date"))))
+
+;; Upgrade packages verbosily
+(defun aj8/package-upgrade-all-verbose ()
+  "Upgrade all packages with detailed information about what will be upgraded.
+
+Excludes VC packages since they show as upgradeable even when
+up-to-date."
+  (interactive)
+  (package-refresh-contents)
+  (let* ((all-upgradable (package--upgradeable-packages))
+         (upgradable (cl-remove-if
+                      (lambda (pkg-name)
+                        (let ((pkg-desc (cadr (assq pkg-name package-alist))))
+                          (and pkg-desc
+                               (eq (package-desc-kind pkg-desc) 'vc))))
+                      all-upgradable)))
+    (if upgradable
+        (let ((package-list (mapconcat 'symbol-name upgradable ", ")))
+          (when (yes-or-no-p (format "Upgrade %d packages (%s)? "
+                                     (length upgradable)
+                                     package-list))
+            ;; Temporarily disable package-refresh-contents during upgrades
+            (cl-letf (((symbol-function 'package-refresh-contents)
+                       (lambda (&optional async) nil)))
+              (dolist (name upgradable)
+                (package-upgrade name)))))
+      (message "All packages are up to date"))))
+
+(defun aj8/package-upgrade-all-advice (orig-fun &rest args)
+  "Advice to make package-upgrade-all show package names in the upgrade prompt."
+  (let ((upgradable (package--upgradeable-packages)))
+    (if upgradable
+        (let ((package-list (mapconcat 'symbol-name upgradable ", ")))
+          (when (yes-or-no-p (format "Upgrade %d packages (%s)? "
+                                     (length upgradable)
+                                     package-list))
+            ;; Call the original function but skip its own prompt
+            (cl-letf (((symbol-function 'yes-or-no-p) (lambda (&rest _) t)))
+              (apply orig-fun args))))
+      (message "All packages are up to date"))))
+
+(advice-add 'package-upgrade-all :around #'aj8/package-upgrade-all-advice)
+
 (defun aj8/package-autoremove-no-vc (orig-fun &rest args)
   "Advice function for `package-autoremove to not remove VC packages'.
 This function temporarily adds packages from
