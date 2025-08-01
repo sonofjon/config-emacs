@@ -1964,6 +1964,7 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package abbrev
   :ensure nil   ; don't install built-in packages
   :diminish
+  ;; Expand abbreviations
   :hook (text-mode . abbrev-mode))
 
 ;; apropos (find commands, functions, and variables by name)
@@ -1985,9 +1986,11 @@ Elisp code explicitly in arbitrary buffers.")
   :ensure nil   ; don't install built-in packages
   :bind (("C-c b" . browse-url-at-point))
   :custom
-  ;; URL browser settings
+  ;; Use default browser
   (browse-url-browser-function #'browse-url-default-browser)
+  ;; Use EWW as secondary browser
   (browse-url-secondary-browser-function #'eww-browse-url)
+  ;; Custom browser settings
   (browse-url-handlers
    '(("\\.md$" . eww-browse-url)
      ("." . browse-url-default-browser))))
@@ -2101,7 +2104,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;;   (https://emacs.stackexchange.com/a/80961/33325)
   (add-hook 'ediff-before-setup-hook #'my-ediff-save-windows)
   (add-hook 'ediff-quit-hook #'my-ediff-restore-windows)
-  ;; MAYBE: check functionality
+  ;; Use both versions with ediff
+  ;;   MAYBE: check functionality
   (add-hook 'ediff-keymap-setup-hook
             ;; Use both versions with ediff
             (lambda () (keymap-set ediff-mode-map "d" #'my/ediff-copy-both-to-C))))
@@ -2142,7 +2146,7 @@ Elisp code explicitly in arbitrary buffers.")
   (user-mail-address "ajdev8@gmail.com")
   ;; Use spaces, not tabs
   (indent-tabs-mode nil)
-  ;; Kill line behavior
+  ;; Delete trailing newline character with kill-line
   (kill-whole-line t)
   ;; Save clipboard text into kill ring before kill
   ;; (save-interprogram-paste-before-kill t)
@@ -2163,15 +2167,16 @@ Elisp code explicitly in arbitrary buffers.")
   (scroll-preserve-screen-position t)
   ;; Smooth horizontal scrolling
   (hscroll-step 1)
-  ;; Mark behavior
+  ;; Use "repeat-mode" for "pop-mark"
   (set-mark-command-repeat-pop t)
   ;; Don't use the mark when region is inactive
   ;;   Note: messes with ediff
   ;; (mark-even-if-inactive nil)
-  ;; Search
+  ;; Interpret spaces as wildcards (with M-s SPC)
   (search-whitespace-regexp ".*?")
   ;; (isearch-invisible nil)
   ;; (isearch-lax-whitespace nil)
+  ;; Allow movement between Isearch matches by cursor motion commands
   (isearch-allow-motion t)
   (isearch-motion-changes-direction t)
   ;; Use 'y' or 'n' questions always
@@ -2180,20 +2185,29 @@ Elisp code explicitly in arbitrary buffers.")
   (pulse-delay 0.05)   ; default is 0.03
   ;; Show mode headers in describe-bindings buffer
   (describe-bindings-outline t)
-  ;; Selection
+  ;; Delete selection on edit
   (delete-selection-mode 1)
-  ;; Completion
+  ;; Select completion styles
+  ;;   substring: needed for partial completion
+  ;;   orderless: space-separated components
+  ;;   basic: fallback
   (completion-styles '(orderless basic))
   ;; (completion-styles '(substring orderless basic))
-  (completion-category-defaults nil)
+  ;; Use TAB for symbol completion (after indentation)
   (tab-always-indent 'complete)
+  ;; Show more details for completions
   (completions-detailed t)
   ;; (read-extended-command-predicate #'command-completion-default-include-p)
   :config
+  ;; Use partial completion for files
+  (setq completion-category-defaults nil)
   (add-to-list 'completion-category-overrides '((file (styles basic partial-completion))))
+  ;; Deactivate highlight mode when selecting text
   (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
   (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
+  ;; Add Treesitter indicator in the modeline
   (add-hook 'after-change-major-mode-hook #'aj8/treesit-mode-name)
+  ;; Collect list of killed file and non-file buffers
   (add-hook 'kill-buffer-hook #'my/reopen-killed-file-save)
   (add-hook 'kill-buffer-hook #'aj8/reopen-killed-buffer-save)
   (keymap-set isearch-mode-map "TAB" #'isearch-complete))
@@ -2292,6 +2306,7 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package find-func
   :ensure nil   ; don't install built-in packages
   :config
+  ;; Set keybindings for find-function and relatives
   (find-function-setup-keys))
 
 ;; flymake (minor mode for on-the-fly syntax checking)
@@ -2308,6 +2323,7 @@ Elisp code explicitly in arbitrary buffers.")
   :hook ((text-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode))
   :config
+  ;; Enable flyspell in web-mode
   (put 'web-mode 'flyspell-mode-predicate #'my/web-mode-flyspell-verify))
 
 ;; goto-addr (go to URL at point)
@@ -2315,6 +2331,7 @@ Elisp code explicitly in arbitrary buffers.")
   :ensure nil   ; don't install built-in packages
   :diminish
   :config
+  ;; Buttonize URLs and e-mail addresses
   (global-goto-address-mode 1))
 
 ;; help (help commands)
@@ -2349,6 +2366,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Let hippie-expand search for line expansions in all buffers
   ;; (add-to-list 'hippie-expand-try-functions-list 'try-expand-line-all-buffers t)
   (setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
+  ;; Ignore some buffers with hippie-expand
   (with-eval-after-load "hippie-exp"
     (add-to-list 'hippie-expand-ignore-buffers "^\\*.*\\*$")
     (add-to-list 'hippie-expand-ignore-buffers "magit:.*")
@@ -2358,6 +2376,7 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package hl-line
   :ensure nil   ; don't install built-in packages
   :config
+  ;; Highlight current line
   (global-hl-line-mode 1))
 
 ;; ibuffer (list and manage buffers)
@@ -2379,6 +2398,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Open *info* buffers in same window
   (info-lookup-other-window-flag nil)
   :config
+  ;; Re-flow Info buffers
   (aj8/reflow-info-mode 1))
 
 ;; ispell (spell checking)
@@ -2398,6 +2418,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; lisp-mode (modes for Lisp dialects)
 (use-package lisp-mode
   :ensure nil   ; don't install built-in packages
+  ;; Outline settings
   :hook (emacs-lisp-mode . outline-headers-for-semicolon-buffers))
 
 ;; minibuffer (minibuffer commands)
@@ -2506,7 +2527,9 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package org
   :ensure nil   ; don't install built-in packages
   :custom
+  ;; Use speed keys
   (org-use-speed-commands t)
+  ;; Don't require confirmation when evaluating code
   (org-confirm-babel-evaluate nil)
   ;; Use shift-selection
   ;;   (disables org-shiftup, org-shiftdown, org-shiftleft and org-shiftright)
@@ -2521,7 +2544,7 @@ Elisp code explicitly in arbitrary buffers.")
   (which-key-add-key-based-replacements "C-c @" "outline")
   :hook (outline-mode . (lambda () (setq outline-regexp "[*]+")))
   :custom
-  ;; Highlight headings
+  ;; Use TAB and S-TAB for cycling
   ;;   See also outline-minor-faces.
   (outline-minor-mode-cycle t)   ; alternatives: 'override and 'append
   ;; (outline-minor-mode-highlight t)
@@ -2559,8 +2582,10 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package recentf
   :ensure nil   ; don't install built-in packages
   :custom
+  ;; Number of saved recent files
   (recentf-max-saved-items 100)
   :config
+  ;; Keeping track of opened files
   (recentf-mode 1))
 
 ;; repeat (repeat commands)
@@ -2688,7 +2713,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Use maximum decoration detail
   (treesit-font-lock-level 4)
   :config
-  ;; Cpy standard mode hooks to their Treesitter equivalents
+  ;; Copy standard mode hooks to their Treesitter equivalents
   (dolist (hook '((bash-ts-mode-hook . sh-mode-hook)
                   (css-ts-mode-hook . css-mode-hook)
                   (html-ts-mode-hook . html-mode-hook)
@@ -2714,6 +2739,7 @@ Elisp code explicitly in arbitrary buffers.")
   :ensure nil   ; don't install built-in packages
   :bind (("C-x v -" . vc-ediff))
   :custom
+  ;; Follow symlinks
   (vc-follow-symlinks t))
 
 ;; which-key (display available keybindings in popup)
@@ -2790,10 +2816,11 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package winner
   :ensure nil   ; don't install built-in packages
   :config
-  (winner-mode 1)
+  ;; Don't bind keys for winner
   (setq winner-dont-bind-my-keys t)
   (keymap-set winner-mode-map "C-c w <" #'winner-undo)
-  (keymap-set winner-mode-map "C-c w >" #'winner-redo))
+  (keymap-set winner-mode-map "C-c w >" #'winner-redo)
+  (winner-mode 1))
 
 ;; window (window management)
 (use-package window
