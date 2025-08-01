@@ -89,31 +89,22 @@ directory."
 ;;; 3.1. Category: Buffers
 
 (ert-deftest test-aj8-list-buffers ()
-  "Test `aj8/gptel-tool-list-buffers'.
+  "Test buffer listing tools.
 
-Ensures the function lists buffers associated with files and excludes
-those not associated with any file."
+This test ensures that `aj8/gptel-tool-list-buffers' correctly lists
+only file-associated buffers, while `aj8/gptel-tool-list-all-buffers'
+lists all buffers, including non-file-backed ones."
   :tags '(unit buffers)
   (with-temp-file-with-content
    tmp-file "file content"
    (find-file-noselect tmp-file)
    (with-temp-buffer-with-content
     "*non-file-buffer*" "some content"
+    ;; Test `aj8/gptel-tool-list-buffers' (file-backed only)
     (let ((buffers (aj8/gptel-tool-list-buffers)))
       (should (member (file-name-nondirectory tmp-file) buffers))
-      (should-not (member "*non-file-buffer*" buffers))))))
-
-(ert-deftest test-aj8-list-all-buffers ()
-  "Test `aj8/gptel-tool-list-all-buffers'.
-
-Ensures the function lists all buffers, including both file-backed
-and non-file-backed buffers."
-  :tags '(unit buffers)
-  (with-temp-file-with-content
-   tmp-file "file content"
-   (find-file-noselect tmp-file)
-   (with-temp-buffer-with-content
-    "*non-file-buffer*" "some content"
+      (should-not (member "*non-file-buffer*" buffers)))
+    ;; Test `aj8/gptel-tool-list-all-buffers' (all)
     (let ((buffers (aj8/gptel-tool-list-all-buffers)))
       (should (member (file-name-nondirectory tmp-file) buffers))
       (should (member "*non-file-buffer*" buffers))))))
