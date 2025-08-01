@@ -99,77 +99,69 @@
       (format "Region lines %d–%d in buffer '%s' replaced."
               start-line end-line buffer-name))))
 
-(defun aj8/gptel-tool-apply-buffer-line-edits (buffer-name buffer-edits)
-  "Edit a buffer with a list of line edits, applying changes directly without review."
-  (with-temp-message "Running tool: aj8_apply_buffer_line_edits"
-    (let ((buffer (get-buffer buffer-name)))
-      (unless buffer
-        (error "Error: Buffer '%s' not found." buffer-name))
-      (with-current-buffer buffer
-        (dolist (edit (sort buffer-edits #'(lambda (a b) (> (plist-get a :line-number) (plist-get b :line-number)))))
-          (let ((line-number (plist-get edit :line-number))
-                (old-string (plist-get edit :old-string))
-                (new-string (plist-get edit :new-string)))
-            (goto-line line-number)
+(defun aj8/--apply-buffer-edits (buffer-name buffer-edits edit-type)
+  "Apply a list of edits to a buffer.
+EDIT-TYPE can be 'line or 'string."
+  (let ((buffer (get-buffer buffer-name)))
+    (unless buffer
+      (error "Error: Buffer '%s' not found." buffer-name))
+    (with-current-buffer buffer
+      (dolist (edit (sort buffer-edits #'(lambda (a b) (> (plist-get a :line-number) (plist-get b :line-number)))))
+        (let ((line-number (plist-get edit :line-number))
+              (old-string (plist-get edit :old-string))
+              (new-string (plist-get edit :new-string)))
+          (goto-line line-number)
+          (cond
+           ((eq edit-type 'line)
             (let ((line-start (point)))
               (when (string-equal (buffer-substring-no-properties line-start (line-end-position)) old-string)
                 (delete-region line-start (line-end-position))
-                (insert new-string)))))
-        (format "Line edits successfully applied to buffer %s." buffer-name)))))
+                (insert new-string))))
+           ((eq edit-type 'string)
+            (when (search-forward old-string (line-end-position) t)
+              (replace-match new-string nil nil)))))))))
+
+(defun aj8/--review-buffer-edits (buffer-name buffer-edits edit-type)
+  "Prepare a temporary buffer with edits and start an Ediff review session.
+EDIT-TYPE can be 'line or 'string."
+  (let* ((original-buffer (get-buffer buffer-name))
+         (temp-buffer-name (format "*%s-edits*" buffer-name))
+         (temp-buffer (get-buffer-create temp-buffer-name)))
+    (unless original-buffer
+      (error "Error: Buffer '%s' not found." buffer-name))
+
+    ;; Prepare the edited version in a temporary buffer
+    (with-current-buffer temp-buffer
+      (erase-buffer)
+      (insert-buffer-substring original-buffer)
+      (aj8/--apply-buffer-edits temp-buffer-name buffer-edits edit-type))
+
+    ;; Start Ediff
+    (ediff-buffers original-buffer temp-buffer)))
+
+(defun aj8/gptel-tool-apply-buffer-line-edits (buffer-name buffer-edits)
+  "Edit a buffer with a list of line edits, applying changes directly without review."
+  (with-temp-message "Running tool: aj8_apply_buffer_line_edits"
+    (aj8/--apply-buffer-edits buffer-name buffer-edits 'line)
+    (format "Line edits successfully applied to buffer %s." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer-edits)
   "Edit a buffer with a list of line edits and start an Ediff session for review."
   (with-temp-message "Running tool: aj8_apply_buffer_line_edits_with_review"
-    (let* ((original-buffer (get-buffer buffer-name))
-           (temp-buffer-name (format "*%s-edits*" buffer-name))
-           (temp-buffer (get-buffer-create temp-buffer-name)))
-      (unless original-buffer
-        (error "Error: Buffer '%s' not found." buffer-name))
-
-      ;; Prepare the edited version in a temporary buffer
-      (with-current-buffer temp-buffer
-        (erase-buffer)
-        (insert-buffer-substring original-buffer)
-        (aj8/gptel-tool-apply-buffer-line-edits temp-buffer-name buffer-edits))
-
-      ;; Start Ediff
-      (ediff-buffers original-buffer temp-buffer)
-      (format "Ediff session started for %s. Please complete the review." buffer-name))))
+    (aj8/--review-buffer-edits buffer-name buffer-edits 'line)
+    (format "Ediff session started for %s. Please complete the review." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits (buffer-name buffer-edits)
   "Edit a buffer with a list of string edits, applying changes directly without review."
   (with-temp-message "Running tool: aj8_apply_buffer_string_edits"
-    (let ((buffer (get-buffer buffer-name)))
-      (unless buffer
-        (error "Error: Buffer '%s' not found." buffer-name))
-      (with-current-buffer buffer
-        (dolist (edit (sort buffer-edits #'(lambda (a b) (> (plist-get a :line-number) (plist-get b :line-number)))))
-          (let ((line-number (plist-get edit :line-number))
-                (old-string (plist-get edit :old-string))
-                (new-string (plist-get edit :new-string)))
-            (goto-line line-number)
-            (when (search-forward old-string (line-end-position) t)
-              (replace-match new-string nil nil))))
-        (format "String edits successfully applied to buffer %s." buffer-name)))))
+    (aj8/--apply-buffer-edits buffer-name buffer-edits 'string)
+    (format "String edits successfully applied to buffer %s." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer-edits)
   "Edit a buffer with a list of string edits and start an Ediff session for review."
   (with-temp-message "Running tool: aj8_apply_buffer_string_edits_with_review"
-    (let* ((original-buffer (get-buffer buffer-name))
-           (temp-buffer-name (format "*%s-edits*" buffer-name))
-           (temp-buffer (get-buffer-create temp-buffer-name)))
-      (unless original-buffer
-        (error "Error: Buffer '%s' not found." buffer-name))
-
-      ;; Prepare the edited version in a temporary buffer
-      (with-current-buffer temp-buffer
-        (erase-buffer)
-        (insert-buffer-substring original-buffer)
-        (aj8/gptel-tool-apply-buffer-string-edits temp-buffer-name buffer-edits))
-
-      ;; Start Ediff
-      (ediff-buffers original-buffer temp-buffer)
-      (format "Ediff session started for %s. Please complete the review." buffer-name))))
+    (aj8/--review-buffer-edits buffer-name buffer-edits 'string)
+    (format "Ediff session started for %s. Please complete the review." buffer-name)))
 
 (defun aj8/gptel-tool-read-file-section (filepath &optional start end)
   "Read a section of a file."
@@ -237,14 +229,8 @@
 (defun aj8/gptel-tool-apply-file-line-edits-with-review (file-path file-edits)
   "Edit a file with a list of line edits and start an Ediff session for review."
   (with-temp-message "Running tool: aj8_apply_file_line_edits_with_review"
-    (let* ((buffer (find-file-noselect file-path))
-           (temp-buffer-name (format "*%s-edits*" (buffer-name buffer)))
-           (temp-buffer (get-buffer-create temp-buffer-name)))
-      (with-current-buffer temp-buffer
-        (erase-buffer)
-        (insert-buffer-substring buffer)
-        (aj8/gptel-tool-apply-buffer-line-edits temp-buffer-name file-edits))
-      (ediff-buffers buffer temp-buffer)
+    (let ((buffer (find-file-noselect file-path)))
+      (aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer) file-edits)
       (format "Ediff session started for %s. Please complete the review." file-path))))
 
 (defun aj8/gptel-tool-apply-file-string-edits (file-path file-edits)
@@ -259,14 +245,8 @@
 (defun aj8/gptel-tool-apply-file-string-edits-with-review (file-path file-edits)
   "Edit a file with a list of string edits and start an Ediff session for review."
   (with-temp-message "Running tool: aj8_apply_file_string_edits_with_review"
-    (let* ((buffer (find-file-noselect file-path))
-           (temp-buffer-name (format "*%s-edits*" (buffer-name buffer)))
-           (temp-buffer (get-buffer-create temp-buffer-name)))
-      (with-current-buffer temp-buffer
-        (erase-buffer)
-        (insert-buffer-substring buffer)
-        (aj8/gptel-tool-apply-buffer-string-edits temp-buffer-name file-edits))
-      (ediff-buffers buffer temp-buffer)
+    (let ((buffer (find-file-noselect file-path)))
+      (aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer) file-edits)
       (format "Ediff session started for %s. Please complete the review." file-path))))
 
 (defun aj8/gptel-tool-read-documentation (symbol)
