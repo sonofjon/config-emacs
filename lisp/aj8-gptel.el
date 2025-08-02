@@ -1,6 +1,8 @@
 ;;; aj8-gptel.el -*- lexical-binding: t; -*-
 
-;; Tool definitions
+;;; Tool definitions
+
+;; Buffers
 
 (defun aj8/gptel-tool-list-buffers ()
   "List the names of all currently open buffers that are associated with a file."
@@ -163,6 +165,8 @@ EDIT-TYPE can be 'line or 'string."
     (aj8/--review-buffer-edits buffer-name buffer-edits 'string)
     (format "Ediff session started for %s. Please complete the review." buffer-name)))
 
+;; Files
+
 (defun aj8/gptel-tool-read-file-section (filepath &optional start end)
   "Read a section of a file."
   (with-temp-message "Running tool: aj8_read_file_section"
@@ -249,6 +253,8 @@ EDIT-TYPE can be 'line or 'string."
       (aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer) file-edits)
       (format "Ediff session started for %s. Please complete the review." file-path))))
 
+;; Emacs
+
 (defun aj8/gptel-tool-read-documentation (symbol)
   "Read the documentation for a given 'symbol'."
   (with-temp-message "Running tool: aj8_read_documentation"
@@ -326,6 +332,8 @@ EDIT-TYPE can be 'line or 'string."
             (buffer-string))
         (kill-buffer info-buffer)))))
 
+;; Project
+
 (defun aj8/gptel-tool-project-get-root ()
   "Get the root directory of the current project."
   (with-temp-message "Running tool: aj8_project_get_root"
@@ -378,7 +386,9 @@ EDIT-TYPE can be 'line or 'string."
                 (buffer-string)))
           (kill-buffer output-buffer))))))
 
-;; Tool Registrations
+;;; Tool Registrations
+
+;; Buffers
 
 ;; (gptel-make-tool
 ;;  :function #'aj8/gptel-tool-read-buffer
@@ -583,6 +593,8 @@ This action requires manual user review. After calling this tool, you must stop 
 ;;                 :type string
 ;;                 :description "The content to write to the new file."))
 
+;; Files
+
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-file-section
  :name "aj8_read_file_section"
@@ -740,6 +752,8 @@ This action requires manual user review. After calling this tool, you must stop 
                      :description "The list of edits to apply to the file."))
  :category "filesystem")
 
+;; Emacs
+
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-documentation
  :name "aj8_read_documentation"
@@ -783,6 +797,8 @@ This action requires manual user review. After calling this tool, you must stop 
  :args (list '(:name "nodename" :type string :description "The name of the node in the Emacs Lisp manual."))
  :category "emacs")
 
+;; Project
+
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-get-root
  :name "aj8_project_get_root"
@@ -824,9 +840,10 @@ This action requires manual user review. After calling this tool, you must stop 
                 :description "A regexp to search for in the project files. The regexp should be compatible with ripgrep or git grep."))
  :category "project")
 
-;; Initialize gptel-tools with all the registered tools
-;;   Only needed for the test suite, i.e.  when running the ERT
-;;   (so that tests that inspect `gptel-tools' will pass)
+;;; Initialization
+;;   Initializes gptel-tools with all the registered tools.
+;;   This is only needed for the test suite, i.e.  when running the ERT
+;;   (so that tests that inspect `gptel-tools' will pass).
 (when (featurep 'ert)
   (setq gptel-tools
         (mapcan (lambda (entry)
