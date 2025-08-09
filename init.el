@@ -168,12 +168,12 @@
  'package-vc-selected-packages
  `(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
-   (combobulate :url "git@github.com:mickeynp/combobulate.git" :rev :newest)
-   (copilot :url "git@github.com:copilot-emacs/copilot.el.git" :rev :newest)
-   (gptel-quick :url "git@github.com:karthink/gptel-quick.git" :rev :newest)
-   (llm-tool-collection :url "git@github.com:skissue/llm-tool-collection.git" :rev :newest)
+   (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
+   (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
+   (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
+   (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
    (markdown-links :url "https://github.com/sonofjon/markdown-links.el" :rev :newest)
-   (obsidian-yaml-tools :url "git@github.com:sonofjon/obsidian-yaml-tools.el.git")
+   (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
                         ;; :branch "dev")
    ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
    ;;                                   "/projects/obsidian-yaml-tools.el"))
