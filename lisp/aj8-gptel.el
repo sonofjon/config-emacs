@@ -12,6 +12,19 @@
 ;;     (with-current-buffer buffer
 ;;       (buffer-substring-no-properties (point-min) (point-max)))))
 
+(defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start end)
+  "Read a region of a buffer.
+Optional START and END are 1-based line numbers. To read the entire buffer,
+omit START and END."
+  (with-temp-message "Running tool: aj8_read_buffer_region"
+    (let ((buffer (get-buffer buffer-name)))
+      (unless buffer
+        (error "Error: Buffer '%s' not found." buffer-name))
+      (with-current-buffer buffer
+        (let* ((start-pos (if start (progn (goto-line start) (point)) (point-min)))
+               (end-pos (if end (progn (goto-line end) (line-end-position)) (point-max))))
+          (buffer-substring-no-properties start-pos end-pos))))))
+
 (defun aj8/gptel-tool-list-buffers ()
   "List the names of all currently open buffers that are associated with a file."
   (with-temp-message "Running tool: aj8_list_buffers"
@@ -180,11 +193,8 @@ EDIT-TYPE can be 'line or 'string."
   (with-temp-message "Running tool: aj8_read_file_section"
     (unless (file-exists-p filepath)
       (error "Error: No such file: %s" filepath))
-    (with-temp-buffer
-      (insert-file-contents filepath)
-      (let* ((start-pos (if start (progn (goto-line start) (point)) (point-min)))
-             (end-pos (if end (progn (goto-line end) (line-end-position)) (point-max))))
-        (buffer-substring-no-properties start-pos end-pos)))))
+    (let ((buf (find-file-noselect filepath)))
+      (aj8/gptel-tool-read-buffer-region (buffer-name buf) start end))))
 
 (defun aj8/gptel-tool-append-to-file (filepath text)
   "Append text to a file."
@@ -405,6 +415,23 @@ EDIT-TYPE can be 'line or 'string."
 ;;  :args (list '(:name "buffer"
 ;;                       :type string
 ;;                       :description "The name of the buffer to read."))
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-read-buffer-region
+ :name "aj8_read_buffer_region"
+ :description "Read a region of a buffer. To read the entire buffer, omit the optional 'start' and 'end' arguments."
+ :args (list '( :name "buffer-name"
+                :type string
+                :description "The name of the buffer to read the contents of. ")
+             '( :name "start"
+                :type integer
+                :optional t
+                :description "The optional first line to read from.")
+             '( :name "end"
+                :type integer
+                :optional t
+                :description "The optional last line to read to."))
+ :category "buffers")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-buffers
