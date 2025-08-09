@@ -2243,9 +2243,6 @@ is mapped to the respective xterm key sequence."
     (rxvt--add-escape-key-mapping-alist "\e[1;7" "M-C-" nav-key-pair-alist)
     (rxvt--add-escape-key-mapping-alist "\e[1;8" "M-C-S-" nav-key-pair-alist)))
 
-;;; Re-flow buffers
-(require 'aj8-reflow)
-
 ;;; Misc
 
 ;; Swap universal prefix argument for functions

@@ -180,6 +180,7 @@
    ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
    ;;                                    "/projects/obsidian-yaml-tools.el")
    ;;                      :branch "dev")))
+   (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)
    (sinister :url "https://github.com/positron-solutions/sinister" :rev :newest)))
 
 ;; Install selected packages
@@ -1186,10 +1187,20 @@ Elisp code explicitly in arbitrary buffers.")
          ("C-c h" . helpful-at-point))
   :custom
   ;; Maximum number of *helpful* buffers
-  (helpful-max-buffers nil)
+  (helpful-max-buffers nil))
+
+;; reflow (Re-flow Info and Helpful buffers)
+(use-package reflow
+  :after (helpful info)
+  :commands (reflow-info-buffer
+             reflow-helpful-buffer
+             reflow-info-mode
+             reflow-helpful-mode)
   :config
+  ;; Re-flow Info buffers
+  (reflow-info-mode 1)
   ;; Re-flow Helpful buffers
-  (aj8/reflow-helpful-mode 1))
+  (reflow-helpful-mode 1))
 
 ;; marginalia (enrich existing commands with completion annotations)
 (use-package marginalia
@@ -2391,10 +2402,7 @@ Elisp code explicitly in arbitrary buffers.")
          (Info-mode . visual-line-mode))
   :custom
   ;; Open *info* buffers in same window
-  (info-lookup-other-window-flag nil)
-  :config
-  ;; Re-flow Info buffers
-  (aj8/reflow-info-mode 1))
+  (info-lookup-other-window-flag nil))
 
 ;; ispell (spell checking)
 (use-package ispell
