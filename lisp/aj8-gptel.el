@@ -4,6 +4,14 @@
 
 ;; Buffers
 
+;; (defun aj8/gptel-tool-read-buffer (buffer)
+;;   "Return the contents of BUFFER."
+;;   (with-temp-message "Running tool: my_read_buffer"
+;;     (unless (buffer-live-p (get-buffer buffer))
+;;       (error "Error: buffer %s is not live." buffer))
+;;     (with-current-buffer buffer
+;;       (buffer-substring-no-properties (point-min) (point-max)))))
+
 (defun aj8/gptel-tool-list-buffers ()
   "List the names of all currently open buffers that are associated with a file."
   (with-temp-message "Running tool: aj8_list_buffers"

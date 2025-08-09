@@ -2453,16 +2453,6 @@ is updated, the buffer’s text is re-flowed."
       (advice-add 'helpful-update :around #'aj8/reflow-helpful-buffer-advice)
     (advice-remove 'helpful-update #'aj8/reflow-helpful-buffer-advice)))
 
-;;; Gptel tools
-
-;; (defun aj8/gptel-tool-read-buffer (buffer)
-;;   "Return the contents of BUFFER."
-;;   (with-temp-message "Running tool: my_read_buffer"
-;;     (unless (buffer-live-p (get-buffer buffer))
-;;       (error "Error: buffer %s is not live." buffer))
-;;     (with-current-buffer buffer
-;;       (buffer-substring-no-properties (point-min) (point-max)))))
-
 ;;; Misc
 
 ;; Swap universal prefix argument for functions
