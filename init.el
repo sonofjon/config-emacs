@@ -1801,8 +1801,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Load custom tools
   (require 'aj8-gptel)
   ;; ChatGPT
-  (setq-default gptel-model 'gpt-4.1)
-  ;; (setq gptel-model 'gpt-o4-mini)
+  (setq-default gptel-model 'gpt-5-mini)
   ;; Set reasoning effort
   ;;   OpenAI default: medium
   ;; (put 'o1-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
