@@ -88,6 +88,28 @@ directory."
 
 ;;; 3.1. Category: Buffers
 
+(ert-deftest test-aj8-read-buffer-region ()
+  "Test `aj8/gptel-tool-read-buffer-region'.
+
+Verifies that the function can read a whole buffer, a section from the
+middle, a section from the beginning, and a section to the end. It also
+verifies that an error is signaled for a non-existent buffer."
+  :tags '(unit buffers)
+  (with-temp-buffer-with-content
+   "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
+   ;; Read whole buffer
+   (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*")
+                         "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
+   ;; Read a section
+   (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" 2 4)
+                         "Line 2\nLine 3\nLine 4"))
+   ;; Read from start
+   (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" nil 2)
+                         "Line 1\nLine 2"))
+   ;; Read to end
+   (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" 4)
+                         "Line 4\nLine 5"))))
+
 (ert-deftest test-aj8-list-buffers ()
   "Test buffer listing tools.
 
@@ -489,6 +511,7 @@ in the `gptel-tools' alist."
                           "aj8_apply_buffer_string_edits_with_review"
                           "aj8_apply_buffer_line_edits"
                           "aj8_apply_buffer_line_edits_with_review"
+                          "aj8_read_buffer_region"
                           "aj8_read_file_section"
                           "aj8_append_to_file"
                           "aj8_insert_into_file"
@@ -731,7 +754,10 @@ The response is processed by `gptel--streaming-done-callback'."
 
       ;; modify-buffer
       (aj8/gptel-tool-modify-buffer buffer-name "new content")
-      (should (string-equal (with-current-buffer buffer-name (buffer-string)) "new content"))))
+      (should (string-equal (with-current-buffer buffer-name (buffer-string)) "new content"))
+
+      ;; read-buffer-region
+      (should (string-equal (aj8/gptel-tool-read-buffer-region buffer-name) "new content"))))
 
   ;; Test on a buffer visiting a file
   (with-temp-file-with-content test-file "file content"
