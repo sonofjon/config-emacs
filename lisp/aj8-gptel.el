@@ -12,6 +12,8 @@
 ;;     (with-current-buffer buffer
 ;;       (buffer-substring-no-properties (point-min) (point-max)))))
 
+;; TODO: Calling this and other functions …–region is a misnomer since start
+;; and end are line numbers, not character positions.
 (defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start end)
   "Read a region of a buffer.
 Optional START and END are 1-based line numbers. To read the entire buffer,
