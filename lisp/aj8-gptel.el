@@ -106,6 +106,13 @@ omit START and END."
             (replace-string old-string new-string)
             (format "String in buffer '%s' successfully replaced." buffer-name))))))))
 
+(defun aj8/gptel-tool-edit-buffer-line (buffer-name line-number content)
+  "Replace line LINE-NUMBER in file BUFFER-NAME with CONTENT.
+This wrapper function delegates replacement to `aj8/gptel-tool-edit-buffer-region' with START-LINE and END-LINE equal to LINE-NUMBER."
+  (with-temp-message "Running tool: aj8_edit_buffer_line"
+    (aj8/gptel-tool-edit-buffer-region buffer-name line-number line-number content)
+    (format "Line %d in buffer '%s' successfully replaced." line-number buffer-name)))
+
 (defun aj8/gptel-tool-edit-buffer-region (buffer-name start-line end-line content)
   "Replace lines START-LINE through END-LINE in BUFFER-NAME with CONTENT."
   (with-temp-message "Running tool: aj8_replace_buffer_region"
@@ -224,6 +231,16 @@ EDIT-TYPE can be 'line or 'string."
         (aj8/gptel-tool-edit-buffer-string (buffer-name) old-string new-string)
         (save-buffer))
       (format "String in file '%s' successfully replaced." filename))))
+
+(defun aj8/gptel-tool-edit-file-line (file-path line-number content)
+  "Replace line LINE-NUMBER in file FILE-PATH with CONTENT.
+This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section' with START-LINE and END-LINE equal to LINE-NUMBER."
+  (with-temp-message "Running tool: aj8_edit_file_line"
+    (let ((buffer (find-file-noselect file-path)))
+      (with-current-buffer buffer
+        (aj8/gptel-tool-edit-file-section file-path line-number line-number content)
+        (save-buffer))
+      (format "Line %d in file '%s' successfully replaced." line-number file-path))))
 
 (defun aj8/gptel-tool-edit-file-section (filepath start-line end-line content)
   "Replace lines START-LINE through END-LINE in file FILEPATH with CONTENT."
@@ -520,6 +537,15 @@ EDIT-TYPE can be 'line or 'string."
  :category "buffers")
 
 (gptel-make-tool
+ :function #'aj8/gptel-tool-edit-buffer-line
+ :name "aj8_edit_buffer_line"
+ :description "Replace a single line (LINE-NUMBER) in a file BUFFER-NAME with CONTENT (possibly multi-line)."
+ :args '((:name "buffer-name" :type string :description "The name of the buffer to edit.")
+         (:name "line-number" :type integer :description "The 1-based line number of the line to edit.")
+         (:name "content" :type string :description "The new content for the line."))
+ :category "buffers")
+
+(gptel-make-tool
  :function #'aj8/gptel-tool-edit-buffer-region
  :name "aj8_edit_buffer_region"
  :description "Replace a range of lines (START-LINE through END-LINE) in a buffer BUFFER-NAME with CONTENT (possibly multi-line)."
@@ -687,6 +713,15 @@ This action requires manual user review. After calling this tool, you must stop 
          (:name "new-string"
                 :type string
                 :description "The text to replace 'old-string' with."))
+ :category "filesystem")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-edit-file-line
+ :name "aj8_edit_file_line"
+ :description "Replace a single line (LINE-NUMBER) in a file FILEPATH with CONTENT (possibly multi-line)."
+ :args '((:name "file-path" :type string :description "The path of the file to modify.")
+         (:name "line-number" :type integer :description "The 1-based line number of the line to edit.")
+         (:name "content" :type string :description "The new content for the line."))
  :category "filesystem")
 
 (gptel-make-tool
