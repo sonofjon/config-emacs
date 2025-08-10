@@ -550,7 +550,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 (gptel-make-tool
  :function #'aj8/gptel-tool-edit-buffer-region
  :name "aj8_edit_buffer_region"
- :description "Replace a range of lines (START-LINE through END-LINE) in a buffer BUFFER-NAME with CONTENT (possibly multi-line)."
+ :description "Replace a range of lines (START-LINE through END-LINE) in a buffer BUFFER-NAME with CONTENT (possibly multi-line). To edit a single line set 'start-line==end-line'"
  :args (list '(:name "buffer-name" :type string
                      :description "Name of the buffer to modify.")
              '(:name "start-line" :type integer
@@ -729,7 +729,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-edit-file-section
  :name "aj8_edit_file_section"
- :description "Replace a range of lines (START-LINE through END-LINE) in a file FILEPATH with CONTENT (possibly multi-line)."
+ :description "Replace a range of lines (START-LINE through END-LINE) in a file FILEPATH with CONTENT (possibly multi-line). To edit a single line set 'start-line==end-line'"
  :args (list '(:name "filepath" :type string
                      :description "Path to the file to modify.")
              '(:name "start-line" :type integer
