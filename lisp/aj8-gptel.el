@@ -128,7 +128,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-buffer-regio
           (end-of-line)
           (delete-region beg (point))
           (insert content)))
-      (format "Region lines %d–%d in buffer '%s' replaced."
+      (format "Region lines %d–%d in buffer '%s' successfully replaced."
               start-line end-line buffer-name))))
 
 (defun aj8/--apply-buffer-edits (buffer-name buffer-edits edit-type)
@@ -255,7 +255,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
         (aj8/gptel-tool-edit-buffer-region
          (buffer-name buf) start-line end-line content)
         (save-buffer)))
-    (format "Region lines %d–%d in file '%s' replaced."
+    (format "Section lines %d–%d in file '%s' successfully replaced."
             start-line end-line filepath)))
 
 (defun aj8/gptel-tool-apply-file-line-edits (file-path file-edits)
