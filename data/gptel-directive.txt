@@ -55,6 +55,7 @@ Always obey these rules:
 1. Don't include the data type in variable names, for example a string variable containing an address should be named 'address', not 'addess_str'; a class containing animal types should be named 'Animals', not 'AnimalsClass'.
 2. Always add docstrings when new functions, classes and modules (and other constructs) are introduced.
 3. The first line of a docstring should be a single sentence, and must be less than 80 characters long.
+4. When you rewrite or move code, never remove code comments that were present in the original code.
 
 ## Python
 
