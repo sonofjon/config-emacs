@@ -29,6 +29,8 @@
 
       ((eq aj8/my-os 'linux)   ; Linux
        (message "Early settings Linux"))
+       ;; Configure language environment
+       ;; (setenv "LANG" "en_US.UTF-8"))
 
       (t (user-error "Unexpected system-name: %s" (system-name))))
 
@@ -3025,9 +3027,6 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; Do not display continuation lines
 ;; (setq-default truncate-lines t)
-
-;; Configure language environment
-;; (setenv "LANG" "en_US.UTF-8")
 
 ;;;; Modes
 
