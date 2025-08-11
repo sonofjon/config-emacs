@@ -2205,6 +2205,8 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (use-short-answers t)
   ;; Use longer pulse
   (pulse-delay 0.05)   ; default is 0.03
+  ;; Increase maximum file size that can be opened without a warning
+  (large-file-warning-threshold 50000000)
   ;; Show mode headers in describe-bindings buffer
   (describe-bindings-outline t)
   ;; Delete selection on edit
@@ -2591,6 +2593,15 @@ Elisp code explicitly in arbitrary buffers.")
   (project-remember-projects-under "~/git")
   (project-remember-projects-under "~/dotfiles")
   (project-remember-projects-under "~/projects" t))
+
+;; python (Python's flying circus support for Emacs)
+(use-package python
+  :config
+  ;; Outline settings
+  (add-hook 'python-base-mode-hook
+            #'outline-headers-for-hash-mark-buffers)
+  ;; Other settings
+  (add-hook 'python-mode-hook 'aj8/python-mode-hook))
 
 ;; recentf (recently opened files)
 (use-package recentf
@@ -3002,23 +3013,11 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;;; Variables
 
-;; Natively compile packages during installation
-(setq package-native-compile t)
-
 ;; Open up the debugger on error
 ;; (setq debug-on-error t)
 
-;; Increase maximum file size that can be opened without a warning
-(setq large-file-warning-threshold 50000000)
-
 ;; Do not display continuation lines
 ;; (setq-default truncate-lines t)
-
-;; python-mode: other settings
-(add-hook 'python-mode-hook 'aj8/python-mode-hook)
-
-;; Use longer pulse
-(setq pulse-delay 0.05)   ; default is 0.03
 
 ;; Configure language environment
 ;; (setenv "LANG" "en_US.UTF-8")
@@ -3037,10 +3036,6 @@ Elisp code explicitly in arbitrary buffers.")
   (aj8/buffer-tail-mode 1))
 
 ;;;; Hooks
-
-;; python-mode: outline settings
-(add-hook 'python-base-mode-hook
-          #'outline-headers-for-hash-mark-buffers)
 
 
 ;;;;; LATE SETTINGS

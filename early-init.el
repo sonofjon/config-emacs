@@ -77,6 +77,9 @@
 ;; Initialize package sources
 (require 'package)
 
+;; Natively compile packages during installation
+(setq package-native-compile t)
+
 ;; Add package-archives
 ;;   Emacs 28.x has GNU `and' non-GNU ELPA as default
 (add-to-list 'package-archives '("stable" . "https://stable.melpa.org/packages/") t)
