@@ -2441,6 +2441,7 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package modus-themes
   :if (eq aj8/my-os 'linux)   ; Linux
   :ensure nil   ; don't install built-in packages
+  ;; :no-require   ; silence use-package-lint warning
   :bind ("<f5>" . modus-themes-toggle)
   ;; Add all customizations prior to loading the themes
   :init
