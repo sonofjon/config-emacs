@@ -2228,6 +2228,14 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Use partial completion for files
   (setq completion-category-defaults nil)
   (add-to-list 'completion-category-overrides '((file (styles basic partial-completion))))
+  ;; Enable auto-scrolling for the *Messages* buffer
+  ;;   Note that the *Messages* buffer is created early during startup (before
+  ;;   this hook is set), so this hook only applies to newly created
+  ;;   *Messages* buffers.  The `with-current-buffer' statement applies the
+  ;;   mode to the current *Messages* buffer.
+  ;; (add-hook 'messages-buffer-mode-hook (lambda () (aj8/buffer-tail-mode 1)))
+  (with-current-buffer "*Messages*"
+    (aj8/buffer-tail-mode 1))
   ;; Deactivate highlight mode when selecting text
   (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
   (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
@@ -2684,6 +2692,8 @@ Elisp code explicitly in arbitrary buffers.")
   (inhibit-startup-buffer-menu t)
   ;; Do not switch to buffers already shown
   (switch-to-prev-buffer-skip 'this)
+  ;; Do not display continuation lines
+  ;; (truncate-lines t)
   ;; Skip some buffers when switching buffers
   ;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
   ;; Skip some buffers when switching buffers
@@ -3018,30 +3028,6 @@ Elisp code explicitly in arbitrary buffers.")
     (add-to-list 'xref-prompt-for-identifier 'xref-find-references t)))
 
 
-;;;;; CUSTOMIZATION
-
-;;;; Variables
-
-;; Open up the debugger on error
-;; (setq debug-on-error t)
-
-;; Do not display continuation lines
-;; (setq-default truncate-lines t)
-
-;;;; Modes
-
-;; Enable auto-scrolling for the *Messages* buffer
-;;   Note that the *Messages* buffer is created early during startup (before
-;;   this hook is set), so this hook only applies to newly created
-;;   *Messages* buffers.  The `with-current-buffer' statement applies the
-;;   mode to the current *Messages* buffer.
-(add-hook 'messages-buffer-mode-hook (lambda () (aj8/buffer-tail-mode 1)))
-
-;; Show *Messages* buffer at the end of startup
-(with-current-buffer "*Messages*"
-  (aj8/buffer-tail-mode 1))
-
-
 ;;;;; LATE SETTINGS
 
 ;; System dependent settings
@@ -3076,7 +3062,7 @@ Elisp code explicitly in arbitrary buffers.")
 
       (t (user-error "Unexpected system-name: %s" (system-name))))
 
-;; Display messages buffer
+;; Display *Messages* buffer
 (display-buffer "*Messages*")
 
 ;; Conditionally load host specific stuff

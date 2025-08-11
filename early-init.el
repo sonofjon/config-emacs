@@ -1,5 +1,8 @@
 ;;; early-init.el -*- lexical-binding: t; -*-
 
+;; Open up the debugger on error
+;; (setq debug-on-error t)
+
 ;;; SYSTEM
 
 ;; Store current OS
