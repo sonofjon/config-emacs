@@ -611,7 +611,7 @@
   ;; Always select help window
   (help-window-select t))
 
-;; hideshow
+;; hideshow (minor mode cmds to selectively display code/comment blocks)
 (use-package hideshow
   :commands (hs-cycle hs-global-cycle)
   :bind (:map hs-minor-mode-map
