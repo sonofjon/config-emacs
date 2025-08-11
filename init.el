@@ -251,11 +251,6 @@
    '(("\\.md$" . eww-browse-url)
      ("." . browse-url-default-browser))))
 
-;; column (display column number)
-(use-package column
-  :ensure nil   ; don't install built-in packages
-  :bind ("C-c N" . column-number-mode))
-
 ;; custom (customize Emacs settings)
 (use-package custom
   :ensure nil   ; don't install built-in packages
@@ -392,6 +387,7 @@
          ("M-p" . backward-paragraph)
          ("M-n" . forward-paragraph)
          ("M-a" . back-to-indentation)
+         ("C-c N" . column-number-mode)
          ("C-c x r" . aj8/reload-init-file)
          ("C-x M-e" . my/eval-next-sexp)
          ("C-x C-M-e" . my/eval-sexp-at-point))
