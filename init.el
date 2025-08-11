@@ -2891,9 +2891,7 @@ Elisp code explicitly in arbitrary buffers.")
       (window-height . ,aj8/side-window-height)
       (side . top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ;; ("\\*\\(Native-compile-Log\\)\\*"
-     ;; ("\\*\\(Async-native-compile-log\\|Native-compile-Log\\|EGLOT.*events\\|.*-ls\\(::.*\\)?\\|texlab\\(::stderr\\)?\\)\\*"
-     ("\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|gptel-reasoning\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
+     ("\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|magit-process:.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . top)
@@ -2907,17 +2905,12 @@ Elisp code explicitly in arbitrary buffers.")
       (window-height . ,aj8/side-window-height)
       (side . top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("magit-process:.*"
-      (display-buffer-in-side-window)
-      (window-height . ,aj8/side-window-height)
-      (side . top)
-      (window-parameters . ((no-delete-other-windows . t))))
      ;;
      ;; Right side window
      ;;
      ;;   Magit
      ;;
-     ("\\(magit:\\|magit-log.*:\\|magit-reflog:\\|magit-log-select:\\).*"
+     ("\\(COMMIT_EDITMSG\\|magit:\\|magit-log.*:\\|magit-reflog:\\|magit-log-select:\\).*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
@@ -2929,26 +2922,9 @@ Elisp code explicitly in arbitrary buffers.")
       (side . right)
       (slot . 1)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("COMMIT_EDITMSG"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . -1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ;;
-     ;;   Browser
-     ;;
-     ;; MAYBE: doesn't work initially
-     ("\\*eww:.*\\*"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . 1)
-      (window-parameters . ((no-delete-other-windows . t))))
      ;;
      ;;   Help
      ;;
-     ;; TODO: Add gptel-reasoning buffer
      ("\\*\\(Apropos\\|Help\\|helpful.*\\|info.*\\|Man.*\\|WoMan.*\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
@@ -2977,6 +2953,13 @@ Elisp code explicitly in arbitrary buffers.")
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
       (slot . -1)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ;; MAYBE: eww doesn't work initially
+     ("\\*\\(eww:.*\\|gptel-reasoning\\)\\*"
+      (display-buffer-in-side-window)
+      (window-width . ,aj8/side-window-width-dynamic)
+      (side . right)
+      (slot . 1)
       (window-parameters . ((no-delete-other-windows . t))))
      ;;
      ;; Bottom side window
