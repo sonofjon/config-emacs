@@ -2886,21 +2886,26 @@ Elisp code explicitly in arbitrary buffers.")
      ;;
      ;; Top side window
      ;;
-     ("\\*\\(Messages\\|Warnings\\|Native-compile-Log\\|Async-native-compile-log\\)\\*"
-      (display-buffer-in-side-window)
-      (window-height . ,aj8/side-window-height)
-      (side . top)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|magit-process:.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
-      (display-buffer-in-side-window)
-      (window-height . ,aj8/side-window-height)
-      (side . top)
-      (window-parameters . ((no-delete-other-windows . t))))
      ;; ((or . ((derived-mode-p . backtrace-mode)
      ;;         (derived-mode-p . compilation-mode)
      ((lambda (buffer _alist)
         (with-current-buffer buffer (or (derived-mode-p 'backtrace-mode)
                                         (derived-mode-p 'compilation-mode))))
+      (display-buffer-in-side-window)
+      (window-height . ,aj8/side-window-height)
+      (side . top)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ("\\*\\(Messages\\|Warnings\\|Native-compile-Log\\|Async-native-compile-log\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . ,aj8/side-window-height)
+      (side . top)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ("magit-process:.*"
+      (display-buffer-in-side-window)
+      (window-height . ,aj8/side-window-height)
+      (side . top)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ("\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . top)
