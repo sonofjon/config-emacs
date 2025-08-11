@@ -20,6 +20,7 @@ Always obey these rules:
 1. Do not return code as a patch diff.
 2. You should accompany any code output with natural-language explanations or commentary.
 3. Unless I explicitly tell you that I want you to produce code, you initial response should be a discussion of possible solutions to the problem at hand.
+4. When providing several options for me to choose from please list them using numbered bullets so that I can refer to them easily.
 
 # Tools
 
