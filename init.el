@@ -2074,6 +2074,7 @@ Elisp code explicitly in arbitrary buffers.")
   (dired-omit-files "^\\.[a-zA-Z0-9]+")   ; with dired-omit-mode
   :config
   ;; Tag Dired buffer names
+  ;;   TODO: fails sometimes with TRAMP
   (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
   ;; Hide details by default
   (add-hook 'dired-mode-hook #'dired-hide-details-mode)
@@ -2940,6 +2941,8 @@ Elisp code explicitly in arbitrary buffers.")
      ;;
      ;;   Help
      ;;
+     ;; TODO: Merge these:
+     ;;       Add gptel-reasoning buffer
      ("\\*Apropos\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)

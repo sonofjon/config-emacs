@@ -424,6 +424,7 @@ See `aj8/magit-buffer-cleanup-timer' and
 
 ;;; Buffer auto scroll
 
+;; TODO: Convert this to a package
 (defvar-local aj8/buffer-tail-mode--timer nil
   "Buffer-local timer object used by `aj8/buffer-tail-mode'.")
 
