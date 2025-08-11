@@ -212,6 +212,1056 @@
 (use-package exec-path-from-shell
   :if (eq aj8/my-os 'macos))   ; macOS
 
+;;; Built-in packages
+
+;; TODO: check package descriptions
+
+;; abbrev (dynamic abbreviations)
+(use-package abbrev
+  :ensure nil   ; don't install built-in packages
+  :diminish
+  ;; Expand abbreviations
+  :hook (text-mode . abbrev-mode))
+
+;; apropos (find commands, functions, and variables by name)
+(use-package apropos
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; More extensive apropos commands
+  (apropos-do-all t))
+
+;; bookmark (record positions in files)
+(use-package bookmark
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Auto-save bookmarks
+  (bookmark-save-flag 1))
+
+;; browse-url (interface to web browsers)
+(use-package browse-url
+  :ensure nil   ; don't install built-in packages
+  :bind (("C-c b" . browse-url-at-point))
+  :custom
+  ;; Use default browser
+  (browse-url-browser-function #'browse-url-default-browser)
+  ;; Use EWW as secondary browser
+  (browse-url-secondary-browser-function #'eww-browse-url)
+  ;; Custom browser settings
+  (browse-url-handlers
+   '(("\\.md$" . eww-browse-url)
+     ("." . browse-url-default-browser))))
+
+;; column (display column number)
+(use-package column
+  :ensure nil   ; don't install built-in packages
+  :bind ("C-c N" . column-number-mode))
+
+;; custom (customize Emacs settings)
+(use-package custom
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Kill customize group windows
+  (custom-buffer-done-kill t)
+  ;; Custom interface: don't convert symbols to words (tags)
+  (custom-unlispify-tag-names nil)
+  ;; Custom interface: don't convert symbols to words (menu)
+  (custom-unlispify-menu-entries t))
+
+;; dabbrev (dynamic abbreviation expansion)
+(use-package dabbrev
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Let Dabbrev searches be case sensitive
+  (dabbrev-case-fold-search nil)
+  :config
+  ;; Don't let Dabbrev check authinfo buffers
+  (with-eval-after-load 'dabbrev
+    (add-to-list 'dabbrev-ignored-buffer-modes 'authinfo-mode)))
+
+;; desktop (save and restore Emacs state)
+(use-package desktop
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Don't clear any variables
+  (desktop-globals-to-clear nil)
+  :config
+  ;; Restore desktop between sessions
+  ;;   TODO: doesn't restore side-windows
+  (desktop-save-mode 1))
+
+;; diff-mode (major mode for viewing diffs)
+(use-package diff-mode
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; No context for diff output
+  (diff-switches "--unified=0"))
+
+;; dired (directory editor)
+(use-package dired
+  :ensure nil   ; don't install built-in packages
+  :bind (:map dired-mode-map
+              ("." . dired-omit-mode)
+         :map dired-mode-map
+              ("C-c C-a d" . markdown-links-insert-from-dired))
+  :init
+  ;; Enable Dired-X
+  (with-eval-after-load 'dired (require 'dired-x))
+  :custom
+  ;; Set custom listing style
+  ;; (dired-listing-switches "-agho --group-directories-first")
+  (dired-listing-switches "-agho")   ; macOS version
+  ;; Guess target directory
+  (dired-dwim-target t)
+  ;; Don't display free disk space
+  (dired-free-space nil)
+  ;; Reuse Dired buffers
+  (dired-kill-when-opening-new-dired-buffer t)
+  ;; Omit hidden (dot-) files
+  (dired-omit-files "^\\.[a-zA-Z0-9]+")   ; with dired-omit-mode
+  :config
+  ;; Tag Dired buffer names
+  ;;   TODO: fails sometimes with TRAMP
+  (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
+  ;; Hide details by default
+  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+  ;; Hide omitted files
+  (add-hook 'dired-mode-hook #'dired-omit-mode))
+
+;; display-line-numbers (display line numbers in the margin)
+(use-package display-line-numbers
+  :ensure nil   ; don't install built-in packages
+  :hook (prog-mode . display-line-numbers-mode)
+  :custom
+  ;; Set display-line-number-width automatically
+  (display-line-numbers-width-start t))
+
+;; ediff (interactive interface to diff and patch)
+(use-package ediff
+  :ensure nil   ; don't install built-in packages
+  :bind (("C-c e b" . ediff-buffers)
+         ("C-c e l" . ediff-regions-linewise)
+         ("C-c e w" . ediff-regions-wordwise))
+  :init
+  (which-key-add-key-based-replacements "C-c e" "ediff")
+  :custom
+  ;; Use horizontal (side-by-side) view by default in ediff
+  (ediff-split-window-function #'split-window-horizontally)
+  (ediff-merge-split-window-function #'split-window-horizontally)
+  ;; Kill all Ediff buffers on exit
+  (aj8/ediff-cleanup-buffers t)
+  :config
+  ;; Let ediff use existing frame in GUI
+  (when (display-graphic-p)
+    (setq ediff-window-setup-function 'ediff-setup-windows-plain))
+  ;; Kill all Ediff buffers on exit
+  (add-hook 'ediff-quit-hook #'aj8/ediff-cleanup-buffers)
+  ;; Store and restore window layout after Ediff
+  ;;   MAYBE: works well for ediff-buffers, but not for
+  ;;   ediff-regions-linewise and ediff-regions-wordwise
+  ;;   (https://emacs.stackexchange.com/a/80961/33325)
+  (add-hook 'ediff-before-setup-hook #'my-ediff-save-windows)
+  (add-hook 'ediff-quit-hook #'my-ediff-restore-windows)
+  ;; Use both versions with ediff
+  ;;   MAYBE: check functionality
+  (add-hook 'ediff-keymap-setup-hook
+            ;; Use both versions with ediff
+            (lambda () (keymap-set ediff-mode-map "d" #'my/ediff-copy-both-to-C))))
+
+;; electric (electric indentation and pairing)
+(use-package electric
+  :ensure nil   ; don't install built-in packages
+  :config
+  ;; Auto-insert closing parens, bracket and double-quotes
+  (electric-pair-mode 1))
+
+;; emacs (core Emacs settings)
+(use-package emacs
+  :ensure nil   ; don't install built-in packages
+  :bind (("C-o" . my/open-line)
+         ("C-<backspace>" . (lambda () (interactive) (kill-line 0)))
+         ("M-u" . upcase-dwim)
+         ("M-l" . downcase-dwim)
+         ("M-c" . aj8/capitalize-word-at-point)
+         ("C-c q" . fill-individual-paragraphs)
+         ("C-c x c" . my/copy-symbol-at-point)
+         ("C-c TAB" . indent-relative)
+         ("C-c C-c" . exit-recursive-edit)
+         ("C-c f" . find-file-at-point)
+         ("C-c <left>" . scroll-right)
+         ("C-c <right>" . scroll-left)
+         ("M-p" . backward-paragraph)
+         ("M-n" . forward-paragraph)
+         ("M-a" . back-to-indentation)
+         ("C-c x r" . aj8/reload-init-file)
+         ("C-x M-e" . my/eval-next-sexp)
+         ("C-x C-M-e" . my/eval-sexp-at-point))
+  :init
+  (which-key-add-key-based-replacements "C-c x" "misc")
+  :custom
+  ;; Personal settings
+  (user-full-name "Andreas Jonsson")
+  (user-mail-address "ajdev8@gmail.com")
+  ;; Use spaces, not tabs
+  (indent-tabs-mode nil)
+  ;; Delete trailing newline character with kill-line
+  (kill-whole-line t)
+  ;; Set fill column
+  (fill-column 76)   ; default is 70
+  ;; Save clipboard text into kill ring before kill
+  ;; (save-interprogram-paste-before-kill t)
+  ;; Yank at point, not at pointer
+  (mouse-yank-at-point t)
+  ;; Reduce delay for echoing multi-character keys
+  (echo-keystrokes 0.01)
+  ;; Scrolling
+  ;;   The order of priority is: ‘scroll-conservatively’, then
+  ;;   ‘scroll-step’, and finally ‘scroll-up-aggressively’ /
+  ;;   ‘scroll-down-aggressively’.
+  (scroll-conservatively 0)        ; default: 0
+  (scroll-step 1)                  ; default: 0
+  (scroll-up-aggressively nil)     ; default: nil
+  (scroll-down-aggressively nil)   ; default: nil
+  ;; (scroll-margin 0)
+  ;; Preserve point position when scrolling
+  (scroll-preserve-screen-position t)
+  ;; Smooth horizontal scrolling
+  (hscroll-step 1)
+  ;; Use "repeat-mode" for "pop-mark"
+  (set-mark-command-repeat-pop t)
+  ;; Don't use the mark when region is inactive
+  ;;   Note: messes with ediff
+  ;; (mark-even-if-inactive nil)
+  ;; Interpret spaces as wildcards (with M-s SPC)
+  (search-whitespace-regexp ".*?")
+  ;; (isearch-invisible nil)
+  ;; (isearch-lax-whitespace nil)
+  ;; Allow movement between Isearch matches by cursor motion commands
+  (isearch-allow-motion t)
+  (isearch-motion-changes-direction t)
+  ;; Use 'y' or 'n' questions always
+  ;; (use-short-answers t)
+  ;; Use longer pulse
+  (pulse-delay 0.05)   ; default is 0.03
+  ;; Increase maximum file size that can be opened without a warning
+  (large-file-warning-threshold 50000000)
+  ;; Show mode headers in describe-bindings buffer
+  (describe-bindings-outline t)
+  ;; Delete selection on edit
+  (delete-selection-mode 1)
+  ;; Select completion styles
+  ;;   substring: needed for partial completion
+  ;;   orderless: space-separated components
+  ;;   basic: fallback
+  (completion-styles '(orderless basic))
+  ;; (completion-styles '(substring orderless basic))
+  ;; Use TAB for symbol completion (after indentation)
+  (tab-always-indent 'complete)
+  ;; Show more details for completions
+  (completions-detailed t)
+  ;; (read-extended-command-predicate #'command-completion-default-include-p)
+  :config
+  ;; Use partial completion for files
+  (setq completion-category-defaults nil)
+  (add-to-list 'completion-category-overrides '((file (styles basic partial-completion))))
+  ;; Enable auto-scrolling for the *Messages* buffer
+  ;;   Note that the *Messages* buffer is created early during startup (before
+  ;;   this hook is set), so this hook only applies to newly created
+  ;;   *Messages* buffers.  The `with-current-buffer' statement applies the
+  ;;   mode to the current *Messages* buffer.
+  ;; (add-hook 'messages-buffer-mode-hook (lambda () (aj8/buffer-tail-mode 1)))
+  (with-current-buffer "*Messages*"
+    (aj8/buffer-tail-mode 1))
+  ;; Deactivate highlight mode when selecting text
+  (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
+  (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
+  ;; Add Treesitter indicator in the modeline
+  (add-hook 'after-change-major-mode-hook #'aj8/treesit-mode-name)
+  ;; Collect list of killed file and non-file buffers
+  (add-hook 'kill-buffer-hook #'my/reopen-killed-file-save)
+  (add-hook 'kill-buffer-hook #'aj8/reopen-killed-buffer-save)
+  (keymap-set isearch-mode-map "TAB" #'isearch-complete))
+
+;; epg (Emacs Privacy Guard)
+(use-package epg
+  :ensure nil   ; don't install built-in packages
+  :config
+  ;; Fill gpg passwords in the minibuffer
+  (setq epg-pinentry-mode 'loopback)
+  ;; Select keys in the minibuffer
+  (setq epa-keys-select-method 'minibuffer))
+
+;; erc (an Emacs internet relay chat client)
+(use-package erc
+  :disabled
+  :ensure nil   ; don't install built-in packages
+  :commands (erc erc-tls)
+  :custom
+  ;; Server settings
+  (erc-server "irc.libera.chat")
+  (erc-nick "ajdev8")
+  (erc-user-full-name user-full-name)
+  (erc-autojoin-channels-alist '(("libera.chat" "#systemcrafters")))
+  ;; Buffers
+  (erc-join-buffer 'bury)
+  (erc-kill-buffer-on-part t)
+  ;; Appearance
+  (erc-fill-function 'erc-fill-static)
+  (erc-fill-static-center 18)
+  ;; (erc-hide-list '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
+  ;; Tracking
+  (erc-track-shorten-start 3)
+  (erc-track-exclude '("#emacs"))
+  (erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
+  (erc-track-exclude-server-buffer t)
+  :config
+  ;; (add-to-list 'erc-modules 'notifications)
+  (add-to-list 'erc-modules 'spelling)
+  (erc-services-mode 1)
+  (erc-update-modules))
+
+;; eshell (the Emacs command shell)
+(use-package eshell
+  :hook (eshell-first-time-mode . efs/configure-eshell)
+  :config
+  ;; Set Eshell options here
+  ;; (with-eval-after-load 'esh-opt
+  ;;   (setq eshell-visual-commands '("htop" "zsh" "vim")))
+  ;; Add Tramp support
+  (with-eval-after-load "eshell"
+    (add-to-list 'eshell-modules-list 'eshell-tramp)))
+
+;; EWW (the Emacs Web Wowser)
+(use-package eww
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Default search engine
+  (eww-search-prefix "https://google.com/search?q=")   ; default is duckduckgo
+  ;; Restore Eww buffers
+  (eww-restore-desktop t)
+  ;; Don't remove duplicates in browsing history
+  ;; (eww-desktop-remove-duplicates nil)
+  ;; Download folder
+  (eww-download-directory (expand-file-name "~/Downloads"))
+  ;; Max history items
+  (eww-history-limit 100)
+  ;; Auto rename eww buffers
+  (setq eww-auto-rename-buffer t)
+  :config
+  ;; Are these needed?
+  ;; (setq shr-use-colors nil)             ; t is bad for accessibility
+  ;; (setq shr-use-fonts nil)
+  ;; Don't shadow default EWW keybindings
+  (with-eval-after-load "shr"
+    (keymap-set shr-map "u" nil)
+    (keymap-set shr-map "v" nil)
+    (keymap-set shr-map "w" nil))
+  ;; Open new EWW buffers in a new window (M-RET)
+  ;;   TODO: Emacs 30 introduces eww-open-in-new-buffer
+  (with-eval-after-load "eww"
+    (define-key eww-mode-map
+                [remap eww-open-in-new-buffer] #'aj8/eww-open-in-new-buffer))
+  ;; Open new EWW buffers in a new window (C-u RET)
+  (with-eval-after-load "eww"
+    (define-key eww-mode-map
+                [remap eww-follow-link] #'aj8/eww-follow-link)))
+
+;; find-func (find source code for functions and variables)
+(use-package find-func
+  :ensure nil   ; don't install built-in packages
+  :config
+  ;; Set keybindings for find-function and relatives
+  (find-function-setup-keys))
+
+;; flymake (minor mode for on-the-fly syntax checking)
+(use-package flymake
+  :bind (:map flymake-diagnostics-buffer-mode-map
+              ("h" . #'aj8/flymake-ruff-goto-doc)
+         :map flymake-project-diagnostics-mode-map
+              ("h" . #'aj8/flymake-ruff-goto-doc)))
+
+;; flyspell (on-the-fly spell checker)
+(use-package flyspell
+  :ensure nil   ; don't install built-in packages
+  :diminish
+  :hook ((text-mode . flyspell-mode)
+         (prog-mode . flyspell-prog-mode))
+  :config
+  ;; Enable flyspell in web-mode
+  (put 'web-mode 'flyspell-mode-predicate #'my/web-mode-flyspell-verify))
+
+;; goto-addr (go to URL at point)
+(use-package goto-addr
+  :ensure nil   ; don't install built-in packages
+  :diminish
+  :config
+  ;; Buttonize URLs and e-mail addresses
+  (global-goto-address-mode 1))
+
+;; help (help commands)
+(use-package help
+  :ensure nil   ; don't install built-in packages
+  :bind (("C-c H e" . aj8/toggle-eldoc-buffer)
+         ("C-c H k" . describe-keymap)
+         ("C-c H s" . shortdoc-display-group))
+  :init
+  (which-key-add-key-based-replacements "C-c H" "help")
+  :custom
+  ;; Reuse windows for *Help* buffers
+  (help-window-keep-selected t)
+  ;; Always select help window
+  (help-window-select t))
+
+;; hideshow
+(use-package hideshow
+  :commands (hs-cycle hs-global-cycle)
+  :bind (:map hs-minor-mode-map
+              ("TAB" . aj8/hs-cycle)
+              ("<backtab>" . aj8/hs-global-cycle)))
+  ;; :custom
+  ;; ;; Hide the comments too
+  ;; (setq hs-hide-comments-when-hiding-all nil))
+
+;; hippie-exp (versatile completion)
+(use-package hippie-exp
+  :ensure nil   ; don't install built-in packages
+  :bind (("<remap> <dabbrev-expand>" . hippie-expand))
+  :config
+  ;; Let hippie-expand search for line expansions in all buffers
+  ;; (add-to-list 'hippie-expand-try-functions-list 'try-expand-line-all-buffers t)
+  (setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
+  ;; Ignore some buffers with hippie-expand
+  (with-eval-after-load "hippie-exp"
+    (add-to-list 'hippie-expand-ignore-buffers "^\\*.*\\*$")
+    (add-to-list 'hippie-expand-ignore-buffers "magit:.*")
+    (add-to-list 'hippie-expand-ignore-buffers aj8/buffer-skip-regexp)))
+
+;; hl-line (highlight current line)
+(use-package hl-line
+  :ensure nil   ; don't install built-in packages
+  :config
+  ;; Highlight current line
+  (global-hl-line-mode 1))
+
+;; ibuffer (list and manage buffers)
+(use-package ibuffer
+  :ensure nil   ; don't install built-in packages
+  :config
+  ;; Set default sort order in Ibuffer
+  (require 'ibuf-ext)   ; initiate ibuffer-sorting-functions-alist
+                        ; https://lists.gnu.org/archive/html/help-gnu-emacs/2008-11/msg00694.html
+  (setq-default ibuffer-default-sorting-mode 'filename/process))
+
+;; info (Info documentation reader)
+(use-package info
+  :ensure nil   ; don't install built-in packages
+  :hook ((Info-mode . rename-uniquely)
+         (Info-mode . (lambda () (keymap-local-unset "M-n")))
+         (Info-mode . visual-line-mode))
+  :custom
+  ;; Open *info* buffers in same window
+  (info-lookup-other-window-flag nil))
+
+;; ispell (spell checking)
+(use-package ispell
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Use aspell
+  ;;   Requires: aspell
+  (ispell-program-name "aspell")   ; this is already the default
+  ;; Set language
+  (ispell-dictionary "en_US")
+  ;; Set aspell suggestion mode
+  (ispell-extra-args '("--sug-mode=ultra")))
+  ;; (setq ispell-extra-args '("--sug-mode=fast")))
+  ;; (setq ispell-extra-args '("--sug-mode=normal")))
+
+;; lisp-mode (modes for Lisp dialects)
+(use-package lisp-mode
+  :ensure nil   ; don't install built-in packages
+  ;; Outline settings
+  :hook (emacs-lisp-mode . outline-headers-for-semicolon-buffers))
+
+;; minibuffer (minibuffer commands)
+(use-package minibuffer
+  :ensure nil   ; don't install built-in packages
+  :bind ("M-o" . aj8/orderless-matching-style-cycle)
+  :custom
+  ;; Allow minibuffer commands while in the minibuffer
+  (enable-recursive-minibuffers t)
+  ;; Timeout for messages in active minibuffer
+  (minibuffer-message-clear-timeout 1)
+  :config
+  ;; Show recursion depth in the minibuffer prompt
+  (minibuffer-depth-indicate-mode 1))
+
+;; modus-themes (elegant, highly legible and customizable themes)
+(use-package modus-themes
+  :if (eq aj8/my-os 'linux)   ; Linux
+  :ensure nil   ; don't install built-in packages
+  ;; :no-require   ; silence use-package-lint warning
+  :bind ("<f5>" . modus-themes-toggle)
+  ;; Add all customizations prior to loading the themes
+  :init
+  ;; Use italic font forms in more code constructs
+  (setq modus-themes-italic-constructs t)
+  ;; Use bold text in more code constructs
+  (setq modus-themes-bold-constructs t)
+  ;; Use more subtle style for line numbers
+  (setq modus-themes-subtle-line-numbers t)
+  ;; Define the visibility of fringes
+  ;;   Options: `nil',`subtle', `intense'
+  (setq modus-themes-fringes nil)
+  ;; Control the style of spelling and code checkers/linters
+  ;;   Options: `straight-underline', `text-also', `background',
+  ;;            `intense', `faint'
+  (setq modus-themes-lang-checkers '(straight-underline text-also))
+  ;; Control the style of the mode line
+  ;;   Options: `3d' OR `moody', `borderless', `accented'
+  (setq modus-themes-mode-line '(borderless))
+  ;(setq modus-themes-mode-line nil)
+  ;; Control the style of code syntax highlighting
+  ;;   Options: `faint', `yellow-comments', `green-strings',
+  ;;            `alt-syntax'
+  (setq modus-themes-syntax '(faint green-strings alt-syntax))
+  ;; Style markup in Org, markdown, and others
+  ;;   Options: `bold', `italic', `background', `intense'
+  ;; (setq modus-themes-markup '(background italic))
+  (setq modus-themes-markup nil)
+  ;; Control the current line highlight of HL-line mode
+  ;;   Options: `accented', `underline', `intense'
+  (setq modus-themes-hl-line nil)
+  ;; Control the style of matching parentheses or delimiters
+  ;;   Options: `bold', `intense', `underline'
+  (setq modus-themes-paren-match '(intense))
+  ;; Set the style of links
+  ;;   Options: `neutral-underline' OR `no-underline', `faint' OR
+  ;;            `no-color', `bold', `italic', `background'
+  (setq modus-themes-links nil)
+  ;; Control the style of buttons in the Custom UI and related
+  ;;   Options: `flat', `accented', `faint', `variable-pitch',
+  ;;            `underline'
+  ;; (setq modus-themes-box-buttons '(variable-pitch flat faint 0.9))
+  (setq modus-themes-box-buttons nil)
+  ;; Set the style for minibuffer and REPL prompts
+  ;;   Options: `background', `bold', `gray', `intense', `italic'
+  (setq modus-themes-prompts nil)
+  ;; Control the style of the completion framework's interface
+  ;;   Options: see manual
+  (setq modus-themes-completions '((matches . (extrabold))
+                                   (selection . (semibold accented))
+                                   (popup . (accented intense))))
+  ;; (setq modus-themes-completions nil)
+  ;; Control the style of the active region
+  ;;   Options: `no-extend', `bg-only', `accented'
+  (setq modus-themes-region nil)
+  ;; Adjust the style of diffs
+  ;;   Options: `desaturated', `bg-only'
+  (setq modus-themes-diffs nil)
+  ;; Set the style of Org code blocks, quotes, and the like
+  ;;   Options: `gray-background', `tinted-background'
+  (setq modus-themes-org-blocks 'gray-background)
+  ;; Org styles
+  ;;   Options: see manual
+  ;; (setq modus-themes-org-agenda
+  ;;       '((header-block . (variable-pitch 1.3))
+  ;;         (mail-header-parse-date . (grayscale workaholic bold-today 1.1))
+  ;;         (event . (accented varied))
+  ;;         (scheduled . uniform)
+  ;;         (habit . traffic-light)))
+  (setq modus-themes-org-agenda nil)
+  ;; Heading styles
+  ;;   Options: `rainbow', `overline', `background', `monochrome'
+  ;; (setq modus-themes-headings
+  ;;       '((1 . (background monochrome))
+  ;;         (t . (monochrome))))
+  (setq modus-themes-headings
+        '((1 . (background rainbow))
+          (2 . (background))
+          (3 . (background monochrome))
+          (t . (monochrome))))
+  ;; Load the theme
+  (if (aj8/daytime-p)
+      (load-theme 'modus-operandi)
+    (load-theme 'modus-vivendi)))
+
+;; org (Org mode)
+(use-package org
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Use speed keys
+  (org-use-speed-commands t)
+  ;; Don't require confirmation when evaluating code
+  (org-confirm-babel-evaluate nil)
+  ;; Use shift-selection
+  ;;   (disables org-shiftup, org-shiftdown, org-shiftleft and org-shiftright)
+  ;; (org-support-shift-select t)
+  )
+
+;; outline (outline mode)
+(use-package outline
+  :ensure nil   ; don't install built-in packages
+  :hook (outline-mode . (lambda () (setq outline-regexp "[*]+")))
+  :bind (("C-c O" . outline-minor-mode))
+  :init
+  (which-key-add-key-based-replacements "C-c @" "outline")
+  :custom
+  ;; Use TAB and S-TAB for cycling
+  ;;   See also outline-minor-faces.
+  (outline-minor-mode-cycle t)   ; alternatives: 'override and 'append
+  ;; (outline-minor-mode-highlight t)
+  )
+
+;; paren (parenthesis matching)
+(use-package paren
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Show context around the opening paren if it is offscreen
+  ;;   MAYBE: Make the text in the echo area persist until key press
+  (show-paren-context-when-offscreen t))
+
+;; project (manage projects in Emacs)
+(use-package project
+  :ensure nil   ; don't install built-in packages
+  :bind (("C-x C-<right>" . my/project-next-buffer)
+         ("C-x C-<left>" . my/project-previous-buffer)
+         ("C-x p t" . project-forget-project))
+  :custom
+  ;; Share file history between projects
+  ;; (project-file-history-behavior 'relativize)
+  ;; Exclude some dirs from projects
+  ;;   Or use a dir-local file!
+  ;; (add-to-list 'project-vc-ignores "archive/")
+  ;; Show current project name on the mode line
+  (project-mode-line t)
+  :config
+  ;; Add projects
+  (project-remember-projects-under "~/git")
+  (project-remember-projects-under "~/dotfiles")
+  (project-remember-projects-under "~/projects" t))
+
+;; python (Python's flying circus support for Emacs)
+(use-package python
+  :bind (:map python-mode-map
+              ("C-c <" . nil)
+         :map python-ts-mode-map
+              ("C-c <" . nil))   ; unbind python-indent-shift-left
+  :config
+  ;; Exclude virtual environment directories from project
+  ;;   Not needed: use M-s G  ;; Outline settings
+  ;; (setq-local project-ignored-files '(".venv/*"))
+  ;; Outline settings
+  (add-hook 'python-base-mode-hook
+            #'outline-headers-for-hash-mark-buffers)
+  ;; Other settings
+  (add-hook 'python-mode-hook 'aj8/python-mode-hook))
+
+;; recentf (recently opened files)
+(use-package recentf
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Number of saved recent files
+  (recentf-max-saved-items 100)
+  :config
+  ;; Keeping track of opened files
+  (recentf-mode 1))
+
+;; repeat (repeat commands)
+(use-package repeat
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Enable repeat mode time-out
+  ;; (repeat-exit-timeout 5)
+  ;; Disable buffer-navigation-repeat-map
+  (buffer-navigation-repeat-map nil)
+  ;; Disable repeat-mode for undo
+  (undo-repeat-map nil)
+  :config
+  (repeat-mode 1))
+
+;; savehist (save minibuffer history)
+(use-package savehist
+  :ensure nil   ; don't install built-in packages
+  :config
+  ;; Persistent minibuffer history
+  (savehist-mode 1)
+  ;; Additional variables to persist between sessions
+  (add-to-list 'savehist-additional-variables 'kill-ring)
+  (add-to-list 'savehist-additional-variables 'global-mark-ring))
+
+;; saveplace (save cursor position in files)
+(use-package saveplace
+  :ensure nil   ; don't install built-in packages
+  :config
+  (save-place-mode 1))
+
+;; scroll-lock (disallow scrolling)
+(use-package scroll-lock
+  :ensure nil   ; don't install built-in packages
+  :bind ("C-c L" . scroll-lock-mode))
+
+;; sh-script (shell script mode)
+(use-package sh-script
+  :ensure nil   ; don't install built-in packages
+  :hook ((sh-mode . outline-headers-for-hash-mark-buffers)
+         (sh-mode . (lambda ()
+                      (keymap-local-unset "C-c =")
+                      (keymap-local-unset "C-c <")
+                      (keymap-local-unset "C-c >")
+                      (keymap-local-unset "C-c ?")))
+         (conf-xdefaults-mode . outline-headers-for-exclamation-mark-buffers)
+         (powershell-mode . outline-headers-for-hash-mark-buffers))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . bash-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . bash-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.profile_.*\\'" . bash-ts-mode)))
+
+;; simple (basic editing commands)
+(use-package simple
+  :ensure nil   ; don't install built-in packages
+  :bind (("C-x <right>" . aj8/next-buffer)
+         ("C-x <left>" . aj8/previous-buffer)
+         ("C-x k" . kill-current-buffer)
+         ("C-c k" . my/kill-buffer-other-window))
+  :custom
+  ;; Hide buffer list at startup when loading multiple files
+  (inhibit-startup-buffer-menu t)
+  ;; Do not switch to buffers already shown
+  (switch-to-prev-buffer-skip 'this)
+  ;; Do not display continuation lines
+  ;; (truncate-lines t)
+  ;; Skip some buffers when switching buffers
+  ;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
+  ;; Skip some buffers when switching buffers
+  ;; (setq switch-to-prev-buffer-skip-regexp regex)
+  ;; Increase history length
+  (history-length 10000)
+  ;; Delete history duplicates
+  (history-delete-duplicates nil))
+
+;; subword (subword movement)
+;;   Subword movement and editing: camelCase
+;;     Cannot be enabled at the same time as superword-mode
+(use-package subword
+  :disabled
+  :ensure nil   ; don't install built-in packages
+  :hook ((prog-mode . (lambda () (subword-mode 1)))))
+
+;; superword (superword movement)
+;;   Superword movement and editing: snake_case and kebab-case
+;;     Cannot be enabled at the same time as subword-mode
+(use-package superword
+  :disabled
+  :ensure nil   ; don't install built-in packages
+  :hook ((prog-mode . (lambda () (superword-mode 1)))))
+
+;; term (terminal-emulator)
+(use-package term
+  :disabled
+  :commands term)
+  ;; :config
+  ;; Match the default Bash shell prompt
+  ;; (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
+
+;; tex-mode (LaTeX mode)
+(use-package tex-mode
+  :ensure nil   ; don't install built-in packages
+  :hook ((latex-mode . outline-headers-for-percentage-buffers)
+         (latex-mode . (lambda () (setq comment-add 0))))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode)))
+  ;; (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-ts-mode)))
+
+;; tramp (Transparent Remote (file) Access, Multiple Protocol)
+;; TODO: Prevent TRAMP commands from appearing in bash history
+;;       (e.g. "exec env TERM dumb INSIDE_EMACS ENV HISTFILE ~/.tramp_history bash history")
+;;       https://mail.gnu.org/archive/html/tramp-devel/2024-11/msg00002.html
+;; TODO: Disable tramp debug buffer
+(use-package tramp
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Override the HISTFILE
+  (tramp-histfile-override t)
+  :config
+  ;; Add mode line indicator
+  (add-to-list 'global-mode-string '(:eval (aj8/tramp-indicator)) t))
+
+;; treesit (tree-sitter integration)
+(use-package treesit
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Use maximum decoration detail
+  (treesit-font-lock-level 4)
+  :config
+  ;; Copy standard mode hooks to their Treesitter equivalents
+  (dolist (hook '((bash-ts-mode-hook . sh-mode-hook)
+                  (css-ts-mode-hook . css-mode-hook)
+                  (html-ts-mode-hook . html-mode-hook)
+                  (js-ts-mode-hook . js-mode-hook)
+                  (json-ts-mode-hook . json-mode-hook)
+                  (lua-ts-mode-hook . lua-mode-hook)
+                  (markdown-ts-mode-hook . markdown-mode-hook)
+                  (python-ts-mode-hook . python-mode-hook)
+                  ;; (latex-ts-mode-hook . latex-mode-hook) ; NA
+                  (yaml-ts-mode-hook . yaml-mode-hook)))
+    (dolist (func (symbol-value (cdr hook)))
+      (add-hook (car hook) func))))
+
+;; uniquify (make buffer names unique)
+(use-package uniquify
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Uniquify buffer name using project
+  (uniquify-dirname-transform 'project-uniquify-dirname-transform))
+
+;; vc (version control)
+(use-package vc
+  :ensure nil   ; don't install built-in packages
+  :bind (("C-x v -" . vc-ediff))
+  :custom
+  ;; Follow symlinks
+  (vc-follow-symlinks t))
+
+;; which-key (display available keybindings in popup)
+;;   MAYBE: which-key buffer overlaps with bottom side-window buffer
+;;          (which might be OK?)
+;;          When doing so, which-key fails to
+;;            1) grow window to respect the height defined below
+;;            2) display a complete list of commands
+(use-package which-key
+  :diminish
+  :custom
+  ;; Use minibuffer
+  ;; (which-key-popup-type 'minibuffer)   ; default is side-window
+  ;; Preserve window configuration
+  (which-key-preserve-window-configuration t)
+  ;; Max window height
+  ;;   (default is 0.25)
+  (which-key-side-window-max-height 0.5)
+  ;; Max description length
+  ;;   (default is 27)
+  (which-key-max-description-length #'aj8/which-key-description-length)
+  ;; Min description length
+  ;;   (see :config section)
+  ;; Column padding
+  ;;   (default is 0)
+  (which-key-add-column-padding 1)
+  ;; Delay (default is 1.0 s)
+  ;; (which-key-idle-delay 10000)
+  (which-key-idle-delay 0.75)
+  ;; Secondary delay (default is nil)
+  (which-key-idle-secondary-delay 0.05)
+  ;; Display remapped commands
+  (which-key-compute-remaps t)
+  ;; Don't show which-key buffer on C-h
+  (which-key-use-C-h-commands nil)
+  :config
+  ;; Min description length
+  ;;   (same as max length; default is 0)
+  (customize-set-variable
+   'which-key-min-column-description-width
+   (eval (aj8/which-key-description-length
+          (cdr (which-key--side-window-max-dimensions)))))
+  (which-key-mode 1))
+
+;; visual-line (visual line wrapping)
+(use-package visual-line
+  :ensure nil   ; don't install built-in packages
+  :diminish
+  :hook ((help-mode . visual-line-mode)
+         (helpful-mode . visual-line-mode)
+         (Info-mode . visual-line-mode))
+  :config
+  (global-visual-wrap-prefix-mode 1))
+
+;; windmove (move between windows)
+(use-package windmove
+  :ensure nil   ; don't install built-in packages
+  :init
+  (which-key-add-key-based-replacements "C-c w" "windows")
+  :config
+  (windmove-default-keybindings 'ctrl)
+  (windmove-swap-states-default-keybindings '(ctrl shift))
+  (keymap-global-set "C-c w <up>" #'windmove-display-up)
+  (keymap-global-set "C-c w <down>" #'windmove-display-down)
+  (keymap-global-set "C-c w <left>" #'windmove-display-left)
+  (keymap-global-set "C-c w <right>" #'windmove-display-right)
+  (keymap-global-set "C-c w 0" #'windmove-display-same-window)
+  (keymap-global-set "C-c w C-<up>" #'windmove-delete-up)
+  (keymap-global-set "C-c w C-<down>" #'windmove-delete-down)
+  (keymap-global-set "C-c w C-<left>" #'windmove-delete-left)
+  (keymap-global-set "C-c w C-<right>" #'windmove-delete-right))
+
+;; winner (undo and redo window configurations)
+(use-package winner
+  :ensure nil   ; don't install built-in packages
+  :config
+  ;; Don't bind keys for winner
+  (setq winner-dont-bind-my-keys t)
+  (keymap-set winner-mode-map "C-c w <" #'winner-undo)
+  (keymap-set winner-mode-map "C-c w >" #'winner-redo)
+  (winner-mode 1))
+
+;; window (window management)
+(use-package window
+  :ensure nil   ; don't install built-in packages
+  :bind (("C-x {" . my/move-splitter-up)
+         ("C-x }" . my/move-splitter-down)
+         ("C-x >" . my/move-splitter-right)
+         ("C-x <" . my/move-splitter-left)
+         ("C-x |" . window-toggle-side-windows)
+         ("C-x !" . delete-other-windows-vertically)
+         ("C-x =" . balance-windows)
+         ("C-x +" . balance-windows-area)
+         ("C-x _" . fit-window-to-buffer)
+         ("C-x 9" . my/toggle-window-split))
+  :custom
+  ;; Set minimum window height
+  ;; (setq window-min-height 16)
+  ;; Prefer horizontal (side-by-side) window splitting
+  ;;   Note: the thresholds need to be twice as big as the smallest
+  ;;   window allowed, because the new windows each use half of the
+  ;;   former window size
+  (split-width-threshold nil)
+  (split-height-threshold 0)
+  ;; Enable horizontal window fitting
+  ;; (setq fit-window-to-buffer-horizontally
+  ;; Resize window combinations proportionally
+  ;;   TODO: Message buffer grows on each Magit commit
+  ;; (window-combination-resize t)
+  ;; Try to even window sizes vertically only
+  (even-window-sizes 'height-only)
+  ;; Allow switching to buffer in strongly dedicated windows
+  ;; (switch-to-buffer-in-dedicated-window 'pop)
+  ;; Top and bottom side windows occupy full frame width (default)
+  (window-sides-vertical nil)
+  ;; Left and right side windows occupy full frame height
+  ;; (setq window-sides-vertical t)
+  ;; Obey display actions when switching buffers
+  (switch-to-buffer-obey-display-actions t)
+  ;; Window rules
+  (display-buffer-alist
+   '(;;
+     ;; Example using mp-make-display-buffer-matcher-function
+     ;;
+     ;; (,(make-display-buffer-matcher-function '(magit-mode))
+     ;;  (display-buffer-in-side-window))
+     ;;
+     ;; No window
+     ;;
+     ;; ("\\*Async Shell Command\\*"
+     ;;  (display-buffer-no-window))
+     ;;
+     ;; Top side window
+     ;;
+     ;; ((or . ((derived-mode-p . backtrace-mode)
+     ;;         (derived-mode-p . compilation-mode)
+     ((lambda (buffer _alist)
+        (with-current-buffer buffer (or (derived-mode-p 'backtrace-mode)
+                                        (derived-mode-p 'compilation-mode))))
+      (display-buffer-in-side-window)
+      (window-height . ,aj8/side-window-height)
+      (side . top)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ("\\*\\(Messages\\|Warnings\\|Native-compile-Log\\|Async-native-compile-log\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . ,aj8/side-window-height)
+      (side . top)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ("magit-process:.*"
+      (display-buffer-in-side-window)
+      (window-height . ,aj8/side-window-height)
+      (side . top)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ("\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . ,aj8/side-window-height)
+      (side . top)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ;;
+     ;; Right side window
+     ;;
+     ;;   Magit
+     ;;
+     ("\\(COMMIT_EDITMSG\\|magit:\\|magit-log.*:\\|magit-reflog:\\|magit-log-select:\\).*"
+      (display-buffer-in-side-window)
+      (window-width . ,aj8/side-window-width-dynamic)
+      (side . right)
+      (slot . -1)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ("\\(magit-diff:\\|magit-revision:\\|magit-stash:\\).*"
+      (display-buffer-in-side-window)
+      (window-width . ,aj8/side-window-width-dynamic)
+      (side . right)
+      (slot . 1)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ;;
+     ;;   Help
+     ;;
+     ("\\*\\(Apropos\\|Help\\|helpful.*\\|info.*\\|Man.*\\|WoMan.*\\)\\*"
+      (display-buffer-in-side-window)
+      (window-width . ,aj8/side-window-width-dynamic)
+      (side . right)
+      (slot . 1)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ;;
+     ;;   Other
+     ;;
+     ((lambda (buffer _alist)
+        (with-current-buffer buffer (or (derived-mode-p 'git-rebase-mode)
+                                        (derived-mode-p 'tabulated-list-mode))))
+      (display-buffer-in-side-window)
+      (window-width . ,aj8/side-window-width-dynamic)
+      (side . right)
+      (slot . -1)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
+      (display-buffer-in-side-window)
+      (window-width . ,aj8/side-window-width-dynamic)
+      (side . right)
+      (slot . -1)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ("\\(gptel-.*\\.\\(org\\|md\\)\\)"
+      (display-buffer-in-side-window)
+      (window-width . ,aj8/side-window-width-dynamic)
+      (side . right)
+      (slot . -1)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ;; MAYBE: eww doesn't work initially
+     ("\\*\\(eww:.*\\|gptel-reasoning\\)\\*"
+      (display-buffer-in-side-window)
+      (window-width . ,aj8/side-window-width-dynamic)
+      (side . right)
+      (slot . 1)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ;;
+     ;; Bottom side window
+     ;;
+     ("\\*\\(e?shell\\|v?term\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . ,aj8/side-window-height)
+      (side . bottom)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ;;
+     ;; Bottom buffer (not side window)
+     ;;
+     ("\\*Embark Actions\\*"
+      (display-buffer-reuse-mode-window display-buffer-at-bottom)
+      (window-height . fit-window-to-buffer)
+      (window-parameters . ((no-other-window . t)
+                            (mode-line-format . none)))))))
+
+;; xref (cross-referencing)
+(use-package xref
+  :ensure nil   ; don't install built-in packages
+  :bind (("M-?" . xref-find-references)
+         ("C-c ?" . xref-find-definitions)
+         ("C-c <" . xref-go-back)
+         ("C-c >" . xref-go-forward))
+  :config
+  ;; Don't prompt with xref-find-references
+  (with-eval-after-load "xref"
+    (add-to-list 'xref-prompt-for-identifier 'xref-find-references t)))
+
 ;;; Admin
 
 ;;; Buffers
@@ -1975,1057 +3025,6 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   (add-hook 'keychain-environment-mode-hook (lambda () (diminish 'keychain-environment-mode)))
   (keychain-refresh-environment))
-
-
-;;; Built-in packages
-
-;; TODO: check package descriptions
-
-;; abbrev (dynamic abbreviations)
-(use-package abbrev
-  :ensure nil   ; don't install built-in packages
-  :diminish
-  ;; Expand abbreviations
-  :hook (text-mode . abbrev-mode))
-
-;; apropos (find commands, functions, and variables by name)
-(use-package apropos
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; More extensive apropos commands
-  (apropos-do-all t))
-
-;; bookmark (record positions in files)
-(use-package bookmark
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Auto-save bookmarks
-  (bookmark-save-flag 1))
-
-;; browse-url (interface to web browsers)
-(use-package browse-url
-  :ensure nil   ; don't install built-in packages
-  :bind (("C-c b" . browse-url-at-point))
-  :custom
-  ;; Use default browser
-  (browse-url-browser-function #'browse-url-default-browser)
-  ;; Use EWW as secondary browser
-  (browse-url-secondary-browser-function #'eww-browse-url)
-  ;; Custom browser settings
-  (browse-url-handlers
-   '(("\\.md$" . eww-browse-url)
-     ("." . browse-url-default-browser))))
-
-;; column (display column number)
-(use-package column
-  :ensure nil   ; don't install built-in packages
-  :bind ("C-c N" . column-number-mode))
-
-;; custom (customize Emacs settings)
-(use-package custom
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Kill customize group windows
-  (custom-buffer-done-kill t)
-  ;; Custom interface: don't convert symbols to words (tags)
-  (custom-unlispify-tag-names nil)
-  ;; Custom interface: don't convert symbols to words (menu)
-  (custom-unlispify-menu-entries t))
-
-;; dabbrev (dynamic abbreviation expansion)
-(use-package dabbrev
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Let Dabbrev searches be case sensitive
-  (dabbrev-case-fold-search nil)
-  :config
-  ;; Don't let Dabbrev check authinfo buffers
-  (with-eval-after-load 'dabbrev
-    (add-to-list 'dabbrev-ignored-buffer-modes 'authinfo-mode)))
-
-;; desktop (save and restore Emacs state)
-(use-package desktop
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Don't clear any variables
-  (desktop-globals-to-clear nil)
-  :config
-  ;; Restore desktop between sessions
-  ;;   TODO: doesn't restore side-windows
-  (desktop-save-mode 1))
-
-;; diff-mode (major mode for viewing diffs)
-(use-package diff-mode
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; No context for diff output
-  (diff-switches "--unified=0"))
-
-;; dired (directory editor)
-(use-package dired
-  :ensure nil   ; don't install built-in packages
-  :bind (:map dired-mode-map
-              ("." . dired-omit-mode)
-         :map dired-mode-map
-              ("C-c C-a d" . markdown-links-insert-from-dired))
-  :init
-  ;; Enable Dired-X
-  (with-eval-after-load 'dired (require 'dired-x))
-  :custom
-  ;; Set custom listing style
-  ;; (dired-listing-switches "-agho --group-directories-first")
-  (dired-listing-switches "-agho")   ; macOS version
-  ;; Guess target directory
-  (dired-dwim-target t)
-  ;; Don't display free disk space
-  (dired-free-space nil)
-  ;; Reuse Dired buffers
-  (dired-kill-when-opening-new-dired-buffer t)
-  ;; Omit hidden (dot-) files
-  (dired-omit-files "^\\.[a-zA-Z0-9]+")   ; with dired-omit-mode
-  :config
-  ;; Tag Dired buffer names
-  ;;   TODO: fails sometimes with TRAMP
-  (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
-  ;; Hide details by default
-  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-  ;; Hide omitted files
-  (add-hook 'dired-mode-hook #'dired-omit-mode))
-
-;; display-line-numbers (display line numbers in the margin)
-(use-package display-line-numbers
-  :ensure nil   ; don't install built-in packages
-  :hook (prog-mode . display-line-numbers-mode)
-  :custom
-  ;; Set display-line-number-width automatically
-  (display-line-numbers-width-start t))
-
-;; ediff (interactive interface to diff and patch)
-(use-package ediff
-  :ensure nil   ; don't install built-in packages
-  :bind (("C-c e b" . ediff-buffers)
-         ("C-c e l" . ediff-regions-linewise)
-         ("C-c e w" . ediff-regions-wordwise))
-  :init
-  (which-key-add-key-based-replacements "C-c e" "ediff")
-  :custom
-  ;; Use horizontal (side-by-side) view by default in ediff
-  (ediff-split-window-function #'split-window-horizontally)
-  (ediff-merge-split-window-function #'split-window-horizontally)
-  ;; Kill all Ediff buffers on exit
-  (aj8/ediff-cleanup-buffers t)
-  :config
-  ;; Let ediff use existing frame in GUI
-  (when (display-graphic-p)
-    (setq ediff-window-setup-function 'ediff-setup-windows-plain))
-  ;; Kill all Ediff buffers on exit
-  (add-hook 'ediff-quit-hook #'aj8/ediff-cleanup-buffers)
-  ;; Store and restore window layout after Ediff
-  ;;   MAYBE: works well for ediff-buffers, but not for
-  ;;   ediff-regions-linewise and ediff-regions-wordwise
-  ;;   (https://emacs.stackexchange.com/a/80961/33325)
-  (add-hook 'ediff-before-setup-hook #'my-ediff-save-windows)
-  (add-hook 'ediff-quit-hook #'my-ediff-restore-windows)
-  ;; Use both versions with ediff
-  ;;   MAYBE: check functionality
-  (add-hook 'ediff-keymap-setup-hook
-            ;; Use both versions with ediff
-            (lambda () (keymap-set ediff-mode-map "d" #'my/ediff-copy-both-to-C))))
-
-;; electric (electric indentation and pairing)
-(use-package electric
-  :ensure nil   ; don't install built-in packages
-  :config
-  ;; Auto-insert closing parens, bracket and double-quotes
-  (electric-pair-mode 1))
-
-;; emacs (core Emacs settings)
-(use-package emacs
-  :ensure nil   ; don't install built-in packages
-  :bind (("C-o" . my/open-line)
-         ("C-<backspace>" . (lambda () (interactive) (kill-line 0)))
-         ("M-u" . upcase-dwim)
-         ("M-l" . downcase-dwim)
-         ("M-c" . aj8/capitalize-word-at-point)
-         ("C-c q" . fill-individual-paragraphs)
-         ("C-c x c" . my/copy-symbol-at-point)
-         ("C-c TAB" . indent-relative)
-         ("C-c C-c" . exit-recursive-edit)
-         ("C-c f" . find-file-at-point)
-         ("C-c <left>" . scroll-right)
-         ("C-c <right>" . scroll-left)
-         ("M-p" . backward-paragraph)
-         ("M-n" . forward-paragraph)
-         ("M-a" . back-to-indentation)
-         ("C-c x r" . aj8/reload-init-file)
-         ("C-x M-e" . my/eval-next-sexp)
-         ("C-x C-M-e" . my/eval-sexp-at-point))
-  :init
-  (which-key-add-key-based-replacements "C-c x" "misc")
-  :custom
-  ;; Personal settings
-  (user-full-name "Andreas Jonsson")
-  (user-mail-address "ajdev8@gmail.com")
-  ;; Use spaces, not tabs
-  (indent-tabs-mode nil)
-  ;; Delete trailing newline character with kill-line
-  (kill-whole-line t)
-  ;; Set fill column
-  (fill-column 76)   ; default is 70
-  ;; Save clipboard text into kill ring before kill
-  ;; (save-interprogram-paste-before-kill t)
-  ;; Yank at point, not at pointer
-  (mouse-yank-at-point t)
-  ;; Reduce delay for echoing multi-character keys
-  (echo-keystrokes 0.01)
-  ;; Scrolling
-  ;;   The order of priority is: ‘scroll-conservatively’, then
-  ;;   ‘scroll-step’, and finally ‘scroll-up-aggressively’ /
-  ;;   ‘scroll-down-aggressively’.
-  (scroll-conservatively 0)        ; default: 0
-  (scroll-step 1)                  ; default: 0
-  (scroll-up-aggressively nil)     ; default: nil
-  (scroll-down-aggressively nil)   ; default: nil
-  ;; (scroll-margin 0)
-  ;; Preserve point position when scrolling
-  (scroll-preserve-screen-position t)
-  ;; Smooth horizontal scrolling
-  (hscroll-step 1)
-  ;; Use "repeat-mode" for "pop-mark"
-  (set-mark-command-repeat-pop t)
-  ;; Don't use the mark when region is inactive
-  ;;   Note: messes with ediff
-  ;; (mark-even-if-inactive nil)
-  ;; Interpret spaces as wildcards (with M-s SPC)
-  (search-whitespace-regexp ".*?")
-  ;; (isearch-invisible nil)
-  ;; (isearch-lax-whitespace nil)
-  ;; Allow movement between Isearch matches by cursor motion commands
-  (isearch-allow-motion t)
-  (isearch-motion-changes-direction t)
-  ;; Use 'y' or 'n' questions always
-  ;; (use-short-answers t)
-  ;; Use longer pulse
-  (pulse-delay 0.05)   ; default is 0.03
-  ;; Increase maximum file size that can be opened without a warning
-  (large-file-warning-threshold 50000000)
-  ;; Show mode headers in describe-bindings buffer
-  (describe-bindings-outline t)
-  ;; Delete selection on edit
-  (delete-selection-mode 1)
-  ;; Select completion styles
-  ;;   substring: needed for partial completion
-  ;;   orderless: space-separated components
-  ;;   basic: fallback
-  (completion-styles '(orderless basic))
-  ;; (completion-styles '(substring orderless basic))
-  ;; Use TAB for symbol completion (after indentation)
-  (tab-always-indent 'complete)
-  ;; Show more details for completions
-  (completions-detailed t)
-  ;; (read-extended-command-predicate #'command-completion-default-include-p)
-  :config
-  ;; Use partial completion for files
-  (setq completion-category-defaults nil)
-  (add-to-list 'completion-category-overrides '((file (styles basic partial-completion))))
-  ;; Enable auto-scrolling for the *Messages* buffer
-  ;;   Note that the *Messages* buffer is created early during startup (before
-  ;;   this hook is set), so this hook only applies to newly created
-  ;;   *Messages* buffers.  The `with-current-buffer' statement applies the
-  ;;   mode to the current *Messages* buffer.
-  ;; (add-hook 'messages-buffer-mode-hook (lambda () (aj8/buffer-tail-mode 1)))
-  (with-current-buffer "*Messages*"
-    (aj8/buffer-tail-mode 1))
-  ;; Deactivate highlight mode when selecting text
-  (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
-  (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
-  ;; Add Treesitter indicator in the modeline
-  (add-hook 'after-change-major-mode-hook #'aj8/treesit-mode-name)
-  ;; Collect list of killed file and non-file buffers
-  (add-hook 'kill-buffer-hook #'my/reopen-killed-file-save)
-  (add-hook 'kill-buffer-hook #'aj8/reopen-killed-buffer-save)
-  (keymap-set isearch-mode-map "TAB" #'isearch-complete))
-
-;; epg (Emacs Privacy Guard)
-(use-package epg
-  :ensure nil   ; don't install built-in packages
-  :config
-  ;; Fill gpg passwords in the minibuffer
-  (setq epg-pinentry-mode 'loopback)
-  ;; Select keys in the minibuffer
-  (setq epa-keys-select-method 'minibuffer))
-
-;; erc (an Emacs internet relay chat client)
-(use-package erc
-  :disabled
-  :ensure nil   ; don't install built-in packages
-  :commands (erc erc-tls)
-  :custom
-  ;; Server settings
-  (erc-server "irc.libera.chat")
-  (erc-nick "ajdev8")
-  (erc-user-full-name user-full-name)
-  (erc-autojoin-channels-alist '(("libera.chat" "#systemcrafters")))
-  ;; Buffers
-  (erc-join-buffer 'bury)
-  (erc-kill-buffer-on-part t)
-  ;; Appearance
-  (erc-fill-function 'erc-fill-static)
-  (erc-fill-static-center 18)
-  ;; (erc-hide-list '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
-  ;; Tracking
-  (erc-track-shorten-start 3)
-  (erc-track-exclude '("#emacs"))
-  (erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "AWAY"))
-  (erc-track-exclude-server-buffer t)
-  :config
-  ;; (add-to-list 'erc-modules 'notifications)
-  (add-to-list 'erc-modules 'spelling)
-  (erc-services-mode 1)
-  (erc-update-modules))
-
-;; eshell (the Emacs command shell)
-(use-package eshell
-  :hook (eshell-first-time-mode . efs/configure-eshell)
-  :config
-  ;; Set Eshell options here
-  ;; (with-eval-after-load 'esh-opt
-  ;;   (setq eshell-visual-commands '("htop" "zsh" "vim")))
-  ;; Add Tramp support
-  (with-eval-after-load "eshell"
-    (add-to-list 'eshell-modules-list 'eshell-tramp)))
-
-;; EWW (the Emacs Web Wowser)
-(use-package eww
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Default search engine
-  (eww-search-prefix "https://google.com/search?q=")   ; default is duckduckgo
-  ;; Restore Eww buffers
-  (eww-restore-desktop t)
-  ;; Don't remove duplicates in browsing history
-  ;; (eww-desktop-remove-duplicates nil)
-  ;; Download folder
-  (eww-download-directory (expand-file-name "~/Downloads"))
-  ;; Max history items
-  (eww-history-limit 100)
-  ;; Auto rename eww buffers
-  (setq eww-auto-rename-buffer t)
-  :config
-  ;; Are these needed?
-  ;; (setq shr-use-colors nil)             ; t is bad for accessibility
-  ;; (setq shr-use-fonts nil)
-  ;; Don't shadow default EWW keybindings
-  (with-eval-after-load "shr"
-    (keymap-set shr-map "u" nil)
-    (keymap-set shr-map "v" nil)
-    (keymap-set shr-map "w" nil))
-  ;; Open new EWW buffers in a new window (M-RET)
-  ;;   TODO: Emacs 30 introduces eww-open-in-new-buffer
-  (with-eval-after-load "eww"
-    (define-key eww-mode-map
-                [remap eww-open-in-new-buffer] #'aj8/eww-open-in-new-buffer))
-  ;; Open new EWW buffers in a new window (C-u RET)
-  (with-eval-after-load "eww"
-    (define-key eww-mode-map
-                [remap eww-follow-link] #'aj8/eww-follow-link)))
-
-;; find-func (find source code for functions and variables)
-(use-package find-func
-  :ensure nil   ; don't install built-in packages
-  :config
-  ;; Set keybindings for find-function and relatives
-  (find-function-setup-keys))
-
-;; flymake (minor mode for on-the-fly syntax checking)
-(use-package flymake
-  :bind (:map flymake-diagnostics-buffer-mode-map
-              ("h" . #'aj8/flymake-ruff-goto-doc)
-         :map flymake-project-diagnostics-mode-map
-              ("h" . #'aj8/flymake-ruff-goto-doc)))
-
-;; flyspell (on-the-fly spell checker)
-(use-package flyspell
-  :ensure nil   ; don't install built-in packages
-  :diminish
-  :hook ((text-mode . flyspell-mode)
-         (prog-mode . flyspell-prog-mode))
-  :config
-  ;; Enable flyspell in web-mode
-  (put 'web-mode 'flyspell-mode-predicate #'my/web-mode-flyspell-verify))
-
-;; goto-addr (go to URL at point)
-(use-package goto-addr
-  :ensure nil   ; don't install built-in packages
-  :diminish
-  :config
-  ;; Buttonize URLs and e-mail addresses
-  (global-goto-address-mode 1))
-
-;; help (help commands)
-(use-package help
-  :ensure nil   ; don't install built-in packages
-  :bind (("C-c H e" . aj8/toggle-eldoc-buffer)
-         ("C-c H k" . describe-keymap)
-         ("C-c H s" . shortdoc-display-group))
-  :init
-  (which-key-add-key-based-replacements "C-c H" "help")
-  :custom
-  ;; Reuse windows for *Help* buffers
-  (help-window-keep-selected t)
-  ;; Always select help window
-  (help-window-select t))
-
-;; hideshow
-(use-package hideshow
-  :commands (hs-cycle hs-global-cycle)
-  :bind (:map hs-minor-mode-map
-              ("TAB" . aj8/hs-cycle)
-              ("<backtab>" . aj8/hs-global-cycle)))
-  ;; :custom
-  ;; ;; Hide the comments too
-  ;; (setq hs-hide-comments-when-hiding-all nil))
-
-;; hippie-exp (versatile completion)
-(use-package hippie-exp
-  :ensure nil   ; don't install built-in packages
-  :bind (("<remap> <dabbrev-expand>" . hippie-expand))
-  :config
-  ;; Let hippie-expand search for line expansions in all buffers
-  ;; (add-to-list 'hippie-expand-try-functions-list 'try-expand-line-all-buffers t)
-  (setcar (nthcdr 5 hippie-expand-try-functions-list) 'try-expand-line-all-buffers)
-  ;; Ignore some buffers with hippie-expand
-  (with-eval-after-load "hippie-exp"
-    (add-to-list 'hippie-expand-ignore-buffers "^\\*.*\\*$")
-    (add-to-list 'hippie-expand-ignore-buffers "magit:.*")
-    (add-to-list 'hippie-expand-ignore-buffers aj8/buffer-skip-regexp)))
-
-;; hl-line (highlight current line)
-(use-package hl-line
-  :ensure nil   ; don't install built-in packages
-  :config
-  ;; Highlight current line
-  (global-hl-line-mode 1))
-
-;; ibuffer (list and manage buffers)
-(use-package ibuffer
-  :ensure nil   ; don't install built-in packages
-  :config
-  ;; Set default sort order in Ibuffer
-  (require 'ibuf-ext)   ; initiate ibuffer-sorting-functions-alist
-                        ; https://lists.gnu.org/archive/html/help-gnu-emacs/2008-11/msg00694.html
-  (setq-default ibuffer-default-sorting-mode 'filename/process))
-
-;; info (Info documentation reader)
-(use-package info
-  :ensure nil   ; don't install built-in packages
-  :hook ((Info-mode . rename-uniquely)
-         (Info-mode . (lambda () (keymap-local-unset "M-n")))
-         (Info-mode . visual-line-mode))
-  :custom
-  ;; Open *info* buffers in same window
-  (info-lookup-other-window-flag nil))
-
-;; ispell (spell checking)
-(use-package ispell
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Use aspell
-  ;;   Requires: aspell
-  (ispell-program-name "aspell")   ; this is already the default
-  ;; Set language
-  (ispell-dictionary "en_US")
-  ;; Set aspell suggestion mode
-  (ispell-extra-args '("--sug-mode=ultra")))
-  ;; (setq ispell-extra-args '("--sug-mode=fast")))
-  ;; (setq ispell-extra-args '("--sug-mode=normal")))
-
-;; lisp-mode (modes for Lisp dialects)
-(use-package lisp-mode
-  :ensure nil   ; don't install built-in packages
-  ;; Outline settings
-  :hook (emacs-lisp-mode . outline-headers-for-semicolon-buffers))
-
-;; minibuffer (minibuffer commands)
-(use-package minibuffer
-  :ensure nil   ; don't install built-in packages
-  :bind ("M-o" . aj8/orderless-matching-style-cycle)
-  :custom
-  ;; Allow minibuffer commands while in the minibuffer
-  (enable-recursive-minibuffers t)
-  ;; Timeout for messages in active minibuffer
-  (minibuffer-message-clear-timeout 1)
-  :config
-  ;; Show recursion depth in the minibuffer prompt
-  (minibuffer-depth-indicate-mode 1))
-
-;; modus-themes (elegant, highly legible and customizable themes)
-(use-package modus-themes
-  :if (eq aj8/my-os 'linux)   ; Linux
-  :ensure nil   ; don't install built-in packages
-  ;; :no-require   ; silence use-package-lint warning
-  :bind ("<f5>" . modus-themes-toggle)
-  ;; Add all customizations prior to loading the themes
-  :init
-  ;; Use italic font forms in more code constructs
-  (setq modus-themes-italic-constructs t)
-  ;; Use bold text in more code constructs
-  (setq modus-themes-bold-constructs t)
-  ;; Use more subtle style for line numbers
-  (setq modus-themes-subtle-line-numbers t)
-  ;; Define the visibility of fringes
-  ;;   Options: `nil',`subtle', `intense'
-  (setq modus-themes-fringes nil)
-  ;; Control the style of spelling and code checkers/linters
-  ;;   Options: `straight-underline', `text-also', `background',
-  ;;            `intense', `faint'
-  (setq modus-themes-lang-checkers '(straight-underline text-also))
-  ;; Control the style of the mode line
-  ;;   Options: `3d' OR `moody', `borderless', `accented'
-  (setq modus-themes-mode-line '(borderless))
-  ;(setq modus-themes-mode-line nil)
-  ;; Control the style of code syntax highlighting
-  ;;   Options: `faint', `yellow-comments', `green-strings',
-  ;;            `alt-syntax'
-  (setq modus-themes-syntax '(faint green-strings alt-syntax))
-  ;; Style markup in Org, markdown, and others
-  ;;   Options: `bold', `italic', `background', `intense'
-  ;; (setq modus-themes-markup '(background italic))
-  (setq modus-themes-markup nil)
-  ;; Control the current line highlight of HL-line mode
-  ;;   Options: `accented', `underline', `intense'
-  (setq modus-themes-hl-line nil)
-  ;; Control the style of matching parentheses or delimiters
-  ;;   Options: `bold', `intense', `underline'
-  (setq modus-themes-paren-match '(intense))
-  ;; Set the style of links
-  ;;   Options: `neutral-underline' OR `no-underline', `faint' OR
-  ;;            `no-color', `bold', `italic', `background'
-  (setq modus-themes-links nil)
-  ;; Control the style of buttons in the Custom UI and related
-  ;;   Options: `flat', `accented', `faint', `variable-pitch',
-  ;;            `underline'
-  ;; (setq modus-themes-box-buttons '(variable-pitch flat faint 0.9))
-  (setq modus-themes-box-buttons nil)
-  ;; Set the style for minibuffer and REPL prompts
-  ;;   Options: `background', `bold', `gray', `intense', `italic'
-  (setq modus-themes-prompts nil)
-  ;; Control the style of the completion framework's interface
-  ;;   Options: see manual
-  (setq modus-themes-completions '((matches . (extrabold))
-                                   (selection . (semibold accented))
-                                   (popup . (accented intense))))
-  ;; (setq modus-themes-completions nil)
-  ;; Control the style of the active region
-  ;;   Options: `no-extend', `bg-only', `accented'
-  (setq modus-themes-region nil)
-  ;; Adjust the style of diffs
-  ;;   Options: `desaturated', `bg-only'
-  (setq modus-themes-diffs nil)
-  ;; Set the style of Org code blocks, quotes, and the like
-  ;;   Options: `gray-background', `tinted-background'
-  (setq modus-themes-org-blocks 'gray-background)
-  ;; Org styles
-  ;;   Options: see manual
-  ;; (setq modus-themes-org-agenda
-  ;;       '((header-block . (variable-pitch 1.3))
-  ;;         (mail-header-parse-date . (grayscale workaholic bold-today 1.1))
-  ;;         (event . (accented varied))
-  ;;         (scheduled . uniform)
-  ;;         (habit . traffic-light)))
-  (setq modus-themes-org-agenda nil)
-  ;; Heading styles
-  ;;   Options: `rainbow', `overline', `background', `monochrome'
-  ;; (setq modus-themes-headings
-  ;;       '((1 . (background monochrome))
-  ;;         (t . (monochrome))))
-  (setq modus-themes-headings
-        '((1 . (background rainbow))
-          (2 . (background))
-          (3 . (background monochrome))
-          (t . (monochrome))))
-  ;; Load the theme
-  (if (aj8/daytime-p)
-      (load-theme 'modus-operandi)
-    (load-theme 'modus-vivendi)))
-
-;; org (Org mode)
-(use-package org
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Use speed keys
-  (org-use-speed-commands t)
-  ;; Don't require confirmation when evaluating code
-  (org-confirm-babel-evaluate nil)
-  ;; Use shift-selection
-  ;;   (disables org-shiftup, org-shiftdown, org-shiftleft and org-shiftright)
-  ;; (org-support-shift-select t)
-  )
-
-;; outline (outline mode)
-(use-package outline
-  :ensure nil   ; don't install built-in packages
-  :hook (outline-mode . (lambda () (setq outline-regexp "[*]+")))
-  :bind (("C-c O" . outline-minor-mode))
-  :init
-  (which-key-add-key-based-replacements "C-c @" "outline")
-  :custom
-  ;; Use TAB and S-TAB for cycling
-  ;;   See also outline-minor-faces.
-  (outline-minor-mode-cycle t)   ; alternatives: 'override and 'append
-  ;; (outline-minor-mode-highlight t)
-  )
-
-;; paren (parenthesis matching)
-(use-package paren
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Show context around the opening paren if it is offscreen
-  ;;   MAYBE: Make the text in the echo area persist until key press
-  (show-paren-context-when-offscreen t))
-
-;; project (manage projects in Emacs)
-(use-package project
-  :ensure nil   ; don't install built-in packages
-  :bind (("C-x C-<right>" . my/project-next-buffer)
-         ("C-x C-<left>" . my/project-previous-buffer)
-         ("C-x p t" . project-forget-project))
-  :custom
-  ;; Share file history between projects
-  ;; (project-file-history-behavior 'relativize)
-  ;; Exclude some dirs from projects
-  ;;   Or use a dir-local file!
-  ;; (add-to-list 'project-vc-ignores "archive/")
-  ;; Show current project name on the mode line
-  (project-mode-line t)
-  :config
-  ;; Add projects
-  (project-remember-projects-under "~/git")
-  (project-remember-projects-under "~/dotfiles")
-  (project-remember-projects-under "~/projects" t))
-
-;; python (Python's flying circus support for Emacs)
-(use-package python
-  :bind (:map python-mode-map
-              ("C-c <" . nil)
-         :map python-ts-mode-map
-              ("C-c <" . nil))   ; unbind python-indent-shift-left
-  :config
-  ;; Exclude virtual environment directories from project
-  ;;   Not needed: use M-s G  ;; Outline settings
-  ;; (setq-local project-ignored-files '(".venv/*"))
-  ;; Outline settings
-  (add-hook 'python-base-mode-hook
-            #'outline-headers-for-hash-mark-buffers)
-  ;; Other settings
-  (add-hook 'python-mode-hook 'aj8/python-mode-hook))
-
-;; recentf (recently opened files)
-(use-package recentf
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Number of saved recent files
-  (recentf-max-saved-items 100)
-  :config
-  ;; Keeping track of opened files
-  (recentf-mode 1))
-
-;; repeat (repeat commands)
-(use-package repeat
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Enable repeat mode time-out
-  ;; (repeat-exit-timeout 5)
-  ;; Disable buffer-navigation-repeat-map
-  (buffer-navigation-repeat-map nil)
-  ;; Disable repeat-mode for undo
-  (undo-repeat-map nil)
-  :config
-  (repeat-mode 1))
-
-;; savehist (save minibuffer history)
-(use-package savehist
-  :ensure nil   ; don't install built-in packages
-  :config
-  ;; Persistent minibuffer history
-  (savehist-mode 1)
-  ;; Additional variables to persist between sessions
-  (add-to-list 'savehist-additional-variables 'kill-ring)
-  (add-to-list 'savehist-additional-variables 'global-mark-ring))
-
-;; saveplace (save cursor position in files)
-(use-package saveplace
-  :ensure nil   ; don't install built-in packages
-  :config
-  (save-place-mode 1))
-
-;; scroll-lock (disallow scrolling)
-(use-package scroll-lock
-  :ensure nil   ; don't install built-in packages
-  :bind ("C-c L" . scroll-lock-mode))
-
-;; sh-script (shell script mode)
-(use-package sh-script
-  :ensure nil   ; don't install built-in packages
-  :hook ((sh-mode . outline-headers-for-hash-mark-buffers)
-         (sh-mode . (lambda ()
-                      (keymap-local-unset "C-c =")
-                      (keymap-local-unset "C-c <")
-                      (keymap-local-unset "C-c >")
-                      (keymap-local-unset "C-c ?")))
-         (conf-xdefaults-mode . outline-headers-for-exclamation-mark-buffers)
-         (powershell-mode . outline-headers-for-hash-mark-buffers))
-  :config
-  (add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . bash-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . bash-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.profile_.*\\'" . bash-ts-mode)))
-
-;; simple (basic editing commands)
-(use-package simple
-  :ensure nil   ; don't install built-in packages
-  :bind (("C-x <right>" . aj8/next-buffer)
-         ("C-x <left>" . aj8/previous-buffer)
-         ("C-x k" . kill-current-buffer)
-         ("C-c k" . my/kill-buffer-other-window))
-  :custom
-  ;; Hide buffer list at startup when loading multiple files
-  (inhibit-startup-buffer-menu t)
-  ;; Do not switch to buffers already shown
-  (switch-to-prev-buffer-skip 'this)
-  ;; Do not display continuation lines
-  ;; (truncate-lines t)
-  ;; Skip some buffers when switching buffers
-  ;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
-  ;; Skip some buffers when switching buffers
-  ;; (setq switch-to-prev-buffer-skip-regexp regex)
-  ;; Increase history length
-  (history-length 10000)
-  ;; Delete history duplicates
-  (history-delete-duplicates nil))
-
-;; subword (subword movement)
-;;   Subword movement and editing: camelCase
-;;     Cannot be enabled at the same time as superword-mode
-(use-package subword
-  :disabled
-  :ensure nil   ; don't install built-in packages
-  :hook ((prog-mode . (lambda () (subword-mode 1)))))
-
-;; superword (superword movement)
-;;   Superword movement and editing: snake_case and kebab-case
-;;     Cannot be enabled at the same time as subword-mode
-(use-package superword
-  :disabled
-  :ensure nil   ; don't install built-in packages
-  :hook ((prog-mode . (lambda () (superword-mode 1)))))
-
-;; term (terminal-emulator)
-(use-package term
-  :disabled
-  :commands term)
-  ;; :config
-  ;; Match the default Bash shell prompt
-  ;; (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
-
-;; tex-mode (LaTeX mode)
-(use-package tex-mode
-  :ensure nil   ; don't install built-in packages
-  :hook ((latex-mode . outline-headers-for-percentage-buffers)
-         (latex-mode . (lambda () (setq comment-add 0))))
-  :config
-  (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode)))
-  ;; (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-ts-mode)))
-
-;; tramp (Transparent Remote (file) Access, Multiple Protocol)
-;; TODO: Prevent TRAMP commands from appearing in bash history
-;;       (e.g. "exec env TERM dumb INSIDE_EMACS ENV HISTFILE ~/.tramp_history bash history")
-;;       https://mail.gnu.org/archive/html/tramp-devel/2024-11/msg00002.html
-;; TODO: Disable tramp debug buffer
-(use-package tramp
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Override the HISTFILE
-  (tramp-histfile-override t)
-  :config
-  ;; Add mode line indicator
-  (add-to-list 'global-mode-string '(:eval (aj8/tramp-indicator)) t))
-
-;; treesit (tree-sitter integration)
-(use-package treesit
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Use maximum decoration detail
-  (treesit-font-lock-level 4)
-  :config
-  ;; Copy standard mode hooks to their Treesitter equivalents
-  (dolist (hook '((bash-ts-mode-hook . sh-mode-hook)
-                  (css-ts-mode-hook . css-mode-hook)
-                  (html-ts-mode-hook . html-mode-hook)
-                  (js-ts-mode-hook . js-mode-hook)
-                  (json-ts-mode-hook . json-mode-hook)
-                  (lua-ts-mode-hook . lua-mode-hook)
-                  (markdown-ts-mode-hook . markdown-mode-hook)
-                  (python-ts-mode-hook . python-mode-hook)
-                  ;; (latex-ts-mode-hook . latex-mode-hook) ; NA
-                  (yaml-ts-mode-hook . yaml-mode-hook)))
-    (dolist (func (symbol-value (cdr hook)))
-      (add-hook (car hook) func))))
-
-;; uniquify (make buffer names unique)
-(use-package uniquify
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Uniquify buffer name using project
-  (uniquify-dirname-transform 'project-uniquify-dirname-transform))
-
-;; vc (version control)
-(use-package vc
-  :ensure nil   ; don't install built-in packages
-  :bind (("C-x v -" . vc-ediff))
-  :custom
-  ;; Follow symlinks
-  (vc-follow-symlinks t))
-
-;; which-key (display available keybindings in popup)
-;;   MAYBE: which-key buffer overlaps with bottom side-window buffer
-;;          (which might be OK?)
-;;          When doing so, which-key fails to
-;;            1) grow window to respect the height defined below
-;;            2) display a complete list of commands
-(use-package which-key
-  :diminish
-  :custom
-  ;; Use minibuffer
-  ;; (which-key-popup-type 'minibuffer)   ; default is side-window
-  ;; Preserve window configuration
-  (which-key-preserve-window-configuration t)
-  ;; Max window height
-  ;;   (default is 0.25)
-  (which-key-side-window-max-height 0.5)
-  ;; Max description length
-  ;;   (default is 27)
-  (which-key-max-description-length #'aj8/which-key-description-length)
-  ;; Min description length
-  ;;   (see :config section)
-  ;; Column padding
-  ;;   (default is 0)
-  (which-key-add-column-padding 1)
-  ;; Delay (default is 1.0 s)
-  ;; (which-key-idle-delay 10000)
-  (which-key-idle-delay 0.75)
-  ;; Secondary delay (default is nil)
-  (which-key-idle-secondary-delay 0.05)
-  ;; Display remapped commands
-  (which-key-compute-remaps t)
-  ;; Don't show which-key buffer on C-h
-  (which-key-use-C-h-commands nil)
-  :config
-  ;; Min description length
-  ;;   (same as max length; default is 0)
-  (customize-set-variable
-   'which-key-min-column-description-width
-   (eval (aj8/which-key-description-length
-          (cdr (which-key--side-window-max-dimensions)))))
-  (which-key-mode 1))
-
-;; visual-line (visual line wrapping)
-(use-package visual-line
-  :ensure nil   ; don't install built-in packages
-  :diminish
-  :hook ((help-mode . visual-line-mode)
-         (helpful-mode . visual-line-mode)
-         (Info-mode . visual-line-mode))
-  :config
-  (global-visual-wrap-prefix-mode 1))
-
-;; windmove (move between windows)
-(use-package windmove
-  :ensure nil   ; don't install built-in packages
-  :init
-  (which-key-add-key-based-replacements "C-c w" "windows")
-  :config
-  (windmove-default-keybindings 'ctrl)
-  (windmove-swap-states-default-keybindings '(ctrl shift))
-  (keymap-global-set "C-c w <up>" #'windmove-display-up)
-  (keymap-global-set "C-c w <down>" #'windmove-display-down)
-  (keymap-global-set "C-c w <left>" #'windmove-display-left)
-  (keymap-global-set "C-c w <right>" #'windmove-display-right)
-  (keymap-global-set "C-c w 0" #'windmove-display-same-window)
-  (keymap-global-set "C-c w C-<up>" #'windmove-delete-up)
-  (keymap-global-set "C-c w C-<down>" #'windmove-delete-down)
-  (keymap-global-set "C-c w C-<left>" #'windmove-delete-left)
-  (keymap-global-set "C-c w C-<right>" #'windmove-delete-right))
-
-;; winner (undo and redo window configurations)
-(use-package winner
-  :ensure nil   ; don't install built-in packages
-  :config
-  ;; Don't bind keys for winner
-  (setq winner-dont-bind-my-keys t)
-  (keymap-set winner-mode-map "C-c w <" #'winner-undo)
-  (keymap-set winner-mode-map "C-c w >" #'winner-redo)
-  (winner-mode 1))
-
-;; window (window management)
-(use-package window
-  :ensure nil   ; don't install built-in packages
-  :bind (("C-x {" . my/move-splitter-up)
-         ("C-x }" . my/move-splitter-down)
-         ("C-x >" . my/move-splitter-right)
-         ("C-x <" . my/move-splitter-left)
-         ("C-x |" . window-toggle-side-windows)
-         ("C-x !" . delete-other-windows-vertically)
-         ("C-x =" . balance-windows)
-         ("C-x +" . balance-windows-area)
-         ("C-x _" . fit-window-to-buffer)
-         ("C-x 9" . my/toggle-window-split))
-  :custom
-  ;; Set minimum window height
-  ;; (setq window-min-height 16)
-  ;; Prefer horizontal (side-by-side) window splitting
-  ;;   Note: the thresholds need to be twice as big as the smallest
-  ;;   window allowed, because the new windows each use half of the
-  ;;   former window size
-  (split-width-threshold nil)
-  (split-height-threshold 0)
-  ;; Enable horizontal window fitting
-  ;; (setq fit-window-to-buffer-horizontally
-  ;; Resize window combinations proportionally
-  ;;   TODO: Message buffer grows on each Magit commit
-  ;; (window-combination-resize t)
-  ;; Try to even window sizes vertically only
-  (even-window-sizes 'height-only)
-  ;; Allow switching to buffer in strongly dedicated windows
-  ;; (switch-to-buffer-in-dedicated-window 'pop)
-  ;; Top and bottom side windows occupy full frame width (default)
-  (window-sides-vertical nil)
-  ;; Left and right side windows occupy full frame height
-  ;; (setq window-sides-vertical t)
-  ;; Obey display actions when switching buffers
-  (switch-to-buffer-obey-display-actions t)
-  ;; Window rules
-  (display-buffer-alist
-   '(;;
-     ;; Example using mp-make-display-buffer-matcher-function
-     ;;
-     ;; (,(make-display-buffer-matcher-function '(magit-mode))
-     ;;  (display-buffer-in-side-window))
-     ;;
-     ;; No window
-     ;;
-     ;; ("\\*Async Shell Command\\*"
-     ;;  (display-buffer-no-window))
-     ;;
-     ;; Top side window
-     ;;
-     ;; ((or . ((derived-mode-p . backtrace-mode)
-     ;;         (derived-mode-p . compilation-mode)
-     ((lambda (buffer _alist)
-        (with-current-buffer buffer (or (derived-mode-p 'backtrace-mode)
-                                        (derived-mode-p 'compilation-mode))))
-      (display-buffer-in-side-window)
-      (window-height . ,aj8/side-window-height)
-      (side . top)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(Messages\\|Warnings\\|Native-compile-Log\\|Async-native-compile-log\\)\\*"
-      (display-buffer-in-side-window)
-      (window-height . ,aj8/side-window-height)
-      (side . top)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ("magit-process:.*"
-      (display-buffer-in-side-window)
-      (window-height . ,aj8/side-window-height)
-      (side . top)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
-      (display-buffer-in-side-window)
-      (window-height . ,aj8/side-window-height)
-      (side . top)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ;;
-     ;; Right side window
-     ;;
-     ;;   Magit
-     ;;
-     ("\\(COMMIT_EDITMSG\\|magit:\\|magit-log.*:\\|magit-reflog:\\|magit-log-select:\\).*"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . -1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ("\\(magit-diff:\\|magit-revision:\\|magit-stash:\\).*"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . 1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ;;
-     ;;   Help
-     ;;
-     ("\\*\\(Apropos\\|Help\\|helpful.*\\|info.*\\|Man.*\\|WoMan.*\\)\\*"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . 1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ;;
-     ;;   Other
-     ;;
-     ((lambda (buffer _alist)
-        (with-current-buffer buffer (or (derived-mode-p 'git-rebase-mode)
-                                        (derived-mode-p 'tabulated-list-mode))))
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . -1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . -1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ("\\(gptel-.*\\.\\(org\\|md\\)\\)"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . -1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ;; MAYBE: eww doesn't work initially
-     ("\\*\\(eww:.*\\|gptel-reasoning\\)\\*"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . 1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ;;
-     ;; Bottom side window
-     ;;
-     ("\\*\\(e?shell\\|v?term\\)\\*"
-      (display-buffer-in-side-window)
-      (window-height . ,aj8/side-window-height)
-      (side . bottom)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ;;
-     ;; Bottom buffer (not side window)
-     ;;
-     ("\\*Embark Actions\\*"
-      (display-buffer-reuse-mode-window display-buffer-at-bottom)
-      (window-height . fit-window-to-buffer)
-      (window-parameters . ((no-other-window . t)
-                            (mode-line-format . none)))))))
-
-;; xref (cross-referencing)
-(use-package xref
-  :ensure nil   ; don't install built-in packages
-  :bind (("M-?" . xref-find-references)
-         ("C-c ?" . xref-find-definitions)
-         ("C-c <" . xref-go-back)
-         ("C-c >" . xref-go-forward))
-  :config
-  ;; Don't prompt with xref-find-references
-  (with-eval-after-load "xref"
-    (add-to-list 'xref-prompt-for-identifier 'xref-find-references t)))
 
 
 ;;;;; LATE SETTINGS
