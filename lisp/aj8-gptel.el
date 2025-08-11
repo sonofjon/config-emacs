@@ -913,10 +913,10 @@ This action requires manual user review. After calling this tool, you must stop 
  :category "project")
 
 ;;; Initialization
-;;   Initializes gptel-tools with all the registered tools.
-;;   This is only needed for the test suite, i.e.  when running the ERT
-;;   (so that tests that inspect `gptel-tools' will pass).
-(when (featurep 'ert)
+;;   Initializes gptel-tools with all the registered tools.  This is only
+;;   needed for the test suite, i.e.  when `gptel-test' is loaded (so that
+;;   tests that inspect `gptel-tools' will pass).
+(when (featurep 'gptel-test)
   (setq gptel-tools
         (mapcan (lambda (entry)
                   (mapcar #'cdr (cdr entry)))

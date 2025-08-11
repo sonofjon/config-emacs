@@ -1,4 +1,6 @@
-;;; gptel-test.el --- Tests for Gptel tools
+;;; gptel-test.el -*- lexical-binding: t; -*-
+
+;; Tests for Gptel tools
 
 ;;
 ;;;; 1. Requirements
@@ -1166,3 +1168,5 @@ an LLM."
 
     (switch-to-buffer "*Gptel Tool Test Instructions*")
     (message "Gptel tool test scenario created! Check the instructions buffer.")))
+
+(provide 'gptel-test)
