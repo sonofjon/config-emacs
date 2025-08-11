@@ -3002,28 +3002,14 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;;; Variables
 
-;;; Admin
-
 ;; Natively compile packages during installation
 (setq package-native-compile t)
-
-;;; Buffers
-
-;;; Coding
 
 ;; Open up the debugger on error
 ;; (setq debug-on-error t)
 
-;;; Files
-
 ;; Increase maximum file size that can be opened without a warning
 (setq large-file-warning-threshold 50000000)
-
-
-;; Configure language environment
-;; (setenv "LANG" "en_US.UTF-8")
-
-;;; Python
 
 ;; Do not display continuation lines
 ;; (setq-default truncate-lines t)
@@ -3031,14 +3017,13 @@ Elisp code explicitly in arbitrary buffers.")
 ;; python-mode: other settings
 (add-hook 'python-mode-hook 'aj8/python-mode-hook)
 
-;;; Other
-
 ;; Use longer pulse
 (setq pulse-delay 0.05)   ; default is 0.03
 
-;;;; Modes
+;; Configure language environment
+;; (setenv "LANG" "en_US.UTF-8")
 
-;;; Buffers
+;;;; Modes
 
 ;; Enable auto-scrolling for the *Messages* buffer
 ;;   Note that the *Messages* buffer is created early during startup (before
@@ -3053,15 +3038,9 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;;; Hooks
 
-;;; Modes
-
 ;; python-mode: outline settings
 (add-hook 'python-base-mode-hook
           #'outline-headers-for-hash-mark-buffers)
-
-;;;; Hydras
-
-;;; Editing
 
 
 ;;;;; LATE SETTINGS
