@@ -1,4 +1,4 @@
-;;; aj8-hydra.el -*- lexical-binding: t; -*-
+;;; aj8-hydra.el --- Definitions for hydra -*- lexical-binding: t; -*-
 
 ;; Markdown
 (defhydra hydra-markdown (:hint nil :foreign-keys run)

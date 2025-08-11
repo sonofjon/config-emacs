@@ -1,4 +1,4 @@
-;;; aj8-gptel.el -*- lexical-binding: t; -*-
+;;; aj8-gptel.el --- Tools for gptel -*- lexical-binding: t; -*-
 
 ;;; Tool definitions
 

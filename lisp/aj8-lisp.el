@@ -1,4 +1,4 @@
-;;; aj8-lisp.el -*- lexical-binding: t; -*-
+;;; aj8-lisp.el --- My custom lisp -*- lexical-binding: t; -*-
 
 ;;;;; FUNCTIONS
 

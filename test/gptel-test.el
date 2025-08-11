@@ -1,6 +1,4 @@
-;;; gptel-test.el -*- lexical-binding: t; -*-
-
-;; Tests for Gptel tools
+;;; gptel-test.el --- Tests for Gptel tools -*- lexical-binding: t; -*-
 
 ;;
 ;;;; 1. Requirements
