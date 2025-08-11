@@ -545,14 +545,6 @@ and end positions, which are required by
 
 ;;;; Coding
 
-(defun aj8/python-mode-hook ()
-  "Custom Python mode hook."
-  ;; Exclude virtual environment directories from project
-  ;;   Not needed: use M-s G
-  ;; (setq-local project-ignored-files '(".venv/*"))
-  (keymap-set python-mode-map "C-c <" nil)
-  (keymap-set python-ts-mode-map "C-c <" nil))   ; unbind python-indent-shift-left
-
 ;; Format XML buffers
 ;;   Requires: xmllint
 (defun aj8/xml-format-buffer ()

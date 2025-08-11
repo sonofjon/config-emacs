@@ -2596,7 +2596,14 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; python (Python's flying circus support for Emacs)
 (use-package python
+  :bind (:map python-mode-map
+              ("C-c <" . nil)
+         :map python-ts-mode-map
+              ("C-c <" . nil))   ; unbind python-indent-shift-left
   :config
+  ;; Exclude virtual environment directories from project
+  ;;   Not needed: use M-s G  ;; Outline settings
+  ;; (setq-local project-ignored-files '(".venv/*"))
   ;; Outline settings
   (add-hook 'python-base-mode-hook
             #'outline-headers-for-hash-mark-buffers)
@@ -3034,8 +3041,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; Show *Messages* buffer at the end of startup
 (with-current-buffer "*Messages*"
   (aj8/buffer-tail-mode 1))
-
-;;;; Hooks
 
 
 ;;;;; LATE SETTINGS
