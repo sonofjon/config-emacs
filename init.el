@@ -3003,7 +3003,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Admin
 
 ;; Natively compile packages during installation
-;; (setq package-native-compile t)
+(setq package-native-compile t)
 
 ;;; Buffers
 
