@@ -1916,6 +1916,8 @@ Elisp code explicitly in arbitrary buffers.")
          ("C-c y n" . hydra-navigation/body)
          ("C-c y o" . hydra-outline/body)
          ("C-c y e" . hydra-smerge/body))
+  :init
+  (which-key-add-key-based-replacements "C-c y" "hydra")
   :config
   (require 'aj8-hydra))
 
@@ -3058,9 +3060,6 @@ Elisp code explicitly in arbitrary buffers.")
           #'outline-headers-for-hash-mark-buffers)
 
 ;;;; Hydras
-
-(which-key-add-key-based-replacements "C-c y" "hydra")
-                                        ; add label for prefix key
 
 ;;; Editing
 
