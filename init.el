@@ -2948,27 +2948,8 @@ Elisp code explicitly in arbitrary buffers.")
      ;;
      ;;   Help
      ;;
-     ;; TODO: Merge these:
-     ;;       Add gptel-reasoning buffer
-     ("\\*Apropos\\*"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . 1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(Help\\|helpful.*\\)\\*"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . 1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*info.*\\*"
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . 1)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(Man\\|WoMan\\).*\\*"
+     ;; TODO: Add gptel-reasoning buffer
+     ("\\*\\(Apropos\\|Help\\|helpful.*\\|info.*\\|Man.*\\|WoMan.*\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
