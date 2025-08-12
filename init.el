@@ -1292,6 +1292,7 @@
 
 ;; copilot (an unofficial Copilot plugin for Emacs) - [source package]
 (use-package copilot
+  ;; :hook (prog-mode . copilot-mode)
   :bind (:map copilot-mode-map
               ("TAB" . copilot-complete)
               ("<backtab>" . 'copilot-accept-completion)
@@ -1301,7 +1302,6 @@
               ("M-n" . 'copilot-next-completion)
          :map copilot-completion-map
               ("C-g" . 'copilot-clear-overlay))
-  ;; :hook (prog-mode . copilot-mode)
   :custom
   ;; Show completions automatically
   (copilot-enable-predicates '(copilot--buffer-changed))
