@@ -30,7 +30,7 @@ The record is machine-readable (prin1) and timestamped."
 
 (defun aj8/gptel-tool--message-and-reraise (tool-name err)
   "Message ERR for TOOL-NAME, log it, and re-signal the error."
-  (message "GPTEL %s: Error: %s" tool-name (error-message-string err))
+  (message "gptel %s: Error: %s" tool-name (error-message-string err))
   (aj8/gptel-tool--log-to-buffer tool-name nil (error-message-string err) t)
   (signal (car err) (cdr err)))
 
@@ -40,10 +40,10 @@ This wrapper is backwards-compatible: it does not require callers to pass an ARG
 When ARGS are not provided the log will record args=nil."
   `(let ((tool-name ,tool-name)
          (args nil))
-     (message "GPTEL %s" tool-name)
+     (message "gptel %s" tool-name)
      (condition-case err
          (let ((result (progn ,@body)))
-           (message "GPTEL %s: Success" tool-name)
+           (message "gptel %s: Success" tool-name)
            (aj8/gptel-tool--log-to-buffer tool-name args result)
            result)
        (error (aj8/gptel-tool--message-and-reraise tool-name err)))))
@@ -54,7 +54,7 @@ When ARGS are not provided the log will record args=nil."
 
 ;; (defun aj8/gptel-tool-read-buffer (buffer)
 ;;   "Return the contents of BUFFER."
-;;   (aj8/gptel-tool--with-tool "Running tool: my_read_buffer"
+;;   (aj8/gptel-tool--with-tool "tool: my_read_buffer"
 ;;     (unless (buffer-live-p (get-buffer buffer))
 ;;       (error "Error: buffer %s is not live." buffer))
 ;;     (with-current-buffer buffer
@@ -66,7 +66,7 @@ When ARGS are not provided the log will record args=nil."
   "Read a region of a buffer.
 Optional START and END are 1-based line numbers. To read the entire buffer,
 omit START and END."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_read_buffer_region"
+  (aj8/gptel-tool--with-tool "tool: aj8_read_buffer_region"
     (let ((buffer (get-buffer buffer-name)))
       (unless buffer
         (error "Error: Buffer '%s' not found." buffer-name))
@@ -77,7 +77,7 @@ omit START and END."
 
 (defun aj8/gptel-tool-list-buffers ()
   "List the names of all currently open buffers that are associated with a file."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_list_buffers"
+  (aj8/gptel-tool--with-tool "tool: aj8_list_buffers"
     (let ((file-buffers '()))
       (dolist (buffer (buffer-list))
         (when (buffer-file-name buffer)
@@ -86,12 +86,12 @@ omit START and END."
 
 (defun aj8/gptel-tool-list-all-buffers ()
   "List the names of all currently open buffers."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_list_all_buffers"
+  (aj8/gptel-tool--with-tool "tool: aj8_list_all_buffers"
     (mapcar #'buffer-name (buffer-list))))
 
 (defun aj8/gptel-tool-buffer-to-file (buffer-name)
   "Return the file path for a given buffer."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_buffer_to_file"
+  (aj8/gptel-tool--with-tool "tool: aj8_buffer_to_file"
     (let ((buffer (get-buffer buffer-name)))
       (unless (and buffer (buffer-file-name buffer))
         (error "Error: Buffer '%s' not found or not associated with a file." buffer-name))
@@ -99,7 +99,7 @@ omit START and END."
 
 (defun aj8/gptel-tool-file-to-buffer (file-path)
   "Return the buffer name for a given file path."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_file_to_buffer"
+  (aj8/gptel-tool--with-tool "tool: aj8_file_to_buffer"
     (let ((buffer (find-buffer-visiting file-path)))
       (unless buffer
         (error "Error: No buffer is visiting the file '%s'." file-path))
@@ -107,7 +107,7 @@ omit START and END."
 
 (defun aj8/gptel-tool-append-to-buffer (buffer text)
   "Append text to a buffer."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_append_to_buffer"
+  (aj8/gptel-tool--with-tool "tool: aj8_append_to_buffer"
     (let ((buf (get-buffer buffer)))
       (unless buf
         (error "Error: Buffer '%s' not found." buffer))
@@ -118,7 +118,7 @@ omit START and END."
 
 (defun aj8/gptel-tool-insert-into-buffer (buffer text line-number)
   "Insert text into a buffer at a specific line number. The text is inserted at the beginning of the specified line."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_insert_into_buffer"
+  (aj8/gptel-tool--with-tool "tool: aj8_insert_into_buffer"
     (let ((buf (get-buffer buffer)))
       (unless buf
         (error "Error: Buffer '%s' not found." buffer))
@@ -129,7 +129,7 @@ omit START and END."
 
 (defun aj8/gptel-tool-modify-buffer (buffer content)
   "Completely overwrite the contents of a buffer."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_modify_buffer"
+  (aj8/gptel-tool--with-tool "tool: aj8_modify_buffer"
     (let ((buf (get-buffer buffer)))
       (unless buf
         (error "Error: Buffer '%s' not found." buffer))
@@ -140,7 +140,7 @@ omit START and END."
 
 (defun aj8/gptel-tool-edit-buffer-string (buffer-name old-string new-string)
   "Edit a buffer by replacing a single instance of an exact string."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_edit_buffer_string"
+  (aj8/gptel-tool--with-tool "tool: aj8_edit_buffer_string"
     (let ((buffer (get-buffer buffer-name)))
       (unless buffer
         (error "Error: Buffer '%s' not found." buffer-name))
@@ -159,13 +159,13 @@ omit START and END."
 (defun aj8/gptel-tool-edit-buffer-line (buffer-name line-number content)
   "Replace line LINE-NUMBER in file BUFFER-NAME with CONTENT.
 This wrapper function delegates replacement to `aj8/gptel-tool-edit-buffer-region' with START-LINE and END-LINE equal to LINE-NUMBER."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_edit_buffer_line"
+  (aj8/gptel-tool--with-tool "tool: aj8_edit_buffer_line"
     (aj8/gptel-tool-edit-buffer-region buffer-name line-number line-number content)
     (format "Line %d in buffer '%s' successfully replaced." line-number buffer-name)))
 
 (defun aj8/gptel-tool-edit-buffer-region (buffer-name start-line end-line content)
   "Replace lines START-LINE through END-LINE in BUFFER-NAME with CONTENT."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_replace_buffer_region"
+  (aj8/gptel-tool--with-tool "tool: aj8_replace_buffer_region"
     (let ((buf (get-buffer buffer-name)))
       (unless buf
         (error "Error: Buffer '%s' not found." buffer-name))
@@ -221,25 +221,25 @@ EDIT-TYPE can be 'line or 'string."
 
 (defun aj8/gptel-tool-apply-buffer-line-edits (buffer-name buffer-edits)
   "Edit a buffer with a list of line edits, applying changes directly without review."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_apply_buffer_line_edits"
+  (aj8/gptel-tool--with-tool "tool: aj8_apply_buffer_line_edits"
     (aj8/--apply-buffer-edits buffer-name buffer-edits 'line)
     (format "Line edits successfully applied to buffer %s." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer-edits)
   "Edit a buffer with a list of line edits and start an Ediff session for review."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_apply_buffer_line_edits_with_review"
+  (aj8/gptel-tool--with-tool "tool: aj8_apply_buffer_line_edits_with_review"
     (aj8/--review-buffer-edits buffer-name buffer-edits 'line)
     (format "Ediff session started for %s. Please complete the review." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits (buffer-name buffer-edits)
   "Edit a buffer with a list of string edits, applying changes directly without review."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_apply_buffer_string_edits"
+  (aj8/gptel-tool--with-tool "tool: aj8_apply_buffer_string_edits"
     (aj8/--apply-buffer-edits buffer-name buffer-edits 'string)
     (format "String edits successfully applied to buffer %s." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer-edits)
   "Edit a buffer with a list of string edits and start an Ediff session for review."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_apply_buffer_string_edits_with_review"
+  (aj8/gptel-tool--with-tool "tool: aj8_apply_buffer_string_edits_with_review"
     (aj8/--review-buffer-edits buffer-name buffer-edits 'string)
     (format "Ediff session started for %s. Please complete the review." buffer-name)))
 
@@ -247,7 +247,7 @@ EDIT-TYPE can be 'line or 'string."
 
 (defun aj8/gptel-tool-read-file-section (filepath &optional start end)
   "Read a section of a file."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_read_file_section"
+  (aj8/gptel-tool--with-tool "tool: aj8_read_file_section"
     (unless (file-exists-p filepath)
       (error "Error: No such file: %s" filepath))
     (let ((buf (find-file-noselect filepath)))
@@ -255,7 +255,7 @@ EDIT-TYPE can be 'line or 'string."
 
 (defun aj8/gptel-tool-append-to-file (filepath text)
   "Append text to a file."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_append_to_file"
+  (aj8/gptel-tool--with-tool "tool: aj8_append_to_file"
     (let ((buffer (find-file-noselect filepath)))
       (with-current-buffer buffer
         (goto-char (point-max))
@@ -265,7 +265,7 @@ EDIT-TYPE can be 'line or 'string."
 
 (defun aj8/gptel-tool-insert-into-file (filepath text line-number)
   "Insert text into a file at a specific line number."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_insert_into_file"
+  (aj8/gptel-tool--with-tool "tool: aj8_insert_into_file"
     (let ((buffer (find-file-noselect filepath)))
       (with-current-buffer buffer
         (goto-line line-number)
@@ -275,7 +275,7 @@ EDIT-TYPE can be 'line or 'string."
 
 (defun aj8/gptel-tool-edit-file-string (filename old-string new-string)
   "Edit a file by replacing a single instance of an exact string."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_edit_file_string"
+  (aj8/gptel-tool--with-tool "tool: aj8_edit_file_string"
     (let ((buffer (find-file-noselect filename)))
       (with-current-buffer buffer
         (aj8/gptel-tool-edit-buffer-string (buffer-name) old-string new-string)
@@ -285,7 +285,7 @@ EDIT-TYPE can be 'line or 'string."
 (defun aj8/gptel-tool-edit-file-line (file-path line-number content)
   "Replace line LINE-NUMBER in file FILE-PATH with CONTENT.
 This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section' with START-LINE and END-LINE equal to LINE-NUMBER."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_edit_file_line"
+  (aj8/gptel-tool--with-tool "tool: aj8_edit_file_line"
     (let ((buffer (find-file-noselect file-path)))
       (with-current-buffer buffer
         (aj8/gptel-tool-edit-file-section file-path line-number line-number content)
@@ -294,7 +294,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-edit-file-section (filepath start-line end-line content)
   "Replace lines START-LINE through END-LINE in file FILEPATH with CONTENT."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_replace_file_region"
+  (aj8/gptel-tool--with-tool "tool: aj8_replace_file_region"
     (unless (file-exists-p filepath)
       (error "Error: File '%s' not found." filepath))
     (let ((buf (find-file-noselect filepath)))
@@ -308,7 +308,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-apply-file-line-edits (file-path file-edits)
   "Edit a file with a list of line edits, saving changes directly without review."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_apply_file_line_edits"
+  (aj8/gptel-tool--with-tool "tool: aj8_apply_file_line_edits"
     (let ((buffer (find-file-noselect file-path)))
       (with-current-buffer buffer
         (aj8/gptel-tool-apply-buffer-line-edits (buffer-name) file-edits)
@@ -317,14 +317,14 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-apply-file-line-edits-with-review (file-path file-edits)
   "Edit a file with a list of line edits and start an Ediff session for review."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_apply_file_line_edits_with_review"
+  (aj8/gptel-tool--with-tool "tool: aj8_apply_file_line_edits_with_review"
     (let ((buffer (find-file-noselect file-path)))
       (aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer) file-edits)
       (format "Ediff session started for %s. Please complete the review." file-path))))
 
 (defun aj8/gptel-tool-apply-file-string-edits (file-path file-edits)
   "Edit a file with a list of string edits, saving changes directly without review."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_apply_file_string_edits"
+  (aj8/gptel-tool--with-tool "tool: aj8_apply_file_string_edits"
     (let ((buffer (find-file-noselect file-path)))
       (with-current-buffer buffer
         (aj8/gptel-tool-apply-buffer-string-edits (buffer-name) file-edits)
@@ -333,7 +333,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-apply-file-string-edits-with-review (file-path file-edits)
   "Edit a file with a list of string edits and start an Ediff session for review."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_apply_file_string_edits_with_review"
+  (aj8/gptel-tool--with-tool "tool: aj8_apply_file_string_edits_with_review"
     (let ((buffer (find-file-noselect file-path)))
       (aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer) file-edits)
       (format "Ediff session started for %s. Please complete the review." file-path))))
@@ -342,7 +342,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-read-documentation (symbol)
   "Read the documentation for a given 'symbol'."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_read_documentation"
+  (aj8/gptel-tool--with-tool "tool: aj8_read_documentation"
     (let* ((sym (intern-soft symbol))
            (doc (if (fboundp sym)
                     ;; Functions
@@ -353,7 +353,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-read-function (function)
   "Return the code of the definition of an Emacs Lisp function."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_read_function"
+  (aj8/gptel-tool--with-tool "tool: aj8_read_function"
     (let ((func-symbol (intern-soft function)))
       (unless (and func-symbol (fboundp func-symbol))
         (error "Error: Function '%s' is not defined." function))
@@ -392,7 +392,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-read-library (library-name)
   "Return the source code of a library or package in Emacs."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_read_library"
+  (aj8/gptel-tool--with-tool "tool: aj8_read_library"
     (let ((file (find-library-name library-name)))
       (unless file (error "Library '%s' not found." library-name))
       (with-temp-buffer
@@ -401,7 +401,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-read-info-symbol (symbol-name)
   "Return the contents of the info node for SYMBOL-NAME."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_read_info_symbol"
+  (aj8/gptel-tool--with-tool "tool: aj8_read_info_symbol"
     (let ((info-buffer (info-lookup-symbol (intern symbol-name))))
       (unless info-buffer (error "Cannot find Info node for symbol '%s'." symbol-name))
       (with-current-buffer info-buffer
@@ -409,7 +409,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-read-info-node (nodename)
   "Return the contents of a specific NODENAME from the Emacs Lisp manual."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_read_info_node"
+  (aj8/gptel-tool--with-tool "tool: aj8_read_info_node"
     (let ((info-buffer (get-buffer-create "*info-node*")))
       (unwind-protect
           (with-current-buffer info-buffer
@@ -421,14 +421,14 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-project-get-root ()
   "Get the root directory of the current project."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_project_get_root"
+  (aj8/gptel-tool--with-tool "tool: aj8_project_get_root"
     (let ((project (project-current)))
       (unless project (error "Not inside a project."))
       (project-root project))))
 
 (defun aj8/gptel-tool-project-get-open-buffers ()
   "Return a string listing all open buffers in the current project."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_project_get_open_buffers"
+  (aj8/gptel-tool--with-tool "tool: aj8_project_get_open_buffers"
     (let ((project (project-current)))
       (unless project (error "Not inside a project."))
       (let ((project-buffers (project-buffers project)))
@@ -438,7 +438,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-project-find-files-glob (pattern)
   "In the current project, find files whose filenames match the glob PATTERN."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_project_find_files_glob"
+  (aj8/gptel-tool--with-tool "tool: aj8_project_find_files_glob"
     (let ((proj (project-current)))
       (unless proj
         (error "No project found in the current context."))
@@ -455,7 +455,7 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-project-search-content (regexp)
   "In the current project, recursively search for content matching the regexp."
-  (aj8/gptel-tool--with-tool "Running tool: aj8_project_search_content"
+  (aj8/gptel-tool--with-tool "tool: aj8_project_search_content"
     (let ((project (project-current)))
       (unless project (error "Not inside a project."))
       (let ((command (cond
