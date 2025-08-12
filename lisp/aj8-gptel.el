@@ -2,19 +2,49 @@
 
 ;;; Helpers
 
+(defun aj8/gptel-tool--truncate (s &optional n)
+  "Return a truncated string of S (or a printed representation).
+If S is a string truncate to N characters (default 120) and append an ellipsis.
+Non-strings are printed with `prin1-to-string'."
+  (when s
+    (let ((n (or n 120)))
+      (if (stringp s)
+          (if (> (length s) n) (concat (substring s 0 n) "…") s)
+        (prin1-to-string s)))))
+
+(defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional errp)
+  "Append a single line to *gptel-tool-log* recording TOOL-NAME, ARGS and RESULT.
+If ERRP is non-nil record it as an error entry.
+The record is machine-readable (prin1) and timestamped."
+  (let ((buf (get-buffer-create "*gptel-tool-log*"))
+        (ts (format-time-string "%Y-%m-%d %T")))
+    (with-current-buffer buf
+      (goto-char (point-max))
+      (insert (format "%s | %s | args=%s | %s=%s\n"
+                      ts
+                      tool-name
+                      (prin1-to-string args)
+                      (if errp "error" "result")
+                      (prin1-to-string (or result "<nil>"))))
+      (force-window-update (get-buffer-window buf)))))
+
 (defun aj8/gptel-tool--message-and-reraise (tool-name err)
-  "Message ERR for TOOL-NAME and re-signal it."
-  (message "Tool %s: Error: %s" tool-name (error-message-string err))
+  "Message ERR for TOOL-NAME, log it, and re-signal the error."
+  (message "GPTEL %s: Error: %s" tool-name (error-message-string err))
+  (aj8/gptel-tool--log-to-buffer tool-name nil (error-message-string err) t)
   (signal (car err) (cdr err)))
 
 (defmacro aj8/gptel-tool--with-tool (tool-name &rest body)
   "Run BODY for TOOL-NAME, message running/success/error in the minibuffer.
-On error the original error is re-signalled after messaging so tests still see it."
-  `(let ((tool-name ,tool-name))
-     (message "Running tool: %s" tool-name)
+This wrapper is backwards-compatible: it does not require callers to pass an ARGS object.
+When ARGS are not provided the log will record args=nil."
+  `(let ((tool-name ,tool-name)
+         (args nil))
+     (message "GPTEL %s" tool-name)
      (condition-case err
          (let ((result (progn ,@body)))
-           (message "Tool %s: Success" tool-name)
+           (message "GPTEL %s: Success" tool-name)
+           (aj8/gptel-tool--log-to-buffer tool-name args result)
            result)
        (error (aj8/gptel-tool--message-and-reraise tool-name err)))))
 
