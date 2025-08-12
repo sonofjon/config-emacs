@@ -456,6 +456,10 @@
   (completions-detailed t)
   ;; (read-extended-command-predicate #'command-completion-default-include-p)
   :config
+  ;; Increase history length
+  (history-length 10000)
+  ;; Delete history duplicates
+  (history-delete-duplicates nil)
   ;; Use partial completion for files
   (setq completion-category-defaults nil)
   (add-to-list 'completion-category-overrides '((file (styles basic partial-completion))))
@@ -929,10 +933,6 @@
   ;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
   ;; Skip some buffers when switching buffers
   ;; (setq switch-to-prev-buffer-skip-regexp regex)
-  ;; Increase history length
-  (history-length 10000)
-  ;; Delete history duplicates
-  (history-delete-duplicates nil))
 
 ;; subword (subword movement)
 ;;   Subword movement and editing: camelCase
