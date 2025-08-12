@@ -30,7 +30,7 @@ The record is machine-readable (prin1) and timestamped."
 
 (defun aj8/gptel-tool--message-and-reraise (tool-name args err)
   "Message ERR for TOOL-NAME with ARGS, log it, and re-signal the error."
-  (message "tool: %s: Error: %s — args=%s"
+  (message "%s: Error: %s — args=%s"
            tool-name (error-message-string err)
            (aj8/gptel-tool--truncate (prin1-to-string args) 200))
   (aj8/gptel-tool--log-to-buffer tool-name args (error-message-string err) t)
@@ -42,12 +42,12 @@ ARGS must be provided (plist or alist) or nil. Backwards-compatibility:
 callers must be updated to pass an explicit ARGS argument (or nil)."
   `(let ((tool-name ,tool-name)
          (args ,args))
-     (message "tool: %s%s"
+     (message "%s%s"
               tool-name
               (if args (concat " " (aj8/gptel-tool--truncate (prin1-to-string args) 200)) ""))
      (condition-case err
          (let ((result (progn ,@body)))
-           (message "tool: %s: Success" tool-name)
+           (message "%s: Success" tool-name)
            (aj8/gptel-tool--log-to-buffer tool-name args result)
            result)
        (error (aj8/gptel-tool--message-and-reraise tool-name args err)))))
