@@ -484,11 +484,12 @@
 ;; epg (Emacs Privacy Guard)
 (use-package epg
   :ensure nil   ; don't install built-in packages
-  :config
+  :custom
   ;; Fill gpg passwords in the minibuffer
-  (setq epg-pinentry-mode 'loopback)
+  (epg-pinentry-mode 'loopback)
   ;; Select keys in the minibuffer
-  (setq epa-keys-select-method 'minibuffer))
+  (epa-keys-select-method 'minibuffer))
+
 
 ;; erc (an Emacs internet relay chat client)
 (use-package erc
@@ -545,7 +546,7 @@
   ;; Max history items
   (eww-history-limit 100)
   ;; Auto rename eww buffers
-  (setq eww-auto-rename-buffer t)
+  (eww-auto-rename-buffer t)
   :config
   ;; Are these needed?
   ;; (setq shr-use-colors nil)             ; t is bad for accessibility
@@ -1090,9 +1091,10 @@
 ;; winner (undo and redo window configurations)
 (use-package winner
   :ensure nil   ; don't install built-in packages
-  :config
+  :custom
   ;; Don't bind keys for winner
-  (setq winner-dont-bind-my-keys t)
+  (winner-dont-bind-my-keys t)
+  :config
   (keymap-set winner-mode-map "C-c w <" #'winner-undo)
   (keymap-set winner-mode-map "C-c w >" #'winner-redo)
   (winner-mode 1))
@@ -1333,9 +1335,10 @@
               ("C-c M-a" . my/csv-align-visible)
               ("C-M-<right>" . csv-forward-field)
               ("C-M-<left>" . csv-backward-field))
-  :config
   ;; Enable modeline linenumber for wide files
-  (setq line-number-display-limit-width 500)   ; default is 200
+  :custom
+  (line-number-display-limit-width 500)   ; default is 200
+  :config
   (defun my/csv-align-visible (&optional arg)
     "Align visible fields."
     (interactive "P")
@@ -1466,9 +1469,9 @@
   :disabled
   :ensure-system-package aspell
   :hook (text-mode . flymake-aspell-setup)
-  :config
+  :custom
   ;; Don't prompt for saving personal dictionary
-  (setq ispell-silently-savep t))
+  (ispell-silently-savep t))
 
 ;; flymake-eslint (a Flymake backend for Javascript using eslint)
 (use-package flymake-eslint
@@ -2216,9 +2219,10 @@ Elisp code explicitly in arbitrary buffers.")
 ;; osx-trash (system trash for OS X)
 (use-package osx-trash
   :if (eq aj8/my-os 'macos)   ; macOS
+  :custom
+  (delete-by-moving-to-trash t)   ; TODO: add this to all systems
   :config
-  (osx-trash-setup)
-  (setq delete-by-moving-to-trash t))   ; TODO: add this to all systems
+  (osx-trash-setup))
 
 ;;; Help
 
