@@ -918,6 +918,9 @@
 ;; simple (basic editing commands)
 (use-package simple
   :ensure nil   ; don't install built-in packages
+  :hook ((help-mode . visual-line-mode)
+         (helpful-mode . visual-line-mode)
+         (Info-mode . visual-line-mode))
   :bind (("C-x <right>" . aj8/next-buffer)
          ("C-x <left>" . aj8/previous-buffer)
          ("C-x k" . kill-current-buffer)
@@ -933,6 +936,8 @@
   ;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
   ;; Skip some buffers when switching buffers
   ;; (setq switch-to-prev-buffer-skip-regexp regex)
+  :config
+  (global-visual-wrap-prefix-mode 1))
 
 ;; subword (subword movement)
 ;;   Subword movement and editing: camelCase
@@ -1058,16 +1063,6 @@
    (eval (aj8/which-key-description-length
           (cdr (which-key--side-window-max-dimensions)))))
   (which-key-mode 1))
-
-;; visual-line (visual line wrapping)
-(use-package visual-line
-  :ensure nil   ; don't install built-in packages
-  :diminish
-  :hook ((help-mode . visual-line-mode)
-         (helpful-mode . visual-line-mode)
-         (Info-mode . visual-line-mode))
-  :config
-  (global-visual-wrap-prefix-mode 1))
 
 ;; windmove (move between windows)
 (use-package windmove
@@ -2810,6 +2805,7 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Pre-loaded modes
   (diminish 'eldoc-mode)
+  (diminish 'visual-line-mode)
   ;; Not pre-loaded modes
   (add-hook 'auto-revert-mode-hook (lambda () (diminish 'auto-revert-mode)))
   (add-hook 'abbrev-mode-hook (lambda () (diminish 'abbrev-mode)))
