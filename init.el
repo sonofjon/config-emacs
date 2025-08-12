@@ -926,8 +926,6 @@
          ("C-x k" . kill-current-buffer)
          ("C-c k" . my/kill-buffer-other-window))
   :custom
-  ;; Hide buffer list at startup when loading multiple files
-  (inhibit-startup-buffer-menu t)
   ;; Do not switch to buffers already shown
   (switch-to-prev-buffer-skip 'this)
   ;; Do not display continuation lines
@@ -938,6 +936,13 @@
   ;; (setq switch-to-prev-buffer-skip-regexp regex)
   :config
   (global-visual-wrap-prefix-mode 1))
+
+;; startup (process Emacs shell arguments)
+(use-package startup
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Hide buffer list at startup when loading multiple files
+  (inhibit-startup-buffer-menu t))
 
 ;; subword (subword movement)
 ;;   Subword movement and editing: camelCase
