@@ -624,7 +624,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-apply-buffer-string-edits
  :name "aj8_apply_buffer_string_edits"
- :description "Edit a buffer with a list of string edits, applying changes directly without review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the specified 'line-number'."
+ :description "Edit a buffer with a list of string edits, applying changes directly without review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the line specified by 'line-number'."
  :args (list '(:name "buffer-name"
                      :type string
                      :description "The name of the buffer to edit.")
@@ -644,7 +644,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-apply-buffer-string-edits-with-review
  :name "aj8_apply_buffer_string_edits_with_review"
- :description "Edit a buffer with a list of string edits and start an Ediff session for review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the specified 'line-number'.
+ :description "Edit a buffer with a list of string edits and start an Ediff session for review. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the buffer to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the line specified by 'line-number'.
 
 This action requires manual user review. After calling this tool, you must stop and instruct the user to complete the review in the Ediff session and to notify you when they are finished. Do not proceed with any other tools or actions until you receive confirmation from the user."
  :args (list '(:name "buffer-name"
@@ -803,7 +803,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-apply-file-string-edits
  :name "aj8_apply_file_string_edits"
- :description "Edit a file with a list of string edits, saving changes directly without review. This tool operates on the buffer visiting the file to avoid losing unsaved changes. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the specified 'line-number'."
+ :description "Edit a file with a list of string edits, saving changes directly without review. This tool operates on the buffer visiting the file to avoid losing unsaved changes. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly. Note: The 'old-string' must be found entirely on the line specified by 'line-number'."
  :args (list '(:name "file-path"
                      :type string
                      :description "The path of the file to edit.")
@@ -823,7 +823,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-apply-file-string-edits-with-review
  :name "aj8_apply_file_string_edits_with_review"
- :description "Edit a file with a list of string edits and start an Ediff session for review. This tool operates on the buffer visiting the file to avoid losing unsaved changes. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the specified 'line-number'.
+ :description "Edit a file with a list of string edits and start an Ediff session for review. This tool operates on the buffer visiting the file to avoid losing unsaved changes. Each edit contains a 'line-number', an 'old-string' and a 'new-string'. 'new-string' should replace 'old-string' at the specified line. Edits are applied from the bottom of the file to the top to handle line number changes correctly.  Note: The 'old-string' must be found entirely on the line specified by 'line-number'.
 
 This action requires manual user review. After calling this tool, you must stop and instruct the user to complete the review in the Ediff session and to notify you when they are finished. Do not proceed with any other tools or actions until you receive confirmation from the user."
  :args (list '(:name "file-path"
