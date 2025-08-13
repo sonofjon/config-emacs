@@ -70,7 +70,7 @@ callers must be updated to pass an explicit ARGS argument (or nil)."
               (if args (concat " " (prin1-to-string (aj8/gptel-tool--make-display-copy args))) ""))
      (condition-case err
          (let ((result (progn ,@body)))
-           (message "%s: Success" tool-name)
+           ;; (message "%s: Success" tool-name)
            (aj8/gptel-tool--log-to-buffer tool-name args result)
            result)
        (error (aj8/gptel-tool--message-and-reraise tool-name args err)))))
