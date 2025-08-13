@@ -2,15 +2,40 @@
 
 ;;; Helpers
 
-(defun aj8/gptel-tool--truncate (s &optional n)
-  "Return a truncated string of S (or a printed representation).
-If S is a string truncate to N characters (default 120) and append an ellipsis.
-Non-strings are printed with `prin1-to-string'."
-  (when s
-    (let ((n (or n 50)))
-      (if (stringp s)
-          (if (> (length s) n) (concat (substring s 0 n) "…") s)
-        (prin1-to-string s)))))
+(defun aj8/gptel-tool--make-display-copy (obj)
+  "Return a display-safe copy of OBJ for minibuffer messages.
+
+This minimal helper handles only the types we need:
+- Lists of plists: return a list containing the processed first plist and,
+  if there are more elements, a string like '(+N more)'.
+- General lists: recursively process elements.
+- Strings: if the string contains a newline, return only the first line
+  (the text up to the first newline). Single-line strings are returned
+  unchanged.
+
+The original OBJ is not mutated; this returns a fresh structure suitable
+for `prin1-to-string'."
+  (cond
+   ((null obj) nil)
+   ((stringp obj)
+    (let ((lines (split-string obj "\n")))
+      (if (> (length lines) 1)
+          (concat (car lines) (format "...(+%d more)" (1- (length lines))))
+        obj)))
+   ;; Detect a list of plists: each element is a list whose car is a keyword
+   ((and (listp obj)
+         (cl-every (lambda (e) (and (listp e) (keywordp (car e)))) obj))
+    (let ((len (length obj)))
+      (if (= len 0)
+          '()
+        (let ((first (aj8/gptel-tool--make-display-copy (car obj)))
+              (rest-count (1- len)))
+          (if (> rest-count 0)
+              (list first (format "...(+%d more)" rest-count))
+            (list first))))))
+   ((listp obj)
+    (mapcar #'aj8/gptel-tool--make-display-copy obj))
+   (t obj)))
 
 (defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional errp)
   "Append a single line to *gptel-tool-log* recording TOOL-NAME, ARGS and RESULT.
@@ -42,7 +67,7 @@ callers must be updated to pass an explicit ARGS argument (or nil)."
          (args ,args))
      (message "%s%s"
               tool-name
-              (if args (concat " " (aj8/gptel-tool--truncate (prin1-to-string args) 120)) ""))
+              (if args (concat " " (prin1-to-string (aj8/gptel-tool--make-display-copy args))) ""))
      (condition-case err
          (let ((result (progn ,@body)))
            (message "%s: Success" tool-name)
