@@ -190,7 +190,8 @@ omit START and END."
      (unless buffer
        (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buffer
-       (let ((count (count-matches old-string (point-min) (point-max))))
+       (let ((count (count-matches (regexp-quote old-string)
+                                   (point-min) (point-max))))
          (cond
           ((= count 0)
            (error "Error: String '%s' not found in buffer '%s'." old-string buffer-name))
