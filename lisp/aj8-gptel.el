@@ -7,7 +7,7 @@
 If S is a string truncate to N characters (default 120) and append an ellipsis.
 Non-strings are printed with `prin1-to-string'."
   (when s
-    (let ((n (or n 120)))
+    (let ((n (or n 50)))
       (if (stringp s)
           (if (> (length s) n) (concat (substring s 0 n) "…") s)
         (prin1-to-string s)))))
@@ -42,7 +42,7 @@ callers must be updated to pass an explicit ARGS argument (or nil)."
          (args ,args))
      (message "%s%s"
               tool-name
-              (if args (concat " " (aj8/gptel-tool--truncate (prin1-to-string args) 200)) ""))
+              (if args (concat " " (aj8/gptel-tool--truncate (prin1-to-string args) 120)) ""))
      (condition-case err
          (let ((result (progn ,@body)))
            (message "%s: Success" tool-name)
