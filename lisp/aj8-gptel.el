@@ -30,9 +30,7 @@ The record is machine-readable (prin1) and timestamped."
 
 (defun aj8/gptel-tool--message-and-reraise (tool-name args err)
   "Message ERR for TOOL-NAME with ARGS, log it, and re-signal the error."
-  (message "%s: Error: %s — args=%s"
-           tool-name (error-message-string err)
-           (aj8/gptel-tool--truncate (prin1-to-string args) 200))
+  (message "%s: %s" tool-name (error-message-string err))
   (aj8/gptel-tool--log-to-buffer tool-name args (error-message-string err) t)
   (signal (car err) (cdr err)))
 
