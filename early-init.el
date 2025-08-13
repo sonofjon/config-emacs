@@ -1,7 +1,12 @@
 ;;; early-init.el -*- lexical-binding: t; -*-
 
+;;; GENERAL
+
 ;; Open up the debugger on error
 ;; (setq debug-on-error t)
+
+;; Hide buffer list at startup when loading multiple files
+(setq inhibit-startup-buffer-menu t)
 
 ;;; SYSTEM
 

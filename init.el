@@ -938,13 +938,6 @@
   :config
   (global-visual-wrap-prefix-mode 1))
 
-;; startup (process Emacs shell arguments)
-(use-package startup
-  :ensure nil   ; don't install built-in packages
-  :custom
-  ;; Hide buffer list at startup when loading multiple files
-  (inhibit-startup-buffer-menu t))
-
 ;; subword (subword movement)
 ;;   Subword movement and editing: camelCase
 ;;     Cannot be enabled at the same time as superword-mode
