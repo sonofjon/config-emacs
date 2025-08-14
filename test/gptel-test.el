@@ -104,7 +104,8 @@ Verifies that the function opens a file into a buffer."
 
 Verifies that the function can read a whole buffer, a section from the
 middle, a section from the beginning, and a section to the end. It also
-verifies that an error is signaled for a non-existent buffer."
+verifies that an error is signaled for a non-existent buffer, and for
+requests larger than `aj8/gptel-default-max-lines'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
@@ -119,7 +120,24 @@ verifies that an error is signaled for a non-existent buffer."
                          "Line 1\nLine 2"))
    ;; Read to end
    (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" 4)
-                         "Line 4\nLine 5"))))
+                         "Line 4\nLine 5"))
+   ;; Assert non-existent buffer errors
+   (should-error (aj8/gptel-tool-read-buffer-region "*non-existent-buffer*") :type 'error))
+  ;; Test handling of max number of lines
+  (let* ((n (1+ aj8/gptel-default-max-lines))
+         (content "")
+         (first-n ""))
+    (dotimes (i n)
+      (setq content (concat content (format "Line %d\n" (1+ i))))
+      (when (< i aj8/gptel-default-max-lines)
+        (setq first-n (concat first-n (format "Line %d\n" (1+ i))))))
+    (setq content (replace-regexp-in-string "\n\\'" "" content))
+    (setq first-n (replace-regexp-in-string "\n\\'" "" first-n))
+    (with-temp-buffer-with-content
+     "*test-read-buffer-max*" content
+     (should-error (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*") :type 'error)
+     (should-error (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*" 1 n) :type 'error)
+     (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n)))))
 
 (ert-deftest test-aj8-list-buffers ()
   "Test buffer listing tools.
