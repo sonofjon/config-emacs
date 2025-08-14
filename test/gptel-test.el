@@ -1,5 +1,7 @@
 ;;; gptel-test.el --- Tests for Gptel tools -*- lexical-binding: t; -*-
 
+(message "Running gptel tool tests")
+
 ;;
 ;;;; 1. Requirements
 ;;
