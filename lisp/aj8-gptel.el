@@ -143,8 +143,9 @@ on the number of lines returned."
 
 (defun aj8/gptel-tool-list-buffers (&optional include-counts)
   "List the names of all currently open buffers that are associated with a file.
+
 If INCLUDE-COUNTS is non-nil, return a list of strings of the form
-"BUFFER-NAME: N lines" instead of bare buffer names."
+\"BUFFER-NAME: N lines\" instead of bare buffer names."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_buffers"
    (list :include-counts include-counts)
@@ -160,8 +161,9 @@ If INCLUDE-COUNTS is non-nil, return a list of strings of the form
 
 (defun aj8/gptel-tool-list-all-buffers (&optional include-counts)
   "List the names of all currently open buffers.
+
 If INCLUDE-COUNTS is non-nil, return a list of strings of the form
-"BUFFER-NAME: N lines" instead of bare buffer names."
+\"BUFFER-NAME: N lines\" instead of bare buffer names."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_all_buffers"
    (list :include-counts include-counts)
@@ -574,8 +576,10 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
 
 (defun aj8/gptel-tool-project-get-open-buffers (&optional include-counts)
   "Return a string listing all open buffers in the current project.
-If INCLUDE-COUNTS is non-nil, return a string where each line is of the form
-"BUFFER-NAME: N lines" instead of the default "BUFFER-NAME: /path/to/file" listing."
+
+If INCLUDE-COUNTS is non-nil, return a string where each line is of the
+form \"BUFFER-NAME: N lines\" instead of the default \"BUFFER-NAME:
+/path/to/file\" listing."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_get_open_buffers"
    (list :include-counts include-counts)
