@@ -240,6 +240,11 @@ EDIT-TYPE can be 'line or 'string."
         (let ((line-number (plist-get edit :line-number))
               (old-string (plist-get edit :old-string))
               (new-string (plist-get edit :new-string)))
+          ;; Validate that old-string is single-line for edit types that require it.
+          (when (and old-string
+                     (or (eq edit-type 'line) (eq edit-type 'string))
+                     (string-match-p "\n" old-string))
+            (error "Error: edit for buffer '%s' line %d contains a multi-line 'old-string'. 'old-string' must not contain newline characters." buffer-name line-number))
           (goto-line line-number)
           (cond
            ((eq edit-type 'line)
