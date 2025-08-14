@@ -102,7 +102,7 @@ callers must be updated to pass an explicit ARGS argument (or nil)."
      (message "File '%s' opened in buffer '%s'." file-path (buffer-name buf))
      nil)))
 
-(defvar aj8/gptel-default-max-lines 100
+(defvar aj8/gptel-default-max-lines 101
   "Default maximum number of lines any read tool will return.")
 
 ;; TODO: Calling this and other functions …–region is a misnomer since start
@@ -656,7 +656,7 @@ form \"BUFFER-NAME: N lines\" instead of the default \"BUFFER-NAME:
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-buffer-region
  :name "aj8_read_buffer_region"
- :description "Read a region of a buffer. START and END are optional 1-based line numbers; if START is nil, read from the beginning of the buffer. If END is nil, read to the end of the buffer. Any request for more than aj8/gptel-default-max-lines lines will signal an error; this limit applies to all calls."
+ :description (format "Read a region of a buffer. START and END are optional 1-based line numbers; if START is nil, read from the beginning of the buffer. If END is nil, read to the end of the buffer. Any request for more than %d lines will signal an error; this limit applies to all calls." aj8/gptel-default-max-lines)
  :args (list '( :name "buffer-name"
                 :type string
                 :description "The name of the buffer to read the contents of. ")
