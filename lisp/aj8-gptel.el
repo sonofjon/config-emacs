@@ -106,21 +106,38 @@ omit START and END."
               (end-pos (if end (progn (goto-line end) (line-end-position)) (point-max))))
          (buffer-substring-no-properties start-pos end-pos))))))
 
-(defun aj8/gptel-tool-list-buffers ()
-  "List the names of all currently open buffers that are associated with a file."
+(defun aj8/gptel-tool-list-buffers (&optional include-counts)
+  "List the names of all currently open buffers that are associated with a file.
+If INCLUDE-COUNTS is non-nil, return a list of strings of the form
+"BUFFER-NAME: N lines" instead of bare buffer names."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_list_buffers" nil
+   "tool: aj8_list_buffers"
+   (list :include-counts include-counts)
    (let ((file-buffers '()))
      (dolist (buffer (buffer-list))
        (when (buffer-file-name buffer)
-         (push (buffer-name buffer) file-buffers)))
+         (with-current-buffer buffer
+           (let ((name (buffer-name buffer)))
+             (if include-counts
+                 (push (format "%s: %d lines" name (count-lines (point-min) (point-max))) file-buffers)
+               (push name file-buffers))))))
      (nreverse file-buffers))))
 
-(defun aj8/gptel-tool-list-all-buffers ()
-  "List the names of all currently open buffers."
+(defun aj8/gptel-tool-list-all-buffers (&optional include-counts)
+  "List the names of all currently open buffers.
+If INCLUDE-COUNTS is non-nil, return a list of strings of the form
+"BUFFER-NAME: N lines" instead of bare buffer names."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_list_all_buffers" nil
-   (mapcar #'buffer-name (buffer-list))))
+   "tool: aj8_list_all_buffers"
+   (list :include-counts include-counts)
+   (let ((res '()))
+     (dolist (buffer (buffer-list))
+       (with-current-buffer buffer
+         (let ((name (buffer-name buffer)))
+           (if include-counts
+               (push (format "%s: %d lines" name (count-lines (point-min) (point-max))) res)
+             (push name res)))))
+     (nreverse res))))
 
 (defun aj8/gptel-tool-buffer-to-file (buffer-name)
   "Return the file path for a given buffer."
@@ -520,15 +537,21 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
      (unless project (error "Not inside a project."))
      (project-root project))))
 
-(defun aj8/gptel-tool-project-get-open-buffers ()
-  "Return a string listing all open buffers in the current project."
+(defun aj8/gptel-tool-project-get-open-buffers (&optional include-counts)
+  "Return a string listing all open buffers in the current project.
+If INCLUDE-COUNTS is non-nil, return a string where each line is of the form
+"BUFFER-NAME: N lines" instead of the default "BUFFER-NAME: /path/to/file" listing."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_project_get_open_buffers" nil
+   "tool: aj8_project_get_open_buffers"
+   (list :include-counts include-counts)
    (let ((project (project-current)))
      (unless project (error "Not inside a project."))
      (let ((project-buffers (project-buffers project)))
        (mapconcat (lambda (b)
-                    (format "%s: %s" (buffer-name b) (buffer-file-name b)))
+                    (if include-counts
+                        (with-current-buffer b
+                          (format "%s: %d lines" (buffer-name) (count-lines (point-min) (point-max))))
+                      (format "%s: %s" (buffer-name b) (buffer-file-name b))))
                   project-buffers "\n")))))
 
 (defun aj8/gptel-tool-project-find-files-glob (pattern)
@@ -603,14 +626,20 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-file-section
  :function #'aj8/gptel-tool-list-buffers
  :name "aj8_list_buffers"
  :description "List the names of all currently open buffers that are associated with a file."
- :args nil
+ :args '((:name "include-counts"
+                :type boolean
+                :optional t
+                :description "If non-nil, return strings of the form \"BUFFER-NAME: N lines\" instead of bare names."))
  :category "buffers")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-all-buffers
  :name "aj8_list_all_buffers"
  :description "List the names of all currently open buffers."
- :args nil
+ :args '((:name "include-counts"
+                :type boolean
+                :optional t
+                :description "If non-nil, return strings of the form \"BUFFER-NAME: N lines\" instead of bare names."))
  :category "buffers")
 
 (gptel-make-tool
@@ -1029,7 +1058,10 @@ This action requires manual user review. After calling this tool, you must stop 
  :function #'aj8/gptel-tool-project-get-open-buffers
  :name "aj8_project_get_open_buffers"
  :description "Return a string listing all open buffers in the current project. Each line contains a buffer name followed by its associated file path."
- :args nil
+ :args '((:name "include-counts"
+                :type boolean
+                :optional t
+                :description "If non-nil, return strings of the form \"BUFFER-NAME: N lines\" instead of path listings."))
  :category "project")
 
 ;;   (gptel-make-tool
