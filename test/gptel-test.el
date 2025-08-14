@@ -209,6 +209,20 @@ found or is not unique."
    (should-error (aj8/gptel-tool-edit-buffer-string "*test-edit*" "non-existent" "foo") :type 'error)
    (should-error (aj8/gptel-tool-edit-buffer-string "*test-edit*" "hello" "hi") :type 'error)))
 
+(ert-deftest test-aj8-edit-buffer-line ()
+  "Test `aj8/gptel-tool-edit-buffer-line'.
+
+Ensures that a specific single line in a buffer is replaced correctly."
+  :tags '(unit buffers)
+  (with-temp-buffer-with-content
+   "*test-edit-line*" "Line A
+Line B
+Line C"
+   (aj8/gptel-tool-edit-buffer-line "*test-edit-line*" 2 "X")
+   (should (string-equal (buffer-string) "Line A
+X
+Line C"))))
+
 (ert-deftest test-aj8-edit-buffer-region ()
   "Test `aj8/gptel-tool-edit-buffer-region'.
 
@@ -550,6 +564,7 @@ in the `gptel-tools' alist."
                           "aj8_insert_into_buffer"
                           "aj8_modify_buffer"
                           "aj8_edit_buffer_string"
+                          "aj8_edit_buffer_line"
                           "aj8_apply_buffer_string_edits"
                           "aj8_apply_buffer_string_edits_with_review"
                           "aj8_apply_buffer_line_edits"
