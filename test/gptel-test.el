@@ -231,7 +231,10 @@ found or is not unique."
    (aj8/gptel-tool-edit-buffer-string "*test-edit*" "world" "emacs")
    (should (string-equal (buffer-string) "hello emacs\nhello universe"))
    (should-error (aj8/gptel-tool-edit-buffer-string "*test-edit*" "non-existent" "foo") :type 'error)
-   (should-error (aj8/gptel-tool-edit-buffer-string "*test-edit*" "hello" "hi") :type 'error)))
+   (should-error (aj8/gptel-tool-edit-buffer-string "*test-edit*" "hello" "hi") :type 'error)
+   ;; Verify that a multi-line :old-string is accepted
+   (aj8/gptel-tool-edit-buffer-string "*test-edit*" "emacs\nhello" "EMACS\nHI")
+   (should (string-equal (buffer-string) "hello EMACS\nHI universe"))))
 
 (ert-deftest test-aj8-edit-buffer-line ()
   "Test `aj8/gptel-tool-edit-buffer-line'.
