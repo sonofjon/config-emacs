@@ -518,22 +518,40 @@ Info manual."
   "Test project root and buffer listing.
 
 Verifies `aj8/gptel-tool-project-get-root' and
-`aj8/gptel-tool-project-get-open-buffers' within a temporary project."
+`aj8/gptel-tool-project-get-open-buffers' within a temporary project.
+
+This test covers three related behaviors:
+- The project root returned by `aj8/gptel-tool-project-get-root'.
+- The project buffer listing without counts includes project-relative paths.
+- The project buffer listing with counts includes entries that contain:
+  * a trailing \": N lines\" count
+  * the Emacs buffer name for the file
+  * the (nondirectory) filename"
   :tags '(unit project)
   (with-temp-project
    (let ((root default-directory))
-     ;; Test get root
+     ;; 1) Project root should match default-directory
      (should (string-equal (file-name-as-directory (aj8/gptel-tool-project-get-root))
                            (file-name-as-directory root)))
-     ;; Test get open buffers
+     ;; Create and visit a file within the temporary project.
      (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
        (with-current-buffer buf
+         ;; 2) Without counts: the project-relative path should appear
+         ;;    in the listing
          (should (string-match-p "src/code.el" (aj8/gptel-tool-project-get-open-buffers)))
-         ;; Test include-counts behavior for project buffer listing
-         (let ((lines (split-string (aj8/gptel-tool-project-get-open-buffers t) "\n" t)))
+         ;; 3) With counts:
+         (let* ((lines (split-string (aj8/gptel-tool-project-get-open-buffers t) "\n" t))
+                (bufname (buffer-name buf))
+                (fname (file-name-nondirectory (buffer-file-name buf))))
+           ;; 3a) At least one entry ends with ": <number> lines".
            (should (cl-some (lambda (s) (string-match-p ": [0-9]+ lines$" s)) lines))
-           (should (cl-some (lambda (s) (string-match-p (regexp-quote (buffer-name buf)) s)) lines))
-           (should (cl-some (lambda (s) (string-match-p (file-name-nondirectory (buffer-file-name buf)) s)) lines))))
+           ;; 3b) At least one entry contains the buffer name for the file.
+           (should (cl-some (lambda (s) (string-match-p (regexp-quote bufname) s)) lines))
+           ;; 3c) At least one entry contains the (nondirectory) filename.
+           (should (cl-some (lambda (s) (string-match-p (regexp-quote fname) s)) lines))
+           ;; 4) Assert that the exact number of lines is reported.
+           (let ((expected (format "%s: %d lines" bufname 1)))
+             (should (member expected lines)))))
        (kill-buffer buf)))))
 
 (ert-deftest test-aj8-project-find-and-search ()
