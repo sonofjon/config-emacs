@@ -459,24 +459,31 @@ EDIT-TYPE can be 'line or 'string."
      (unless project (error "Not inside a project."))
      (project-root project))))
 
-(defun aj8/gptel-tool-project-get-open-buffers (&optional include-counts)
-  "Return a string listing all open buffers in the current project.
+(defun aj8/gptel-tool-project-list-files (&optional include-counts)
+  "Return a string listing all files in the current project.
 
-If INCLUDE-COUNTS is non-nil, return a string where each line is of the
-form \"BUFFER-NAME: N lines\" instead of the default \"BUFFER-NAME:
-/path/to/file\" listing."
+Each line is of the form "NAME: RELATIVE/PATH". If INCLUDE-COUNTS
+is non-nil, append the number of lines as "NAME: RELATIVE/PATH N lines".
+
+NAME is the file's base name and RELATIVE/PATH is the path relative to
+the project root."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_project_get_open_buffers"
+   "tool: aj8_project_list_files"
    (list :include-counts include-counts)
    (let ((project (project-current)))
      (unless project (error "Not inside a project."))
-     (let ((project-buffers (project-buffers project)))
-       (mapconcat (lambda (b)
-                    (if include-counts
-                        (with-current-buffer b
-                          (format "%s: %d lines" (buffer-name) (count-lines (point-min) (point-max))))
-                      (format "%s: %s" (buffer-name b) (buffer-file-name b))))
-                  project-buffers "\n")))))
+     (let* ((root (project-root project))
+            (project-file-list (project-files project)))
+       (mapconcat (lambda (f)
+                    (let* ((rel (file-relative-name f root))
+                           (name (file-name-nondirectory f)))
+                      (if include-counts
+                          (let ((nlines (with-temp-buffer
+                                          (insert-file-contents f)
+                                          (count-lines (point-min) (point-max)))))
+                            (format "%s: %s %d lines" name rel nlines))
+                        (format "%s: %s" name rel))))
+                  project-file-list "\n")))))
 
 (defun aj8/gptel-tool-project-find-files-glob (pattern)
   "In the current project, find files whose filenames match the glob PATTERN."
@@ -820,13 +827,13 @@ This action requires manual user review. After calling this tool, you must stop 
  :category "project")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-project-get-open-buffers
- :name "aj8_project_get_open_buffers"
- :description "Return a string listing all open buffers in the current project. Each line contains a buffer name followed by its associated file path."
+ :function #'aj8/gptel-tool-project-list-files
+ :name "aj8_project_list_files"
+ :description "Return a string listing all files in the current project. Each line contains a file base name followed by its path relative to the project root; if include-counts is non-nil, append the line count."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If non-nil, return strings of the form \"BUFFER-NAME: N lines\" instead of path listings."))
+                :description "If non-nil, append the number of lines to each entry as '... N lines'."))
  :category "project")
 
 ;;   (gptel-make-tool
