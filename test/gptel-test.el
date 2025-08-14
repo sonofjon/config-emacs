@@ -115,7 +115,10 @@ verifies that an error is signaled for a non-existent buffer."
 
 This test ensures that `aj8/gptel-tool-list-buffers' correctly lists
 only file-associated buffers, while `aj8/gptel-tool-list-all-buffers'
-lists all buffers, including non-file-backed ones."
+lists all buffers, including non-file-backed ones. It also verifies the
+optional INCLUDE-COUNTS argument for both functions, which should cause
+them to return formatted strings like "NAME: N lines" when non-nil.
+"
   :tags '(unit buffers)
   (with-temp-file-with-content
    tmp-file "file content"
@@ -129,7 +132,18 @@ lists all buffers, including non-file-backed ones."
     ;; Test `aj8/gptel-tool-list-all-buffers' (all)
     (let ((buffers (aj8/gptel-tool-list-all-buffers)))
       (should (member (file-name-nondirectory tmp-file) buffers))
-      (should (member "*non-file-buffer*" buffers))))))
+      (should (member "*non-file-buffer*" buffers)))
+    ;; Test include-counts for file-backed buffers only
+    (let ((buffers (aj8/gptel-tool-list-buffers t)))
+      ;; The file-backed buffer should be present and formatted
+      (should (cl-some (lambda (s) (string-match-p ": [0-9]+ lines$" s)) buffers))
+      (should (cl-some (lambda (s) (string-match-p (regexp-quote (buffer-name (get-file-buffer tmp-file))) s)) buffers))
+      (should (cl-some (lambda (s) (string-match-p (file-name-nondirectory tmp-file) s)) buffers)))
+    ;; Test include-counts for all buffers
+    (let ((buffers (aj8/gptel-tool-list-all-buffers t)))
+      (should (cl-some (lambda (s) (string-match-p ": [0-9]+ lines$" s)) buffers))
+      (should (cl-some (lambda (s) (string-match-p (regexp-quote (buffer-name (get-buffer "*non-file-buffer*"))) s)) buffers))
+      (should (cl-some (lambda (s) (string-match-p (file-name-nondirectory tmp-file) s)) buffers))))))
 
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test buffer-file path conversions.
@@ -459,7 +473,12 @@ Verifies `aj8/gptel-tool-project-get-root' and
      ;; Test get open buffers
      (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
        (with-current-buffer buf
-         (should (string-match-p "src/code.el" (aj8/gptel-tool-project-get-open-buffers))))
+         (should (string-match-p "src/code.el" (aj8/gptel-tool-project-get-open-buffers)))
+         ;; Test include-counts behavior for project buffer listing
+         (let ((lines (split-string (aj8/gptel-tool-project-get-open-buffers t) "\n" t)))
+           (should (cl-some (lambda (s) (string-match-p ": [0-9]+ lines$" s)) lines))
+           (should (cl-some (lambda (s) (string-match-p (regexp-quote (buffer-name buf)) s)) lines))
+           (should (cl-some (lambda (s) (string-match-p (file-name-nondirectory (buffer-file-name buf)) s)) lines))))
        (kill-buffer buf)))))
 
 (ert-deftest test-aj8-project-find-and-search ()
