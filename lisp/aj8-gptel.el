@@ -89,6 +89,19 @@ callers must be updated to pass an explicit ARGS argument (or nil)."
 ;;    (with-current-buffer buffer
 ;;      (buffer-substring-no-properties (point-min) (point-max)))))
 
+(defun aj8/gptel-tool-open-file-in-buffer (file-path)
+  "Open FILE-PATH into a visiting buffer."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_open_file_in_buffer"
+   (list :file-path file-path)
+   (unless (file-exists-p file-path)
+     (error "Error: No such file: %s" file-path))
+   (when (file-directory-p file-path)
+     (error "Error: '%s' is a directory." file-path))
+   (let ((buf (find-file-noselect file-path)))
+     (message "File '%s' opened in buffer '%s'." file-path (buffer-name buf))
+     nil)))
+
 ;; TODO: Calling this and other functions …–region is a misnomer since start
 ;; and end are line numbers, not character positions.
 (defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start end)
@@ -604,6 +617,15 @@ If INCLUDE-COUNTS is non-nil, return a string where each line is of the form
 ;;  :args (list '(:name "buffer"
 ;;                       :type string
 ;;                       :description "The name of the buffer to read."))
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-open-file-in-buffer
+ :name "aj8_open_file_in_buffer"
+ :description "Open a file into a visiting buffer."
+ :args (list '(:name "file-path"
+               :type string
+               :description "Path to the file to open."))
+ :category "buffers")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-buffer-region
