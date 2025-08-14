@@ -463,7 +463,7 @@ EDIT-TYPE can be 'line or 'string."
   "Return a string listing all files in the current project.
 
 Each line is of the form "NAME: RELATIVE/PATH". If INCLUDE-COUNTS
-is non-nil, append the number of lines as "NAME: RELATIVE/PATH N lines".
+is non-nil, append the number of lines as "NAME: RELATIVE/PATH (N lines)".
 
 NAME is the file's base name and RELATIVE/PATH is the path relative to
 the project root."
@@ -481,7 +481,7 @@ the project root."
                           (let ((nlines (with-temp-buffer
                                           (insert-file-contents f)
                                           (count-lines (point-min) (point-max)))))
-                            (format "%s: %s %d lines" name rel nlines))
+                            (format "%s: %s (%d lines)" name rel nlines))
                         (format "%s: %s" name rel))))
                   project-file-list "\n")))))
 
@@ -829,11 +829,11 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-list-files
  :name "aj8_project_list_files"
- :description "Return a string listing all files in the current project. Each line contains a file base name followed by its path relative to the project root; if include-counts is non-nil, append the line count."
+ :description "Return a string listing all files in the current project. Each line contains a file base name followed by its path relative to the project root; if include-counts is non-nil, append the line count as " (N lines).""
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If non-nil, append the number of lines to each entry as '... N lines'."))
+                :description "If non-nil, append the number of lines to each entry as ' (N lines)'."))
  :category "project")
 
 ;;   (gptel-make-tool
