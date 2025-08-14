@@ -88,6 +88,17 @@ directory."
 
 ;;; 3.1. Category: Buffers
 
+(ert-deftest test-aj8-open-file-in-buffer ()
+  "Test `aj8/gptel-tool-open-file-in-buffer'.
+
+Verifies that the function opens a file into a buffer."
+  :tags '(unit buffers)
+  (with-temp-file-with-content
+   test-file "test content"
+   (should (null (get-file-buffer test-file)))
+   (aj8/gptel-tool-open-file-in-buffer test-file)
+   (should (buffer-live-p (get-file-buffer test-file)))))
+
 (ert-deftest test-aj8-read-buffer-region ()
   "Test `aj8/gptel-tool-read-buffer-region'.
 
@@ -530,7 +541,8 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
 This test checks that a predefined list of essential tool names exists
 in the `gptel-tools' alist."
   :tags '(integration tools)
-  (let ((expected-tools '("aj8_list_buffers"
+  (let ((expected-tools '("aj8_open_file_in_buffer"
+                          "aj8_list_buffers"
                           "aj8_list_all_buffers"
                           "aj8_buffer_to_file"
                           "aj8_file_to_buffer"
