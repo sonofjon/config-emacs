@@ -225,7 +225,10 @@ Ensures that a list of substring edits is applied correctly to a buffer."
    (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
                   (:line-number 1 :old-string "one" :new-string "ONE"))))
      (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits)
-     (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE.")))))
+     (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE."))
+     ;; Verify that a multi-line :old-string is rejected for batched string edits
+     (let ((edits2 '((:line-number 2 :old-string "two\nextra" :new-string "TWO"))))
+       (should-error (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits2) :type 'error)))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits'.
@@ -237,7 +240,10 @@ Ensures that a list of full-line edits is applied correctly to a buffer."
    (let ((edits '((:line-number 3 :old-string "Line three." :new-string "Line THREE.")
                   (:line-number 1 :old-string "Line one." :new-string "Line ONE."))))
      (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" edits)
-     (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE.")))))
+     (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE."))
+     ;; Verify that a multi-line :old-string is rejected for batched line edits
+     (let ((edits2 '((:line-number 2 :old-string "Line two.\nextra" :new-string "Line TWO."))))
+       (should-error (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" edits2) :type 'error)))))
 
 (ert-deftest test-aj8-apply-buffer-string-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review'.
@@ -256,7 +262,10 @@ review system, without altering the original buffer."
      (should ediff-called)
      ;; Check that original buffer is unchanged.
      (with-current-buffer "*test-review*"
-       (should (string-equal (buffer-string) "Line one.\nLine two."))))))
+       (should (string-equal (buffer-string) "Line one.\nLine two."))))
+   ;; Verify that a multi-line :old-string is rejected for batched string edits
+   (let ((edits2 '((:line-number 2 :old-string "two\nextra" :new-string "TWO"))))
+     (should-error (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits2) :type 'error))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'.
@@ -275,7 +284,10 @@ review system, without altering the original buffer."
      (should ediff-called)
      ;; Check that the original buffer is unchanged.
      (with-current-buffer "*test-review*"
-       (should (string-equal (buffer-string) "Line one.\nLine two."))))))
+       (should (string-equal (buffer-string) "Line one.\nLine two."))))
+   ;; Verify that a multi-line :old-string is rejected for batched line edits
+   (let ((edits2 '((:line-number 2 :old-string "Line two.\nextra" :new-string "Line TWO."))))
+     (should-error (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2) :type 'error))))
 
 ;;; 3.2. Category: Filesystem
 
