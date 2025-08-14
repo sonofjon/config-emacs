@@ -167,12 +167,18 @@ them to return formatted strings like "NAME: N lines" when non-nil.
       ;; The file-backed buffer should be present and formatted
       (should (cl-some (lambda (s) (string-match-p ": [0-9]+ lines$" s)) buffers))
       (should (cl-some (lambda (s) (string-match-p (regexp-quote (buffer-name (get-file-buffer tmp-file))) s)) buffers))
-      (should (cl-some (lambda (s) (string-match-p (file-name-nondirectory tmp-file) s)) buffers)))
+      (should (cl-some (lambda (s) (string-match-p (file-name-nondirectory tmp-file) s)) buffers))
+      ;; Exact line number check
+      (let ((expected (format "%s: %d lines" (buffer-name (get-file-buffer tmp-file)) 1)))
+        (should (member expected buffers))))
     ;; Test include-counts for all buffers
     (let ((buffers (aj8/gptel-tool-list-all-buffers t)))
       (should (cl-some (lambda (s) (string-match-p ": [0-9]+ lines$" s)) buffers))
       (should (cl-some (lambda (s) (string-match-p (regexp-quote (buffer-name (get-buffer "*non-file-buffer*"))) s)) buffers))
-      (should (cl-some (lambda (s) (string-match-p (file-name-nondirectory tmp-file) s)) buffers))))))
+      (should (cl-some (lambda (s) (string-match-p (file-name-nondirectory tmp-file) s)) buffers))
+      ;; Exact line number check
+      (let ((expected (format "%s: %d lines" (buffer-name (get-file-buffer tmp-file)) 1)))
+        (should (member expected buffers)))))))
 
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test buffer-file path conversions.
