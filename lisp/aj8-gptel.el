@@ -118,7 +118,7 @@ The macro binds local variables `tool-name' and `args' and then:
      (message "File '%s' opened in buffer '%s'." file-path (buffer-name buf))
      nil)))
 
-(defvar aj8/gptel-default-max-lines 101
+(defvar aj8/gptel-default-max-lines 100
   "Default maximum number of lines any read tool will return.")
 
 ;; TODO: Calling this and other functions …–region is a misnomer since start
