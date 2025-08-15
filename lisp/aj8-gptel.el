@@ -222,13 +222,8 @@ non-nil, append the number of lines as \" (N lines)\"."
                  (push (format "%s: %s" buf-name path) lines))
              (if include-counts
                  (push (format "%s (%d lines)" buf-name (count-lines (point-min) (point-max))) lines)
-               (push buf-name lines)))))
+               (push buf-name lines))))))
      (mapconcat #'identity (nreverse lines) "\n"))))
-         (let ((name (buffer-name buffer)))
-           (if include-counts
-               (push (format "%s: %d lines" name (count-lines (point-min) (point-max))) res)
-             (push name res)))))
-     (nreverse res))))
 
 (defun aj8/gptel-tool-buffer-to-file (buffer-name)
   "Return the file path for BUFFER-NAME."
