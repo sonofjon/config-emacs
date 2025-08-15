@@ -159,8 +159,7 @@ The macro binds local variables `tool-name' and `args' and then:
    (when (file-directory-p file-path)
      (error "Error: '%s' is a directory." file-path))
    (let ((buf (find-file-noselect file-path)))
-     (message "File '%s' opened in buffer '%s'." file-path (buffer-name buf))
-     nil)))
+     (format "File '%s' opened in buffer '%s'." file-path (buffer-name buf)))))
 
 (defvar aj8/gptel-tool-max-lines 100
   "Default maximum number of lines any read tool will return.")
