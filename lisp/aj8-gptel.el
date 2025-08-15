@@ -5,18 +5,21 @@
 (defun aj8/gptel-tool--truncate-for-display (obj)
 "Return a truncated, display-safe copy of OBJ for minibuffer messages.
 
-OBJ is the source object to convert; it may be nil, a string, a vector,
-a list, or a list of property lists (plists).  The conversion rules are:
+OBJ is the source object to convert; it may be nil, a string, a list, a
+vector, or a list or vector of property lists (plists).  The conversion
+rules are:
 
 - nil: returned as nil.
 - string: if the string contains a newline, return only the text up to
   the first newline followed by the suffix \"...(+N more)\" where N is
   the number of remaining lines; otherwise return the original string.
-- vector: convert to list before processing.
+- list: recursively process each element.
 - list of plists: return a list whose first element is the processed
   first plist and, if there are more elements, a second element that is
   the string \"...(+N more)\" where N is the number of remaining plists.
-- general list: recursively process each element.
+- vector: recursively process each element and return a new vector.
+- vector of plists: see \"list of plists\" above; the same truncation is
+  applied, but the result is a vector, not a list.
 
 The original OBJ is not mutated; the result is a fresh structure intended
 for use with `prin1-to-string' for concise minibuffer display."
@@ -28,11 +31,9 @@ for use with `prin1-to-string' for concise minibuffer display."
       (if (> (length lines) 1)
           (concat (car lines) (format "...(+%d more)" (1- (length lines))))
         obj)))
-   ;; Vectors: convert to list
-   ((vectorp obj)
-    (aj8/gptel-tool--truncate-for-display (append obj nil)))
-   ;; Lists of plists: each element is a list whose car is a keyword
+   ;; Lists of plists
    ((and (listp obj)
+         ;; Each element is a list whose car is a keyword
          (cl-every (lambda (e) (and (listp e) (keywordp (car e)))) obj))
     (let ((len (length obj)))
       (if (= len 0)
@@ -42,8 +43,28 @@ for use with `prin1-to-string' for concise minibuffer display."
           (if (> rest-count 0)
               (list first (format "...(+%d more)" rest-count))
             (list first))))))
+   ;; Lists
    ((listp obj)
     (mapcar #'aj8/gptel-tool--truncate-for-display obj))
+   ;; Vectors of plists
+   ((and (vectorp obj)
+         ;; Each element is a list whose car is a keyword
+         (cl-every (lambda (e) (and (listp e) (keywordp (car e)))) obj))
+    (let ((len (length obj)))
+      (if (= len 0)
+          (vector)
+        (let ((first (aj8/gptel-tool--truncate-for-display (aref obj 0)))
+              (rest-count (1- len)))
+          (if (> rest-count 0)
+              (vector first (format "...(+%d more)" rest-count))
+            (vector first))))))
+   ;; Vectors
+   ((vectorp obj)
+    (let* ((len (length obj))
+           (out (make-vector len nil)))
+      (dotimes (i len)
+        (aset out i (aj8/gptel-tool--make-display-copy (aref obj i))))
+      out))
    (t obj)))
 
 (defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional error-p)
