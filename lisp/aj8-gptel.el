@@ -61,8 +61,20 @@ machine-readable (prin1) and timestamped."
   (signal (car err) (cdr err)))
 
 (defmacro aj8/gptel-tool--with-tool (tool-name args &rest body)
-  "Run BODY for TOOL-NAME, message running/success/error in the minibuffer.
-ARGS must be provided (plist) or nil."
+  "Run BODY for TOOL-NAME and message/log the action.
+
+ARGS is a property list (plist) of keyword/value pairs describing the
+parameters passed to the tool function.
+
+If ARGS is nil the minibuffer will show only the tool name (no argument summary is displayed).
+
+The macro binds local variables `tool-name' and `args' and then:
+- Messages the running tool name and a display-safe summary of ARGS in the
+  minibuffer (using `aj8/gptel-tool--make-display-copy').
+- Executes BODY and on success logs the full ARGS and the RESULT to the
+  `*gptel-tool-log*' buffer and returns RESULT.
+- On error it messages and logs the error (including ARGS) and then
+  re-signals the error."
   `(let ((tool-name ,tool-name)
          (args ,args))
      (message "%s%s"
