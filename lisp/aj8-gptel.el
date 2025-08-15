@@ -272,8 +272,9 @@ non-nil, append the number of lines as \" (N lines)\"."
      (unless buf
        (error "Error: Buffer '%s' not found." buffer))
      (with-current-buffer buf
-       (goto-char (point-max))
-       (insert text))
+       (save-excursion
+         (goto-char (point-max))
+         (insert text)))
      (format "Text successfully appended to buffer %s." buffer))))
 
 (defun aj8/gptel-tool-insert-into-buffer (buffer text line-number)
@@ -287,8 +288,9 @@ The text is inserted at the beginning of the specified line."
      (unless buf
        (error "Error: Buffer '%s' not found." buffer))
      (with-current-buffer buf
-       (goto-line line-number)
-       (insert text))
+       (save-excursion
+         (goto-line line-number)
+         (insert text)))
      (format "Text successfully inserted into buffer %s at line %d." buffer line-number))))
 
 (defun aj8/gptel-tool-modify-buffer (buffer content)
@@ -313,17 +315,18 @@ The text is inserted at the beginning of the specified line."
      (unless buffer
        (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buffer
-       (let ((count (count-matches (regexp-quote old-string)
-                                   (point-min) (point-max))))
-         (cond
-          ((= count 0)
-           (error "Error: String '%s' not found in buffer '%s'." old-string buffer-name))
-          ((> count 1)
-           (error "Error: String '%s' is not unique in buffer '%s'. Found %d occurrences." old-string buffer-name count))
-          (t
-           (goto-char (point-min))
-           (replace-string old-string new-string)
-           (format "String in buffer '%s' successfully replaced." buffer-name))))))))
+       (save-excursion
+         (let ((count (count-matches (regexp-quote old-string)
+                                     (point-min) (point-max))))
+           (cond
+            ((= count 0)
+             (error "Error: String '%s' not found in buffer '%s'." old-string buffer-name))
+            ((> count 1)
+             (error "Error: String '%s' is not unique in buffer '%s'. Found %d occurrences." old-string buffer-name count))
+            (t
+             (goto-char (point-min))
+             (replace-string old-string new-string)
+             (format "String in buffer '%s' successfully replaced." buffer-name)))))))))
 
 (defun aj8/gptel-tool-edit-buffer-line (buffer-name line-number content)
   "Replace line LINE-NUMBER in file BUFFER-NAME with CONTENT.
@@ -346,13 +349,14 @@ to LINE-NUMBER."
      (unless buf
        (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
-       (goto-line start-line)
-       (let ((beg (point)))
-         (goto-line end-line)
-         (end-of-line)
-         (delete-region beg (point))
-         (insert content)))
-     (format "Region lines %d–%d in buffer '%s' successfully replaced."
+       (save-excursion
+         (goto-line start-line)
+         (let ((beg (point)))
+           (goto-line end-line)
+           (end-of-line)
+           (delete-region beg (point))
+           (insert content))))
+     (format "Region lines %d-%d in buffer '%s' successfully replaced."
              start-line end-line buffer-name))))
 
 (defun aj8/--apply-buffer-edits (buffer-name buffer-edits edit-type)
@@ -378,24 +382,25 @@ subsequent line numbers."
       (error "Error: Buffer '%s' not found." buffer-name))
     (with-current-buffer buffer
       (dolist (edit (sort buffer-edits #'(lambda (a b) (> (plist-get a :line-number) (plist-get b :line-number)))))
-        (let ((line-number (plist-get edit :line-number))
-              (old-string (plist-get edit :old-string))
-              (new-string (plist-get edit :new-string)))
-          ;; Validate that old-string is single-line for edit types that require it
-          (when (and old-string
-                     (or (eq edit-type 'line) (eq edit-type 'string))
-                     (string-match-p "\n" old-string))
-            (error "Error: edit for buffer '%s' line %d contains a multi-line 'old-string'. 'old-string' must not contain newline characters." buffer-name line-number))
-          (goto-line line-number)
-          (cond
-           ((eq edit-type 'line)
-            (let ((line-start (point)))
-              (when (string-equal (buffer-substring-no-properties line-start (line-end-position)) old-string)
-                (delete-region line-start (line-end-position))
-                (insert new-string))))
-           ((eq edit-type 'string)
-            (when (search-forward old-string (line-end-position) t)
-              (replace-match new-string nil nil)))))))))
+        (save-excursion
+          (let ((line-number (plist-get edit :line-number))
+                (old-string (plist-get edit :old-string))
+                (new-string (plist-get edit :new-string)))
+            ;; Validate that old-string is single-line for edit types that require it
+            (when (and old-string
+                       (or (eq edit-type 'line) (eq edit-type 'string))
+                       (string-match-p "\n" old-string))
+              (error "Error: edit for buffer '%s' line %d contains a multi-line 'old-string'. 'old-string' must not contain newline characters." buffer-name line-number))
+            (goto-line line-number)
+            (cond
+             ((eq edit-type 'line)
+              (let ((line-start (point)))
+                (when (string-equal (buffer-substring-no-properties line-start (line-end-position)) old-string)
+                  (delete-region line-start (line-end-position))
+                  (insert new-string))))
+             ((eq edit-type 'string)
+              (when (search-forward old-string (line-end-position) t)
+                (replace-match new-string nil nil))))))))))
 
 (defun aj8/--review-buffer-edits (buffer-name buffer-edits edit-type)
   "Prepare a temporary buffer with edits and start an Ediff review session.
