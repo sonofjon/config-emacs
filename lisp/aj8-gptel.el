@@ -3,18 +3,22 @@
 ;;; Helpers
 
 (defun aj8/gptel-tool--make-display-copy (obj)
-  "Return a display-safe copy of OBJ for minibuffer messages.
+"Return a display-safe copy of OBJ suitable for minibuffer messages.
 
-This minimal helper handles only the types we need:
-- Lists of plists: return a list containing the processed first plist and,
-  if there are more elements, a string like '(+N more)'.
-- General lists: recursively process elements.
-- Strings: if the string contains a newline, return only the first line
-  (the text up to the first newline).  Single-line strings are returned
-  unchanged.
+OBJ is the source object to convert; it may be nil, a string, a list, or
+a list of property lists (plists).  The conversion rules are:
 
-The original OBJ is not mutated; this returns a fresh structure suitable
-for `prin1-to-string'."
+- nil: returned as nil.
+- string: if the string contains a newline, return only the text up to
+  the first newline followed by the suffix \"...(+N more)\" where N is
+  the number of remaining lines; otherwise return the original string.
+- list of plists: return a list whose first element is the processed
+  first plist and, if there are more elements, a second element that is
+  the string \"...(+N more)\" where N is the number of remaining plists.
+- general list: recursively process each element.
+
+The original OBJ is not mutated; the result is a fresh structure intended
+for use with `prin1-to-string' for concise minibuffer display."
   (cond
    ((null obj) nil)
    ((stringp obj)
