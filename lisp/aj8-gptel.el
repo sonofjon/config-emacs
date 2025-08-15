@@ -700,7 +700,7 @@ project root."
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-buffer-region-count
  :name "aj8_read_buffer_region_count"
- :description (format "Read lines from a buffer; max per call: %d. START and COUNT are optional and default to 1 and %d, respectively " aj8/gptel-default-max-lines aj8/gptel-default-max-lines)
+ :description (format "Read lines from a buffer; max per call: %d. START and COUNT are optional and default to 1 and %d, respectively." aj8/gptel-default-max-lines aj8/gptel-default-max-lines)
  :args (list '( :name "buffer-name"
                 :type string
                 :description "The name of the buffer to read from.")
@@ -708,10 +708,11 @@ project root."
                 :type integer
                 :optional t
                 :description "The 1-based line number to start reading from (default is 1).")
-             '( :name "count"
-                :type integer
-                :optional t
-                :description (format "The number of lines to read (must be <= %d)." aj8/gptel-default-max-lines)))
+             (list :name "count"
+                   :type 'integer
+                   :optional t
+                   :description (format "The number of lines to read (must be <= %d)."
+                                        aj8/gptel-default-max-lines)))
  :category "buffers")
 
 (gptel-make-tool
