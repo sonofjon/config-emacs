@@ -113,27 +113,27 @@ requests larger than `aj8/gptel-default-max-lines'."
   (with-temp-buffer-with-content
    "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
    ;; Read whole buffer
-   (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*")
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*")
                          "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
    (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer*" 1 5)
                          "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
    ;; Read a section
-   (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" 2 4)
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" 2 4)
                          "Line 2\nLine 3\nLine 4"))
    (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer*" 2 3)
                          "Line 2\nLine 3\nLine 4"))
    ;; Read from start
-   (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" nil 2)
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" nil 2)
                          "Line 1\nLine 2"))
    (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer*" 1 2)
                          "Line 1\nLine 2"))
    ;; Read to end
-   (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" 4)
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" 4)
                          "Line 4\nLine 5"))
    (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer*" 4 2)
                          "Line 4\nLine 5"))
    ;; Assert non-existent buffer errors
-   (should-error (aj8/gptel-tool-read-buffer-region "*non-existent-buffer*") :type 'error)
+   ;; (should-error (aj8/gptel-tool-read-buffer-region "*non-existent-buffer*") :type 'error)
    (should-error (aj8/gptel-tool-read-buffer-region-count "*non-existent-buffer*" 1 1) :type 'error))
   ;; Test handling of max number of lines
   (let* ((n (1+ aj8/gptel-default-max-lines))
@@ -147,9 +147,9 @@ requests larger than `aj8/gptel-default-max-lines'."
     (setq first-n (replace-regexp-in-string "\n\\'" "" first-n))
     (with-temp-buffer-with-content
      "*test-read-buffer-max*" content
-     (should-error (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*") :type 'error)
-     (should-error (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*" 1 n) :type 'error)
-     (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n))
+     ;; (should-error (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*") :type 'error)
+     ;; (should-error (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*" 1 n) :type 'error)
+     ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n))
      (should-error (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer-max*") :type 'error)
      (should-error (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer-max*" 1 n) :type 'error)
      (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n)))))
@@ -699,8 +699,8 @@ The response is processed by `gptel--streaming-done-callback'."
       (aj8/gptel-tool-modify-buffer buffer-name "new content")
       (should (string-equal (with-current-buffer buffer-name (buffer-string)) "new content"))
 
-      ;; read-buffer-region
-      (should (string-equal (aj8/gptel-tool-read-buffer-region buffer-name) "new content"))))
+      ;; read-buffer-region-count
+      (should (string-equal (aj8/gptel-tool-read-buffer-region-count buffer-name) "new content"))))
 
   ;; Test on a buffer visiting a file
   (with-temp-file-with-content test-file "file content"

@@ -124,38 +124,38 @@ The macro binds local variables `tool-name' and `args' and then:
 ;; TODO: Calling this and other functions …–region is a misnomer since start
 ;; and end are line numbers, not character positions.
 ;;       Implement a soft truncation (returning the first/last N lines rather than an error)?
-(defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start end)
-  "Read a region from BUFFER-NAME.
+;; (defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start end)
+;;   "Read a region from BUFFER-NAME.
 
-Optional START and END are 1-based line numbers.  If START is nil read
-from the beginning of the buffer.  If END is nil read to the end of the
-buffer.
+;; Optional START and END are 1-based line numbers.  If START is nil read
+;; from the beginning of the buffer.  If END is nil read to the end of the
+;; buffer.
 
-This function enforces `aj8/gptel-default-max-lines' as an upper bound
-on the number of lines returned."
-  (aj8/gptel-tool--with-tool
-   "tool: aj8_read_buffer_region"
-   (list :buffer-name buffer-name :start start :end end)
-   (let ((buffer (get-buffer buffer-name)))
-     (unless buffer
-       (error "Error: Buffer '%s' not found." buffer-name))
-     (with-current-buffer buffer
-       (let* ((total-lines (count-lines (point-min) (point-max)))
-              (start-line (or start 1))
-              (end-line (or end total-lines)))
-         ;; Validate bounds
-         (when (< start-line 1)
-           (error "Error: START must be >= 1"))
-         (when (> end-line total-lines)
-           (error "Error: END exceeds buffer length (%d)." total-lines))
-         (when (> (1+ (- end-line start-line)) aj8/gptel-default-max-lines)
-           (error "Error: Requested region (%d lines) exceeds maximum allowed (%d)."
-                  (1+ (- end-line start-line)) aj8/gptel-default-max-lines))
-         (goto-line start-line)
-         (let ((start-pos (point)))
-           (goto-line end-line)
-           (let ((end-pos (line-end-position)))
-             (buffer-substring-no-properties start-pos end-pos))))))))
+;; This function enforces `aj8/gptel-default-max-lines' as an upper bound
+;; on the number of lines returned."
+;;   (aj8/gptel-tool--with-tool
+;;    "tool: aj8_read_buffer_region"
+;;    (list :buffer-name buffer-name :start start :end end)
+;;    (let ((buffer (get-buffer buffer-name)))
+;;      (unless buffer
+;;        (error "Error: Buffer '%s' not found." buffer-name))
+;;      (with-current-buffer buffer
+;;        (let* ((total-lines (count-lines (point-min) (point-max)))
+;;               (start-line (or start 1))
+;;               (end-line (or end total-lines)))
+;;          ;; Validate bounds
+;;          (when (< start-line 1)
+;;            (error "Error: START must be >= 1"))
+;;          (when (> end-line total-lines)
+;;            (error "Error: END exceeds buffer length (%d)." total-lines))
+;;          (when (> (1+ (- end-line start-line)) aj8/gptel-default-max-lines)
+;;            (error "Error: Requested region (%d lines) exceeds maximum allowed (%d)."
+;;                   (1+ (- end-line start-line)) aj8/gptel-default-max-lines))
+;;          (goto-line start-line)
+;;          (let ((start-pos (point)))
+;;            (goto-line end-line)
+;;            (let ((end-pos (line-end-position)))
+;;              (buffer-substring-no-properties start-pos end-pos))))))))
 
 (defun aj8/gptel-tool-read-buffer-region-count (buffer-name &optional start count)
   "Read COUNT lines from BUFFER-NAME starting at line START.
@@ -668,22 +668,22 @@ project root."
                :description "Path to the file to open."))
  :category "buffers")
 
-(gptel-make-tool
- :function #'aj8/gptel-tool-read-buffer-region
- :name "aj8_read_buffer_region"
- :description (format "Read lines from a buffer. Max lines per call: %d. Use chunking for larger ranges. START and END are optional 1-based line numbers; if START is nil, read from the beginning of the buffer. If END is nil, read to the end of the buffer." aj8/gptel-default-max-lines)
- :args (list '( :name "buffer-name"
-                :type string
-                :description "The name of the buffer to read the contents of. ")
-             '( :name "start"
-                :type integer
-                :optional t
-                :description "The optional first line to read from.")
-             '( :name "end"
-                :type integer
-                :optional t
-                :description "The optional last line to read to."))
- :category "buffers")
+;; (gptel-make-tool
+;;  :function #'aj8/gptel-tool-read-buffer-region
+;;  :name "aj8_read_buffer_region"
+;;  :description (format "Read lines from a buffer. Max lines per call: %d. Use chunking for larger ranges. START and END are optional 1-based line numbers; if START is nil, read from the beginning of the buffer. If END is nil, read to the end of the buffer." aj8/gptel-default-max-lines)
+;;  :args (list '( :name "buffer-name"
+;;                 :type string
+;;                 :description "The name of the buffer to read the contents of. ")
+;;              '( :name "start"
+;;                 :type integer
+;;                 :optional t
+;;                 :description "The optional first line to read from.")
+;;              '( :name "end"
+;;                 :type integer
+;;                 :optional t
+;;                 :description "The optional last line to read to."))
+;;  :category "buffers")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-buffer-region-count
