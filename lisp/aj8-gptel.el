@@ -340,7 +340,21 @@ to LINE-NUMBER."
 (defun aj8/--apply-buffer-edits (buffer-name buffer-edits edit-type)
   "Apply a list of edits to BUFFER-NAME.
 
-BUFFER-EDITS is... EDIT-TYPE can be 'line or 'string."
+BUFFER-EDITS is a list of property lists describing edits. Each edit is
+a plist with the following keys:
+- :line-number (integer) -- The line to edit.
+- :old-string (string) -- The text to replace. Must not contain newline
+                          characters.
+- :new-string (string) -- The replacement text to insert.
+
+EDIT-TYPE can be 'line or 'string. For 'line edits the :old-string is
+compared against the entire line; when equal the entire line is replaced
+with :new-string. For 'string edits the function searches from the
+beginning of the specified line to the end of the line for the first
+occurrence of :old-string and replaces that occurrence with :new-string.
+
+Edits are applied in descending order of :line-number to avoid shifting
+subsequent line numbers."
   (let ((buffer (get-buffer buffer-name)))
     (unless buffer
       (error "Error: Buffer '%s' not found." buffer-name))
@@ -367,7 +381,19 @@ BUFFER-EDITS is... EDIT-TYPE can be 'line or 'string."
 
 (defun aj8/--review-buffer-edits (buffer-name buffer-edits edit-type)
   "Prepare a temporary buffer with edits and start an Ediff review session.
-BUFFER-EDITS is... EDIT-TYPE can be 'line or 'string."
+
+BUFFER-EDITS is a list of property lists with the same shape as
+described for `aj8/--apply-buffer-edits': each edit should contain
+:line-number, :old-string, and :new-string.
+
+EDIT-TYPE can be 'line or 'string, as described in
+`aj8/--apply-buffer-edits'.
+
+This function creates a temporary buffer named
+\"*<BUFFER-NAME>-edits*\", inserts the contents of BUFFER-NAME, applies
+the edits to the temporary buffer (using `aj8/--apply-buffer-edits'),
+and launches `ediff-buffers' comparing the original buffer and the
+edited temporary buffer."
   (let* ((original-buffer (get-buffer buffer-name))
          (temp-buffer-name (format "*%s-edits*" buffer-name))
          (temp-buffer (get-buffer-create temp-buffer-name)))
@@ -386,7 +412,11 @@ BUFFER-EDITS is... EDIT-TYPE can be 'line or 'string."
 (defun aj8/gptel-tool-apply-buffer-line-edits (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of line edits, applying changes directly without review.
 
-BUFFER-EDITS is ..."
+BUFFER-EDITS is a list of property lists where each edit must contain
+the keys :line-number (integer), :old-string (string), and
+:new-string (string). The :old-string is compared against the entire
+line; when it matches, the line is replaced with :new-string. Edits are
+applied in descending order of :line-number."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_line_edits"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -396,7 +426,12 @@ BUFFER-EDITS is ..."
 (defun aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of line edits and start an Ediff session for review.
 
-BUFFER-EDITS is ..."
+BUFFER-EDITS is a list of property lists where each edit must contain
+:line-number (integer), :old-string (string), and
+:new-string (string). This function prepares a temporary buffer with the
+line edits applied and launches `ediff-buffers' to let the user review
+the changes interactively. Edits are applied to the temporary buffer
+only; the original buffer is not modified by this command."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_line_edits_with_review"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -406,7 +441,12 @@ BUFFER-EDITS is ..."
 (defun aj8/gptel-tool-apply-buffer-string-edits (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of string edits, applying changes directly without review.
 
-BUFFER-EDITS is ..."
+BUFFER-EDITS is a list of property lists where each edit must contain
+:line-number (integer), :old-string (string), and
+:new-string (string). The function searches from the start of the
+specified line to the end of the line for the first occurrence of
+:old-string and replaces it with :new-string. Edits are applied in
+descending order of :line-number."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_string_edits"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -416,7 +456,12 @@ BUFFER-EDITS is ..."
 (defun aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of string edits and start an Ediff session for review.
 
-BUFFER-EDITS is ..."
+BUFFER-EDITS is a list of property lists where each edit must contain
+:line-number (integer), :old-string (string), and
+:new-string (string). This function prepares a temporary buffer with the
+string edits applied and launches `ediff-buffers' to let the user review
+the changes interactively. Edits are applied to the temporary buffer
+only; the original buffer is not modified by this command."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_string_edits_with_review"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
