@@ -2,8 +2,8 @@
 
 ;;; Helpers
 
-(defun aj8/gptel-tool--make-display-copy (obj)
-"Return a display-safe copy of OBJ suitable for minibuffer messages.
+(defun aj8/gptel-tool--truncate-for-display (obj)
+"Return a truncated, display-safe copy of OBJ for minibuffer messages.
 
 OBJ is the source object to convert; it may be nil, a string, a vector,
 a list, or a list of property lists (plists).  The conversion rules are:
@@ -30,20 +30,20 @@ for use with `prin1-to-string' for concise minibuffer display."
         obj)))
    ;; Vectors: convert to list
    ((vectorp obj)
-    (aj8/gptel-tool--make-display-copy (append obj nil)))
+    (aj8/gptel-tool--truncate-for-display (append obj nil)))
    ;; Lists of plists: each element is a list whose car is a keyword
    ((and (listp obj)
          (cl-every (lambda (e) (and (listp e) (keywordp (car e)))) obj))
     (let ((len (length obj)))
       (if (= len 0)
           '()
-        (let ((first (aj8/gptel-tool--make-display-copy (car obj)))
+        (let ((first (aj8/gptel-tool--truncate-for-display (car obj)))
               (rest-count (1- len)))
           (if (> rest-count 0)
               (list first (format "...(+%d more)" rest-count))
             (list first))))))
    ((listp obj)
-    (mapcar #'aj8/gptel-tool--make-display-copy obj))
+    (mapcar #'aj8/gptel-tool--truncate-for-display obj))
    (t obj)))
 
 (defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional error-p)
@@ -85,7 +85,7 @@ If ARGS is nil the minibuffer will show only the tool name (no argument summary 
 
 The macro binds local variables `tool-name' and `args' and then:
 - Messages the running tool name and a display-safe summary of ARGS in the
-  minibuffer (using `aj8/gptel-tool--make-display-copy').
+  minibuffer (using `aj8/gptel-tool--truncate-for-display').
 - Executes BODY and on success logs the full ARGS and the RESULT to the
   `*gptel-tool-log*' buffer and returns RESULT.
 - On error it messages and logs the error (including ARGS) and then
@@ -94,7 +94,7 @@ The macro binds local variables `tool-name' and `args' and then:
          (args ,args))
      (message "%s%s"
               tool-name
-              (if args (concat " " (prin1-to-string (aj8/gptel-tool--make-display-copy args))) ""))
+              (if args (concat " " (prin1-to-string (aj8/gptel-tool--truncate-for-display args))) ""))
      (condition-case err
          (let ((result (progn ,@body)))
            ;; (message "%s: Success" tool-name)
