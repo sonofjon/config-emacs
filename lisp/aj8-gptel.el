@@ -5,13 +5,14 @@
 (defun aj8/gptel-tool--make-display-copy (obj)
 "Return a display-safe copy of OBJ suitable for minibuffer messages.
 
-OBJ is the source object to convert; it may be nil, a string, a list, or
-a list of property lists (plists).  The conversion rules are:
+OBJ is the source object to convert; it may be nil, a string, a vector,
+a list, or a list of property lists (plists).  The conversion rules are:
 
 - nil: returned as nil.
 - string: if the string contains a newline, return only the text up to
   the first newline followed by the suffix \"...(+N more)\" where N is
   the number of remaining lines; otherwise return the original string.
+- vector: convert to list before processing.
 - list of plists: return a list whose first element is the processed
   first plist and, if there are more elements, a second element that is
   the string \"...(+N more)\" where N is the number of remaining plists.
@@ -21,12 +22,16 @@ The original OBJ is not mutated; the result is a fresh structure intended
 for use with `prin1-to-string' for concise minibuffer display."
   (cond
    ((null obj) nil)
+   ;; Strings
    ((stringp obj)
     (let ((lines (split-string obj "\n")))
       (if (> (length lines) 1)
           (concat (car lines) (format "...(+%d more)" (1- (length lines))))
         obj)))
-   ;; Detect a list of plists: each element is a list whose car is a keyword
+   ;; Vectors: convert to list
+   ((vectorp obj)
+    (aj8/gptel-tool--make-display-copy (append obj nil)))
+   ;; Lists of plists: each element is a list whose car is a keyword
    ((and (listp obj)
          (cl-every (lambda (e) (and (listp e) (keywordp (car e)))) obj))
     (let ((len (length obj)))
