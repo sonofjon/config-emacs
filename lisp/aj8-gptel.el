@@ -63,11 +63,17 @@ machine-readable (prin1) and timestamped."
                       (prin1-to-string (or result "<nil>"))))
       (force-window-update (get-buffer-window buf)))))
 
+(defvar aj8/gptel-tool-return-errors t
+  "When non-nil, tool errors are returned instead of signaling.")
+
 (defun aj8/gptel-tool--message-and-reraise (tool-name args err)
   "Message ERR for TOOL-NAME with ARGS, log it, and re-signal the error."
-  (message "%s: %s" tool-name (error-message-string err))
-  (aj8/gptel-tool--log-to-buffer tool-name args (error-message-string err) t)
-  (signal (car err) (cdr err)))
+  (let ((msg (format "%s: %s" tool-name (error-message-string err))))
+    (message "%s" msg)
+    (aj8/gptel-tool--log-to-buffer tool-name args (error-message-string err) t)
+    (if aj8/gptel-tool-return-error-to-caller
+        msg
+      (signal (car err) (cdr err)))))
 
 (defmacro aj8/gptel-tool--with-tool (tool-name args &rest body)
   "Run BODY for TOOL-NAME and message/log the action.
