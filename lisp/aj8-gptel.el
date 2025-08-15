@@ -121,16 +121,16 @@ The macro binds local variables `tool-name' and `args' and then:
 (defvar aj8/gptel-default-max-lines 100
   "Default maximum number of lines any read tool will return.")
 
-;; TODO: Calling this and other functions …–region is a misnomer since start
-;; and end are line numbers, not character positions.
-;;       Implement a soft truncation (returning the first/last N lines rather than an error)?
+;; ;; TODO: Calling this and other functions …–region is a misnomer since start
+;; ;; and end are line numbers, not character positions.
+;; ;;       Implement a soft truncation (returning the first/last N lines rather than an error)?
 ;; (defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start end)
 ;;   "Read a region from BUFFER-NAME.
-
+;;
 ;; Optional START and END are 1-based line numbers.  If START is nil read
 ;; from the beginning of the buffer.  If END is nil read to the end of the
 ;; buffer.
-
+;;
 ;; This function enforces `aj8/gptel-default-max-lines' as an upper bound
 ;; on the number of lines returned."
 ;;   (aj8/gptel-tool--with-tool
@@ -140,22 +140,23 @@ The macro binds local variables `tool-name' and `args' and then:
 ;;      (unless buffer
 ;;        (error "Error: Buffer '%s' not found." buffer-name))
 ;;      (with-current-buffer buffer
-;;        (let* ((total-lines (count-lines (point-min) (point-max)))
-;;               (start-line (or start 1))
-;;               (end-line (or end total-lines)))
-;;          ;; Validate bounds
-;;          (when (< start-line 1)
-;;            (error "Error: START must be >= 1"))
-;;          (when (> end-line total-lines)
-;;            (error "Error: END exceeds buffer length (%d)." total-lines))
-;;          (when (> (1+ (- end-line start-line)) aj8/gptel-default-max-lines)
-;;            (error "Error: Requested region (%d lines) exceeds maximum allowed (%d)."
-;;                   (1+ (- end-line start-line)) aj8/gptel-default-max-lines))
-;;          (goto-line start-line)
-;;          (let ((start-pos (point)))
-;;            (goto-line end-line)
-;;            (let ((end-pos (line-end-position)))
-;;              (buffer-substring-no-properties start-pos end-pos))))))))
+;;        (save-excursion
+;;          (let* ((total-lines (count-lines (point-min) (point-max)))
+;;                 (start-line (or start 1))
+;;                 (end-line (or end total-lines)))
+;;            ;; Validate bounds
+;;            (when (< start-line 1)
+;;              (error "Error: START must be >= 1"))
+;;            (when (> end-line total-lines)
+;;              (error "Error: END exceeds buffer length (%d)." total-lines))
+;;            (when (> (1+ (- end-line start-line)) aj8/gptel-default-max-lines)
+;;              (error "Error: Requested region (%d lines) exceeds maximum allowed (%d)."
+;;                     (1+ (- end-line start-line)) aj8/gptel-default-max-lines))
+;;            (goto-line start-line)
+;;            (let ((start-pos (point)))
+;;              (goto-line end-line)
+;;              (let ((end-pos (line-end-position)))
+;;                (buffer-substring-no-properties start-pos end-pos)))))))))
 
 (defun aj8/gptel-tool-read-buffer-region-count (buffer-name &optional start count)
   "Read COUNT lines from BUFFER-NAME starting at line START.
@@ -170,26 +171,27 @@ When START is nil it defaults to 1.  When COUNT nil it defaults to
      (unless buffer
        (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buffer
-       (let* ((total-lines (count-lines (point-min) (point-max)))
-              (start-line (or start 1))
-              (count (or count aj8/gptel-default-max-lines))
-              (end-line (+ start-line (1- count))))
-         ;; Validate bounds
-         (when (< start-line 1)
-           (error "Error: START must be >= 1"))
-         (when (< count 1)
-           (error "Error: COUNT must be >= 1"))
-         (when (> count aj8/gptel-default-max-lines)
-           (error "Error: Requested COUNT (%d) exceeds maximum allowed (%d)."
-                  count aj8/gptel-default-max-lines))
-         (when (> end-line total-lines)
-           (error "Error: Requested region end (%d) exceeds buffer length (%d)."
-                  end-line total-lines))
-         (goto-line start-line)
-         (let ((start-pos (point)))
-           (goto-line end-line)
-           (let ((end-pos (line-end-position)))
-             (buffer-substring-no-properties start-pos end-pos))))))))
+       (save-excursion
+         (let* ((total-lines (count-lines (point-min) (point-max)))
+                (start-line (or start 1))
+                (count (or count aj8/gptel-default-max-lines))
+                (end-line (+ start-line (1- count))))
+           ;; Validate bounds
+           (when (< start-line 1)
+             (error "Error: START must be >= 1"))
+           (when (< count 1)
+             (error "Error: COUNT must be >= 1"))
+           (when (> count aj8/gptel-default-max-lines)
+             (error "Error: Requested COUNT (%d) exceeds maximum allowed (%d)."
+                    count aj8/gptel-default-max-lines))
+           (when (> end-line total-lines)
+             (error "Error: Requested region end (%d) exceeds buffer length (%d)."
+                    end-line total-lines))
+           (goto-line start-line)
+           (let ((start-pos (point)))
+             (goto-line end-line)
+             (let ((end-pos (line-end-position)))
+               (buffer-substring-no-properties start-pos end-pos)))))))))
 
 (defun aj8/gptel-tool-list-buffers (&optional include-counts)
   "Return a newline-separated string listing all currently open file-based buffers.
