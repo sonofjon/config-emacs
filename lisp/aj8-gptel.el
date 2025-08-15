@@ -142,34 +142,54 @@ on the number of lines returned."
              (buffer-substring-no-properties start-pos end-pos))))))))
 
 (defun aj8/gptel-tool-list-buffers (&optional include-counts)
-  "List the names of all currently open buffers that are associated with a file.
+  "Return a newline-separated string listing all currently open file-based buffers.
 
-If INCLUDE-COUNTS is non-nil, return a list of strings of the form
-\"BUFFER-NAME: N lines\" instead of bare buffer names."
+Each line is of the form \"NAME: PATH\" where PATH is the file path
+relative to the current project root.  When the file is outside the
+current project PATH is the absolute file path.  If INCLUDE-COUNTS is
+non-nil, append the number of lines as \" (N lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_buffers"
    (list :include-counts include-counts)
-   (let ((file-buffers '()))
+   (let ((lines '())
+         (proj (project-current)))
      (dolist (buffer (buffer-list))
        (when (buffer-file-name buffer)
          (with-current-buffer buffer
-           (let ((name (buffer-name buffer)))
+           (let* ((buf-name (buffer-name buffer))
+                  (file (buffer-file-name buffer))
+                  (path (if (and file proj) (file-relative-name file (project-root proj)) file)))
              (if include-counts
-                 (push (format "%s: %d lines" name (count-lines (point-min) (point-max))) file-buffers)
-               (push name file-buffers))))))
-     (nreverse file-buffers))))
+                 (push (format "%s: %s (%d lines)" buf-name path (count-lines (point-min) (point-max))) lines)
+               (push (format "%s: %s" buf-name path) lines))))))
+     (mapconcat #'identity (nreverse lines) "\n"))))
 
 (defun aj8/gptel-tool-list-all-buffers (&optional include-counts)
-  "List the names of all currently open buffers.
+  "Return a newline-separated string listing all currently open buffers.
 
-If INCLUDE-COUNTS is non-nil, return a list of strings of the form
-\"BUFFER-NAME: N lines\" instead of bare buffer names."
+Each line is either \"NAME: PATH\" for file-backed buffers or just
+\"NAME\" for non-file buffers. For file-backed buffers, PATH is the file
+path relative to the current project root.  When the file is outside the
+current project PATH is the absolute file path.  If INCLUDE-COUNTS is
+non-nil, append the number of lines as \" (N lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_all_buffers"
    (list :include-counts include-counts)
-   (let ((res '()))
+   (let ((lines '())
+         (proj (project-current)))
      (dolist (buffer (buffer-list))
        (with-current-buffer buffer
+         (let* ((buf-name (buffer-name buffer))
+                (file (buffer-file-name buffer))
+                (path (when file (if proj (file-relative-name file (project-root proj)) file))))
+           (if file
+               (if include-counts
+                   (push (format "%s: %s (%d lines)" buf-name path (count-lines (point-min) (point-max))) lines)
+                 (push (format "%s: %s" buf-name path) lines))
+             (if include-counts
+                 (push (format "%s (%d lines)" buf-name (count-lines (point-min) (point-max))) lines)
+               (push buf-name lines)))))
+     (mapconcat #'identity (nreverse lines) "\n"))))
          (let ((name (buffer-name buffer)))
            (if include-counts
                (push (format "%s: %d lines" name (count-lines (point-min) (point-max))) res)
@@ -565,21 +585,21 @@ the project root."
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-buffers
  :name "aj8_list_buffers"
- :description "List the names of all currently open buffers that are associated with a file."
+ :description "Return a newline-separated string listing all currently open buffers that are associated with a file. Each line is of the form \"NAME: PATH\" where PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If non-nil, return strings of the form \"BUFFER-NAME: N lines\" instead of bare names."))
+                :description "If non-nil, return strings where each line is of the form \"NAME: PATH (N lines)\" instead of bare names."))
  :category "buffers")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-all-buffers
  :name "aj8_list_all_buffers"
- :description "List the names of all currently open buffers."
+ :description "Return a newline-separated string listing all currently open buffers. Each line is either \"NAME: PATH\" for file-backed buffers or just \"NAME\" for non-file buffers. For file-backed buffers, PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If non-nil, return strings of the form \"BUFFER-NAME: N lines\" instead of bare names."))
+                :description "If non-nil, return strings where each line is of the form \"NAME: PATH (N lines)\" instead of bare names."))
  :category "buffers")
 
 (gptel-make-tool
