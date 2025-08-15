@@ -909,7 +909,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-list-files
  :name "aj8_project_list_files"
- :description "Return a string listing all files in the current project. Each line contains a file base name followed by its path relative to the project root; if include-counts is non-nil, append the line count as " (N lines).""
+ :description "Return a string listing all files in the current project. Each line contains a file base name followed by its path relative to the project root; if include-counts is non-nil, append the line count as \" (N lines).\""
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
