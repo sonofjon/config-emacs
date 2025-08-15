@@ -568,7 +568,7 @@ the project root."
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-buffer-region
  :name "aj8_read_buffer_region"
- :description (format "Read a region of a buffer. START and END are optional 1-based line numbers; if START is nil, read from the beginning of the buffer. If END is nil, read to the end of the buffer. Any request for more than %d lines will signal an error; this limit applies to all calls." aj8/gptel-default-max-lines)
+ :description (format "Read lines from a buffer. Max lines per call: %d. Use chunking for larger ranges. START and END are optional 1-based line numbers; if START is nil, read from the beginning of the buffer. If END is nil, read to the end of the buffer." aj8/gptel-default-max-lines)
  :args (list '( :name "buffer-name"
                 :type string
                 :description "The name of the buffer to read the contents of. ")
