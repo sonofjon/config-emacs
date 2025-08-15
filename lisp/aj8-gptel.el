@@ -157,7 +157,7 @@ on the number of lines returned."
            (let ((end-pos (line-end-position)))
              (buffer-substring-no-properties start-pos end-pos))))))))
 
-(defun aj8/gptel-tool-read-buffer-region-count (buffer-name start count)
+(defun aj8/gptel-tool-read-buffer-region-count (buffer-name &optional start count)
   "Read COUNT lines from BUFFER-NAME starting at line START.
 
 When START is nil it defaults to 1.  When COUNT nil it defaults to
@@ -688,18 +688,18 @@ project root."
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-buffer-region-count
  :name "aj8_read_buffer_region_count"
- :description (format "Read lines from a buffer using a start+count API. COUNT is the number of lines to retrieve; max per call: %d. START is optional and defaults to 1." aj8/gptel-default-max-lines)
+ :description (format "Read lines from a buffer; max per call: %d. START and COUNT are optional and default to 1 and %d, respectively " aj8/gptel-default-max-lines aj8/gptel-default-max-lines)
  :args (list '( :name "buffer-name"
                 :type string
                 :description "The name of the buffer to read from.")
              '( :name "start"
                 :type integer
                 :optional t
-                :description "The 1-based starting line number; defaults to 1.")
+                :description "The 1-based line number to start reading from (default is 1).")
              '( :name "count"
                 :type integer
                 :optional t
-                :description "Number of lines to read; must be >= 1 and no greater than the tool max.") )
+                :description (format "The number of lines to read (must be <= %d)." aj8/gptel-default-max-lines)))
  :category "buffers")
 
 (gptel-make-tool
