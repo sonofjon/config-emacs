@@ -37,10 +37,10 @@ for `prin1-to-string'."
     (mapcar #'aj8/gptel-tool--make-display-copy obj))
    (t obj)))
 
-(defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional errp)
+(defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional error-p)
   "Append to `*gptel-tool-log*' recording TOOL-NAME, ARGS and RESULT.
 
-If ERRP is non-nil record it as an error entry.  The record is
+If ERROR-P is non-nil record it as an error entry.  The record is
 machine-readable (prin1) and timestamped."
   (let ((buf (get-buffer-create "*gptel-tool-log*"))
         (ts (format-time-string "%Y-%m-%d %T")))
@@ -50,7 +50,7 @@ machine-readable (prin1) and timestamped."
                       ts
                       tool-name
                       (prin1-to-string args)
-                      (if errp "error" "result")
+                      (if error-p "error" "result")
                       (prin1-to-string (or result "<nil>"))))
       (force-window-update (get-buffer-window buf)))))
 
