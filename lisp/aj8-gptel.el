@@ -38,9 +38,10 @@ for `prin1-to-string'."
    (t obj)))
 
 (defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional errp)
-  "Append a single line to *gptel-tool-log* recording TOOL-NAME, ARGS and RESULT.
-If ERRP is non-nil record it as an error entry.
-The record is machine-readable (prin1) and timestamped."
+  "Append to `*gptel-tool-log*' recording TOOL-NAME, ARGS and RESULT.
+
+If ERRP is non-nil record it as an error entry.  The record is
+machine-readable (prin1) and timestamped."
   (let ((buf (get-buffer-create "*gptel-tool-log*"))
         (ts (format-time-string "%Y-%m-%d %T")))
     (with-current-buffer buf
@@ -61,8 +62,7 @@ The record is machine-readable (prin1) and timestamped."
 
 (defmacro aj8/gptel-tool--with-tool (tool-name args &rest body)
   "Run BODY for TOOL-NAME, message running/success/error in the minibuffer.
-ARGS must be provided (plist or alist) or nil. Backwards-compatibility:
-callers must be updated to pass an explicit ARGS argument (or nil)."
+ARGS must be provided (plist) or nil."
   `(let ((tool-name ,tool-name)
          (args ,args))
      (message "%s%s"
@@ -109,7 +109,7 @@ callers must be updated to pass an explicit ARGS argument (or nil)."
 ;; and end are line numbers, not character positions.
 ;;       Implement a soft truncation (returning the first/last N lines rather than an error)?
 (defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start end)
-  "Read a region of a buffer.
+  "Read a region from BUFFER-NAME.
 
 Optional START and END are 1-based line numbers. If START is nil read
 from the beginning of the buffer. If END is nil read to the end of the
@@ -144,8 +144,7 @@ on the number of lines returned."
 (defun aj8/gptel-tool-read-buffer-region-count (buffer-name start count)
   "Read COUNT lines from BUFFER-NAME starting at line START.
 
-Optional START is a 1-based line number; when nil it defaults to 1.
-COUNT is the number of lines to return. If COUNT is nil it defaults to
+When START is nil it defaults to 1.  When COUNT nil it defaults to
 `aj8/gptel-default-max-lines'. COUNT must be >= 1 and no greater than
 `aj8/gptel-default-max-lines'."
   (aj8/gptel-tool--with-tool
@@ -232,7 +231,7 @@ non-nil, append the number of lines as \" (N lines)\"."
      (nreverse res))))
 
 (defun aj8/gptel-tool-buffer-to-file (buffer-name)
-  "Return the file path for a given buffer."
+  "Return the file path for BUFFER-NAME."
   (aj8/gptel-tool--with-tool
    "tool: aj8_buffer_to_file"
    (list :buffer-name buffer-name)
@@ -242,7 +241,7 @@ non-nil, append the number of lines as \" (N lines)\"."
      (buffer-file-name buffer))))
 
 (defun aj8/gptel-tool-file-to-buffer (file-path)
-  "Return the buffer name for a given file path."
+  "Return the buffer name for FILE-PATH."
   (aj8/gptel-tool--with-tool
    "tool: aj8_file_to_buffer"
    (list :file-path file-path)
@@ -252,7 +251,7 @@ non-nil, append the number of lines as \" (N lines)\"."
      (buffer-name buffer))))
 
 (defun aj8/gptel-tool-append-to-buffer (buffer text)
-  "Append text to a buffer."
+  "Append TEXT to BUFFER."
   (aj8/gptel-tool--with-tool
    "tool: aj8_append_to_buffer"
    (list :buffer buffer :text text)
@@ -265,7 +264,9 @@ non-nil, append the number of lines as \" (N lines)\"."
      (format "Text successfully appended to buffer %s." buffer))))
 
 (defun aj8/gptel-tool-insert-into-buffer (buffer text line-number)
-  "Insert text into a buffer at a specific line number. The text is inserted at the beginning of the specified line."
+  "Insert TEXT into BUFFER at LINE-NUMBER.
+
+The text is inserted at the beginning of the specified line."
   (aj8/gptel-tool--with-tool
    "tool: aj8_insert_into_buffer"
    (list :buffer buffer :text text :line-number line-number)
@@ -278,7 +279,7 @@ non-nil, append the number of lines as \" (N lines)\"."
      (format "Text successfully inserted into buffer %s at line %d." buffer line-number))))
 
 (defun aj8/gptel-tool-modify-buffer (buffer content)
-  "Completely overwrite the contents of a buffer."
+  "Overwrite BUFFER with CONTENT."
   (aj8/gptel-tool--with-tool
    "tool: aj8_modify_buffer"
    (list :buffer buffer :content content)
@@ -291,7 +292,7 @@ non-nil, append the number of lines as \" (N lines)\"."
      (format "Buffer %s successfully modified." buffer))))
 
 (defun aj8/gptel-tool-edit-buffer-string (buffer-name old-string new-string)
-  "Edit a buffer by replacing a single instance of an exact string."
+  "Replace a single instance of OLD-STRING with NEW-STRING in BUFFER-NAME."
   (aj8/gptel-tool--with-tool
    "tool: aj8_edit_buffer_string"
    (list :buffer-name buffer-name :old-string old-string :new-string new-string)
@@ -313,7 +314,10 @@ non-nil, append the number of lines as \" (N lines)\"."
 
 (defun aj8/gptel-tool-edit-buffer-line (buffer-name line-number content)
   "Replace line LINE-NUMBER in file BUFFER-NAME with CONTENT.
-This wrapper function delegates replacement to `aj8/gptel-tool-edit-buffer-region' with START-LINE and END-LINE equal to LINE-NUMBER."
+
+This wrapper function delegates replacement to
+`aj8/gptel-tool-edit-buffer-region' with START-LINE and END-LINE equal
+to LINE-NUMBER."
   (aj8/gptel-tool--with-tool
    "tool: aj8_edit_buffer_line"
    (list :buffer-name buffer-name :line-number line-number :content content)
@@ -339,8 +343,9 @@ This wrapper function delegates replacement to `aj8/gptel-tool-edit-buffer-regio
              start-line end-line buffer-name))))
 
 (defun aj8/--apply-buffer-edits (buffer-name buffer-edits edit-type)
-  "Apply a list of edits to a buffer.
-EDIT-TYPE can be 'line or 'string."
+  "Apply a list of edits to BUFFER-NAME.
+
+BUFFER-EDITS is... EDIT-TYPE can be 'line or 'string."
   (let ((buffer (get-buffer buffer-name)))
     (unless buffer
       (error "Error: Buffer '%s' not found." buffer-name))
@@ -367,7 +372,7 @@ EDIT-TYPE can be 'line or 'string."
 
 (defun aj8/--review-buffer-edits (buffer-name buffer-edits edit-type)
   "Prepare a temporary buffer with edits and start an Ediff review session.
-EDIT-TYPE can be 'line or 'string."
+BUFFER-EDITS is... EDIT-TYPE can be 'line or 'string."
   (let* ((original-buffer (get-buffer buffer-name))
          (temp-buffer-name (format "*%s-edits*" buffer-name))
          (temp-buffer (get-buffer-create temp-buffer-name)))
@@ -384,7 +389,9 @@ EDIT-TYPE can be 'line or 'string."
     (ediff-buffers original-buffer temp-buffer)))
 
 (defun aj8/gptel-tool-apply-buffer-line-edits (buffer-name buffer-edits)
-  "Edit a buffer with a list of line edits, applying changes directly without review."
+  "Edit BUFFER-NAME with a list of line edits, applying changes directly without review.
+
+BUFFER-EDITS is ..."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_line_edits"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -392,7 +399,9 @@ EDIT-TYPE can be 'line or 'string."
    (format "Line edits successfully applied to buffer %s." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer-edits)
-  "Edit a buffer with a list of line edits and start an Ediff session for review."
+  "Edit BUFFER-NAME with a list of line edits and start an Ediff session for review.
+
+BUFFER-EDITS is ..."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_line_edits_with_review"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -400,7 +409,9 @@ EDIT-TYPE can be 'line or 'string."
    (format "Ediff session started for %s. Please complete the review." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits (buffer-name buffer-edits)
-  "Edit a buffer with a list of string edits, applying changes directly without review."
+  "Edit BUFFER-NAME with a list of string edits, applying changes directly without review.
+
+BUFFER-EDITS is ..."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_string_edits"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -408,7 +419,9 @@ EDIT-TYPE can be 'line or 'string."
    (format "String edits successfully applied to buffer %s." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer-edits)
-  "Edit a buffer with a list of string edits and start an Ediff session for review."
+  "Edit BUFFER-NAME with a list of string edits and start an Ediff session for review.
+
+BUFFER-EDITS is ..."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_string_edits_with_review"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -418,7 +431,7 @@ EDIT-TYPE can be 'line or 'string."
 ;; Emacs
 
 (defun aj8/gptel-tool-read-documentation (symbol)
-  "Read the documentation for a given 'symbol'."
+  "Read the documentation for SYMBOL."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_documentation"
    (list :symbol symbol)
@@ -431,7 +444,7 @@ EDIT-TYPE can be 'line or 'string."
      (or doc (format "No documentation found for symbol '%s'." symbol)))))
 
 (defun aj8/gptel-tool-read-function (function)
-  "Return the code of the definition of an Emacs Lisp function."
+  "Return the definition FUNCTION."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_function"
    (list :function function)
@@ -472,7 +485,7 @@ EDIT-TYPE can be 'line or 'string."
          (prin1-to-string func-def)))))))
 
 (defun aj8/gptel-tool-read-library (library-name)
-  "Return the source code of a library or package in Emacs."
+  "Return the source code of LIBRARY-NAME."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_library"
    (list :library-name library-name)
@@ -517,11 +530,11 @@ EDIT-TYPE can be 'line or 'string."
 (defun aj8/gptel-tool-project-list-files (&optional include-counts)
   "Return a string listing all files in the current project.
 
-Each line is of the form "NAME: RELATIVE/PATH". If INCLUDE-COUNTS
-is non-nil, append the number of lines as "NAME: RELATIVE/PATH (N lines)".
+Each line is of the form \"NAME: PATH\". If INCLUDE-COUNTS is non-nil,
+append the number of lines as \"NAME: PATH (N lines)\".
 
-NAME is the file's base name and RELATIVE/PATH is the path relative to
-the project root."
+NAME is the file's base name and PATH is the path relative to the
+project root."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_list_files"
    (list :include-counts include-counts)
@@ -560,7 +573,7 @@ the project root."
        (seq-intersection project-file-list wildcard-file-list #'string-equal)))))
 
 (defun aj8/gptel-tool-project-search-content (regexp)
-  "In the current project, recursively search for content matching the regexp."
+  "In the current project, recursively search for content matching REGEXP."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_search_content"
    (list :regexp regexp)
