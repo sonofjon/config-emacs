@@ -659,11 +659,14 @@ project root."
                         (format "%s: %s" name rel))))
                   project-file-list "\n")))))
 
-(defun aj8/gptel-tool-project-find-files-glob (pattern)
-  "In the current project, find files whose filenames match the glob PATTERN."
+(defun aj8/gptel-tool-project-find-files-glob (pattern &optional include-counts)
+  "In the current project, find files whose filenames match the glob PATTERN.
+
+Return a newline-separated string where each line is \"NAME: PATH\".  If
+INCLUDE-COUNTS is non-nil append the number of lines as \" (N lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_find_files_glob"
-   (list :pattern pattern)
+   (list :pattern pattern :include-counts include-counts)
    (let ((proj (project-current)))
      (unless proj
        (error "No project found in the current context."))
@@ -674,9 +677,20 @@ project root."
             (wildcard-file-list
              (let ((default-directory root))
                ;; The 't' argument makes it return absolute paths
-               (file-expand-wildcards pattern t))))
-       ;; Return the files present in both lists
-       (seq-intersection project-file-list wildcard-file-list #'string-equal)))))
+               (file-expand-wildcards pattern t)))
+            ;; Return the files present in both lists
+            (matched (seq-intersection project-file-list wildcard-file-list #'string-equal)))
+       ;; Return as newline-separated relative paths, with optional line counts
+       (mapconcat (lambda (f)
+                    (let* ((rel (file-relative-name f root))
+                           (name (file-name-nondirectory f)))
+                      (if include-counts
+                          (let ((nlines (with-temp-buffer
+                                          (insert-file-contents f)
+                                          (count-lines (point-min) (point-max)))))
+                            (format "%s: %s (%d lines)" name rel nlines))
+                        (format "%s: %s" name rel))))
+                  matched "\n")))))
 
 (defun aj8/gptel-tool-project-search-content (regexp)
   "In the current project, recursively search for content matching REGEXP."
@@ -1043,7 +1057,11 @@ This action requires manual user review. After calling this tool, you must stop 
  :description "In the current project, find files matching the glob PATTERN. This search respects .gitignore. The pattern is a standard file glob. To search recursively, use the '**/' prefix. For example, a PATTERN of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory."
  :args '((:name "pattern"
                 :type string
-                :description "A glob pattern to match against the filenames in the project."))
+                :description "A glob pattern to match against the filenames in the project.")
+         (:name "include-counts"
+                :type boolean
+                :optional t
+                :description "If non-nil, append the number of lines to each entry as ' (N lines)'."))
  :category "project")
 
 (gptel-make-tool
