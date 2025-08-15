@@ -63,23 +63,34 @@ machine-readable (prin1) and timestamped."
                       (prin1-to-string (or result "<nil>"))))
       (force-window-update (get-buffer-window buf)))))
 
-(defvar aj8/gptel-tool-return-errors t
-  "When non-nil, tool errors are returned instead of signaling.")
+(defvar aj8/gptel-tool-return-error t
+  "When non-nil, tools return errors to the caller.
 
-(defun aj8/gptel-tool--message-and-reraise (tool-name args err)
-  "Message ERR for TOOL-NAME with ARGS, log it, and re-signal the error."
+If non-nil, tool error handlers return the same human-readable error
+text that is messaged in the minibuffer, instead of signaling an Emacs
+error. When nil, errors are re-signaled after being messaged and logged.")
+
+(defun aj8/gptel-tool--report-and-return-or-signal (tool-name args err)
+  "Message and log ERR for TOOL-NAME with ARGS, then return or re-signal.
+
+ERR is the error object received by a condition-case handler.
+
+This builds the exact minibuffer message string for ERR, messages it,
+and logs it. If `aj8/gptel-tool-return-error' is non-nil, it returns
+that string; otherwise it re-signals the original error."
   (let ((msg (format "%s: %s" tool-name (error-message-string err))))
     (message "%s" msg)
     (aj8/gptel-tool--log-to-buffer tool-name args (error-message-string err) t)
-    (if aj8/gptel-tool-return-error-to-caller
+    (if aj8/gptel-tool-return-error
         msg
       (signal (car err) (cdr err)))))
 
 (defmacro aj8/gptel-tool--with-tool (tool-name args &rest body)
   "Run BODY for TOOL-NAME and message/log the action.
 
-ARGS is a property list (plist) of keyword/value pairs describing the
-parameters passed to the tool function.
+TOOL-NAME is the tool's display name (string).  ARGS is a property
+list (plist) of keyword/value pairs describing the parameters passed to
+the tool function.
 
 If ARGS is nil the minibuffer will show only the tool name (no argument summary is displayed).
 
@@ -88,8 +99,9 @@ The macro binds local variables `tool-name' and `args' and then:
   minibuffer (using `aj8/gptel-tool--truncate-for-display').
 - Executes BODY and on success logs the full ARGS and the RESULT to the
   `*gptel-tool-log*' buffer and returns RESULT.
-- On error it messages and logs the error (including ARGS) and then
-  re-signals the error."
+- On error it delegates to
+  `aj8/gptel-tool--report-and-return-or-signal', which messages/logs and
+  returns or re-signals depending on aj8/gptel-tool-return-error."
   `(let ((tool-name ,tool-name)
          (args ,args))
      (message "%s%s"
@@ -100,7 +112,7 @@ The macro binds local variables `tool-name' and `args' and then:
            ;; (message "%s: Success" tool-name)
            (aj8/gptel-tool--log-to-buffer tool-name args result)
            result)
-       (error (aj8/gptel-tool--message-and-reraise tool-name args err)))))
+       (error (aj8/gptel-tool--report-and-return-or-signal tool-name args err)))))
 
 ;;; Tool definitions
 
