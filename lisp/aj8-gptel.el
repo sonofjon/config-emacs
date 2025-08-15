@@ -375,7 +375,7 @@ subsequent line numbers."
         (let ((line-number (plist-get edit :line-number))
               (old-string (plist-get edit :old-string))
               (new-string (plist-get edit :new-string)))
-          ;; Validate that old-string is single-line for edit types that require it.
+          ;; Validate that old-string is single-line for edit types that require it
           (when (and old-string
                      (or (eq edit-type 'line) (eq edit-type 'string))
                      (string-match-p "\n" old-string))
@@ -613,14 +613,14 @@ project root."
      (unless proj
        (error "No project found in the current context."))
      (let* ((root (project-root proj))
-            ;; Get list of non-ignored files from project.el (absolute paths).
+            ;; Get list of non-ignored files from project.el (absolute paths)
             (project-file-list (project-files proj))
-            ;; Get list of files matching glob from filesystem (absolute paths).
+            ;; Get list of files matching glob from filesystem (absolute paths)
             (wildcard-file-list
              (let ((default-directory root))
-               ;; The 't' argument makes it return absolute paths.
+               ;; The 't' argument makes it return absolute paths
                (file-expand-wildcards pattern t))))
-       ;; Return the files present in both lists.
+       ;; Return the files present in both lists
        (seq-intersection project-file-list wildcard-file-list #'string-equal)))))
 
 (defun aj8/gptel-tool-project-search-content (regexp)
