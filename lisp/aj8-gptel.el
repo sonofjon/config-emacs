@@ -10,7 +10,7 @@ This minimal helper handles only the types we need:
   if there are more elements, a string like '(+N more)'.
 - General lists: recursively process elements.
 - Strings: if the string contains a newline, return only the first line
-  (the text up to the first newline). Single-line strings are returned
+  (the text up to the first newline).  Single-line strings are returned
   unchanged.
 
 The original OBJ is not mutated; this returns a fresh structure suitable
@@ -123,8 +123,8 @@ The macro binds local variables `tool-name' and `args' and then:
 (defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start end)
   "Read a region from BUFFER-NAME.
 
-Optional START and END are 1-based line numbers. If START is nil read
-from the beginning of the buffer. If END is nil read to the end of the
+Optional START and END are 1-based line numbers.  If START is nil read
+from the beginning of the buffer.  If END is nil read to the end of the
 buffer.
 
 This function enforces `aj8/gptel-default-max-lines' as an upper bound
@@ -157,7 +157,7 @@ on the number of lines returned."
   "Read COUNT lines from BUFFER-NAME starting at line START.
 
 When START is nil it defaults to 1.  When COUNT nil it defaults to
-`aj8/gptel-default-max-lines'. COUNT must be >= 1 and no greater than
+`aj8/gptel-default-max-lines'.  COUNT must be >= 1 and no greater than
 `aj8/gptel-default-max-lines'."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_buffer_region_count"
@@ -214,7 +214,7 @@ non-nil, append the number of lines as \" (N lines)\"."
   "Return a newline-separated string listing all currently open buffers.
 
 Each line is either \"NAME: PATH\" for file-backed buffers or just
-\"NAME\" for non-file buffers. For file-backed buffers, PATH is the file
+\"NAME\" for non-file buffers.  For file-backed buffers, PATH is the file
 path relative to the current project root.  When the file is outside the
 current project PATH is the absolute file path.  If INCLUDE-COUNTS is
 non-nil, append the number of lines as \" (N lines)\"."
@@ -352,16 +352,16 @@ to LINE-NUMBER."
 (defun aj8/--apply-buffer-edits (buffer-name buffer-edits edit-type)
   "Apply a list of edits to BUFFER-NAME.
 
-BUFFER-EDITS is a list of property lists describing edits. Each edit is
+BUFFER-EDITS is a list of property lists describing edits.  Each edit is
 a plist with the following keys:
 - :line-number (integer) -- The line to edit.
 - :old-string (string) -- The text to replace. Must not contain newline
                           characters.
 - :new-string (string) -- The replacement text to insert.
 
-EDIT-TYPE can be 'line or 'string. For 'line edits the :old-string is
+EDIT-TYPE can be 'line or 'string.  For 'line edits the :old-string is
 compared against the entire line; when equal the entire line is replaced
-with :new-string. For 'string edits the function searches from the
+with :new-string.  For 'string edits the function searches from the
 beginning of the specified line to the end of the line for the first
 occurrence of :old-string and replaces that occurrence with :new-string.
 
@@ -426,8 +426,8 @@ edited temporary buffer."
 
 BUFFER-EDITS is a list of property lists where each edit must contain
 the keys :line-number (integer), :old-string (string), and
-:new-string (string). The :old-string is compared against the entire
-line; when it matches, the line is replaced with :new-string. Edits are
+:new-string (string).  The :old-string is compared against the entire
+line; when it matches, the line is replaced with :new-string.  Edits are
 applied in descending order of :line-number."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_line_edits"
@@ -440,9 +440,9 @@ applied in descending order of :line-number."
 
 BUFFER-EDITS is a list of property lists where each edit must contain
 :line-number (integer), :old-string (string), and
-:new-string (string). This function prepares a temporary buffer with the
+:new-string (string).  This function prepares a temporary buffer with the
 line edits applied and launches `ediff-buffers' to let the user review
-the changes interactively. Edits are applied to the temporary buffer
+the changes interactively.  Edits are applied to the temporary buffer
 only; the original buffer is not modified by this command."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_line_edits_with_review"
@@ -454,11 +454,10 @@ only; the original buffer is not modified by this command."
   "Edit BUFFER-NAME with a list of string edits, applying changes directly without review.
 
 BUFFER-EDITS is a list of property lists where each edit must contain
-:line-number (integer), :old-string (string), and
-:new-string (string). The function searches from the start of the
-specified line to the end of the line for the first occurrence of
-:old-string and replaces it with :new-string. Edits are applied in
-descending order of :line-number."
+:line-number (integer), :old-string (string), and :new-string (string).
+The function searches from the start of the specified line to the end of
+the line for the first occurrence of :old-string and replaces it with
+:new-string.  Edits are applied in descending order of :line-number."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_string_edits"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -469,11 +468,11 @@ descending order of :line-number."
   "Edit BUFFER-NAME with a list of string edits and start an Ediff session for review.
 
 BUFFER-EDITS is a list of property lists where each edit must contain
-:line-number (integer), :old-string (string), and
-:new-string (string). This function prepares a temporary buffer with the
-string edits applied and launches `ediff-buffers' to let the user review
-the changes interactively. Edits are applied to the temporary buffer
-only; the original buffer is not modified by this command."
+:line-number (integer), :old-string (string), and :new-string (string).
+This function prepares a temporary buffer with the string edits applied
+and launches `ediff-buffers' to let the user review the changes
+interactively.  Edits are applied to the temporary buffer only; the
+original buffer is not modified by this command."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_string_edits_with_review"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -582,7 +581,7 @@ only; the original buffer is not modified by this command."
 (defun aj8/gptel-tool-project-list-files (&optional include-counts)
   "Return a string listing all files in the current project.
 
-Each line is of the form \"NAME: PATH\". If INCLUDE-COUNTS is non-nil,
+Each line is of the form \"NAME: PATH\".  If INCLUDE-COUNTS is non-nil,
 append the number of lines as \"NAME: PATH (N lines)\".
 
 NAME is the file's base name and PATH is the path relative to the
