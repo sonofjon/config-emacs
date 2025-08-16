@@ -239,10 +239,11 @@ When START is nil it defaults to 1.  When COUNT nil it defaults to
 (defun aj8/gptel-tool-list-buffers (&optional include-counts)
   "Return a newline-separated string listing all currently open file-based buffers.
 
-Each line is of the form \"NAME: PATH\" where PATH is the file path
-relative to the current project root.  When the file is outside the
-current project PATH is the absolute file path.  If INCLUDE-COUNTS is
-non-nil, append the number of lines as \" (N lines)\"."
+Each line is of the form \"NAME: PATH\", where NAME is the buffer name
+and PATH is the file path relative to the current project root.  When
+the file is outside the current project PATH is the absolute file path.
+If INCLUDE-COUNTS is non-nil, append the number of lines as \" (N
+lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_buffers"
    (list :include-counts include-counts)
@@ -263,10 +264,10 @@ non-nil, append the number of lines as \" (N lines)\"."
   "Return a newline-separated string listing all currently open buffers.
 
 Each line is either \"NAME: PATH\" for file-backed buffers or just
-\"NAME\" for non-file buffers.  For file-backed buffers, PATH is the file
-path relative to the current project root.  When the file is outside the
-current project PATH is the absolute file path.  If INCLUDE-COUNTS is
-non-nil, append the number of lines as \" (N lines)\"."
+\"NAME\" for non-file buffers.  NAME is the buffer name and PATH is the
+file path relative to the current project root.  When the file is
+outside the current project PATH is the absolute file path.  If
+INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_all_buffers"
    (list :include-counts include-counts)
@@ -661,8 +662,10 @@ project root."
 (defun aj8/gptel-tool-project-find-files-glob (pattern &optional include-counts)
   "In the current project, find files whose filenames match the glob PATTERN.
 
-Return a newline-separated string where each line is \"NAME: PATH\".  If
-INCLUDE-COUNTS is non-nil append the number of lines as \" (N lines)\"."
+Returns a newline-separated string where each line is \"NAME: PATH\".
+NAME is the file's base name and PATH is the path relative to the
+project root.  If INCLUDE-COUNTS is non-nil append the number of lines
+as \" (N lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_find_files_glob"
    (list :pattern pattern :include-counts include-counts)
