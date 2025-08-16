@@ -424,7 +424,7 @@ subsequent line numbers."
     (unless buffer
       (error "Error: Buffer '%s' not found." buffer-name))
     (with-current-buffer buffer
-      (dolist (edit (sort buffer-edits #'(lambda (a b) (> (plist-get a :line-number) (plist-get b :line-number)))))
+      (dolist (edit (sort (if (vectorp buffer-edits) (append buffer-edits nil) buffer-edits) #'(lambda (a b) (> (plist-get a :line-number) (plist-get b :line-number)))))
         (save-excursion
           (let ((line-number (plist-get edit :line-number))
                 (old-string (plist-get edit :old-string))
