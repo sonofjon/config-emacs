@@ -476,8 +476,8 @@ subsequent line numbers."
                                     (nth 0 f) (nth 1 f) (nth 2 f)))
                           (nreverse failures)
                           "\n")))
-            (error "Error applying edits to buffer '%s': %d failed of %d; %d applied.\n%s"
-                   buffer-name failed total applied details)))))))
+            (error "Error applying edits to buffer '%s': %d (out of %d) failed.\n%s"
+                   buffer-name failed total details)))))))
 
 (defun aj8/--review-buffer-edits (buffer-name buffer-edits edit-type)
   "Prepare a temporary buffer with edits and start an Ediff review session.
