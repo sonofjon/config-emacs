@@ -504,7 +504,11 @@ edited temporary buffer."
     (with-current-buffer temp-buffer
       (erase-buffer)
       (insert-buffer-substring original-buffer)
-      (aj8/--apply-buffer-edits temp-buffer-name buffer-edits edit-type))
+      (condition-case err
+          (aj8/--apply-buffer-edits temp-buffer-name buffer-edits edit-type)
+        (error
+         (error "%s\nNote: No review was started and no changes were applied to buffer '%s'. Any details above refer only to the temporary review buffer."
+                (error-message-string err) buffer-name))))
 
     ;; Start Ediff
     (ediff-buffers original-buffer temp-buffer)))
