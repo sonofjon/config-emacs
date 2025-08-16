@@ -254,7 +254,11 @@ lines)\"."
          (with-current-buffer buffer
            (let* ((buf-name (buffer-name buffer))
                   (file (buffer-file-name buffer))
-                  (path (if (and file proj) (file-relative-name file (project-root proj)) file)))
+                  (path (if (and file
+                                 proj
+                                 (file-in-directory-p file (project-root proj)))
+                            (file-relative-name file (project-root proj))
+                          file)))
              (if include-counts
                  (push (format "%s: %s (%d lines)" buf-name path (count-lines (point-min) (point-max))) lines)
                (push (format "%s: %s" buf-name path) lines))))))
@@ -277,7 +281,11 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
        (with-current-buffer buffer
          (let* ((buf-name (buffer-name buffer))
                 (file (buffer-file-name buffer))
-                (path (when file (if proj (file-relative-name file (project-root proj)) file))))
+                (path (when file (if (and
+                                      proj
+                                      (file-in-directory-p file (project-root proj)))
+                                     (file-relative-name file (project-root proj))
+                                   file))))
            (if file
                (if include-counts
                    (push (format "%s: %s (%d lines)" buf-name path (count-lines (point-min) (point-max))) lines)
