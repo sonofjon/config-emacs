@@ -169,31 +169,30 @@ them to return formatted strings like "NAME: N lines" when non-nil.
    (find-file-noselect tmp-file)
    (with-temp-buffer-with-content
     "*non-file-buffer*" "some content"
-    ;; Test `aj8/gptel-tool-list-buffers' (file-backed only)
+    ;; 1. Test `aj8/gptel-tool-list-buffers' (file-backed only)
     (let ((buffers (split-string (aj8/gptel-tool-list-buffers) "\n" t)))
       (should (cl-some (lambda (s) (string-match-p (regexp-quote (file-name-nondirectory tmp-file)) s)) buffers))
       (should-not (cl-some (lambda (s) (string-equal s "*non-file-buffer*")) buffers)))
-    ;; Test `aj8/gptel-tool-list-all-buffers' (all)
-    (let ((buffers (split-string (aj8/gptel-tool-list-all-buffers) "\n" t)))
-      (should (cl-some (lambda (s) (string-match-p (regexp-quote (file-name-nondirectory tmp-file)) s)) buffers))
-      (should (member "*non-file-buffer*" buffers)))
-    ;; Test include-counts for file-backed buffers only
+    ;; 1.1. Test include-counts
     (let ((buffers (split-string (aj8/gptel-tool-list-buffers t) "\n" t)))
-      ;; The file-backed buffer should be present and formatted
       (should (cl-some (lambda (s) (string-match-p "([0-9]+ lines)$" s)) buffers))
       (should (cl-some (lambda (s) (string-match-p (regexp-quote (buffer-name (get-file-buffer tmp-file))) s)) buffers))
       (should (cl-some (lambda (s) (string-match-p (regexp-quote (file-name-nondirectory tmp-file)) s)) buffers))
-      ;; Exact line number check: ensure there's an entry containing the buffer name and the line count
+      ;; Exact line number check
       (should (cl-some (lambda (s) (and (string-match-p (regexp-quote (buffer-name (get-file-buffer tmp-file))) s)
-                                         (string-match-p (regexp-quote (format "(%d lines)" 1)) s))) buffers)))
-    ;; Test include-counts for all buffers
+                                        (string-match-p (regexp-quote (format "(%d lines)" 1)) s))) buffers)))
+    ;; 2. Test `aj8/gptel-tool-list-all-buffers' (all)
+    (let ((buffers (split-string (aj8/gptel-tool-list-all-buffers) "\n" t)))
+      (should (cl-some (lambda (s) (string-match-p (regexp-quote (file-name-nondirectory tmp-file)) s)) buffers))
+      (should (member "*non-file-buffer*" buffers)))
+    ;; 2.1 Test include-counts
     (let ((buffers (split-string (aj8/gptel-tool-list-all-buffers t) "\n" t)))
       (should (cl-some (lambda (s) (string-match-p "([0-9]+ lines)$" s)) buffers))
       (should (cl-some (lambda (s) (string-match-p (regexp-quote (buffer-name (get-buffer "*non-file-buffer*"))) s)) buffers))
       (should (cl-some (lambda (s) (string-match-p (regexp-quote (file-name-nondirectory tmp-file)) s)) buffers))
-      ;; Exact line number check: ensure the project file buffer has an entry with the line count
+      ;; Exact line number check
       (should (cl-some (lambda (s) (and (string-match-p (regexp-quote (buffer-name (get-file-buffer tmp-file))) s)
-                                         (string-match-p (regexp-quote (format "(%d lines)" 1)) s))) buffers)))))
+                                        (string-match-p (regexp-quote (format "(%d lines)" 1)) s))) buffers))))))
 
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test buffer-file path conversions.
