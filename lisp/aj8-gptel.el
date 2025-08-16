@@ -425,26 +425,59 @@ subsequent line numbers."
     (unless buffer
       (error "Error: Buffer '%s' not found." buffer-name))
     (with-current-buffer buffer
-      (dolist (edit (sort (if (vectorp buffer-edits) (append buffer-edits nil) buffer-edits) #'(lambda (a b) (> (plist-get a :line-number) (plist-get b :line-number)))))
-        (save-excursion
+      (let* ((edits (if (vectorp buffer-edits) (append buffer-edits nil) buffer-edits))
+             (sorted-edits (sort edits #'(lambda (a b)
+                                           (> (plist-get a :line-number)
+                                              (plist-get b :line-number)))))
+             (total 0)
+             (applied 0)
+             (failures nil))
+        (dolist (edit sorted-edits)
+          (setq total (1+ total))
           (let ((line-number (plist-get edit :line-number))
                 (old-string (plist-get edit :old-string))
-                (new-string (plist-get edit :new-string)))
-            ;; Validate that old-string is single-line for edit types that require it
-            (when (and old-string
-                       (or (eq edit-type 'line) (eq edit-type 'string))
-                       (string-match-p "\n" old-string))
-              (error "Error: edit for buffer '%s' line %d contains a multi-line 'old-string'. 'old-string' must not contain newline characters." buffer-name line-number))
-            (goto-line line-number)
-            (cond
-             ((eq edit-type 'line)
-              (let ((line-start (point)))
-                (when (string-equal (buffer-substring-no-properties line-start (line-end-position)) old-string)
-                  (delete-region line-start (line-end-position))
-                  (insert new-string))))
-             ((eq edit-type 'string)
-              (when (search-forward old-string (line-end-position) t)
-                (replace-match new-string nil nil))))))))))
+                (new-string (plist-get edit :new-string))
+                (success nil))
+            ;; Validate that old-string is single-line for edit types that require it.
+            (if (and old-string
+                     (or (eq edit-type 'line) (eq edit-type 'string))
+                     (string-match-p "\n" old-string))
+                (push (list line-number
+                            "old-string contains newline"
+                            old-string)
+                      failures)
+              (progn
+                (goto-line line-number)
+                (cond
+                 ((eq edit-type 'line)
+                  (let ((line-start (point)))
+                    (when (string-equal (buffer-substring-no-properties line-start (line-end-position)) old-string)
+                      (delete-region line-start (line-end-position))
+                      (insert new-string)
+                      (setq success t))))
+                 ((eq edit-type 'string)
+                  (when (search-forward old-string (line-end-position) t)
+                    (replace-match new-string nil nil)
+                    (setq success t))))
+                (when success
+                  (setq applied (1+ applied)))
+                (unless success
+                  (push (list line-number
+                              (if (eq edit-type 'line)
+                                  "entire line did not equal old-string"
+                                "old-string not found on the line")
+                              old-string)
+                        failures))))))
+        (when failures
+          (let ((failed (length failures))
+                (details (mapconcat
+                          (lambda (f)
+                            (format " - line %d: %s (old-string: %S)"
+                                    (nth 0 f) (nth 1 f) (nth 2 f)))
+                          (nreverse failures)
+                          "\n")))
+            (error "Error applying edits to buffer '%s': %d failed of %d; %d applied.\n%s"
+                   buffer-name failed total applied details)))))))
 
 (defun aj8/--review-buffer-edits (buffer-name buffer-edits edit-type)
   "Prepare a temporary buffer with edits and start an Ediff review session.
