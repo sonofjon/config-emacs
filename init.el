@@ -70,6 +70,7 @@
 ;;; Local
 
 (require 'aj8-lisp)
+(require 'aj8-keys)
 
 
 ;;;; Packages
