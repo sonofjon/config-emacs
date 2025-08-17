@@ -467,10 +467,12 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
   :tags '(unit project)
   (with-temp-project
    ;; Test find files glob
-   (let ((files (aj8/gptel-tool-project-find-files-glob "**/*.el")))
+   (let* ((files-str (aj8/gptel-tool-project-find-files-glob "**/*.el"))
+          (files (split-string files-str "\n" t)))
      (should (= 1 (length files)))
      (should (string-match-p "src/code.el" (car files))))
-   (let ((files (aj8/gptel-tool-project-find-files-glob "*.txt")))
+   (let* ((files-str (aj8/gptel-tool-project-find-files-glob "*.txt"))
+          (files (split-string files-str "\n" t)))
      (should (= 1 (length files)))
      (should (string-match-p "data.txt" (car files))))
    ;; Test search content
@@ -742,7 +744,8 @@ The response is processed by `gptel--streaming-done-callback'."
       (should (string-match-p "ert-test-project" root)))
 
     ;; find-files-glob
-    (let ((files (aj8/gptel-tool-project-find-files-glob "**/*.el")))
+    (let* ((files-str (aj8/gptel-tool-project-find-files-glob "**/*.el"))
+           (files (split-string files-str "\n" t)))
       (should (= 1 (length files)))
       (should (string-match-p "src/code.el" (car files))))
 
