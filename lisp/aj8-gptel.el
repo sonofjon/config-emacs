@@ -63,7 +63,7 @@ for use with `prin1-to-string' for concise minibuffer display."
     (let* ((len (length obj))
            (out (make-vector len nil)))
       (dotimes (i len)
-        (aset out i (aj8/gptel-tool--make-display-copy (aref obj i))))
+        (aset out i (aj8/gptel-tool--truncate-for-display (aref obj i))))
       out))
    (t obj)))
 
