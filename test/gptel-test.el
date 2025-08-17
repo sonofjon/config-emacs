@@ -423,7 +423,7 @@ Info manual."
   "Test project root and buffer listing.
 
 Verifies `aj8/gptel-tool-project-get-root' and
-`aj8/gptel-tool-project-get-open-buffers' within a temporary project.
+`aj8/gptel-tool-project-list-files' within a temporary project.
 
 This test covers three related behaviors:
 - The project root returned by `aj8/gptel-tool-project-get-root'.
@@ -443,9 +443,8 @@ This test covers three related behaviors:
        (with-current-buffer buf
          ;; 2) Without counts: the project-relative path should appear
          ;;    in the listing
-         (should (string-match-p "src/code.el" (aj8/gptel-tool-project-get-open-buffers)))
+         (should (string-match-p "src/code.el" (aj8/gptel-tool-project-list-files)))
          ;; 3) With counts:
-         (let* ((lines (split-string (aj8/gptel-tool-project-get-open-buffers t) "\n" t))
                 (bufname (buffer-name buf))
                 (fname (file-name-nondirectory (buffer-file-name buf))))
            ;; 3a) At least one entry ends with ": <number> lines".
@@ -453,6 +452,7 @@ This test covers three related behaviors:
            ;; 3b) At least one entry contains the buffer name for the file.
            (should (cl-some (lambda (s) (string-match-p (regexp-quote bufname) s)) lines))
            ;; 3c) At least one entry contains the (nondirectory) filename.
+         (let* ((lines (split-string (aj8/gptel-tool-project-list-files t) "\n" t))
            (should (cl-some (lambda (s) (string-match-p (regexp-quote fname) s)) lines))
            ;; 4) Assert that the exact number of lines is reported.
            (let ((expected (format "%s: %d lines" bufname 1)))
@@ -757,7 +757,7 @@ The response is processed by `gptel--streaming-done-callback'."
     ;; get-open-buffers
     (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
       (unwind-protect
-          (let ((open-buffers (aj8/gptel-tool-project-get-open-buffers)))
+          (let ((open-buffers (aj8/gptel-tool-project-list-files)))
             (should (string-match-p "code.el" open-buffers))
             (should (string-match-p "src/code.el" open-buffers)))
         (kill-buffer buf)))))
