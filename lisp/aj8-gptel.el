@@ -753,10 +753,15 @@ as \" (N lines)\"."
            (output-buffer (generate-new-buffer "*search-output*")))
        (unwind-protect
            (let ((status (apply #'call-process (car command) nil output-buffer nil (cdr command))))
-             (when (not (zerop status))
-               (message "Search command exited with status %d" status))
-             (with-current-buffer output-buffer
-               (buffer-string)))
+             (cond
+              ((zerop status)
+               (with-current-buffer output-buffer
+                 (buffer-string)))
+              ((= status 1)
+               (format "No matches found for regexp: %s" regexp))
+              (t
+               (error "Search command '%s' failed with status %d for regexp: %s"
+                      (car command) status regexp))))
          (kill-buffer output-buffer))))))
 
 ;;; Tool Registrations
