@@ -157,12 +157,16 @@ requests larger than `aj8/gptel-default-max-lines'."
 (ert-deftest test-aj8-list-buffers ()
   "Test buffer listing tools.
 
-This test ensures that `aj8/gptel-tool-list-buffers' correctly lists
-only file-associated buffers, while `aj8/gptel-tool-list-all-buffers'
-lists all buffers, including non-file-backed ones. It also verifies the
-optional INCLUDE-COUNTS argument for both functions, which should cause
-them to return formatted strings like "NAME: N lines" when non-nil.
-"
+This test ensures that `aj8/gptel-tool-list-buffers' lists only
+file-associated buffers, while `aj8/gptel-tool-list-all-buffers' lists
+all buffers, including non-file-backed ones.
+
+Formatting assertions verify both modes (with and without line counts),
+ensuring file-backed entries show names with paths and non-file entries
+show names only when applicable.
+
+It also verifies that PATH is absolute for files outside the current
+project and relative to the project root for files inside it."
   :tags '(unit buffers)
   (with-temp-file-with-content
    tmp-file "file content"
