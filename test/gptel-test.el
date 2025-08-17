@@ -463,7 +463,7 @@ This test covers three related behaviors:
   "Test project file finding and content searching.
 
 Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
-`aj8/gptel-tool-project-search-content' for content searching."
+`aj8/gptel-tool-project-search-regexp' for content searching."
   :tags '(unit project)
   (with-temp-project
    ;; Test find files glob
@@ -475,7 +475,7 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
      (should (string-match-p "data.txt" (car files))))
    ;; Test search content
    (when (or (executable-find "rg") (and (executable-find "git") (file-directory-p ".git")))
-     (let ((results (aj8/gptel-tool-project-search-content "some text data")))
+     (let ((results (aj8/gptel-tool-project-search-regexp "some text data")))
        (should (string-match-p "data\\.txt:1:[0-9]+:some text data" results))))))
 
 ;;
@@ -748,7 +748,7 @@ The response is processed by `gptel--streaming-done-callback'."
 
     ;; search-content
     (when (or (executable-find "rg") (and (executable-find "git") (file-directory-p ".git")))
-      (let ((results (aj8/gptel-tool-project-search-content "hello")))
+      (let ((results (aj8/gptel-tool-project-search-regexp "hello")))
         (should (string-match-p "src/code.el:1:.*hello" results))))
 
     ;; get-open-buffers

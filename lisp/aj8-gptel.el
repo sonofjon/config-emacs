@@ -739,7 +739,7 @@ as \" (N lines)\"."
                         (format "%s: %s" name rel))))
                   matched "\n")))))
 
-(defun aj8/gptel-tool-project-search-content (regexp)
+(defun aj8/gptel-tool-project-search-regexp (regexp)
   "In the current project, recursively search for content matching REGEXP."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_search_content"
@@ -1112,7 +1112,7 @@ This action requires manual user review. After calling this tool, you must stop 
  :category "project")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-project-search-content
+ :function #'aj8/gptel-tool-project-search-regexp
  :name "aj8_project_search_content"
  :description "In the current project, recursively search for content matching the regexp. This search respects .gitignore. It returns a string of matching lines, where each line is prefixed with the file path, 1-based line number, and 0-based column number."
  :args '((:name "regexp"
