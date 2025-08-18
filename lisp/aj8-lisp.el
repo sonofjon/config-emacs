@@ -243,8 +243,9 @@ The matching buffers are ignored by `next-buffer' and
 
 (defun aj8/buffer-skip-p (window buffer bury-or-kill)
   "Return t if the BUFFER should be skipped.
-WINDOW is the window displaying the buffer.
-BURY-OR-KILL indicates whether to bury or kill the buffer."
+
+WINDOW is the window displaying the buffer.  BURY-OR-KILL indicates
+whether to bury or kill the buffer."
   ;; Buffer name matches `aj8/buffer-skip-regexp'
   (string-match-p aj8/buffer-skip-regexp (buffer-name buffer)))
   ;; Buffer is displayed in a side window
@@ -739,11 +740,11 @@ respectively."
 (defun aj8/sp-down-sexp-dwim ()
   "Move point down one level of s-expression (sexp).
 
-The function moves point in the direction that makes sense, i.e.
-in the forward direction if point is surrounded by left
-parentheses, and in the backward direction if surrounded by right
-parentheses.  If point is between a right and a left parenthesis
-it chooses the closest direction to move down.
+The function moves point in the direction that makes sense, i.e.  in the
+forward direction if point is surrounded by left parentheses, and in the
+backward direction if surrounded by right parentheses.  If point is
+between a right and a left parenthesis it chooses the closest direction
+to move down.
 
 Note that the logic in this function only considers parenthesis-
 delimited s-expressions."
@@ -773,11 +774,11 @@ delimited s-expressions."
 (defun aj8/sp-up-sexp-dwim ()
   "Move point up one level of s-expression (sexp).
 
-The function moves point in the direction that makes sense, i.e.
-in the forward direction if point is surrounded by right
-parentheses, and in the backward direction if surrounded by left
-parentheses.  If point is between a left and a right parenthesis
-it chooses the closest direction to move up.
+The function moves point in the direction that makes sense, i.e.  in the
+forward direction if point is surrounded by right parentheses, and in
+the backward direction if surrounded by left parentheses.  If point is
+between a left and a right parenthesis it chooses the closest direction
+to move up.
 
 Note that the logic in this function only considers parenthesis-
 delimited s-expressions."
@@ -1343,9 +1344,10 @@ ARG specifies the number of times to move backward."
 ;; Return outline heading level
 (defun aj8/outline-level ()
   "Return the depth to which a statement is nested in the outline.
-Point must be at the beginning of a header line.  This is the
-level specified in `outline-heading-alist' and not based on the
-number of characters matched by `outline-regexp'."
+
+Point must be at the beginning of a header line.  This is the level
+specified in `outline-heading-alist' and not based on the number of
+characters matched by `outline-regexp'."
   ;; (outline-back-to-heading)
   (cdr (assoc (match-string 1) outline-heading-alist)))
 
@@ -1489,8 +1491,8 @@ entire word at point."
 ;;   Requires: aspell, aspell-en, aspell-sv, hunspell, hunspell-sv
 (defun aj8/toggle-ispell-program ()
   "Toggle `ispell' program.
-If current program is `aspell', switch to `hunspell', and vice
-versa."
+
+If current program is `aspell', switch to `hunspell', and vice versa."
   (interactive)
   (cond
    ((string-match-p "hunspell" ispell-program-name)   ; switch to aspell
@@ -1599,9 +1601,10 @@ versa."
 
 (defun aj8/jinx-correct-previous ()
   "Correct the previous visible spelling error.
-The function repeatedly jumps to each previous error, corrects it,
-and continues checking.  When done, the point is restored to its
-original position."
+
+The function repeatedly jumps to each previous error, corrects it, and
+continues checking.  When done, the point is restored to its original
+position."
   (interactive)
   (save-excursion
     (while (ignore-errors (jinx-previous 1) t)
@@ -1609,9 +1612,10 @@ original position."
 
 (defun aj8/jinx-correct-next ()
   "Correct next visible spelling error.
-The function repeatedly jumps to each next error, corrects it,
-and continues checking.  When done, the point is restored to its
-original position."
+
+The function repeatedly jumps to each next error, corrects it, and
+continues checking.  When done, the point is restored to its original
+position."
   (interactive)
   (save-excursion
     (while (ignore-errors (jinx-next 1) t)
@@ -2003,8 +2007,9 @@ the hook."
 ;;   C-u RET
 (defun aj8/eww-follow-link ()
   "Browse the URL under point.
-Swaps the functionality of single and double prefix arguments,
-see `eww-follow-link' for details."
+
+Swaps the functionality of single and double prefix arguments, see
+`eww-follow-link' for details."
   (interactive)
   (cond
    ((equal current-prefix-arg nil) ; no C-u
@@ -2027,9 +2032,9 @@ see `eww-follow-link' for details."
 (defun prot-eww-browse-dwim (url &optional arg)
   "Visit a URL, maybe from `eww-prompt-history', with completion.
 
-With optional prefix ARG (\\[universal-argument]) open URL in a
-new eww buffer.  If URL does not look like a valid link, run a
-web query using `eww-search-prefix'.
+With optional prefix ARG (\\[universal-argument]) open URL in a new eww
+buffer.  If URL does not look like a valid link, run a web query using
+`eww-search-prefix'.
 
 When called from an eww buffer, provide the current link as
 \\<minibuffer-local-map>\\[next-history-element]."
@@ -2213,7 +2218,9 @@ ARGS are the arguments to be passed to ORIG-FUN."
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
   "Add mappings for a given list of escape sequences and list of keys.
 
-ESCAPE-PREFIX is the common escape sequence prefix.  KEY-PREFIX is the key prefix to map.  SUFFIX-ALIST is an alist of (escape-suffix . key-suffix) pairs."
+ESCAPE-PREFIX is the common escape sequence prefix.  KEY-PREFIX is the
+key prefix to map.  SUFFIX-ALIST is an alist of (escape-suffix
+. key-suffix) pairs."
   (while suffix-alist
     (let ((escape-suffix (car (car suffix-alist)))
           (key-suffix (cdr (car suffix-alist))))
