@@ -402,12 +402,19 @@ to LINE-NUMBER."
        (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (save-excursion
-         (goto-line start-line)
-         (let ((beg (point)))
-           (goto-line end-line)
-           (end-of-line)
-           (delete-region beg (point))
-           (insert content))))
+         (let ((total-lines (count-lines (point-min) (point-max))))
+           (when (< start-line 1)
+             (error "Error: START-LINE must be >= 1"))
+           (when (< end-line start-line)
+             (error "Error: END-LINE must be >= START-LINE"))
+           (when (> end-line total-lines)
+             (error "Error: END-LINE exceeds buffer length (%d)." total-lines))
+           (goto-line start-line)
+           (let ((beg (point)))
+             (goto-line end-line)
+             (end-of-line)
+             (delete-region beg (point))
+             (insert content)))))
     (format "Region lines %d-%d in buffer '%s' successfully replaced."
             start-line end-line buffer-name))))
 
