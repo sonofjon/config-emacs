@@ -356,6 +356,104 @@ X
 Y
 Line D"))))
 
+(ert-deftest test-aj8-delete-buffer-string ()
+  "Test `aj8/gptel-tool-delete-buffer-string'.
+
+Verifies that a single, unique string can be deleted from a buffer. It
+also confirms that an error is signaled if the target string is not
+found or is not unique."
+  :tags '(unit buffers)
+  (with-temp-buffer-with-content
+   "*test-delete*" "hello world\nhello universe"
+   (aj8/gptel-tool-delete-buffer-string "*test-delete*" "world")
+   (should (string-equal (buffer-string) "hello \nhello universe"))
+
+   ;; Assert errors
+   ;; Mode 1: tool re-signals the error
+   (let ((aj8/gptel-tool-return-error nil))
+     (should-error (aj8/gptel-tool-delete-buffer-string "*test-delete*" "non-existent") :type 'error))
+
+   ;; Mode 2: tool returns the error as a string; assert the message
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-delete-buffer-string "*test-delete*" "non-existent")))
+       (should (string-equal
+                "tool: aj8_delete_buffer_string: Error: String 'non-existent' not found in buffer '*test-delete*'."
+                result))))
+
+   ;; Mode 1: tool re-signals the error for non-unique occurrences
+   (let ((aj8/gptel-tool-return-error nil))
+     (should-error (aj8/gptel-tool-delete-buffer-string "*test-delete*" "hello") :type 'error))
+
+   ;; Mode 2: tool returns the error as a string; assert the message
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-delete-buffer-string "*test-delete*" "hello")))
+       (should (string-equal
+                "tool: aj8_delete_buffer_string: Error: String 'hello' is not unique in buffer '*test-delete*'. Found 2 occurrences."
+                result)))))
+
+  ;; Verify that a multi-line :old-string is accepted for deletion
+  (with-temp-buffer-with-content
+   "*test-delete-ml*" "A\nB\nC"
+   (aj8/gptel-tool-delete-buffer-string "*test-delete-ml*" "B\n")
+   (should (string-equal (buffer-string) "A\nC"))))
+
+(ert-deftest test-aj8-delete-buffer-line ()
+  "Test `aj8/gptel-tool-delete-buffer-line'.
+
+Ensures that a specific single line in a buffer is deleted correctly."
+  :tags '(unit buffers)
+  (with-temp-buffer-with-content
+   "*test-delete-line*" "Line A\nLine B\nLine C"
+   ;; Mode 1: re-signal errors
+   (let ((aj8/gptel-tool-return-error nil))
+     (should-error (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 0) :type 'error)
+     (should-error (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 10) :type 'error))
+   ;; Mode 2: return error strings
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 0)))
+       (should (string-equal
+                "tool: aj8_delete_buffer_line: Error: START-LINE must be >= 1"
+                result)))
+     (let ((result (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 10)))
+       (should (string-equal
+                "tool: aj8_delete_buffer_line: Error: END-LINE exceeds buffer length (3)."
+                result))))
+   ;; Success case
+   (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 2)
+   (should (string-equal (buffer-string) "Line A\n\nLine C"))))
+
+(ert-deftest test-aj8-delete-buffer-region ()
+  "Test `aj8/gptel-tool-delete-buffer-region'.
+
+Ensures that a contiguous range of lines is deleted correctly in a buffer."
+  :tags '(unit buffers)
+  (with-temp-buffer-with-content
+   "*test-delete-buffer-region*" "Line A\nLine B\nLine C\nLine D"
+   ;; Mode 1: re-signal errors
+   (let ((aj8/gptel-tool-return-error nil))
+     (should-error (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 0 1) :type 'error)
+     (should-error (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 3 2) :type 'error)
+     (should-error (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 2 5) :type 'error))
+
+   ;; Mode 2: return error strings
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 0 1)))
+       (should (string-equal
+                "tool: aj8_delete_buffer_region: Error: START-LINE must be >= 1"
+                result)))
+     (let ((result (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 3 2)))
+       (should (string-equal
+                "tool: aj8_delete_buffer_region: Error: END-LINE must be >= START-LINE"
+                result)))
+     (let ((result (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 2 5)))
+       (should (string-equal
+                "tool: aj8_delete_buffer_region: Error: END-LINE exceeds buffer length (4)."
+                result))))
+
+   ;; Success case
+   (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 2 3)
+   (should (string-equal (buffer-string) "Line A\n\nLine D"))))
+
 (ert-deftest test-aj8-apply-buffer-string-edits ()
   "Test `aj8/gptel-tool-apply-buffer-string-edits'.
 
@@ -579,6 +677,9 @@ in the `gptel-tools' alist."
                           "aj8_edit_buffer_string"
                           "aj8_edit_buffer_line"
                           "aj8_edit_buffer_region"
+                          "aj8_delete_buffer_string"
+                          "aj8_delete_buffer_line"
+                          "aj8_delete_buffer_region"
                           "aj8_apply_buffer_string_edits"
                           "aj8_apply_buffer_string_edits_with_review"
                           "aj8_apply_buffer_line_edits"
