@@ -850,12 +850,12 @@ The response is processed by `gptel--streaming-done-callback'."
     (with-current-buffer gptel-buffer
       (erase-buffer)
       ;; Test read_documentation
-      (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_read_documentation\", \"arguments\": {\"symbol\": \"car\"}}]}"))
+      (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_read_documentation\", \"arguments\": {\"symbol-name\": \"car\"}}]}"))
         (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
         (should (string-match-p "Return the car of LIST" (buffer-string))))
       (erase-buffer)
       ;; Test read_function
-      (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_read_function\", \"arguments\": {\"function\": \"gptel-send\"}}]}"))
+      (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_read_function\", \"arguments\": {\"function-name\": \"gptel-send\"}}]}"))
         (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
         (should (string-match-p "(defun gptel-send" (buffer-string)))))))
 

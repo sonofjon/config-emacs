@@ -139,7 +139,7 @@ The macro binds local variables `tool-name' and `args' and then:
 
 ;; Buffers
 
-;; (defun aj8/gptel-tool-read-buffer (buffer)
+;; (defun aj8/gptel-tool-read-buffer (buffer-name)
 ;;   "Return the contents of BUFFER."
 ;;   (aj8/gptel-tool--with-tool
 ;;   "tool: my_read_buffer"
@@ -167,7 +167,7 @@ The macro binds local variables `tool-name' and `args' and then:
 ;; ;; TODO: Calling this and other functions …–region is a misnomer since start
 ;; ;; and end are line numbers, not character positions.
 ;; ;;       Implement a soft truncation (returning the first/last N lines rather than an error)?
-;; (defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start end)
+;; (defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start-line end-line)
 ;;   "Read a region from BUFFER-NAME.
 ;;
 ;; Optional START and END are 1-based line numbers.  If START is nil read
@@ -201,27 +201,27 @@ The macro binds local variables `tool-name' and `args' and then:
 ;;              (let ((end-pos (line-end-position)))
 ;;                (buffer-substring-no-properties start-pos end-pos)))))))))
 
-(defun aj8/gptel-tool-read-buffer-region-count (buffer-name &optional start count)
-  "Read COUNT lines from BUFFER-NAME starting at line START.
+(defun aj8/gptel-tool-read-buffer-region-count (buffer-name &optional start-line count)
+  "Read COUNT lines from BUFFER-NAME starting at line START-LINE.
 
-When START is nil it defaults to 1.  When COUNT nil it defaults to
+When START-LINE is nil it defaults to 1.  When COUNT nil it defaults to
 `aj8/gptel-tool-max-lines'.  COUNT must be >= 1 and no greater than
 `aj8/gptel-tool-max-lines'."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_buffer_region_count"
-   (list :buffer-name buffer-name :start start :count count)
+   (list :buffer-name buffer-name :start-line start-line :count count)
    (let ((buffer (get-buffer buffer-name)))
      (unless buffer
        (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buffer
        (save-excursion
          (let* ((total-lines (count-lines (point-min) (point-max)))
-                (start-line (or start 1))
+                (start-line (or start-line 1))
                 (count (or count aj8/gptel-tool-max-lines))
                 (end-line (+ start-line (1- count))))
            ;; Validate bounds
            (when (< start-line 1)
-             (error "Error: START must be >= 1"))
+             (error "Error: START-LINE must be >= 1"))
            (when (< count 1)
              (error "Error: COUNT must be >= 1"))
            (when (> count aj8/gptel-tool-max-lines)
@@ -315,48 +315,48 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
        (error "Error: No buffer is visiting the file '%s'." file-path))
      (buffer-name buffer))))
 
-(defun aj8/gptel-tool-append-to-buffer (buffer text)
+(defun aj8/gptel-tool-append-to-buffer (buffer-name text)
   "Append TEXT to BUFFER."
   (aj8/gptel-tool--with-tool
    "tool: aj8_append_to_buffer"
-   (list :buffer buffer :text text)
-   (let ((buf (get-buffer buffer)))
+   (list :buffer-name buffer-name :text text)
+   (let ((buf (get-buffer buffer-name)))
      (unless buf
-       (error "Error: Buffer '%s' not found." buffer))
+       (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (save-excursion
          (goto-char (point-max))
          (insert text)))
-     (format "Text successfully appended to buffer %s." buffer))))
+     (format "Text successfully appended to buffer %s." buffer-name))))
 
-(defun aj8/gptel-tool-insert-into-buffer (buffer text line-number)
+(defun aj8/gptel-tool-insert-into-buffer (buffer-name text line-number)
   "Insert TEXT into BUFFER at LINE-NUMBER.
 
 The text is inserted at the beginning of the specified line."
   (aj8/gptel-tool--with-tool
    "tool: aj8_insert_into_buffer"
-   (list :buffer buffer :text text :line-number line-number)
-   (let ((buf (get-buffer buffer)))
+   (list :buffer-name buffer-name :text text :line-number line-number)
+   (let ((buf (get-buffer buffer-name)))
      (unless buf
-       (error "Error: Buffer '%s' not found." buffer))
+       (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (save-excursion
          (goto-line line-number)
          (insert text)))
-     (format "Text successfully inserted into buffer %s at line %d." buffer line-number))))
+     (format "Text successfully inserted into buffer %s at line %d." buffer-name line-number))))
 
-(defun aj8/gptel-tool-modify-buffer (buffer content)
+(defun aj8/gptel-tool-modify-buffer (buffer-name content)
   "Overwrite BUFFER with CONTENT."
   (aj8/gptel-tool--with-tool
    "tool: aj8_modify_buffer"
-   (list :buffer buffer :content content)
-   (let ((buf (get-buffer buffer)))
+   (list :buffer-name buffer-name :content content)
+   (let ((buf (get-buffer buffer-name)))
      (unless buf
-       (error "Error: Buffer '%s' not found." buffer))
+       (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (erase-buffer)
        (insert content))
-     (format "Buffer %s successfully modified." buffer))))
+     (format "Buffer %s successfully modified." buffer-name))))
 
 (defun aj8/gptel-tool-edit-buffer-string (buffer-name old-string new-string)
   "Replace a single instance of OLD-STRING with NEW-STRING in BUFFER-NAME."
@@ -619,31 +619,31 @@ original buffer is not modified by this command."
 
 ;; Emacs
 
-(defun aj8/gptel-tool-read-documentation (symbol)
+(defun aj8/gptel-tool-read-documentation (symbol-name)
   "Read the documentation for SYMBOL."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_documentation"
-   (list :symbol symbol)
-   (let* ((sym (intern-soft symbol))
+   (list :symbol-name symbol-name)
+   (let* ((sym (intern-soft symbol-name))
           (doc (if (fboundp sym)
                    ;; Functions
                    (documentation sym)
                  ;; Variables
                  (documentation-property sym 'variable-documentation))))
-     (or doc (format "No documentation found for symbol '%s'." symbol)))))
+     (or doc (format "No documentation found for symbol '%s'." symbol-name)))))
 
-(defun aj8/gptel-tool-read-function (function)
+(defun aj8/gptel-tool-read-function (function-name)
   "Return the definition FUNCTION."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_function"
-   (list :function function)
-   (let ((func-symbol (intern-soft function)))
+   (list :function-name function-name)
+   (let ((func-symbol (intern-soft function-name)))
      (unless (and func-symbol (fboundp func-symbol))
-       (error "Error: Function '%s' is not defined." function))
+       (error "Error: Function '%s' is not defined." function-name))
      (let ((func-def (symbol-function func-symbol)))
        (cond
         ((subrp func-def)
-         (format "Function '%s' is a built-in primitive (subr); it has no Lisp source code." function))
+         (format "Function '%s' is a built-in primitive (subr); it has no Lisp source code." function-name))
         ((or (byte-code-function-p func-def)
              (and (listp func-def) (eq (car func-def) 'byte-code)))
          (let* ((found-lib-pair (find-function-library func-symbol))
@@ -660,7 +660,7 @@ original buffer is not modified by this command."
                      (with-temp-buffer
                        (insert-file-contents source-file)
                        (goto-char (point-min))
-                       (if (re-search-forward (format "^(def\\(?:un\\|macro\\) %s\\b" (regexp-quote function)) nil t)
+                       (if (re-search-forward (format "^(def\(?:un\|macro\) %s\b" (regexp-quote function-name)) nil t)
                            (save-excursion
                              (goto-char (match-beginning 0))
                              (let ((beg (point)))
@@ -668,8 +668,8 @@ original buffer is not modified by this command."
                                (buffer-substring-no-properties beg (point))))
                          (format "Source file for '%s' found at '%s', but the function definition could not be located inside it."
                                  function source-file)))
-                   (format "Function '%s' is byte-compiled, and its source code file could not be found." function)))
-             (format "Library for function '%s' not found." function))))
+                   (format "Function '%s' is byte-compiled, and its source code file could not be found." function-name)))
+             (format "Library for function '%s' not found." function-name))))
         (t
          (prin1-to-string func-def)))))))
 
@@ -694,15 +694,15 @@ original buffer is not modified by this command."
      (with-current-buffer info-buffer
        (unwind-protect (buffer-string) (kill-buffer info-buffer))))))
 
-(defun aj8/gptel-tool-read-info-node (nodename)
+(defun aj8/gptel-tool-read-info-node (node-name)
   "Return the contents of a specific NODENAME from the Emacs Lisp manual."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_info_node"
-   (list :nodename nodename)
+   (list :node-name node-name)
    (let ((info-buffer (get-buffer-create "*info-node*")))
      (unwind-protect
          (with-current-buffer info-buffer
-           (Info-goto-node (format "(emacs-lisp)%s" nodename))
+           (Info-goto-node (format "(emacs-lisp)%s" node-name))
            (buffer-string))
        (kill-buffer info-buffer)))))
 
@@ -810,7 +810,7 @@ as \" (N lines)\"."
 ;;  :function #'aj8/gptel-tool-read-buffer
 ;;  :name "aj8_read_buffer"
 ;;  :description "Return the contents of a buffer."
-;;  :args (list '(:name "buffer"
+;;  :args (list '(:name "buffer-name"
 ;;                       :type string
 ;;                       :description "The name of the buffer to read."))
 
@@ -830,11 +830,11 @@ as \" (N lines)\"."
 ;;  :args (list '( :name "buffer-name"
 ;;                 :type string
 ;;                 :description "The name of the buffer to read the contents of. ")
-;;              '( :name "start"
+;;              '( :name "start-line"
 ;;                 :type integer
 ;;                 :optional t
 ;;                 :description "The optional first line to read from.")
-;;              '( :name "end"
+;;              '( :name "end-line"
 ;;                 :type integer
 ;;                 :optional t
 ;;                 :description "The optional last line to read to."))
@@ -847,7 +847,7 @@ as \" (N lines)\"."
  :args (list '( :name "buffer-name"
                 :type string
                 :description "The name of the buffer to read from.")
-             '( :name "start"
+             '( :name "start-line"
                 :type integer
                 :optional t
                 :description "The 1-based line number to start reading from (default is 1).")
@@ -900,7 +900,7 @@ as \" (N lines)\"."
  :function #'aj8/gptel-tool-append-to-buffer
  :name "aj8_append_to_buffer"
  :description "Append text to a buffer (at the end of the buffer)."
- :args (list '(:name "buffer"
+ :args (list '(:name "buffer-name"
                      :type string
                      :description "The name of the buffer to append text to.")
              '(:name "text"
@@ -912,7 +912,7 @@ as \" (N lines)\"."
  :function #'aj8/gptel-tool-insert-into-buffer
  :name "aj8_insert_into_buffer"
  :description "Insert text into a buffer at a specific line number. The text is inserted at the beginning of the specified line."
- :args (list '(:name "buffer"
+ :args (list '(:name "buffer-name"
                      :type string
                      :description "The name of the buffer to insert text into.")
              '(:name "text"
@@ -927,7 +927,7 @@ as \" (N lines)\"."
  :function #'aj8/gptel-tool-modify-buffer
  :name "aj8_modify_buffer"
  :description "Completely overwrite the contents of a buffer."
- :args (list '(:name "buffer"
+ :args (list '(:name "buffer-name"
                      :type string
                      :description "The name of the buffer to overwrite.")
              '(:name "content"
@@ -1093,7 +1093,7 @@ This action requires manual user review. After calling this tool, you must stop 
 ;;  :function #'aj8/gptel-tool-create-file
 ;;  :name "aj8_create_file"
 ;;  :description "Create a new file with the specified content. Overwrites the file if it already exists."
-;;  :args '((:name "filepath"
+;;  :args '((:name "file-path"
 ;;                 :type string
 ;;                 :description "The path of the file to create.")
 ;;          (:name "content"
@@ -1106,7 +1106,7 @@ This action requires manual user review. After calling this tool, you must stop 
  :function #'aj8/gptel-tool-read-documentation
  :name "aj8_read_documentation"
  :description "Read the documentation for a given 'symbol', which can be a function or variable"
- :args (list '(:name "symbol"
+ :args (list '(:name "symbol-name"
                      :type string
                      :description "The name of the function or variable whose documentation is to be read."))
  :category "emacs")
@@ -1115,7 +1115,7 @@ This action requires manual user review. After calling this tool, you must stop 
  :function #'aj8/gptel-tool-read-function
  :name "aj8_read_function"
  :description "Return the code of the definition of an Emacs Lisp function."
- :args (list '(:name "function"
+ :args (list '(:name "function-name"
                      :type string
                      :description "The name of the function whose code is to be returned."))
  :category "emacs")
@@ -1142,7 +1142,7 @@ This action requires manual user review. After calling this tool, you must stop 
  :function #'aj8/gptel-tool-read-info-node
  :name "aj8_read_info_node"
  :description "Return the contents of a specific NODENAME from the Emacs Lisp manual."
- :args (list '(:name "nodename" :type string :description "The name of the node in the Emacs Lisp manual."))
+ :args (list '(:name "node-name" :type string :description "The name of the node in the Emacs Lisp manual."))
  :category "emacs")
 
 ;; Project
