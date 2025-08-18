@@ -237,7 +237,7 @@ When START-LINE is nil it defaults to 1.  When COUNT nil it defaults to
                (buffer-substring-no-properties start-pos end-pos)))))))))
 
 (defun aj8/gptel-tool-list-buffers (&optional include-counts)
-  "Return a newline-separated string listing all currently open file-based buffers.
+  "Return a newline-separated string of open file-backed buffers.
 
 Each line is of the form \"NAME: PATH\", where NAME is the buffer name
 and PATH is the file path relative to the current project root.  When
@@ -265,7 +265,7 @@ lines)\"."
      (mapconcat #'identity (nreverse lines) "\n"))))
 
 (defun aj8/gptel-tool-list-all-buffers (&optional include-counts)
-  "Return a newline-separated string listing all currently open buffers.
+  "Return a newline-separated string of all open buffers.
 
 Each line is either \"NAME: PATH\" for file-backed buffers or just
 \"NAME\" for non-file buffers.  NAME is the buffer name and PATH is the
@@ -316,7 +316,7 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
      (buffer-name buffer))))
 
 (defun aj8/gptel-tool-append-to-buffer (buffer-name text)
-  "Append TEXT to BUFFER."
+  "Append TEXT to BUFFER-NAME."
   (aj8/gptel-tool--with-tool
    "tool: aj8_append_to_buffer"
    (list :buffer-name buffer-name :text text)
@@ -330,7 +330,7 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
      (format "Text successfully appended to buffer %s." buffer-name))))
 
 (defun aj8/gptel-tool-insert-into-buffer (buffer-name text line-number)
-  "Insert TEXT into BUFFER at LINE-NUMBER.
+  "Insert TEXT into BUFFER-NAME at LINE-NUMBER.
 
 The text is inserted at the beginning of the specified line."
   (aj8/gptel-tool--with-tool
@@ -346,7 +346,7 @@ The text is inserted at the beginning of the specified line."
      (format "Text successfully inserted into buffer %s at line %d." buffer-name line-number))))
 
 (defun aj8/gptel-tool-replace-buffer (buffer-name content)
-  "Overwrite BUFFER with CONTENT."
+  "Overwrite BUFFER-NAME with CONTENT."
   (aj8/gptel-tool--with-tool
    "tool: aj8_replace_buffer"
    (list :buffer-name buffer-name :content content)
@@ -384,8 +384,8 @@ The text is inserted at the beginning of the specified line."
   "Replace line LINE-NUMBER in file BUFFER-NAME with CONTENT.
 
 This wrapper function delegates replacement to
-`aj8/gptel-tool-replace-buffer-region' with START-LINE and END-LINE equal
-to LINE-NUMBER."
+`aj8/gptel-tool-replace-buffer-region' with START-LINE and END-LINE both
+equal to LINE-NUMBER."
   (aj8/gptel-tool--with-tool
    "tool: aj8_replace_buffer_line"
    (list :buffer-name buffer-name :line-number line-number :content content)
@@ -627,7 +627,7 @@ original buffer is not modified by this command."
 ;; Emacs
 
 (defun aj8/gptel-tool-read-documentation (symbol-name)
-  "Read the documentation for SYMBOL."
+  "Read the documentation for SYMBOL-NAME."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_documentation"
    (list :symbol-name symbol-name)
@@ -640,7 +640,7 @@ original buffer is not modified by this command."
      (or doc (format "No documentation found for symbol '%s'." symbol-name)))))
 
 (defun aj8/gptel-tool-read-function (function-name)
-  "Return the definition FUNCTION."
+  "Return the definition of FUNCTION-NAME."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_function"
    (list :function-name function-name)
@@ -692,7 +692,7 @@ original buffer is not modified by this command."
        (buffer-string)))))
 
 (defun aj8/gptel-tool-read-info-symbol (symbol-name)
-  "Return the contents of the info node for SYMBOL-NAME."
+  "Return the contents of the Info node for SYMBOL-NAME."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_info_symbol"
    (list :symbol-name symbol-name)
@@ -702,7 +702,7 @@ original buffer is not modified by this command."
        (unwind-protect (buffer-string) (kill-buffer info-buffer))))))
 
 (defun aj8/gptel-tool-read-info-node (node-name)
-  "Return the contents of a specific NODENAME from the Emacs Lisp manual."
+  "Return the contents of the Emacs Lisp manual node NODE-NAME."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_info_node"
    (list :node-name node-name)
