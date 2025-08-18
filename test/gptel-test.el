@@ -478,7 +478,13 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
    ;; Test search content
    (when (or (executable-find "rg") (and (executable-find "git") (file-directory-p ".git")))
      (let ((results (aj8/gptel-tool-project-search-regexp "some text data")))
-       (should (string-match-p "data\\.txt:1:[0-9]+:some text data" results))))))
+       (should (string-match-p "data\\.txt:1:[0-9]+:some text data" results)))
+     ;; No-match path should return an informative message
+     (let* ((regexp "NO_MATCH_REGEX_12345")
+            (nores (aj8/gptel-tool-project-search-regexp regexp)))
+       (should (string-equal nores (format "No matches found for regexp: %s" regexp))))
+     ;; Error path: invalid regexp should cause backend to return status > 1 and signal an error
+     (should-error (aj8/gptel-tool-project-search-regexp "[") :type 'error))))
 
 ;;
 ;;;; 4. Integration Tests (ert-deftest)
