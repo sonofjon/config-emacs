@@ -35,8 +35,9 @@
 (defun aj8/package-list-upgrades (&optional verbose)
   "List all packages that have upgrades available.
 
-With prefix argument (C-u), show detailed version information.  Excludes
-VC packages since they show as upgradeable even when up-to-date."
+With prefix argument (C-u), or if VERBOSE is non-nil, show detailed
+version information.  Excludes VC packages since they show as
+upgradeable even when up-to-date."
   (interactive "P")
   (package-refresh-contents)
   (let* ((all-upgradable (package--upgradeable-packages))
@@ -114,10 +115,10 @@ up-to-date."
 
 (defun aj8/package-autoremove-no-vc (orig-fun &rest args)
   "Advice function for `package-autoremove to not remove VC packages'.
+
 This function temporarily adds packages from
 `package-vc-selected-packages' to `package-selected-packages' before
-calling the `package-autoremove'. ORIG-FUN should be
-`package-autoremove'."
+calling `package-autoremove'. ORIG-FUN should be `package-autoremove'."
   (let ((package-selected-packages
          (append (mapcar #'car package-vc-selected-packages)
                  package-selected-packages)))
@@ -2210,7 +2211,9 @@ ARGS are the arguments to be passed to ORIG-FUN."
 ;;; xterm key sequence mappings for rxvt
 
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
-  "Add mappings for a given list of escape sequences and list of keys."
+  "Add mappings for a given list of escape sequences and list of keys.
+
+ESCAPE-PREFIX is the common escape sequence prefix.  KEY-PREFIX is the key prefix to map.  SUFFIX-ALIST is an alist of (escape-suffix . key-suffix) pairs."
   (while suffix-alist
     (let ((escape-suffix (car (car suffix-alist)))
           (key-suffix (cdr (car suffix-alist))))
