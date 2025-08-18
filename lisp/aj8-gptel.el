@@ -500,7 +500,7 @@ subsequent line numbers."
                             "old-string contains newline"
                             old-string)
                       failures)
-              (progn
+              (save-excursion
                 (goto-line line-number)
                 (cond
                  ((eq edit-type 'line)
