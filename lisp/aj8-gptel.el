@@ -345,10 +345,10 @@ The text is inserted at the beginning of the specified line."
          (insert text)))
      (format "Text successfully inserted into buffer %s at line %d." buffer-name line-number))))
 
-(defun aj8/gptel-tool-modify-buffer (buffer-name content)
+(defun aj8/gptel-tool-replace-buffer (buffer-name content)
   "Overwrite BUFFER with CONTENT."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_modify_buffer"
+   "tool: aj8_replace_buffer"
    (list :buffer-name buffer-name :content content)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
@@ -380,19 +380,19 @@ The text is inserted at the beginning of the specified line."
              (replace-string old-string new-string)
              (format "String in buffer '%s' successfully replaced." buffer-name)))))))))
 
-(defun aj8/gptel-tool-edit-buffer-line (buffer-name line-number content)
+(defun aj8/gptel-tool-replace-buffer-line (buffer-name line-number content)
   "Replace line LINE-NUMBER in file BUFFER-NAME with CONTENT.
 
 This wrapper function delegates replacement to
-`aj8/gptel-tool-edit-buffer-region' with START-LINE and END-LINE equal
+`aj8/gptel-tool-replace-buffer-region' with START-LINE and END-LINE equal
 to LINE-NUMBER."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_edit_buffer_line"
+   "tool: aj8_replace_buffer_line"
    (list :buffer-name buffer-name :line-number line-number :content content)
-   (aj8/gptel-tool-edit-buffer-region buffer-name line-number line-number content)
+   (aj8/gptel-tool-replace-buffer-region buffer-name line-number line-number content)
    (format "Line %d in buffer '%s' successfully replaced." line-number buffer-name)))
 
-(defun aj8/gptel-tool-edit-buffer-region (buffer-name start-line end-line content)
+(defun aj8/gptel-tool-replace-buffer-region (buffer-name start-line end-line content)
   "Replace lines START-LINE through END-LINE in BUFFER-NAME with CONTENT."
   (aj8/gptel-tool--with-tool
    "tool: aj8_replace_buffer_region"
@@ -924,8 +924,8 @@ as \" (N lines)\"."
  :category "buffers")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-modify-buffer
- :name "aj8_modify_buffer"
+ :function #'aj8/gptel-tool-replace-buffer
+ :name "aj8_replace_buffer"
  :description "Completely overwrite the contents of a buffer."
  :args (list '(:name "buffer-name"
                      :type string
@@ -951,8 +951,8 @@ as \" (N lines)\"."
  :category "buffers")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-edit-buffer-line
- :name "aj8_edit_buffer_line"
+ :function #'aj8/gptel-tool-replace-buffer-line
+ :name "aj8_replace_buffer_line"
  :description "Replace a single line in a buffer with new content. The new content may contain newline characters."
  :args '((:name "buffer-name" :type string :description "The name of the buffer to edit.")
          (:name "line-number" :type integer :description "The 1-based line number of the line to replace.")
@@ -960,8 +960,8 @@ as \" (N lines)\"."
  :category "buffers")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-edit-buffer-region
- :name "aj8_edit_buffer_region"
+ :function #'aj8/gptel-tool-replace-buffer-region
+ :name "aj8_replace_buffer_region"
  :description "Replace a range of lines in a buffer with new content. The new content may contain newline characters. To replace a single line set 'start-line==end-line'"
  :args (list '(:name "buffer-name" :type string
                      :description "Name of the buffer to modify.")

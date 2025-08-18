@@ -271,7 +271,7 @@ and file paths, and that they signal errors for invalid inputs."
   "Test buffer content modification functions.
 
 This test covers `aj8/gptel-tool-append-to-buffer',
-`aj8/gptel-tool-insert-into-buffer', and `aj8/gptel-tool-modify-buffer',
+`aj8/gptel-tool-insert-into-buffer', and `aj8/gptel-tool-replace-buffer',
 ensuring they alter the buffer content as expected."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -282,9 +282,9 @@ ensuring they alter the buffer content as expected."
    ;; Insert
    (aj8/gptel-tool-insert-into-buffer "*test-modify*" "Line 2\n" 2)
    (should (string-equal (buffer-string) "Line 1\nLine 2\nLine 3\nLine 4"))
-   ;; Modify
-   (aj8/gptel-tool-modify-buffer "*test-modify*" "New Content")
    (should (string-equal (buffer-string) "New Content"))))
+   ;; Replace
+   (aj8/gptel-tool-replace-buffer "*test-modify*" "New Content")
 
 (ert-deftest test-aj8-edit-buffer-string ()
   "Test `aj8/gptel-tool-edit-buffer-string'.
@@ -673,10 +673,10 @@ in the `gptel-tools' alist."
                           "aj8_file_to_buffer"
                           "aj8_append_to_buffer"
                           "aj8_insert_into_buffer"
-                          "aj8_modify_buffer"
+                          "aj8_replace_buffer"
                           "aj8_edit_buffer_string"
-                          "aj8_edit_buffer_line"
-                          "aj8_edit_buffer_region"
+                          "aj8_replace_buffer_line"
+                          "aj8_replace_buffer_region"
                           "aj8_delete_buffer_string"
                           "aj8_delete_buffer_line"
                           "aj8_delete_buffer_region"
