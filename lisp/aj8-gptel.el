@@ -113,7 +113,8 @@ TOOL-NAME is the tool's display name (string).  ARGS is a property
 list (plist) of keyword/value pairs describing the parameters passed to
 the tool function.
 
-If ARGS is nil the minibuffer will show only the tool name (no argument summary is displayed).
+If ARGS is nil the minibuffer will show only the tool name (no argument
+summary is displayed).
 
 The macro binds local variables `tool-name' and `args' and then:
 - Messages the running tool name and a display-safe summary of ARGS in the
@@ -584,11 +585,11 @@ applied in descending order of :line-number."
   "Edit BUFFER-NAME with a list of line edits and start an Ediff session for review.
 
 BUFFER-EDITS is a list of property lists where each edit must contain
-:line-number (integer), :old-string (string), and
-:new-string (string).  This function prepares a temporary buffer with the
-line edits applied and launches `ediff-buffers' to let the user review
-the changes interactively.  Edits are applied to the temporary buffer
-only; the original buffer is not modified by this command."
+the keys :line-number (integer), :old-string (string), and
+:new-string (string).  This function prepares a temporary buffer with
+the line edits applied and launches `ediff-buffers' to let the user
+review the changes interactively.  Edits are applied to the temporary
+buffer only; the original buffer is not modified by this command."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_line_edits_with_review"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -599,10 +600,11 @@ only; the original buffer is not modified by this command."
   "Edit BUFFER-NAME with a list of string edits, applying changes directly without review.
 
 BUFFER-EDITS is a list of property lists where each edit must contain
-:line-number (integer), :old-string (string), and :new-string (string).
-The function searches from the start of the specified line to the end of
-the line for the first occurrence of :old-string and replaces it with
-:new-string.  Edits are applied in descending order of :line-number."
+the keys :line-number (integer), :old-string (string), and
+:new-string (string).  The function searches from the start of the
+specified line to the end of the line for the first occurrence of
+:old-string and replaces it with :new-string.  Edits are applied in
+descending order of :line-number."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_string_edits"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
@@ -613,11 +615,11 @@ the line for the first occurrence of :old-string and replaces it with
   "Edit BUFFER-NAME with a list of string edits and start an Ediff session for review.
 
 BUFFER-EDITS is a list of property lists where each edit must contain
-:line-number (integer), :old-string (string), and :new-string (string).
-This function prepares a temporary buffer with the string edits applied
-and launches `ediff-buffers' to let the user review the changes
-interactively.  Edits are applied to the temporary buffer only; the
-original buffer is not modified by this command."
+the keys :line-number (integer), :old-string (string), and
+:new-string (string).  This function prepares a temporary buffer with
+the string edits applied and launches `ediff-buffers' to let the user
+review the changes interactively.  Edits are applied to the temporary
+buffer only; the original buffer is not modified by this command."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_string_edits_with_review"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
