@@ -165,7 +165,7 @@ The macro binds local variables `tool-name' and `args' and then:
 (defvar aj8/gptel-tool-max-lines 100
   "Default maximum number of lines any read tool will return.")
 
-;; ;; TODO: Calling this and other functions …–region is a misnomer since start
+;; ;; TODO: Calling this and other functions ...-region is a misnomer since start
 ;; ;; and end are line numbers, not character positions.
 ;; ;;       Implement a soft truncation (returning the first/last N lines rather than an error)?
 ;; (defun aj8/gptel-tool-read-buffer-region (buffer-name &optional start-line end-line)

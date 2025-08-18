@@ -560,7 +560,7 @@ Much faster than `sgml-pretty-print'."
 (defun aj8/flymake-ruff-goto-doc ()
 "Browse to the documentation for the Ruff rule on a Flymake diagnostic line.
 
-Scans the Flymake diagnostic at point for a “[RULE123]”-style code and
+Scans the Flymake diagnostic at point for a \"[RULE123]\"-style code and
 browses to its documentation at https://docs.astral.sh/ruff/rules."
 (interactive)
 (unless (or (derived-mode-p 'flymake-diagnostics-buffer-mode)
@@ -882,7 +882,7 @@ a line below."
 Groups include:
 1. Directories (ends with \"/\")
 2. Regular files (no \"/\" or \"*\" anywhere)
-3. Regular files in directories (contains \"/\" but doesn’t end with \"/\"
+3. Regular files in directories (contains \"/\" but doesn't end with \"/\"
    and no \"*\")
 4. Wildcards (contains \"*\")"
   (interactive "r")

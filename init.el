@@ -411,9 +411,9 @@
   ;; Reduce delay for echoing multi-character keys
   (echo-keystrokes 0.01)
   ;; Scrolling
-  ;;   The order of priority is: ‘scroll-conservatively’, then
-  ;;   ‘scroll-step’, and finally ‘scroll-up-aggressively’ /
-  ;;   ‘scroll-down-aggressively’.
+  ;;   The order of priority is: `scroll-conservatively', then
+  ;;   `scroll-step', and finally `scroll-up-aggressively' /
+  ;;   `scroll-down-aggressively'.
   (scroll-conservatively 0)        ; default: 0
   (scroll-step 1)                  ; default: 0
   (scroll-up-aggressively nil)     ; default: nil
