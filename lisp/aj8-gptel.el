@@ -742,7 +742,7 @@ buffer only; the original buffer is not modified by this command."
 Each line is of the form \"NAME: PATH\".  If INCLUDE-COUNTS is non-nil,
 append the number of lines as \"NAME: PATH (N lines)\".
 
-NAME is the file's base name and PATH is the path relative to the
+NAME is the base name of the file and PATH is the path relative to the
 project root."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_list_files"

@@ -880,9 +880,9 @@ This test covers three related behaviors:
 - The project root returned by `aj8/gptel-tool-project-get-root'.
 - The project buffer listing without counts includes project-relative paths.
 - The project buffer listing with counts includes entries that contain:
-  * a trailing \": N lines\" count
-  * the Emacs buffer name for the file
-  * the (nondirectory) filename"
+  * the base name of the file
+  * the (nondirectory) filename
+  * a trailing \": N lines\" count"
   :tags '(unit project)
   (with-temp-project
    (let ((root default-directory))
