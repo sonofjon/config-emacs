@@ -551,8 +551,7 @@ Much faster than `sgml-pretty-print'."
 
 ;; Open Ruff docs from Flymake
 (defun aj8/flymake-ruff-goto-doc ()
-"Browse to the documentation for the Ruff rule on a Flymake diagnostic line.
-
+  "Browse to the documentation for the Ruff rule on a Flymake diagnostic line.
 Scans the Flymake diagnostic at point for a \"[RULE123]\"-style code and
 browses to its documentation at https://docs.astral.sh/ruff/rules."
 (interactive)
