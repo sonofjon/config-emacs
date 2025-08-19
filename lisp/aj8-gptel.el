@@ -69,7 +69,6 @@ for use with `prin1-to-string' for concise minibuffer display."
 
 (defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional error-p)
   "Append to `*gptel-tool-log*' recording TOOL-NAME, ARGS and RESULT.
-
 If ERROR-P is non-nil record it as an error entry.  The record is
 machine-readable (prin1) and timestamped."
   (let ((buf (get-buffer-create "*gptel-tool-log*"))
@@ -86,7 +85,6 @@ machine-readable (prin1) and timestamped."
 
 (defvar aj8/gptel-tool-return-error t
   "When non-nil, tools return errors to the caller.
-
 If non-nil, tool error handlers return the same human-readable error
 text that is messaged in the minibuffer, instead of signaling an Emacs
 error. When nil, errors are re-signaled after being messaged and logged.")
@@ -204,7 +202,6 @@ The macro binds local variables `tool-name' and `args' and then:
 
 (defun aj8/gptel-tool-read-buffer-region-count (buffer-name &optional start-line count)
   "Read COUNT lines from BUFFER-NAME starting at line START-LINE.
-
 When START-LINE is nil it defaults to 1.  When COUNT nil it defaults to
 `aj8/gptel-tool-max-lines'.  COUNT must be >= 1 and no greater than
 `aj8/gptel-tool-max-lines'."
@@ -239,7 +236,6 @@ When START-LINE is nil it defaults to 1.  When COUNT nil it defaults to
 
 (defun aj8/gptel-tool-list-buffers (&optional include-counts)
   "Return a newline-separated string of open file-backed buffers.
-
 Each line is of the form \"NAME: PATH\", where NAME is the buffer name
 and PATH is the file path relative to the current project root.  When
 the file is outside the current project PATH is the absolute file path.
@@ -267,7 +263,6 @@ lines)\"."
 
 (defun aj8/gptel-tool-list-all-buffers (&optional include-counts)
   "Return a newline-separated string of all open buffers.
-
 Each line is either \"NAME: PATH\" for file-backed buffers or just
 \"NAME\" for non-file buffers.  NAME is the buffer name and PATH is the
 file path relative to the current project root.  When the file is
@@ -332,7 +327,6 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
 
 (defun aj8/gptel-tool-insert-into-buffer (buffer-name text line-number)
   "Insert TEXT into BUFFER-NAME at LINE-NUMBER.
-
 The text is inserted at the beginning of the specified line."
   (aj8/gptel-tool--with-tool
    "tool: aj8_insert_into_buffer"
@@ -383,7 +377,6 @@ The text is inserted at the beginning of the specified line."
 
 (defun aj8/gptel-tool-replace-buffer-line (buffer-name line-number content)
   "Replace line LINE-NUMBER in file BUFFER-NAME with CONTENT.
-
 This wrapper function delegates replacement to
 `aj8/gptel-tool-replace-buffer-region' with START-LINE and END-LINE both
 equal to LINE-NUMBER."
@@ -421,7 +414,6 @@ equal to LINE-NUMBER."
 
 (defun aj8/gptel-tool-delete-buffer-string (buffer-name old-string)
   "Delete a single instance of OLD-STRING in BUFFER-NAME.
-
 This wrapper function delegates deletion to
 `aj8/gptel-tool-edit-buffer-string' by setting NEW-STRING to an empty
 string."
@@ -435,7 +427,6 @@ string."
 
 (defun aj8/gptel-tool-delete-buffer-region (buffer-name start-line end-line)
   "Delete lines START-LINE through END-LINE in BUFFER-NAME.
-
 This wrapper function delegates deletion to
 `aj8/gptel-tool-edit-buffer-region' by setting CONTENT to an empty
 string."
@@ -448,7 +439,6 @@ string."
 
 (defun aj8/gptel-tool-delete-buffer-line (buffer-name line-number)
   "Delete line LINE-NUMBER in BUFFER-NAME.
-
 This wrapper function delegates deletion to
 `aj8/gptel-tool-edit-buffer-line' by setting CONTENT to an empty string."
   (aj8/gptel-tool--with-tool
@@ -569,7 +559,6 @@ edited temporary buffer."
 
 (defun aj8/gptel-tool-apply-buffer-line-edits (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of line edits, applying changes directly without review.
-
 BUFFER-EDITS is a list of property lists where each edit must contain
 the keys :line-number (integer), :old-string (string), and
 :new-string (string).  The :old-string is compared against the entire
@@ -583,7 +572,6 @@ applied in descending order of :line-number."
 
 (defun aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of line edits and start an Ediff session for review.
-
 BUFFER-EDITS is a list of property lists where each edit must contain
 the keys :line-number (integer), :old-string (string), and
 :new-string (string).  This function prepares a temporary buffer with
@@ -598,7 +586,6 @@ buffer only; the original buffer is not modified by this command."
 
 (defun aj8/gptel-tool-apply-buffer-string-edits (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of string edits, applying changes directly without review.
-
 BUFFER-EDITS is a list of property lists where each edit must contain
 the keys :line-number (integer), :old-string (string), and
 :new-string (string).  The function searches from the start of the
@@ -613,7 +600,6 @@ descending order of :line-number."
 
 (defun aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of string edits and start an Ediff session for review.
-
 BUFFER-EDITS is a list of property lists where each edit must contain
 the keys :line-number (integer), :old-string (string), and
 :new-string (string).  This function prepares a temporary buffer with
@@ -753,7 +739,6 @@ project root."
 
 (defun aj8/gptel-tool-project-find-files-glob (pattern &optional include-counts)
   "In the current project, find files whose filenames match the glob PATTERN.
-
 Returns a newline-separated string where each line is \"NAME: PATH\".
 NAME is the file's base name and PATH is the path relative to the
 project root.  If INCLUDE-COUNTS is non-nil append the number of lines

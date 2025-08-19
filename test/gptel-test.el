@@ -19,7 +19,6 @@
 
 (defmacro with-temp-buffer-with-content (buffer-name content &rest body)
   "Execute BODY in a temporary buffer containing initial CONTENT.
-
 The buffer is named BUFFER-NAME. This macro ensures the buffer is killed
 after BODY executes, even in case of an error."
   `(let ((test-buf (get-buffer-create ,buffer-name)))
@@ -33,7 +32,6 @@ after BODY executes, even in case of an error."
 
 (defmacro with-temp-file-with-content (file-var content &rest body)
   "Execute BODY with a temporary file containing initial CONTENT.
-
 The file's path is bound to FILE-VAR. This macro ensures both the file
 and its associated buffer are deleted after BODY executes."
   `(let ((,file-var (make-temp-file "ert-test-file-")))
@@ -51,7 +49,6 @@ and its associated buffer are deleted after BODY executes."
 
 (defmacro with-temp-project (&rest body)
   "Execute BODY with `default-directory' set to a temporary project's root.
-
 This macro creates a directory, initializes a Git repository, and adds
 dummy files to simulate a real project. It runs the BODY forms with the
 project root as the current working directory, then deletes the
@@ -92,7 +89,6 @@ directory."
 
 (ert-deftest test-aj8-open-file-in-buffer ()
   "Test `aj8/gptel-tool-open-file-in-buffer'.
-
 Verifies that the function opens a file into a buffer."
   :tags '(unit buffers)
   (with-temp-file-with-content
@@ -104,7 +100,6 @@ Verifies that the function opens a file into a buffer."
 (ert-deftest test-aj8-read-buffer-region ()
   "Test `aj8/gptel-tool-read-buffer-region' and
 `aj8/gptel-tool-read-buffer-region-count'.
-
 Verifies that the functions can read a whole buffer, a section from the
 middle, a section from the beginning, and a section to the end. It also
 verifies that an error is signaled for a non-existent buffer, and for
@@ -227,7 +222,6 @@ project and relative to the project root for files inside it."
 
 (ert-deftest test-aj8-buffer-and-file-conversion ()
   "Test buffer-file path conversions.
-
 Verifies that `aj8/gptel-tool-buffer-to-file' and
 `aj8/gptel-tool-file-to-buffer' correctly convert between buffer names
 and file paths, and that they signal errors for invalid inputs."
@@ -269,7 +263,6 @@ and file paths, and that they signal errors for invalid inputs."
 
 (ert-deftest test-aj8-buffer-modification-tools ()
   "Test buffer content modification functions.
-
 This test covers `aj8/gptel-tool-append-to-buffer',
 `aj8/gptel-tool-insert-into-buffer', and `aj8/gptel-tool-replace-buffer',
 ensuring they alter the buffer content as expected."
@@ -288,7 +281,6 @@ ensuring they alter the buffer content as expected."
 
 (ert-deftest test-aj8-edit-buffer-string ()
   "Test `aj8/gptel-tool-edit-buffer-string'.
-
 Verifies that a single, unique string can be replaced in a buffer.  It
 also confirms that an error is signaled if the target string is not
 found or is not unique."
@@ -327,7 +319,6 @@ found or is not unique."
 
 (ert-deftest test-aj8-edit-buffer-line ()
   "Test `aj8/gptel-tool-edit-buffer-line'.
-
 Ensures that a specific single line in a buffer is replaced correctly."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -341,7 +332,6 @@ Line C"))))
 
 (ert-deftest test-aj8-edit-buffer-region ()
   "Test `aj8/gptel-tool-edit-buffer-region'.
-
 Ensures that a contiguous range of lines is replaced correctly in a buffer."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -358,7 +348,6 @@ Line D"))))
 
 (ert-deftest test-aj8-delete-buffer-string ()
   "Test `aj8/gptel-tool-delete-buffer-string'.
-
 Verifies that a single, unique string can be deleted from a buffer. It
 also confirms that an error is signaled if the target string is not
 found or is not unique."
@@ -399,7 +388,6 @@ found or is not unique."
 
 (ert-deftest test-aj8-delete-buffer-line ()
   "Test `aj8/gptel-tool-delete-buffer-line'.
-
 Ensures that a specific single line in a buffer is deleted correctly."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -424,7 +412,6 @@ Ensures that a specific single line in a buffer is deleted correctly."
 
 (ert-deftest test-aj8-delete-buffer-region ()
   "Test `aj8/gptel-tool-delete-buffer-region'.
-
 Ensures that a contiguous range of lines is deleted correctly in a buffer."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -456,7 +443,6 @@ Ensures that a contiguous range of lines is deleted correctly in a buffer."
 
 (ert-deftest test-aj8-apply-buffer-string-edits ()
   "Test `aj8/gptel-tool-apply-buffer-string-edits'.
-
 Ensures that a list of substring edits is applied correctly to a buffer."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -482,7 +468,6 @@ Ensures that a list of substring edits is applied correctly to a buffer."
 
 (ert-deftest test-aj8-apply-buffer-line-edits ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits'.
-
 Ensures that a list of full-line edits is applied correctly to a buffer."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -497,7 +482,6 @@ Ensures that a list of full-line edits is applied correctly to a buffer."
 
 (ert-deftest test-aj8-apply-buffer-string-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review'.
-
 Verifies that the function prepares substring edits and invokes the Ediff
 review system, without altering the original buffer."
   :tags '(unit buffers review)
@@ -519,7 +503,6 @@ review system, without altering the original buffer."
 
 (ert-deftest test-aj8-apply-buffer-line-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'.
-
 Verifies that the function prepares full-line edits and invokes the Ediff
 review system, without altering the original buffer."
   :tags '(unit buffers review)
@@ -543,7 +526,6 @@ review system, without altering the original buffer."
 
 (ert-deftest test-aj8-read-documentation ()
   "Test `aj8/gptel-tool-read-documentation'.
-
 Verifies that documentation can be retrieved for both functions and
 variables, and that a meaningful message is returned for symbols with no
 documentation."
@@ -571,7 +553,6 @@ library can be retrieved."
 
 (ert-deftest test-aj8-info-lookup ()
   "Test Info manual lookup tools.
-
 Verifies that `aj8/gptel-tool-read-info-symbol' and
 `aj8/gptel-tool-read-info-node' can retrieve content from the Emacs Lisp
 Info manual."
@@ -623,7 +604,6 @@ This test covers three related behaviors:
 
 (ert-deftest test-aj8-project-find-and-search ()
   "Test project file finding and content searching.
-
 Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
 `aj8/gptel-tool-project-search-regexp' for content searching."
   :tags '(unit project)
@@ -662,7 +642,6 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
 
 (ert-deftest test-gptel-tools-registration ()
   "Verify that all Gptel tools are registered in `gptel-tools'.
-
 This test checks that a predefined list of essential tool names exists
 in the `gptel-tools' alist."
   :tags '(integration tools)
@@ -701,7 +680,6 @@ in the `gptel-tools' alist."
 ;; TODO: duplication?
 (ert-deftest test-gptel-tools-json-schema-validation ()
   "Validate the structure of each `gptel-tool' definition.
-
 Ensures that every registered tool definition has the required
 properties, such as `:function` and `:description`, and that the
 argument list `:args` is a valid list."
@@ -736,7 +714,6 @@ their associated functions can be called without error."
 
 (ert-deftest test-gptel-tools-via-json-call ()
   "Simulate calling Gptel tools via a JSON-like interface.
-
 This test mimics how a Large Language Model (LLM) would call the tools
 by invoking the tool's function with arguments directly. It verifies
 both a query and a buffer modification tool."
@@ -760,7 +737,6 @@ both a query and a buffer modification tool."
 
 (ert-deftest test-gptel-tools-error-handling ()
   "Test that Gptel tools handle common errors gracefully.
-
 Verifies that tools produce user-friendly error messages when given
 invalid arguments, such as a non-existent buffer name or an invalid file
 path."
@@ -961,7 +937,6 @@ The response is processed by `gptel--streaming-done-callback'."
 
 (ert-deftest test-gptel-tools-multi-buffer-string-edits ()
   "Test complex, multi-part string editing scenarios.
-
 Simulates an LLM performing a refactoring task that requires making
 several related substring edits in a single buffer, using
 `aj8/gptel-tool-apply-buffer-string-edits' to apply them all at once."
@@ -990,7 +965,6 @@ several related substring edits in a single buffer, using
 
 (ert-deftest test-gptel-tools-multi-buffer-line-edits ()
   "Test complex, multi-part line editing scenarios.
-
 Simulates an LLM performing a refactoring task that requires making
 several related full-line edits in a single buffer, using
 `aj8/gptel-tool-apply-buffer-line-edits' to apply them all at once."
@@ -1170,7 +1144,6 @@ if all tools are valid."
 
 (defun aj8/gptel-tool-create-scenario ()
   "Create a sandboxed environment for manually testing Gptel tools.
-
 This sets up a temporary directory with several files and opens them in
 buffers, simulating a realistic project. It also creates an instructions
 buffer with suggested prompts for testing tool-based interactions with

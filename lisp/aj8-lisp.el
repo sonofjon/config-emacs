@@ -34,7 +34,6 @@
 ;; List available package upgrades
 (defun aj8/package-list-upgrades (&optional verbose)
   "List all packages that have upgrades available.
-
 With prefix argument (C-u), or if VERBOSE is non-nil, show detailed
 version information.  Excludes VC packages since they show as
 upgradeable even when up-to-date."
@@ -74,7 +73,6 @@ upgradeable even when up-to-date."
 ;; Upgrade packages verbosily
 (defun aj8/package-upgrade-all-verbose ()
   "Upgrade all packages with detailed information about what will be upgraded.
-
 Excludes VC packages since they show as upgradeable even when
 up-to-date."
   (interactive)
@@ -115,7 +113,6 @@ up-to-date."
 
 (defun aj8/package-autoremove-no-vc (orig-fun &rest args)
   "Advice function for `package-autoremove to not remove VC packages'.
-
 This function temporarily adds packages from
 `package-vc-selected-packages' to `package-selected-packages' before
 calling `package-autoremove'. ORIG-FUN should be `package-autoremove'."
@@ -243,7 +240,6 @@ The matching buffers are ignored by `next-buffer' and
 
 (defun aj8/buffer-skip-p (window buffer bury-or-kill)
   "Return t if the BUFFER should be skipped.
-
 WINDOW is the window displaying the buffer.  BURY-OR-KILL indicates
 whether to bury or kill the buffer."
   ;; Buffer name matches `aj8/buffer-skip-regexp'
@@ -371,7 +367,6 @@ If the current window is a side window don't skip buffers."
 
 (defcustom aj8/ediff-cleanup-buffers nil
   "If non-nil, clean up Ediff buffers on exit.
-
 See function `aj8/ediff-cleanup-buffers' for details."
   :type 'boolean
   :group 'aj8-lisp)
@@ -389,7 +384,6 @@ See also `ediff-cleanup-mess'."
 
 (defcustom aj8/magit-cleanup-buffers nil
   "If non-nil, clean up Magit buffers regularly.
-
 See `aj8/magit-buffer-cleanup-timer' and
 `aj8/magit-kill-process-buffers' for details."
   :type 'boolean
@@ -450,7 +444,6 @@ This function is intended to be run from an idle timer."
 
 (define-minor-mode aj8/buffer-tail-mode
   "A buffer-local minor mode to make the current buffer auto-scroll.
-
 When enabled in a buffer, a timer periodically checks for changes in that
 buffer and scrolls its window to the end."
   :init-value nil
@@ -506,7 +499,6 @@ function.  ORIG-FUN should be `gptel'."
 ;; Auto-save gptel buffers
 (defun aj8/gptel-auto-save-chat-buffer (beg end)
   "Auto-save gptel chat buffer after LLM response.
-
 Only saves if the current buffer is a modified gptel chat buffer with a
 file name.  This function is meant to be used with
 `gptel-post-response-functions'.  BEG and END are the response beginning
@@ -951,7 +943,6 @@ matching `aj8/no-backup-regexp`."
 
 (defun aj8/scroll-up-paragraph (&optional move-point)
   "Scroll the selected window up one paragraph.
-
 MOVE-POINT determines whether the point should adjust position.  With a
 numeric MOVE-POINT > 0, move point to the start of the next paragraph.
 With a negative MOVE-POINT, keep point centered on the window."
@@ -982,7 +973,6 @@ With a negative MOVE-POINT, keep point centered on the window."
 ;; Scroll down one paragraph
 (defun aj8/scroll-down-paragraph (&optional move-point)
   "Scroll the selected window down one paragraph.
-
 MOVE-POINT determines whether the point should adjust position.  With a
 numeric MOVE-POINT > 0, move point to the start of the next paragraph.
 With a negative MOVE-POINT, keep point centered on the window."
@@ -1161,7 +1151,6 @@ If nil, cycle through all levels."
 ;;        Toggle `hide/show' completely with C-u
 (defun aj8/hs-cycle ()
   "Cycle code folding, progressively revealing deeper levels.
-
 Each invocation reveals one more nested level up to `aj8/hs-cycle-max-depth'.
 Once the maximum depth is reached, fully expand the block on the next call.
 If the block is fully visible, hide it entirely."
@@ -1199,7 +1188,6 @@ Tracks the current level of code folding globally.")
 ;; TODO: Adopt recent changes to non-global version
 (defun aj8/hs-global-cycle ()
   "Cycle code folding globally, progressively revealing deeper levels.
-
 On the first call, hide all blocks.  On each subsequent call, show the
 next level across all blocks, up to `aj8/hs-cycle-max-depth'.  After
 reaching `aj8/hs-cycle-max-depth', fully expand all blocks on the next
@@ -1344,7 +1332,6 @@ ARG specifies the number of times to move backward."
 ;; Return outline heading level
 (defun aj8/outline-level ()
   "Return the depth to which a statement is nested in the outline.
-
 Point must be at the beginning of a header line.  This is the level
 specified in `outline-heading-alist' and not based on the number of
 characters matched by `outline-regexp'."
@@ -1491,7 +1478,6 @@ entire word at point."
 ;;   Requires: aspell, aspell-en, aspell-sv, hunspell, hunspell-sv
 (defun aj8/toggle-ispell-program ()
   "Toggle `ispell' program.
-
 If current program is `aspell', switch to `hunspell', and vice versa."
   (interactive)
   (cond
@@ -1601,7 +1587,6 @@ If current program is `aspell', switch to `hunspell', and vice versa."
 
 (defun aj8/jinx-correct-previous ()
   "Correct the previous visible spelling error.
-
 The function repeatedly jumps to each previous error, corrects it, and
 continues checking.  When done, the point is restored to its original
 position."
@@ -1612,7 +1597,6 @@ position."
 
 (defun aj8/jinx-correct-next ()
   "Correct next visible spelling error.
-
 The function repeatedly jumps to each next error, corrects it, and
 continues checking.  When done, the point is restored to its original
 position."
@@ -1709,7 +1693,6 @@ position."
 
 (defun aj8/ediff-buffers-ignore-regexp ()
   "Run ediff on two buffers, ignoring lines that match REGEXP.
-
 Note that matching lines, in either file, are hidden in the output."
   (interactive)
   (let* ((buffer-A (get-buffer (read-buffer "Select buffer A: ")))
@@ -1973,7 +1956,6 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
 ;; Display gptel reasoning buffer
 (defun aj8/gptel-display-reasoning-buffer (beg end)
   "Display the gptel reasoning buffer.
-
 This function displays the gptel reasoning buffer and enables
 `aj8/buffer-tail-mode' (on first display only).  Use with any of gptel's
 built-in hooks. The arguments BEG and END are ignored but required by
@@ -2007,7 +1989,6 @@ the hook."
 ;;   C-u RET
 (defun aj8/eww-follow-link ()
   "Browse the URL under point.
-
 Swaps the functionality of single and double prefix arguments, see
 `eww-follow-link' for details."
   (interactive)
@@ -2217,7 +2198,6 @@ ARGS are the arguments to be passed to ORIG-FUN."
 
 (defun rxvt--add-escape-key-mapping-alist (escape-prefix key-prefix suffix-alist)
   "Add mappings for a given list of escape sequences and list of keys.
-
 ESCAPE-PREFIX is the common escape sequence prefix.  KEY-PREFIX is the
 key prefix to map.  SUFFIX-ALIST is an alist of (escape-suffix
 . key-suffix) pairs."
