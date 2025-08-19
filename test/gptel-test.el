@@ -898,12 +898,18 @@ This test covers three related behaviors:
            ;; 2) Without counts: the project-relative path should appear
            ;;    in the listing
            (should (string-match-p "src/code.el" (aj8/gptel-tool-project-list-files)))
+           ;; Exact no-counts "NAME: PATH" entry exists
+           (let* ((no-counts-lines (split-string (aj8/gptel-tool-project-list-files) "\n" t))
+                  (expected (format "%s: %s" fname rel)))
+             (should (member expected no-counts-lines)))
            ;; 3) With counts:
            ;; 3a) At least one entry ends with "(N lines)".
            (should (cl-some (lambda (s) (string-match-p "([0-9]+ lines)$" s)) lines))
            ;; 3b) At least one entry contains the (nondirectory) filename.
            (should (cl-some (lambda (s) (string-match-p (regexp-quote fname) s)) lines))
            ;; 4) Assert that the exact number of lines is reported.
+           ;; All include-counts entries end with "(N lines)"
+           (should (cl-every (lambda (s) (string-match-p "^[^:]+: .+ ([0-9]+ lines)$" s)) lines))
            (let ((expected (format "%s: %s (%d lines)" fname rel 1)))
              (should (member expected lines)))))
        (kill-buffer buf))))
@@ -945,7 +951,7 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
    (when (or (executable-find "rg") (and (executable-find "git") (file-directory-p ".git")))
      (let ((results (aj8/gptel-tool-project-search-regexp "some text data")))
        ;; Assert search output includes filename, line, and matched text
-       (should (string-match-p "data\\.txt:1:[0-9]+:some text data" results)))
+       (should (string-match-p "data\\.txt:1:some text data" results)))
      ;; No-match path should return an informative message
      (let* ((regexp "NO_MATCH_REGEX_12345")
             (nores (aj8/gptel-tool-project-search-regexp regexp)))
