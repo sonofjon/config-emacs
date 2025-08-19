@@ -890,24 +890,22 @@ This test covers three related behaviors:
      ;; Assert returned project root corresponds to the temporary project directory
      (should (string-equal (file-name-as-directory (aj8/gptel-tool-project-get-root))
                            (file-name-as-directory root)))
-     ;; Create and visit a file within the temporary project.
      (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
        (with-current-buffer buf
-         ;; 2) Without counts: the project-relative path should appear
-         ;;    in the listing
-         (should (string-match-p "src/code.el" (aj8/gptel-tool-project-list-files)))
-         ;; 3) With counts:
-         (let* ((lines (split-string (aj8/gptel-tool-project-list-files t) "\n" t))
-                (bufname (buffer-name buf))
-                (fname (file-name-nondirectory (buffer-file-name buf))))
-           ;; 3a) At least one entry ends with ": <number> lines".
-           (should (cl-some (lambda (s) (string-match-p ": [0-9]+ lines$" s)) lines))
-           ;; 3b) At least one entry contains the buffer name for the file.
-           (should (cl-some (lambda (s) (string-match-p (regexp-quote bufname) s)) lines))
-           ;; 3c) At least one entry contains the (nondirectory) filename.
+         (let ((lines (split-string (aj8/gptel-tool-project-list-files t) "\n" t))
+               (bufname (buffer-name buf))
+               (fname (file-name-nondirectory (buffer-file-name buf)))
+               (rel (file-relative-name (buffer-file-name buf) root)))
+           ;; 2) Without counts: the project-relative path should appear
+           ;;    in the listing
+           (should (string-match-p "src/code.el" (aj8/gptel-tool-project-list-files)))
+           ;; 3) With counts:
+           ;; 3a) At least one entry ends with "(N lines)".
+           (should (cl-some (lambda (s) (string-match-p "([0-9]+ lines)$" s)) lines))
+           ;; 3b) At least one entry contains the (nondirectory) filename.
            (should (cl-some (lambda (s) (string-match-p (regexp-quote fname) s)) lines))
            ;; 4) Assert that the exact number of lines is reported.
-           (let ((expected (format "%s: %d lines" bufname 1)))
+           (let ((expected (format "%s: %s (%d lines)" fname rel 1)))
              (should (member expected lines)))))
        (kill-buffer buf))))
   ;; Error cases: outside of any project
