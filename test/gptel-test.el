@@ -161,7 +161,7 @@ requests larger than `aj8/gptel-default-max-lines'."
      ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n))
      (should-error (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer-max*") :type 'error)
      (should-error (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer-max*" 1 n) :type 'error)
-     (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n)))))
+     (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n))))))
 
 (ert-deftest test-aj8-list-buffers ()
   "Test buffer listing tools.
