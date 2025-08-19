@@ -893,7 +893,6 @@ This test covers three related behaviors:
      (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
        (with-current-buffer buf
          (let ((lines (split-string (aj8/gptel-tool-project-list-files t) "\n" t))
-               (bufname (buffer-name buf))
                (fname (file-name-nondirectory (buffer-file-name buf)))
                (rel (file-relative-name (buffer-file-name buf) root)))
            ;; 2) Without counts: the project-relative path should appear
