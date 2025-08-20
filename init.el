@@ -2908,6 +2908,16 @@ Elisp code explicitly in arbitrary buffers.")
     :key (gptel-api-key-from-auth-source
           "api.deepseek.com" "apikey")
     :stream t)
+  ;; OpenRouter offers an OpenAI compatible API
+  (gptel-make-openai "OpenRouter"
+    :host "openrouter.ai"
+    :endpoint "/api/v1/chat/completions"
+    :key (gptel-api-key-from-auth-source
+          "openrouter.ai" "apikey")
+    :stream t
+    :models '(moonshotai/kimi-k2
+              qwen/qwen3-coder
+              qwen/qwen3-coder:free))
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
