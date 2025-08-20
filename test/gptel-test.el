@@ -526,7 +526,9 @@ Ensures that a specific single line in a buffer is deleted correctly."
    ;; Mode 1: re-signal errors
    (let ((aj8/gptel-tool-return-error nil))
      (should-error (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 0) :type 'error)
-     (should-error (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 10) :type 'error))
+     (should-error (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 10) :type 'error)
+     ;; Assert non-existent buffer errors
+     (should-error (aj8/gptel-tool-delete-buffer-line "*non-existent-buffer*" 2) :type 'error))
    ;; Mode 2: return error strings
    (let ((aj8/gptel-tool-return-error t))
      (let ((result (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 0)))
@@ -536,6 +538,11 @@ Ensures that a specific single line in a buffer is deleted correctly."
      (let ((result (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 10)))
        (should (string-equal
                 "tool: aj8_delete_buffer_line: Error: END-LINE exceeds buffer length (3)."
+                result)))
+     ;; Assert non-existent buffer errors
+     (let ((result (aj8/gptel-tool-delete-buffer-line "*non-existent-buffer*" 2)))
+       (should (string-equal
+                "tool: aj8_delete_buffer_line: Error: Buffer '*non-existent-buffer*' not found."
                 result))))
    ;; Success case
    (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 2)
@@ -551,7 +558,9 @@ Ensures that a contiguous range of lines is deleted correctly in a buffer."
    (let ((aj8/gptel-tool-return-error nil))
      (should-error (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 0 1) :type 'error)
      (should-error (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 3 2) :type 'error)
-     (should-error (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 2 5) :type 'error))
+     (should-error (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 2 5) :type 'error)
+     ;; Assert non-existent buffer errors
+     (should-error (aj8/gptel-tool-delete-buffer-region "*non-existent-buffer*" 2 3) :type 'error))
 
    ;; Mode 2: return error strings
    (let ((aj8/gptel-tool-return-error t))
@@ -566,6 +575,11 @@ Ensures that a contiguous range of lines is deleted correctly in a buffer."
      (let ((result (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 2 5)))
        (should (string-equal
                 "tool: aj8_delete_buffer_region: Error: END-LINE exceeds buffer length (4)."
+                result)))
+     ;; Assert non-existent buffer errors
+     (let ((result (aj8/gptel-tool-delete-buffer-region "*non-existent-buffer*" 2 3)))
+       (should (string-equal
+                "tool: aj8_delete_buffer_region: Error: Buffer '*non-existent-buffer*' not found."
                 result))))
 
    ;; Success case
