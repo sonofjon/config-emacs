@@ -824,7 +824,7 @@ PATH:LINE:TEXT, or if INCLUDE-COLUMNS is non-nil, PATH:LINE:COLUMN:TEXT.
 Both line and column numbers are 1-based. This search respects
 .gitignore."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_project_search_content"
+   "tool: aj8_project_search_regexp"
    (list :regexp regexp :include-columns include-columns)
    (let ((project (project-current)))
      (unless project (error "Not inside a project."))
@@ -1257,7 +1257,7 @@ This action requires manual user review. After calling this tool, you must stop 
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-search-regexp
- :name "aj8_project_search_content"
+ :name "aj8_project_search_regexp"
  :description "In the current project, recursively search for content matching REGEXP. The tool returns a newline-separated string of matching lines. Each line includes: PATH:LINE:TEXT, where PATH is the file path relative to the current project root, LINE is the 1-based line number of the match, and TEXT is the matched line text. If the optional argument INCLUDE-COLUMNS is non-nil, the tool returns PATH:LINE:COLUMN:TEXT, where COLUMN is the 1-based column number of the match."
  :args '((:name "regexp"
                 :type string
