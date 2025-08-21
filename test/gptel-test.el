@@ -1057,7 +1057,7 @@ their associated functions can be called without error."
   (let ((no-arg-tools '("aj8_list_buffers"
                         "aj8_list_all_buffers"
                         "aj8_project_get_root"
-                        "aj8_project_get_open_buffers")))
+                        "aj8_project_list_files")))
     ;; Test tools that don't require arguments
     (dolist (tool-name no-arg-tools)
       (let* ((tool-def (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools))
