@@ -322,7 +322,7 @@ and file paths, and that they signal errors for invalid inputs."
 (ert-deftest test-aj8-buffer-modification-tools ()
   "Test buffer content modification functions.
 This test covers `aj8/gptel-tool-append-to-buffer',
-`aj8/gptel-tool-insert-into-buffer', and `aj8/gptel-tool-replace-buffer',
+`aj8/gptel-tool-insert-in-buffer', and `aj8/gptel-tool-replace-buffer',
 ensuring they alter the buffer content as expected."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -332,7 +332,7 @@ ensuring they alter the buffer content as expected."
    ;; Assert appended content appears at buffer end
    (should (string-equal (buffer-string) "Line 1\nLine 3\nLine 4"))
    ;; Insert
-   (aj8/gptel-tool-insert-into-buffer "*test-modify*" "Line 2\n" 2)
+   (aj8/gptel-tool-insert-in-buffer "*test-modify*" "Line 2\n" 2)
    ;; Assert inserted content appears at the requested position
    (should (string-equal (buffer-string) "Line 1\nLine 2\nLine 3\nLine 4"))
    ;; Replace
@@ -356,13 +356,13 @@ ensuring they alter the buffer content as expected."
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert insert signals error for missing buffer (re-signal)
-     (should-error (aj8/gptel-tool-insert-into-buffer "*nope*" "text" 1) :type 'error))
+     (should-error (aj8/gptel-tool-insert-in-buffer "*nope*" "text" 1) :type 'error))
 
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
-     (let ((result (aj8/gptel-tool-insert-into-buffer "*nope*" "text" 1)))
+     (let ((result (aj8/gptel-tool-insert-in-buffer "*nope*" "text" 1)))
        (should (string-equal
-                "tool: aj8_insert_into_buffer: Error: Buffer '*nope*' not found."
+                "tool: aj8_insert_in_buffer: Error: Buffer '*nope*' not found."
                 result))))
 
    ;; Mode 1: tool re-signals the error
@@ -1004,7 +1004,7 @@ in the `gptel-tools' alist."
                           "aj8_buffer_to_file"
                           "aj8_file_to_buffer"
                           "aj8_append_to_buffer"
-                          "aj8_insert_into_buffer"
+                          "aj8_insert_in_buffer"
                           "aj8_replace_buffer"
                           "aj8_edit_buffer_string"
                           "aj8_replace_buffer_line"
@@ -1234,9 +1234,9 @@ The response is processed by `gptel--streaming-done-callback'."
      (aj8/gptel-tool-append-to-buffer buffer-name "\nAppended")
      (should (string-equal (with-current-buffer buffer-name (buffer-string)) "initial content\nAppended"))
 
-     ;; insert-into-buffer
+     ;; insert-in-buffer
      ;; Insert at start and verify ordering
-     (aj8/gptel-tool-insert-into-buffer buffer-name "Prepended\n" 1)
+     (aj8/gptel-tool-insert-in-buffer buffer-name "Prepended\n" 1)
      (should (string-equal (with-current-buffer buffer-name (buffer-string)) "Prepended\ninitial content\nAppended"))
 
      ;; edit-buffer

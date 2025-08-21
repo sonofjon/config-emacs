@@ -350,11 +350,11 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
          (insert text)))
      (format "Text successfully appended to buffer %s." buffer-name))))
 
-(defun aj8/gptel-tool-insert-into-buffer (buffer-name text line-number)
-  "Insert TEXT into BUFFER-NAME at LINE-NUMBER.
+(defun aj8/gptel-tool-insert-in-buffer (buffer-name text line-number)
+  "Insert TEXT in BUFFER-NAME at LINE-NUMBER.
 The text is inserted at the beginning of the specified line."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_insert_into_buffer"
+   "tool: aj8_insert_in_buffer"
    (list :buffer-name buffer-name :text text :line-number line-number)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
@@ -975,9 +975,9 @@ Both line and column numbers are 1-based. This search respects
  :category "buffers")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-insert-into-buffer
- :name "aj8_insert_into_buffer"
- :description "Insert text into a buffer at a specific line number. The text is inserted at the beginning of the specified line."
+ :function #'aj8/gptel-tool-insert-in-buffer
+ :name "aj8_insert_in_buffer"
+ :description "Insert text in a buffer at a specific line number. The text is inserted at the beginning of the specified line."
  :args (list '(:name "buffer-name"
                      :type string
                      :description "The name of the buffer to insert text into.")
