@@ -452,22 +452,23 @@ string."
 (defun aj8/gptel-tool-delete-buffer-line (buffer-name line-number)
   "Delete line LINE-NUMBER in BUFFER-NAME.
 This wrapper function delegates deletion to
-`aj8/gptel-tool-edit-buffer-line' by setting CONTENT to an empty string."
+`aj8/gptel-tool-replace-buffer-line' by setting CONTENT to an empty
+string."
   (aj8/gptel-tool--with-tool
    "tool: aj8_delete_buffer_line"
    (list :buffer-name buffer-name :line-number line-number)
-   (aj8/gptel-tool-edit-buffer-line buffer-name line-number "")
+   (aj8/gptel-tool-replace-buffer-line buffer-name line-number "")
    (format "Line %d in buffer '%s' successfully deleted." line-number buffer-name)))
 
 (defun aj8/gptel-tool-delete-buffer-region (buffer-name start-line end-line)
   "Delete lines START-LINE through END-LINE in BUFFER-NAME.
 This wrapper function delegates deletion to
-`aj8/gptel-tool-edit-buffer-region' by setting CONTENT to an empty
+`aj8/gptel-tool-replace-buffer-region' by setting CONTENT to an empty
 string."
   (aj8/gptel-tool--with-tool
    "tool: aj8_delete_buffer_region"
    (list :buffer-name buffer-name :start-line start-line :end-line end-line)
-   (aj8/gptel-tool-edit-buffer-region buffer-name start-line end-line "")
+   (aj8/gptel-tool-replace-buffer-region buffer-name start-line end-line "")
    (format "Region lines %d-%d in buffer '%s' successfully deleted."
            start-line end-line buffer-name)))
 
