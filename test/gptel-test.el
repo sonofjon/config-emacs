@@ -419,7 +419,7 @@ found or is not unique."
    (should (string-equal (buffer-string) "hello EMACS\nHI universe"))))
 
 (ert-deftest test-aj8-edit-buffer-line ()
-  "Test `aj8/gptel-tool-edit-buffer-line'.
+  "Test `aj8/gptel-tool-replace-buffer-line'.
 Ensures that a specific single line in a buffer is replaced correctly."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -429,20 +429,20 @@ Line C"
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert invalid line numbers re-signal errors
-     (should-error (aj8/gptel-tool-edit-buffer-line "*test-edit-line*" 0 "X") :type 'error)
-     (should-error (aj8/gptel-tool-edit-buffer-line "*test-edit-line*" 10 "X") :type 'error))
+     (should-error (aj8/gptel-tool-replace-buffer-line "*test-edit-line*" 0 "X") :type 'error)
+     (should-error (aj8/gptel-tool-replace-buffer-line "*test-edit-line*" 10 "X") :type 'error))
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
-     (let ((result (aj8/gptel-tool-edit-buffer-line "*test-edit-line*" 0 "X")))
+     (let ((result (aj8/gptel-tool-replace-buffer-line "*test-edit-line*" 0 "X")))
        (should (string-equal
                 "tool: aj8_replace_buffer_line: Error: START-LINE must be >= 1"
                 result)))
-     (let ((result (aj8/gptel-tool-edit-buffer-line "*test-edit-line*" 10 "X")))
+     (let ((result (aj8/gptel-tool-replace-buffer-line "*test-edit-line*" 10 "X")))
        (should (string-equal
                 "tool: aj8_replace_buffer_line: Error: END-LINE exceeds buffer length (3)."
                 result))))
    ;; Success case
-   (aj8/gptel-tool-edit-buffer-line "*test-edit-line*" 2 "X")
+   (aj8/gptel-tool-replace-buffer-line "*test-edit-line*" 2 "X")
    ;; Line replacement succeeded
    (should (string-equal (buffer-string) "Line A
 X
@@ -452,17 +452,17 @@ Line C")))
   ;; Mode 1: tool re-signals the error
   (let ((aj8/gptel-tool-return-error nil))
     ;; Assert editing a missing buffer re-signals an error
-    (should-error (aj8/gptel-tool-edit-buffer-line "*non-existent-buffer*" 1 "X") :type 'error))
+    (should-error (aj8/gptel-tool-replace-buffer-line "*non-existent-buffer*" 1 "X") :type 'error))
 
   ;; Mode 2: tool returns the error as a string
   (let ((aj8/gptel-tool-return-error t))
-    (let ((result (aj8/gptel-tool-edit-buffer-line "*non-existent-buffer*" 1 "X")))
+    (let ((result (aj8/gptel-tool-replace-buffer-line "*non-existent-buffer*" 1 "X")))
       (should (string-equal
                "tool: aj8_replace_buffer_line: Error: Buffer '*non-existent-buffer*' not found."
                result)))))
 
 (ert-deftest test-aj8-edit-buffer-lines ()
-  "Test `aj8/gptel-tool-edit-buffer-lines'.
+  "Test `aj8/gptel-tool-replace-buffer-lines'.
 Ensures that a contiguous range of lines is replaced correctly in a buffer."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -472,42 +472,42 @@ Line C
 Line D"
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
-     ;; Assert various invalid region ranges re-signal errors
-     (should-error (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 0 1 "X") :type 'error)
-     (should-error (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 3 2 "X") :type 'error)
-     (should-error (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 2 5 "X") :type 'error))
+     ;; Assert various invalid line ranges re-signal errors
+     (should-error (aj8/gptel-tool-replace-buffer-lines "*test-edit-buffer-lines*" 0 1 "X") :type 'error)
+     (should-error (aj8/gptel-tool-replace-buffer-lines "*test-edit-buffer-lines*" 3 2 "X") :type 'error)
+     (should-error (aj8/gptel-tool-replace-buffer-lines "*test-edit-buffer-lines*" 2 5 "X") :type 'error))
 
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
-     (let ((result (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 0 1 "X")))
+     (let ((result (aj8/gptel-tool-replace-buffer-lines "*test-edit-buffer-lines*" 0 1 "X")))
        (should (string-equal
-                "tool: aj8_replace_buffer_region: Error: START-LINE must be >= 1"
+                "tool: aj8_replace_buffer_lines: Error: START-LINE must be >= 1"
                 result)))
-     (let ((result (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 3 2 "X")))
+     (let ((result (aj8/gptel-tool-replace-buffer-lines "*test-edit-buffer-lines*" 3 2 "X")))
        (should (string-equal
-                "tool: aj8_replace_buffer_region: Error: END-LINE must be >= START-LINE"
+                "tool: aj8_replace_buffer_lines: Error: END-LINE must be >= START-LINE"
                 result)))
-     (let ((result (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 2 5 "X")))
+     (let ((result (aj8/gptel-tool-replace-buffer-lines "*test-edit-buffer-lines*" 2 5 "X")))
        (should (string-equal
-                "tool: aj8_replace_buffer_region: Error: END-LINE exceeds buffer length (4)."
+                "tool: aj8_replace_buffer_lines: Error: END-LINE exceeds buffer length (4)."
                 result))))
 
    ;; Success case
-   (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 2 3 "X\nY")
-   ;; Region replacement succeeded
+   (aj8/gptel-tool-replace-buffer-lines "*test-edit-buffer-lines*" 2 3 "X\nY")
+   ;; LIne range replacement succeeded
    (should (string-equal (buffer-string) "Line A\nX\nY\nLine D"))
 
    ;; Assert non-existent buffer errors
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
-     ;; Assert editing a missing buffer region re-signals an error
-     (should-error (aj8/gptel-tool-edit-buffer-lines "*non-existent-buffer*" 1 1 "X") :type 'error))
+     ;; Assert editing a missing buffer line range re-signals an error
+     (should-error (aj8/gptel-tool-replace-buffer-lines "*non-existent-buffer*" 1 1 "X") :type 'error))
 
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
-     (let ((result (aj8/gptel-tool-edit-buffer-lines "*non-existent-buffer*" 1 1 "X")))
+     (let ((result (aj8/gptel-tool-replace-buffer-lines "*non-existent-buffer*" 1 1 "X")))
        (should (string-equal
-                "tool: aj8_replace_buffer_region: Error: Buffer '*non-existent-buffer*' not found."
+                "tool: aj8_replace_buffer_lines: Error: Buffer '*non-existent-buffer*' not found."
                 result))))))
 
 (ert-deftest test-aj8-delete-buffer-string ()
@@ -598,11 +598,11 @@ Ensures that a contiguous range of lines is deleted correctly in a buffer."
    "*test-delete-buffer-lines*" "Line A\nLine B\nLine C\nLine D"
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
-     ;; Assert invalid region ranges re-signal errors
+     ;; Assert invalid line ranges re-signal errors
      (should-error (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 0 1) :type 'error)
      (should-error (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 3 2) :type 'error)
      (should-error (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 2 5) :type 'error)
-     ;; Assert deleting a region in missing buffer re-signals error
+     ;; Assert deleting a line range in missing buffer re-signals error
      (should-error (aj8/gptel-tool-delete-buffer-lines "*non-existent-buffer*" 2 3) :type 'error))
 
    ;; Mode 2: tool returns the error as a string
@@ -610,22 +610,22 @@ Ensures that a contiguous range of lines is deleted correctly in a buffer."
      (let ((result (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 0 1)))
        ;; Assert returned message for invalid start-line
        (should (string-equal
-                "tool: aj8_delete_buffer_region: Error: START-LINE must be >= 1"
+                "tool: aj8_delete_buffer_lines: Error: START-LINE must be >= 1"
                 result)))
      (let ((result (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 3 2)))
        ;; Assert returned message for end-line < start-line
        (should (string-equal
-                "tool: aj8_delete_buffer_region: Error: END-LINE must be >= START-LINE"
+                "tool: aj8_delete_buffer_lines: Error: END-LINE must be >= START-LINE"
                 result)))
      (let ((result (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 2 5)))
        ;; Assert returned message for end-line exceeding buffer
        (should (string-equal
-                "tool: aj8_delete_buffer_region: Error: END-LINE exceeds buffer length (4)."
+                "tool: aj8_delete_buffer_lines: Error: END-LINE exceeds buffer length (4)."
                 result)))
      ;; Assert returned message for missing buffer
      (let ((result (aj8/gptel-tool-delete-buffer-lines "*non-existent-buffer*" 2 3)))
        (should (string-equal
-                "tool: aj8_delete_buffer_region: Error: Buffer '*non-existent-buffer*' not found."
+                "tool: aj8_delete_buffer_lines: Error: Buffer '*non-existent-buffer*' not found."
                 result))))
 
    ;; Success case
@@ -1000,7 +1000,7 @@ in the `gptel-tools' alist."
   (let ((expected-tools '("aj8_buffer_search_content"
                           "aj8_open_file_in_buffer"
                           ;; "aj8_read_buffer"
-                          ;; "aj8_read_buffer_region"
+                          ;; "aj8_read_buffer_lines"
                           "aj8_read_buffer_lines_count"
                           "aj8_list_buffers"
                           "aj8_list_all_buffers"
@@ -1011,10 +1011,10 @@ in the `gptel-tools' alist."
                           "aj8_replace_buffer"
                           "aj8_edit_buffer_string"
                           "aj8_replace_buffer_line"
-                          "aj8_replace_buffer_region"
+                          "aj8_replace_buffer_lines"
                           "aj8_delete_buffer_string"
                           "aj8_delete_buffer_line"
-                          "aj8_delete_buffer_region"
+                          "aj8_delete_buffer_lines"
                           "aj8_apply_buffer_string_edits"
                           "aj8_apply_buffer_string_edits_with_review"
                           "aj8_apply_buffer_line_edits"
