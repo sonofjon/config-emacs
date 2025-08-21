@@ -201,13 +201,29 @@ requests larger than `aj8/gptel-tool-max-lines'."
      (setq first-n (replace-regexp-in-string "\n\\'" "" first-n))
      (with-temp-buffer-with-content
       "*test-read-buffer-max*" content
-      ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*") :type 'error)
-      ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 n) :type 'error)
-      ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))
-      ;; Assert error when buffer exceeds max allowed lines
-      (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*") :type 'error)
-      ;; Assert error when requested range exceeds buffer length
-      (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 n) :type 'error)
+      ;; Use signal mode for all error assertions in this block
+      (let ((aj8/gptel-tool-return-error nil))
+        ;; Assert error when total-lines > max
+        ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*") :type 'error)
+        ;; Assert error when requested length > max
+        ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 n) :type 'error)
+        ;; Assert error when START < 1
+        ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 0 2) :type 'error)
+        ;; Assert error when START > total-lines
+        ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" (1+ (count-lines (point-min) (point-max)))) :type 'error)
+        ;; Assert error when COUNT > MAX
+        (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 n) :type 'error)
+        ;; Assert error when START < 1
+        (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 0 2) :type 'error)
+        ;; Assert error when START > total-lines
+        (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" (1+ (count-lines (point-min) (point-max))) 1) :type 'error))
+
+      ;; Success cases (use default return-error mode)
+      ;; Range API: explicit request for first MAX lines should succeed
+      (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))
+      ;; Default COUNT (nil) is treated as MAX and should return first N lines
+      (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*") first-n))
+      ;; Requesting COUNT == MAX should return first MAX lines
       (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))))))
 
 (ert-deftest test-aj8-list-buffers ()
