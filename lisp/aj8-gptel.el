@@ -796,20 +796,34 @@ as \" (N lines)\"."
                         (format "%s: %s" name rel))))
                   matched "\n")))))
 
-(defun aj8/gptel-tool-project-search-regexp (regexp)
-  "In the current project, recursively search for content matching REGEXP."
+(defun aj8/gptel-tool-project-search-regexp (regexp &optional include-columns)
+  "In the current project, recursively search for content matching REGEXP.
+Results are newline-separated strings of matching lines, each specifying
+PATH:LINE:TEXT, or if INCLUDE-COLUMNS is non-nil, PATH:LINE:COLUMN:TEXT.
+Both line and column numbers are 1-based. This search respects
+.gitignore."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_search_content"
-   (list :regexp regexp)
+   (list :regexp regexp :include-columns include-columns)
    (let ((project (project-current)))
      (unless project (error "Not inside a project."))
      (let ((command (cond
-                     ((executable-find "rg") (list "rg" "--vimgrep" "--" regexp))
-                     ((executable-find "git") (list "git" "grep" "-n" "-e" regexp))
+                     ((executable-find "rg")
+                      (let ((base (list "rg" "--no-heading"))
+                            (flags (if include-columns
+                                       (list "--column" "--vimgrep")
+                                     (list "--no-column"))))
+                        (append base flags (list "--regexp" regexp))))
+                     ((executable-find "git")
+                      (let ((base (list "git" "grep" "--full-name" "--perl-regexp" "--line-number"))
+                            (flags (and include-columns (list "--column"))))
+                        (append base flags (list "-e" regexp))))
                      (t (error "Neither 'rg' nor 'git' found for searching."))))
            (output-buffer (generate-new-buffer "*search-output*")))
        (unwind-protect
-           (let ((status (apply #'call-process (car command) nil output-buffer nil (cdr command))))
+           (let* ((default-directory (project-root project))
+                  (status (apply #'call-process (car command) nil
+                                 output-buffer nil (cdr command))))
              (cond
               ((zerop status)
                (with-current-buffer output-buffer
@@ -1220,10 +1234,14 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-search-regexp
  :name "aj8_project_search_content"
- :description "In the current project, recursively search for content matching the regexp. This search respects .gitignore. It returns a string of matching lines, where each line is prefixed with the file path, 1-based line number, and 0-based column number."
+ :description "In the current project, recursively search for content matching REGEXP. The tool returns a newline-separated string of matching lines. Each line includes: PATH:LINE:TEXT, where PATH is the file path relative to the current project root, LINE is the 1-based line number of the match, and TEXT is the matched line text. If the optional argument INCLUDE-COLUMNS is non-nil, the tool returns PATH:LINE:COLUMN:TEXT, where COLUMN is the 1-based column number of the match."
  :args '((:name "regexp"
                 :type string
-                :description "A regexp to search for in the project files. The regexp should be compatible with ripgrep or git grep."))
+                :description "A regexp to search for in the project files. The regexp should be compatible with ripgrep or git grep.")
+         (:name "include-columns"
+                :type boolean
+                :optional t
+                :description "If non-nil, include 1-based column numbers in the result."))
  :category "project")
 
 ;;; Initialization
