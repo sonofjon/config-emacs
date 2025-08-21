@@ -994,7 +994,11 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
 This test checks that a predefined list of essential tool names exists
 in the `gptel-tools' alist."
   :tags '(integration tools)
-  (let ((expected-tools '("aj8_open_file_in_buffer"
+  (let ((expected-tools '("aj8_buffer_search_content"
+                          "aj8_open_file_in_buffer"
+                          ;; "aj8_read_buffer"
+                          ;; "aj8_read_buffer_region"
+                          "aj8_read_buffer_region_count"
                           "aj8_list_buffers"
                           "aj8_list_all_buffers"
                           "aj8_buffer_to_file"
@@ -1012,17 +1016,17 @@ in the `gptel-tools' alist."
                           "aj8_apply_buffer_string_edits_with_review"
                           "aj8_apply_buffer_line_edits"
                           "aj8_apply_buffer_line_edits_with_review"
-                          ;; "aj8_read_buffer_region"
-                          "aj8_read_buffer_region_count"
+                          ;; "aj8_create_file"
                           "aj8_read_documentation"
                           "aj8_read_function"
                           "aj8_read_library"
                           "aj8_read_info_symbol"
                           "aj8_read_info_node"
                           "aj8_project_get_root"
-                          "aj8_project_get_open_buffers"
+                          "aj8_project_list_files"
+                          ;; "aj8_project_find_files"
                           "aj8_project_find_files_glob"
-                          "aj8_project_search_content")))
+                          "aj8_project_search_regexp")))
     (dolist (tool-name expected-tools)
       ;; Assert the tool is registered in `gptel-tools'
       (should (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools)))))
