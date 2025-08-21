@@ -3,7 +3,7 @@
 ;;; Helpers
 
 (defun aj8/gptel-tool--truncate-for-display (obj)
-"Return a truncated, display-safe copy of OBJ for minibuffer messages.
+  "Return a truncated, display-safe copy of OBJ for minibuffer messages.
 
 OBJ is the source object to convert; it may be nil, a string, a list, a
 vector, or a list or vector of property lists (plists).  The conversion
@@ -434,8 +434,8 @@ equal to LINE-NUMBER."
              (end-of-line)
              (delete-region beg (point))
              (insert content)))))
-    (format "Line range %d-%d in buffer '%s' successfully replaced."
-            start-line end-line buffer-name))))
+     (format "Line range %d-%d in buffer '%s' successfully replaced."
+             start-line end-line buffer-name))))
 
 (defun aj8/gptel-tool-delete-buffer-string (buffer-name old-string)
   "Delete a single instance of OLD-STRING in BUFFER-NAME.
@@ -878,8 +878,8 @@ Both line and column numbers are 1-based. This search respects
  :name "aj8_open_file_in_buffer"
  :description "Open a file into a visiting buffer."
  :args (list '(:name "file-path"
-               :type string
-               :description "Path to the file to open."))
+                     :type string
+                     :description "Path to the file to open."))
  :category "buffers")
 
 ;; (gptel-make-tool
