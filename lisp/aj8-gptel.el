@@ -636,6 +636,7 @@ buffer only; the original buffer is not modified by this command."
    (aj8/--review-buffer-edits buffer-name buffer-edits 'line)
    (format "Ediff session started for %s. Please complete the review." buffer-name)))
 
+;; Files
 
 ;; (defun aj8/gptel-tool-create-file (file-path content)
 ;;   "Create a new file at FILE-PATH with CONTENT."
@@ -1154,6 +1155,8 @@ This action requires manual user review. After calling this tool, you must stop 
                                     (:type string :description "The entire new content of the line.")))
                      :description "The list of edits to apply to the buffer."))
  :category "buffers")
+
+;; Files
 
 ;; (gptel-make-tool
 ;;  :function #'aj8/gptel-tool-create-file
