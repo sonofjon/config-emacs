@@ -138,6 +138,31 @@ The macro binds local variables `tool-name' and `args' and then:
 
 ;; Buffers
 
+(defun aj8/gptel-tool-buffer-search-regexp (buffer-name regexp)
+  "Search for content matching REGEXP in BUFFER-NAME."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_buffer_search_content"
+   (list :buffer-name buffer-name :regexp regexp)
+   (let ((buf (get-buffer buffer-name)))
+     (unless buf
+       (error "Error: Buffer '%s' not found." buffer-name))
+     (with-current-buffer buf
+       (save-excursion
+         (goto-char (point-min))
+         (let ((results '()))
+           (condition-case err
+               (while (re-search-forward regexp nil t)
+                 (let* ((match-pos (match-beginning 0))
+                        (line (line-number-at-pos match-pos))
+                        (col (save-excursion (goto-char match-pos) (current-column)))
+                        (line-str (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+                        (name (or (buffer-file-name buf) (buffer-name buf))))
+                   (push (format "%s:%d:%d:%s" name line col line-str) results)))
+             (error (error "Invalid regexp: %s" regexp)))
+           (if results
+               (mapconcat #'identity (nreverse results) "\n")
+             (format "No matches found for regexp: %s" regexp))))))))
+
 ;; (defun aj8/gptel-tool-read-buffer (buffer-name)
 ;;   "Return the contents of BUFFER."
 ;;   (aj8/gptel-tool--with-tool
@@ -799,6 +824,18 @@ as \" (N lines)\"."
 ;;; Tool Registrations
 
 ;; Buffers
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-buffer-search-regexp
+ :name "aj8_buffer_search_content"
+ :description "Search for content matching the regexp in BUFFER. This returns a string of matching lines where each line is prefixed with the buffer name or file path, 1-based line number, and 0-based column number."
+ :args '((:name "buffer-name"
+                :type string
+                :description "The name of the buffer to search.")
+         (:name "regexp"
+                :type string
+                :description "The regexp to search for in the buffer."))
+ :category "buffers")
 
 ;; (gptel-make-tool
 ;;  :function #'aj8/gptel-tool-read-buffer
