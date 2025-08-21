@@ -138,9 +138,9 @@ Verifies that the function opens a file into a buffer."
         (when (file-directory-p dir)
           (delete-directory dir t))))))
 
-(ert-deftest test-aj8-read-buffer-region ()
-  "Test `aj8/gptel-tool-read-buffer-region' and
-`aj8/gptel-tool-read-buffer-region-count'.
+(ert-deftest test-aj8-read-buffer-lines ()
+  "Test `aj8/gptel-tool-read-buffer-lines' and
+`aj8/gptel-tool-read-buffer-lines-count'.
 Verifies that the functions can read a whole buffer, a section from the
 middle, a section from the beginning, and a section to the end. It also
 verifies that an error is signaled for a non-existent buffer, and for
@@ -149,45 +149,45 @@ requests larger than `aj8/gptel-default-max-lines'."
   (with-temp-buffer-with-content
    "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
    ;; Read whole buffer
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*")
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*")
    ;;                       "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
    ;; Reading the full buffer returns all lines
    ;; Assert reading the full buffer returns all lines
-   (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer*" 1 5)
+   (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 1 5)
                          "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
    ;; Read a section
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" 2 4)
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 2 4)
    ;;                       "Line 2\nLine 3\nLine 4"))
    ;; Reading a middle section returns the expected lines
    ;; Assert reading a middle section returns expected lines
-   (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer*" 2 3)
+   (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 2 3)
                          "Line 2\nLine 3\nLine 4"))
    ;; Read from start
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" nil 2)
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" nil 2)
    ;;                       "Line 1\nLine 2"))
    ;; Reading from the start returns the first N lines
    ;; Assert reading from the start returns the first N lines
-   (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer*" 1 2)
+   (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 1 2)
                          "Line 1\nLine 2"))
    ;; Read to end
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer*" 4)
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 4)
    ;;                       "Line 4\nLine 5"))
    ;; Reading to the end returns the last lines
    ;; Assert reading to the end returns the last lines
-   (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer*" 4 2)
+   (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 4 2)
                          "Line 4\nLine 5"))
 
    ;; Assert non-existent buffer errors
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert error signaled for non-existent buffer (re-signal mode)
-     (should-error (aj8/gptel-tool-read-buffer-region-count "*non-existent-buffer*") :type 'error))
+     (should-error (aj8/gptel-tool-read-buffer-lines-count "*non-existent-buffer*") :type 'error))
 
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
-     (let ((result (aj8/gptel-tool-read-buffer-region-count "*non-existent-buffer*")))
+     (let ((result (aj8/gptel-tool-read-buffer-lines-count "*non-existent-buffer*")))
        (should (string-equal
-                "tool: aj8_read_buffer_region_count: Error: Buffer '*non-existent-buffer*' not found."
+                "tool: aj8_read_buffer_lines_count: Error: Buffer '*non-existent-buffer*' not found."
                 result))))
    ;; Test handling of max number of lines
    (let* ((n (1+ aj8/gptel-default-max-lines))
@@ -201,14 +201,14 @@ requests larger than `aj8/gptel-default-max-lines'."
      (setq first-n (replace-regexp-in-string "\n\\'" "" first-n))
      (with-temp-buffer-with-content
       "*test-read-buffer-max*" content
-      ;; (should-error (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*") :type 'error)
-      ;; (should-error (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*" 1 n) :type 'error)
-      ;; (should (string-equal (aj8/gptel-tool-read-buffer-region "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n))
+      ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*") :type 'error)
+      ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 n) :type 'error)
+      ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n))
       ;; Assert error when buffer exceeds max allowed lines
-      (should-error (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer-max*") :type 'error)
+      (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*") :type 'error)
       ;; Assert error when requested range exceeds buffer length
-      (should-error (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer-max*" 1 n) :type 'error)
-      (should (string-equal (aj8/gptel-tool-read-buffer-region-count "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n))))))
+      (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 n) :type 'error)
+      (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n))))))
 
 (ert-deftest test-aj8-list-buffers ()
   "Test buffer listing tools.
@@ -461,39 +461,39 @@ Line C")))
                "tool: aj8_replace_buffer_line: Error: Buffer '*non-existent-buffer*' not found."
                result)))))
 
-(ert-deftest test-aj8-edit-buffer-region ()
-  "Test `aj8/gptel-tool-edit-buffer-region'.
+(ert-deftest test-aj8-edit-buffer-lines ()
+  "Test `aj8/gptel-tool-edit-buffer-lines'.
 Ensures that a contiguous range of lines is replaced correctly in a buffer."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
-   "*test-edit-buffer-region*" "Line A
+   "*test-edit-buffer-lines*" "Line A
 Line B
 Line C
 Line D"
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert various invalid region ranges re-signal errors
-     (should-error (aj8/gptel-tool-edit-buffer-region "*test-edit-buffer-region*" 0 1 "X") :type 'error)
-     (should-error (aj8/gptel-tool-edit-buffer-region "*test-edit-buffer-region*" 3 2 "X") :type 'error)
-     (should-error (aj8/gptel-tool-edit-buffer-region "*test-edit-buffer-region*" 2 5 "X") :type 'error))
+     (should-error (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 0 1 "X") :type 'error)
+     (should-error (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 3 2 "X") :type 'error)
+     (should-error (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 2 5 "X") :type 'error))
 
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
-     (let ((result (aj8/gptel-tool-edit-buffer-region "*test-edit-buffer-region*" 0 1 "X")))
+     (let ((result (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 0 1 "X")))
        (should (string-equal
                 "tool: aj8_replace_buffer_region: Error: START-LINE must be >= 1"
                 result)))
-     (let ((result (aj8/gptel-tool-edit-buffer-region "*test-edit-buffer-region*" 3 2 "X")))
+     (let ((result (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 3 2 "X")))
        (should (string-equal
                 "tool: aj8_replace_buffer_region: Error: END-LINE must be >= START-LINE"
                 result)))
-     (let ((result (aj8/gptel-tool-edit-buffer-region "*test-edit-buffer-region*" 2 5 "X")))
+     (let ((result (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 2 5 "X")))
        (should (string-equal
                 "tool: aj8_replace_buffer_region: Error: END-LINE exceeds buffer length (4)."
                 result))))
 
    ;; Success case
-   (aj8/gptel-tool-edit-buffer-region "*test-edit-buffer-region*" 2 3 "X\nY")
+   (aj8/gptel-tool-edit-buffer-lines "*test-edit-buffer-lines*" 2 3 "X\nY")
    ;; Region replacement succeeded
    (should (string-equal (buffer-string) "Line A\nX\nY\nLine D"))
 
@@ -501,11 +501,11 @@ Line D"
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert editing a missing buffer region re-signals an error
-     (should-error (aj8/gptel-tool-edit-buffer-region "*non-existent-buffer*" 1 1 "X") :type 'error))
+     (should-error (aj8/gptel-tool-edit-buffer-lines "*non-existent-buffer*" 1 1 "X") :type 'error))
 
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
-     (let ((result (aj8/gptel-tool-edit-buffer-region "*non-existent-buffer*" 1 1 "X")))
+     (let ((result (aj8/gptel-tool-edit-buffer-lines "*non-existent-buffer*" 1 1 "X")))
        (should (string-equal
                 "tool: aj8_replace_buffer_region: Error: Buffer '*non-existent-buffer*' not found."
                 result))))))
@@ -590,46 +590,46 @@ Ensures that a specific single line in a buffer is deleted correctly."
    (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 2)
    (should (string-equal (buffer-string) "Line A\n\nLine C"))))
 
-(ert-deftest test-aj8-delete-buffer-region ()
-  "Test `aj8/gptel-tool-delete-buffer-region'.
+(ert-deftest test-aj8-delete-buffer-lines ()
+  "Test `aj8/gptel-tool-delete-buffer-lines'.
 Ensures that a contiguous range of lines is deleted correctly in a buffer."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
-   "*test-delete-buffer-region*" "Line A\nLine B\nLine C\nLine D"
+   "*test-delete-buffer-lines*" "Line A\nLine B\nLine C\nLine D"
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert invalid region ranges re-signal errors
-     (should-error (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 0 1) :type 'error)
-     (should-error (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 3 2) :type 'error)
-     (should-error (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 2 5) :type 'error)
+     (should-error (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 0 1) :type 'error)
+     (should-error (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 3 2) :type 'error)
+     (should-error (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 2 5) :type 'error)
      ;; Assert deleting a region in missing buffer re-signals error
-     (should-error (aj8/gptel-tool-delete-buffer-region "*non-existent-buffer*" 2 3) :type 'error))
+     (should-error (aj8/gptel-tool-delete-buffer-lines "*non-existent-buffer*" 2 3) :type 'error))
 
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
-     (let ((result (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 0 1)))
+     (let ((result (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 0 1)))
        ;; Assert returned message for invalid start-line
        (should (string-equal
                 "tool: aj8_delete_buffer_region: Error: START-LINE must be >= 1"
                 result)))
-     (let ((result (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 3 2)))
+     (let ((result (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 3 2)))
        ;; Assert returned message for end-line < start-line
        (should (string-equal
                 "tool: aj8_delete_buffer_region: Error: END-LINE must be >= START-LINE"
                 result)))
-     (let ((result (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 2 5)))
+     (let ((result (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 2 5)))
        ;; Assert returned message for end-line exceeding buffer
        (should (string-equal
                 "tool: aj8_delete_buffer_region: Error: END-LINE exceeds buffer length (4)."
                 result)))
      ;; Assert returned message for missing buffer
-     (let ((result (aj8/gptel-tool-delete-buffer-region "*non-existent-buffer*" 2 3)))
+     (let ((result (aj8/gptel-tool-delete-buffer-lines "*non-existent-buffer*" 2 3)))
        (should (string-equal
                 "tool: aj8_delete_buffer_region: Error: Buffer '*non-existent-buffer*' not found."
                 result))))
 
    ;; Success case
-   (aj8/gptel-tool-delete-buffer-region "*test-delete-buffer-region*" 2 3)
+   (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 2 3)
    (should (string-equal (buffer-string) "Line A\n\nLine D"))))
 
 (ert-deftest test-aj8-apply-buffer-string-edits ()
@@ -998,7 +998,7 @@ in the `gptel-tools' alist."
                           "aj8_open_file_in_buffer"
                           ;; "aj8_read_buffer"
                           ;; "aj8_read_buffer_region"
-                          "aj8_read_buffer_region_count"
+                          "aj8_read_buffer_lines_count"
                           "aj8_list_buffers"
                           "aj8_list_all_buffers"
                           "aj8_buffer_to_file"
@@ -1249,9 +1249,9 @@ The response is processed by `gptel--streaming-done-callback'."
      (aj8/gptel-tool-modify-buffer buffer-name "new content")
      (should (string-equal (with-current-buffer buffer-name (buffer-string)) "new content"))
 
-     ;; read-buffer-region-count
+     ;; read-buffer-lines-count
      ;; Reading the buffer returns the new content
-     (should (string-equal (aj8/gptel-tool-read-buffer-region-count buffer-name) "new content"))))
+     (should (string-equal (aj8/gptel-tool-read-buffer-lines-count buffer-name) "new content"))))
 
   ;; Test on a buffer visiting a file
   (with-temp-file-with-content

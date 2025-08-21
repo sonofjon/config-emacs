@@ -403,18 +403,18 @@ The text is inserted at the beginning of the specified line."
 (defun aj8/gptel-tool-replace-buffer-line (buffer-name line-number content)
   "Replace line LINE-NUMBER in file BUFFER-NAME with CONTENT.
 This wrapper function delegates replacement to
-`aj8/gptel-tool-replace-buffer-region' with START-LINE and END-LINE both
+`aj8/gptel-tool-replace-buffer-lines' with START-LINE and END-LINE both
 equal to LINE-NUMBER."
   (aj8/gptel-tool--with-tool
    "tool: aj8_replace_buffer_line"
    (list :buffer-name buffer-name :line-number line-number :content content)
-   (aj8/gptel-tool-replace-buffer-region buffer-name line-number line-number content)
+   (aj8/gptel-tool-replace-buffer-lines buffer-name line-number line-number content)
    (format "Line %d in buffer '%s' successfully replaced." line-number buffer-name)))
 
-(defun aj8/gptel-tool-replace-buffer-region (buffer-name start-line end-line content)
+(defun aj8/gptel-tool-replace-buffer-lines (buffer-name start-line end-line content)
   "Replace lines START-LINE through END-LINE in BUFFER-NAME with CONTENT."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_replace_buffer_region"
+   "tool: aj8_replace_buffer_lines"
    (list :buffer-name buffer-name :start-line start-line :end-line end-line :content content)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
@@ -434,7 +434,7 @@ equal to LINE-NUMBER."
              (end-of-line)
              (delete-region beg (point))
              (insert content)))))
-    (format "Region lines %d-%d in buffer '%s' successfully replaced."
+    (format "Line range %d-%d in buffer '%s' successfully replaced."
             start-line end-line buffer-name))))
 
 (defun aj8/gptel-tool-delete-buffer-string (buffer-name old-string)
@@ -460,16 +460,16 @@ string."
    (aj8/gptel-tool-replace-buffer-line buffer-name line-number "")
    (format "Line %d in buffer '%s' successfully deleted." line-number buffer-name)))
 
-(defun aj8/gptel-tool-delete-buffer-region (buffer-name start-line end-line)
+(defun aj8/gptel-tool-delete-buffer-lines (buffer-name start-line end-line)
   "Delete lines START-LINE through END-LINE in BUFFER-NAME.
 This wrapper function delegates deletion to
-`aj8/gptel-tool-replace-buffer-region' by setting CONTENT to an empty
+`aj8/gptel-tool-replace-buffer-lines' by setting CONTENT to an empty
 string."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_delete_buffer_region"
+   "tool: aj8_delete_buffer_lines"
    (list :buffer-name buffer-name :start-line start-line :end-line end-line)
-   (aj8/gptel-tool-replace-buffer-region buffer-name start-line end-line "")
-   (format "Region lines %d-%d in buffer '%s' successfully deleted."
+   (aj8/gptel-tool-replace-buffer-lines buffer-name start-line end-line "")
+   (format "Line range %d-%d in buffer '%s' successfully deleted."
            start-line end-line buffer-name)))
 
 (defun aj8/--apply-buffer-edits (buffer-name buffer-edits edit-type)
@@ -891,8 +891,8 @@ Both line and column numbers are 1-based. This search respects
 ;;                       :description "The name of the buffer to read."))
 
 ;; (gptel-make-tool
-;;  :function #'aj8/gptel-tool-read-buffer-region
-;;  :name "aj8_read_buffer_region"
+;;  :function #'aj8/gptel-tool-read-buffer-lines
+;;  :name "aj8_read_buffer_lines"
 ;;  :description (format "Read lines from a buffer. Max lines per call: %d. Use chunking for larger ranges. START and END are optional 1-based line numbers; if START is nil, read from the beginning of the buffer. If END is nil, read to the end of the buffer." aj8/gptel-tool-max-lines)
 ;;  :args (list '( :name "buffer-name"
 ;;                 :type string
@@ -908,8 +908,8 @@ Both line and column numbers are 1-based. This search respects
 ;;  :category "buffers")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-read-buffer-region-count
- :name "aj8_read_buffer_region_count"
+ :function #'aj8/gptel-tool-read-buffer-lines-count
+ :name "aj8_read_buffer_lines_count"
  :description (format "Read lines from a buffer; max per call: %d. START and COUNT are optional and default to 1 and %d, respectively." aj8/gptel-tool-max-lines aj8/gptel-tool-max-lines)
  :args (list '( :name "buffer-name"
                 :type string
@@ -1027,17 +1027,17 @@ Both line and column numbers are 1-based. This search respects
  :category "buffers")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-replace-buffer-region
- :name "aj8_replace_buffer_region"
+ :function #'aj8/gptel-tool-replace-buffer-lines
+ :name "aj8_replace_buffer_lines"
  :description "Replace a range of lines in a buffer with new content. The new content may contain newline characters. To replace a single line set 'start-line==end-line'"
  :args (list '(:name "buffer-name" :type string
                      :description "Name of the buffer to modify.")
              '(:name "start-line" :type integer
-                     :description "First line of the region to replace.")
+                     :description "First line of the range to replace.")
              '(:name "end-line" :type integer
-                     :description "Last line of the region to replace.")
+                     :description "Last line of the range to replace.")
              '(:name "content" :type string
-                     :description "Text to insert in place of the region."))
+                     :description "Text to insert in place of the line range."))
  :category "buffers")
 
 
@@ -1062,15 +1062,15 @@ Both line and column numbers are 1-based. This search respects
  :category "buffers")
 
 (gptel-make-tool
- :function #'aj8/gptel-tool-delete-buffer-region
- :name "aj8_delete_buffer_region"
+ :function #'aj8/gptel-tool-delete-buffer-lines
+ :name "aj8_delete_buffer_lines"
  :description "Delete a range of lines in a buffer. To delete a single line set 'start-line==end-line'"
  :args (list '(:name "buffer-name" :type string
                      :description "Name of the buffer to modify.")
              '(:name "start-line" :type integer
-                     :description "First line of the region to delete.")
+                     :description "First line of the range to delete.")
              '(:name "end-line" :type integer
-                     :description "Last line of the region to delete."))
+                     :description "Last line of the range to delete."))
  :category "buffers")
 
 (gptel-make-tool
