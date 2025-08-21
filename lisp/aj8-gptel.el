@@ -809,7 +809,7 @@ Both line and column numbers are 1-based. This search respects
      (unless project (error "Not inside a project."))
      (let ((command (cond
                      ((executable-find "rg")
-                      (let ((base (list "rg" "--no-heading"))
+                      (let ((base (list "rg" "--no-heading" "--hidden" "--glob" "!.git/**"))
                             (flags (if include-columns
                                        (list "--column" "--vimgrep")
                                      (list "--no-column"))))
