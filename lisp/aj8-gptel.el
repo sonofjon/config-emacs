@@ -906,7 +906,7 @@ Both line and column numbers are 1-based. This search respects
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-buffers
  :name "aj8_list_buffers"
- :description "Return a newline-separated string listing all currently open buffers that are associated with a file. Each line is of the form \"NAME: PATH\" where PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
+ :description "Return a newline-separated string listing all currently open buffers that are associated with a file. Each line is of the form \"NAME: PATH\" where NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
@@ -916,7 +916,7 @@ Both line and column numbers are 1-based. This search respects
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-all-buffers
  :name "aj8_list_all_buffers"
- :description "Return a newline-separated string listing all currently open buffers. Each line is either \"NAME: PATH\" for file-backed buffers or just \"NAME\" for non-file buffers. For file-backed buffers, PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
+ :description "Return a newline-separated string listing all currently open buffers. Each line is either \"NAME: PATH\" for file-backed buffers or just \"NAME\" for non-file buffers. NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
@@ -1202,7 +1202,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-list-files
  :name "aj8_project_list_files"
- :description "Return a string listing all files in the current project. Each line contains a file base name followed by its path relative to the project root; if include-counts is non-nil, append the line count as \" (N lines).\""
+ :description "Return a string listing all files in the current project. Each line contains a file base name followed by its path relative to the current project root. if the optional argument INCLUDE-COUNTS is non-nil, append the line count as \" (N lines).\""
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
@@ -1212,7 +1212,7 @@ This action requires manual user review. After calling this tool, you must stop 
 ;;   (gptel-make-tool
 ;;    :function #'aj8/gptel-tool-project-find-files
 ;;    :name "aj8_project_find_files"
-;;    :description "In the current project, recursively find files whose filenames contain pattern. This search is case-sensitive and respects .gitignore. It does not find directories."
+;;    :description "In the current project, recursively find files whose filenames contain pattern. This search is case-sensitive. It does not find directories."
 ;;    :args '((:name "pattern"
 ;;                   :type string
 ;;                   :description "A pattern to match against the filenames in the project."))
@@ -1221,7 +1221,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-find-files-glob
  :name "aj8_project_find_files_glob"
- :description "In the current project, find files matching the glob PATTERN. This search respects .gitignore. The pattern is a standard file glob. To search recursively, use the '**/' prefix. For example, a PATTERN of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory."
+ :description "In the current project, find files matching the glob PATTERN. The pattern is a standard file glob. To search recursively, use the '**/' prefix. For example, a PATTERN of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory. The result is a newline-separated string where each line is \"NAME: PATH\", where NAME is the file's base name and PATH is the path relative to the current project root.  If the optional argument INCLUDE-COUNTS is non-nil append the number of lines as \" (N lines)\"."
  :args '((:name "pattern"
                 :type string
                 :description "A glob pattern to match against the filenames in the project.")
