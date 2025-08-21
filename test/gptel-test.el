@@ -144,7 +144,7 @@ Verifies that the function opens a file into a buffer."
 Verifies that the functions can read a whole buffer, a section from the
 middle, a section from the beginning, and a section to the end. It also
 verifies that an error is signaled for a non-existent buffer, and for
-requests larger than `aj8/gptel-default-max-lines'."
+requests larger than `aj8/gptel-tool-max-lines'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
@@ -190,12 +190,12 @@ requests larger than `aj8/gptel-default-max-lines'."
                 "tool: aj8_read_buffer_lines_count: Error: Buffer '*non-existent-buffer*' not found."
                 result))))
    ;; Test handling of max number of lines
-   (let* ((n (1+ aj8/gptel-default-max-lines))
+   (let* ((n (1+ aj8/gptel-tool-max-lines))
           (content "")
           (first-n ""))
      (dotimes (i n)
        (setq content (concat content (format "Line %d\n" (1+ i))))
-       (when (< i aj8/gptel-default-max-lines)
+       (when (< i aj8/gptel-tool-max-lines)
          (setq first-n (concat first-n (format "Line %d\n" (1+ i))))))
      (setq content (replace-regexp-in-string "\n\\'" "" content))
      (setq first-n (replace-regexp-in-string "\n\\'" "" first-n))
@@ -203,12 +203,12 @@ requests larger than `aj8/gptel-default-max-lines'."
       "*test-read-buffer-max*" content
       ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*") :type 'error)
       ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 n) :type 'error)
-      ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n))
+      ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))
       ;; Assert error when buffer exceeds max allowed lines
       (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*") :type 'error)
       ;; Assert error when requested range exceeds buffer length
       (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 n) :type 'error)
-      (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 aj8/gptel-default-max-lines) first-n))))))
+      (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))))))
 
 (ert-deftest test-aj8-list-buffers ()
   "Test buffer listing tools.
