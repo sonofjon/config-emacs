@@ -636,6 +636,14 @@ buffer only; the original buffer is not modified by this command."
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
    (aj8/--review-buffer-edits buffer-name buffer-edits 'string)
    (format "Ediff session started for %s. Please complete the review." buffer-name)))
+;; (defun aj8/gptel-tool-create-file (file-path content)
+;;   "Create a new file at FILE-PATH with CONTENT."
+;;   (with-temp-message "Running tool: aj8_create_file"
+;;     (let ((full-path (expand-file-name file-path)))
+;;       (with-temp-buffer
+;;         (insert content)
+;;         (write-file full-path t)) ; The 't' arg prevents confirmation prompts
+;;       (format "Successfully created file: %s" full-path))))
 
 ;; Emacs
 
@@ -761,6 +769,17 @@ project root."
                             (format "%s: %s (%d lines)" name rel nlines))
                         (format "%s: %s" name rel))))
                   project-file-list "\n")))))
+
+;; (defun aj8/gptel-tool-project-find-files (pattern)
+;;   "In the current project, find files whose filenames contain PATTERN.
+;; This search respects the project's .gitignore file and other standard
+;; ignores.  It does not return directories."
+;;   (with-temp-message "Running tool: my_project_find_files"
+;;     (let ((proj (project-current)))
+;;       (if (not proj)
+;;           (error "No project found in the current context.")
+;;         (let ((all-files (project-files proj)))
+;;           (seq-filter (lambda (file) (string-search pattern (file-name-nondirectory file))) all-files))))))
 
 (defun aj8/gptel-tool-project-find-files-glob (pattern &optional include-counts)
   "In the current project, find files whose filenames match the glob PATTERN.
