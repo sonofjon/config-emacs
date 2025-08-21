@@ -947,9 +947,12 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
      (should (string-match-p "data.txt" (car files))))
    ;; Test search content
    (when (or (executable-find "rg") (and (executable-find "git") (file-directory-p ".git")))
+     ;; Assert exact output PATH:LINE:TEXT
      (let ((results (aj8/gptel-tool-project-search-regexp "some text data")))
-       ;; Assert search output includes filename, line, and matched text
-       (should (string-match-p "data\\.txt:1:some text data" results)))
+       (should (string-equal results "data.txt:1:some text data")))
+     ;; Assert exact output PATH:LINE:COLUMN:TEXT with include-columns
+     (let ((results-with-col (aj8/gptel-tool-project-search-regexp "some text data" t)))
+       (should (string-equal results-with-col "data.txt:1:1:some text data")))
      ;; No-match path should return an informative message
      (let* ((regexp "NO_MATCH_REGEX_12345")
             (nores (aj8/gptel-tool-project-search-regexp regexp)))
