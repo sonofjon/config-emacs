@@ -335,26 +335,16 @@ and file paths, and that they signal errors for invalid inputs."
 
        (kill-buffer buffer)))))
 
-(ert-deftest test-aj8-buffer-modification-tools ()
-  "Test buffer content modification functions.
-This test covers `aj8/gptel-tool-append-to-buffer',
-`aj8/gptel-tool-insert-in-buffer', and `aj8/gptel-tool-replace-buffer',
-ensuring they alter the buffer content as expected."
+(ert-deftest test-aj8-append-to-buffer ()
+  "Test `aj8/gptel-tool-append-to-buffer'.
+Ensures that content can be appended to a buffer correctly."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
-   "*test-modify*" "Line 1\nLine 3"
+   "*test-append*" "Line 1\nLine 3"
    ;; Append
-   (aj8/gptel-tool-append-to-buffer "*test-modify*" "\nLine 4")
+   (aj8/gptel-tool-append-to-buffer "*test-append*" "\nLine 4")
    ;; Assert appended content appears at buffer end
    (should (string-equal (buffer-string) "Line 1\nLine 3\nLine 4"))
-   ;; Insert
-   (aj8/gptel-tool-insert-in-buffer "*test-modify*" "Line 2\n" 2)
-   ;; Assert inserted content appears at the requested position
-   (should (string-equal (buffer-string) "Line 1\nLine 2\nLine 3\nLine 4"))
-   ;; Replace
-   (aj8/gptel-tool-replace-buffer "*test-modify*" "New Content")
-   ;; Assert buffer replaced with new content
-   (should (string-equal (buffer-string) "New Content"))
 
    ;; Assert non-existent buffer errors
    ;; Mode 1: tool re-signals the error
@@ -367,8 +357,20 @@ ensuring they alter the buffer content as expected."
      (let ((result (aj8/gptel-tool-append-to-buffer "*nope*" "text")))
        (should (string-equal
                 "tool: aj8_append_to_buffer: Error: Buffer '*nope*' not found."
-                result))))
+                result))))))
 
+(ert-deftest test-aj8-insert-in-buffer ()
+  "Test `aj8/gptel-tool-insert-in-buffer'.
+Ensures that content can be inserted at a specific position in a buffer."
+  :tags '(unit buffers)
+  (with-temp-buffer-with-content
+   "*test-insert*" "Line 1\nLine 3"
+   ;; Insert
+   (aj8/gptel-tool-insert-in-buffer "*test-insert*" "Line 2\n" 2)
+   ;; Assert inserted content appears at the requested position
+   (should (string-equal (buffer-string) "Line 1\nLine 2\nLine 3"))
+
+   ;; Assert non-existent buffer errors
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert insert signals error for missing buffer (re-signal)
@@ -379,8 +381,20 @@ ensuring they alter the buffer content as expected."
      (let ((result (aj8/gptel-tool-insert-in-buffer "*nope*" "text" 1)))
        (should (string-equal
                 "tool: aj8_insert_in_buffer: Error: Buffer '*nope*' not found."
-                result))))
+                result))))))
 
+(ert-deftest test-aj8-replace-buffer ()
+  "Test `aj8/gptel-tool-replace-buffer'.
+Ensures that a buffer's entire content can be replaced correctly."
+  :tags '(unit buffers)
+  (with-temp-buffer-with-content
+   "*test-replace*" "Line 1\nLine 3"
+   ;; Replace
+   (aj8/gptel-tool-replace-buffer "*test-replace*" "New Content")
+   ;; Assert buffer replaced with new content
+   (should (string-equal (buffer-string) "New Content"))
+
+   ;; Assert non-existent buffer errors
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert replace signals error for missing buffer (re-signal)
@@ -811,18 +825,14 @@ documentation."
   ;; Assert missing symbol returns a 'no documentation' message
   (should (string-match-p "No documentation found" (aj8/gptel-tool-read-documentation "non-existent-symbol-xyz"))))
 
-(ert-deftest test-aj8-read-function-and-library ()
-  "Test `aj8/gptel-tool-read-function' and `aj8/gptel-tool-read-library'.
-
-Ensures that the source code for both a specific function and an entire
-library can be retrieved."
+(ert-deftest test-aj8-read-function ()
+  "Test `aj8/gptel-tool-read-function'.
+Ensures that the source code for a specific function can be retrieved."
   :tags '(unit emacs)
   (unwind-protect
       (progn
         ;; Assert function source contains expected fragment
         (should (string-match-p "(defun project-current" (aj8/gptel-tool-read-function "project-current")))
-        ;; Assert library source contains expected filename
-        (should (string-match-p "project.el" (aj8/gptel-tool-read-library "project")))
         ;; Error cases: undefined function
         ;; Mode 1: tool re-signals the error
         (let ((aj8/gptel-tool-return-error nil))
@@ -834,7 +844,20 @@ library can be retrieved."
             ;; Assert returned error message for missing function
             (should (string-equal
                      "tool: aj8_read_function: Error: Function 'non-existent-function-xyz' is not defined."
-                     result))))
+                     result)))))
+    (when (get-buffer "project.el")
+      (kill-buffer "project.el"))
+    (when (get-buffer "project.el.gz")
+      (kill-buffer "project.el.gz"))))
+
+(ert-deftest test-aj8-read-library ()
+  "Test `aj8/gptel-tool-read-library'.
+Ensures that the source code for an entire library can be retrieved."
+  :tags '(unit emacs)
+  (unwind-protect
+      (progn
+        ;; Assert library source contains expected filename
+        (should (string-match-p "project.el" (aj8/gptel-tool-read-library "project")))
         ;; Error cases: missing library
         ;; Mode 1: tool re-signals the error
         (let ((aj8/gptel-tool-return-error nil))
@@ -852,16 +875,12 @@ library can be retrieved."
     (when (get-buffer "project.el.gz")
       (kill-buffer "project.el.gz"))))
 
-(ert-deftest test-aj8-info-lookup ()
-  "Test Info manual lookup tools.
-Verifies that `aj8/gptel-tool-read-info-symbol' and
-`aj8/gptel-tool-read-info-node' can retrieve content from the Emacs Lisp
-Info manual."
+(ert-deftest test-aj8-read-info-symbol ()
+  "Test `aj8/gptel-tool-read-info-symbol'.
+Verifies that Info manual content can be retrieved by symbol lookup."
   :tags '(unit emacs)
   ;; Assert Info lookup by symbol returns expected text
   (should (string-match-p "special form in `Lisp'" (aj8/gptel-tool-read-info-symbol "defun")))
-  ;; Assert Info lookup by node returns expected text
-  (should (string-match-p "A function definition has the form" (aj8/gptel-tool-read-info-node "Defining Functions")))
 
   ;; Error cases: unknown symbol for info lookup
   ;; Mode 1: tool re-signals the error
@@ -872,7 +891,14 @@ Info manual."
     (let ((result (aj8/gptel-tool-read-info-symbol "non-existent-symbol-xyz")))
       (should (string-equal
                "tool: aj8_read_info_symbol: Cannot find Info node for symbol 'non-existent-symbol-xyz'."
-               result))))
+               result)))))
+
+(ert-deftest test-aj8-read-info-node ()
+  "Test `aj8/gptel-tool-read-info-node'.
+Verifies that Info manual content can be retrieved by node lookup."
+  :tags '(unit emacs)
+  ;; Assert Info lookup by node returns expected text
+  (should (string-match-p "A function definition has the form" (aj8/gptel-tool-read-info-node "Defining Functions")))
 
   ;; Error cases: invalid node for info manual
   ;; Mode 1: tool re-signals the error
@@ -886,26 +912,41 @@ Info manual."
                result)))))
 ;;; 3.4. Category: Project
 
-(ert-deftest test-aj8-project-root-and-buffers ()
-  "Test project root and buffer listing.
-
-Verifies `aj8/gptel-tool-project-get-root' and
-`aj8/gptel-tool-project-list-files' within a temporary project.
-
-This test covers three related behaviors:
-- The project root returned by `aj8/gptel-tool-project-get-root'.
-- The project buffer listing without counts includes project-relative paths.
-- The project buffer listing with counts includes entries that contain:
-  * the base name of the file
-  * the (nondirectory) filename
-  * a trailing \": N lines\" count"
+(ert-deftest test-aj8-project-get-root ()
+  "Test `aj8/gptel-tool-project-get-root'.
+Verifies that the project root can be determined correctly."
   :tags '(unit project)
   (with-temp-project
    (let ((root default-directory))
      ;; 1) Project root should match default-directory
      ;; Assert returned project root corresponds to the temporary project directory
      (should (string-equal (file-name-as-directory (aj8/gptel-tool-project-get-root))
-                           (file-name-as-directory root)))
+                           (file-name-as-directory root)))))
+  ;; Error cases: outside of any project
+  ;; Mode 1: tool re-signals the error
+  (let* ((tmpdir (make-temp-file "aj8-non-project" t)))
+    (unwind-protect
+        (let ((default-directory tmpdir))
+          (let ((aj8/gptel-tool-return-error nil))
+            (should-error (aj8/gptel-tool-project-get-root) :type 'error))
+          ;; Mode 2: tool returns the error as a string
+          (let ((aj8/gptel-tool-return-error t))
+            (let ((res1 (aj8/gptel-tool-project-get-root)))
+              (should (string-equal "tool: aj8_project_get_root: Not inside a project." res1)))))
+      (when (file-directory-p tmpdir)
+        (delete-directory tmpdir t)))))
+
+(ert-deftest test-aj8-project-list-files ()
+  "Test `aj8/gptel-tool-project-list-files'.
+Verifies that project buffer listing works correctly with and without line counts.
+The project buffer listing without counts includes project-relative paths.
+The project buffer listing with counts includes entries that contain:
+* the base name of the file
+* the (nondirectory) filename
+* a trailing \": N lines\" count"
+  :tags '(unit project)
+  (with-temp-project
+   (let ((root default-directory))
      (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
        (with-current-buffer buf
          (let ((lines (split-string (aj8/gptel-tool-project-list-files t) "\n" t))
@@ -933,21 +974,17 @@ This test covers three related behaviors:
     (unwind-protect
         (let ((default-directory tmpdir))
           (let ((aj8/gptel-tool-return-error nil))
-            (should-error (aj8/gptel-tool-project-get-root) :type 'error)
             (should-error (aj8/gptel-tool-project-list-files) :type 'error))
           ;; Mode 2: tool returns the error as a string
           (let ((aj8/gptel-tool-return-error t))
-            (let ((res1 (aj8/gptel-tool-project-get-root)))
-              (should (string-equal "tool: aj8_project_get_root: Not inside a project." res1)))
             (let ((res2 (aj8/gptel-tool-project-list-files)))
               (should (string-equal "tool: aj8_project_list_files: Not inside a project." res2)))))
       (when (file-directory-p tmpdir)
         (delete-directory tmpdir t)))))
 
-(ert-deftest test-aj8-project-find-and-search ()
-  "Test project file finding and content searching.
-Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
-`aj8/gptel-tool-project-search-regexp' for content searching."
+(ert-deftest test-aj8-project-find-files-glob ()
+  "Test `aj8/gptel-tool-project-find-files-glob'.
+Verifies that project file finding with glob patterns works correctly."
   :tags '(unit project)
   (with-temp-project
    ;; Test find files glob
@@ -960,7 +997,26 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
           (files (split-string files-str "\n" t)))
      ;; Assert the glob found the expected single text file
      (should (= 1 (length files)))
-     (should (string-match-p "data.txt" (car files))))
+     (should (string-match-p "data.txt" (car files)))))
+  ;; Error cases: outside of any project
+  ;; Mode 1: tool re-signals the error
+  (let* ((tmpdir (make-temp-file "aj8-non-project" t)))
+    (unwind-protect
+        (let ((default-directory tmpdir))
+          (let ((aj8/gptel-tool-return-error nil))
+            (should-error (aj8/gptel-tool-project-find-files-glob "**/*.el") :type 'error))
+          ;; Mode 2: tool returns the error as a string
+          (let ((aj8/gptel-tool-return-error t))
+            (let ((res1 (aj8/gptel-tool-project-find-files-glob "**/*.el")))
+              (should (string-equal "tool: aj8_project_find_files_glob: No project found in the current context." res1)))))
+      (when (file-directory-p tmpdir)
+        (delete-directory tmpdir t)))))
+
+(ert-deftest test-aj8-project-search-regexp ()
+  "Test `aj8/gptel-tool-project-search-regexp'.
+Verifies that project content searching with regular expressions works correctly."
+  :tags '(unit project)
+  (with-temp-project
    ;; Test search content
    (when (or (executable-find "rg") (and (executable-find "git") (file-directory-p ".git")))
      ;; Assert exact output PATH:LINE:TEXT
@@ -985,12 +1041,9 @@ Verifies `aj8/gptel-tool-project-find-files-glob' for file searching and
     (unwind-protect
         (let ((default-directory tmpdir))
           (let ((aj8/gptel-tool-return-error nil))
-            (should-error (aj8/gptel-tool-project-find-files-glob "**/*.el") :type 'error)
             (should-error (aj8/gptel-tool-project-search-regexp "x") :type 'error))
           ;; Mode 2: tool returns the error as a string
           (let ((aj8/gptel-tool-return-error t))
-            (let ((res1 (aj8/gptel-tool-project-find-files-glob "**/*.el")))
-              (should (string-equal "tool: aj8_project_find_files_glob: No project found in the current context." res1)))
             (let ((res2 (aj8/gptel-tool-project-search-regexp "x")))
               (should (string-equal "tool: aj8_project_search_content: Not inside a project." res2)))))
       (when (file-directory-p tmpdir)
