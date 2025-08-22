@@ -13,6 +13,9 @@
 (require 'gptel)
 (require 'aj8-gptel)
 
+;; Ensure straight quotes in error messages that we match against
+(setq text-quoting-style 'straight)
+
 ;;
 ;;;; 2. Test Helper Macros
 ;;
