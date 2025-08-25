@@ -739,10 +739,14 @@ buffer only; the original buffer is not modified by this command."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_info_symbol"
    (list :symbol-name symbol-name)
-   (let ((info-buffer (info-lookup-symbol (intern symbol-name))))
-     (unless info-buffer (error "Cannot find Info node for symbol '%s'." symbol-name))
-     (with-current-buffer info-buffer
-       (unwind-protect (buffer-string) (kill-buffer info-buffer))))))
+   (with-temp-buffer
+     (emacs-lisp-mode)
+     (let ((result (info-lookup-symbol (intern symbol-name))))
+       (unless result (error "Cannot find Info node for symbol '%s'." symbol-name))
+       (let ((info-buffer (get-buffer "*info*")))
+         (unless info-buffer (error "Not documented as a symbol: %s" symbol-name))
+         (with-current-buffer info-buffer
+           (buffer-string)))))))
 
 (defun aj8/gptel-tool-read-info-node (node-name)
   "Return the contents of the Emacs Lisp manual node NODE-NAME."
