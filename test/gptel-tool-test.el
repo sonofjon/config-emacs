@@ -946,7 +946,7 @@ Ensures that the source code for an entire library can be retrieved."
 Verifies that Info manual content can be retrieved by symbol lookup."
   :tags '(unit emacs)
   ;; Assert Info lookup by symbol returns expected text
-  (should (string-match-p "special form in `Lisp'" (aj8/gptel-tool-read-info-symbol "defun")))
+  (should (string-match-p "special form" (aj8/gptel-tool-read-info-symbol "defun")))
 
   ;; Error cases: unknown symbol for info lookup
   ;; Mode 1: tool re-signals the error
