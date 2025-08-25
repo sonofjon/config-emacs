@@ -872,7 +872,7 @@ Both line and column numbers are 1-based. This search respects
              (cond
               ((zerop status)
                (with-current-buffer output-buffer
-                 (buffer-string)))
+                 (string-trim-right (buffer-string))))
               ((= status 1)
                (format "No matches found for regexp: %s" regexp))
               (t
