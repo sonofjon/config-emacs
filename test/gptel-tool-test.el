@@ -964,7 +964,7 @@ Verifies that Info manual content can be retrieved by symbol lookup."
 Verifies that Info manual content can be retrieved by node lookup."
   :tags '(unit emacs)
   ;; Assert Info lookup by node returns expected text
-  (should (string-match-p "A function definition has the form" (aj8/gptel-tool-read-info-node "Defining Functions")))
+  (should (string-match-p "defining a function" (aj8/gptel-tool-read-info-node "Defining Functions")))
 
   ;; Error cases: invalid node for info manual
   ;; Mode 1: tool re-signals the error
