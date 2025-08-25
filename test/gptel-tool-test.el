@@ -1097,11 +1097,13 @@ Verifies that project content searching with regular expressions works correctly
             (nores (aj8/gptel-tool-project-search-regexp regexp)))
        (should (string-equal nores (format "No matches found for regexp: %s" regexp))))
      ;; Error path: invalid regexp should cause backend to return status > 1 and signal an error
-     (should-error (aj8/gptel-tool-project-search-regexp "[") :type 'error)
+     ;; Mode 1: tool re-signals the error
+     (let ((aj8/gptel-tool-return-error nil))
+       (should-error (aj8/gptel-tool-project-search-regexp "[") :type 'error))
      ;; Mode 2: tool returns the error as a string
      (let ((aj8/gptel-tool-return-error t))
        (let ((res (aj8/gptel-tool-project-search-regexp "[")))
-         (should (string-match-p "^tool: aj8_project_search_content: Search command .* failed with status .* for regexp: \\[" res)))))
+         (should (string-match-p "^tool: aj8_project_search_regexp: Search command .* failed with status .* for regexp: \\[" res)))))
    (let ((res (aj8/gptel-tool-project-search-regexp "[")))
      ;; Mode 1: tool re-signals the error
      (let* ((tmpdir (make-temp-file "aj8-non-project" t)))
