@@ -746,11 +746,9 @@ Ensures that a list of substring edits is applied correctly to a buffer."
        (let ((aj8/gptel-tool-return-error t))
          (let ((result (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits2)))
            ;; Assert returned message when applying invalid string edits
-           (aj8--assert-tool-error
-            result
-            :tool-name "aj8_apply_buffer_string_edits"
-            :details-str "Error applying edits to buffer '*test-apply-edits*'."
-            :full-match t)))))))
+           (should (string-equal
+                    "tool: aj8_apply_buffer_string_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\\nextra\")"
+                    result))))))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits'.
@@ -772,11 +770,9 @@ Ensures that a list of full-line edits is applied correctly to a buffer."
        ;; Mode 2: tool returns the error as a string
        (let ((aj8/gptel-tool-return-error t))
          (let ((result (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" edits2)))
-           (aj8--assert-tool-error
-            result
-            :tool-name "aj8_apply_buffer_line_edits"
-            :details-str "Error applying edits to buffer '*test-apply-edits*'."
-            :full-match t)))
+           (should (string-equal
+                    "tool: aj8_apply_buffer_line_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\\nextra\")"
+                    result))))
 
        ;; Assert non-existent buffer errors
        ;; Mode 1: tool re-signals the error
@@ -789,11 +785,9 @@ Ensures that a list of full-line edits is applied correctly to a buffer."
        (let ((aj8/gptel-tool-return-error t))
          (let ((result
                 (aj8/gptel-tool-apply-buffer-line-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
-           (aj8--assert-tool-error
-            result
-            :tool-name "aj8_apply_buffer_line_edits"
-            :details-str (format "Error: Buffer '%s' not found." "*non-existent*")
-            :full-match t)))))))
+           (should (string-equal
+                    "tool: aj8_apply_buffer_line_edits: Error: Buffer '*non-existent*' not found."
+                    result))))))))
 
 (ert-deftest test-aj8-apply-buffer-string-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review'.
@@ -823,24 +817,20 @@ review system, without altering the original buffer."
        (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits2)))
          ;; Assert header and that the specific diagnostic text appears; allow
          ;; temporary review buffer naming to differ.
-         (aj8--assert-tool-error
-          result
-          :tool-name "aj8_apply_buffer_string_edits_with_review"
-          :allow-different-buffer t
-          :details-regex "old-string contains newline"))
+         (should (string-equal
+                  "tool: aj8_apply_buffer_string_edits_with_review: Error applying edits to buffer '**test-review*-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\\nextra\")"
+                  result))))
 
-       ;; Assert non-existent buffer errors
-       ;; Mode 1: tool re-signals the error
-       (let ((aj8/gptel-tool-return-error nil))
-         (should-error (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
-       ;; Mode 2: tool returns the error as a string
-       (let ((aj8/gptel-tool-return-error t))
-         (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
-           (aj8--assert-tool-error
-            result
-            :tool-name "aj8_apply_buffer_string_edits_with_review"
-            :details-str (format "Error: Buffer '%s' not found." "*non-existent*")
-            :full-match t)))))))
+     ;; Assert non-existent buffer errors
+     ;; Mode 1: tool re-signals the error
+     (let ((aj8/gptel-tool-return-error nil))
+       (should-error (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
+     ;; Mode 2: tool returns the error as a string
+     (let ((aj8/gptel-tool-return-error t))
+       (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
+         (should (string-equal
+                  "tool: aj8_apply_buffer_string_edits_with_review: Error: Buffer '*non-existent*' not found."
+                  result)))))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'.
@@ -868,25 +858,21 @@ review system, without altering the original buffer."
      ;; Mode 2: tool returns the error as a string
      (let ((aj8/gptel-tool-return-error t))
        (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2)))
-         (aj8--assert-tool-error
-          result
-          :tool-name "aj8_apply_buffer_line_edits_with_review"
-          :allow-different-buffer t
-          :details-regex "old-string contains newline")))
+         (should (string-equal
+                  "tool: aj8_apply_buffer_line_edits_with_review: Error applying edits to buffer '**test-review*-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
+                  result)))))
 
-     ;; Assert non-existent buffer errors
-     ;; Mode 1: tool re-signals the error
-     (let ((aj8/gptel-tool-return-error nil))
-       (should-error (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
+   ;; Assert non-existent buffer errors
+   ;; Mode 1: tool re-signals the error
+   (let ((aj8/gptel-tool-return-error nil))
+     (should-error (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
 
-     ;; Mode 2: tool returns the error as a string
-     (let ((aj8/gptel-tool-return-error t))
-       (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
-         (aj8--assert-tool-error
-          result
-          :tool-name "aj8_apply_buffer_line_edits_with_review"
-          :details-str (format "Error: Buffer '%s' not found." "*non-existent*")
-          :full-match t))))))
+   ;; Mode 2: tool returns the error as a string
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
+       (should (string-equal
+                "tool: aj8_apply_buffer_line_edits_with_review: Error: Buffer '*non-existent*' not found."
+                result))))))
 
 ;;; 3.3. Category: Emacs
 
@@ -985,7 +971,9 @@ Verifies that Info manual content can be retrieved by node lookup."
   ;; Mode 2: tool returns the error as a string
   (let ((aj8/gptel-tool-return-error t))
     (let ((result (aj8/gptel-tool-read-info-node "Bogus Node 123")))
-      (aj8--assert-tool-error result :tool-name "aj8_read_info_node"))))
+      (should (string-equal
+               "tool: aj8_read_info_node: No such node or anchor: Bogus Node 123"
+               result)))))
 
 ;;; 3.4. Category: Project
 
@@ -1111,7 +1099,7 @@ Verifies that project content searching with regular expressions works correctly
      ;; Mode 2: tool returns the error as a string
      (let ((aj8/gptel-tool-return-error t))
        (let ((res (aj8/gptel-tool-project-search-regexp "[")))
-         (aj8--assert-tool-error res :tool-name "aj8_project_search_content" :details-regex "Search command"))))
+         (should (string-match-p "^tool: aj8_project_search_content: Search command .* failed with status .* for regexp: \\[" res)))))
    (let ((res (aj8/gptel-tool-project-search-regexp "[")))
      ;; Mode 1: tool re-signals the error
      (let* ((tmpdir (make-temp-file "aj8-non-project" t)))
