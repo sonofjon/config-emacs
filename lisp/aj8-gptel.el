@@ -756,7 +756,7 @@ buffer only; the original buffer is not modified by this command."
    (let ((info-buffer (get-buffer-create "*info-node*")))
      (unwind-protect
          (with-current-buffer info-buffer
-           (Info-goto-node (format "(emacs-lisp)%s" node-name))
+           (Info-goto-node (format "(elisp)%s" node-name))
            (buffer-string))
        (kill-buffer info-buffer)))))
 
