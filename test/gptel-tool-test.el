@@ -282,7 +282,7 @@ requests larger than `aj8/gptel-tool-max-lines'."
 
       ;; Success cases (use default return-error mode)
       ;; Range API: explicit request for first MAX lines should succeed
-      (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))
+      (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))
       ;; Default COUNT (nil) is treated as MAX and should return first N lines
       (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*") first-n))
       ;; Requesting COUNT == MAX should return first MAX lines
