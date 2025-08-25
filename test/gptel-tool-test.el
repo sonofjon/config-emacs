@@ -1114,7 +1114,7 @@ Verifies that project content searching with regular expressions works correctly
              ;; Mode 2: tool returns the error as a string
              (let ((aj8/gptel-tool-return-error t))
                (let ((res2 (aj8/gptel-tool-project-search-regexp "x")))
-                 (should (string-equal "tool: aj8_project_search_content: Not inside a project." res2)))))
+                 (should (string-equal "tool: aj8_project_search_regexp: Not inside a project." res2)))))
          (when (file-directory-p tmpdir)
            (delete-directory tmpdir t)))))))
 
