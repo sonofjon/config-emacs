@@ -357,6 +357,10 @@
   ;;   (https://emacs.stackexchange.com/a/80961/33325)
   (add-hook 'ediff-before-setup-hook #'my-ediff-save-windows)
   (add-hook 'ediff-quit-hook #'my-ediff-restore-windows)
+  ;; Hide side windows before Ediff
+  ;;   Passing optional argument DEPTH as t ensures the hook runs last
+  ;;   (`after my-ediff-save-windows')
+  (add-hook 'ediff-before-setup-hook #'aj8/hide-side-windows t)
   ;; Use both versions with ediff
   ;;   MAYBE: check functionality
   (add-hook 'ediff-keymap-setup-hook
