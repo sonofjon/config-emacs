@@ -726,7 +726,9 @@ buffer only; the original buffer is not modified by this command."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_library"
    (list :library-name library-name)
-   (let ((file (find-library-name library-name)))
+   (let ((file (condition-case nil
+                   (find-library-name library-name)
+                 (error nil))))
      (unless file (error "Library '%s' not found." library-name))
      (with-temp-buffer
        (insert-file-contents file)
