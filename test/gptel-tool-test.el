@@ -956,7 +956,7 @@ Verifies that Info manual content can be retrieved by symbol lookup."
   (let ((aj8/gptel-tool-return-error t))
     (let ((result (aj8/gptel-tool-read-info-symbol "non-existent-symbol-xyz")))
       (should (string-equal
-               "tool: aj8_read_info_symbol: Cannot find Info node for symbol 'non-existent-symbol-xyz'."
+               "tool: aj8_read_info_symbol: Not documented as a symbol: non-existent-symbol-xyz"
                result)))))
 
 (ert-deftest test-aj8-read-info-node ()
