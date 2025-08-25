@@ -91,37 +91,42 @@ directory."
 
 ;;; 2.2 Functions
 
-(cl-defun aj8--assert-tool-error (result &key tool-name buffer-name
-                                         allow-different-buffer
+(cl-defun aj8--assert-tool-error (result &key tool-name
                                          details-str details-regex
                                          details-predicate
-                                         expect-nonempty-details full-match)
-  "Assert that RESULT contains an error from TOOL-NAME.
+                                         details-nonempty)
+  "Assert that RESULT contains a properly formatted Gptel tool error message.
 
-If BUFFER-NAME is supplied, the helper will require the header to
-mention that buffer unless ALLOW-DIFFERENT-BUFFER is non-nil.  The
-details may be asserted by passing one of DETAILS-STR (substring),
-DETAILS-REGEX (regexp) or DETAILS-PREDICATE (function taking RESULT).
-If none of those are provided the helper only checks the header prefix.
-If FULL-MATCH is non-nil and DETAILS-STR is provided, the helper will
-assert full equality of the constructed header+details string."
+This function validates that RESULT starts with the expected \"tool: TOOL-NAME:\"
+format and optionally validates additional error content using the provided
+validation parameters.
+
+RESULT should be a string containing the tool's error output.
+
+Required keyword parameters:
+- TOOL-NAME: The name of the tool that generated the error.
+
+Optional keyword parameters:
+- DETAILS-STR: If provided, check that this substring appears in the error.
+- DETAILS-REGEX: If provided, check that this regexp matches the error.
+- DETAILS-PREDICATE: If provided, call this function with RESULT; it should
+  return non-nil if the error is valid.
+- DETAILS-NONEMPTY: If non-nil, require that the error contains
+  non-empty details after \"Error:\" in the message."
+  (unless tool-name
+    (error "tool-name is required"))
   (let ((header (format "tool: %s:" tool-name)))
     ;; Basic header prefix check
     (should (string-prefix-p header result))
+
     ;; If no details requested, done
-    (unless (or details-str details-regex details-predicate expect-nonempty-details full-match)
+    (unless (or details-str details-regex details-predicate details-nonempty)
       (cl-return-from aj8--assert-tool-error t))
 
     ;; details-predicate takes precedence
     (when details-predicate
       (should (funcall details-predicate result))
       (cl-return-from aj8--assert-tool-error t))
-
-    ;; full-match with details-str -> exact equality
-    (when (and details-str full-match)
-      (let ((expected (format "%s %s" header details-str)))
-        (should (string-equal expected result))
-        (cl-return-from aj8--assert-tool-error t)))
 
     ;; details-str as substring
     (when details-str
@@ -134,7 +139,7 @@ assert full equality of the constructed header+details string."
       (cl-return-from aj8--assert-tool-error t))
 
     ;; expect non-empty details
-    (when expect-nonempty-details
+    (when details-nonempty
       (let ((after (substring result (min (length result) (or (string-match-p "Error" result) 0)))))
         (should (> (length (string-trim after)) 0))))))
 
