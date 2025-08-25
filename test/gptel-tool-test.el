@@ -747,7 +747,7 @@ Ensures that a list of substring edits is applied correctly to a buffer."
          (let ((result (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits2)))
            ;; Assert returned message when applying invalid string edits
            (should (string-equal
-                    "tool: aj8_apply_buffer_string_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\\nextra\")"
+                    "tool: aj8_apply_buffer_string_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")"
                     result))))))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits ()
@@ -771,7 +771,7 @@ Ensures that a list of full-line edits is applied correctly to a buffer."
        (let ((aj8/gptel-tool-return-error t))
          (let ((result (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" edits2)))
            (should (string-equal
-                    "tool: aj8_apply_buffer_line_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\\nextra\")"
+                    "tool: aj8_apply_buffer_line_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")"
                     result))))
 
        ;; Assert non-existent buffer errors
@@ -818,7 +818,7 @@ review system, without altering the original buffer."
          ;; Assert header and that the specific diagnostic text appears; allow
          ;; temporary review buffer naming to differ.
          (should (string-equal
-                  "tool: aj8_apply_buffer_string_edits_with_review: Error applying edits to buffer '**test-review*-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\\nextra\")"
+                  "tool: aj8_apply_buffer_string_edits_with_review: Error applying edits to buffer '**test-review*-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
                   result))))
 
      ;; Assert non-existent buffer errors
@@ -859,7 +859,7 @@ review system, without altering the original buffer."
      (let ((aj8/gptel-tool-return-error t))
        (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2)))
          (should (string-equal
-                  "tool: aj8_apply_buffer_line_edits_with_review: Error applying edits to buffer '**test-review*-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
+                  "tool: aj8_apply_buffer_line_edits_with_review: Error applying edits to buffer '**test-review*-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
                   result)))))
 
    ;; Assert non-existent buffer errors
