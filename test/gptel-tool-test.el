@@ -709,7 +709,7 @@ Ensures that a list of substring edits is applied correctly to a buffer."
            (let ((expected (aj8--build-tool-error-message
                             "aj8_apply_buffer_string_edits"
                             "Error applying edits to buffer '*test-apply-edits*'.")))
-             (should (string-equal expected result))))))))
+             (should (string-equal expected result)))))))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits'.
