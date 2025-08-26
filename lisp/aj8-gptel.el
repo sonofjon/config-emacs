@@ -523,10 +523,8 @@ subsequent line numbers."
                 (old-string (plist-get edit :old-string))
                 (new-string (plist-get edit :new-string))
                 (success nil))
-            ;; Validate that old-string is single-line for edit types that require it.
-            (if (and old-string
-                     (or (eq edit-type 'line) (eq edit-type 'string))
-                     (string-match-p "\n" old-string))
+            ;; Validate that old-string is single-line.
+            (if (string-match-p "\n" old-string)
                 (push (list line-number
                             "old-string contains newline"
                             old-string)
