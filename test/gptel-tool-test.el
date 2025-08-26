@@ -200,6 +200,46 @@ Verifies that the function opens a file into a buffer."
         (when (file-directory-p dir)
           (delete-directory dir t))))))
 
+(ert-deftest test-aj8-buffer-search-regexp ()
+  "Test `aj8/gptel-tool-buffer-search-regexp'.
+Verifies that the function can search for content in a buffer and
+properly handles error cases for non-existent buffers and invalid regexps."
+  :tags '(unit buffers)
+  (with-temp-buffer-with-content
+   "*test-buffer-search*" "line 1\ntest content here\nline 3"
+   ;; Test successful search
+   (let ((result (aj8/gptel-tool-buffer-search-regexp "*test-buffer-search*" "content")))
+     ;; Assert search finds the matching line
+     (should (string-match-p "test content here" result)))
+
+   ;; Test non-existent buffer errors
+   ;; Mode 1: tool re-signals the error
+   (let ((aj8/gptel-tool-return-error nil))
+     ;; Assert an error is signaled for searching a missing buffer
+     (should-error (aj8/gptel-tool-buffer-search-regexp "*non-existent-buffer*" "test") :type 'error))
+
+   ;; Mode 2: tool returns the error as a string
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-buffer-search-regexp "*non-existent-buffer*" "test")))
+       ;; Assert returned error message matches expected format
+       (should (string-equal
+                "tool: aj8_buffer_search_content: Error: Buffer '*non-existent-buffer*' not found."
+                result))))
+
+   ;; Test invalid regexp errors
+   ;; Mode 1: tool re-signals the error
+   (let ((aj8/gptel-tool-return-error nil))
+     ;; Assert an error is signaled for invalid regexp
+     (should-error (aj8/gptel-tool-buffer-search-regexp "*test-buffer-search*" "[invalid") :type 'error))
+
+   ;; Mode 2: tool returns the error as a string
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-buffer-search-regexp "*test-buffer-search*" "[invalid")))
+       ;; Assert returned error message matches expected format
+       (should (string-equal
+                "tool: aj8_buffer_search_content: Invalid regexp: [invalid"
+                result))))))
+
 (ert-deftest test-aj8-read-buffer-lines ()
   "Test `aj8/gptel-tool-read-buffer-lines' and
 `aj8/gptel-tool-read-buffer-lines-count'.
