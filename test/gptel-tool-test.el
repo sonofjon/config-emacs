@@ -834,6 +834,21 @@ Ensures that a list of substring edits is applied correctly to a buffer."
            ;; Assert returned message when applying invalid string edits
            (should (string-equal
                     "tool: aj8_apply_buffer_string_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")"
+                    result))))
+
+       ;; Assert non-existent buffer errors
+       ;; Mode 1: tool re-signals the error
+       (let ((aj8/gptel-tool-return-error nil))
+         (should-error
+          (aj8/gptel-tool-apply-buffer-string-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))
+          :type 'error))
+
+       ;; Mode 2: tool returns the error as a string
+       (let ((aj8/gptel-tool-return-error t))
+         (let ((result
+                (aj8/gptel-tool-apply-buffer-string-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
+           (should (string-equal
+                    "tool: aj8_apply_buffer_string_edits: Error: Buffer '*non-existent*' not found."
                     result))))))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits ()
