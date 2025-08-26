@@ -689,36 +689,21 @@ buffer only; the original buffer is not modified by this command."
         ;; Built-in primitive functions (C functions)
         ((subrp func-def)
          (format "Function '%s' is a built-in primitive (subr); it has no Lisp source code." function-name))
-        ;; Byte-compiled functions
-        ((or (byte-code-function-p func-def)
-             (and (listp func-def) (eq (car func-def) 'byte-code)))
-         (let* ((found-lib-pair (find-function-library func-symbol))
-                (file-name (cdr found-lib-pair)))
-           (if file-name
-               (let* ((source-file
-                       (let ((base-name (file-name-sans-extension file-name)))
-                         ;; Handle cases like ".el.gz" -> ".el"
-                         (when (string-suffix-p ".el" base-name)
-                           (setq base-name (file-name-sans-extension base-name)))
-                         (or (locate-file (concat base-name ".el") load-path)
-                             (locate-file (concat base-name ".el.gz") load-path)))))
-                 (if source-file
-                     (with-temp-buffer
-                       (insert-file-contents source-file)
-                       (goto-char (point-min))
-                       (if (re-search-forward (format "^(def\(?:un\|macro\) %s\b" (regexp-quote function-name)) nil t)
-                           (save-excursion
-                             (goto-char (match-beginning 0))
-                             (let ((beg (point)))
-                               (forward-sexp 1)
-                               (buffer-substring-no-properties beg (point))))
-                         (format "Source file for '%s' found at '%s', but the function definition could not be located inside it."
-                                 function-name source-file)))
-                   (format "Function '%s' is byte-compiled, and its source code file could not be found." function-name)))
-             (format "Library for function '%s' not found." function-name))))
-        ;; Regular Lisp functions
+        ;; All other functions
         (t
-         (prin1-to-string func-def)))))))
+         (condition-case err
+             (let ((location (find-function-noselect func-symbol t)))
+               (if (cdr location)
+                   ;; Found source location
+                   (with-current-buffer (car location)
+                     (save-excursion
+                       (goto-char (cdr location))
+                       (let ((beg (point)))
+                         (forward-sexp 1)
+                         (buffer-substring-no-properties beg (point)))))
+                 ;; No source location found
+                 (format "Function '%s' source could not be located." function-name)))
+           (error (format "Error finding function '%s': %s" function-name (error-message-string err))))))))))
 
 (defun aj8/gptel-tool-read-library (library-name)
   "Return the source code of LIBRARY-NAME."
