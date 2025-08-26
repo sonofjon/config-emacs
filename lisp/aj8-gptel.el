@@ -13,7 +13,7 @@ rules are:
 - string: if the string contains a newline, return only the text up to
   the first newline followed by the suffix \"...(+N more)\" where N is
   the number of remaining lines; otherwise return the original string.
-- list: recursively process each element.
+- list: recursively process each element and return a new list.
 - list of plists: return a list whose first element is the processed
   first plist and, if there are more elements, a second element that is
   the string \"...(+N more)\" where N is the number of remaining plists.
@@ -107,9 +107,9 @@ that string; otherwise it re-signals the original error."
 (defmacro aj8/gptel-tool--with-tool (tool-name args &rest body)
   "Run BODY for TOOL-NAME and message/log the action.
 
-TOOL-NAME is the tool's display name (string).  ARGS is a property
-list (plist) of keyword/value pairs describing the parameters passed to
-the tool function.
+TOOL-NAME is display name of the tool.  ARGS is a property list of
+keyword/value pairs describing the parameters passed to the tool
+function.
 
 If ARGS is nil the minibuffer will show only the tool name (no argument
 summary is displayed).
@@ -121,7 +121,7 @@ The macro binds local variables `tool-name' and `args' and then:
   `*gptel-tool-log*' buffer and returns RESULT.
 - On error it delegates to
   `aj8/gptel-tool--report-and-return-or-signal', which messages/logs and
-  returns or re-signals depending on aj8/gptel-tool-return-error."
+  returns or re-signals depending on `aj8/gptel-tool-return-error'."
   `(let ((tool-name ,tool-name)
          (args ,args))
      (message "%s%s"
@@ -225,8 +225,8 @@ The macro binds local variables `tool-name' and `args' and then:
 When START-LINE is nil it defaults to 1.  When COUNT is nil it defaults
 to `aj8/gptel-tool-max-lines'.  If COUNT is greater than
 `aj8/gptel-tool-max-lines' an error is signaled.  If the requested range
-extends past the buffer end, the function silently returns lines to the
-end of the buffer only."
+extends past the end of the buffer, the function returns only the
+available lines."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_buffer_lines_count"
    (list :buffer-name buffer-name :start-line start-line :count count)
@@ -260,7 +260,7 @@ end of the buffer only."
   "Return a newline-separated string of open file-backed buffers.
 Each line is of the form \"NAME: PATH\", where NAME is the buffer name
 and PATH is the file path relative to the current project root.  When
-the file is outside the current project PATH is the absolute file path.
+the file is outside the current project, PATH is the absolute file path.
 If INCLUDE-COUNTS is non-nil, append the number of lines as \" (N
 lines)\"."
   (aj8/gptel-tool--with-tool
@@ -288,7 +288,7 @@ lines)\"."
 Each line is either \"NAME: PATH\" for file-backed buffers or just
 \"NAME\" for non-file buffers.  NAME is the buffer name and PATH is the
 file path relative to the current project root.  When the file is
-outside the current project PATH is the absolute file path.  If
+outside the current project, PATH is the absolute file path.  If
 INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_all_buffers"
