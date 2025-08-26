@@ -872,7 +872,20 @@ Ensures that a list of substring edits is applied correctly to a buffer."
                 (aj8/gptel-tool-apply-buffer-string-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
            (should (string-equal
                     "tool: aj8_apply_buffer_string_edits: Error: Buffer '*non-existent*' not found."
-                    result))))))))
+                    result))))
+
+       ;; Test edge case: empty edits list
+       (with-temp-buffer-with-content
+        "*test-empty-edits*" "Line one.\nLine two.\nLine three."
+        ;; Empty edits should succeed and do nothing
+        (aj8/gptel-tool-apply-buffer-string-edits "*test-empty-edits*" '())
+        ;; Buffer should remain unchanged
+        (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+
+        ;; Test with nil edits as well
+        (aj8/gptel-tool-apply-buffer-string-edits "*test-empty-edits*" nil)
+        ;; Buffer should still remain unchanged
+        (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits'.
@@ -911,7 +924,20 @@ Ensures that a list of full-line edits is applied correctly to a buffer."
                 (aj8/gptel-tool-apply-buffer-line-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
            (should (string-equal
                     "tool: aj8_apply_buffer_line_edits: Error: Buffer '*non-existent*' not found."
-                    result))))))))
+                    result))))
+
+       ;; Test edge case: empty edits list
+       (with-temp-buffer-with-content
+        "*test-empty-edits*" "Line one.\nLine two.\nLine three."
+        ;; Empty edits should succeed and do nothing
+        (aj8/gptel-tool-apply-buffer-line-edits "*test-empty-edits*" '())
+        ;; Buffer should remain unchanged
+        (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+
+        ;; Test with nil edits as well
+        (aj8/gptel-tool-apply-buffer-line-edits "*test-empty-edits*" nil)
+        ;; Buffer should still remain unchanged
+        (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))))))
 
 (ert-deftest test-aj8-apply-buffer-string-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review'.
@@ -954,7 +980,20 @@ review system, without altering the original buffer."
        (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
          (should (string-equal
                   "tool: aj8_apply_buffer_string_edits_with_review: Error: Buffer '*non-existent*' not found."
-                  result)))))))
+                  result))))
+
+     ;; Test edge case: empty edits list
+     (with-temp-buffer-with-content
+      "*test-empty-edits*" "Line one.\nLine two.\nLine three."
+      ;; Empty edits should succeed and do nothing
+      (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-empty-edits*" '())
+      ;; Buffer should remain unchanged
+      (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+
+      ;; Test with nil edits as well
+      (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-empty-edits*" nil)
+      ;; Buffer should still remain unchanged
+      (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'.
@@ -996,7 +1035,20 @@ review system, without altering the original buffer."
      (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
        (should (string-equal
                 "tool: aj8_apply_buffer_line_edits_with_review: Error: Buffer '*non-existent*' not found."
-                result))))))
+                result))))
+
+   ;; Test edge case: empty edits list
+   (with-temp-buffer-with-content
+    "*test-empty-edits*" "Line one.\nLine two.\nLine three."
+    ;; Empty edits should succeed and do nothing
+    (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" '())
+    ;; Buffer should remain unchanged
+    (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+
+    ;; Test with nil edits as well
+    (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" nil)
+    ;; Buffer should still remain unchanged
+    (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))))
 
 ;;; 3.3. Category: Emacs
 
