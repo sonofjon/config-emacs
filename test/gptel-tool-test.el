@@ -6,13 +6,13 @@
 ;;;; 1. Requirements
 ;;
 
-;; Require ERT, the Emacs Lisp Regression Testing tool
+;; ERT, the Emacs Lisp Regression Testing tool
 (require 'ert)
 
 ;; Common CL utilities (cl-defun, cl-letf, cl-every, etc.)
 (require 'cl-lib)
 
-;; Load libraries required for these tests
+;; Libraries required for these tests
 (require 'gptel)
 (require 'aj8-gptel)
 
