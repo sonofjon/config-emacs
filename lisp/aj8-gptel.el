@@ -731,7 +731,12 @@ buffer only; the original buffer is not modified by this command."
        (buffer-string)))))
 
 (defun aj8/gptel-tool-read-info-symbol (symbol-name)
-  "Return the contents of the Info node for SYMBOL-NAME."
+  "Return the contents of the Info node for SYMBOL-NAME.
+
+SYMBOL-NAME should be the name of an Emacs Lisp function, macro, or
+variable (e.g., \"defun\", \"let\", \"buffer-string\").  The function
+uses `info-lookup-symbol` to find where the symbol is documented and
+returns the content of that Info page."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_info_symbol"
    (list :symbol-name symbol-name)
@@ -745,7 +750,12 @@ buffer only; the original buffer is not modified by this command."
            (buffer-string)))))))
 
 (defun aj8/gptel-tool-read-info-node (node-name)
-  "Return the contents of the Emacs Lisp manual node NODE-NAME."
+  "Return the contents of the Info node NODE-NAME.
+
+NODE-NAME should be the name of a section in the Elisp manual, such as
+\"Control Structures\", \"Variables\", or \"Functions\".  The function
+navigates to (elisp)NODE-NAME and returns the content from that Info
+page."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_info_node"
    (list :node-name node-name)
