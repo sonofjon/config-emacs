@@ -546,6 +546,19 @@ found or is not unique."
                 "tool: aj8_edit_buffer_string: Error: String 'hello' is not unique in buffer '*test-edit*'. Found 2 occurrences."
                 result))))
 
+   ;; Test non-existent buffer errors
+   ;; Mode 1: tool re-signals the error
+   (let ((aj8/gptel-tool-return-error nil))
+     ;; Assert edit-string signals error for missing buffer (re-signal)
+     (should-error (aj8/gptel-tool-edit-buffer-string "*non-existent-buffer*" "text" "replacement") :type 'error))
+
+   ;; Mode 2: tool returns the error as a string
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-edit-buffer-string "*non-existent-buffer*" "text" "replacement")))
+       (should (string-equal
+                "tool: aj8_edit_buffer_string: Error: Buffer '*non-existent-buffer*' not found."
+                result))))
+
    ;; Verify that a multi-line :old-string is accepted
    (aj8/gptel-tool-edit-buffer-string "*test-edit*" "emacs\nhello" "EMACS\nHI")
    (should (string-equal (buffer-string) "hello EMACS\nHI universe"))))
