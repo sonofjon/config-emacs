@@ -27,8 +27,8 @@
 
 (defmacro with-temp-buffer-with-content (buffer-name content &rest body)
   "Execute BODY in a temporary buffer containing initial CONTENT.
-The buffer is named BUFFER-NAME. This macro ensures the buffer is killed
-after BODY executes, even in case of an error."
+The buffer is named BUFFER-NAME.  This macro ensures the buffer is
+killed after BODY executes, even in case of an error."
   `(let ((test-buf (get-buffer-create ,buffer-name)))
      (unwind-protect
          (with-current-buffer test-buf
@@ -40,7 +40,7 @@ after BODY executes, even in case of an error."
 
 (defmacro with-temp-file-with-content (file-var content &rest body)
   "Execute BODY with a temporary file containing initial CONTENT.
-The file's path is bound to FILE-VAR. This macro ensures both the file
+The file's path is bound to FILE-VAR.  This macro ensures both the file
 and its associated buffer are deleted after BODY executes."
   `(let ((,file-var (make-temp-file "ert-test-file-")))
      (unwind-protect
@@ -91,15 +91,14 @@ directory."
 
 ;;; 2.2 Functions
 
-(cl-defun aj8--assert-tool-error (result &key tool-name
-                                         details-str details-regex
-                                         details-predicate
+(cl-defun aj8--assert-tool-error (result &key tool-name details-str
+                                         details-regex details-predicate
                                          details-nonempty)
   "Assert that RESULT contains a properly formatted Gptel tool error message.
 
-This function validates that RESULT starts with the expected \"tool: TOOL-NAME:\"
-format and optionally validates additional error content using the provided
-validation parameters.
+This function validates that RESULT starts with the expected \"tool:
+TOOL-NAME:\" format and optionally validates additional error content
+using the provided validation parameters.
 
 RESULT should be a string containing the tool's error output.
 
@@ -119,16 +118,16 @@ Optional keyword parameters:
     ;; Basic header prefix check
     (should (string-prefix-p header result))
 
-    ;; If no details requested, done
+    ;; If no details are requested, return
     (unless (or details-str details-regex details-predicate details-nonempty)
       (cl-return-from aj8--assert-tool-error t))
 
-    ;; details-predicate takes precedence
+    ;; details-predicate
     (when details-predicate
       (should (funcall details-predicate result))
       (cl-return-from aj8--assert-tool-error t))
 
-    ;; details-str as substring
+    ;; details-str
     (when details-str
       (should (string-match-p (regexp-quote details-str) result))
       (cl-return-from aj8--assert-tool-error t))
@@ -138,7 +137,7 @@ Optional keyword parameters:
       (should (string-match-p details-regex result))
       (cl-return-from aj8--assert-tool-error t))
 
-    ;; expect non-empty details
+    ;; Non-empty details
     (when details-nonempty
       (let ((after (substring result (min (length result) (or (string-match-p "Error" result) 0)))))
         (should (> (length (string-trim after)) 0))))))
