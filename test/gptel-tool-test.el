@@ -320,6 +320,26 @@ requests larger than `aj8/gptel-tool-max-lines'."
         ;; Assert error when START > total-lines
         (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" (1+ (count-lines (point-min) (point-max))) 1) :type 'error))
 
+      ;; Mode 2: tool returns the error as a string for line validation errors
+      (let ((aj8/gptel-tool-return-error t))
+        ;; Test COUNT > MAX error in return-string mode
+        (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 n)))
+          (should (string-equal
+                   (format "tool: aj8_read_buffer_lines_count: Error: requested COUNT (%d) exceeds maximum allowed (%d)." n aj8/gptel-tool-max-lines)
+                   result)))
+        ;; Test START < 1 error in return-string mode
+        (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 0 2)))
+          (should (string-equal
+                   "tool: aj8_read_buffer_lines_count: Error: START-LINE must be >= 1"
+                   result)))
+        ;; Test START > total-lines error in return-string mode
+        (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" (1+ (count-lines (point-min) (point-max))) 1)))
+          (should (string-equal
+                   (format "tool: aj8_read_buffer_lines_count: Error: START-LINE (%d) exceeds buffer length (%d)."
+                           (1+ (count-lines (point-min) (point-max)))
+                           (count-lines (point-min) (point-max)))
+                   result))))
+
       ;; Success cases (use default return-error mode)
       ;; Range API: explicit request for first MAX lines should succeed
       (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))
