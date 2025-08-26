@@ -595,7 +595,7 @@ EDIT-TYPE can be 'line or 'string, as described in
     (ediff-buffers original-buffer temp-buffer)))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits (buffer-name buffer-edits)
-  "Edit BUFFER-NAME with a list of string edits, applying changes directly without review.
+  "Edit BUFFER-NAME with a list of string edits.
 BUFFER-EDITS is a list of property lists where each edit must contain
 the keys :line-number (integer), :old-string (string), and
 :new-string (string).  The function searches from the start of the
@@ -609,7 +609,7 @@ descending order of :line-number."
    (format "String edits successfully applied to buffer %s." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer-edits)
-  "Edit BUFFER-NAME with a list of string edits and start an Ediff session for review.
+  "Edit BUFFER-NAME with a list of string edits and review with Ediff.
 BUFFER-EDITS is a list of property lists where each edit must contain
 the keys :line-number (integer), :old-string (string), and
 :new-string (string).  This function prepares a temporary buffer with
@@ -623,7 +623,7 @@ buffer only; the original buffer is not modified by this command."
    (format "Ediff session started for %s. Please complete the review." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-line-edits (buffer-name buffer-edits)
-  "Edit BUFFER-NAME with a list of line edits, applying changes directly without review.
+  "Edit BUFFER-NAME with a list of line edits.
 BUFFER-EDITS is a list of property lists where each edit must contain
 the keys :line-number (integer), :old-string (string), and
 :new-string (string).  The :old-string is compared against the entire
@@ -636,7 +636,7 @@ applied in descending order of :line-number."
    (format "Line edits successfully applied to buffer %s." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer-edits)
-  "Edit BUFFER-NAME with a list of line edits and start an Ediff session for review.
+  "Edit BUFFER-NAME with a list of line edits and review with Ediff.
 BUFFER-EDITS is a list of property lists where each edit must contain
 the keys :line-number (integer), :old-string (string), and
 :new-string (string).  This function prepares a temporary buffer with
