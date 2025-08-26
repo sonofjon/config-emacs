@@ -686,8 +686,10 @@ buffer only; the original buffer is not modified by this command."
        (error "Error: Function '%s' is not defined." function-name))
      (let ((func-def (symbol-function func-symbol)))
        (cond
+        ;; Built-in primitive functions (C functions)
         ((subrp func-def)
          (format "Function '%s' is a built-in primitive (subr); it has no Lisp source code." function-name))
+        ;; Byte-compiled functions
         ((or (byte-code-function-p func-def)
              (and (listp func-def) (eq (car func-def) 'byte-code)))
          (let* ((found-lib-pair (find-function-library func-symbol))
@@ -714,6 +716,7 @@ buffer only; the original buffer is not modified by this command."
                                  function source-file)))
                    (format "Function '%s' is byte-compiled, and its source code file could not be found." function-name)))
              (format "Library for function '%s' not found." function-name))))
+        ;; Regular Lisp functions
         (t
          (prin1-to-string func-def)))))))
 
