@@ -563,20 +563,18 @@ subsequent line numbers."
                    buffer-name failed total details)))))))
 
 (defun aj8/--review-buffer-edits (buffer-name buffer-edits edit-type)
-  "Prepare a temporary buffer with edits and start an Ediff review session.
+  "Review a list of buffer edits in Ediff.
+
+Creates a temporary buffer containing the original buffer's content with
+the proposed edits applied, then launches an Ediff session to visually
+compare the original buffer against the edited version.
 
 BUFFER-EDITS is a list of property lists with the same shape as
 described for `aj8/--apply-buffer-edits': each edit should contain
 :line-number, :old-string, and :new-string.
 
 EDIT-TYPE can be 'line or 'string, as described in
-`aj8/--apply-buffer-edits'.
-
-This function creates a temporary buffer named
-\"*<BUFFER-NAME>-edits*\", inserts the contents of BUFFER-NAME, applies
-the edits to the temporary buffer (using `aj8/--apply-buffer-edits'),
-and launches `ediff-buffers' comparing the original buffer and the
-edited temporary buffer."
+`aj8/--apply-buffer-edits'."
   (let* ((original-buffer (get-buffer buffer-name))
          (temp-buffer-name (format "*%s-edits*" buffer-name))
          (temp-buffer (get-buffer-create temp-buffer-name)))
