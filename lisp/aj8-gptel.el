@@ -576,7 +576,8 @@ described for `aj8/--apply-buffer-edits': each edit should contain
 EDIT-TYPE can be 'line or 'string, as described in
 `aj8/--apply-buffer-edits'."
   (let* ((original-buffer (get-buffer buffer-name))
-         (temp-buffer-name (format "*%s-edits*" buffer-name))
+         (temp-buffer-name (format "*%s-edits*"
+                                  (string-trim buffer-name "*" "*")))
          (temp-buffer (get-buffer-create temp-buffer-name)))
     (unless original-buffer
       (error "Error: Buffer '%s' not found." buffer-name))
