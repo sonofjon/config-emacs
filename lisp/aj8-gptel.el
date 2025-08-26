@@ -713,7 +713,7 @@ buffer only; the original buffer is not modified by this command."
                                (forward-sexp 1)
                                (buffer-substring-no-properties beg (point))))
                          (format "Source file for '%s' found at '%s', but the function definition could not be located inside it."
-                                 function source-file)))
+                                 function-name source-file)))
                    (format "Function '%s' is byte-compiled, and its source code file could not be found." function-name)))
              (format "Library for function '%s' not found." function-name))))
         ;; Regular Lisp functions
