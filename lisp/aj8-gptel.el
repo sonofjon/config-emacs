@@ -777,7 +777,7 @@ page."
      (project-root project))))
 
 (defun aj8/gptel-tool-project-list-files (&optional include-counts)
-  "Return a string listing all files in the current project.
+  "Return a newline-separated string listing all files in the current project.
 
 Each line is of the form \"NAME: PATH\".  If INCLUDE-COUNTS is non-nil,
 append the number of lines as \"NAME: PATH (N lines)\".
@@ -804,8 +804,7 @@ project root."
 
 ;; (defun aj8/gptel-tool-project-find-files (pattern)
 ;;   "In the current project, find files whose filenames contain PATTERN.
-;; This search respects the project's .gitignore file and other standard
-;; ignores.  It does not return directories."
+;; This function respects .gitignore.  It does not return directories."
 ;;   (with-temp-message "Running tool: my_project_find_files"
 ;;     (let ((proj (project-current)))
 ;;       (if (not proj)
@@ -818,7 +817,7 @@ project root."
 Returns a newline-separated string where each line is \"NAME: PATH\".
 NAME is the file's base name and PATH is the path relative to the
 project root.  If INCLUDE-COUNTS is non-nil append the number of lines
-as \" (N lines)\"."
+as \" (N lines)\". This function respects .gitignore."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_find_files_glob"
    (list :pattern pattern :include-counts include-counts)
