@@ -58,7 +58,7 @@ and its associated buffer are deleted after BODY executes."
 (defmacro with-temp-project (&rest body)
   "Execute BODY with `default-directory' set to a temporary project's root.
 This macro creates a directory, initializes a Git repository, and adds
-dummy files to simulate a real project. It runs the BODY forms with the
+dummy files to simulate a real project.  It runs the BODY forms with the
 project root as the current working directory, then deletes the
 directory."
   `(let* ((proj-dir (expand-file-name "ert-test-project/" temporary-file-directory))
@@ -243,7 +243,7 @@ properly handles error cases for non-existent buffers and invalid regexps."
   "Test `aj8/gptel-tool-read-buffer-lines' and
 `aj8/gptel-tool-read-buffer-lines-count'.
 Verifies that the functions can read a whole buffer, a section from the
-middle, a section from the beginning, and a section to the end. It also
+middle, a section from the beginning, and a section to the end.  It also
 verifies that an error is signaled for a non-existent buffer, and for
 requests larger than `aj8/gptel-tool-max-lines'."
   :tags '(unit buffers)
@@ -695,7 +695,7 @@ Line D"
 
 (ert-deftest test-aj8-delete-buffer-string ()
   "Test `aj8/gptel-tool-delete-buffer-string'.
-Verifies that a single, unique string can be deleted from a buffer. It
+Verifies that a single, unique string can be deleted from a buffer.  It
 also confirms that an error is signaled if the target string is not
 found or is not unique."
   :tags '(unit buffers)
@@ -1295,9 +1295,9 @@ Verifies that project content searching with regular expressions works correctly
 
 ;;; 4.1. Category: Tool Definition and Invocation
 ;;
-;; This section tests the fundamental integrity of the tool system. It
+;; This section tests the fundamental integrity of the tool system.  It
 ;; ensures that all tools are correctly defined, registered, and can be
-;; invoked through their function pointers. It also verifies that the tool
+;; invoked through their function pointers.  It also verifies that the tool
 ;; definitions meet the structural requirements and that error handling for
 ;; invalid arguments is working as expected.
 
@@ -1384,7 +1384,7 @@ their associated functions can be called without error."
 (ert-deftest test-gptel-tools-via-json-call ()
   "Simulate calling Gptel tools via a JSON-like interface.
 This test mimics how a Large Language Model (LLM) would call the tools
-by invoking the tool's function with arguments directly. It verifies
+by invoking the tool's function with arguments directly.  It verifies
 both a query and a buffer modification tool."
   :tags '(integration tools json)
   (with-temp-buffer-with-content
@@ -1425,8 +1425,8 @@ path."
 
 ;;; 4.2. Category: LLM Tool Mock Simulation
 ;;
-;; This section simulates the end-to-end process of an LLM calling a
-;; tool. It uses mock LLM responses containing tool call requests to test if
+;; This section simulates the end-to-end process of an LLM calling a tool.
+;; It uses mock LLM responses containing tool call requests to test if
 ;; `gptel' correctly parses these requests, invokes the appropriate tool
 ;; with the right arguments, and that the tools produce the expected side
 ;; effects (e.g., modifying a buffer or file).
@@ -1521,7 +1521,7 @@ The response is processed by `gptel--streaming-done-callback'."
 ;;; 4.3. Category: User Workflow Simulation
 ;;
 ;; This section tests common sequences of tool calls that emulate a user's
-;; workflow for a specific task. Unlike the LLM simulations, these tests
+;; workflow for a specific task.  Unlike the LLM simulations, these tests
 ;; call the tool functions directly to verify that combinations of tools
 ;; work together correctly to achieve a larger goal, such as refactoring
 ;; code in a buffer or managing project files.
@@ -1760,10 +1760,10 @@ several related full-line edits in a single buffer, using
 
 This function prompts for a TOOL-NAME from a list of all registered
 gptel tools.  If the tool requires arguments, you will be prompted to
-enter a value for each one. The tool is then executed with the provided
+enter a value for each one.  The tool is then executed with the provided
 arguments.
 
-The return value of the tool is displayed as a message. This is useful
+The return value of the tool is displayed as a message.  This is useful
 for quick, manual testing and inspection of any tool.
 
 TOOL-NAME is the name of the tool to run (e.g., 'aj8_list_buffers')."
@@ -1849,9 +1849,9 @@ if all tools are valid."
 (defun aj8/gptel-tool-create-scenario ()
   "Create a sandboxed environment for manually testing Gptel tools.
 This sets up a temporary directory with several files and opens them in
-buffers, simulating a realistic project. It also creates an instructions
-buffer with suggested prompts for testing tool-based interactions with
-an LLM."
+buffers, simulating a realistic project.  It also creates an
+instructions buffer with suggested prompts for testing tool-based
+interactions with an LLM."
   (interactive)
   (let ((test-dir (expand-file-name "gptel-tool-test/" temporary-file-directory)))
     ;; Create test directory

@@ -87,7 +87,8 @@ machine-readable (prin1) and timestamped."
   "When non-nil, tools return errors to the caller.
 If non-nil, tool error handlers return the same human-readable error
 text that is messaged in the minibuffer, instead of signaling an Emacs
-error. When nil, errors are re-signaled after being messaged and logged.")
+error.  When nil, errors are re-signaled after being messaged and
+logged.")
 
 (defun aj8/gptel-tool--report-and-return-or-signal (tool-name args err)
   "Message and log ERR for TOOL-NAME with ARGS, then return or re-signal.
@@ -95,7 +96,7 @@ error. When nil, errors are re-signaled after being messaged and logged.")
 ERR is the error object received by a condition-case handler.
 
 This builds the exact minibuffer message string for ERR, messages it,
-and logs it. If `aj8/gptel-tool-return-error' is non-nil, it returns
+and logs it.  If `aj8/gptel-tool-return-error' is non-nil, it returns
 that string; otherwise it re-signals the original error."
   (let ((msg (format "%s: %s" tool-name (error-message-string err))))
     (message "%s" msg)
@@ -810,7 +811,7 @@ project root."
 Returns a newline-separated string where each line is \"NAME: PATH\".
 NAME is the file's base name and PATH is the path relative to the
 project root.  If INCLUDE-COUNTS is non-nil append the number of lines
-as \" (N lines)\". This function respects .gitignore."
+as \" (N lines)\".  This function respects .gitignore."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_find_files_glob"
    (list :pattern pattern :include-counts include-counts)
@@ -843,7 +844,7 @@ as \" (N lines)\". This function respects .gitignore."
   "In the current project, recursively search for content matching REGEXP.
 Results are newline-separated strings of matching lines, each specifying
 PATH:LINE:TEXT, or if INCLUDE-COLUMNS is non-nil, PATH:LINE:COLUMN:TEXT.
-Both line and column numbers are 1-based. This search respects
+Both line and column numbers are 1-based.  This search respects
 .gitignore."
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_search_regexp"
@@ -917,7 +918,7 @@ Both line and column numbers are 1-based. This search respects
 ;;  :description (format "Read lines from a buffer. Max lines per call: %d. Use chunking for larger ranges. START and END are optional 1-based line numbers; if START is nil, read from the beginning of the buffer. If END is nil, read to the end of the buffer." aj8/gptel-tool-max-lines)
 ;;  :args (list '( :name "buffer-name"
 ;;                 :type string
-;;                 :description "The name of the buffer to read the contents of. ")
+;;                 :description "The name of the buffer to read the contents of.")
 ;;              '( :name "start-line"
 ;;                 :type integer
 ;;                 :optional t
