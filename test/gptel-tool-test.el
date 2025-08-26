@@ -421,41 +421,37 @@ and file paths, and that they signal errors for invalid inputs."
   (with-temp-file-with-content
    test-file "content"
    (let ((buffer (find-file-noselect test-file)))
-     (unwind-protect
-         (progn
-           ;; Assert buffer name converts to the expected file path
-           (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer))
-                                 (expand-file-name test-file)))
-           ;; Assert file path converts back to the expected buffer name
-           (should (string-equal (aj8/gptel-tool-file-to-buffer test-file)
-                                 (buffer-name buffer)))
+     ;; Assert buffer name converts to the expected file path
+     (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer))
+                           (expand-file-name test-file)))
+     ;; Assert file path converts back to the expected buffer name
+     (should (string-equal (aj8/gptel-tool-file-to-buffer test-file)
+                           (buffer-name buffer)))
 
-           ;; Assert errors
-           ;; Mode 1: tool re-signals the error
-           (let ((aj8/gptel-tool-return-error nil))
-             ;; Assert error when converting a non-file buffer to a file (re-signal)
-             (should-error (aj8/gptel-tool-buffer-to-file "*scratch*") :type 'error))
+     ;; Assert errors
+     ;; Mode 1: tool re-signals the error
+     (let ((aj8/gptel-tool-return-error nil))
+       ;; Assert error when converting a non-file buffer to a file (re-signal)
+       (should-error (aj8/gptel-tool-buffer-to-file "*scratch*") :type 'error))
 
-           ;; Mode 2: tool returns the error as a string
-           (let ((aj8/gptel-tool-return-error t))
-             (let ((result (aj8/gptel-tool-buffer-to-file "*scratch*")))
-               (should (string-equal
-                        "tool: aj8_buffer_to_file: Error: Buffer '*scratch*' not found or not associated with a file."
-                        result))))
+     ;; Mode 2: tool returns the error as a string
+     (let ((aj8/gptel-tool-return-error t))
+       (let ((result (aj8/gptel-tool-buffer-to-file "*scratch*")))
+         (should (string-equal
+                  "tool: aj8_buffer_to_file: Error: Buffer '*scratch*' not found or not associated with a file."
+                  result))))
 
-           ;; Mode 1: tool re-signals the error
-           (let ((aj8/gptel-tool-return-error nil))
-             ;; Assert error when converting a non-existent file to a buffer (re-signal)
-             (should-error (aj8/gptel-tool-file-to-buffer "/non/existent/file.tmp") :type 'error))
+     ;; Mode 1: tool re-signals the error
+     (let ((aj8/gptel-tool-return-error nil))
+       ;; Assert error when converting a non-existent file to a buffer (re-signal)
+       (should-error (aj8/gptel-tool-file-to-buffer "/non/existent/file.tmp") :type 'error))
 
-           ;; Mode 2: tool returns the error as a string
-           (let ((aj8/gptel-tool-return-error t))
-             (let ((result (aj8/gptel-tool-file-to-buffer "/non/existent/file.tmp")))
-               (should (string-equal
-                        (format "tool: aj8_file_to_buffer: Error: No buffer is visiting the file '%s'." "/non/existent/file.tmp")
-                        result)))))
-
-       (kill-buffer buffer)))))
+     ;; Mode 2: tool returns the error as a string
+     (let ((aj8/gptel-tool-return-error t))
+       (let ((result (aj8/gptel-tool-file-to-buffer "/non/existent/file.tmp")))
+         (should (string-equal
+                  (format "tool: aj8_file_to_buffer: Error: No buffer is visiting the file '%s'." "/non/existent/file.tmp")
+                  result)))))))
 
 (ert-deftest test-aj8-append-to-buffer ()
   "Test `aj8/gptel-tool-append-to-buffer'.
