@@ -406,8 +406,8 @@ equal to LINE-NUMBER."
    "tool: aj8_replace_buffer_line"
    (list :buffer-name buffer-name :line-number line-number :content content)
    (let ((result (aj8/gptel-tool-replace-buffer-lines buffer-name line-number line-number content)))
-     ;; If the result is an error string (when aj8/gptel-tool-return-error is t),
-     ;; replace the tool name to match this wrapper function
+     ;; If the result is an error string (when aj8/gptel-tool-return-error
+     ;; is t), replace the tool name to match this wrapper function
      (if (and aj8/gptel-tool-return-error (string-match "^tool: aj8_replace_buffer_lines: " result))
          (replace-regexp-in-string "^tool: aj8_replace_buffer_lines: " "tool: aj8_replace_buffer_line: " result)
        ;; If not an error, return success message
@@ -447,10 +447,9 @@ string."
   (aj8/gptel-tool--with-tool
    "tool: aj8_delete_buffer_string"
    (list :buffer-name buffer-name :old-string old-string)
-   ;; Delegate to aj8/gptel-tool-edit-buffer-string to keep behavior consistent.
    (let ((result (aj8/gptel-tool-edit-buffer-string buffer-name old-string "")))
-     ;; If the result is an error string (when aj8/gptel-tool-return-error is t),
-     ;; replace the tool name to match this wrapper function
+     ;; If the result is an error string (when aj8/gptel-tool-return-error
+     ;; is t), replace the tool name to match this wrapper function
      (if (and aj8/gptel-tool-return-error (string-match "^tool: aj8_edit_buffer_string: " result))
          (replace-regexp-in-string "^tool: aj8_edit_buffer_string: " "tool: aj8_delete_buffer_string: " result)
        ;; If not an error, return success message
@@ -465,8 +464,8 @@ string."
    "tool: aj8_delete_buffer_line"
    (list :buffer-name buffer-name :line-number line-number)
    (let ((result (aj8/gptel-tool-replace-buffer-line buffer-name line-number "")))
-     ;; If the result is an error string (when aj8/gptel-tool-return-error is t),
-     ;; replace the tool name to match this wrapper function
+     ;; If the result is an error string (when aj8/gptel-tool-return-error
+     ;; is t), replace the tool name to match this wrapper function
      (if (and aj8/gptel-tool-return-error (string-match "^tool: aj8_replace_buffer_line: " result))
          (replace-regexp-in-string "^tool: aj8_replace_buffer_line: " "tool: aj8_delete_buffer_line: " result)
        ;; If not an error, return success message
@@ -481,8 +480,8 @@ string."
    "tool: aj8_delete_buffer_lines"
    (list :buffer-name buffer-name :start-line start-line :end-line end-line)
    (let ((result (aj8/gptel-tool-replace-buffer-lines buffer-name start-line end-line "")))
-     ;; If the result is an error string (when aj8/gptel-tool-return-error is t),
-     ;; replace the tool name to match this wrapper function
+     ;; If the result is an error string (when aj8/gptel-tool-return-error
+     ;; is t), replace the tool name to match this wrapper function
      (if (and aj8/gptel-tool-return-error (string-match "^tool: aj8_replace_buffer_lines: " result))
          (replace-regexp-in-string "^tool: aj8_replace_buffer_lines: " "tool: aj8_delete_buffer_lines: " result)
        ;; If not an error, return success message
