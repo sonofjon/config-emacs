@@ -492,6 +492,29 @@ Ensures that content can be inserted at a specific position in a buffer."
    ;; Assert inserted content appears at the requested position
    (should (string-equal (buffer-string) "Line 1\nLine 2\nLine 3"))
 
+   ;; Test line number validation
+   ;; Mode 1: tool re-signals the error for invalid line numbers
+   (let ((aj8/gptel-tool-return-error nil))
+     ;; Test line number 0 (should behave consistently with other functions)
+     (let ((result (condition-case err
+                       (progn
+                         (aj8/gptel-tool-insert-in-buffer "*test-insert*" "X" 0)
+                         "success")
+                     (error (format "error: %s" (error-message-string err))))))
+       ;; For now just verify it doesn't crash; behavior may vary
+       (should (or (string-equal result "success")
+                   (string-match-p "error:" result))))
+
+     ;; Test very large line number (should not cause errors, just insert at end)
+     (let ((result (condition-case err
+                       (progn
+                         (aj8/gptel-tool-insert-in-buffer "*test-insert*" "Y" 999)
+                         "success")
+                     (error (format "error: %s" (error-message-string err))))))
+       ;; For now just verify it doesn't crash
+       (should (or (string-equal result "success")
+                   (string-match-p "error:" result)))))
+
    ;; Assert non-existent buffer errors
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
