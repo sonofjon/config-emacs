@@ -239,8 +239,11 @@ Optional keyword parameters:
 (ert-deftest test-aj8-read-buffer-lines ()
   "Test `aj8/gptel-tool-read-buffer-lines'."
   :tags '(unit buffers)
+  ;; Create main test buffer once
   (with-temp-buffer-with-content
    "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
+
+   ;; Basic functionality tests (currently commented out)
    ;; Read whole buffer
    ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*")
    ;;                       "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
@@ -257,7 +260,7 @@ Optional keyword parameters:
    ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 4)
    ;;                       "Line 4\nLine 5"))
 
-   ;; Test handling of max number of lines (commented out)
+   ;; Test handling of max number of lines - consolidated to use main buffer
    ;; (let* ((n (1+ aj8/gptel-tool-max-lines))
    ;;        (content "")
    ;;        (first-n ""))
@@ -267,18 +270,21 @@ Optional keyword parameters:
    ;;       (setq first-n (concat first-n (format "Line %d\n" (1+ i))))))
    ;;   (setq content (replace-regexp-in-string "\n\\'" "" content))
    ;;   (setq first-n (replace-regexp-in-string "\n\\'" "" first-n))
-   ;;   (with-temp-buffer-with-content
-   ;;    "*test-read-buffer-max*" content
-   ;;    ;; Use signal mode for all error assertions in this block
-   ;;    (let ((aj8/gptel-tool-return-error nil))
-   ;;      ;; Assert error when total-lines > max
-   ;;      (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*") :type 'error)
-   ;;      ;; Assert error when requested length > max
-   ;;      (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 n) :type 'error)
-   ;;      ;; Assert error when START < 1
-   ;;      (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 0 2) :type 'error)
-   ;;      ;; Assert error when START > total-lines
-   ;;      (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" (1+ (count-lines (point-min) (point-max)))) :type 'error))))
+   ;;
+   ;;   ;; Update current buffer with max+1 lines content instead of creating new buffer
+   ;;   (erase-buffer)
+   ;;   (insert content)
+   ;;
+   ;;   ;; Use signal mode for all error assertions in this block
+   ;;   (let ((aj8/gptel-tool-return-error nil))
+   ;;     ;; Assert error when total-lines > max
+   ;;     (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*") :type 'error)
+   ;;     ;; Assert error when requested length > max
+   ;;     (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 1 n) :type 'error)
+   ;;     ;; Assert error when START < 1
+   ;;     (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 0 2) :type 'error)
+   ;;     ;; Assert error when START > total-lines
+   ;;     (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" (1+ (count-lines (point-min) (point-max)))) :type 'error)))
 
    ;; Note: All tests for aj8/gptel-tool-read-buffer-lines are currently commented out
    ;; because the function may not be fully implemented or available
@@ -289,6 +295,8 @@ Optional keyword parameters:
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
+
+   ;; Basic functionality tests
    ;; Reading the full buffer returns all lines
    ;; Assert reading the full buffer returns all lines
    (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 1 5)
@@ -311,14 +319,14 @@ Optional keyword parameters:
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert error signaled for non-existent buffer (re-signal mode)
      (should-error (aj8/gptel-tool-read-buffer-lines-count "*non-existent-buffer*") :type 'error))
-
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
      (let ((result (aj8/gptel-tool-read-buffer-lines-count "*non-existent-buffer*")))
        (should (string-equal
                 "tool: aj8_read_buffer_lines_count: Error: Buffer '*non-existent-buffer*' not found."
                 result))))
-   ;; Test handling of max number of lines
+
+   ;; Now test with buffer containing max+1 lines by updating current buffer content
    (let* ((n (1+ aj8/gptel-tool-max-lines))
           (content "")
           (first-n ""))
@@ -328,44 +336,48 @@ Optional keyword parameters:
          (setq first-n (concat first-n (format "Line %d\n" (1+ i))))))
      (setq content (replace-regexp-in-string "\n\\'" "" content))
      (setq first-n (replace-regexp-in-string "\n\\'" "" first-n))
-     (with-temp-buffer-with-content
-      "*test-read-buffer-max*" content
-      ;; Use signal mode for all error assertions in this block
-      (let ((aj8/gptel-tool-return-error nil))
-        ;; Assert error when COUNT > MAX
-        (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 n) :type 'error)
-        ;; Assert error when START < 1
-        (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 0 2) :type 'error)
-        ;; Assert error when START > total-lines
-        (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" (1+ (count-lines (point-min) (point-max))) 1) :type 'error))
 
-      ;; Mode 2: tool returns the error as a string for line validation errors
-      (let ((aj8/gptel-tool-return-error t))
-        ;; Test COUNT > MAX error in return-string mode
-        (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 n)))
-          (should (string-equal
-                   (format "tool: aj8_read_buffer_lines_count: Error: requested COUNT (%d) exceeds maximum allowed (%d)." n aj8/gptel-tool-max-lines)
-                   result)))
-        ;; Test START < 1 error in return-string mode
-        (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 0 2)))
-          (should (string-equal
-                   "tool: aj8_read_buffer_lines_count: Error: START-LINE must be >= 1"
-                   result)))
-        ;; Test START > total-lines error in return-string mode
-        (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" (1+ (count-lines (point-min) (point-max))) 1)))
-          (should (string-equal
-                   (format "tool: aj8_read_buffer_lines_count: Error: START-LINE (%d) exceeds buffer length (%d)."
-                           (1+ (count-lines (point-min) (point-max)))
-                           (count-lines (point-min) (point-max)))
-                   result))))
+     ;; Update current buffer with max+1 lines content
+     (erase-buffer)
+     (insert content)
 
-      ;; Success cases (use default return-error mode)
-      ;; Range API: explicit request for first MAX lines should succeed
-      (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))
-      ;; Default COUNT (nil) is treated as MAX and should return first N lines
-      (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*") first-n))
-      ;; Requesting COUNT == MAX should return first MAX lines
-      (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))))))
+     ;; Error validation tests with max lines
+     ;; Mode 1: tool re-signals the error
+     (let ((aj8/gptel-tool-return-error nil))
+       ;; Assert error when COUNT > MAX
+       (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 1 n) :type 'error)
+       ;; Assert error when START < 1
+       (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 0 2) :type 'error)
+       ;; Assert error when START > total-lines
+       (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" (1+ (count-lines (point-min) (point-max))) 1) :type 'error))
+
+     ;; Mode 2: tool returns the error as a string for line validation errors
+     (let ((aj8/gptel-tool-return-error t))
+       ;; Test COUNT > MAX error in return-string mode
+       (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 1 n)))
+         (should (string-equal
+                  (format "tool: aj8_read_buffer_lines_count: Error: requested COUNT (%d) exceeds maximum allowed (%d)." n aj8/gptel-tool-max-lines)
+                  result)))
+       ;; Test START < 1 error in return-string mode
+       (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 0 2)))
+         (should (string-equal
+                  "tool: aj8_read_buffer_lines_count: Error: START-LINE must be >= 1"
+                  result)))
+       ;; Test START > total-lines error in return-string mode
+       (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" (1+ (count-lines (point-min) (point-max))) 1)))
+         (should (string-equal
+                  (format "tool: aj8_read_buffer_lines_count: Error: START-LINE (%d) exceeds buffer length (%d)."
+                          (1+ (count-lines (point-min) (point-max)))
+                          (count-lines (point-min) (point-max)))
+                  result))))
+
+     ;; Success cases (use default return-error mode)
+     ;; Range API: explicit request for first MAX lines should succeed
+     (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 1 aj8/gptel-tool-max-lines) first-n))
+     ;; Default COUNT (nil) is treated as MAX and should return first N lines
+     (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*") first-n))
+     ;; Requesting COUNT == MAX should return first MAX lines
+     (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 1 aj8/gptel-tool-max-lines) first-n)))))
 
 (ert-deftest test-aj8-list-buffers ()
   "Test `aj8/gptel-tool-list-buffers'."
@@ -712,16 +724,17 @@ Line D"
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-delete*" "hello world\nhello universe"
+
+   ;; Basic functionality test
    (aj8/gptel-tool-delete-buffer-string "*test-delete*" "world")
    ;; Assert the target string was removed
    (should (string-equal (buffer-string) "hello \nhello universe"))
 
-   ;; Assert errors
+   ;; Error testing for missing substring
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert deleting a missing substring re-signals an error
      (should-error (aj8/gptel-tool-delete-buffer-string "*test-delete*" "non-existent") :type 'error))
-
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
      (let ((result (aj8/gptel-tool-delete-buffer-string "*test-delete*" "non-existent")))
@@ -730,11 +743,11 @@ Line D"
                 "tool: aj8_delete_buffer_string: Error: String 'non-existent' not found in buffer '*test-delete*'."
                 result))))
 
+   ;; Error testing for non-unique substring
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
      ;; Assert deleting a non-unique substring re-signals an error
      (should-error (aj8/gptel-tool-delete-buffer-string "*test-delete*" "hello") :type 'error))
-
    ;; Mode 2: tool returns the error as a string
    (let ((aj8/gptel-tool-return-error t))
      (let ((result (aj8/gptel-tool-delete-buffer-string "*test-delete*" "hello")))
@@ -748,7 +761,6 @@ Line D"
   (let ((aj8/gptel-tool-return-error nil))
     ;; Assert delete-string signals error for missing buffer (re-signal)
     (should-error (aj8/gptel-tool-delete-buffer-string "*non-existent-buffer*" "text") :type 'error))
-
   ;; Mode 2: tool returns the error as a string
   (let ((aj8/gptel-tool-return-error t))
     (let ((result (aj8/gptel-tool-delete-buffer-string "*non-existent-buffer*" "text")))
@@ -842,53 +854,55 @@ Line D"
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-apply-edits*" "Line one.\nLine two.\nLine three."
+
+   ;; Basic functionality test
    (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
                   (:line-number 1 :old-string "one" :new-string "ONE"))))
      (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits)
      ;; Assert batched substring edits applied successfully
-     (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE."))
-     ;; Verify that a multi-line :old-string is rejected for batched string edits
-     (let ((edits2 '((:line-number 2 :old-string "two\nextra" :new-string "TWO"))))
+     (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE.")))
 
-       ;; Mode 1: tool re-signals the error
-       (let ((aj8/gptel-tool-return-error nil))
-         (should-error (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits2) :type 'error))
+   ;; Test multi-line old-string rejection
+   (let ((edits2 '((:line-number 2 :old-string "two\nextra" :new-string "TWO"))))
+     ;; Mode 1: tool re-signals the error
+     (let ((aj8/gptel-tool-return-error nil))
+       (should-error (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits2) :type 'error))
+     ;; Mode 2: tool returns the error as a string
+     (let ((aj8/gptel-tool-return-error t))
+       (let ((result (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits2)))
+         ;; Assert returned message when applying invalid string edits
+         (should (string-equal
+                  "tool: aj8_apply_buffer_string_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")"
+                  result)))))
 
-       ;; Mode 2: tool returns the error as a string
-       (let ((aj8/gptel-tool-return-error t))
-         (let ((result (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits2)))
-           ;; Assert returned message when applying invalid string edits
-           (should (string-equal
-                    "tool: aj8_apply_buffer_string_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")"
-                    result))))
+   ;; Test edge cases: empty and nil edits
+   ;; Reset buffer content for edge case testing
+   (erase-buffer)
+   (insert "Line one.\nLine two.\nLine three.")
 
-       ;; Assert non-existent buffer errors
-       ;; Mode 1: tool re-signals the error
-       (let ((aj8/gptel-tool-return-error nil))
-         (should-error
-          (aj8/gptel-tool-apply-buffer-string-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))
-          :type 'error))
+   ;; Empty edits should succeed and do nothing
+   (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" '())
+   ;; Buffer should remain unchanged
+   (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
 
-       ;; Mode 2: tool returns the error as a string
-       (let ((aj8/gptel-tool-return-error t))
-         (let ((result
-                (aj8/gptel-tool-apply-buffer-string-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
-           (should (string-equal
-                    "tool: aj8_apply_buffer_string_edits: Error: Buffer '*non-existent*' not found."
-                    result))))
+   ;; Test with nil edits as well
+   (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" nil)
+   ;; Buffer should still remain unchanged
+   (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))
 
-       ;; Test edge case: empty edits list
-       (with-temp-buffer-with-content
-        "*test-empty-edits*" "Line one.\nLine two.\nLine three."
-        ;; Empty edits should succeed and do nothing
-        (aj8/gptel-tool-apply-buffer-string-edits "*test-empty-edits*" '())
-        ;; Buffer should remain unchanged
-        (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
-
-        ;; Test with nil edits as well
-        (aj8/gptel-tool-apply-buffer-string-edits "*test-empty-edits*" nil)
-        ;; Buffer should still remain unchanged
-        (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))))))
+  ;; Test non-existent buffer errors (separate from main buffer)
+  ;; Mode 1: tool re-signals the error
+  (let ((aj8/gptel-tool-return-error nil))
+    (should-error
+     (aj8/gptel-tool-apply-buffer-string-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))
+     :type 'error))
+  ;; Mode 2: tool returns the error as a string
+  (let ((aj8/gptel-tool-return-error t))
+    (let ((result
+           (aj8/gptel-tool-apply-buffer-string-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
+      (should (string-equal
+               "tool: aj8_apply_buffer_string_edits: Error: Buffer '*non-existent*' not found."
+               result)))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits'."
@@ -929,49 +943,20 @@ Line D"
                     result))))
 
        ;; Test edge case: empty edits list
-       (with-temp-buffer-with-content
-        "*test-empty-edits*" "Line one.\nLine two.\nLine three."
-        ;; Empty edits should succeed and do nothing
-        (aj8/gptel-tool-apply-buffer-line-edits "*test-empty-edits*" '())
-        ;; Buffer should remain unchanged
-        (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+       ;; Reset buffer content for edge case testing
+       (erase-buffer)
+       (insert "Line one.\nLine two.\nLine three.")
+       ;; Empty edits should succeed and do nothing
+       (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" '())
+       ;; Buffer should remain unchanged
+       (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
 
-        ;; Test with nil edits as well
-        (aj8/gptel-tool-apply-buffer-line-edits "*test-empty-edits*" nil)
-        ;; Buffer should still remain unchanged
-        (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))))))
+       ;; Test with nil edits as well
+       (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" nil)
+       ;; Buffer should still remain unchanged
+       (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))
 
-(ert-deftest test-aj8-apply-buffer-string-edits-with-review ()
-  "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review'."
-  :tags '(unit buffers review)
-  (with-temp-buffer-with-content
-   "*test-review*" "Line one.\nLine two."
-   (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
-         (ediff-called nil))
-     ;; Temporarily advise `ediff-buffers' to check if it's called,
-     ;; without actually starting the interactive session.
-     (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2) (setq ediff-called t))))
-       (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits))
-     ;; Assert the ediff review function was called
-     (should ediff-called)
-     ;; Check that the original buffer is unchanged.
-     (with-current-buffer "*test-review*"
-       (should (string-equal (buffer-string) "Line one.\nLine two."))))
-   ;; Verify that a multi-line :old-string is rejected for batched string edits
-   (let ((edits2 '((:line-number 2 :old-string "two\nextra" :new-string "TWO"))))
-     ;; Mode 1: tool re-signals the error
-     (let ((aj8/gptel-tool-return-error nil))
-       (should-error (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits2) :type 'error))
-     ;; Mode 2: tool returns the error as a string
-     (let ((aj8/gptel-tool-return-error t))
-       (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits2)))
-         ;; Assert header and that the specific diagnostic text appears; allow
-         ;; temporary review buffer naming to differ.
-         (should (string-equal
-                  "tool: aj8_apply_buffer_string_edits_with_review: Error applying edits to buffer '*test-review-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
-                  result))))
-
-     ;; Assert non-existent buffer errors
+     ;; Test non-existent buffer errors (separate from main buffer)
      ;; Mode 1: tool re-signals the error
      (let ((aj8/gptel-tool-return-error nil))
        (should-error (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
@@ -980,20 +965,63 @@ Line D"
        (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
          (should (string-equal
                   "tool: aj8_apply_buffer_string_edits_with_review: Error: Buffer '*non-existent*' not found."
-                  result))))
+                  result)))))
 
-     ;; Test edge case: empty edits list
+   (ert-deftest test-aj8-apply-buffer-string-edits-with-review ()
+     "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review'."
+     :tags '(unit buffers review)
      (with-temp-buffer-with-content
-      "*test-empty-edits*" "Line one.\nLine two.\nLine three."
-      ;; Empty edits should succeed and do nothing
-      (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-empty-edits*" '())
-      ;; Buffer should remain unchanged
-      (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+      "*test-review*" "Line one.\nLine two."
+      (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
+            (ediff-called nil))
+        ;; Temporarily advise `ediff-buffers' to check if it's called,
+        ;; without actually starting the interactive session.
+        (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2) (setq ediff-called t))))
+          (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits))
+        ;; Assert the ediff review function was called
+        (should ediff-called)
+        ;; Check that the original buffer is unchanged.
+        (with-current-buffer "*test-review*"
+          (should (string-equal (buffer-string) "Line one.\nLine two."))))
+      ;; Verify that a multi-line :old-string is rejected for batched string edits
+      (let ((edits2 '((:line-number 2 :old-string "two\nextra" :new-string "TWO"))))
+        ;; Mode 1: tool re-signals the error
+        (let ((aj8/gptel-tool-return-error nil))
+          (should-error (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits2) :type 'error))
+        ;; Mode 2: tool returns the error as a string
+        (let ((aj8/gptel-tool-return-error t))
+          (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits2)))
+            ;; Assert header and that the specific diagnostic text appears; allow
+            ;; temporary review buffer naming to differ.
+            (should (string-equal
+                     "tool: aj8_apply_buffer_string_edits_with_review: Error applying edits to buffer '*test-review-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
+                     result))))
 
-      ;; Test with nil edits as well
-      (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-empty-edits*" nil)
-      ;; Buffer should still remain unchanged
-      (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))))
+        ;; Assert non-existent buffer errors
+        ;; Mode 1: tool re-signals the error
+        (let ((aj8/gptel-tool-return-error nil))
+          (should-error (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
+        ;; Mode 2: tool returns the error as a string
+        (let ((aj8/gptel-tool-return-error t))
+          (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
+            (should (string-equal
+                     "tool: aj8_apply_buffer_string_edits_with_review: Error: Buffer '*non-existent*' not found."
+                     result))))
+
+        ;; Test edge cases: empty and nil edits
+        ;; Reset buffer content for edge case testing
+        (erase-buffer)
+        (insert "Line one.\nLine two.\nLine three.")
+
+        ;; Empty edits should succeed and do nothing
+        (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" '())
+        ;; Buffer should remain unchanged
+        (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+
+        ;; Test with nil edits as well
+        (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" nil)
+        ;; Buffer should still remain unchanged
+        (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'."
