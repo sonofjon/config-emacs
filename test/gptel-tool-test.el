@@ -157,21 +157,29 @@ Optional keyword parameters:
   ;; Mode 1: tool re-signals the error
   (let ((aj8/gptel-tool-return-error nil))
     (let* ((tmp (make-temp-file "aj8-nonexistent-file-")))
-      (delete-file tmp)
-      ;; Assert an error is signaled for opening a missing file
-      (should-error (aj8/gptel-tool-open-file-in-buffer tmp) :type 'error)))
+      (unwind-protect
+          (progn
+            (delete-file tmp)
+            ;; Assert an error is signaled for opening a missing file
+            (should-error (aj8/gptel-tool-open-file-in-buffer tmp) :type 'error))
+        (when (file-exists-p tmp)
+          (delete-file tmp)))))
 
   ;; Mode 2: tool returns the error as a string
   (let ((aj8/gptel-tool-return-error t))
     (let* ((tmp (make-temp-file "aj8-nonexistent-file-")))
-      (delete-file tmp)
-      (let ((result (aj8/gptel-tool-open-file-in-buffer tmp)))
-        ;; Assert returned error message matches expected format
-        (should (string-equal
-                 (format "tool: aj8_open_file_in_buffer: Error: No such file: %s" tmp)
-                 result)))))
+      (unwind-protect
+          (progn
+            (delete-file tmp)
+            (let ((result (aj8/gptel-tool-open-file-in-buffer tmp)))
+              ;; Assert returned error message matches expected format
+              (should (string-equal
+                       (format "tool: aj8_open_file_in_buffer: Error: No such file: %s" tmp)
+                       result))))
+        (when (file-exists-p tmp)
+          (delete-file tmp)))))
 
-  ;; Assert directory path errors
+  ;; Assert directory path errors:
   ;; Mode 1: tool re-signals the error
   (let ((aj8/gptel-tool-return-error nil))
     (let ((dir (make-temp-file "aj8-temp-dir-" t)))
