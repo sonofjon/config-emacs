@@ -521,7 +521,7 @@ Optional keyword parameters:
    ;; Test line number validation errors:
    ;; Mode 1: tool re-signals the error for invalid line numbers
    (let ((aj8/gptel-tool-return-error nil))
-       ;; Assert error is signaled for line number 0
+     ;; Assert error is signaled for line number 0
      (should-error (aj8/gptel-tool-insert-in-buffer "*test-insert*" "X" 0) :type 'error)
      ;; Assert error is signaled for line number beyond buffer
      (should-error (aj8/gptel-tool-insert-in-buffer "*test-insert*" "Y" 999) :type 'error))
@@ -985,20 +985,20 @@ Line D"
    (ert-deftest test-aj8-apply-buffer-string-edits-with-review ()
      "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review'."
      :tags '(unit buffers review)
-  (with-temp-buffer-with-content
-   "*test-review*" "Line one.\nLine two."
-   ;; Test basic review functionality:
-   (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
-         (ediff-called nil))
-     ;; Temporarily advise `ediff-buffers' to check if it's called,
-     ;; without actually starting the interactive session.
-     (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2) (setq ediff-called t))))
-       (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits))
-     ;; Assert the ediff review function was called
-     (should ediff-called)
-     ;; Assert that the original buffer is unchanged.
-     (with-current-buffer "*test-review*"
-       (should (string-equal (buffer-string) "Line one.\nLine two."))))      ;; Assert that a multi-line :old-string is rejected for batched string edits:
+     (with-temp-buffer-with-content
+      "*test-review*" "Line one.\nLine two."
+      ;; Test basic review functionality:
+      (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")))
+            (ediff-called nil))
+        ;; Temporarily advise `ediff-buffers' to check if it's called,
+        ;; without actually starting the interactive session.
+        (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2) (setq ediff-called t))))
+          (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits))
+        ;; Assert the ediff review function was called
+        (should ediff-called)
+        ;; Assert that the original buffer is unchanged.
+        (with-current-buffer "*test-review*"
+          (should (string-equal (buffer-string) "Line one.\nLine two."))))      ;; Test that a multi-line :old-string is rejected for batched string edits:
       (let ((edits2 '((:line-number 2 :old-string "two\nextra" :new-string "TWO"))))
         ;; Mode 1: tool re-signals the error
         (let ((aj8/gptel-tool-return-error nil))
