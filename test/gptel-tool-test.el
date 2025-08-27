@@ -237,35 +237,70 @@ Optional keyword parameters:
                 result))))))
 
 (ert-deftest test-aj8-read-buffer-lines ()
-  "Test `aj8/gptel-tool-read-buffer-lines' and
-`aj8/gptel-tool-read-buffer-lines-count'."
+  "Test `aj8/gptel-tool-read-buffer-lines'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
    ;; Read whole buffer
    ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*")
    ;;                       "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
+
+   ;; Read a section
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 2 4)
+   ;;                       "Line 2\nLine 3\nLine 4"))
+
+   ;; Read from start
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" nil 2)
+   ;;                       "Line 1\nLine 2"))
+
+   ;; Read to end
+   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 4)
+   ;;                       "Line 4\nLine 5"))
+
+   ;; Test handling of max number of lines (commented out)
+   ;; (let* ((n (1+ aj8/gptel-tool-max-lines))
+   ;;        (content "")
+   ;;        (first-n ""))
+   ;;   (dotimes (i n)
+   ;;     (setq content (concat content (format "Line %d\n" (1+ i))))
+   ;;     (when (< i aj8/gptel-tool-max-lines)
+   ;;       (setq first-n (concat first-n (format "Line %d\n" (1+ i))))))
+   ;;   (setq content (replace-regexp-in-string "\n\\'" "" content))
+   ;;   (setq first-n (replace-regexp-in-string "\n\\'" "" first-n))
+   ;;   (with-temp-buffer-with-content
+   ;;    "*test-read-buffer-max*" content
+   ;;    ;; Use signal mode for all error assertions in this block
+   ;;    (let ((aj8/gptel-tool-return-error nil))
+   ;;      ;; Assert error when total-lines > max
+   ;;      (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*") :type 'error)
+   ;;      ;; Assert error when requested length > max
+   ;;      (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 n) :type 'error)
+   ;;      ;; Assert error when START < 1
+   ;;      (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 0 2) :type 'error)
+   ;;      ;; Assert error when START > total-lines
+   ;;      (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" (1+ (count-lines (point-min) (point-max)))) :type 'error))))
+
+   ;; Note: All tests for aj8/gptel-tool-read-buffer-lines are currently commented out
+   ;; because the function may not be fully implemented or available
+   ))
+
+(ert-deftest test-aj8-read-buffer-lines-count ()
+  "Test `aj8/gptel-tool-read-buffer-lines-count'."
+  :tags '(unit buffers)
+  (with-temp-buffer-with-content
+   "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
    ;; Reading the full buffer returns all lines
    ;; Assert reading the full buffer returns all lines
    (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 1 5)
                          "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
-   ;; Read a section
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 2 4)
-   ;;                       "Line 2\nLine 3\nLine 4"))
    ;; Reading a middle section returns the expected lines
    ;; Assert reading a middle section returns expected lines
    (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 2 3)
                          "Line 2\nLine 3\nLine 4"))
-   ;; Read from start
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" nil 2)
-   ;;                       "Line 1\nLine 2"))
    ;; Reading from the start returns the first N lines
    ;; Assert reading from the start returns the first N lines
    (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 1 2)
                          "Line 1\nLine 2"))
-   ;; Read to end
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 4)
-   ;;                       "Line 4\nLine 5"))
    ;; Reading to the end returns the last lines
    ;; Assert reading to the end returns the last lines
    (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 4 2)
@@ -297,14 +332,6 @@ Optional keyword parameters:
       "*test-read-buffer-max*" content
       ;; Use signal mode for all error assertions in this block
       (let ((aj8/gptel-tool-return-error nil))
-        ;; Assert error when total-lines > max
-        ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*") :type 'error)
-        ;; Assert error when requested length > max
-        ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 1 n) :type 'error)
-        ;; Assert error when START < 1
-        ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" 0 2) :type 'error)
-        ;; Assert error when START > total-lines
-        ;; (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer-max*" (1+ (count-lines (point-min) (point-max)))) :type 'error)
         ;; Assert error when COUNT > MAX
         (should-error (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 n) :type 'error)
         ;; Assert error when START < 1
@@ -341,7 +368,7 @@ Optional keyword parameters:
       (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))))))
 
 (ert-deftest test-aj8-list-buffers ()
-  "Test buffer listing tools."
+  "Test `aj8/gptel-tool-list-buffers'."
   :tags '(unit buffers)
   (with-temp-file-with-content
    tmp-file "file content"
@@ -368,7 +395,16 @@ Optional keyword parameters:
              (expected (format "%s: %s (%d lines)" name path 1)))
         (should (member expected buffers)))
       ;; Non-file buffer should not be listed
-      (should-not (member "*non-file-buffer*" buffers)))
+      (should-not (member "*non-file-buffer*" buffers))))))
+
+(ert-deftest test-aj8-list-all-buffers ()
+  "Test `aj8/gptel-tool-list-all-buffers'."
+  :tags '(unit buffers)
+  (with-temp-file-with-content
+   tmp-file "file content"
+   (find-file-noselect tmp-file)
+   (with-temp-buffer-with-content
+    "*non-file-buffer*" "some content"
     ;; 2. Test `aj8/gptel-tool-list-all-buffers' (all)
     (let ((buffers (split-string (aj8/gptel-tool-list-all-buffers) "\n" t)))
       ;; Non-file buffer should be listed as "NAME"
@@ -393,8 +429,8 @@ Optional keyword parameters:
              (expected (format "%s: %s (%d lines)" name path 1)))
         (should (member expected buffers)))))))
 
-(ert-deftest test-aj8-buffer-and-file-conversion ()
-  "Test buffer-file path conversions."
+(ert-deftest test-aj8-buffer-to-file ()
+  "Test `aj8/gptel-tool-buffer-to-file'."
   :tags '(unit buffers)
   (with-temp-file-with-content
    test-file "content"
@@ -402,9 +438,6 @@ Optional keyword parameters:
      ;; Assert buffer name converts to the expected file path
      (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer))
                            (expand-file-name test-file)))
-     ;; Assert file path converts back to the expected buffer name
-     (should (string-equal (aj8/gptel-tool-file-to-buffer test-file)
-                           (buffer-name buffer)))
 
      ;; Assert errors
      ;; Mode 1: tool re-signals the error
@@ -417,7 +450,17 @@ Optional keyword parameters:
        (let ((result (aj8/gptel-tool-buffer-to-file "*scratch*")))
          (should (string-equal
                   "tool: aj8_buffer_to_file: Error: Buffer '*scratch*' not found or not associated with a file."
-                  result))))
+                  result)))))))
+
+(ert-deftest test-aj8-file-to-buffer ()
+  "Test `aj8/gptel-tool-file-to-buffer'."
+  :tags '(unit buffers)
+  (with-temp-file-with-content
+   test-file "content"
+   (let ((buffer (find-file-noselect test-file)))
+     ;; Assert file path converts back to the expected buffer name
+     (should (string-equal (aj8/gptel-tool-file-to-buffer test-file)
+                           (buffer-name buffer)))
 
      ;; Mode 1: tool re-signals the error
      (let ((aj8/gptel-tool-return-error nil))
