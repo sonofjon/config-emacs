@@ -2,9 +2,7 @@
 
 (message "Running gptel tool tests")
 
-;;
 ;;;; 1. Requirements
-;;
 
 ;; ERT, the Emacs Lisp Regression Testing tool
 (require 'ert)
@@ -19,9 +17,7 @@
 ;; Ensure straight quotes in error messages that we match against
 (setq text-quoting-style 'straight)
 
-;;
 ;;;; 2. Test Helpers
-;;
 
 ;;; 2.1 Macros
 
@@ -142,9 +138,7 @@ Optional keyword parameters:
       (let ((after (substring result (min (length result) (or (string-match-p "Error" result) 0)))))
         (should (> (length (string-trim after)) 0))))))
 
-;;
 ;;;; 3. Unit Tests (ert-deftest)
-;;
 
 ;;; 3.1. Category: Buffers
 
@@ -1314,9 +1308,7 @@ Line D"
          (when (file-directory-p tmpdir)
            (delete-directory tmpdir t)))))))
 
-;;
 ;;;; 4. Integration Tests (ert-deftest)
-;;
 
 ;;; 4.1. Category: Tool Definition and Invocation
 ;;
@@ -1719,9 +1711,7 @@ several related full-line edits in a single buffer, using
        (should-not (string-match-p "calculateSum" content))
        (should-not (string-match-p "calculateProduct" content))))))
 
-;;
 ;;;; 5. Test Runner Functions (interactive)
-;;
 
 (defun aj8/gptel-tool-test-run-all ()
   "Run all ERT tests defined for Gptel tools."
@@ -1776,9 +1766,7 @@ several related full-line edits in a single buffer, using
         (ert selected-test)
       (message "No test selected"))))
 
-;;
 ;;;; 6. Manual Testing & Utility Functions (interactive)
-;;
 
 (defun aj8/gptel-tool-run-tool (tool-name)
   "Directly invoke a Gptel tool chosen interactively by its name.
