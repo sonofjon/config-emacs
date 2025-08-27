@@ -149,8 +149,7 @@ Optional keyword parameters:
 ;;; 3.1. Category: Buffers
 
 (ert-deftest test-aj8-open-file-in-buffer ()
-  "Test `aj8/gptel-tool-open-file-in-buffer'.
-Verifies that the function opens a file into a buffer."
+  "Test `aj8/gptel-tool-open-file-in-buffer'."
   :tags '(unit buffers)
   (with-temp-file-with-content
    test-file "test content"
@@ -200,9 +199,7 @@ Verifies that the function opens a file into a buffer."
           (delete-directory dir t))))))
 
 (ert-deftest test-aj8-buffer-search-regexp ()
-  "Test `aj8/gptel-tool-buffer-search-regexp'.
-Verifies that the function can search for content in a buffer and
-properly handles error cases for non-existent buffers and invalid regexps."
+  "Test `aj8/gptel-tool-buffer-search-regexp'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-buffer-search*" "line 1\ntest content here\nline 3"
@@ -241,11 +238,7 @@ properly handles error cases for non-existent buffers and invalid regexps."
 
 (ert-deftest test-aj8-read-buffer-lines ()
   "Test `aj8/gptel-tool-read-buffer-lines' and
-`aj8/gptel-tool-read-buffer-lines-count'.
-Verifies that the functions can read a whole buffer, a section from the
-middle, a section from the beginning, and a section to the end.  It also
-verifies that an error is signaled for a non-existent buffer, and for
-requests larger than `aj8/gptel-tool-max-lines'."
+`aj8/gptel-tool-read-buffer-lines-count'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
@@ -348,18 +341,7 @@ requests larger than `aj8/gptel-tool-max-lines'."
       (should (string-equal (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer-max*" 1 aj8/gptel-tool-max-lines) first-n))))))
 
 (ert-deftest test-aj8-list-buffers ()
-  "Test buffer listing tools.
-
-This test ensures that `aj8/gptel-tool-list-buffers' lists only
-file-associated buffers, while `aj8/gptel-tool-list-all-buffers' lists
-all buffers, including non-file-backed ones.
-
-Formatting assertions verify both modes (with and without line counts),
-ensuring file-backed entries show names with paths and non-file entries
-show names only when applicable.
-
-It also verifies that PATH is absolute for files outside the current
-project and relative to the project root for files inside it."
+  "Test buffer listing tools."
   :tags '(unit buffers)
   (with-temp-file-with-content
    tmp-file "file content"
@@ -412,10 +394,7 @@ project and relative to the project root for files inside it."
         (should (member expected buffers)))))))
 
 (ert-deftest test-aj8-buffer-and-file-conversion ()
-  "Test buffer-file path conversions.
-Verifies that `aj8/gptel-tool-buffer-to-file' and
-`aj8/gptel-tool-file-to-buffer' correctly convert between buffer names
-and file paths, and that they signal errors for invalid inputs."
+  "Test buffer-file path conversions."
   :tags '(unit buffers)
   (with-temp-file-with-content
    test-file "content"
@@ -453,8 +432,7 @@ and file paths, and that they signal errors for invalid inputs."
                   result)))))))
 
 (ert-deftest test-aj8-append-to-buffer ()
-  "Test `aj8/gptel-tool-append-to-buffer'.
-Ensures that content can be appended to a buffer correctly."
+  "Test `aj8/gptel-tool-append-to-buffer'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-append*" "Line 1\nLine 3"
@@ -477,8 +455,7 @@ Ensures that content can be appended to a buffer correctly."
                 result))))))
 
 (ert-deftest test-aj8-insert-in-buffer ()
-  "Test `aj8/gptel-tool-insert-in-buffer'.
-Ensures that content can be inserted at a specific position in a buffer."
+  "Test `aj8/gptel-tool-insert-in-buffer'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-insert*" "Line 1\nLine 3"
@@ -524,8 +501,7 @@ Ensures that content can be inserted at a specific position in a buffer."
                 result))))))
 
 (ert-deftest test-aj8-replace-buffer ()
-  "Test `aj8/gptel-tool-replace-buffer'.
-Ensures that a buffer's entire content can be replaced correctly."
+  "Test `aj8/gptel-tool-replace-buffer'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-replace*" "Line 1\nLine 3"
@@ -548,10 +524,7 @@ Ensures that a buffer's entire content can be replaced correctly."
                 result))))))
 
 (ert-deftest test-aj8-edit-buffer-string ()
-  "Test `aj8/gptel-tool-edit-buffer-string'.
-Verifies that a single, unique string can be replaced in a buffer.  It
-also confirms that an error is signaled if the target string is not
-found or is not unique."
+  "Test `aj8/gptel-tool-edit-buffer-string'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-edit*" "hello world\nhello universe"
@@ -602,8 +575,7 @@ found or is not unique."
    (should (string-equal (buffer-string) "hello EMACS\nHI universe"))))
 
 (ert-deftest test-aj8-edit-buffer-line ()
-  "Test `aj8/gptel-tool-replace-buffer-line'.
-Ensures that a specific single line in a buffer is replaced correctly."
+  "Test `aj8/gptel-tool-replace-buffer-line'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-edit-line*" "Line A
@@ -645,8 +617,7 @@ Line C")))
                result)))))
 
 (ert-deftest test-aj8-edit-buffer-lines ()
-  "Test `aj8/gptel-tool-replace-buffer-lines'.
-Ensures that a contiguous range of lines is replaced correctly in a buffer."
+  "Test `aj8/gptel-tool-replace-buffer-lines'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-edit-buffer-lines*" "Line A
@@ -694,10 +665,7 @@ Line D"
                 result))))))
 
 (ert-deftest test-aj8-delete-buffer-string ()
-  "Test `aj8/gptel-tool-delete-buffer-string'.
-Verifies that a single, unique string can be deleted from a buffer.  It
-also confirms that an error is signaled if the target string is not
-found or is not unique."
+  "Test `aj8/gptel-tool-delete-buffer-string'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-delete*" "hello world\nhello universe"
@@ -753,8 +721,7 @@ found or is not unique."
    (should (string-equal (buffer-string) "A\nC"))))
 
 (ert-deftest test-aj8-delete-buffer-line ()
-  "Test `aj8/gptel-tool-delete-buffer-line'.
-Ensures that a specific single line in a buffer is deleted correctly."
+  "Test `aj8/gptel-tool-delete-buffer-line'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-delete-line*" "Line A\nLine B\nLine C"
@@ -787,8 +754,7 @@ Ensures that a specific single line in a buffer is deleted correctly."
    (should (string-equal (buffer-string) "Line A\n\nLine C"))))
 
 (ert-deftest test-aj8-delete-buffer-lines ()
-  "Test `aj8/gptel-tool-delete-buffer-lines'.
-Ensures that a contiguous range of lines is deleted correctly in a buffer."
+  "Test `aj8/gptel-tool-delete-buffer-lines'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-delete-buffer-lines*" "Line A\nLine B\nLine C\nLine D"
@@ -829,8 +795,7 @@ Ensures that a contiguous range of lines is deleted correctly in a buffer."
    (should (string-equal (buffer-string) "Line A\n\nLine D"))))
 
 (ert-deftest test-aj8-apply-buffer-string-edits ()
-  "Test `aj8/gptel-tool-apply-buffer-string-edits'.
-Ensures that a list of substring edits is applied correctly to a buffer."
+  "Test `aj8/gptel-tool-apply-buffer-string-edits'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-apply-edits*" "Line one.\nLine two.\nLine three."
@@ -883,8 +848,7 @@ Ensures that a list of substring edits is applied correctly to a buffer."
         (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits ()
-  "Test `aj8/gptel-tool-apply-buffer-line-edits'.
-Ensures that a list of full-line edits is applied correctly to a buffer."
+  "Test `aj8/gptel-tool-apply-buffer-line-edits'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-apply-edits*" "Line one.\nLine two.\nLine three."
@@ -935,9 +899,7 @@ Ensures that a list of full-line edits is applied correctly to a buffer."
         (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))))))
 
 (ert-deftest test-aj8-apply-buffer-string-edits-with-review ()
-  "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review'.
-Verifies that the function prepares substring edits and invokes the Ediff
-review system, without altering the original buffer."
+  "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review'."
   :tags '(unit buffers review)
   (with-temp-buffer-with-content
    "*test-review*" "Line one.\nLine two."
@@ -991,9 +953,7 @@ review system, without altering the original buffer."
       (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits-with-review ()
-  "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'.
-Verifies that the function prepares full-line edits and invokes the Ediff
-review system, without altering the original buffer."
+  "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'."
   :tags '(unit buffers review)
   (with-temp-buffer-with-content
    "*test-review*" "Line one.\nLine two."
@@ -1048,10 +1008,7 @@ review system, without altering the original buffer."
 ;;; 3.3. Category: Emacs
 
 (ert-deftest test-aj8-read-documentation ()
-  "Test `aj8/gptel-tool-read-documentation'.
-Verifies that documentation can be retrieved for both functions and
-variables, and that a meaningful message is returned for symbols with no
-documentation."
+  "Test `aj8/gptel-tool-read-documentation'."
   :tags '(unit emacs)
   ;; Assert function documentation contains expected phrase
   (should (string-match-p "Return the car of LIST" (aj8/gptel-tool-read-documentation "car")))
@@ -1061,8 +1018,7 @@ documentation."
   (should (string-match-p "No documentation found" (aj8/gptel-tool-read-documentation "non-existent-symbol-xyz"))))
 
 (ert-deftest test-aj8-read-function ()
-  "Test `aj8/gptel-tool-read-function'.
-Ensures that the source code for a specific function can be retrieved."
+  "Test `aj8/gptel-tool-read-function'."
   :tags '(unit emacs)
   (unwind-protect
       (progn
@@ -1088,8 +1044,7 @@ Ensures that the source code for a specific function can be retrieved."
       (kill-buffer "project.el.gz"))))
 
 (ert-deftest test-aj8-read-library ()
-  "Test `aj8/gptel-tool-read-library'.
-Ensures that the source code for an entire library can be retrieved."
+  "Test `aj8/gptel-tool-read-library'."
   :tags '(unit emacs)
   (unwind-protect
       (progn
@@ -1113,8 +1068,7 @@ Ensures that the source code for an entire library can be retrieved."
       (kill-buffer "project.el.gz"))))
 
 (ert-deftest test-aj8-read-info-symbol ()
-  "Test `aj8/gptel-tool-read-info-symbol'.
-Verifies that Info manual content can be retrieved by symbol lookup."
+  "Test `aj8/gptel-tool-read-info-symbol'."
   :tags '(unit emacs)
   ;; Assert Info lookup by symbol returns expected text
   (should (string-match-p "special form" (aj8/gptel-tool-read-info-symbol "defun")))
@@ -1131,8 +1085,7 @@ Verifies that Info manual content can be retrieved by symbol lookup."
                result)))))
 
 (ert-deftest test-aj8-read-info-node ()
-  "Test `aj8/gptel-tool-read-info-node'.
-Verifies that Info manual content can be retrieved by node lookup."
+  "Test `aj8/gptel-tool-read-info-node'."
   :tags '(unit emacs)
   ;; Assert Info lookup by node returns expected text
   (should (string-match-p "defining a function" (aj8/gptel-tool-read-info-node "Defining Functions")))
@@ -1151,8 +1104,7 @@ Verifies that Info manual content can be retrieved by node lookup."
 ;;; 3.4. Category: Project
 
 (ert-deftest test-aj8-project-get-root ()
-  "Test `aj8/gptel-tool-project-get-root'.
-Verifies that the project root can be determined correctly."
+  "Test `aj8/gptel-tool-project-get-root'."
   :tags '(unit project)
   (with-temp-project
    (let ((root default-directory))
@@ -1175,13 +1127,7 @@ Verifies that the project root can be determined correctly."
         (delete-directory tmpdir t)))))
 
 (ert-deftest test-aj8-project-list-files ()
-  "Test `aj8/gptel-tool-project-list-files'.
-Verifies that project buffer listing works correctly with and without line counts.
-The project buffer listing without counts includes project-relative paths.
-The project buffer listing with counts includes entries that contain:
-* the base name of the file
-* the (nondirectory) filename
-* a trailing \": N lines\" count"
+  "Test `aj8/gptel-tool-project-list-files'."
   :tags '(unit project)
   (with-temp-project
    (let ((root default-directory))
@@ -1221,8 +1167,7 @@ The project buffer listing with counts includes entries that contain:
         (delete-directory tmpdir t)))))
 
 (ert-deftest test-aj8-project-find-files-glob ()
-  "Test `aj8/gptel-tool-project-find-files-glob'.
-Verifies that project file finding with glob patterns works correctly."
+  "Test `aj8/gptel-tool-project-find-files-glob'."
   :tags '(unit project)
   (with-temp-project
    ;; Test find files glob
@@ -1251,8 +1196,7 @@ Verifies that project file finding with glob patterns works correctly."
         (delete-directory tmpdir t)))))
 
 (ert-deftest test-aj8-project-search-regexp ()
-  "Test `aj8/gptel-tool-project-search-regexp'.
-Verifies that project content searching with regular expressions works correctly."
+  "Test `aj8/gptel-tool-project-search-regexp'."
   :tags '(unit project)
   (with-temp-project
    ;; Test search content
