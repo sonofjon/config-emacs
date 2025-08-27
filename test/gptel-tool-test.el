@@ -238,59 +238,53 @@ Optional keyword parameters:
                 "tool: aj8_buffer_search_content: Invalid regexp: [invalid"
                 result))))))
 
-(ert-deftest test-aj8-read-buffer-lines ()
-  "Test `aj8/gptel-tool-read-buffer-lines'."
-  :tags '(unit buffers)
-  ;; Create main test buffer once
-  (with-temp-buffer-with-content
-   "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
+;; (ert-deftest test-aj8-read-buffer-lines ()
+;;   "Test `aj8/gptel-tool-read-buffer-lines'."
+;;   :tags '(unit buffers)
+;;   (with-temp-buffer-with-content
+;;    "*test-read-buffer*" "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"
 
-   ;; Assert basic functionalitys (currently commented out)
-   ;; Read whole buffer
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*")
-   ;;                       "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
+;;    ;; Assert basic functionality
+;;    (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*")
+;;                          "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"))
 
-   ;; Read a section
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 2 4)
-   ;;                       "Line 2\nLine 3\nLine 4"))
+;;    ;; Assert reading a section
+;;    (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 2 4)
+;;                          "Line 2\nLine 3\nLine 4"))
 
-   ;; Read from start
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" nil 2)
-   ;;                       "Line 1\nLine 2"))
+;;    ;; Assert reading from start
+;;    (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" nil 2)
+;;                          "Line 1\nLine 2"))
 
-   ;; Read to end
-   ;; (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 4)
-   ;;                       "Line 4\nLine 5"))
+;;    ;; Assert reading to end
+;;    (should (string-equal (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 4)
+;;                          "Line 4\nLine 5"))
 
-   ;; Test handling of max number of lines - consolidated to use main buffer
-   ;; (let* ((n (1+ aj8/gptel-tool-max-lines))
-   ;;        (content "")
-   ;;        (first-n ""))
-   ;;   (dotimes (i n)
-   ;;     (setq content (concat content (format "Line %d\n" (1+ i))))
-   ;;     (when (< i aj8/gptel-tool-max-lines)
-   ;;       (setq first-n (concat first-n (format "Line %d\n" (1+ i))))))
-   ;;   (setq content (replace-regexp-in-string "\n\\'" "" content))
-   ;;   (setq first-n (replace-regexp-in-string "\n\\'" "" first-n))
-   ;;
-   ;;   ;; Assert current buffer update with max+1 lines content instead of creating new buffer
-   ;;   (erase-buffer)
-   ;;   (insert content)
-   ;;
-   ;;   ;; Assert signal mode for all error assertions in this block
-   ;;   (let ((aj8/gptel-tool-return-error nil))
-   ;;     ;; Assert error when total-lines > max
-   ;;     (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*") :type 'error)
-   ;;     ;; Assert error when requested length > max
-   ;;     (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 1 n) :type 'error)
-   ;;     ;; Assert error when START < 1
-   ;;     (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 0 2) :type 'error)
-   ;;     ;; Assert error when START > total-lines
-   ;;     (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" (1+ (count-lines (point-min) (point-max)))) :type 'error)))
+;;    ;; Test handling of max number of lines:
+;;    (let* ((n (1+ aj8/gptel-tool-max-lines))
+;;           (content "")
+;;           (first-n ""))
+;;      (dotimes (i n)
+;;        (setq content (concat content (format "Line %d\n" (1+ i))))
+;;        (when (< i aj8/gptel-tool-max-lines)
+;;          (setq first-n (concat first-n (format "Line %d\n" (1+ i))))))
+;;      (setq content (replace-regexp-in-string "\n\\'" "" content))
+;;      (setq first-n (replace-regexp-in-string "\n\\'" "" first-n))
 
-   ;; Note: All tests for aj8/gptel-tool-read-buffer-lines are currently commented out
-   ;; because the function may not be fully implemented or available
-   ))
+;;      ;; Assert current buffer update with max+1 lines content instead of creating new buffer
+;;      (erase-buffer)
+;;      (insert content)
+
+;;      ;; Test signal mode for all error assertions in this block
+;;      (let ((aj8/gptel-tool-return-error nil))
+;;        ;; Assert error when total-lines > max
+;;        (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*") :type 'error)
+;;        ;; Assert error when requested length > max
+;;        (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 1 n) :type 'error)
+;;        ;; Assert error when START < 1
+;;        (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" 0 2) :type 'error)
+;;        ;; Assert error when START > total-lines
+;;        (should-error (aj8/gptel-tool-read-buffer-lines "*test-read-buffer*" (1+ (count-lines (point-min) (point-max)))) :type 'error)))))
 
 (ert-deftest test-aj8-read-buffer-lines-count ()
   "Test `aj8/gptel-tool-read-buffer-lines-count'."
