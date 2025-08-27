@@ -203,10 +203,20 @@ Optional keyword parameters:
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-buffer-search*" "line 1\ntest content here\nline 3"
-   ;; Test successful search
+   ;; Test search without columns (default behavior) - should return LINE:TEXT
    (let ((result (aj8/gptel-tool-buffer-search-regexp "*test-buffer-search*" "content")))
-     ;; Assert search finds the matching line
-     (should (string-match-p "test content here" result)))
+     ;; Assert exact output LINE:TEXT
+     (should (string-equal result "2:test content here")))
+
+   ;; Test search with include-columns - should return LINE:COLUMN:TEXT
+   (let ((result-with-col (aj8/gptel-tool-buffer-search-regexp "*test-buffer-search*" "content" t)))
+     ;; Assert exact output LINE:COLUMN:TEXT (column is 0-based, so "content" starts at column 5)
+     (should (string-equal result-with-col "2:5:test content here")))
+
+   ;; Test no matches - should return informative message
+   (let* ((regexp "NO_MATCH_REGEX_12345")
+          (nores (aj8/gptel-tool-buffer-search-regexp "*test-buffer-search*" regexp)))
+     (should (string-equal nores (format "No matches found for regexp: %s" regexp))))
 
    ;; Test non-existent buffer errors
    ;; Mode 1: tool re-signals the error
