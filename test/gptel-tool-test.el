@@ -691,7 +691,7 @@ Line D"
 
    ;; Success case
    (aj8/gptel-tool-replace-buffer-lines "*test-edit-buffer-lines*" 2 3 "X\nY")
-   ;; LIne range replacement succeeded
+   ;; Line range replacement succeeded
    (should (string-equal (buffer-string) "Line A\nX\nY\nLine D"))
 
    ;; Assert non-existent buffer errors:
