@@ -139,11 +139,16 @@ The macro binds local variables `tool-name' and `args' and then:
 
 ;; Buffers
 
-(defun aj8/gptel-tool-buffer-search-regexp (buffer-name regexp)
-  "Search for content matching REGEXP in BUFFER-NAME."
+(defun aj8/gptel-tool-buffer-search-regexp (buffer-name regexp &optional include-columns)
+  "Search for content matching REGEXP in BUFFER-NAME.
+Return a newline-separated string of matching lines.  Each match is
+formatted as \"LINE:TEXT\" or, if INCLUDE-COLUMNS is non-nil,
+\"LINE:COLUMN:TEXT\" where LINE is the 1-based line number, COLUMN is
+the 0-based column number, and TEXT is the full text of the matching
+line."
   (aj8/gptel-tool--with-tool
    "tool: aj8_buffer_search_content"
-   (list :buffer-name buffer-name :regexp regexp)
+   (list :buffer-name buffer-name :regexp regexp :include-columns include-columns)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
        (error "Error: Buffer '%s' not found." buffer-name))
@@ -156,9 +161,11 @@ The macro binds local variables `tool-name' and `args' and then:
                  (let* ((match-pos (match-beginning 0))
                         (line (line-number-at-pos match-pos))
                         (col (save-excursion (goto-char match-pos) (current-column)))
-                        (line-str (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
-                        (name (or (buffer-file-name buf) (buffer-name buf))))
-                   (push (format "%s:%d:%d:%s" name line col line-str) results)))
+                        (line-str (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
+                   (push (if include-columns
+                             (format "%d:%d:%s" line col line-str)
+                           (format "%d:%s" line line-str))
+                         results)))
              (error (error "Invalid regexp: %s" regexp)))
            (if results
                (mapconcat #'identity (nreverse results) "\n")
@@ -886,13 +893,17 @@ Both line and column numbers are 1-based.  This search respects
 (gptel-make-tool
  :function #'aj8/gptel-tool-buffer-search-regexp
  :name "aj8_buffer_search_content"
- :description "Search for content matching the regexp in BUFFER. This returns a string of matching lines where each line is prefixed with the buffer name or file path, 1-based line number, and 0-based column number."
+ :description "Search BUFFER for content matching REGEXP. This returns a newline-separated string of matching lines. Each line is formatted as LINE:TEXT or, if INCLUDE-COLUMNS is non-nil, LINE:COLUMN:TEXT where LINE is 1-based and COLUMN is 0-based."
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to search.")
          (:name "regexp"
                 :type string
-                :description "The regexp to search for in the buffer."))
+                :description "The regexp to search for in the buffer.")
+         (:name "include-columns"
+                :type boolean
+                :optional t
+                :description "If non-nil, include 0-based column numbers in the result."))
  :category "buffers")
 
 (gptel-make-tool
