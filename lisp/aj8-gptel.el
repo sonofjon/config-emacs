@@ -926,24 +926,24 @@ Both line and column numbers are 1-based.  This search respects
 ;; (gptel-make-tool
 ;;  :function #'aj8/gptel-tool-read-buffer-lines
 ;;  :name "aj8_read_buffer_lines"
-;;  :description (format "Read lines from a buffer. Max lines per call: %d. Use chunking for larger ranges. START and END are optional 1-based line numbers; if START is nil, read from the beginning of the buffer. If END is nil, read to the end of the buffer." aj8/gptel-tool-max-lines)
+;;  :description (format "Read lines from a buffer; max lines per call: %d. Use chunking for larger ranges. START-LINE and END-LINE are optional 1-based line numbers; if START-LINE is nil, read from the beginning of the buffer. If END-LINE is nil, read to the end of the buffer." aj8/gptel-tool-max-lines)
 ;;  :args (list '( :name "buffer-name"
 ;;                 :type string
 ;;                 :description "The name of the buffer to read the contents of.")
 ;;              '( :name "start-line"
 ;;                 :type integer
 ;;                 :optional t
-;;                 :description "The optional first line to read from.")
+;;                 :description "The first line to read from.")
 ;;              '( :name "end-line"
 ;;                 :type integer
 ;;                 :optional t
-;;                 :description "The optional last line to read to."))
+;;                 :description "The last line to read to."))
 ;;  :category "buffers")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-buffer-lines-count
  :name "aj8_read_buffer_lines_count"
- :description (format "Read lines from a buffer; max per call: %d. START and COUNT are optional and default to 1 and %d, respectively." aj8/gptel-tool-max-lines aj8/gptel-tool-max-lines)
+ :description (format "Read lines from a buffer; max lines per call: %d. START and COUNT are optional and default to 1 and %d, respectively." aj8/gptel-tool-max-lines aj8/gptel-tool-max-lines)
  :args (list '( :name "buffer-name"
                 :type string
                 :description "The name of the buffer to read from.")
@@ -965,7 +965,7 @@ Both line and column numbers are 1-based.  This search respects
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If non-nil, return strings where each line is of the form \"NAME: PATH (N lines)\" instead of bare names."))
+                :description "If non-nil, append the number of lines to each entry as ' (N lines)'."))
  :category "buffers")
 
 (gptel-make-tool
@@ -975,7 +975,7 @@ Both line and column numbers are 1-based.  This search respects
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If non-nil, return strings where each line is of the form \"NAME: PATH (N lines)\" instead of bare names."))
+                :description "If non-nil, append the number of lines to each entry as ' (N lines)'."))
  :category "buffers")
 
 (gptel-make-tool
@@ -1017,7 +1017,7 @@ Both line and column numbers are 1-based.  This search respects
                      :description "The name of the buffer to insert text into.")
              '(:name "text"
                      :type string
-                     :description "The text to insert.")
+                     :description "The text to insert in the buffer.")
              '(:name "line-number"
                      :type integer
                      :description "The 1-based line number where the text should be inserted."))
@@ -1054,7 +1054,7 @@ Both line and column numbers are 1-based.  This search respects
  :function #'aj8/gptel-tool-replace-buffer-line
  :name "aj8_replace_buffer_line"
  :description "Replace a single line in a buffer with new content. The new content may contain newline characters."
- :args '((:name "buffer-name" :type string :description "The name of the buffer to edit.")
+ :args '((:name "buffer-name" :type string :description "The name of the buffer to modify.")
          (:name "line-number" :type integer :description "The 1-based line number of the line to replace.")
          (:name "content" :type string :description "The new content."))
  :category "buffers")
@@ -1062,17 +1062,16 @@ Both line and column numbers are 1-based.  This search respects
 (gptel-make-tool
  :function #'aj8/gptel-tool-replace-buffer-lines
  :name "aj8_replace_buffer_lines"
- :description "Replace a range of lines in a buffer with new content. The new content may contain newline characters. To replace a single line set 'start-line==end-line'"
+ :description "Replace a range of lines in a buffer with new content. The new content may contain newline characters. To replace a single line set 'start-line==end-line'. Line numbers are 1-based."
  :args (list '(:name "buffer-name" :type string
-                     :description "Name of the buffer to modify.")
+                     :description "The name of the buffer to modify.")
              '(:name "start-line" :type integer
-                     :description "First line of the range to replace.")
+                     :description "The first line of the range to replace.")
              '(:name "end-line" :type integer
-                     :description "Last line of the range to replace.")
+                     :description "The last line of the range to replace.")
              '(:name "content" :type string
-                     :description "Text to insert in place of the line range."))
+                     :description "The new content."))
  :category "buffers")
-
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-delete-buffer-string
@@ -1090,20 +1089,20 @@ Both line and column numbers are 1-based.  This search respects
  :function #'aj8/gptel-tool-delete-buffer-line
  :name "aj8_delete_buffer_line"
  :description "Delete a single line in a buffer."
- :args '((:name "buffer-name" :type string :description "The name of the buffer to edit.")
+ :args '((:name "buffer-name" :type string :description "The name of the buffer to modify.")
          (:name "line-number" :type integer :description "The 1-based line number of the line to delete."))
  :category "buffers")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-delete-buffer-lines
  :name "aj8_delete_buffer_lines"
- :description "Delete a range of lines in a buffer. To delete a single line set 'start-line==end-line'"
+ :description "Delete a range of lines in a buffer. To delete a single line set 'start-line==end-line', Line numbers are 1-based."
  :args (list '(:name "buffer-name" :type string
-                     :description "Name of the buffer to modify.")
+                     :description "The name of the buffer to modify.")
              '(:name "start-line" :type integer
-                     :description "First line of the range to delete.")
+                     :description "The first line of the range to delete.")
              '(:name "end-line" :type integer
-                     :description "Last line of the range to delete."))
+                     :description "The last line of the range to delete."))
  :category "buffers")
 
 (gptel-make-tool
@@ -1160,11 +1159,11 @@ This action requires manual user review. After calling this tool, you must stop 
                      :items (:type object
                                    :properties
                                    (:line-number
-                                    (:type integer :description "The 1-based line number where the edit starts.")
+                                    (:type integer :description "The 1-based line number of the line to modify.")
                                     :old-string
                                     (:type string :description "The entire original content of the line to be replaced.")
                                     :new-string
-                                    (:type string :description "The entire new content of the line.")))
+                                    (:type string :description "The new content.")))
                      :description "The list of edits to apply to the buffer."))
  :category "buffers")
 
@@ -1182,11 +1181,11 @@ This action requires manual user review. After calling this tool, you must stop 
                      :items (:type object
                                    :properties
                                    (:line-number
-                                    (:type integer :description "The 1-based line number where the edit starts.")
+                                    (:type integer :description "The 1-based line number of the line to modify.")
                                     :old-string
                                     (:type string :description "The entire original content of the line to be replaced.")
                                     :new-string
-                                    (:type string :description "The entire new content of the line.")))
+                                    (:type string :description "The new content.")))
                      :description "The list of edits to apply to the buffer."))
  :category "buffers")
 
@@ -1208,43 +1207,43 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-documentation
  :name "aj8_read_documentation"
- :description "Read the documentation for a given 'symbol', which can be a function or variable"
+ :description "Return the documentation for a given Emacs Lisp symbol. The symbol can be either a function or a variable"
  :args (list '(:name "symbol-name"
                      :type string
-                     :description "The name of the function or variable whose documentation is to be read."))
+                     :description "The name of the symbol to return the documentation for."))
  :category "emacs")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-function
  :name "aj8_read_function"
- :description "Return the code of the definition of an Emacs Lisp function."
+ :description "Return the code of a given Emacs Lisp function."
  :args (list '(:name "function-name"
                      :type string
-                     :description "The name of the function whose code is to be returned."))
+                     :description "The name of the function to return the code for."))
  :category "emacs")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-library
  :name "aj8_read_library"
- :description "Return the source code of a library or package in emacs."
+ :description "Return the source code for an Emacs library or package."
  :args (list '(:name "library-name"
                      :type string
-                     :description "The library name."))
+                     :description "The name of the library or package to return source code for."))
  :category "emacs")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-info-symbol
  :name "aj8_read_info_symbol"
- :description "Return the contents of the info node for SYMBOL-NAME as determined by `info-lookup-symbol', specifically for Emacs Lisp symbols."
+ :description "Return the contents of the info node where a given Emacs Lisp symbol is documented."
  :args (list '(:name "symbol-name"
                      :type string
-                     :description "The name of the Emacs Lisp symbol to look up."))
+                     :description "The name of the symbol to look up."))
  :category "emacs")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-info-node
  :name "aj8_read_info_node"
- :description "Return the contents of a specific NODENAME from the Emacs Lisp manual."
+ :description "Return the contents of a specific info node from the Emacs Lisp manual."
  :args (list '(:name "node-name" :type string :description "The name of the node in the Emacs Lisp manual."))
  :category "emacs")
 
@@ -1260,7 +1259,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-list-files
  :name "aj8_project_list_files"
- :description "Return a string listing all files in the current project. Each line contains a file base name followed by its path relative to the current project root. if the optional argument INCLUDE-COUNTS is non-nil, append the line count as \" (N lines).\""
+ :description "Return a newline-separated string listing all files in the current project. Each line contains a file base name followed by its path relative to the current project root. if the optional argument INCLUDE-COUNTS is non-nil, append the line count as \" (N lines).\""
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
@@ -1279,7 +1278,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-find-files-glob
  :name "aj8_project_find_files_glob"
- :description "In the current project, find files matching the glob PATTERN. The pattern is a standard file glob. To search recursively, use the '**/' prefix. For example, a PATTERN of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory. The result is a newline-separated string where each line is \"NAME: PATH\", where NAME is the file's base name and PATH is the path relative to the current project root.  If the optional argument INCLUDE-COUNTS is non-nil append the number of lines as \" (N lines)\"."
+ :description "In the current project, find files matching a glob pattern. To search recursively, use the '**/' prefix. For example, a PATTERN of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory. The result is a newline-separated string where each line is \"NAME: PATH\", where NAME is the file's base name and PATH is the path relative to the current project root.  If the optional argument INCLUDE-COUNTS is non-nil append the number of lines as \" (N lines)\"."
  :args '((:name "pattern"
                 :type string
                 :description "A glob pattern to match against the filenames in the project.")
