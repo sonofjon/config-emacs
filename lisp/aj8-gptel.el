@@ -366,8 +366,14 @@ The text is inserted at the beginning of the specified line."
        (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (save-excursion
-         (goto-line line-number)
-         (insert text)))
+         (let ((total-lines (count-lines (point-min) (point-max))))
+           (when (< line-number 1)
+             (error "Error: LINE-NUMBER must be >= 1"))
+           (when (> line-number total-lines)
+             (error "Error: LINE-NUMBER (%d) exceeds buffer length (%d)."
+                    line-number total-lines))
+           (goto-line line-number)
+           (insert text))))
      (format "Text successfully inserted into buffer %s at line %d." buffer-name line-number))))
 
 (defun aj8/gptel-tool-replace-buffer (buffer-name content)

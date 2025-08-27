@@ -518,25 +518,24 @@ Optional keyword parameters:
    ;; Test line number validation:
    ;; Mode 1: tool re-signals the error for invalid line numbers
    (let ((aj8/gptel-tool-return-error nil))
-     ;; Test line number 0 (should behave consistently with other functions)
-     (let ((result (condition-case err
-                       (progn
-                         (aj8/gptel-tool-insert-in-buffer "*test-insert*" "X" 0)
-                         "success")
-                     (error (format "error: %s" (error-message-string err))))))
-       ;; For now just verify it doesn't crash; behavior may vary
-       (should (or (string-equal result "success")
-                   (string-match-p "error:" result))))
-
-     ;; Test very large line number (should not cause errors, just insert at end)
-     (let ((result (condition-case err
-                       (progn
-                         (aj8/gptel-tool-insert-in-buffer "*test-insert*" "Y" 999)
-                         "success")
-                     (error (format "error: %s" (error-message-string err))))))
-       ;; For now just verify it doesn't crash
-       (should (or (string-equal result "success")
-                   (string-match-p "error:" result)))))
+       ;; Test line number 0 (should error consistently with other functions)
+     (should-error (aj8/gptel-tool-insert-in-buffer "*test-insert*" "X" 0) :type 'error)
+     ;; Test very large line number (should error)
+     (should-error (aj8/gptel-tool-insert-in-buffer "*test-insert*" "Y" 999) :type 'error))
+   ;; Mode 2: tool returns the error as a string
+   (let ((aj8/gptel-tool-return-error t))
+     ;; Test line number 0
+     (let ((result (aj8/gptel-tool-insert-in-buffer "*test-insert*" "X" 0)))
+       (should (string-equal
+                "tool: aj8_insert_in_buffer: Error: LINE-NUMBER must be >= 1"
+                result)))
+     ;; Test very large line number
+     (let ((result (aj8/gptel-tool-insert-in-buffer "*test-insert*" "Y" 999)))
+       (should (string-equal
+                (format "tool: aj8_insert_in_buffer: Error: LINE-NUMBER (999) exceeds buffer length (%d)."
+                        (with-current-buffer (get-buffer "*test-insert*")
+                          (count-lines (point-min) (point-max))))
+                result))))
 
    ;; Assert non-existent buffer errors:
    ;; Mode 1: tool re-signals the error
