@@ -154,49 +154,40 @@ Optional keyword parameters:
    (should (buffer-live-p (get-file-buffer test-file))))
 
   ;; Assert non-existent file errors:
-  ;; Mode 1: tool re-signals the error
-  (let ((aj8/gptel-tool-return-error nil))
-    (let* ((tmp (make-temp-file "aj8-nonexistent-file-")))
-      (unwind-protect
-          (progn
-            (delete-file tmp)
+  (let* ((tmp (make-temp-file "aj8-nonexistent-file-")))
+    (unwind-protect
+        (progn
+          (delete-file tmp)
+          ;; Mode 1: tool re-signals the error
+          (let ((aj8/gptel-tool-return-error nil))
             ;; Assert an error is signaled for opening a missing file
             (should-error (aj8/gptel-tool-open-file-in-buffer tmp) :type 'error))
-        (when (file-exists-p tmp)
-          (delete-file tmp)))))
-  ;; Mode 2: tool returns the error as a string
-  (let ((aj8/gptel-tool-return-error t))
-    (let* ((tmp (make-temp-file "aj8-nonexistent-file-")))
-      (unwind-protect
-          (progn
-            (delete-file tmp)
+          ;; Mode 2: tool returns the error as a string
+          (let ((aj8/gptel-tool-return-error t))
             (let ((result (aj8/gptel-tool-open-file-in-buffer tmp)))
               ;; Assert returned error message matches expected format
               (should (string-equal
                        (format "tool: aj8_open_file_in_buffer: Error: No such file: %s" tmp)
-                       result))))
-        (when (file-exists-p tmp)
-          (delete-file tmp)))))
+                       result)))))
+      (when (file-exists-p tmp)
+        (delete-file tmp))))
 
   ;; Assert directory path errors:
-  ;; Mode 1: tool re-signals the error
-  (let ((aj8/gptel-tool-return-error nil))
-    (let ((dir (make-temp-file "aj8-temp-dir-" t)))
-      (unwind-protect
-          (should-error (aj8/gptel-tool-open-file-in-buffer dir) :type 'error)
-        (when (file-directory-p dir)
-          (delete-directory dir t)))))
-  ;; Mode 2: tool returns the error as a string
-  (let ((aj8/gptel-tool-return-error t))
-    (let ((dir (make-temp-file "aj8-temp-dir-" t)))
-      (unwind-protect
-          (let ((result (aj8/gptel-tool-open-file-in-buffer dir)))
-            ;; Assert returned message for directory path error
-            (should (string-equal
-                     (format "tool: aj8_open_file_in_buffer: Error: '%s' is a directory." dir)
-                     result)))
-        (when (file-directory-p dir)
-          (delete-directory dir t))))))
+  (let ((dir (make-temp-file "aj8-temp-dir-" t)))
+    (unwind-protect
+        (progn
+          ;; Mode 1: tool re-signals the error
+          (let ((aj8/gptel-tool-return-error nil))
+            (should-error (aj8/gptel-tool-open-file-in-buffer dir) :type 'error))
+          ;; Mode 2: tool returns the error as a string
+          (let ((aj8/gptel-tool-return-error t))
+            (let ((result (aj8/gptel-tool-open-file-in-buffer dir)))
+              ;; Assert returned message for directory path error
+              (should (string-equal
+                       (format "tool: aj8_open_file_in_buffer: Error: '%s' is a directory." dir)
+                       result)))))
+      (when (file-directory-p dir)
+        (delete-directory dir t)))))
 
 (ert-deftest test-aj8-buffer-search-regexp ()
   "Test `aj8/gptel-tool-buffer-search-regexp'."
