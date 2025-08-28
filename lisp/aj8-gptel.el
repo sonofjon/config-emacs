@@ -923,6 +923,40 @@ Both line and column numbers are 1-based.  This search respects
          (when (buffer-live-p output-buffer)
            (kill-buffer output-buffer)))))))
 
+;; Test
+
+(defun aj8/gptel-tool-ert-run-unit ()
+  "Run all ERT tests tagged 'unit'."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_ert_run_unit" nil
+   (require 'ert)
+   (ert '(tag unit))
+   "Ran ERT unit tests; inspect '*ert*' buffer for results."))
+
+(defun aj8/gptel-tool-ert-run-by-name (test-name)
+  "Run a single ERT test by name.
+
+TEST-NAME is the string name of the ERT test symbol to run."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_ert_run_by_name" (list :test-name test-name)
+   (require 'ert)
+   (let ((sym (intern test-name)))
+     (unless (get sym 'ert--test)
+       (error "No ERT test found named %s" test-name))
+     (ert sym)
+     (format "Ran ERT test %s; inspect '*ert*' buffer for results." test-name))))
+
+(defun aj8/gptel-tool-ert-list-unit-tests ()
+  "List names of loaded ERT tests tagged 'unit'."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_ert_list_unit_tests" nil
+   (require 'ert)
+   (let* ((tests (ert-select-tests '(tag unit) t))
+          (names (mapcar #'ert-test-name tests)))
+     (if names
+         (mapconcat (lambda (sym) (symbol-name sym)) names "\n")
+       "No loaded ERT unit tests found."))))
+
 ;;; Tool Registrations
 
 ;; Buffers
@@ -1337,6 +1371,31 @@ This action requires manual user review. After calling this tool, you must stop 
                 :optional t
                 :description "If non-nil, include 1-based column numbers in the result."))
  :category "project")
+
+;; Test
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-ert-run-unit
+ :name "aj8_ert_run_unit"
+ :description "Run all ERT unit tests. Returns a short status. Inspect buffer '*ert*' for results."
+ :args '()
+ :category "testing")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-ert-run-by-name
+ :name "aj8_ert_run_by_name"
+ :description "Run a single ERT unit test by name. Returns a short status. Inspect buffer '*ert*' for results."
+ :args '((:name "test-name"
+                :type string
+                :description "The name of the ERT test symbol to run."))
+ :category "testing")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-ert-list-unit-tests
+ :name "aj8_ert_list_unit_tests"
+ :description "Return a newline-separated list of names for loaded ERT unit tests."
+ :args '()
+ :category "testing")
 
 ;;; Initialization
 ;;   Initializes gptel-tools with all the registered tools.  This is only
