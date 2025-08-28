@@ -1035,8 +1035,8 @@ Optional keyword parameters:
      ;; Assert buffer should still remain unchanged
      (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
 
-   ;; Clean up any Ediff buffers created during testing
-   (aj8/ediff-cleanup-buffers))
+  ;; Clean up any Ediff buffers created during testing
+  (aj8/ediff-cleanup-buffers))
 
 (ert-deftest test-aj8-apply-buffer-line-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'."
@@ -1096,8 +1096,8 @@ Optional keyword parameters:
     ;; Assert buffer should still remain unchanged
     (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
 
-   ;; Clean up any Ediff buffers created during testing
-   (aj8/ediff-cleanup-buffers))
+  ;; Clean up any Ediff buffers created during testing
+  (aj8/ediff-cleanup-buffers))
 
 ;;; 3.3. Category: Emacs
 
