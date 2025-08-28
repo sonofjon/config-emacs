@@ -223,7 +223,7 @@ Optional keyword parameters:
      (let ((result (aj8/gptel-tool-buffer-search-regexp "*non-existent-buffer*" "test")))
        ;; Assert error message matches expected format
        (should (string-equal
-                "tool: aj8_buffer_search_content: Error: Buffer '*non-existent-buffer*' not found."
+                "tool: aj8_buffer_search_regexp: Error: Buffer '*non-existent-buffer*' not found."
                 result))))
 
    ;; Test invalid regexp error handling:
@@ -236,7 +236,7 @@ Optional keyword parameters:
      (let ((result (aj8/gptel-tool-buffer-search-regexp "*test-buffer-search*" "[invalid")))
        ;; Assert returned error message matches expected format
        (should (string-equal
-                "tool: aj8_buffer_search_content: Invalid regexp: [invalid"
+                "tool: aj8_buffer_search_regexp: Invalid regexp: [invalid"
                 result))))))
 
 ;; (ert-deftest test-aj8-read-buffer-lines ()
@@ -1431,7 +1431,7 @@ Optional keyword parameters:
 This test checks that a predefined list of essential tool names exists
 in the `gptel-tools' alist."
   :tags '(integration tools)
-  (let ((expected-tools '("aj8_buffer_search_content"
+  (let ((expected-tools '("aj8_buffer_search_regexp"
                           "aj8_open_file_in_buffer"
                           ;; "aj8_read_buffer"
                           ;; "aj8_read_buffer_lines"

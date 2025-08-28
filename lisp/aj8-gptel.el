@@ -170,7 +170,7 @@ formatted as \"LINE:TEXT\" or, if INCLUDE-COLUMNS is non-nil,
 the 0-based column number, and TEXT is the full text of the matching
 line."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_buffer_search_content"
+   "tool: aj8_buffer_search_regexp"
    (list :buffer-name buffer-name :regexp regexp :include-columns include-columns)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
@@ -986,7 +986,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-buffer-search-regexp
- :name "aj8_buffer_search_content"
+ :name "aj8_buffer_search_regexp"
  :description "Search BUFFER for content matching REGEXP. This returns a newline-separated string of matching lines. Each line is formatted as LINE:TEXT or, if INCLUDE-COLUMNS is non-nil, LINE:COLUMN:TEXT where LINE is 1-based and COLUMN is 0-based."
  :args '((:name "buffer-name"
                 :type string
