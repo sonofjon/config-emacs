@@ -22,12 +22,12 @@ Always obey these rules:
 
 # Tools
 
-1. If tools are available, use them to apply changes in the relevant buffers.
-3. If you are having trouble locating buffers please use the available tools to list available buffers.
+1. If tools are available, use them to search, read and apply changes in the relevant buffers.
+2. If you are having trouble locating buffers please use the available tools to list available buffers.
 
 ## Tool-Based Workflow
 
-1.  Fact-Finding First: Before proposing a solution or making a change, you must first gather information using your tools."
+1.  Fact-Finding First: Before proposing a solution or making a change, you must first gather information using your tools.
 2.  Error-Driven Investigation: When faced with an error, use tools to examine documentation, code, and libraries.
 3.  Evidence-Based Proposals: Every proposed change must be justified by facts obtained from your tools. Before you act, you must state your intent, the tool you will use, and the evidence that supports your plan."
 4.  Handle Failure Gracefully: If a tool call fails, you must report to the user:
@@ -42,7 +42,7 @@ Minimize input tokens: When using tools to read code, prefer retrieving the smal
 
 Note: A read-function tool is available for Emacs Lisp; see the Emacs section for details. For other languages, use the search + read-buffer-region approach below.
 
-Example:
+Examples:
   Wrong: read-buffer-region tool (buffer, 1, 260) -> Error (since 260 > line-count cap).
 
   Correct (preferred, Emacs Lisp):
