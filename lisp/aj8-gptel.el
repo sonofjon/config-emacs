@@ -589,30 +589,30 @@ described for `aj8/--apply-buffer-edits': each edit should contain
 
 EDIT-TYPE can be 'line or 'string, as described in
 `aj8/--apply-buffer-edits'."
-  (let* ((original-buffer (get-buffer buffer-name))
-         (temp-buffer-name (format "*%s-edits*"
-                                  (string-trim buffer-name "*" "*")))
-         (temp-buffer (get-buffer-create temp-buffer-name)))
+  (let ((original-buffer (get-buffer buffer-name)))
     (unless original-buffer
       (error "Error: Buffer '%s' not found." buffer-name))
 
-    (unwind-protect
-        (progn
-          ;; Prepare the edited version in a temporary buffer
-          (with-current-buffer temp-buffer
-            (erase-buffer)
-            (insert-buffer-substring original-buffer)
-            (condition-case err
-                (aj8/--apply-buffer-edits temp-buffer-name buffer-edits edit-type)
-              (error
-               (error "%s\nNote: No review was started and no changes were applied to buffer '%s'. Any details above refer only to the temporary review buffer."
-                      (error-message-string err) buffer-name))))
+    (let* ((temp-buffer-name (format "*%s-edits*"
+                                     (string-trim buffer-name "*" "*")))
+           (temp-buffer (get-buffer-create temp-buffer-name)))
+      (unwind-protect
+          (progn
+            ;; Prepare the edited version in a temporary buffer
+            (with-current-buffer temp-buffer
+              (erase-buffer)
+              (insert-buffer-substring original-buffer)
+              (condition-case err
+                  (aj8/--apply-buffer-edits temp-buffer-name buffer-edits edit-type)
+                (error
+                 (error "%s\nNote: No review was started and no changes were applied to buffer '%s'. Any details above refer only to the temporary review buffer."
+                        (error-message-string err) buffer-name))))
 
-          ;; Start Ediff
-          (ediff-buffers original-buffer temp-buffer))
-      ;; Cleanup: kill the temporary buffer
-      (when (buffer-live-p temp-buffer)
-        (kill-buffer temp-buffer)))))
+            ;; Start Ediff
+            (ediff-buffers original-buffer temp-buffer))
+        ;; Cleanup: kill the temporary buffer
+        (when (buffer-live-p temp-buffer)
+          (kill-buffer temp-buffer))))))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of string edits.
