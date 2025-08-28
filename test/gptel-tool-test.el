@@ -1,4 +1,4 @@
-;;; gptel-test.el --- Tests for Gptel tools -*- lexical-binding: t; -*-
+;;; gptel-test.el --- Tests for GPTel tools -*- lexical-binding: t; -*-
 
 (message "Running gptel tool tests")
 
@@ -91,7 +91,7 @@ directory."
 (cl-defun aj8--assert-tool-error (result &key tool-name details-str
                                          details-regex details-predicate
                                          details-nonempty)
-  "Assert that RESULT contains a properly formatted Gptel tool error message.
+  "Assert that RESULT contains a properly formatted GPTel tool error message.
 
 This function validates that RESULT starts with the expected \"tool:
 TOOL-NAME:\" format and optionally validates additional error content
@@ -1380,7 +1380,7 @@ Optional keyword parameters:
 ;; invalid arguments is working as expected.
 
 (ert-deftest test-gptel-tools-registration ()
-  "Verify that all Gptel tools are registered in `gptel-tools'.
+  "Verify that all GPTel tools are registered in `gptel-tools'.
 This test checks that a predefined list of essential tool names exists
 in the `gptel-tools' alist."
   :tags '(integration tools)
@@ -1460,7 +1460,7 @@ their associated functions can be called without error."
                       (error t)))))))
 
 (ert-deftest test-gptel-tools-via-json-call ()
-  "Simulate calling Gptel tools via a JSON-like interface.
+  "Simulate calling GPTel tools via a JSON-like interface.
 This test mimics how a Large Language Model (LLM) would call the tools
 by invoking the tool's function with arguments directly.  It verifies
 both a query and a buffer modification tool."
@@ -1479,15 +1479,15 @@ both a query and a buffer modification tool."
    ;; Test edit buffer tool with JSON-like parameters
    (let* ((tool-def (cl-find "aj8_edit_buffer_string" gptel-tools :key #'gptel-tool-name :test #'string-equal))
           (func (gptel-tool-function tool-def))
-          (result (funcall func "*test-json-call*" "World" "Gptel")))
+          (result (funcall func "*test-json-call*" "World" "GPTel")))
      ;; Assert edit returned a success message
      (should (string-match-p "successfully" result))
      ;; Assert buffer content reflects the edit
      (with-current-buffer (get-buffer "*test-json-call*")
-       (should (string-equal (buffer-string) "Hello Gptel\nLine 2"))))))
+       (should (string-equal (buffer-string) "Hello GPTel\nLine 2"))))))
 
 (ert-deftest test-gptel-tools-error-handling ()
-  "Test that Gptel tools handle common errors gracefully.
+  "Test that GPTel tools handle common errors gracefully.
 Verifies that tools produce user-friendly error messages when given
 invalid arguments, such as a non-existent buffer name or an invalid file
 path."
@@ -1511,7 +1511,7 @@ path."
 
 
 ;; (defun aj8/gptel-tool-test--run-with-mock-llm (tool-name args expected-pattern)
-;;   "Simulate an LLM call to a Gptel tool and check the result.
+;;   "Simulate an LLM call to a GPTel tool and check the result.
 
 ;; This helper function looks up TOOL-NAME in `gptel-tools', applies ARGS
 ;; to its function, and asserts that the formatted result matches
@@ -1557,7 +1557,7 @@ The response is processed by `gptel--streaming-done-callback'."
            (should (string-equal (buffer-string) "Modified content")))
          ;; Check that the gptel buffer contains the tool result
          (with-current-buffer gptel-buffer
-           ;; Assert Gptel buffer should record the tool result message
+           ;; Assert GPTel buffer should record the tool result message
            (should (string-match-p "Tool `aj8_edit_buffer_string` returned: String replaced successfully." (buffer-string)))))))))
 
 (ert-deftest test-gptel-tools-llm-mock-project ()
@@ -1779,22 +1779,22 @@ several related full-line edits in a single buffer, using
 ;;;; 5. Test Runner Functions (interactive)
 
 (defun aj8/gptel-tool-test-run-all ()
-  "Run all ERT tests defined for Gptel tools."
+  "Run all ERT tests defined for GPTel tools."
   (interactive)
   (ert t))
 
 (defun aj8/gptel-tool-test-run-unit ()
-  "Run all Gptel tool unit tests."
+  "Run all GPTel tool unit tests."
   (interactive)
   (ert '(tag unit)))
 
 (defun aj8/gptel-tool-test-run-integration ()
-  "Run Gptel tool integration tests."
+  "Run GPTel tool integration tests."
   (interactive)
   (ert '(tag integration)))
 
 (defun aj8/gptel-tool-test-run-by-tag (tag)
-  "Run all Gptel tool tests with a specified TAG."
+  "Run all GPTel tool tests with a specified TAG."
   (interactive
    (list (completing-read "Select tag: "
                           '("unit" "buffers" "emacs" "project" "review"
@@ -1804,7 +1804,7 @@ several related full-line edits in a single buffer, using
   (ert `(tag ,(intern tag))))
 
 (defun aj8/gptel-tool-test-run-by-name ()
-  "Run a single Gptel tool test selected by name."
+  "Run a single GPTel tool test selected by name."
   (interactive)
   (let* ((all-tests (ert-select-tests t t))
          (test-choices
@@ -1834,7 +1834,7 @@ several related full-line edits in a single buffer, using
 ;;;; 6. Manual Testing & Utility Functions (interactive)
 
 (defun aj8/gptel-tool-run-tool (tool-name)
-  "Directly invoke a Gptel tool chosen interactively by its name.
+  "Directly invoke a GPTel tool chosen interactively by its name.
 
 This function prompts for a TOOL-NAME from a list of all registered
 gptel tools.  If the tool requires arguments, you will be prompted to
@@ -1917,15 +1917,15 @@ if all tools are valid."
 
     (if errors
         (progn
-          (message "Gptel tool validation errors found:")
+          (message "GPTel tool validation errors found:")
           (dolist (error errors)
             (message "  - %s" error))
           errors)
-      (message "All Gptel tools validated successfully!")
+      (message "All GPTel tools validated successfully!")
       nil)))
 
 (defun aj8/gptel-tool-create-scenario ()
-  "Create a sandboxed environment for manually testing Gptel tools.
+  "Create a sandboxed environment for manually testing GPTel tools.
 This sets up a temporary directory with several files and opens them in
 buffers, simulating a realistic project.  It also creates an
 instructions buffer with suggested prompts for testing tool-based
@@ -1937,7 +1937,7 @@ interactions with an LLM."
 
     ;; Create test files
     (with-temp-buffer
-      (insert "# Test Project\n\nThis is a test project for Gptel tools.\n\n## Files\n- main.py: Python script\n- config.json: Configuration\n- README.md: This file")
+      (insert "# Test Project\n\nThis is a test project for GPTel tools.\n\n## Files\n- main.py: Python script\n- config.json: Configuration\n- README.md: This file")
       (write-file (expand-file-name "README.md" test-dir)))
 
     (with-temp-buffer
@@ -1945,25 +1945,25 @@ interactions with an LLM."
       (write-file (expand-file-name "main.py" test-dir)))
 
     (with-temp-buffer
-      (insert "{\n  \"app_name\": \"Gptel Test\",\n  \"version\": \"1.0.0\",\n  \"debug\": true\n}")
+      (insert "{\n  \"app_name\": \"GPTel Test\",\n  \"version\": \"1.0.0\",\n  \"debug\": true\n}")
       (write-file (expand-file-name "config.json" test-dir)))
 
     ;; Create test buffers
-    (with-current-buffer (get-buffer-create "*Gptel Test Buffer*")
+    (with-current-buffer (get-buffer-create "*GPTel Test Buffer*")
       (erase-buffer)
-      (insert "This is a test buffer for Gptel tools.\n\nYou can ask the LLM to:\n- Edit this content\n- Add new lines\n- Replace text\n- Apply multiple edits\n\nOriginal timestamp: " (current-time-string)))
+      (insert "This is a test buffer for GPTel tools.\n\nYou can ask the LLM to:\n- Edit this content\n- Add new lines\n- Replace text\n- Apply multiple edits\n\nOriginal timestamp: " (current-time-string)))
 
     ;; Open files in buffers
     (find-file (expand-file-name "main.py" test-dir))
     (find-file (expand-file-name "config.json" test-dir))
 
     ;; Display instructions
-    (with-current-buffer (get-buffer-create "*Gptel Tool Test Instructions*")
+    (with-current-buffer (get-buffer-create "*GPTel Tool Test Instructions*")
       (erase-buffer)
-      (insert "=== Gptel Tool Test Scenario Created ===\n\n")
+      (insert "=== GPTel Tool Test Scenario Created ===\n\n")
       (insert "Test files created in: " test-dir "\n\n")
       (insert "Available test buffers:\n")
-      (insert "- *Gptel Test Buffer*\n")
+      (insert "- *GPTel Test Buffer*\n")
       (insert "- main.py\n")
       (insert "- config.json\n\n")
       (insert "=== Suggested Test Prompts ===\n\n")
@@ -1974,7 +1974,7 @@ interactions with an LLM."
       (insert "5. \"Update the version in config.json to 2.0.0\"\n")
       (insert "6. \"Find all Python files in the current project\"\n")
       (insert "7. \"Search for the word 'greet' in all project files\"\n")
-      (insert "8. \"Add a comment to the *Gptel Test Buffer*\"\n\n")
+      (insert "8. \"Add a comment to the *GPTel Test Buffer*\"\n\n")
       (insert "=== Testing Tips ===\n\n")
       (insert "- Use the 'coding' preset for tool access\n")
       (insert "- Tools should work automatically when enabled\n")
@@ -1982,7 +1982,7 @@ interactions with an LLM."
       (insert "- Verify error handling with invalid requests\n")
       (goto-char (point-min)))
 
-    (switch-to-buffer "*Gptel Tool Test Instructions*")
-    (message "Gptel tool test scenario created! Check the instructions buffer.")))
+    (switch-to-buffer "*GPTel Tool Test Instructions*")
+    (message "GPTel tool test scenario created! Check the instructions buffer.")))
 
 (provide 'gptel-tool-test)
