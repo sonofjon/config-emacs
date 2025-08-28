@@ -1274,21 +1274,21 @@ Optional keyword parameters:
        (when (buffer-live-p buf)
          (kill-buffer buf))))
 
-  ;; Test non-project directory errors:
-  (let* ((tmpdir (make-temp-file "aj8-non-project" t)))
-    (unwind-protect
-        (let ((default-directory tmpdir))
-          ;; Mode 1: tool re-signals the error
-          (let ((aj8/gptel-tool-return-error nil))
-            ;; Assert error is signaled when not inside a project
-            (should-error (aj8/gptel-tool-project-list-files) :type 'error))
-          ;; Mode 2: tool returns the error as a string
-          (let ((aj8/gptel-tool-return-error t))
-            (let ((res2 (aj8/gptel-tool-project-list-files)))
-              ;; Assert error message indicates not inside a project
-              (should (string-equal "tool: aj8_project_list_files: Not inside a project." res2)))))
-      (when (file-directory-p tmpdir)
-        (delete-directory tmpdir t)))))
+   ;; Test non-project directory errors:
+   (let* ((tmpdir (make-temp-file "aj8-non-project" t)))
+     (unwind-protect
+         (let ((default-directory tmpdir))
+           ;; Mode 1: tool re-signals the error
+           (let ((aj8/gptel-tool-return-error nil))
+             ;; Assert error is signaled when not inside a project
+             (should-error (aj8/gptel-tool-project-list-files) :type 'error))
+           ;; Mode 2: tool returns the error as a string
+           (let ((aj8/gptel-tool-return-error t))
+             (let ((res2 (aj8/gptel-tool-project-list-files)))
+               ;; Assert error message indicates not inside a project
+               (should (string-equal "tool: aj8_project_list_files: Not inside a project." res2)))))
+       (when (file-directory-p tmpdir)
+         (delete-directory tmpdir t))))))
 
 (ert-deftest test-aj8-project-find-files-glob ()
   "Test `aj8/gptel-tool-project-find-files-glob'."
