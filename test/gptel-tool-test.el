@@ -1271,7 +1271,8 @@ Optional keyword parameters:
            (let ((expected (format "%s: %s (%d lines)" fname rel 1)))
              ;; Assert exact line count format is present in output
              (should (member expected lines)))))
-       (kill-buffer buf))))
+       (when (buffer-live-p buf)
+         (kill-buffer buf))))
 
   ;; Test non-project directory errors:
   (let* ((tmpdir (make-temp-file "aj8-non-project" t)))
@@ -1651,7 +1652,8 @@ The response is processed by `gptel--streaming-done-callback'."
            (should (member (buffer-name buffer) (aj8/gptel-tool-list-buffers)))
            (should (string-equal (aj8/gptel-tool-file-to-buffer test-file) (buffer-name buffer)))
            (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer)) (expand-file-name test-file))))
-       (kill-buffer buffer)))))
+       (when (buffer-live-p buffer)
+         (kill-buffer buffer)))))
 
 (ert-deftest test-gptel-tools-workflow-project ()
   "Simulate a workflow using project tools."
@@ -1678,7 +1680,8 @@ The response is processed by `gptel--streaming-done-callback'."
          (let ((open-buffers (aj8/gptel-tool-project-list-files)))
            (should (string-match-p "code.el" open-buffers))
            (should (string-match-p "src/code.el" open-buffers)))
-       (kill-buffer buf)))))
+       (when (buffer-live-p buf)
+         (kill-buffer buf)))))
 
 (ert-deftest test-gptel-tools-workflow-emacs ()
   "Simulate a workflow using Emacs introspection tools."

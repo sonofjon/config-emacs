@@ -765,7 +765,8 @@ returns the content of that Info page."
                  (buffer-string)))))
        ;; Cleanup: kill any new Info buffers that were created
        (dolist (buffer (buffer-list))
-         (when (and (string-match-p "\\*info\\*\\(<[0-9]+>\\)?$" (buffer-name buffer))
+         (when (and (buffer-live-p buffer)
+                    (string-match-p "\\*info\\*\\(<[0-9]+>\\)?$" (buffer-name buffer))
                     (not (member (buffer-name buffer) info-buffer-names-before)))
            (kill-buffer buffer)))))))
 
@@ -790,10 +791,12 @@ page."
          (with-current-buffer info-buffer
            (Info-goto-node (format "(elisp)%s" node-name))
            (buffer-string))
-       (kill-buffer info-buffer)
+       (when (buffer-live-p info-buffer)
+         (kill-buffer info-buffer))
        ;; Cleanup: kill any new Info buffers that were created
        (dolist (buffer (buffer-list))
-         (when (and (string-match-p "\\*info\\*\\(<[0-9]+>\\)?$" (buffer-name buffer))
+         (when (and (buffer-live-p buffer)
+                    (string-match-p "\\*info\\*\\(<[0-9]+>\\)?$" (buffer-name buffer))
                     (not (member (buffer-name buffer) info-buffer-names-before)))
            (kill-buffer buffer)))))))
 
@@ -914,7 +917,8 @@ Both line and column numbers are 1-based.  This search respects
               (t
                (error "Search command '%s' failed with status %d for regexp: %s"
                       (car command) status regexp))))
-         (kill-buffer output-buffer))))))
+         (when (buffer-live-p output-buffer)
+           (kill-buffer output-buffer)))))))
 
 ;;; Tool Registrations
 
