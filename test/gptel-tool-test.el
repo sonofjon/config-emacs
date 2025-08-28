@@ -1110,11 +1110,21 @@ Optional keyword parameters:
   :tags '(unit emacs)
   (unwind-protect
       (progn
-        ;; Test function source retrieval:
-        (let ((result (aj8/gptel-tool-read-function "aj8/gptel-tool-read-documentation")))
-          ;; Assert function source contains expected fragment or valid function representation
-          (should (or (string-match-p "(defun aj8/gptel-tool-read-documentation" result)
-                      (string-match-p "#\\[" result))))
+        ;; Test function source retrieval with a built-in Emacs function:
+        (let ((result (aj8/gptel-tool-read-function "vc-sccs-registered")))
+          ;; Assert function source contains expected content
+          (should (string-match-p "(defun vc-sccs-registered" result)))
+
+        ;; Test with a non-byte-compiled function:
+        (require 'aj8-lisp)
+        (let ((result (aj8/gptel-tool-read-function "aj8/system-package-name")))
+          ;; Assert function source contains expected content
+          (should (string-match-p "(defun aj8/system-package-name" result)))
+
+        ;; Test built-in primitive function:
+        (let ((result (aj8/gptel-tool-read-function "car")))
+          ;; Assert built-in primitive returns expected message
+          (should (string-match-p "built-in primitive" result)))
 
         ;; Test missing function errors:
         ;; Mode 1: tool re-signals the error
@@ -1128,10 +1138,13 @@ Optional keyword parameters:
             (should (string-equal
                      "tool: aj8_read_function: Error: Function 'non-existent-function-xyz' is not defined."
                      result)))))
-    (when (get-buffer "project.el")
-      (kill-buffer "project.el"))
-    (when (get-buffer "project.el.gz")
-      (kill-buffer "project.el.gz"))))
+    (when (get-buffer "loaddefs.el")
+      (kill-buffer "loaddefs.el"))
+    (when (get-buffer "loaddefs.el.gz")
+      (kill-buffer "loaddefs.el.gz"))
+    ;; (when (get-buffer "aj8-lisp.el")
+    ;;   (kill-buffer "aj8-lisp.el"))
+    ))
 
 (ert-deftest test-aj8-read-library ()
   "Test `aj8/gptel-tool-read-library'."
