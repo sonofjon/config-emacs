@@ -13,6 +13,7 @@
 ;; Libraries required for these tests
 (require 'gptel)
 (require 'aj8-gptel)
+(require 'aj8-lisp)
 
 ;; Ensure straight quotes in error messages that we match against
 (setq text-quoting-style 'straight)
@@ -1032,7 +1033,10 @@ Optional keyword parameters:
      ;; Assert nil edits should succeed and do nothing
      (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" nil)
      ;; Assert buffer should still remain unchanged
-     (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))))
+     (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
+
+   ;; Clean up any Ediff buffers created during testing
+   (aj8/ediff-cleanup-buffers))
 
 (ert-deftest test-aj8-apply-buffer-line-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'."
@@ -1090,7 +1094,10 @@ Optional keyword parameters:
     ;; Assert nil edits should succeed and do nothing
     (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" nil)
     ;; Assert buffer should still remain unchanged
-    (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))))
+    (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
+
+   ;; Clean up any Ediff buffers created during testing
+   (aj8/ediff-cleanup-buffers))
 
 ;;; 3.3. Category: Emacs
 
