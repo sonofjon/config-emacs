@@ -1254,25 +1254,26 @@ Optional keyword parameters:
    ;; Test project file listing:
    (let ((root default-directory))
      (let ((buf (find-file-noselect (expand-file-name "src/code.el"))))
-       (with-current-buffer buf
-         (let ((lines (split-string (aj8/gptel-tool-project-list-files t) "\n" t))
-               (fname (file-name-nondirectory (buffer-file-name buf)))
-               (rel (file-relative-name (buffer-file-name buf) root)))
-           ;; Assert file appears in project listing output
-           (should (string-match-p "src/code.el" (aj8/gptel-tool-project-list-files)))
-           ;; Assert exact no-counts line "NAME: PATH" entry exists
-           (let* ((no-counts-lines (split-string (aj8/gptel-tool-project-list-files) "\n" t))
-                  (expected (format "%s: %s" fname rel)))
-             (should (member expected no-counts-lines)))
-           ;; Assert exact counts line: "NAME: PATH (N lines) exists
-           (should (member (format "%s: %s (%d lines)" fname rel 1) lines))
-           ;; Assert all include-counts entries end with "(N lines)"
-           (should (cl-every (lambda (s) (string-match-p "^[^:]+: .+ ([0-9]+ lines)$" s)) lines))
-           (let ((expected (format "%s: %s (%d lines)" fname rel 1)))
-             ;; Assert exact line count format is present in output
-             (should (member expected lines)))))
-       (when (buffer-live-p buf)
-         (kill-buffer buf))))
+       (unwind-protect
+           (with-current-buffer buf
+             (let ((lines (split-string (aj8/gptel-tool-project-list-files t) "\n" t))
+                   (fname (file-name-nondirectory (buffer-file-name buf)))
+                   (rel (file-relative-name (buffer-file-name buf) root)))
+               ;; Assert file appears in project listing output
+               (should (string-match-p "src/code.el" (aj8/gptel-tool-project-list-files)))
+               ;; Assert exact no-counts line "NAME: PATH" entry exists
+               (let* ((no-counts-lines (split-string (aj8/gptel-tool-project-list-files) "\n" t))
+                      (expected (format "%s: %s" fname rel)))
+                 (should (member expected no-counts-lines)))
+               ;; Assert exact counts line: "NAME: PATH (N lines) exists
+               (should (member (format "%s: %s (%d lines)" fname rel 1) lines))
+               ;; Assert all include-counts entries end with "(N lines)"
+               (should (cl-every (lambda (s) (string-match-p "^[^:]+: .+ ([0-9]+ lines)$" s)) lines))
+               (let ((expected (format "%s: %s (%d lines)" fname rel 1)))
+                 ;; Assert exact line count format is present in output
+                 (should (member expected lines)))))
+         (when (buffer-live-p buf)
+           (kill-buffer buf)))))
 
    ;; Test non-project directory errors:
    (let* ((tmpdir (make-temp-file "aj8-non-project" t)))
