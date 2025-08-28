@@ -1985,4 +1985,4 @@ interactions with an LLM."
     (switch-to-buffer "*Gptel Tool Test Instructions*")
     (message "Gptel tool test scenario created! Check the instructions buffer.")))
 
-(provide 'gptel-test)
+(provide 'gptel-tool-test)
