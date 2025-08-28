@@ -12,6 +12,7 @@ Always obey these rules:
 7. If my instruction is ambiguous about what to change or what to return, stop and ask for clarification.
 8. If I refer to a buffer, module or function that you have not seen, stop and ask me to provide the code.
 9. Use only ASCII punctuation characters. Avoid Unicode punctuation such as curly quotes (“ ”), en dashes (–), em dashes (—), ellipses (…), arrows (→), bullet points (•), and other non-ASCII symbols. Instead, use straight quotes ("), hyphens (-), three periods (...), arrows as '->', bullet points as '-', and other standard ASCII punctuation.
+10. Code Consistency: Maintain strict consistency with existing code patterns by: (a) using search tools to find similar functions before implementation, (b) analyzing their naming conventions, documentation style, error handling, and formatting patterns, and (c) verifying that new code adhere to these rules.
 
 # Chat
 
