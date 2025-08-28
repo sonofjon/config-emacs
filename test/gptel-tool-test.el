@@ -1372,14 +1372,14 @@ Optional keyword parameters:
 
 ;;; 3.5. Category: Test
 
-(ert-deftest test-aj8-ert-run-unit-tool ()
+(ert-deftest test-aj8-ert-run-unit ()
   "Test `aj8/gptel-tool-ert-run-unit'."
   :tags '(unit test)
   (let ((result (aj8/gptel-tool-ert-run-unit)))
     ;; Assert the function returns a status string and does not error
     (should (stringp result))))
 
-(ert-deftest test-aj8-ert-run-by-name-tool ()
+(ert-deftest test-aj8-ert-run-by-name ()
   "Test `aj8/gptel-tool-ert-run-by-name'."
   :tags '(unit test)
    ;; Test basic test running functionality:
@@ -1402,14 +1402,14 @@ Optional keyword parameters:
                "tool: aj8_ert_run_by_name: Error: No ERT test found named NON_EXISTENT_TEST"
                res)))))
 
-(ert-deftest test-aj8-ert-list-unit-tests-tool ()
+(ert-deftest test-aj8-ert-list-unit-tests ()
   "Test `aj8/gptel-tool-ert-list-unit-tests'."
   :tags '(unit test)
   ;; Test basic test listing functionality:
   (let* ((result (aj8/gptel-tool-ert-list-unit-tests))
          (lines (split-string result "\n" t)))
     ;; Assert the list includes this test as a full line
-    (should (member "test-aj8-ert-list-unit-tests-tool" lines)))
+    (should (member "test-aj8-ert-list-unit-tests" lines)))
   ;; Test missing test errors:
   (cl-letf (((symbol-function 'ert-select-tests) (lambda (&rest _) nil)))
     (let ((result (aj8/gptel-tool-ert-list-unit-tests)))
