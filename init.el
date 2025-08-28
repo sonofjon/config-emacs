@@ -2921,7 +2921,8 @@ Elisp code explicitly in arbitrary buffers.")
     :key (gptel-api-key-from-auth-source
           "openrouter.ai" "apikey")
     :stream t
-    :models '(moonshotai/kimi-k2
+    :models '(deepseek/deepseek-chat-v3.1
+              moonshotai/kimi-k2
               qwen/qwen3-coder
               qwen/qwen3-coder:free))
   ;; Enable word-wrap
