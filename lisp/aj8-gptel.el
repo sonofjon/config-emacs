@@ -788,11 +788,14 @@ page."
                      (string-match-p "\\*info\\*\\(<[0-9]+>\\)?$" (buffer-name buf)))
                    (buffer-list)))))
      (unwind-protect
-         (with-current-buffer info-buffer
-           (Info-goto-node (format "(elisp)%s" node-name))
-           (buffer-string))
-       (when (buffer-live-p info-buffer)
-         (kill-buffer info-buffer))
+         (with-temp-buffer
+           (emacs-lisp-mode)
+           (let ((result (Info-goto-node (format "(elisp)%s" node-name))))
+             (unless result (error "Cannot find Info node for '%s'." node-name))
+             (let ((info-buffer (get-buffer "*info*")))
+               (unless info-buffer (error "Not documented as a node: %s" node-name))
+               (with-current-buffer info-buffer
+                 (buffer-string)))))
        ;; Cleanup: kill any new Info buffers that were created
        (dolist (buffer (buffer-list))
          (when (and (buffer-live-p buffer)
