@@ -53,7 +53,7 @@ Examples:
   Correct:
     1) Use a search tool to find a string -> match at line M.
     2) Use the read-buffer-region tool on a tight window around the match, e.g. start = M-20, count = P (where P <= the tool's line-count cap).
-    3) If more lines are needed, request the next sequential P-size chunk(s).
+    3) If more lines are needed, request another chunk of lines.
 
 # Applications
 
