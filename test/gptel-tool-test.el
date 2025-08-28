@@ -628,9 +628,7 @@ Optional keyword parameters:
   "Test `aj8/gptel-tool-replace-buffer-line'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
-   "*test-edit-line*" "Line A
-Line B
-Line C"
+   "*test-edit-line*" "Line A\nLine B\nLine C"
    ;; Test error handling for invalid line numbers:
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
@@ -650,12 +648,11 @@ Line C"
        (should (string-equal
                 "tool: aj8_replace_buffer_line: Error: END-LINE exceeds buffer length (3)."
                 result))))
+
    ;; Test line replacement:
    (aj8/gptel-tool-replace-buffer-line "*test-edit-line*" 2 "X")
    ;; Assert specified line is replaced with new content
-   (should (string-equal (buffer-string) "Line A
-X
-Line C")))
+   (should (string-equal (buffer-string) "Line A\nX\nLine C")))
 
   ;; Test error handling for non-existent buffers:
   ;; Mode 1: tool re-signals the error
@@ -674,10 +671,7 @@ Line C")))
   "Test `aj8/gptel-tool-replace-buffer-lines'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
-   "*test-edit-buffer-lines*" "Line A
-Line B
-Line C
-Line D"
+   "*test-edit-buffer-lines*" "Line A\nLine B\nLine C\nLine D"
    ;; Test error handling for invalid line ranges:
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
