@@ -1370,6 +1370,52 @@ Optional keyword parameters:
            (when (file-directory-p tmpdir)
              (delete-directory tmpdir t))))))))
 
+;;; 3.5. Category: Test
+
+(ert-deftest test-aj8-ert-run-unit-tool ()
+  "Test `aj8/gptel-tool-ert-run-unit'."
+  :tags '(unit test)
+  (let ((result (aj8/gptel-tool-ert-run-unit)))
+    ;; Assert the function returns a status string and does not error
+    (should (stringp result))))
+
+(ert-deftest test-aj8-ert-run-by-name-tool ()
+  "Test `aj8/gptel-tool-ert-run-by-name'."
+  :tags '(unit test)
+   ;; Test basic test running functionality:
+  (let ((success (aj8/gptel-tool-ert-run-by-name "test-aj8-open-file-in-buffer")))
+    ;; Assert success message matches expected format
+    (should (string-equal
+             "Ran ERT test test-aj8-open-file-in-buffer; inspect '*ert*' buffer for results."
+             success)))
+
+  ;; Test unknown test errors:
+  ;; Mode 1: tool re-signals the error
+  (let ((aj8/gptel-tool-return-error nil))
+    ;; Assert error is signaled for an unknown test name
+    (should-error (aj8/gptel-tool-ert-run-by-name "NON_EXISTENT_TEST") :type 'error))
+  ;; Mode 2: tool returns the error as a string
+  (let ((aj8/gptel-tool-return-error t))
+    (let ((res (aj8/gptel-tool-ert-run-by-name "NON_EXISTENT_TEST")))
+      ;; Assert formatted error string matches expected error message
+      (should (string-equal
+               "tool: aj8_ert_run_by_name: Error: No ERT test found named NON_EXISTENT_TEST"
+               res)))))
+
+(ert-deftest test-aj8-ert-list-unit-tests-tool ()
+  "Test `aj8/gptel-tool-ert-list-unit-tests'."
+  :tags '(unit test)
+  ;; Test basic test listing functionality:
+  (let* ((result (aj8/gptel-tool-ert-list-unit-tests))
+         (lines (split-string result "\n" t)))
+    ;; Assert the list includes this test as a full line
+    (should (member "test-aj8-ert-list-unit-tests-tool" lines)))
+  ;; Test missing test errors:
+  (cl-letf (((symbol-function 'ert-select-tests) (lambda (&rest _) nil)))
+    (let ((result (aj8/gptel-tool-ert-list-unit-tests)))
+      ;; Assert exact no-tests message when no unit tests are loaded
+      (should (string-equal "No loaded ERT unit tests found." result)))))
+
 ;;;; 4. Integration Tests (ert-deftest)
 
 ;;; 4.1. Category: Tool Definition and Invocation
@@ -1417,7 +1463,10 @@ in the `gptel-tools' alist."
                           "aj8_project_list_files"
                           ;; "aj8_project_find_files"
                           "aj8_project_find_files_glob"
-                          "aj8_project_search_regexp")))
+                          "aj8_project_search_regexp"
+                          "aj8_ert_run_unit"
+                          "aj8_ert_run_by_name"
+                          "aj8_ert_list_unit_tests")))
     (dolist (tool-name expected-tools)
       ;; Assert the tool is registered in `gptel-tools'
       (should (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools)))))
@@ -1448,7 +1497,9 @@ their associated functions can be called without error."
   (let ((no-arg-tools '("aj8_list_buffers"
                         "aj8_list_all_buffers"
                         "aj8_project_get_root"
-                        "aj8_project_list_files")))
+                        "aj8_project_list_files"
+                        "aj8_ert_run_unit"
+                        "aj8_ert_list_unit_tests")))
     ;; Test tools that don't require arguments
     (dolist (tool-name no-arg-tools)
       (let* ((tool-def (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools))
