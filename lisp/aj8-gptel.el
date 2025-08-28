@@ -67,6 +67,26 @@ for use with `prin1-to-string' for concise minibuffer display."
       out))
    (t obj)))
 
+(defun aj8/gptel-tool--filter-display-args (args)
+  "Filter ARGS property list for display in minibuffer messages.
+
+Remove keyword-value pairs where the value is `:json-false' (indicating
+no value was provided by the caller), but preserve pairs where the value
+is explicitly nil (indicating the caller explicitly set it to nil).
+
+ARGS is a property list of keyword-value pairs.
+
+Returns a new property list with only the desired pairs for display."
+  (when args
+    (let (result)
+      (while args
+        (let ((keyword (pop args))
+              (value (pop args)))
+          (unless (eq value :json-false)
+            (push value result)
+            (push keyword result))))
+      (nreverse result))))
+
 (defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional error-p)
   "Append to `*gptel-tool-log*' recording TOOL-NAME, ARGS and RESULT.
 If ERROR-P is non-nil record it as an error entry.  The record is
@@ -125,9 +145,12 @@ The macro binds local variables `tool-name' and `args' and then:
   returns or re-signals depending on `aj8/gptel-tool-return-error'."
   `(let ((tool-name ,tool-name)
          (args ,args))
-     (message "%s%s"
-              tool-name
-              (if args (concat " " (prin1-to-string (aj8/gptel-tool--truncate-for-display args))) ""))
+     (message "%s%s" tool-name
+              (if args
+                  (concat " " (prin1-to-string
+                               (aj8/gptel-tool--truncate-for-display
+                                (aj8/gptel-tool--filter-display-args args))))
+                ""))
      (condition-case err
          (let ((result (progn ,@body)))
            ;; (message "%s: Success" tool-name)
