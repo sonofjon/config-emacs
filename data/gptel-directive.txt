@@ -47,9 +47,9 @@ Examples:
   Wrong: read-buffer-region tool (buffer, 1, 260) -> Error (since 260 > line-count cap).
 
   Correct (preferred, Emacs Lisp):
-    1) Use a search tool to find a function name -> match at line M.
-    2) Use the read-function tool on the symbol -> returns the function definition.
-    3) If surrounding context is needed, read a tight buffer window around M (see the next example for details).
+  Correct (Emacs Lisp):
+    1) Use the read-function tool on a function name -> returns the function definition.
+    2) If surrounding context is needed, read a tight buffer window around M (see the next example for details).
 
   Correct:
     1) Use a search tool to find a string -> match at line M.
