@@ -1705,7 +1705,7 @@ The response is processed by `gptel--streaming-done-callback'."
            (should (string-equal (aj8/gptel-tool-file-to-buffer test-file) (buffer-name buffer)))
            (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer)) (expand-file-name test-file))))
        (when (buffer-live-p buffer)
-         (kill-buffer buffer)))))
+         (kill-buffer buffer))))))
 
 (ert-deftest test-gptel-tools-workflow-project ()
   "Simulate a workflow using project tools."
@@ -1733,7 +1733,7 @@ The response is processed by `gptel--streaming-done-callback'."
            (should (string-match-p "code.el" open-buffers))
            (should (string-match-p "src/code.el" open-buffers)))
        (when (buffer-live-p buf)
-         (kill-buffer buf)))))
+         (kill-buffer buf))))))
 
 (ert-deftest test-gptel-tools-workflow-emacs ()
   "Simulate a workflow using Emacs introspection tools."
