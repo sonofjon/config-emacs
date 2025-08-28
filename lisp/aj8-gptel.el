@@ -747,14 +747,27 @@ returns the content of that Info page."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_info_symbol"
    (list :symbol-name symbol-name)
-   (with-temp-buffer
-     (emacs-lisp-mode)
-     (let ((result (info-lookup-symbol (intern symbol-name))))
-       (unless result (error "Cannot find Info node for symbol '%s'." symbol-name))
-       (let ((info-buffer (get-buffer "*info*")))
-         (unless info-buffer (error "Not documented as a symbol: %s" symbol-name))
-         (with-current-buffer info-buffer
-           (buffer-string)))))))
+   ;; Track existing Info buffers before lookup to enable targeted cleanup
+   (let ((info-buffer-names-before
+          (mapcar #'buffer-name
+                  (cl-remove-if-not
+                   (lambda (buf)
+                     (string-match-p "\\*info\\*\\(<[0-9]+>\\)?$" (buffer-name buf)))
+                   (buffer-list)))))
+     (unwind-protect
+         (with-temp-buffer
+           (emacs-lisp-mode)
+           (let ((result (info-lookup-symbol (intern symbol-name))))
+             (unless result (error "Cannot find Info node for symbol '%s'." symbol-name))
+             (let ((info-buffer (get-buffer "*info*")))
+               (unless info-buffer (error "Not documented as a symbol: %s" symbol-name))
+               (with-current-buffer info-buffer
+                 (buffer-string)))))
+       ;; Cleanup: kill any new Info buffers that were created
+       (dolist (buffer (buffer-list))
+         (when (and (string-match-p "\\*info\\*\\(<[0-9]+>\\)?$" (buffer-name buffer))
+                    (not (member (buffer-name buffer) info-buffer-names-before)))
+           (kill-buffer buffer)))))))
 
 (defun aj8/gptel-tool-read-info-node (node-name)
   "Return the contents of the Info node NODE-NAME.
@@ -766,12 +779,23 @@ page."
   (aj8/gptel-tool--with-tool
    "tool: aj8_read_info_node"
    (list :node-name node-name)
-   (let ((info-buffer (get-buffer-create "*info-node*")))
+   ;; Track existing Info buffers  before lookup to enable targeted cleanup
+   (let ((info-buffer-names-before
+          (mapcar #'buffer-name
+                  (cl-remove-if-not
+                   (lambda (buf)
+                     (string-match-p "\\*info\\*\\(<[0-9]+>\\)?$" (buffer-name buf)))
+                   (buffer-list)))))
      (unwind-protect
          (with-current-buffer info-buffer
            (Info-goto-node (format "(elisp)%s" node-name))
            (buffer-string))
-       (kill-buffer info-buffer)))))
+       (kill-buffer info-buffer)
+       ;; Cleanup: kill any new Info buffers that were created
+       (dolist (buffer (buffer-list))
+         (when (and (string-match-p "\\*info\\*\\(<[0-9]+>\\)?$" (buffer-name buffer))
+                    (not (member (buffer-name buffer) info-buffer-names-before)))
+           (kill-buffer buffer)))))))
 
 ;; Project
 
