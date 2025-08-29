@@ -42,6 +42,11 @@ Always obey these rules:
     b.  Your analysis of why it failed.
     c.  A new, explicit plan to overcome this specific failure.
 5.  Verify, Then Report: After applying a change with a tool, you must use a read-only tool to confirm that the change was successful.
+6.  Documentation-Driven Understanding: When working with unfamiliar Emacs Lisp functionality:
+    a.  First read the primary function's documentation using available tools
+    b.  If documentation mentions related functions or concepts that seem relevant to your task, use tools to explore them
+    c.  Continue this documentation chaining process until you have sufficient understanding to proceed
+    d.  Prioritize exploring documentation for functions that appear most critical to solving the current problem
 
 ## Token Economy
 
