@@ -969,7 +969,10 @@ Both line and column numbers are 1-based.  This search respects
   (aj8/gptel-tool--with-tool
    "tool: aj8_ert_run_unit" nil
    (require 'ert)
-   (ert '(tag unit))
+   (let ((result (ert '(tag unit))))
+     (when result
+       (message "ERT returned: %S" result))
+     nil)
    "Ran ERT unit tests; inspect '*ert*' buffer for results."))
 
 (defun aj8/gptel-tool-ert-run-by-name (test-name)
@@ -982,7 +985,9 @@ TEST-NAME is the string name of the ERT test symbol to run."
    (let ((sym (intern test-name)))
      (unless (get sym 'ert--test)
        (error "No ERT test found named %s" test-name))
-     (ert sym)
+     (let ((result (ert sym)))
+       (when result
+         (message "ERT returned: %S" result)))
      (format "Ran ERT test %s; inspect '*ert*' buffer for results." test-name))))
 
 (defun aj8/gptel-tool-ert-list-unit-tests ()
