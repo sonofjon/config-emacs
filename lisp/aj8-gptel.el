@@ -83,8 +83,8 @@ Returns a new property list with only the desired pairs for display."
         (let ((keyword (pop args))
               (value (pop args)))
           (unless (eq value :json-false)
-            (push value result)
-            (push keyword result))))
+            (push keyword result)
+            (push value result))))
       (nreverse result))))
 
 (defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional error-p)
