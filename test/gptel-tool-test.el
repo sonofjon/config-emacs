@@ -1374,7 +1374,7 @@ Optional keyword parameters:
 
 (ert-deftest test-aj8-ert-run-unit ()
   "Test `aj8/gptel-tool-ert-run-unit'."
-  :tags '(unit test)
+  :tags '(integration test)
   (let ((result (aj8/gptel-tool-ert-run-unit)))
     ;; Assert the function returns a status string and does not error
     (should (stringp result))))
