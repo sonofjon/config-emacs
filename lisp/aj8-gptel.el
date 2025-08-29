@@ -247,7 +247,9 @@ line."
 ;;                       requested aj8/gptel-tool-max-lines))
 ;;              (goto-line start-line)
 ;;              (let ((start-pos (point)))
-;;                (goto-line end-line)
+;;                (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
+;;                  (goto-char (point-min))
+;;                  (forward-line (1- end-line)))
 ;;                (let ((end-pos (line-end-position)))
 ;;                  (buffer-substring-no-properties start-pos end-pos))))))))))
 
@@ -402,7 +404,9 @@ The text is inserted at the beginning of the specified line."
            (when (> line-number total-lines)
              (error "Error: LINE-NUMBER (%d) exceeds buffer length (%d)."
                     line-number total-lines))
-           (goto-line line-number)
+           (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
+             (goto-char (point-min))
+             (forward-line (1- line-number)))
            (insert text))))
      (format "Text successfully inserted into buffer %s at line %d." buffer-name line-number))))
 
@@ -474,12 +478,15 @@ equal to LINE-NUMBER."
              (error "Error: END-LINE must be >= START-LINE"))
            (when (> end-line total-lines)
              (error "Error: END-LINE exceeds buffer length (%d)." total-lines))
-           (goto-line start-line)
-           (let ((beg (point)))
-             (goto-line end-line)
-             (end-of-line)
-             (delete-region beg (point))
-             (insert content)))))
+           (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
+             (goto-char (point-min))
+             (forward-line (1- start-line))
+             (let ((beg (point)))
+               (goto-char (point-min))
+               (forward-line (1- end-line))
+               (end-of-line)
+               (delete-region beg (point))
+               (insert content))))))
      (format "Line range %d-%d in buffer '%s' successfully replaced."
              start-line end-line buffer-name))))
 
@@ -574,7 +581,9 @@ subsequent line numbers."
                             old-string)
                       failures)
               (save-excursion
-                (goto-line line-number)
+                (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
+                  (goto-char (point-min))
+                  (forward-line (1- line-number)))
                 (cond
                  ((eq edit-type 'line)
                   (let ((line-start (point)))
