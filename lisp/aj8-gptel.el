@@ -281,15 +281,18 @@ available lines."
                     requested-start total-lines))
            (let* ((start-line requested-start)
                   (end-line (min total-lines (+ start-line (1- requested-count)))))
-             (let ((start-pos
-                    (let ((inhibit-messages t))
-                      (goto-line start-line)
-                      (point)))
-                   (end-pos
-                    (let ((inhibit-messages t))
-                      (goto-line end-line)
-                      (line-end-position))))
-               (buffer-substring-no-properties start-pos end-pos)))))))))
+             (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
+               (let ((start-pos
+                      (save-excursion
+                        (goto-char (point-min))
+                        (forward-line (1- start-line))
+                        (point)))
+                     (end-pos
+                      (save-excursion
+                        (goto-char (point-min))
+                        (forward-line (1- end-line))
+                        (line-end-position))))
+                 (buffer-substring-no-properties start-pos end-pos))))))))))
 
 (defun aj8/gptel-tool-list-buffers (&optional include-counts)
   "Return a newline-separated string of open file-backed buffers.
