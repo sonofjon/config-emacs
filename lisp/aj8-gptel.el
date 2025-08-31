@@ -772,9 +772,16 @@ buffer only; the original buffer is not modified by this command."
                    (find-library-name library-name)
                  (error nil))))
      (unless file (error "Library '%s' not found." library-name))
-     (with-temp-buffer
-       (insert-file-contents file)
-       (buffer-string)))))
+     (let* ((buffer (find-file-noselect file))
+            (original-name (buffer-name buffer))
+            (clean-name (replace-regexp-in-string "\\.gz$" "" original-name)))
+       ;; Rename buffer to remove .gz extension if present
+       (unless (string= original-name clean-name)
+         (with-current-buffer buffer
+           (rename-buffer clean-name t)))
+       ;; Return the buffer contents
+       (with-current-buffer buffer
+         (buffer-string))))))
 
 (defun aj8/gptel-tool-read-info-symbol (symbol-name)
   "Return the contents of the Info node for SYMBOL-NAME.
