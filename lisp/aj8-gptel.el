@@ -1381,14 +1381,14 @@ This action requires manual user review. After calling this tool, you must stop 
                      :description "If non-nil, include the number of lines in the result."))
  :category "emacs")
 
-(gptel-make-tool
- :function #'aj8/gptel-tool-read-library
- :name "aj8_read_library"
- :description "Return the source code for an Emacs library or package."
- :args (list '(:name "library-name"
-                     :type string
-                     :description "The name of the library or package to return source code for."))
- :category "emacs")
+;; (gptel-make-tool
+;;  :function #'aj8/gptel-tool-read-library
+;;  :name "aj8_read_library"
+;;  :description "Return the source code for an Emacs library or package."
+;;  :args (list '(:name "library-name"
+;;                      :type string
+;;                      :description "The name of the library or package to return source code for."))
+;;  :category "emacs")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-info-symbol
