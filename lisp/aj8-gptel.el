@@ -763,6 +763,31 @@ buffer only; the original buffer is not modified by this command."
                  (format "Function '%s' source could not be located." function-name)))
            (error (format "Error finding function '%s': %s" function-name (error-message-string err))))))))))
 
+(defun aj8/gptel-tool-load-library (library-name &optional include-counts)
+  "Load LIBRARY-NAME into a buffer."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_load_library"
+   (list :library-name library-name :include-counts include-counts)
+   (let ((file (condition-case nil
+                   (find-library-name library-name)
+                 (error nil))))
+     (unless file (error "Library '%s' not found." library-name))
+     (let* ((buffer (find-file-noselect file))
+            (original-name (buffer-name buffer))
+            (clean-name (replace-regexp-in-string "\\.gz$" "" original-name)))
+       ;; Rename buffer to remove .gz extension if present
+       (unless (string= original-name clean-name)
+         (with-current-buffer buffer
+           (rename-buffer clean-name t)))
+       ;; Return confirmation with buffer info
+       (let ((base-message (format "Library '%s' loaded into buffer '%s'"
+                                   library-name clean-name)))
+         (if include-counts
+             (format "%s (%d lines)." base-message
+                     (with-current-buffer buffer
+                       (count-lines (point-min) (point-max))))
+           (format "%s." base-message)))))))
+
 (defun aj8/gptel-tool-read-library (library-name)
   "Return the source code of LIBRARY-NAME."
   (aj8/gptel-tool--with-tool
@@ -1342,6 +1367,18 @@ This action requires manual user review. After calling this tool, you must stop 
  :args (list '(:name "function-name"
                      :type string
                      :description "The name of the function to return the code for."))
+ :category "emacs")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-load-library
+ :name "aj8_load_library"
+ :description "Load an Emacs library or package into a buffer."
+ :args (list '(:name "library-name"
+                     :type string
+                     :description "The name of the library or package to load into a buffer.")
+               '(:name "include-counts"
+                     :type boolean
+                     :description "If non-nil, include the number of lines in the result."))
  :category "emacs")
 
 (gptel-make-tool
