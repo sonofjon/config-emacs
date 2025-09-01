@@ -1682,7 +1682,7 @@ This action requires manual user review. After calling this tool, you must stop 
  :name "aj8_ert_run_unit"
  :description "Run all ERT unit tests. Returns a short status. Inspect buffer '*ert*' for results."
  :args '()
- :category "testing")
+ :category "test")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-ert-run-by-name
@@ -1691,14 +1691,14 @@ This action requires manual user review. After calling this tool, you must stop 
  :args '((:name "test-name"
                 :type string
                 :description "The name of the ERT test symbol to run."))
- :category "testing")
+ :category "test")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-ert-list-unit-tests
  :name "aj8_ert_list_unit_tests"
  :description "Return a newline-separated list of names for loaded ERT unit tests."
  :args '()
- :category "testing")
+ :category "test")
 
 ;;; Initialization
 ;;   Initializes gptel-tools with all the registered tools.  This is only
