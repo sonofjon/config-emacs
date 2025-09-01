@@ -881,6 +881,44 @@ page."
                     (not (member (buffer-name buffer) info-buffer-names-before)))
            (kill-buffer buffer)))))))
 
+(defun aj8/gptel-tool-eval-buffer (buffer-name)
+  "Evaluate all Emacs Lisp code in BUFFER-NAME.
+This evaluates the current buffer content, including any unsaved changes."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_eval_buffer"
+   (list :buffer-name buffer-name)
+   (let ((buf (get-buffer buffer-name)))
+     (unless buf
+       (error "Error: Buffer '%s' not found." buffer-name))
+     (with-current-buffer buf
+       (eval-buffer))
+     (format "Successfully evaluated all code in buffer %s." buffer-name))))
+
+(defun aj8/gptel-tool-eval-function (function-name buffer-name)
+  "Evaluate FUNCTION-NAME in BUFFER-NAME.
+This finds the function definition in the buffer and evaluates it,
+including any unsaved changes."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_eval_function"
+   (list :function-name function-name :buffer-name buffer-name)
+   (let ((buf (get-buffer buffer-name)))
+     (unless buf
+       (error "Error: Buffer '%s' not found." buffer-name))
+     (with-current-buffer buf
+       (save-excursion
+         (goto-char (point-min))
+         (let ((case-fold-search nil))
+           (unless (re-search-forward 
+                    (format "^(defun %s\\b" (regexp-quote function-name)) nil t)
+             (error "Error: Function '%s' not found in buffer '%s'." 
+                    function-name buffer-name)))
+         (beginning-of-line)
+         (let ((start (point)))
+           (forward-sexp)
+           (eval-region start (point)))))
+     (format "Successfully evaluated function %s from buffer %s." 
+             function-name buffer-name))))
+
 ;; Project
 
 (defun aj8/gptel-tool-project-get-root ()
@@ -1530,6 +1568,27 @@ This action requires manual user review. After calling this tool, you must stop 
  :name "aj8_read_info_node"
  :description "Return the contents of a specific info node from the Emacs Lisp manual."
  :args (list '(:name "node-name" :type string :description "The name of the node in the Emacs Lisp manual."))
+ :category "emacs")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-eval-buffer
+ :name "aj8_eval_buffer"
+ :description "Evaluate all Emacs Lisp code in BUFFER-NAME. This evaluates the current buffer content, including any unsaved changes."
+ :args '((:name "buffer-name"
+                :type string
+                :description "The name of the buffer to evaluate."))
+ :category "emacs")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-eval-function
+ :name "aj8_eval_function"
+ :description "Evaluate FUNCTION-NAME in BUFFER-NAME. This finds the function definition in the buffer and evaluates it, including any unsaved changes."
+ :args '((:name "function-name"
+                :type string
+                :description "The name of the function to evaluate.")
+         (:name "buffer-name"
+                :type string
+                :description "The name of the buffer containing the function."))
  :category "emacs")
 
 ;; Project
