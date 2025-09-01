@@ -87,21 +87,28 @@ Returns a new property list with only the desired pairs for display."
             (push value result))))
       (nreverse result))))
 
+(defvar aj8/gptel-tool--suppress-logging nil
+  "When non-nil, suppress tool call logging to `*gptel-tool-log*'.
+This is useful during test execution to avoid cluttering the log with
+internal tool calls made by the test code itself.")
+
 (defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional error-p)
   "Append to `*gptel-tool-log*' recording TOOL-NAME, ARGS and RESULT.
 If ERROR-P is non-nil record it as an error entry.  The record is
-machine-readable (prin1) and timestamped."
-  (let ((buf (get-buffer-create "*gptel-tool-log*"))
-        (ts (format-time-string "%Y-%m-%d %T")))
-    (with-current-buffer buf
-      (goto-char (point-max))
-      (insert (format "%s | %s | args=%s | %s=%s\n"
-                      ts
-                      tool-name
-                      (prin1-to-string args)
-                      (if error-p "error" "result")
-                      (prin1-to-string (or result "<nil>"))))
-      (force-window-update (get-buffer-window buf)))))
+machine-readable (prin1) and timestamped.  Does nothing if
+`aj8/gptel-tool--suppress-logging' is non-nil."
+  (unless aj8/gptel-tool--suppress-logging
+    (let ((buf (get-buffer-create "*gptel-tool-log*"))
+          (ts (format-time-string "%Y-%m-%d %T")))
+      (with-current-buffer buf
+        (goto-char (point-max))
+        (insert (format "%s | %s | args=%s | %s=%s\n"
+                        ts
+                        tool-name
+                        (prin1-to-string args)
+                        (if error-p "error" "result")
+                        (prin1-to-string (or result "<nil>"))))
+        (force-window-update (get-buffer-window buf))))))
 
 (defvar aj8/gptel-tool-return-error t
   "When non-nil, tools return errors to the caller.
@@ -1070,7 +1077,10 @@ Returns a formatted string with test results and detailed debugging information.
      (unless (get sym 'ert--test)
        (error "No ERT test found named %s" test-name))
      ;; Run test synchronously and capture results
-     (let* ((stats (ert-run-tests-batch sym))
+     ;; Suppress logging during test execution to avoid cluttering the log
+     ;; with internal tool calls made by the test code
+     (let* ((aj8/gptel-tool--suppress-logging t)
+            (stats (ert-run-tests-batch sym))
             (summary (aj8/ert-parse-test-results stats))
             (detailed-info (aj8/ert-format-detailed-results stats)))
        ;; Format results for LLM consumption with both summary and details
