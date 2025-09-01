@@ -2948,6 +2948,36 @@ Elisp code explicitly in arbitrary buffers.")
   (add-to-list 'gptel-directives
                '(debug . "You are a large language model and a debugger. Diagnose issues and suggest fixes.")
                t)
+  (defvar aj8/gptel-redundant-tools
+    '("aj8_list_buffers"
+      "aj8_insert_in_buffer"
+      "aj8_replace_buffer_line"
+      "aj8_delete_buffer_line"
+      "aj8_delete_buffer_string"
+      "aj8_apply_buffer_line_edits"
+      "aj8_apply_buffer_line_edits_with_review")
+    "A list of redundant tool names.")
+  (defvar aj8/gptel-unwanted-tools
+    '("edit_buffer"
+      "view_buffer"
+      "read_file"
+      "list_directory"
+      "aj8_replace_buffer"
+      "aj8_ert_run_unit")
+    "A list of unwanted tool names.")
+  (defvar aj8/gptel-temporary-tools
+    '("create_file"
+      "create_directory")
+    "A list of temporary tool names.")
+  (defun aj8/gptel--get-minimal-tools ()
+    "Return a list of all known GPTel tools, excluding the redundant ones.
+This is a helper function for the GPTel presets."
+    (let ((all-tools (mapcan (lambda (category) (mapcar #'car (cdr category))) gptel--known-tools)))
+      (seq-remove (lambda (tool)
+                    (or (member tool aj8/gptel-redundant-tools)
+                        (member tool aj8/gptel-unwanted-tools)
+                        (member tool aj8/gptel-temporary-tools)))
+                  all-tools)))
   ;; Preset: chat
   (gptel-make-preset 'chat
     :description "Preset for chat"
@@ -2967,6 +2997,7 @@ Elisp code explicitly in arbitrary buffers.")
     :temperature 0.1
     :use-context 'user
     :include-reasoning "*gptel-reasoning*"
+    :tools (aj8/gptel--get-minimal-tools)
     :use-tools t))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
