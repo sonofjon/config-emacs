@@ -1049,7 +1049,29 @@ STATS is an ERT stats object containing test results."
                                       (mapconcat
                                        (lambda (form) (format "  %s" form))
                                        (ert-test-result-should-forms result)
-                                       "\n"))))))))
+                                       "\n")))))
+
+              ;; Add backtrace for failed tests
+              (let ((backtrace (ert-test-result-with-condition-backtrace result)))
+                (when backtrace
+                  (with-temp-buffer
+                    (let ((print-level 8)
+                          (print-length 50))
+                      (insert (backtrace-to-string backtrace)))
+                    (goto-char (point-min))
+                    (let ((truncated-backtrace ""))
+                      (while (not (eobp))
+                        (let* ((start (point))
+                               (end (line-end-position))
+                               (truncated-end (min end (+ start 70))))
+                          (setq truncated-backtrace
+                                (concat truncated-backtrace
+                                        (buffer-substring-no-properties start truncated-end)
+                                        "\n")))
+                        (forward-line 1))
+                      (setq detailed-info
+                            (concat detailed-info
+                                    (format "Backtrace:\n%s" truncated-backtrace))))))))))
         detailed-info))))
 
 (defun aj8/gptel-tool-ert-run-by-name (test-name)
