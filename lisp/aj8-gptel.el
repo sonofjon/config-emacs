@@ -1162,7 +1162,7 @@ STATS is an ERT stats object containing test results."
               (ert--print-test-for-ewoc entry))
             (insert "\n")))))
 
-    (buffer-string)))
+    (buffer-substring-no-properties (point-min) (point-max))))
 
 (defun aj8/gptel-tool-ert-run-by-name (test-name)
   "Run a single ERT test by name and return results.
