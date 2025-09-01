@@ -1586,7 +1586,8 @@ This action requires manual user review. After calling this tool, you must stop 
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to evaluate."))
- :category "emacs")
+ :category "emacs"
+ :confirm t)
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-eval-function
@@ -1598,7 +1599,8 @@ This action requires manual user review. After calling this tool, you must stop 
          (:name "buffer-name"
                 :type string
                 :description "The name of the buffer containing the function."))
- :category "emacs")
+ :category "emacs"
+ :confirm t)
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-eval-expression
@@ -1607,7 +1609,8 @@ This action requires manual user review. After calling this tool, you must stop 
  :args '((:name "expression"
                 :type string
                 :description "The Emacs Lisp expression to evaluate."))
- :category "emacs")
+ :category "emacs"
+ :confirm t)
 
 ;; Project
 

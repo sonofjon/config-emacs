@@ -2876,6 +2876,8 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-cache t)
   ;; Enable experimental options
   (gptel-expert-commands t)
+  ;; confirm tool calls with ':confirm t' in the tool registration
+  (gptel-confirm-tool-calls 'auto)
   :config
   ;; Load custom tools
   (require 'aj8-gptel)
