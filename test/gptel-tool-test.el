@@ -1586,8 +1586,8 @@ Optional keyword parameters:
    ;; Test basic test running functionality:
   (let ((success (aj8/gptel-tool-ert-run-by-name "test-aj8-open-file-in-buffer")))
     ;; Assert success message matches expected format
-    (should (string-equal
-             "Ran ERT test test-aj8-open-file-in-buffer; inspect '*ert*' buffer for results."
+    (should (string-prefix-p
+             "Ran 1 test, 1 passed, 0 failed"
              success)))
 
   ;; Test unknown test errors:
@@ -1600,7 +1600,7 @@ Optional keyword parameters:
     (let ((res (aj8/gptel-tool-ert-run-by-name "NON_EXISTENT_TEST")))
       ;; Assert formatted error string matches expected error message
       (should (string-equal
-               "tool: aj8_ert_run_by_name: Error: No ERT test found named NON_EXISTENT_TEST"
+               "tool: aj8_ert_run_by_name: No ERT test found named NON_EXISTENT_TEST"
                res)))))
 
 (ert-deftest test-aj8-ert-list-unit-tests ()
