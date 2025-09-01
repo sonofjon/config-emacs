@@ -1035,13 +1035,6 @@ STATS is an ERT stats object containing test results."
                     (concat detailed-info
                             (format "\n\nTest: %s\n" test-name)))
 
-              ;; Add test messages (output from the test)
-              (let ((messages (ert-test-result-messages result)))
-                (when (and messages (not (string-empty-p messages)))
-                  (setq detailed-info
-                        (concat detailed-info
-                                (format "Messages:\n%s\n" messages)))))
-
               ;; Add failure information for failed tests
               (let ((condition (ert-test-result-with-condition-condition result)))
                 (setq detailed-info
@@ -1056,14 +1049,7 @@ STATS is an ERT stats object containing test results."
                                       (mapconcat
                                        (lambda (form) (format "  %s" form))
                                        (ert-test-result-should-forms result)
-                                       "\n")))))
-
-              ;; Add test duration
-              (let ((duration (ert-test-result-duration result)))
-                (when duration
-                  (setq detailed-info
-                        (concat detailed-info
-                                (format "Duration: %.3fs\n" duration))))))))
+                                       "\n"))))))))
         detailed-info))))
 
 (defun aj8/gptel-tool-ert-run-by-name (test-name)
