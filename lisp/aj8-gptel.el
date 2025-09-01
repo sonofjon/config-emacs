@@ -2,6 +2,15 @@
 
 ;;; Helpers
 
+(defun aj8/gptel-tool--find-file-noselect-quiet (file-path)
+  "Like `find-file-noselect' but suppress 'same file' messages.
+FILE-PATH is the path to the file to open."
+  (let ((inhibit-message-regexps
+         (cons ".*are the same file$" inhibit-message-regexps))
+        (set-message-functions
+         (cons #'inhibit-message set-message-functions)))
+    (find-file-noselect file-path)))
+
 (defun aj8/gptel-tool--truncate-for-display (obj)
   "Return a truncated, display-safe copy of OBJ for minibuffer messages.
 
@@ -210,7 +219,7 @@ line."
      (error "Error: No such file: %s" file-path))
    (when (file-directory-p file-path)
      (error "Error: '%s' is a directory." file-path))
-   (let ((buf (find-file-noselect file-path)))
+   (let ((buf (aj8/gptel-tool--find-file-noselect-quiet file-path)))
      (format "File '%s' opened in buffer '%s'." file-path (buffer-name buf)))))
 
 ;; (defun aj8/gptel-tool-read-buffer (buffer-name)
@@ -779,7 +788,7 @@ buffer only; the original buffer is not modified by this command."
                    (find-library-name library-name)
                  (error nil))))
      (unless file (error "Library '%s' not found." library-name))
-     (let* ((buffer (find-file-noselect file))
+     (let* ((buffer (aj8/gptel-tool--find-file-noselect-quiet file))
             (original-name (buffer-name buffer))
             (clean-name (replace-regexp-in-string "\\.gz$" "" original-name)))
        ;; Rename buffer to remove .gz extension if present
@@ -804,7 +813,7 @@ buffer only; the original buffer is not modified by this command."
                    (find-library-name library-name)
                  (error nil))))
      (unless file (error "Library '%s' not found." library-name))
-     (let* ((buffer (find-file-noselect file))
+     (let* ((buffer (aj8/gptel-tool--find-file-noselect-quiet file))
             (original-name (buffer-name buffer))
             (clean-name (replace-regexp-in-string "\\.gz$" "" original-name)))
        ;; Rename buffer to remove .gz extension if present
