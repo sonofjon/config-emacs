@@ -996,31 +996,96 @@ Both line and column numbers are 1-based.  This search respects
 
 ;; Test
 
-(defun aj8/gptel-tool-ert-run-unit ()
-  "Run all ERT tests tagged 'unit'."
-  (aj8/gptel-tool--with-tool
-   "tool: aj8_ert_run_unit" nil
-   (require 'ert)
-   (let ((result (ert '(tag unit))))
-     (when result
-       (message "ERT returned: %S" result))
-     nil)
-   "Ran ERT unit tests; inspect '*ert*' buffer for results."))
+(defun aj8/ert-parse-test-results (stats)
+  "Parse ERT stats into a human-readable summary string."
+  (let ((total (ert-stats-total stats))
+        (passed-expected (ert--stats-passed-expected stats))
+        (failed-expected (ert--stats-failed-expected stats))
+        (failed-unexpected (ert--stats-failed-unexpected stats))
+        (passed-unexpected (ert--stats-passed-unexpected stats))
+        (skipped (ert--stats-skipped stats)))
+    (let ((passed (+ passed-expected failed-expected))
+          (failed (+ passed-unexpected failed-unexpected)))
+      (format "Ran %d test%s, %d passed, %d failed%s"
+              total (if (= total 1) "" "s")
+              passed failed
+              (if (> skipped 0) (format ", %d skipped" skipped) "")))))
+
+(defun aj8/ert-format-detailed-results (stats)
+  "Format detailed ERT test results for LLM consumption.
+STATS is an ERT stats object containing test results."
+  (let ((total (ert-stats-total stats))
+        (detailed-info ""))
+    (when (> total 0)
+      (let ((tests (ert--stats-tests stats))
+            (results (ert--stats-test-results stats)))
+        (dotimes (i total)
+          (let* ((test (aref tests i))
+                 (result (aref results i))
+                 (test-name (ert-test-name test)))
+            (when (and result (ert-test-result-with-condition-p result))
+              (setq detailed-info
+                    (concat detailed-info
+                            (format "\n\nTest: %s\n" test-name)))
+
+              ;; Add test messages (output from the test)
+              (let ((messages (ert-test-result-messages result)))
+                (when (and messages (not (string-empty-p messages)))
+                  (setq detailed-info
+                        (concat detailed-info
+                                (format "Messages:\n%s\n" messages)))))
+
+              ;; Add failure information for failed tests
+              (let ((condition (ert-test-result-with-condition-condition result)))
+                (setq detailed-info
+                      (concat detailed-info
+                              (format "Condition:\n  %s\n" condition))))
+
+              ;; Add failed assertions
+              (when (ert-test-result-should-forms result)
+                (setq detailed-info
+                      (concat detailed-info
+                              (format "Failed assertions:\n%s\n"
+                                      (mapconcat
+                                       (lambda (form) (format "  %s" form))
+                                       (ert-test-result-should-forms result)
+                                       "\n")))))
+
+              ;; Add test duration
+              (let ((duration (ert-test-result-duration result)))
+                (when duration
+                  (setq detailed-info
+                        (concat detailed-info
+                                (format "Duration: %.3fs\n" duration))))))))
+        detailed-info))))
 
 (defun aj8/gptel-tool-ert-run-by-name (test-name)
-  "Run a single ERT test by name.
-
-TEST-NAME is the string name of the ERT test symbol to run."
+  "Run a single ERT test by name and return parsed results.
+TEST-NAME is the string name of the ERT test symbol to run.
+Returns a formatted string with test results and detailed debugging information."
   (aj8/gptel-tool--with-tool
    "tool: aj8_ert_run_by_name" (list :test-name test-name)
    (require 'ert)
    (let ((sym (intern test-name)))
      (unless (get sym 'ert--test)
        (error "No ERT test found named %s" test-name))
-     (let ((result (ert sym)))
-       (when result
-         (message "ERT returned: %S" result)))
-     (format "Ran ERT test %s; inspect '*ert*' buffer for results." test-name))))
+     ;; Run test synchronously and capture results
+     (let* ((stats (ert-run-tests-batch sym))
+            (summary (aj8/ert-parse-test-results stats))
+            (detailed-info (aj8/ert-format-detailed-results stats)))
+       ;; Format results for LLM consumption with both summary and details
+       (format "ERT Test Results for %s:\n%s%s"
+               test-name
+               summary
+               detailed-info)))))
+
+(defun aj8/gptel-tool-ert-run-unit ()
+  "Run all ERT tests tagged 'unit'."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_ert_run_unit" nil
+   (require 'ert)
+   (ert '(tag unit))
+   "Ran ERT unit tests; inspect '*ert*' buffer for results."))
 
 (defun aj8/gptel-tool-ert-list-unit-tests ()
   "List names of loaded ERT tests tagged 'unit'."
