@@ -1074,28 +1074,71 @@ STATS is an ERT stats object containing test results."
                                     (format "Backtrace:\n%s" truncated-backtrace))))))))))
         detailed-info))))
 
+(defun aj8/ert-format-simple-results (stats)
+  "Format ERT test results using ERT's own print function directly.
+STATS is an ERT stats object containing test results."
+  (with-temp-buffer
+    ;; Set up buffer-local variable that ert--print-test-for-ewoc expects
+    (setq-local ert--results-stats stats)
+
+    ;; Summary line
+    (let ((total (ert-stats-total stats))
+          (passed (+ (ert--stats-passed-expected stats)
+                     (ert--stats-failed-expected stats)))
+          (failed (+ (ert--stats-passed-unexpected stats)
+                     (ert--stats-failed-unexpected stats))))
+      (insert (format "Ran %d test%s, %d passed, %d failed\n\n"
+                      total
+                      (if (= total 1) "" "s")
+                      passed failed)))
+
+    ;; Use ERT's own formatting function for each test
+    (let ((tests (ert--stats-tests stats))
+          (results (ert--stats-test-results stats)))
+      (dotimes (i (length tests))
+        (let ((test (aref tests i))
+              (result (aref results i)))
+          (when result   ; only show tests that actually ran
+            ;; Create ewoc entry and use ERT's own print function
+            (let ((entry (make-ert--ewoc-entry
+                         :test test
+                         :hidden-p nil)))
+              (ert--print-test-for-ewoc entry))
+            (insert "\n")))))
+
+    (buffer-string)))
+
 (defun aj8/gptel-tool-ert-run-by-name (test-name)
-  "Run a single ERT test by name and return parsed results.
-TEST-NAME is the string name of the ERT test symbol to run.
-Returns a formatted string with test results and detailed debugging information."
+  "Run a single ERT test by name and return results.
+TEST-NAME is the string name of the ERT test symbol to run."
   (aj8/gptel-tool--with-tool
    "tool: aj8_ert_run_by_name" (list :test-name test-name)
    (require 'ert)
    (let ((sym (intern test-name)))
      (unless (get sym 'ert--test)
        (error "No ERT test found named %s" test-name))
+
      ;; Run test synchronously and capture results
-     ;; Suppress logging during test execution to avoid cluttering the log
-     ;; with internal tool calls made by the test code
+     ;;   Suppress logging during test execution to avoid cluttering the log
+     ;;   with internal tool calls made by the test code
+
+     ;; Simple output
      (let* ((aj8/gptel-tool--suppress-logging t)
-            (stats (ert-run-tests-batch sym))
-            (summary (aj8/ert-parse-test-results stats))
-            (detailed-info (aj8/ert-format-detailed-results stats)))
-       ;; Format results for LLM consumption with both summary and details
-       (format "ERT Test Results for %s:\n%s%s"
-               test-name
-               summary
-               detailed-info)))))
+            (stats (ert-run-tests-batch sym)))
+       ;; Format results similar to ERT buffer output
+       (aj8/ert-format-simple-results stats)))))
+
+     ;; Detailed output
+     ;; (let* ((aj8/gptel-tool--suppress-logging t)
+     ;;        (stats (ert-run-tests-batch sym))
+     ;;        (summary (aj8/ert-parse-test-results stats))
+     ;;        (detailed-info (aj8/ert-format-detailed-results stats)))
+     ;;   ;; Format results for LLM consumption with both summary and details
+     ;;   (format "ERT Test Results for %s:\n%s%s"
+     ;;           test-name
+     ;;           summary
+     ;;           detailed-info)))))
+
 
 (defun aj8/gptel-tool-ert-run-unit ()
   "Run all ERT tests tagged 'unit'."
