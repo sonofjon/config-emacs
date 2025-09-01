@@ -1151,7 +1151,7 @@
   (switch-to-buffer-obey-display-actions t)
   ;; Window rules
   (display-buffer-alist
-   '(;;
+   `(;;
      ;; Example using mp-make-display-buffer-matcher-function
      ;;
      ;; (,(make-display-buffer-matcher-function '(magit-mode))
