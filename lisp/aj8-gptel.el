@@ -919,6 +919,15 @@ including any unsaved changes."
      (format "Successfully evaluated function %s from buffer %s." 
              function-name buffer-name))))
 
+(defun aj8/gptel-tool-eval-expression (expression)
+  "Evaluate an Emacs Lisp EXPRESSION and return the result.
+WARNING: This can execute arbitrary code and should be used with caution."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_eval_expression"
+   (list :expression expression)
+   (let ((result (eval (read expression))))
+     (format "Expression result: %s" (prin1-to-string result)))))
+
 ;; Project
 
 (defun aj8/gptel-tool-project-get-root ()
@@ -1589,6 +1598,15 @@ This action requires manual user review. After calling this tool, you must stop 
          (:name "buffer-name"
                 :type string
                 :description "The name of the buffer containing the function."))
+ :category "emacs")
+
+(gptel-make-tool
+ :function #'aj8/gptel-tool-eval-expression
+ :name "aj8_eval_expression"
+ :description "Evaluate an Emacs Lisp EXPRESSION and return the result. WARNING: This can execute arbitrary code and should be used with caution."
+ :args '((:name "expression"
+                :type string
+                :description "The Emacs Lisp expression to evaluate."))
  :category "emacs")
 
 ;; Project
