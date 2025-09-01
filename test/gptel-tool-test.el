@@ -1257,6 +1257,169 @@ Optional keyword parameters:
                "tool: aj8_read_info_node: No such node or anchor: Bogus Node 123"
                result)))))
 
+(ert-deftest test-aj8-eval-buffer ()
+  "Test `aj8/gptel-tool-eval-buffer'."
+  :tags '(unit emacs)
+  (with-temp-buffer-with-content
+   "*test-eval-buffer*" "(setq test-eval-result 42)\n(+ 1 2 3)"
+   ;; Test basic buffer evaluation functionality:
+   (let ((result (aj8/gptel-tool-eval-buffer "*test-eval-buffer*")))
+     ;; Assert evaluation returns success message
+     (should (string-equal result "Successfully evaluated all code in buffer *test-eval-buffer*."))
+     ;; Assert side effects occurred (variable was set)
+     (should (eq test-eval-result 42)))
+
+  ;; Test error handling for non-existent buffer:
+  ;; Mode 1: tool re-signals the error
+  (let ((aj8/gptel-tool-return-error nil))
+    ;; Assert error is signaled when buffer not found
+    (should-error (aj8/gptel-tool-eval-buffer "*non-existent-buffer*") :type 'error))
+  ;; Mode 2: tool returns the error as a string
+  (let ((aj8/gptel-tool-return-error t))
+    (let ((result (aj8/gptel-tool-eval-buffer "*non-existent-buffer*")))
+      ;; Assert error message describes buffer not found
+      (should (string-match "Buffer '\\*non-existent-buffer\\*' not found" result))))
+
+  ;; Test error handling for syntax errors:
+  (with-temp-buffer-with-content
+   "*test-eval-syntax-error*" "(defun broken-syntax (x\n  ;; missing closing paren"
+   ;; Mode 1: tool re-signals the error
+   (let ((aj8/gptel-tool-return-error nil))
+     ;; Assert error is signaled for malformed code
+     (should-error (aj8/gptel-tool-eval-buffer "*test-eval-syntax-error*") :type 'error))
+   ;; Mode 2: tool returns the error as a string
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-eval-buffer "*test-eval-syntax-error*")))
+       ;; Assert error message indicates evaluation failure
+       (should (string-match "tool: aj8_eval_buffer:" result)))))))
+
+(ert-deftest test-aj8-eval-function ()
+  "Test `aj8/gptel-tool-eval-function'."
+  :tags '(unit emacs)
+  (with-temp-buffer-with-content
+   "*test-eval-function*" "(defun test-func-one (x) (* x 2))\n\n(defun test-func-two (y) (+ y 10))\n\n(setq some-var 5)"
+   ;; Test basic function evaluation functionality:
+   (let ((result (aj8/gptel-tool-eval-function "test-func-one" "*test-eval-function*")))
+     ;; Assert function evaluation returns success message
+     (should (string-equal result "Successfully evaluated function test-func-one from buffer *test-eval-function*."))
+     ;; Assert function is now defined and callable
+     (should (eq (test-func-one 5) 10)))
+
+   ;; Test evaluating second function:
+   (let ((result (aj8/gptel-tool-eval-function "test-func-two" "*test-eval-function*")))
+     ;; Assert function evaluation returns success message
+     (should (string-equal result "Successfully evaluated function test-func-two from buffer *test-eval-function*."))
+     ;; Assert function is now defined and callable
+     (should (eq (test-func-two 5) 15))))
+
+  ;; Test error handling for non-existent buffer:
+  ;; Mode 1: tool re-signals the error
+  (let ((aj8/gptel-tool-return-error nil))
+    ;; Assert error is signaled when buffer not found
+    (should-error (aj8/gptel-tool-eval-function "some-func" "*non-existent-buffer*") :type 'error))
+  ;; Mode 2: tool returns the error as a string
+  (let ((aj8/gptel-tool-return-error t))
+    (let ((result (aj8/gptel-tool-eval-function "some-func" "*non-existent-buffer*")))
+      ;; Assert error message describes buffer not found
+      (should (string-match "Buffer '\\*non-existent-buffer\\*' not found" result))))
+
+  ;; Test error handling for function not found:
+  (with-temp-buffer-with-content
+   "*test-eval-no-func*" "(setq some-var 42)\n(+ 1 2 3)"
+   ;; Mode 1: tool re-signals the error
+   (let ((aj8/gptel-tool-return-error nil))
+     ;; Assert error is signaled when function not found
+     (should-error (aj8/gptel-tool-eval-function "non-existent-func" "*test-eval-no-func*") :type 'error))
+   ;; Mode 2: tool returns the error as a string
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-eval-function "non-existent-func" "*test-eval-no-func*")))
+       ;; Assert error message describes function not found
+       (should (string-match "Function 'non-existent-func' not found" result)))))
+
+  ;; Test error handling for malformed function:
+  (with-temp-buffer-with-content
+   "*test-eval-bad-func*" "(defun broken-func (x\n  ;; missing closing paren and body"
+   ;; Mode 1: tool re-signals the error
+   (let ((aj8/gptel-tool-return-error nil))
+     ;; Assert error is signaled for malformed function
+     (should-error (aj8/gptel-tool-eval-function "broken-func" "*test-eval-bad-func*") :type 'error))
+   ;; Mode 2: tool returns the error as a string
+   (let ((aj8/gptel-tool-return-error t))
+     (let ((result (aj8/gptel-tool-eval-function "broken-func" "*test-eval-bad-func*")))
+       ;; Assert error message indicates evaluation failure
+       (should (string-match "tool: aj8_eval_function:" result))))))
+
+(ert-deftest test-aj8-eval-expression ()
+  "Test `aj8/gptel-tool-eval-expression'."
+  :tags '(unit emacs)
+  ;; Test basic expression evaluation:
+  (let ((result (aj8/gptel-tool-eval-expression "(+ 1 2 3)")))
+    ;; Assert arithmetic expression evaluates correctly
+    (should (string-equal result "Expression result: 6")))
+
+  ;; Test string expression:
+  (let ((result (aj8/gptel-tool-eval-expression "(concat \"hello\" \" \" \"world\")")))
+    ;; Assert string concatenation works
+    (should (string-equal result "Expression result: \"hello world\"")))
+
+  ;; Test list expression:
+  (let ((result (aj8/gptel-tool-eval-expression "(list 1 2 3)")))
+    ;; Assert list creation works
+    (should (string-equal result "Expression result: (1 2 3)")))
+
+  ;; Test boolean expressions:
+  (let ((result (aj8/gptel-tool-eval-expression "(> 5 3)")))
+    ;; Assert boolean true
+    (should (string-equal result "Expression result: t")))
+  (let ((result (aj8/gptel-tool-eval-expression "(< 5 3)")))
+    ;; Assert boolean false (nil)
+    (should (string-equal result "Expression result: nil")))
+
+  ;; Test variable assignment and retrieval:
+  (aj8/gptel-tool-eval-expression "(setq test-eval-var 123)")
+  (let ((result (aj8/gptel-tool-eval-expression "test-eval-var")))
+    ;; Assert variable was set and can be retrieved
+    (should (string-equal result "Expression result: 123")))
+
+  ;; Test function call:
+  (aj8/gptel-tool-eval-expression "(defun test-eval-func (x) (* x x))")
+  (let ((result (aj8/gptel-tool-eval-expression "(test-eval-func 4)")))
+    ;; Assert function call works
+    (should (string-equal result "Expression result: 16")))
+
+  ;; Test error handling for syntax errors:
+  ;; Mode 1: tool re-signals the error
+  (let ((aj8/gptel-tool-return-error nil))
+    ;; Assert error is signaled for malformed expression
+    (should-error (aj8/gptel-tool-eval-expression "(+ 1 2") :type 'error))
+  ;; Mode 2: tool returns the error as a string
+  (let ((aj8/gptel-tool-return-error t))
+    (let ((result (aj8/gptel-tool-eval-expression "(+ 1 2")))
+      ;; Assert error message indicates syntax error
+      (should (string-match "tool: aj8_eval_expression:" result))))
+
+  ;; Test error handling for runtime errors:
+  ;; Mode 1: tool re-signals the error
+  (let ((aj8/gptel-tool-return-error nil))
+    ;; Assert error is signaled for undefined function
+    (should-error (aj8/gptel-tool-eval-expression "(undefined-function-xyz 1 2)") :type 'error))
+  ;; Mode 2: tool returns the error as a string
+  (let ((aj8/gptel-tool-return-error t))
+    (let ((result (aj8/gptel-tool-eval-expression "(undefined-function-xyz 1 2)")))
+      ;; Assert error message indicates runtime error
+      (should (string-match "tool: aj8_eval_expression:" result))))
+
+  ;; Test error handling for division by zero:
+  ;; Mode 1: tool re-signals the error
+  (let ((aj8/gptel-tool-return-error nil))
+    ;; Assert error is signaled for division by zero
+    (should-error (aj8/gptel-tool-eval-expression "(/ 1 0)") :type 'error))
+  ;; Mode 2: tool returns the error as a string
+  (let ((aj8/gptel-tool-return-error t))
+    (let ((result (aj8/gptel-tool-eval-expression "(/ 1 0)")))
+      ;; Assert error message indicates arithmetic error
+      (should (string-match "tool: aj8_eval_expression:" result)))))
+
 ;;; 3.3. Category: Project
 
 (ert-deftest test-aj8-project-get-root ()
