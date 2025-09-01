@@ -1099,7 +1099,7 @@ Optional keyword parameters:
   ;; Clean up any Ediff buffers created during testing
   (aj8/ediff-cleanup-buffers))
 
-;;; 3.3. Category: Emacs
+;;; 3.2. Category: Emacs
 
 (ert-deftest test-aj8-read-documentation ()
   "Test `aj8/gptel-tool-read-documentation'."
@@ -1257,7 +1257,7 @@ Optional keyword parameters:
                "tool: aj8_read_info_node: No such node or anchor: Bogus Node 123"
                result)))))
 
-;;; 3.4. Category: Project
+;;; 3.3. Category: Project
 
 (ert-deftest test-aj8-project-get-root ()
   "Test `aj8/gptel-tool-project-get-root'."
@@ -1408,7 +1408,7 @@ Optional keyword parameters:
            (when (file-directory-p tmpdir)
              (delete-directory tmpdir t))))))))
 
-;;; 3.5. Category: Test
+;;; 3.4. Category: Test
 
 (ert-deftest test-aj8-ert-run-unit ()
   "Test `aj8/gptel-tool-ert-run-unit'."
