@@ -1172,8 +1172,8 @@ STATS is an ERT stats object containing test results."
           (when result   ; only show tests that actually ran
             ;; Create ewoc entry and use ERT's own print function
             (let ((entry (make-ert--ewoc-entry
-                         :test test
-                         :hidden-p nil)))
+                          :test test
+                          :hidden-p nil)))
               (ert--print-test-for-ewoc entry))
             (insert "\n")))))
 
@@ -1573,7 +1573,7 @@ This action requires manual user review. After calling this tool, you must stop 
  :args (list '(:name "library-name"
                      :type string
                      :description "The name of the library or package to load into a buffer.")
-               '(:name "include-counts"
+             '(:name "include-counts"
                      :type boolean
                      :description "If non-nil, include the number of lines in the result."))
  :category "emacs")
