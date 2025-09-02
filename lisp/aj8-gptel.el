@@ -1,5 +1,10 @@
 ;;; aj8-gptel.el --- Tools for gptel -*- lexical-binding: t; -*-
 
+;;; Requirements
+
+;; LLM, Interface to pluggable llm backends
+(require 'llm)
+
 ;;; Helpers
 
 (defun aj8/gptel-tool--find-file-noselect-quiet (file-path)
@@ -10,14 +15,6 @@ FILE-PATH is the path to the file to open."
         (set-message-functions
          (cons #'inhibit-message set-message-functions)))
     (find-file-noselect file-path)))
-
-(defun aj8/gptel-tool--json-bool-to-elisp (value)
-  "Convert JSON boolean VALUE to proper Emacs Lisp boolean.
-
-Convert `:json-false' to nil and leave other values unchanged.  This is
-needed because JSON-RPC passes `:json-false' for false values which are
-truthy in Emacs Lisp."
-  (if (eq value :json-false) nil value))
 
 (defun aj8/gptel-tool--truncate-for-display (obj)
   "Return a truncated, display-safe copy of OBJ for minibuffer messages.
@@ -200,7 +197,8 @@ line."
      (unless buf
        (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
-       (let ((include-columns (aj8/gptel-tool--json-bool-to-elisp include-columns)))
+       (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-columns include-columns)))
+              (include-columns (plist-get normalized-args :include-columns)))
          (save-excursion
            (goto-char (point-min))
            (let ((results '()))
@@ -331,9 +329,10 @@ lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_buffers"
    (list :include-counts include-counts)
-   (let ((include-counts (aj8/gptel-tool--json-bool-to-elisp include-counts))
-         (lines '())
-         (proj (project-current)))
+   (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-counts include-counts)))
+          (include-counts (plist-get normalized-args :include-counts))
+          (lines '())
+          (proj (project-current)))
      (dolist (buffer (buffer-list))
        (when (buffer-file-name buffer)
          (with-current-buffer buffer
@@ -359,9 +358,10 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_all_buffers"
    (list :include-counts include-counts)
-   (let ((include-counts (aj8/gptel-tool--json-bool-to-elisp include-counts))
-         (lines '())
-         (proj (project-current)))
+   (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-counts include-counts)))
+          (include-counts (plist-get normalized-args :include-counts))
+          (lines '())
+          (proj (project-current)))
      (dolist (buffer (buffer-list))
        (with-current-buffer buffer
          (let* ((buf-name (buffer-name buffer))
@@ -807,7 +807,8 @@ buffer only; the original buffer is not modified by this command."
          (with-current-buffer buffer
            (rename-buffer clean-name t)))
        ;; Return confirmation with buffer info
-       (let ((include-counts (aj8/gptel-tool--json-bool-to-elisp include-counts)))
+       (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-counts include-counts)))
+              (include-counts (plist-get normalized-args :include-counts)))
          (let ((base-message (format "Library '%s' loaded into buffer '%s'"
                                      library-name clean-name)))
            (if include-counts
@@ -972,7 +973,8 @@ project root."
    (list :include-counts include-counts)
    (let ((project (project-current)))
      (unless project (error "Not inside a project."))
-     (let ((include-counts (aj8/gptel-tool--json-bool-to-elisp include-counts)))
+     (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-counts include-counts)))
+            (include-counts (plist-get normalized-args :include-counts)))
        (let* ((root (project-root project))
               (project-file-list (project-files project)))
          (mapconcat (lambda (f)
@@ -1008,7 +1010,8 @@ as \" (N lines)\".  This function respects .gitignore."
    (let ((proj (project-current)))
      (unless proj
        (error "No project found in the current context."))
-     (let ((include-counts (aj8/gptel-tool--json-bool-to-elisp include-counts)))
+     (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-counts include-counts)))
+            (include-counts (plist-get normalized-args :include-counts)))
        (let* ((root (project-root proj))
               ;; Get list of non-ignored files from project.el (absolute paths)
               (project-file-list (project-files proj))
@@ -1040,7 +1043,8 @@ Both line and column numbers are 1-based.  This search respects
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_search_regexp"
    (list :regexp regexp :include-columns include-columns)
-   (let ((include-columns (aj8/gptel-tool--json-bool-to-elisp include-columns)))
+   (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-columns include-columns)))
+          (include-columns (plist-get normalized-args :include-columns)))
      (let ((project (project-current)))
        (unless project (error "Not inside a project."))
        (let ((command (cond
