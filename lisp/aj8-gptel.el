@@ -1222,7 +1222,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-buffer-search-regexp
  :name "aj8_buffer_search_regexp"
- :description "Search BUFFER-NAME for content matching REGEXP. This returns a newline-separated string of matching lines. Each line is formatted as LINE:TEXT or, if INCLUDE-COLUMNS is non-nil, LINE:COLUMN:TEXT where LINE is 1-based and COLUMN is 0-based."
+ :description "Search a buffer for content matching a regexp. This returns a newline-separated string of matching lines. Each line is formatted as LINE:TEXT or, if 'include-columns' is non-nil, LINE:COLUMN:TEXT where LINE is 1-based and COLUMN is 0-based."
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to search.")
@@ -1255,7 +1255,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 ;; (gptel-make-tool
 ;;  :function #'aj8/gptel-tool-read-buffer-lines
 ;;  :name "aj8_read_buffer_lines"
-;;  :description (format "Read lines from a buffer; max lines per call: %d. Use chunking for larger ranges. START-LINE and END-LINE are optional 1-based line numbers; if START-LINE is nil, read from the beginning of the buffer. If END-LINE is nil, read to the end of the buffer." aj8/gptel-tool-max-lines)
+;;  :description (format "Read lines from a buffer; max lines per call: %d. Use chunking for larger ranges. 'start-line' and 'end-line' are optional 1-based line numbers; if 'start-line' is nil, read from the beginning of the buffer. If 'end-line' is nil, read to the end of the buffer." aj8/gptel-tool-max-lines)
 ;;  :args (list '( :name "buffer-name"
 ;;                 :type string
 ;;                 :description "The name of the buffer to read the contents of.")
@@ -1272,7 +1272,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-read-buffer-lines-count
  :name "aj8_read_buffer_lines_count"
- :description (format "Read lines from a buffer; max lines per call: %d. START and COUNT are optional and default to 1 and %d, respectively." aj8/gptel-tool-max-lines aj8/gptel-tool-max-lines)
+ :description (format "Read lines from a buffer; max lines per call: %d. 'start-line' and 'count' are optional and default to 1 and %d, respectively." aj8/gptel-tool-max-lines aj8/gptel-tool-max-lines)
  :args (list '( :name "buffer-name"
                 :type string
                 :description "The name of the buffer to read from.")
@@ -1290,7 +1290,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-buffers
  :name "aj8_list_buffers"
- :description "Return a newline-separated string listing all currently open buffers that are associated with a file. Each line is of the form \"NAME: PATH\" where NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
+ :description "Return a newline-separated string listing all currently open buffers that are associated with a file. Each line is of the form \"NAME: PATH\" where NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument 'include-count'S is non-nil, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
@@ -1300,7 +1300,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-all-buffers
  :name "aj8_list_all_buffers"
- :description "Return a newline-separated string listing all currently open buffers. Each line is either \"NAME: PATH\" for file-backed buffers or just \"NAME\" for non-file buffers. NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
+ :description "Return a newline-separated string listing all currently open buffers. Each line is either \"NAME: PATH\" for file-backed buffers or just \"NAME\" for non-file buffers. NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument 'include-count'S is non-nil, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
@@ -1367,7 +1367,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-edit-buffer-string
  :name "aj8_edit_buffer_string"
- :description "Edit a buffer by replacing a single instance of an exact string: The tool replaces a single instance of OLD-STRING with NEW-STRING in BUFFER-NAME. OLD-STRING is treated literally and may contain newline characters; it must occur exactly once. NEW-STRING may contain newline characters and will be inserted as-is."
+ :description "Edit a buffer by replacing a single instance of an exact string: The tool replaces a single instance of 'old-string' with 'new-string' in BUFFER-NAME. 'old-string' is treated literally and may contain newline characters; it must occur exactly once. 'new-string' may contain newline characters and will be inserted as-is."
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to edit.")
@@ -1391,7 +1391,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-replace-buffer-lines
  :name "aj8_replace_buffer_lines"
- :description "Replace a range of lines in a buffer with new content. The new content may contain newline characters. To replace a single line set 'start-line==end-line'. Line numbers are 1-based."
+ :description "Replace a range of lines in a buffer with new content. The new content may contain newline characters. To replace a single line set 'start-line' == 'end-line'. Line numbers are 1-based."
  :args (list '(:name "buffer-name" :type string
                      :description "The name of the buffer to modify.")
              '(:name "start-line" :type integer
@@ -1405,7 +1405,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-delete-buffer-string
  :name "aj8_delete_buffer_string"
- :description "Delete a single instance of an exact string from a buffer. OLD-STRING is treated literally and may contain newline characters; it must occur exactly once."
+ :description "Delete a single instance of an exact string from a buffer. 'old-string' is treated literally and may contain newline characters; it must occur exactly once."
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to edit.")
@@ -1425,7 +1425,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-delete-buffer-lines
  :name "aj8_delete_buffer_lines"
- :description "Delete a range of lines in a buffer. To delete a single line set 'start-line==end-line', Line numbers are 1-based."
+ :description "Delete a range of lines in a buffer. To delete a single line set 'start-line' == 'end-line'. Line numbers are 1-based."
  :args (list '(:name "buffer-name" :type string
                      :description "The name of the buffer to modify.")
              '(:name "start-line" :type integer
@@ -1591,7 +1591,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-eval-buffer
  :name "aj8_eval_buffer"
- :description "Evaluate all Emacs Lisp code in BUFFER-NAME. This evaluates the current buffer content, including any unsaved changes."
+ :description "Evaluate all Emacs Lisp code in a buffer. This evaluates the current buffer content, including any unsaved changes."
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to evaluate."))
@@ -1601,7 +1601,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-eval-function
  :name "aj8_eval_function"
- :description "Evaluate FUNCTION-NAME in BUFFER-NAME. This finds the function definition in the buffer and evaluates it, including any unsaved changes."
+ :description "Evaluate a function definition from a buffer. This finds the function definition in the buffer and evaluates it, including any unsaved changes."
  :args '((:name "function-name"
                 :type string
                 :description "The name of the function to evaluate.")
@@ -1614,7 +1614,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-eval-expression
  :name "aj8_eval_expression"
- :description "Evaluate an Emacs Lisp EXPRESSION and return the result. WARNING: This can execute arbitrary code and should be used with caution."
+ :description "Evaluate an Emacs Lisp expression and return the result. WARNING: This can execute arbitrary code and should be used with caution."
  :args '((:name "expression"
                 :type string
                 :description "The Emacs Lisp expression to evaluate."))
@@ -1633,7 +1633,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-list-files
  :name "aj8_project_list_files"
- :description "Return a newline-separated string listing all files in the current project. Each line contains a file base name followed by its path relative to the current project root. if the optional argument INCLUDE-COUNTS is non-nil, append the line count as \" (N lines).\""
+ :description "Return a newline-separated string listing all files in the current project. Each line contains a file base name followed by its path relative to the current project root. if the optional argument 'include-count'S is non-nil, append the line count as \" (N lines).\""
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
@@ -1652,7 +1652,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-find-files-glob
  :name "aj8_project_find_files_glob"
- :description "In the current project, find files matching a glob pattern. To search recursively, use the '**/' prefix. For example, a PATTERN of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory. The result is a newline-separated string where each line is \"NAME: PATH\", where NAME is the file's base name and PATH is the path relative to the current project root.  If the optional argument INCLUDE-COUNTS is non-nil append the number of lines as \" (N lines)\"."
+ :description "In the current project, find files matching a glob pattern. To search recursively, use the '**/' prefix. For example, a pattern of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory. The result is a newline-separated string where each line is \"NAME: PATH\", where NAME is the file's base name and PATH is the path relative to the current project root.  If the optional argument 'include-count'S is non-nil append the number of lines as \" (N lines)\"."
  :args '((:name "pattern"
                 :type string
                 :description "A glob pattern to match against the filenames in the project.")
@@ -1665,7 +1665,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-search-regexp
  :name "aj8_project_search_regexp"
- :description "In the current project, recursively search for content matching REGEXP. The tool returns a newline-separated string of matching lines. Each line includes: PATH:LINE:TEXT, where PATH is the file path relative to the current project root, LINE is the 1-based line number of the match, and TEXT is the matched line text. If the optional argument INCLUDE-COLUMNS is non-nil, the tool returns PATH:LINE:COLUMN:TEXT, where COLUMN is the 1-based column number of the match."
+ :description "In the current project, recursively search for content matching REGEXP. The tool returns a newline-separated string of matching lines. Each line includes: PATH:LINE:TEXT, where PATH is the file path relative to the current project root, LINE is the 1-based line number of the match, and TEXT is the matched line text. If the optional argument 'include-columns' is non-nil, the tool returns PATH:LINE:COLUMN:TEXT, where COLUMN is the 1-based column number of the match."
  :args '((:name "regexp"
                 :type string
                 :description "A regexp to search for in the project files. The regexp should be compatible with ripgrep or git grep.")
