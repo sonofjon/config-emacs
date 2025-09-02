@@ -223,7 +223,7 @@ line."
      (format "File '%s' opened in buffer '%s'." file-path (buffer-name buf)))))
 
 ;; (defun aj8/gptel-tool-read-buffer (buffer-name)
-;;   "Return the contents of BUFFER."
+;;   "Return the contents of BUFFER-NAME."
 ;;   (aj8/gptel-tool--with-tool
 ;;   "tool: my_read_buffer"
 ;;   (list :buffer buffer)
@@ -1222,7 +1222,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-buffer-search-regexp
  :name "aj8_buffer_search_regexp"
- :description "Search BUFFER for content matching REGEXP. This returns a newline-separated string of matching lines. Each line is formatted as LINE:TEXT or, if INCLUDE-COLUMNS is non-nil, LINE:COLUMN:TEXT where LINE is 1-based and COLUMN is 0-based."
+ :description "Search BUFFER-NAME for content matching REGEXP. This returns a newline-separated string of matching lines. Each line is formatted as LINE:TEXT or, if INCLUDE-COLUMNS is non-nil, LINE:COLUMN:TEXT where LINE is 1-based and COLUMN is 0-based."
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to search.")
@@ -1367,7 +1367,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-edit-buffer-string
  :name "aj8_edit_buffer_string"
- :description "Edit a buffer by replacing a single instance of an exact string: The tool replaces a single instance of OLD-STRING with NEW-STRING in BUFFER. OLD-STRING is treated literally and may contain newline characters; it must occur exactly once. NEW-STRING may contain newline characters and will be inserted as-is."
+ :description "Edit a buffer by replacing a single instance of an exact string: The tool replaces a single instance of OLD-STRING with NEW-STRING in BUFFER-NAME. OLD-STRING is treated literally and may contain newline characters; it must occur exactly once. NEW-STRING may contain newline characters and will be inserted as-is."
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to edit.")
