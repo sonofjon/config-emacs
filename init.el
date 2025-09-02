@@ -1907,6 +1907,16 @@ Elisp code explicitly in arbitrary buffers.")
      aj8/orderless-dispatch-prefixes-if-less
      aj8/orderless-dispatch-regexp-if-star
      aj8/orderless-dispatch-without-if-bang)))
+  ;; :config
+  ;; ;; Style dispatchers
+  ;; (defun prefixes-for-separators (pattern _index _total)
+  ;;   (when (string-match-p "^[^][^\\+*]*[./-][^][\\+*$]*$" pattern)
+  ;;     (cons 'orderless-prefixes pattern)))
+  ;; (setq orderless-style-dispatchers
+  ;;       '(orderless-affix-dispatch prefixes-for-separators))
+  ;; ;; Component separators
+  ;; (cl-pushnew '(?* . orderless-regexp) orderless-affix-dispatch-alist)
+  ;; (setq orderless-component-separator #'orderless-escapable-split-on-space))
 
 ;; vertico (VERTical Interactive COmpletion)
 ;;   TODO: Set up vertico-grid-mode (with vertico-multiform-mode?)?
@@ -2856,7 +2866,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Track media
   (gptel-track-media t)
   ;; Don't use Curl
-  ;; (gptel-use-curl nil)
+  (gptel-use-curl nil)
   ;; Don't show reasoning
   ;; (gptel-include-reasoning nil)
   ;; Ignore reasoning in requests
@@ -2890,7 +2900,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Use Flex processing
   ;;   https://platform.openai.com/docs/guides/flex-processing
   ;;   TODO: Only available for `o3-mini' and `o4-mini': perhaps apply setting to models instead of to backend
-  (setf (gptel-backend-request-params gptel--openai) '(:service_tier "flex"))
+  ;; (setf (gptel-backend-request-params gptel--openai) '(:service_tier "flex"))
   ;; Claude
   (gptel-make-anthropic "Claude"
     :key (gptel-api-key-from-auth-source
@@ -2929,6 +2939,8 @@ Elisp code explicitly in arbitrary buffers.")
               qwen/qwen3-coder:free))
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
+  ;; Reverse Markdown header levels
+  (add-hook 'gptel-mode-hook #'outline-headers-for-hash-mark-buffers)
   ;; Scroll window automatically
   (add-hook 'gptel-post-stream-hook #'gptel-auto-scroll)
   ;; Jump to next prompt after response
