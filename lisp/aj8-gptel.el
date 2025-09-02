@@ -1591,7 +1591,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-eval-buffer
  :name "aj8_eval_buffer"
- :description "Evaluate all Emacs Lisp code in a buffer. This evaluates the current buffer content, including any unsaved changes."
+ :description "Evaluate all Emacs Lisp code in a buffer. This evaluates the buffer's current content, including any unsaved changes."
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to evaluate."))
