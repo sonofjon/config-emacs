@@ -164,8 +164,11 @@ The macro binds local variables `tool-name' and `args' and then:
 - On error it delegates to
   `aj8/gptel-tool--report-and-return-or-signal', which messages/logs and
   returns or re-signals depending on `aj8/gptel-tool-return-error'."
-  `(let ((tool-name ,tool-name)
-         (args ,args))
+  `(let* ((tool-name ,tool-name)
+         (args ,args)
+         (args (llm-provider-utils--normalize-args args))
+         (include-counts (plist-get args :include-counts))
+         (include-columns (plist-get args :include-columns)))
      (message "%s%s" tool-name
               (if args
                   (concat " " (prin1-to-string
@@ -197,25 +200,23 @@ line."
      (unless buf
        (error "Error: Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
-       (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-columns include-columns)))
-              (include-columns (plist-get normalized-args :include-columns)))
-         (save-excursion
-           (goto-char (point-min))
-           (let ((results '()))
-             (condition-case err
-                 (while (re-search-forward regexp nil t)
-                   (let* ((match-pos (match-beginning 0))
-                          (line (line-number-at-pos match-pos))
-                          (col (save-excursion (goto-char match-pos) (current-column)))
-                          (line-str (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
-                     (push (if include-columns
-                               (format "%d:%d:%s" line col line-str)
-                             (format "%d:%s" line line-str))
-                           results)))
-               (error (error "Invalid regexp: %s" regexp)))
-             (if results
-                 (mapconcat #'identity (nreverse results) "\n")
-               (format "No matches found for regexp: %s" regexp)))))))))
+       (save-excursion
+         (goto-char (point-min))
+         (let ((results '()))
+           (condition-case err
+               (while (re-search-forward regexp nil t)
+                 (let* ((match-pos (match-beginning 0))
+                        (line (line-number-at-pos match-pos))
+                        (col (save-excursion (goto-char match-pos) (current-column)))
+                        (line-str (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
+                   (push (if include-columns
+                             (format "%d:%d:%s" line col line-str)
+                           (format "%d:%s" line line-str))
+                         results)))
+             (error (error "Invalid regexp: %s" regexp)))
+           (if results
+               (mapconcat #'identity (nreverse results) "\n")
+             (format "No matches found for regexp: %s" regexp))))))))
 
 (defun aj8/gptel-tool-open-file-in-buffer (file-path)
   "Open FILE-PATH into a visiting buffer."
@@ -329,9 +330,7 @@ lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_buffers"
    (list :include-counts include-counts)
-   (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-counts include-counts)))
-          (include-counts (plist-get normalized-args :include-counts))
-          (lines '())
+   (let ((lines '())
           (proj (project-current)))
      (dolist (buffer (buffer-list))
        (when (buffer-file-name buffer)
@@ -358,9 +357,7 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
   (aj8/gptel-tool--with-tool
    "tool: aj8_list_all_buffers"
    (list :include-counts include-counts)
-   (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-counts include-counts)))
-          (include-counts (plist-get normalized-args :include-counts))
-          (lines '())
+   (let ((lines '())
           (proj (project-current)))
      (dolist (buffer (buffer-list))
        (with-current-buffer buffer
@@ -807,15 +804,13 @@ buffer only; the original buffer is not modified by this command."
          (with-current-buffer buffer
            (rename-buffer clean-name t)))
        ;; Return confirmation with buffer info
-       (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-counts include-counts)))
-              (include-counts (plist-get normalized-args :include-counts)))
-         (let ((base-message (format "Library '%s' loaded into buffer '%s'"
-                                     library-name clean-name)))
-           (if include-counts
-               (format "%s (%d lines)." base-message
-                       (with-current-buffer buffer
-                         (count-lines (point-min) (point-max))))
-             (format "%s." base-message))))))))
+       (let ((base-message (format "Library '%s' loaded into buffer '%s'"
+                                   library-name clean-name)))
+         (if include-counts
+             (format "%s (%d lines)." base-message
+                     (with-current-buffer buffer
+                       (count-lines (point-min) (point-max))))
+           (format "%s." base-message)))))))
 
 (defun aj8/gptel-tool-read-library (library-name)
   "Return the source code of LIBRARY-NAME."
@@ -973,20 +968,18 @@ project root."
    (list :include-counts include-counts)
    (let ((project (project-current)))
      (unless project (error "Not inside a project."))
-     (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-counts include-counts)))
-            (include-counts (plist-get normalized-args :include-counts)))
-       (let* ((root (project-root project))
-              (project-file-list (project-files project)))
-         (mapconcat (lambda (f)
-                      (let* ((rel (file-relative-name f root))
-                             (name (file-name-nondirectory f)))
-                        (if include-counts
-                            (let ((nlines (with-temp-buffer
-                                            (insert-file-contents f)
-                                            (count-lines (point-min) (point-max)))))
-                              (format "%s: %s (%d lines)" name rel nlines))
-                          (format "%s: %s" name rel))))
-                    project-file-list "\n"))))))
+     (let ((root (project-root project))
+           (project-file-list (project-files project)))
+       (mapconcat (lambda (f)
+                    (let* ((rel (file-relative-name f root))
+                           (name (file-name-nondirectory f)))
+                      (if include-counts
+                          (let ((nlines (with-temp-buffer
+                                          (insert-file-contents f)
+                                          (count-lines (point-min) (point-max)))))
+                            (format "%s: %s (%d lines)" name rel nlines))
+                        (format "%s: %s" name rel))))
+                  project-file-list "\n")))))
 
 ;; (defun aj8/gptel-tool-project-find-files (pattern)
 ;;   "In the current project, find files whose filenames contain PATTERN.
@@ -1010,29 +1003,27 @@ as \" (N lines)\".  This function respects .gitignore."
    (let ((proj (project-current)))
      (unless proj
        (error "No project found in the current context."))
-     (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-counts include-counts)))
-            (include-counts (plist-get normalized-args :include-counts)))
-       (let* ((root (project-root proj))
-              ;; Get list of non-ignored files from project.el (absolute paths)
-              (project-file-list (project-files proj))
-              ;; Get list of files matching glob from filesystem (absolute paths)
-              (wildcard-file-list
-               (let ((default-directory root))
-                 ;; The 't' argument makes it return absolute paths
-                 (file-expand-wildcards pattern t)))
-              ;; Return the files present in both lists
-              (matched (seq-intersection project-file-list wildcard-file-list #'string-equal)))
-         ;; Return as newline-separated relative paths, with optional line counts
-         (mapconcat (lambda (f)
-                      (let* ((rel (file-relative-name f root))
-                             (name (file-name-nondirectory f)))
-                        (if include-counts
-                            (let ((nlines (with-temp-buffer
-                                            (insert-file-contents f)
-                                            (count-lines (point-min) (point-max)))))
-                              (format "%s: %s (%d lines)" name rel nlines))
-                          (format "%s: %s" name rel))))
-                    matched "\n"))))))
+     (let* ((root (project-root proj))
+            ;; Get list of non-ignored files from project.el (absolute paths)
+            (project-file-list (project-files proj))
+            ;; Get list of files matching glob from filesystem (absolute paths)
+            (wildcard-file-list
+             (let ((default-directory root))
+               ;; The 't' argument makes it return absolute paths
+               (file-expand-wildcards pattern t)))
+            ;; Return the files present in both lists
+            (matched (seq-intersection project-file-list wildcard-file-list #'string-equal)))
+       ;; Return as newline-separated relative paths, with optional line counts
+       (mapconcat (lambda (f)
+                    (let* ((rel (file-relative-name f root))
+                           (name (file-name-nondirectory f)))
+                      (if include-counts
+                          (let ((nlines (with-temp-buffer
+                                          (insert-file-contents f)
+                                          (count-lines (point-min) (point-max)))))
+                            (format "%s: %s (%d lines)" name rel nlines))
+                        (format "%s: %s" name rel))))
+                  matched "\n")))))
 
 (defun aj8/gptel-tool-project-search-regexp (regexp &optional include-columns)
   "In the current project, recursively search for content matching REGEXP.
@@ -1043,38 +1034,36 @@ Both line and column numbers are 1-based.  This search respects
   (aj8/gptel-tool--with-tool
    "tool: aj8_project_search_regexp"
    (list :regexp regexp :include-columns include-columns)
-   (let* ((normalized-args (llm-provider-utils--normalize-args (list :include-columns include-columns)))
-          (include-columns (plist-get normalized-args :include-columns)))
-     (let ((project (project-current)))
-       (unless project (error "Not inside a project."))
-       (let ((command (cond
-                       ((executable-find "rg")
-                        (let ((base (list "rg" "--no-heading" "--line-number" "--hidden" "--glob" "!.git/**"))
-                              (flags (if include-columns
-                                         (list "--column" "--vimgrep")
-                                       (list "--no-column"))))
-                          (append base flags (list "--regexp" regexp))))
-                       ((executable-find "git")
-                        (let ((base (list "git" "grep" "--full-name" "--perl-regexp" "--line-number"))
-                              (flags (and include-columns (list "--column"))))
-                          (append base flags (list "-e" regexp))))
-                       (t (error "Neither 'rg' nor 'git' found for searching."))))
-             (output-buffer (generate-new-buffer "*search-output*")))
-         (unwind-protect
-             (let* ((default-directory (project-root project))
-                    (status (apply #'call-process (car command) nil
-                                   output-buffer nil (cdr command))))
-               (cond
-                ((zerop status)
-                 (with-current-buffer output-buffer
-                   (string-trim-right (buffer-string))))
-                ((= status 1)
-                 (format "No matches found for regexp: %s" regexp))
-                (t
-                 (error "Search command '%s' failed with status %d for regexp: %s"
-                        (car command) status regexp))))
-           (when (buffer-live-p output-buffer)
-             (kill-buffer output-buffer))))))))
+   (let ((project (project-current)))
+     (unless project (error "Not inside a project."))
+     (let ((command (cond
+                     ((executable-find "rg")
+                      (let ((base (list "rg" "--no-heading" "--line-number" "--hidden" "--glob" "!.git/**"))
+                            (flags (if include-columns
+                                       (list "--column" "--vimgrep")
+                                     (list "--no-column"))))
+                        (append base flags (list "--regexp" regexp))))
+                     ((executable-find "git")
+                      (let ((base (list "git" "grep" "--full-name" "--perl-regexp" "--line-number"))
+                            (flags (and include-columns (list "--column"))))
+                        (append base flags (list "-e" regexp))))
+                     (t (error "Neither 'rg' nor 'git' found for searching."))))
+           (output-buffer (generate-new-buffer "*search-output*")))
+       (unwind-protect
+           (let* ((default-directory (project-root project))
+                  (status (apply #'call-process (car command) nil
+                                 output-buffer nil (cdr command))))
+             (cond
+              ((zerop status)
+               (with-current-buffer output-buffer
+                 (string-trim-right (buffer-string))))
+              ((= status 1)
+               (format "No matches found for regexp: %s" regexp))
+              (t
+               (error "Search command '%s' failed with status %d for regexp: %s"
+                      (car command) status regexp))))
+         (when (buffer-live-p output-buffer)
+           (kill-buffer output-buffer)))))))
 
 ;; Test
 
