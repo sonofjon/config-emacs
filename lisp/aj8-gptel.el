@@ -1241,7 +1241,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-buffer-search-regexp
  :name "aj8_buffer_search_regexp"
- :description "Search a buffer for content matching a regexp. This returns a newline-separated string of matching lines. Each line is formatted as LINE:TEXT or, if 'include-columns' is non-nil, LINE:COLUMN:TEXT where LINE is 1-based and COLUMN is 0-based."
+ :description "Search a buffer for content matching a regexp. This returns a newline-separated string of matching lines. Each line is formatted as LINE:TEXT or, if 'include-columns' is true, LINE:COLUMN:TEXT where LINE is 1-based and COLUMN is 0-based."
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to search.")
@@ -1251,7 +1251,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
          (:name "include-columns"
                 :type boolean
                 :optional t
-                :description "If non-nil, include 0-based column numbers in the result."))
+                :description "If true, include 0-based column numbers in the result."))
  :category "buffers")
 
 (gptel-make-tool
@@ -1309,21 +1309,21 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-buffers
  :name "aj8_list_buffers"
- :description "Return a newline-separated string listing all currently open buffers that are associated with a file. Each line is of the form \"NAME: PATH\" where NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument 'include-count'S is non-nil, append the number of lines as \" (N lines)\"."
+ :description "Return a newline-separated string listing all currently open buffers that are associated with a file. Each line is of the form \"NAME: PATH\" where NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument 'include-counts' is true, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If non-nil, append the number of lines to each entry as ' (N lines)'."))
+                :description "If true, append the number of lines to each entry as ' (N lines)'."))
  :category "buffers")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-all-buffers
  :name "aj8_list_all_buffers"
- :description "Return a newline-separated string listing all currently open buffers. Each line is either \"NAME: PATH\" for file-backed buffers or just \"NAME\" for non-file buffers. NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument 'include-count'S is non-nil, append the number of lines as \" (N lines)\"."
+ :description "Return a newline-separated string listing all currently open buffers. Each line is either \"NAME: PATH\" for file-backed buffers or just \"NAME\" for non-file buffers. NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument 'include-counts' is true, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If non-nil, append the number of lines to each entry as ' (N lines)'."))
+                :description "If true, append the number of lines to each en entry as ' (N lines)'."))
  :category "buffers")
 
 (gptel-make-tool
@@ -1579,7 +1579,7 @@ This action requires manual user review. After calling this tool, you must stop 
                      :description "The name of the library or package to load into a buffer.")
              '(:name "include-counts"
                      :type boolean
-                     :description "If non-nil, include the number of lines in the result."))
+                     :description "If true, include the number of lines in the result."))
  :category "emacs")
 
 ;; (gptel-make-tool
@@ -1652,11 +1652,11 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-list-files
  :name "aj8_project_list_files"
- :description "Return a newline-separated string listing all files in the current project. Each line contains a file base name followed by its path relative to the current project root. if the optional argument 'include-count'S is non-nil, append the line count as \" (N lines).\""
+ :description "Return a newline-separated string listing all files in the current project. Each line contains a file base name followed by its path relative to the current project root. if the optional argument 'include-counts' is true, append the line count as \" (N lines).\""
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If non-nil, append the number of lines to each entry as ' (N lines)'."))
+                :description "If true, append the number of lines to each entry as ' (N lines)'."))
  :category "project")
 
 ;;   (gptel-make-tool
@@ -1671,27 +1671,27 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-find-files-glob
  :name "aj8_project_find_files_glob"
- :description "In the current project, find files matching a glob pattern. To search recursively, use the '**/' prefix. For example, a pattern of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory. The result is a newline-separated string where each line is \"NAME: PATH\", where NAME is the file's base name and PATH is the path relative to the current project root.  If the optional argument 'include-count'S is non-nil append the number of lines as \" (N lines)\"."
+ :description "In the current project, find files matching a glob pattern. To search recursively, use the '**/' prefix. For example, a pattern of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory. The result is a newline-separated string where each line is \"NAME: PATH\", where NAME is the file's base name and PATH is the path relative to the current project root.  If the optional argument 'include-counts' is true append the number of lines as \" (N lines)\"."
  :args '((:name "pattern"
                 :type string
                 :description "A glob pattern to match against the filenames in the project.")
          (:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If non-nil, append the number of lines to each entry as ' (N lines)'."))
+                :description "If true, append the number of lines to each entry as ' (N lines)'."))
  :category "project")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-search-regexp
  :name "aj8_project_search_regexp"
- :description "In the current project, recursively search for content matching REGEXP. The tool returns a newline-separated string of matching lines. Each line includes: PATH:LINE:TEXT, where PATH is the file path relative to the current project root, LINE is the 1-based line number of the match, and TEXT is the matched line text. If the optional argument 'include-columns' is non-nil, the tool returns PATH:LINE:COLUMN:TEXT, where COLUMN is the 1-based column number of the match."
+ :description "In the current project, recursively search for content matching REGEXP. The tool returns a newline-separated string of matching lines. Each line includes: PATH:LINE:TEXT, where PATH is the file path relative to the current project root, LINE is the 1-based line number of the match, and TEXT is the matched line text. If the optional argument 'include-columns' is true, the tool returns PATH:LINE:COLUMN:TEXT, where COLUMN is the 1-based column number of the match."
  :args '((:name "regexp"
                 :type string
                 :description "A regexp to search for in the project files. The regexp should be compatible with ripgrep or git grep.")
          (:name "include-columns"
                 :type boolean
                 :optional t
-                :description "If non-nil, include 1-based column numbers in the result."))
+                :description "If true, include 1-based column numbers in the result."))
  :category "project")
 
 ;; Test
