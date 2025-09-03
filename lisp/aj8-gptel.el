@@ -785,7 +785,7 @@ buffer only; the original buffer is not modified by this command."
         ;; All other functions
         (t
          (condition-case err
-             (let ((location (find-function-noselect func-symbol t)))
+             (let ((location (aj8/gptel-tool--find-file-noselect-quiet func-symbol t)))
                (if (cdr location)
                    ;; Found source location
                    (with-current-buffer (car location)
