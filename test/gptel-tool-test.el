@@ -863,19 +863,19 @@ Optional keyword parameters:
    (let ((edits '((:line-number 3 :old-string "three" :new-string "THREE")
                   (:line-number 1 :old-string "one" :new-string "ONE"))))
      (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits)
-     ;; Assert batched substring edits applied successfully
+     ;; Assert batched string edits applied successfully
      (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE.")))
 
    ;; Test multi-line old-string rejection:
    (let ((edits2 '((:line-number 2 :old-string "two\nextra" :new-string "TWO"))))
      ;; Mode 1: tool re-signals the error
      (let ((aj8/gptel-tool-return-error nil))
-       ;; Assert error is signaled for invalid string edits
+       ;; Assert error is signaled for multi-line old-string
        (should-error (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits2) :type 'error))
      ;; Mode 2: tool returns the error as a string
      (let ((aj8/gptel-tool-return-error t))
        (let ((result (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits2)))
-         ;; Assert returned message when applying invalid string edits
+         ;; Assert returned message when applying multi-line old-string
          (should (string-equal
                   "tool: aj8_apply_buffer_string_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")"
                   result)))))
@@ -1003,7 +1003,7 @@ Optional keyword parameters:
      ;; Mode 2: tool returns the error as a string
      (let ((aj8/gptel-tool-return-error t))
        (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits2)))
-         ;; Assert header and that the specific diagnostic text appears
+         ;; Assert returned message when applying multi-line old-string
          (should (string-equal
                   "tool: aj8_apply_buffer_string_edits_with_review: Error applying edits to buffer '*test-review-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
                   result))))
@@ -1065,7 +1065,7 @@ Optional keyword parameters:
      ;; Mode 2: tool returns the error as a string
      (let ((aj8/gptel-tool-return-error t))
        (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2)))
-         ;; Assert header and that the specific diagnostic text appears
+         ;; Assert returned message when applying multi-line old-string
          (should (string-equal
                   "tool: aj8_apply_buffer_line_edits_with_review: Error applying edits to buffer '*test-review-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
                   result)))))
