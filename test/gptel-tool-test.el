@@ -967,13 +967,13 @@ Optional keyword parameters:
      ;; Mode 1: tool re-signals the error
      (let ((aj8/gptel-tool-return-error nil))
        ;; Assert error is signaled for non-existent buffer
-       (should-error (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
+       (should-error (aj8/gptel-tool-apply-buffer-line-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
      ;; Mode 2: tool returns the error as a string
      (let ((aj8/gptel-tool-return-error t))
-       (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
+       (let ((result (aj8/gptel-tool-apply-buffer-line-edits "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
          ;; Assert error message for non-existent buffer
          (should (string-equal
-                  "tool: aj8_apply_buffer_string_edits_with_review: Error: Buffer '*non-existent*' not found."
+                  "tool: aj8_apply_buffer_line_edits: Error: Buffer '*non-existent*' not found."
                   result)))))))
 
 (ert-deftest test-aj8-apply-buffer-string-edits-with-review ()
