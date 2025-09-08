@@ -481,7 +481,8 @@ The text is inserted at the beginning of the specified line."
             ((> count 1)
              (error "Error: String '%s' is not unique in buffer '%s'. Found %d occurrences." old-string buffer-name count))
             (t
-             (goto-char (point-min))
+             (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
+               (goto-char (point-min)))
              (replace-string old-string new-string)
              (format "String in buffer '%s' successfully replaced." buffer-name)))))))))
 
