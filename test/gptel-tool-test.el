@@ -223,7 +223,7 @@ Optional keyword parameters:
      (let ((result (aj8/gptel-tool-buffer-search-regexp "*non-existent-buffer*" "test")))
        ;; Assert error message matches expected format
        (should (string-equal
-                "tool: aj8_buffer_search_regexp: Error: Buffer '*non-existent-buffer*' not found."
+                "tool: aj8_buffer_search_regexp: Error: Buffer '*non-existent-buffer*' does not exist"
                 result))))
 
    ;; Test invalid regexp error handling:
@@ -236,7 +236,7 @@ Optional keyword parameters:
      (let ((result (aj8/gptel-tool-buffer-search-regexp "*test-buffer-search*" "[invalid")))
        ;; Assert returned error message matches expected format
        (should (string-equal
-                "tool: aj8_buffer_search_regexp: Invalid regexp: [invalid"
+                "tool: aj8_buffer_search_regexp: Error: Invalid regexp: "Unmatched [ or [^""
                 result))))))
 
 ;; (ert-deftest test-aj8-read-buffer-lines ()
@@ -1143,7 +1143,7 @@ Optional keyword parameters:
           (let ((result (aj8/gptel-tool-read-function "non-existent-function-xyz")))
             ;; Assert returned error message for missing function
             (should (string-equal
-                     "tool: aj8_read_function: Error: Function 'non-existent-function-xyz' is not defined."
+                     "tool: aj8_read_function: Error: Symbol's function definition is void: non-existent-function-xyz"
                      result)))))
     (when (get-buffer "loaddefs.el")
       (kill-buffer "loaddefs.el"))
@@ -1184,7 +1184,7 @@ Optional keyword parameters:
           (let ((result (aj8/gptel-tool-load-library "non-existent-library-xyz")))
             ;; Assert returned error message for missing library
             (should (string-equal
-                     "tool: aj8_load_library: Library 'non-existent-library-xyz' not found."
+                     "tool: aj8_load_library: Error: Can't find library: non-existent-library-xyz"
                      result)))))
     (when (get-buffer "project.el")
       (kill-buffer "project.el"))

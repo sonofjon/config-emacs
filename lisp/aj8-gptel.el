@@ -209,22 +209,20 @@ line."
        raw-args
        (let ((buf (get-buffer buffer-name)))
          (unless buf
-           (error "Buffer '%s' not found." buffer-name))
+           (error "Buffer '%s' does not exist" buffer-name))
          (with-current-buffer buf
            (save-excursion
              (goto-char (point-min))
              (let ((results '()))
-               (condition-case err
-                   (while (re-search-forward regexp nil t)
-                     (let* ((match-pos (match-beginning 0))
-                            (line (line-number-at-pos match-pos))
-                            (col (save-excursion (goto-char match-pos) (current-column)))
-                            (line-str (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
-                       (push (if include-columns
-                                 (format "%d:%d:%s" line col line-str)
-                               (format "%d:%s" line line-str))
-                             results)))
-                 (error (error "Invalid regexp: %s" regexp)))
+               (while (re-search-forward regexp nil t)
+                 (let* ((match-pos (match-beginning 0))
+                        (line (line-number-at-pos match-pos))
+                        (col (save-excursion (goto-char match-pos) (current-column)))
+                        (line-str (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
+                   (push (if include-columns
+                             (format "%d:%d:%s" line col line-str)
+                           (format "%d:%s" line line-str))
+                         results)))
                (if results
                    (mapconcat #'identity (nreverse results) "\n")
                  (format "No matches found for regexp: %s" regexp))))))))))
@@ -653,7 +651,7 @@ subsequent line numbers."
                                     (nth 0 f) (nth 1 f) (nth 2 f)))
                           (nreverse failures)
                           "\n")))
-            (error "Error applying edits to buffer '%s': %d (out of %d) failed.\n%s"
+            (error "Could not apply edits to buffer '%s': %d (out of %d) failed.\n%s"
                    buffer-name failed total details)))))))
 
 (defun aj8/--review-buffer-edits (buffer-name buffer-edits edit-type)
@@ -791,8 +789,6 @@ buffer only; the original buffer is not modified by this command."
    "tool: aj8_read_function"
    (list :function-name function-name)
    (let ((func-symbol (intern-soft function-name)))
-     (unless (and func-symbol (fboundp func-symbol))
-       (error "Function '%s' is not defined." function-name))
      (let ((func-def (symbol-function func-symbol)))
        (cond
         ;; Built-in primitive functions (C functions)
@@ -800,20 +796,17 @@ buffer only; the original buffer is not modified by this command."
          (format "Function '%s' is a built-in primitive (subr); it has no Lisp source code." function-name))
         ;; All other functions
         (t
-         (condition-case err
-             (let ((location (aj8/gptel-tool--with-suppressed-messages
-                               (find-function-noselect func-symbol t))))
-               (if (cdr location)
-                   ;; Found source location
-                   (with-current-buffer (car location)
-                     (save-excursion
-                       (goto-char (cdr location))
-                       (let ((beg (point)))
-                         (forward-sexp 1)
-                         (buffer-substring-no-properties beg (point)))))
-                 ;; No source location found
-                 (format "Function '%s' source could not be located." function-name)))
-           (error (format "Error finding function '%s': %s" function-name (error-message-string err))))))))))
+         (let ((location (aj8/gptel-tool--with-suppressed-messages
+                           (find-function-noselect func-symbol t))))
+           (if (cdr location)
+               ;; Found source location
+               (with-current-buffer (car location)
+                 (save-excursion
+                   (goto-char (cdr location))
+                   (let ((beg (point)))
+                     (forward-sexp 1)
+                     (buffer-substring-no-properties beg (point)))))
+             (error "Function '%s' source could not be located" function-name)))))))))
 
 (defun aj8/gptel-tool-load-library (library-name &optional include-counts)
   "Load LIBRARY-NAME into a buffer."
@@ -823,12 +816,9 @@ buffer only; the original buffer is not modified by this command."
        "tool: aj8_load_library"
        raw-args
        (let ((file (aj8/gptel-tool--with-suppressed-messages
-                     (condition-case nil
-                         (find-library-name library-name)
-                       (error nil)))))
-         (unless file (error "Library '%s' not found." library-name))
+                    (find-library-name library-name))))
          (let* ((buffer (aj8/gptel-tool--with-suppressed-messages
-                          (find-file-noselect file)))
+                         (find-file-noselect file)))
                 (original-name (buffer-name buffer))
                 (clean-name (replace-regexp-in-string "\\.gz$" "" original-name)))
            ;; Rename buffer to remove .gz extension if present
@@ -849,10 +839,8 @@ buffer only; the original buffer is not modified by this command."
 ;;   (aj8/gptel-tool--with-tool
 ;;    "tool: aj8_read_library"
 ;;    (list :library-name library-name)
-;;    (let ((file (condition-case nil
-;;                    (find-library-name library-name)
-;;                  (error nil))))
-;;      (unless file (error "Library '%s' not found." library-name))
+;;    (let ((file (aj8/gptel-tool--with-suppressed-messages
+;;                 (find-library-name library-name))))
 ;;      (let* ((buffer (aj8/gptel-tool--with-suppressed-messages
 ;;               (find-file-noselect file)))
 ;;             (original-name (buffer-name buffer))
