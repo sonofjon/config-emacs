@@ -1291,7 +1291,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 ;; (gptel-make-tool
 ;;  :function #'aj8/gptel-tool-read-buffer-lines
 ;;  :name "aj8_read_buffer_lines"
-;;  :description (format "Read lines from a buffer; max lines per call: %d. Use chunking for larger ranges. 'start-line' and 'end-line' are optional 1-based line numbers; if 'start-line' is nil, read from the beginning of the buffer. If 'end-line' is nil, read to the end of the buffer." aj8/gptel-tool-max-lines)
+;;  :description (format "Read lines from a buffer; max lines per call: %d. Use chunking for larger ranges. 'start-line' and 'end-line' are optional 1-based line numbers; if 'start-line' is omitted or false, read from the beginning of the buffer. If 'end-line' is omitted or false, read to the end of the buffer." aj8/gptel-tool-max-lines)
 ;;  :args (list '( :name "buffer-name"
 ;;                 :type string
 ;;                 :description "The name of the buffer to read the contents of.")
