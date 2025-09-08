@@ -197,7 +197,7 @@ The macro binds local variables `tool-name' and `args' and then:
 
 (defun aj8/gptel-tool-buffer-search-regexp (buffer-name regexp &optional include-columns)
   "Search for content matching REGEXP in BUFFER-NAME.
-Return a newline-separated string of matching lines.  Each match is
+Returns a newline-separated string of matching lines.  Each match is
 formatted as \"LINE:TEXT\" or, if INCLUDE-COLUMNS is non-nil,
 \"LINE:COLUMN:TEXT\" where LINE is the 1-based line number, COLUMN is
 the 0-based column number, and TEXT is the full text of the matching
@@ -361,9 +361,9 @@ lines)\"."
 
 (defun aj8/gptel-tool-list-all-buffers (&optional include-counts)
   "Return a newline-separated string of all open buffers.
-Each line is either \"NAME: PATH\" for file-backed buffers or just
-\"NAME\" for non-file buffers.  NAME is the buffer name and PATH is the
-file path relative to the current project root.  When the file is
+Each line is either of the form \"NAME: PATH\" for file-backed buffers
+or just \"NAME\" for non-file buffers.  NAME is the buffer name and PATH
+is the file path relative to the current project root.  When the file is
 outside the current project, PATH is the absolute file path.  If
 INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
   (let ((raw-args (list :include-counts include-counts)))
@@ -423,7 +423,7 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
        (save-excursion
          (goto-char (point-max))
          (insert text)))
-     (format "Text successfully appended to buffer %s." buffer-name))))
+     (format "Text successfully appended to buffer '%s'." buffer-name))))
 
 (defun aj8/gptel-tool-insert-in-buffer (buffer-name text line-number)
   "Insert TEXT in BUFFER-NAME at LINE-NUMBER.
@@ -446,7 +446,7 @@ The text is inserted at the beginning of the specified line."
              (goto-char (point-min))
              (forward-line (1- line-number)))
            (insert text))))
-     (format "Text successfully inserted into buffer %s at line %d." buffer-name line-number))))
+     (format "Text successfully inserted into buffer '%s' at line %d." buffer-name line-number))))
 
 (defun aj8/gptel-tool-replace-buffer (buffer-name content)
   "Overwrite BUFFER-NAME with CONTENT."
@@ -459,7 +459,7 @@ The text is inserted at the beginning of the specified line."
      (with-current-buffer buf
        (erase-buffer)
        (insert content))
-     (format "Buffer %s successfully modified." buffer-name))))
+     (format "Buffer '%s' successfully modified." buffer-name))))
 
 (defun aj8/gptel-tool-edit-buffer-string (buffer-name old-string new-string)
   "Replace a single instance of OLD-STRING with NEW-STRING in BUFFER-NAME."
@@ -714,7 +714,7 @@ descending order of :line-number."
    "tool: aj8_apply_buffer_string_edits"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
    (aj8/--apply-buffer-edits buffer-name buffer-edits 'string)
-   (format "String edits successfully applied to buffer %s." buffer-name)))
+   (format "String edits successfully applied to buffer '%s'." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of string edits and review with Ediff.
@@ -741,7 +741,7 @@ applied in descending order of :line-number."
    "tool: aj8_apply_buffer_line_edits"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
    (aj8/--apply-buffer-edits buffer-name buffer-edits 'line)
-   (format "Line edits successfully applied to buffer %s." buffer-name)))
+   (format "Line edits successfully applied to buffer '%s'." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of line edits and review with Ediff.
@@ -905,7 +905,7 @@ page."
          (with-temp-buffer
            (emacs-lisp-mode)
            (let ((result (Info-goto-node (format "(elisp)%s" node-name))))
-             (unless result (error "Cannot find Info node for '%s'." node-name))
+             (unless result (error "Cannot find Info node for node '%s'." node-name))
              (let ((info-buffer (get-buffer "*info*")))
                (unless info-buffer (error "Not documented as a node: %s" node-name))
                (with-current-buffer info-buffer
@@ -977,8 +977,8 @@ WARNING: This can execute arbitrary code and should be used with caution."
 (defun aj8/gptel-tool-project-list-files (&optional include-counts)
   "Return a newline-separated string listing all files in the current project.
 Each line is of the form \"NAME: PATH\".  If INCLUDE-COUNTS is non-nil,
-append the number of lines as \"NAME: PATH (N lines)\".  NAME is the
-base name of the file and PATH is the path relative to the project root."
+append the number of lines as \" (N lines)\".  NAME is the base name of
+the file and PATH is the path relative to the project root."
   (let ((raw-args (list :include-counts include-counts)))
     (aj8/gptel-tool--with-normalized-bools (include-counts)
       (aj8/gptel-tool--with-tool
@@ -1011,7 +1011,7 @@ base name of the file and PATH is the path relative to the project root."
 
 (defun aj8/gptel-tool-project-find-files-glob (pattern &optional include-counts)
   "In the current project, find files whose filenames match the glob PATTERN.
-Returns a newline-separated string where each line is \"NAME: PATH\".
+Returns a newline-separated string where each line is of the form \"NAME: PATH\".
 NAME is the file's base name and PATH is the path relative to the
 project root.  If INCLUDE-COUNTS is non-nil append the number of lines
 as \" (N lines)\".  This function respects .gitignore."
@@ -1047,8 +1047,8 @@ as \" (N lines)\".  This function respects .gitignore."
 
 (defun aj8/gptel-tool-project-search-regexp (regexp &optional include-columns)
   "In the current project, recursively search for content matching REGEXP.
-Results are newline-separated strings of matching lines, each specifying
-PATH:LINE:TEXT, or if INCLUDE-COLUMNS is non-nil, PATH:LINE:COLUMN:TEXT.
+Returns a newline-separated string of matching lines.  Each match is formatted as
+PATH:LINE:TEXT or, if INCLUDE-COLUMNS is non-nil, PATH:LINE:COLUMN:TEXT.
 Both line and column numbers are 1-based.  This search respects
 .gitignore."
   (let ((raw-args (list :regexp regexp :include-columns include-columns)))
@@ -1271,7 +1271,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
  :description "Open a file into a visiting buffer."
  :args (list '(:name "file-path"
                      :type string
-                     :description "Path to the file to open."))
+                     :description "The path to the file to open."))
  :category "buffers")
 
 ;; (gptel-make-tool
@@ -1320,7 +1320,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-buffers
  :name "aj8_list_buffers"
- :description "Return a newline-separated string listing all currently open buffers that are associated with a file. Each line is of the form \"NAME: PATH\" where NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument 'include-counts' is true, append the number of lines as \" (N lines)\"."
+ :description "Return a newline-separated string listing all currently open buffers that are associated with a file. Each line is of the form \"NAME: PATH\" where NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside a project; otherwise PATH is the absolute file path. If the optional argument 'include-counts' is true, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
@@ -1330,7 +1330,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-all-buffers
  :name "aj8_list_all_buffers"
- :description "Return a newline-separated string listing all currently open buffers. Each line is either \"NAME: PATH\" for file-backed buffers or just \"NAME\" for non-file buffers. NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside the current project; otherwise PATH is the absolute file path. If the optional argument 'include-counts' is true, append the number of lines as \" (N lines)\"."
+ :description "Return a newline-separated string listing all currently open buffers. Each line is of the form \"NAME: PATH\" where NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside a project; otherwise PATH is the absolute file path. If the optional argument 'include-counts' is true, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
@@ -1376,7 +1376,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
                      :description "The name of the buffer to insert text into.")
              '(:name "text"
                      :type string
-                     :description "The text to insert in the buffer.")
+                     :description "The text to insert into the buffer.")
              '(:name "line-number"
                      :type integer
                      :description "The 1-based line number where the text should be inserted."))
@@ -1480,7 +1480,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
                                     :old-string
                                     (:type string :description "The string to be replaced by 'new-string'.")
                                     :new-string
-                                    (:type string :description "The string to replace 'old-string'.")))
+                                    (:type string :description "The string to replace 'old-string' with.")))
                      :description "The list of edits to apply to the buffer."))
  :category "buffers")
 
@@ -1502,7 +1502,7 @@ This action requires manual user review. After calling this tool, you must stop 
                                     :old-string
                                     (:type string :description "The string to be replaced by 'new-string'.")
                                     :new-string
-                                    (:type string :description "The string to replace 'old-string'.")))
+                                    (:type string :description "The string to replace 'old-string' with.")))
                      :description "The list of edits to apply to the buffer."))
  :category "buffers")
 
@@ -1663,7 +1663,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-list-files
  :name "aj8_project_list_files"
- :description "Return a newline-separated string listing all files in the current project. Each line contains a file base name followed by its path relative to the current project root. if the optional argument 'include-counts' is true, append the line count as \" (N lines).\""
+ :description "Return a newline-separated string listing all files in the current project. Each line is of the form \"NAME: PATH\", where NAME is the file's base name and PATH is the path relative to the current project root. If the optional argument 'include-counts' is true, append the number of lines as \" (N lines).\""
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
@@ -1682,7 +1682,7 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-find-files-glob
  :name "aj8_project_find_files_glob"
- :description "In the current project, find files matching a glob pattern. To search recursively, use the '**/' prefix. For example, a pattern of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory. The result is a newline-separated string where each line is \"NAME: PATH\", where NAME is the file's base name and PATH is the path relative to the current project root.  If the optional argument 'include-counts' is true append the number of lines as \" (N lines)\"."
+ :description "In the current project, find files matching a glob pattern. To search recursively, use the '**/' prefix. For example, a pattern of '**/*.el' finds all Emacs Lisp files in the project, while '*.el' finds them only in the root directory. The result is a newline-separated string where each line is of the form \"NAME: PATH\", where NAME is the file's base name and PATH is the path relative to the current project root.  If the optional argument 'include-counts' is true, append the number of lines as \" (N lines)\"."
  :args '((:name "pattern"
                 :type string
                 :description "A glob pattern to match against the filenames in the project.")
