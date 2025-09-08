@@ -4,15 +4,6 @@
 
 ;; Functions
 
-(defun aj8/gptel-tool--find-file-noselect-quiet (file-path)
-  "Like `find-file-noselect' but suppress 'same file' messages.
-FILE-PATH is the path to the file to open."
-  (let ((inhibit-message-regexps
-         (cons ".*are the same file$" inhibit-message-regexps))
-        (set-message-functions
-         (cons #'inhibit-message set-message-functions)))
-    (find-file-noselect file-path)))
-
 (defun aj8/gptel-tool--truncate-for-display (obj)
   "Return a truncated, display-safe copy of OBJ for minibuffer messages.
 
@@ -145,6 +136,15 @@ that string; otherwise it re-signals the original error."
 
 ;; Macros
 
+(defmacro aj8/gptel-tool--with-suppressed-messages (&rest body)
+  "Execute BODY while suppressing all messages.
+This macro temporarily sets `inhibit-message' to t and `message-log-max'
+to nil, preventing messages from appearing in the echo area or being
+logged to the *Messages* buffer."
+  `(let ((inhibit-message t)
+         (message-log-max nil))
+     ,@body))
+
 (defmacro aj8/gptel-tool--with-normalized-bools (vars &rest body)
   "Re-bind VARS to normalized boolean values (t or nil) within BODY.
 Handles `:json-false` and `:false`."
@@ -238,7 +238,8 @@ line."
      (error "Error: No such file: %s" file-path))
    (when (file-directory-p file-path)
      (error "Error: '%s' is a directory." file-path))
-   (let ((buf (aj8/gptel-tool--find-file-noselect-quiet file-path)))
+   (let ((buf (aj8/gptel-tool--with-suppressed-messages
+                (find-file-noselect file-path))))
      (format "File '%s' opened in buffer '%s'." file-path (buffer-name buf)))))
 
 ;; (defun aj8/gptel-tool-read-buffer (buffer-name)
@@ -789,7 +790,8 @@ buffer only; the original buffer is not modified by this command."
         ;; All other functions
         (t
          (condition-case err
-             (let ((location (aj8/gptel-tool--find-file-noselect-quiet func-symbol t)))
+             (let ((location (aj8/gptel-tool--with-suppressed-messages
+                               (find-function-noselect func-symbol t))))
                (if (cdr location)
                    ;; Found source location
                    (with-current-buffer (car location)
@@ -809,11 +811,13 @@ buffer only; the original buffer is not modified by this command."
       (aj8/gptel-tool--with-tool
        "tool: aj8_load_library"
        raw-args
-       (let ((file (condition-case nil
-                       (find-library-name library-name)
-                     (error nil))))
+       (let ((file (aj8/gptel-tool--with-suppressed-messages
+                     (condition-case nil
+                         (find-library-name library-name)
+                       (error nil)))))
          (unless file (error "Library '%s' not found." library-name))
-         (let* ((buffer (aj8/gptel-tool--find-file-noselect-quiet file))
+         (let* ((buffer (aj8/gptel-tool--with-suppressed-messages
+                          (find-file-noselect file)))
                 (original-name (buffer-name buffer))
                 (clean-name (replace-regexp-in-string "\\.gz$" "" original-name)))
            ;; Rename buffer to remove .gz extension if present
@@ -838,7 +842,8 @@ buffer only; the original buffer is not modified by this command."
 ;;                    (find-library-name library-name)
 ;;                  (error nil))))
 ;;      (unless file (error "Library '%s' not found." library-name))
-;;      (let* ((buffer (aj8/gptel-tool--find-file-noselect-quiet file))
+;;      (let* ((buffer (aj8/gptel-tool--with-suppressed-messages
+;;               (find-file-noselect file)))
 ;;             (original-name (buffer-name buffer))
 ;;             (clean-name (replace-regexp-in-string "\\.gz$" "" original-name)))
 ;;        ;; Rename buffer to remove .gz extension if present
