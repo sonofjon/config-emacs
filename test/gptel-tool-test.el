@@ -246,7 +246,7 @@ Optional keyword parameters:
      (let ((result (aj8/gptel-tool-buffer-search-regexp "*test-buffer-search*" "[invalid")))
        ;; Assert that the returned error message matches expected format
        (should (string-equal
-                "tool: aj8_buffer_search_regexp: Error: Invalid regexp: "Unmatched [ or [^""
+                "tool: aj8_buffer_search_regexp: Error: Invalid regexp: Unmatched [ or [^"
                 result))))))
 
 ;; (ert-deftest test-aj8-read-buffer-lines ()
