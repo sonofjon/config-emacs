@@ -127,7 +127,7 @@ ERR is the error object received by a condition-case handler.
 This builds the exact minibuffer message string for ERR, messages it,
 and logs it.  If `aj8/gptel-tool-return-error' is non-nil, it returns
 that string; otherwise it re-signals the original error."
-  (let ((msg (format "%s: %s" tool-name (error-message-string err))))
+  (let ((msg (format "%s: Error: %s" tool-name (error-message-string err))))
     (message "%s" msg)
     (aj8/gptel-tool--log-to-buffer tool-name args (error-message-string err) t)
     (if aj8/gptel-tool-return-error
@@ -209,7 +209,7 @@ line."
        raw-args
        (let ((buf (get-buffer buffer-name)))
          (unless buf
-           (error "Error: Buffer '%s' not found." buffer-name))
+           (error "Buffer '%s' not found." buffer-name))
          (with-current-buffer buf
            (save-excursion
              (goto-char (point-min))
@@ -235,9 +235,9 @@ line."
    "tool: aj8_open_file_in_buffer"
    (list :file-path file-path)
    (unless (file-exists-p file-path)
-     (error "Error: No such file: %s" file-path))
+     (error "No such file: %s" file-path))
    (when (file-directory-p file-path)
-     (error "Error: '%s' is a directory." file-path))
+     (error "'%s' is a directory." file-path))
    (let ((buf (aj8/gptel-tool--with-suppressed-messages
                 (find-file-noselect file-path))))
      (format "File '%s' opened in buffer '%s'." file-path (buffer-name buf)))))
@@ -248,7 +248,7 @@ line."
 ;;   "tool: my_read_buffer"
 ;;   (list :buffer buffer)
 ;;    (unless (buffer-live-p (get-buffer buffer))
-;;      (error "Error: buffer %s is not live." buffer))
+;;      (error "Buffer %s is not live." buffer))
 ;;    (with-current-buffer buffer
 ;;      (buffer-substring-no-properties (point-min) (point-max)))))
 
@@ -267,19 +267,19 @@ line."
 ;;    (list :buffer-name buffer-name :start-line start-line :end-line end-line)
 ;;    (let ((buffer (get-buffer buffer-name)))
 ;;      (unless buffer
-;;        (error "Error: Buffer '%s' not found." buffer-name))
+;;        (error "Buffer '%s' not found." buffer-name))
 ;;      (with-current-buffer buffer
 ;;        (save-excursion
 ;;          (let* ((total-lines (count-lines (point-min) (point-max)))
 ;;                 (requested-start (or start-line 1))
 ;;                 (requested-end   (or end-line total-lines)))
 ;;            (when (< requested-end requested-start)
-;;              (error "Error: END-LINE must be >= START-LINE"))
+;;              (error "END-LINE must be >= START-LINE"))
 ;;            (let* ((start-line (max 1 requested-start))
 ;;                   (end-line   (min total-lines requested-end))
 ;;                   (requested (1+ (- end-line start-line))))
 ;;              (when (> requested aj8/gptel-tool-max-lines)
-;;                (error "Error: requested range length (%d) exceeds maximum allowed (%d)."
+;;                (error "Requested range length (%d) exceeds maximum allowed (%d)."
 ;;                       requested aj8/gptel-tool-max-lines))
 ;;              (goto-line start-line)
 ;;              (let ((start-pos (point)))
@@ -301,21 +301,21 @@ available lines."
    (list :buffer-name buffer-name :start-line start-line :count count)
    (let ((buffer (get-buffer buffer-name)))
      (unless buffer
-       (error "Error: Buffer '%s' not found." buffer-name))
+       (error "Buffer '%s' not found." buffer-name))
      (with-current-buffer buffer
        (save-excursion
          (let* ((total-lines (count-lines (point-min) (point-max)))
                 (requested-start (or start-line 1))
                 (requested-count (or count aj8/gptel-tool-max-lines)))
            (when (< requested-count 1)
-             (error "Error: COUNT must be >= 1"))
+             (error "COUNT must be >= 1"))
            (when (> requested-count aj8/gptel-tool-max-lines)
-             (error "Error: requested COUNT (%d) exceeds maximum allowed (%d)."
+             (error "Requested COUNT (%d) exceeds maximum allowed (%d)."
                     requested-count aj8/gptel-tool-max-lines))
            (when (< requested-start 1)
-             (error "Error: START-LINE must be >= 1"))
+             (error "START-LINE must be >= 1"))
            (when (> requested-start total-lines)
-             (error "Error: START-LINE (%d) exceeds buffer length (%d)."
+             (error "START-LINE (%d) exceeds buffer length (%d)."
                     requested-start total-lines))
            (let* ((start-line requested-start)
                   (end-line (min total-lines (+ start-line (1- requested-count)))))
@@ -400,7 +400,7 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
    (list :buffer-name buffer-name)
    (let ((buffer (get-buffer buffer-name)))
      (unless (and buffer (buffer-file-name buffer))
-       (error "Error: Buffer '%s' not found or not associated with a file." buffer-name))
+       (error "Buffer '%s' not found or not associated with a file." buffer-name))
      (buffer-file-name buffer))))
 
 (defun aj8/gptel-tool-file-to-buffer (file-path)
@@ -410,7 +410,7 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
    (list :file-path file-path)
    (let ((buffer (find-buffer-visiting file-path)))
      (unless buffer
-       (error "Error: No buffer is visiting the file '%s'." file-path))
+       (error "No buffer is visiting the file '%s'." file-path))
      (buffer-name buffer))))
 
 (defun aj8/gptel-tool-append-to-buffer (buffer-name text)
@@ -420,7 +420,7 @@ INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
    (list :buffer-name buffer-name :text text)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
-       (error "Error: Buffer '%s' not found." buffer-name))
+       (error "Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (save-excursion
          (goto-char (point-max))
@@ -435,14 +435,14 @@ The text is inserted at the beginning of the specified line."
    (list :buffer-name buffer-name :text text :line-number line-number)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
-       (error "Error: Buffer '%s' not found." buffer-name))
+       (error "Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (save-excursion
          (let ((total-lines (count-lines (point-min) (point-max))))
            (when (< line-number 1)
-             (error "Error: LINE-NUMBER must be >= 1"))
+             (error "LINE-NUMBER must be >= 1"))
            (when (> line-number total-lines)
-             (error "Error: LINE-NUMBER (%d) exceeds buffer length (%d)."
+             (error "LINE-NUMBER (%d) exceeds buffer length (%d)."
                     line-number total-lines))
            (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
              (goto-char (point-min))
@@ -457,7 +457,7 @@ The text is inserted at the beginning of the specified line."
    (list :buffer-name buffer-name :content content)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
-       (error "Error: Buffer '%s' not found." buffer-name))
+       (error "Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (erase-buffer)
        (insert content))
@@ -470,16 +470,16 @@ The text is inserted at the beginning of the specified line."
    (list :buffer-name buffer-name :old-string old-string :new-string new-string)
    (let ((buffer (get-buffer buffer-name)))
      (unless buffer
-       (error "Error: Buffer '%s' not found." buffer-name))
+       (error "Buffer '%s' not found." buffer-name))
      (with-current-buffer buffer
        (save-excursion
          (let ((count (count-matches (regexp-quote old-string)
                                      (point-min) (point-max))))
            (cond
             ((= count 0)
-             (error "Error: String '%s' not found in buffer '%s'." old-string buffer-name))
+             (error "String '%s' not found in buffer '%s'." old-string buffer-name))
             ((> count 1)
-             (error "Error: String '%s' is not unique in buffer '%s'. Found %d occurrences." old-string buffer-name count))
+             (error "String '%s' is not unique in buffer '%s'. Found %d occurrences." old-string buffer-name count))
             (t
              (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
                (goto-char (point-min)))
@@ -509,16 +509,16 @@ equal to LINE-NUMBER."
    (list :buffer-name buffer-name :start-line start-line :end-line end-line :content content)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
-       (error "Error: Buffer '%s' not found." buffer-name))
+       (error "Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (save-excursion
          (let ((total-lines (count-lines (point-min) (point-max))))
            (when (< start-line 1)
-             (error "Error: START-LINE must be >= 1"))
+             (error "START-LINE must be >= 1"))
            (when (< end-line start-line)
-             (error "Error: END-LINE must be >= START-LINE"))
+             (error "END-LINE must be >= START-LINE"))
            (when (> end-line total-lines)
-             (error "Error: END-LINE exceeds buffer length (%d)." total-lines))
+             (error "END-LINE exceeds buffer length (%d)." total-lines))
            (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
              (goto-char (point-min))
              (forward-line (1- start-line))
@@ -600,7 +600,7 @@ Edits are applied in descending order of :line-number to avoid shifting
 subsequent line numbers."
   (let ((buffer (get-buffer buffer-name)))
     (unless buffer
-      (error "Error: Buffer '%s' not found." buffer-name))
+      (error "Buffer '%s' not found." buffer-name))
     (with-current-buffer buffer
       (let* ((edits (if (vectorp buffer-edits) (append buffer-edits nil) buffer-edits))
              (sorted-edits (sort edits #'(lambda (a b)
@@ -671,7 +671,7 @@ EDIT-TYPE can be 'line or 'string, as described in
 `aj8/--apply-buffer-edits'."
   (let ((original-buffer (get-buffer buffer-name)))
     (unless original-buffer
-      (error "Error: Buffer '%s' not found." buffer-name))
+      (error "Buffer '%s' not found." buffer-name))
 
     (let* ((temp-buffer-name (format "*%s-edits*"
                                      (string-trim buffer-name "*" "*")))
@@ -792,7 +792,7 @@ buffer only; the original buffer is not modified by this command."
    (list :function-name function-name)
    (let ((func-symbol (intern-soft function-name)))
      (unless (and func-symbol (fboundp func-symbol))
-       (error "Error: Function '%s' is not defined." function-name))
+       (error "Function '%s' is not defined." function-name))
      (let ((func-def (symbol-function func-symbol)))
        (cond
         ;; Built-in primitive functions (C functions)
@@ -939,7 +939,7 @@ This evaluates the current buffer content, including any unsaved changes."
    (list :buffer-name buffer-name)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
-       (error "Error: Buffer '%s' not found." buffer-name))
+       (error "Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (eval-buffer))
      (format "Successfully evaluated all code in buffer %s." buffer-name))))
@@ -953,14 +953,14 @@ including any unsaved changes."
    (list :function-name function-name :buffer-name buffer-name)
    (let ((buf (get-buffer buffer-name)))
      (unless buf
-       (error "Error: Buffer '%s' not found." buffer-name))
+       (error "Buffer '%s' not found." buffer-name))
      (with-current-buffer buf
        (save-excursion
          (goto-char (point-min))
          (let ((case-fold-search nil))
            (unless (re-search-forward 
                     (format "^(defun %s\\b" (regexp-quote function-name)) nil t)
-             (error "Error: Function '%s' not found in buffer '%s'." 
+             (error "Function '%s' not found in buffer '%s'."
                     function-name buffer-name)))
          (beginning-of-line)
          (let ((start (point)))
