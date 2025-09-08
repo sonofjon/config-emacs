@@ -613,7 +613,7 @@ subsequent line numbers."
                 (old-string (plist-get edit :old-string))
                 (new-string (plist-get edit :new-string))
                 (success nil))
-            ;; Validate that old-string is single-line.
+            ;; Verify that old-string is single-line.
             (if (string-match-p "\n" old-string)
                 (push (list line-number
                             "old-string contains newline"
@@ -855,7 +855,6 @@ buffer only; the original buffer is not modified by this command."
 
 (defun aj8/gptel-tool-read-info-symbol (symbol-name)
   "Return the contents of the Info node for SYMBOL-NAME.
-
 SYMBOL-NAME should be the name of an Emacs Lisp function, macro, or
 variable (e.g., \"defun\", \"let\", \"buffer-string\").  The function
 uses `info-lookup-symbol` to find where the symbol is documented and
@@ -888,7 +887,6 @@ returns the content of that Info page."
 
 (defun aj8/gptel-tool-read-info-node (node-name)
   "Return the contents of the Info node NODE-NAME.
-
 NODE-NAME should be the name of a section in the Elisp manual, such as
 \"Control Structures\", \"Variables\", or \"Functions\".  The function
 navigates to (elisp)NODE-NAME and returns the content from that Info
@@ -978,12 +976,9 @@ WARNING: This can execute arbitrary code and should be used with caution."
 
 (defun aj8/gptel-tool-project-list-files (&optional include-counts)
   "Return a newline-separated string listing all files in the current project.
-
 Each line is of the form \"NAME: PATH\".  If INCLUDE-COUNTS is non-nil,
-append the number of lines as \"NAME: PATH (N lines)\".
-
-NAME is the base name of the file and PATH is the path relative to the
-project root."
+append the number of lines as \"NAME: PATH (N lines)\".  NAME is the
+base name of the file and PATH is the path relative to the project root."
   (let ((raw-args (list :include-counts include-counts)))
     (aj8/gptel-tool--with-normalized-bools (include-counts)
       (aj8/gptel-tool--with-tool
