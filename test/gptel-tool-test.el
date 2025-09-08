@@ -1641,7 +1641,7 @@ Optional keyword parameters:
                  ;; Assert that the error message indicates not inside a project
                  (should (string-equal "tool: aj8_project_search_regexp: Not inside a project." res2)))))
          (when (file-directory-p tmpdir)
-           (delete-directory tmpdir t))))))))
+           (delete-directory tmpdir t)))))))
 
 ;;; 3.4. Category: Test
 
