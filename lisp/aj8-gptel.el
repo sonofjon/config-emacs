@@ -675,7 +675,7 @@ EDIT-TYPE can be 'line or 'string, as described in
     (let* ((temp-buffer-name (format "*%s-edits*"
                                      (string-trim buffer-name "*" "*")))
            (temp-buffer (get-buffer-create temp-buffer-name)))
-      (unwind-protect
+      (condition-case err
           (progn
             ;; Prepare the edited version in a temporary buffer
             (with-current-buffer temp-buffer
@@ -687,11 +687,21 @@ EDIT-TYPE can be 'line or 'string, as described in
                  (error "%s\nNote: No review was started and no changes were applied to buffer '%s'. Any details above refer only to the temporary review buffer."
                         (error-message-string err) buffer-name))))
 
-            ;; Start Ediff
-            (ediff-buffers original-buffer temp-buffer))
-        ;; Cleanup: kill the temporary buffer
-        (when (buffer-live-p temp-buffer)
-          (kill-buffer temp-buffer))))))
+            ;; Start Ediff with a startup hook that cleans up the temp buffer on quit
+            (let ((startup-hooks
+                   (list (lambda ()
+                           (let ((tb temp-buffer))
+                             (add-hook 'ediff-quit-hook
+                                       (lambda ()
+                                         (when (buffer-live-p tb)
+                                           (kill-buffer tb)))
+                                       nil t))))))
+              (ediff-buffers original-buffer temp-buffer startup-hooks)))
+        (error
+         ;; If anything failed before Ediff properly started, clean up the temp buffer
+         (when (buffer-live-p temp-buffer)
+           (kill-buffer temp-buffer))
+         (signal (car err) (cdr err)))))))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of string edits.
