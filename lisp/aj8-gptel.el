@@ -829,25 +829,25 @@ buffer only; the original buffer is not modified by this command."
                            (count-lines (point-min) (point-max))))
                (format "%s." base-message)))))))))
 
-(defun aj8/gptel-tool-read-library (library-name)
-  "Return the source code of LIBRARY-NAME."
-  (aj8/gptel-tool--with-tool
-   "tool: aj8_read_library"
-   (list :library-name library-name)
-   (let ((file (condition-case nil
-                   (find-library-name library-name)
-                 (error nil))))
-     (unless file (error "Library '%s' not found." library-name))
-     (let* ((buffer (aj8/gptel-tool--find-file-noselect-quiet file))
-            (original-name (buffer-name buffer))
-            (clean-name (replace-regexp-in-string "\\.gz$" "" original-name)))
-       ;; Rename buffer to remove .gz extension if present
-       (unless (string= original-name clean-name)
-         (with-current-buffer buffer
-           (rename-buffer clean-name t)))
-       ;; Return the buffer contents
-       (with-current-buffer buffer
-         (buffer-string))))))
+;; (defun aj8/gptel-tool-read-library (library-name)
+;;   "Return the source code of LIBRARY-NAME."
+;;   (aj8/gptel-tool--with-tool
+;;    "tool: aj8_read_library"
+;;    (list :library-name library-name)
+;;    (let ((file (condition-case nil
+;;                    (find-library-name library-name)
+;;                  (error nil))))
+;;      (unless file (error "Library '%s' not found." library-name))
+;;      (let* ((buffer (aj8/gptel-tool--find-file-noselect-quiet file))
+;;             (original-name (buffer-name buffer))
+;;             (clean-name (replace-regexp-in-string "\\.gz$" "" original-name)))
+;;        ;; Rename buffer to remove .gz extension if present
+;;        (unless (string= original-name clean-name)
+;;          (with-current-buffer buffer
+;;            (rename-buffer clean-name t)))
+;;        ;; Return the buffer contents
+;;        (with-current-buffer buffer
+;;          (buffer-string))))))
 
 (defun aj8/gptel-tool-read-info-symbol (symbol-name)
   "Return the contents of the Info node for SYMBOL-NAME.
