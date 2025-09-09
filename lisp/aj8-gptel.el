@@ -1725,9 +1725,9 @@ This action requires manual user review. After calling this tool, you must stop 
 
 ;;; Initialization
 ;;   Initializes gptel-tools with all the registered tools.  This is only
-;;   needed for the test suite, i.e.  when `gptel-test' is loaded (so that
-;;   tests that inspect `gptel-tools' will pass).
-(when (featurep 'gptel-test)
+;;   needed for the test suite, i.e.  when `gptel-tool-test' is loaded (so
+;;   that tests that inspect `gptel-tools' will pass).
+(when (featurep 'gptel-tool-test)
   (setq gptel-tools
         (mapcan (lambda (entry)
                   (mapcar #'cdr (cdr entry)))
