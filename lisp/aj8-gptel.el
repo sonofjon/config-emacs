@@ -2,6 +2,63 @@
 
 ;;; Helpers
 
+;; Macros
+
+(defmacro aj8/gptel-tool--with-suppressed-messages (&rest body)
+  "Execute BODY while suppressing all messages.
+This macro temporarily sets `inhibit-message' to t and `message-log-max'
+to nil, preventing messages from appearing in the echo area or being
+logged to the *Messages* buffer."
+  `(let ((inhibit-message t)
+         (message-log-max nil))
+     ,@body))
+
+(defmacro aj8/gptel-tool--with-normalized-bools (vars &rest body)
+  "Re-bind VARS to normalized boolean values (t or nil) within BODY.
+Handles `:json-false` and `:false`."
+  (let ((bindings (mapcar (lambda (var)
+                            `(,var (let ((val ,var))
+                                     (if (memq val '(:json-false :false))
+                                         nil
+                                       val))))
+                          vars)))
+    `(let ,bindings
+       ,@body)))
+
+(defmacro aj8/gptel-tool--with-tool (tool-name args &rest body)
+  "Run BODY for TOOL-NAME and message/log the action.
+
+TOOL-NAME is display name of the tool.  ARGS is a property list of
+keyword/value pairs describing the parameters passed to the tool
+function.
+
+If ARGS is nil the minibuffer will show only the tool name (no argument
+summary is displayed).
+
+The macro binds local variables `tool-name' and `args' and then:
+- Messages the running tool name and a display-safe summary of filtered ARGS
+  in the minibuffer (using `aj8/gptel-tool--truncate-for-display').
+- Executes BODY and on success logs the full ARGS and the RESULT to the
+  `*gptel-tool-log*' buffer and returns RESULT.
+- On error it delegates to
+  `aj8/gptel-tool--report-and-return-or-signal', which messages/logs and
+  returns or re-signals depending on `aj8/gptel-tool-return-error'."
+  `(let* ((tool-name ,tool-name)
+          (args ,args)
+          ;; Filter raw args for display (before normalization)
+          (display-args (aj8/gptel-tool--filter-display-args ,args)))
+     (message "%s%s" tool-name
+              (if display-args
+                  (concat " " (prin1-to-string
+                               (aj8/gptel-tool--truncate-for-display display-args)))
+                ""))
+     (condition-case err
+         (let ((result (progn ,@body)))
+           ;; (message "%s: Success" tool-name)
+           (aj8/gptel-tool--log-to-buffer tool-name args result)
+           result)
+       (error (aj8/gptel-tool--report-and-return-or-signal tool-name args err)))))
+
 ;; Functions
 
 (defun aj8/gptel-tool--truncate-for-display (obj)
@@ -133,63 +190,6 @@ that string; otherwise it re-signals the original error."
     (if aj8/gptel-tool-return-error
         msg
       (signal (car err) (cdr err)))))
-
-;; Macros
-
-(defmacro aj8/gptel-tool--with-suppressed-messages (&rest body)
-  "Execute BODY while suppressing all messages.
-This macro temporarily sets `inhibit-message' to t and `message-log-max'
-to nil, preventing messages from appearing in the echo area or being
-logged to the *Messages* buffer."
-  `(let ((inhibit-message t)
-         (message-log-max nil))
-     ,@body))
-
-(defmacro aj8/gptel-tool--with-normalized-bools (vars &rest body)
-  "Re-bind VARS to normalized boolean values (t or nil) within BODY.
-Handles `:json-false` and `:false`."
-  (let ((bindings (mapcar (lambda (var)
-                            `(,var (let ((val ,var))
-                                     (if (memq val '(:json-false :false))
-                                         nil
-                                       val))))
-                          vars)))
-    `(let ,bindings
-       ,@body)))
-
-(defmacro aj8/gptel-tool--with-tool (tool-name args &rest body)
-  "Run BODY for TOOL-NAME and message/log the action.
-
-TOOL-NAME is display name of the tool.  ARGS is a property list of
-keyword/value pairs describing the parameters passed to the tool
-function.
-
-If ARGS is nil the minibuffer will show only the tool name (no argument
-summary is displayed).
-
-The macro binds local variables `tool-name' and `args' and then:
-- Messages the running tool name and a display-safe summary of filtered ARGS
-  in the minibuffer (using `aj8/gptel-tool--truncate-for-display').
-- Executes BODY and on success logs the full ARGS and the RESULT to the
-  `*gptel-tool-log*' buffer and returns RESULT.
-- On error it delegates to
-  `aj8/gptel-tool--report-and-return-or-signal', which messages/logs and
-  returns or re-signals depending on `aj8/gptel-tool-return-error'."
-  `(let* ((tool-name ,tool-name)
-          (args ,args)
-          ;; Filter raw args for display (before normalization)
-          (display-args (aj8/gptel-tool--filter-display-args ,args)))
-     (message "%s%s" tool-name
-              (if display-args
-                  (concat " " (prin1-to-string
-                               (aj8/gptel-tool--truncate-for-display display-args)))
-                ""))
-     (condition-case err
-         (let ((result (progn ,@body)))
-           ;; (message "%s: Success" tool-name)
-           (aj8/gptel-tool--log-to-buffer tool-name args result)
-           result)
-       (error (aj8/gptel-tool--report-and-return-or-signal tool-name args err)))))
 
 ;;; Tool definitions
 
