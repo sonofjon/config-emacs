@@ -2034,7 +2034,7 @@ specifications with 'name' and 'arguments' fields. This function:
          ;; Check that the gptel buffer contains the tool result
          (with-current-buffer gptel-buffer
            ;; Assert that GPTel buffer should record the tool result message
-           (should (string-match-p "Tool `aj8_edit_buffer_string` returned: String replaced successfully." (buffer-string)))))))))
+           (should (string-match-p "Tool `aj8_edit_buffer_string` returned: String in buffer.*successfully replaced" (buffer-string)))))))))
 
 (ert-deftest test-gptel-tools-llm-mock-project ()
   "Test project tools by simulating calls from an LLM."
