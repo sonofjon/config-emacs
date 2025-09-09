@@ -1720,7 +1720,7 @@ Optional keyword parameters:
 
 (ert-deftest test-aj8-ert-run-unit ()
   "Test `aj8/gptel-tool-ert-run-unit'."
-  :tags '(integration test)
+  :tags '(test)
 
   ;; === SUCCESS CASES ===
 
@@ -1730,7 +1730,7 @@ Optional keyword parameters:
 
 (ert-deftest test-aj8-ert-run-by-name ()
   "Test `aj8/gptel-tool-ert-run-by-name'."
-  :tags '(unit test)
+  :tags '(test)
 
   ;; === SUCCESS CASES ===
 
@@ -1758,7 +1758,7 @@ Optional keyword parameters:
 
 (ert-deftest test-aj8-ert-list-unit-tests ()
   "Test `aj8/gptel-tool-ert-list-unit-tests'."
-  :tags '(unit test)
+  :tags '(test)
 
   ;; === SUCCESS CASES ===
 
@@ -2214,7 +2214,7 @@ several related full-line edits in a single buffer, using
    (list (completing-read "Select tag: "
                           '("unit" "buffers" "emacs" "project" "review"
                             "integration" "tools" "json" "errors" "mock"
-                            "workflow")
+                            "test" "workflow")
                           nil t)))
   (ert `(tag ,(intern tag))))
 
