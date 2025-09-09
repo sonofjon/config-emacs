@@ -1884,10 +1884,10 @@ both a query and a buffer modification tool."
    (let* ((tool-def (cl-find "aj8_list_all_buffers" gptel-tools :key #'gptel-tool-name :test #'string-equal))
           (func (gptel-tool-function tool-def))
           (result (funcall func)))
-     ;; Assert that the tool returned a list
-     (should (listp result))
+     ;; Assert that the tool returned a string
+     (should (stringp result))
      ;; Assert that our test buffer is included in the result
-     (should (member "*test-json-call*" result)))
+     (should (string-match-p (regexp-quote "*test-json-call*") result)))
 
    ;; Test edit buffer tool with JSON-like parameters
    (let* ((tool-def (cl-find "aj8_edit_buffer_string" gptel-tools :key #'gptel-tool-name :test #'string-equal))
@@ -2030,7 +2030,8 @@ The response is processed by `gptel--streaming-done-callback'."
      ;; Assert that the buffer is not in the file-backed-only listing
      (should-not (member buffer-name (split-string (aj8/gptel-tool-list-buffers) "\n" t)))
      ;; Assert that converting a non-file buffer to a file errors
-     (should-error (aj8/gptel-tool-buffer-to-file buffer-name))
+     (let ((aj8/gptel-tool-return-error nil))
+       (should-error (aj8/gptel-tool-buffer-to-file buffer-name)))
 
      ;; Test append-to-buffer functionality:
      ;; Assert that we can append text and verify
@@ -2049,7 +2050,7 @@ The response is processed by `gptel--streaming-done-callback'."
 
      ;; Test modify-buffer functionality:
      ;; Assert that we can replace the entire buffer and verify
-     (aj8/gptel-tool-modify-buffer buffer-name "new content")
+     (aj8/gptel-tool-replace-buffer buffer-name "new content")
      (should (string-equal (with-current-buffer buffer-name (buffer-string)) "new content"))
 
      ;; Test read-buffer-lines-count functionality:
@@ -2062,7 +2063,7 @@ The response is processed by `gptel--streaming-done-callback'."
    (let ((buffer (find-file-noselect test-file)))
      (unwind-protect
          (progn
-           (should (member (buffer-name buffer) (aj8/gptel-tool-list-buffers)))
+           (should (string-match-p (regexp-quote (buffer-name buffer)) (aj8/gptel-tool-list-buffers)))
            (should (string-equal (aj8/gptel-tool-file-to-buffer test-file) (buffer-name buffer)))
            (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer)) (expand-file-name test-file))))
        ;; Cleanup
