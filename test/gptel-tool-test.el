@@ -15,6 +15,12 @@
 (require 'aj8-gptel)
 (require 'aj8-lisp)
 
+;; Initialize gptel-tools for testing
+(setq gptel-tools
+      (mapcan (lambda (entry)
+                (mapcar #'cdr (cdr entry)))
+              gptel--known-tools))
+
 ;; Ensure straight quotes in error messages that we match against
 (setq text-quoting-style 'straight)
 
