@@ -1043,76 +1043,74 @@ Optional keyword parameters:
       ;; Assert that the error message describes the missing buffer
       (should (string-equal
                "tool: aj8_apply_buffer_line_edits: Error: Buffer '*non-existent*' not found."
-               result))))
-
-  ;; Clean up any Ediff buffers created during testing
-  (aj8/ediff-cleanup-buffers))
+               result)))))
 
 (ert-deftest test-aj8-apply-buffer-line-edits-with-review ()
   "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'."
   :tags '(unit buffers review)
-  (with-temp-buffer-with-content
-   "*test-review*" "Line one.\nLine two."
+  (unwind-protect
+      (progn
+        (with-temp-buffer-with-content
+         "*test-review*" "Line one.\nLine two."
 
-   ;; === SUCCESS CASES ===
+         ;; === SUCCESS CASES ===
 
-   ;; Test basic review functionality:
-   (let ((edits '((:line-number 1 :old-string "Line one." :new-string "Line ONE.")))
-         (ediff-called nil))
-     ;; Temporarily advise `ediff-buffers' to check if it's called,
-     ;; without actually starting the interactive session.
-     (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2 &optional startup-hooks) (setq ediff-called t))))
-       (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits))
-     ;; Assert that the ediff review function was called
-     (should ediff-called)
-     ;; Assert that the original buffer is unchanged after review setup
-     (with-current-buffer "*test-review*"
-       (should (string-equal (buffer-string) "Line one.\nLine two."))))
+         ;; Test basic review functionality:
+         (let ((edits '((:line-number 1 :old-string "Line one." :new-string "Line ONE.")))
+               (ediff-called nil))
+           ;; Temporarily advise `ediff-buffers' to check if it's called,
+           ;; without actually starting the interactive session.
+           (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2 &optional startup-hooks) (setq ediff-called t))))
+             (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits))
+           ;; Assert that the ediff review function was called
+           (should ediff-called)
+           ;; Assert that the original buffer is unchanged after review setup
+           (with-current-buffer "*test-review*"
+             (should (string-equal (buffer-string) "Line one.\nLine two."))))
 
-   ;; === ERROR CASES ===
+         ;; === ERROR CASES ===
 
-   ;; Test multi-line old-string rejection:
-   (let ((edits2 '((:line-number 2 :old-string "Line two.\nextra" :new-string "Line TWO."))))
-     ;; Mode 1: tool re-signals the error
-     (let ((aj8/gptel-tool-return-error nil))
-       ;; Assert that an error is signaled for a multi-line old-string
-       (should-error (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2) :type 'error))
-     ;; Mode 2: tool returns the error as a string
-     (let ((aj8/gptel-tool-return-error t))
-       (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2)))
-         ;; Assert that the returned message describes the multi-line error
-         (should (string-equal
-                  "tool: aj8_apply_buffer_line_edits_with_review: Error: Could not apply edits to buffer '*test-review-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
-                  result)))))
+         ;; Test multi-line old-string rejection:
+         (let ((edits2 '((:line-number 2 :old-string "Line two.\nextra" :new-string "Line TWO."))))
+           ;; Mode 1: tool re-signals the error
+           (let ((aj8/gptel-tool-return-error nil))
+             ;; Assert that an error is signaled for a multi-line old-string
+             (should-error (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2) :type 'error))
+           ;; Mode 2: tool returns the error as a string
+           (let ((aj8/gptel-tool-return-error t))
+             (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2)))
+               ;; Assert that the returned message describes the multi-line error
+               (should (string-equal
+                        "tool: aj8_apply_buffer_line_edits_with_review: Error: Could not apply edits to buffer '*test-review-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
+                        result)))))
 
-   ;; Test non-existent buffer errors:
-   ;; Mode 1: tool re-signals the error
-   (let ((aj8/gptel-tool-return-error nil))
-     ;; Assert that an error is signaled for a non-existent buffer
-     (should-error (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
-   ;; Mode 2: tool returns the error as a string
-   (let ((aj8/gptel-tool-return-error t))
-     (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
-       ;; Assert that the error message describes the missing buffer
-       (should (string-equal
-                "tool: aj8_apply_buffer_line_edits_with_review: Error: Buffer '*non-existent*' not found."
-                result))))
+         ;; Test non-existent buffer errors:
+         ;; Mode 1: tool re-signals the error
+         (let ((aj8/gptel-tool-return-error nil))
+           ;; Assert that an error is signaled for a non-existent buffer
+           (should-error (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
+         ;; Mode 2: tool returns the error as a string
+         (let ((aj8/gptel-tool-return-error t))
+           (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
+             ;; Assert that the error message describes the missing buffer
+             (should (string-equal
+                      "tool: aj8_apply_buffer_line_edits_with_review: Error: Buffer '*non-existent*' not found."
+                      result)))))
 
-   ;; Test edge cases:
-   (with-temp-buffer-with-content
-    "*test-empty-edits*" "Line one.\nLine two.\nLine three."
-    ;; Assert that empty edits succeed and do nothing
-    (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" '())
-    ;; Assert that the buffer remains unchanged
-    (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+        ;; Test edge cases:
+        (with-temp-buffer-with-content
+         "*test-empty-edits*" "Line one.\nLine two.\nLine three."
+         ;; Assert that empty edits succeed and do nothing
+         (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" '())
+         ;; Assert that the buffer remains unchanged
+         (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
 
-    ;; Assert that nil edits succeed and do nothing
-    (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" nil)
-    ;; Assert that the buffer remains unchanged
-    (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
-
-  ;; Clean up any Ediff buffers created during testing
-  (aj8/ediff-cleanup-buffers))
+         ;; Assert that nil edits succeed and do nothing
+         (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" nil)
+         ;; Assert that the buffer remains unchanged
+         (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
+    ;; Clean up any Ediff buffers created during testing
+    (aj8/ediff-cleanup-buffers)))
 
 ;;; 3.2. Category: Emacs
 
@@ -1168,13 +1166,12 @@ Optional keyword parameters:
             (should (string-equal
                      "tool: aj8_read_function: Error: Symbol's function definition is void: non-existent-function-xyz"
                      result)))))
-    (when (get-buffer "loaddefs.el")
-      (kill-buffer "loaddefs.el"))
     (when (get-buffer "loaddefs.el.gz")
       (kill-buffer "loaddefs.el.gz"))
-    ;; (when (get-buffer "aj8-lisp.el")
-    ;;   (kill-buffer "aj8-lisp.el"))
-    ))
+    (when (get-buffer "find-func.el")
+      (kill-buffer "find-func.el"))
+    (when (get-buffer "find-func.el.gz")
+      (kill-buffer "find-func.el.gz"))))
 
 (ert-deftest test-aj8-load-library ()
   "Test `aj8/gptel-tool-load-library'."
