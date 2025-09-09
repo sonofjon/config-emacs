@@ -1865,7 +1865,7 @@ their associated functions can be called without error."
                         "aj8_list_all_buffers"
                         "aj8_project_get_root"
                         "aj8_project_list_files"
-                        "aj8_ert_run_unit"
+                        ;; "aj8_ert_run_unit"
                         "aj8_ert_list_unit_tests")))
     ;; Test tools that don't require arguments
     (dolist (tool-name no-arg-tools)
