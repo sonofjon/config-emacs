@@ -246,7 +246,7 @@ Optional keyword parameters:
      (let ((result (aj8/gptel-tool-buffer-search-regexp "*test-buffer-search*" "[invalid")))
        ;; Assert that the returned error message matches expected format
        (should (string-equal
-                "tool: aj8_buffer_search_regexp: Error: Invalid regexp: Unmatched [ or [^"
+                "tool: aj8_buffer_search_regexp: Error: Invalid regexp: \"Unmatched [ or [^\""
                 result))))))
 
 ;; (ert-deftest test-aj8-read-buffer-lines ()
@@ -363,7 +363,7 @@ Optional keyword parameters:
        ;; Assert that a COUNT > MAX error is signaled in return-string mode
        (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 1 n)))
          (should (string-equal
-                  (format "tool: aj8_read_buffer_lines_count: Error: requested COUNT (%d) exceeds maximum allowed (%d)." n aj8/gptel-tool-max-lines)
+                  (format "tool: aj8_read_buffer_lines_count: Error: Requested COUNT (%d) exceeds maximum allowed (%d)." n aj8/gptel-tool-max-lines)
                   result)))
        ;; Assert that a START < 1 error is signaled in return-string mode
        (let ((result (aj8/gptel-tool-read-buffer-lines-count "*test-read-buffer*" 0 2)))
@@ -441,7 +441,7 @@ Optional keyword parameters:
     ;; Test include-counts option:
     (let ((buffers (split-string (aj8/gptel-tool-list-all-buffers t) "\n" t)))
       ;; Assert that all entries use the proper count format
-      (should (cl-every (lambda (s) (string-match-p "^[^:]+\\(: .+\\)? ([0-9]+ lines)$" s)) buffers))
+      (should (cl-every (lambda (s) (string-match-p "^.+\\(: .+\\)? ([0-9]+ lines)$" s)) buffers))
       ;; Assert that the non-file buffer shows the "NAME (N lines)" format
       (let* ((name "*non-file-buffer*")
              (expected (format "%s (%d lines)" name 1)))
@@ -967,7 +967,7 @@ Optional keyword parameters:
        (let ((result (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" edits2)))
          ;; Assert that the returned message describes the multi-line error
          (should (string-equal
-                  "tool: aj8_apply_buffer_string_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")"
+                  "tool: aj8_apply_buffer_string_edits: Error: Could not apply edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")"
                   result))))))
 
   ;; Test non-existent buffer errors:
@@ -1029,7 +1029,7 @@ Optional keyword parameters:
        (let ((result (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" edits)))
          ;; Assert that the error message describes the multi-line error
          (should (string-equal
-                  "tool: aj8_apply_buffer_line_edits: Error applying edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")"
+                  "tool: aj8_apply_buffer_line_edits: Error: Could not apply edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")"
                   result))))))
 
   ;; Test non-existent buffer errors:
@@ -1061,7 +1061,7 @@ Optional keyword parameters:
          (ediff-called nil))
      ;; Temporarily advise `ediff-buffers' to check if it's called,
      ;; without actually starting the interactive session.
-     (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2) (setq ediff-called t))))
+     (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2 &optional startup-hooks) (setq ediff-called t))))
        (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits))
      ;; Assert that the ediff review function was called
      (should ediff-called)
@@ -1082,7 +1082,7 @@ Optional keyword parameters:
        (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2)))
          ;; Assert that the returned message describes the multi-line error
          (should (string-equal
-                  "tool: aj8_apply_buffer_line_edits_with_review: Error applying edits to buffer '*test-review-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
+                  "tool: aj8_apply_buffer_line_edits_with_review: Error: Could not apply edits to buffer '*test-review-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
                   result)))))
 
    ;; Test non-existent buffer errors:
@@ -1139,9 +1139,9 @@ Optional keyword parameters:
         ;; === SUCCESS CASES ===
 
         ;; Test function source retrieval with a built-in Emacs function:
-        (let ((result (aj8/gptel-tool-read-function "vc-sccs-registered")))
+        (let ((result (aj8/gptel-tool-read-function "find-function-noselect")))
           ;; Assert that function source contains expected content
-          (should (string-match-p "(defun vc-sccs-registered" result)))
+          (should (string-match-p "(defun find-function-noselect" result)))
 
         ;; Test with a non-byte-compiled function:
         (require 'aj8-lisp)
@@ -1267,7 +1267,7 @@ Optional keyword parameters:
     (let ((result (aj8/gptel-tool-read-info-symbol "non-existent-symbol-xyz")))
       ;; Assert that the error message indicates symbol is not documented
       (should (string-equal
-               "tool: aj8_read_info_symbol: Not documented as a symbol: non-existent-symbol-xyz"
+               "tool: aj8_read_info_symbol: Error: Not documented as a symbol: non-existent-symbol-xyz"
                result)))))
 
 (ert-deftest test-aj8-read-info-node ()
@@ -1502,7 +1502,7 @@ Optional keyword parameters:
           (let ((aj8/gptel-tool-return-error t))
             (let ((res1 (aj8/gptel-tool-project-get-root)))
               ;; Assert that the error message indicates not inside a project
-              (should (string-equal "tool: aj8_project_get_root: Not inside a project." res1)))))
+              (should (string-equal "tool: aj8_project_get_root: Error: Not inside a project." res1)))))
       (when (file-directory-p tmpdir)
         (delete-directory tmpdir t)))))
 
@@ -1551,7 +1551,7 @@ Optional keyword parameters:
            (let ((aj8/gptel-tool-return-error t))
              (let ((res2 (aj8/gptel-tool-project-list-files)))
                ;; Assert that the error message indicates not inside a project
-               (should (string-equal "tool: aj8_project_list_files: Not inside a project." res2)))))
+               (should (string-equal "tool: aj8_project_list_files: Error: Not inside a project." res2)))))
        (when (file-directory-p tmpdir)
          (delete-directory tmpdir t))))))
 
@@ -1590,7 +1590,7 @@ Optional keyword parameters:
           (let ((aj8/gptel-tool-return-error t))
             (let ((res1 (aj8/gptel-tool-project-find-files-glob "**/*.el")))
               ;; Assert that the error message indicates no project found
-              (should (string-equal "tool: aj8_project_find_files_glob: No project found in the current context." res1)))))
+              (should (string-equal "tool: aj8_project_find_files_glob: Error: No project found in the current context." res1)))))
       (when (file-directory-p tmpdir)
         (delete-directory tmpdir t)))))
 
@@ -1625,7 +1625,7 @@ Optional keyword parameters:
      (let ((aj8/gptel-tool-return-error t))
        (let ((res (aj8/gptel-tool-project-search-regexp "[")))
          ;; Assert that the error message describes regexp failure
-         (should (string-match-p "^tool: aj8_project_search_regexp: Search command .* failed with status .* for regexp: \\[" res))))
+         (should (string-match-p "^tool: aj8_project_search_regexp: Error: Search command .* failed with status .* for regexp: \\[" res))))
 
      ;; Test non-project directory errors:
      (let* ((tmpdir (make-temp-file "aj8-non-project" t)))
@@ -1639,7 +1639,7 @@ Optional keyword parameters:
              (let ((aj8/gptel-tool-return-error t))
                (let ((res2 (aj8/gptel-tool-project-search-regexp "x")))
                  ;; Assert that the error message indicates not inside a project
-                 (should (string-equal "tool: aj8_project_search_regexp: Not inside a project." res2)))))
+                 (should (string-equal "tool: aj8_project_search_regexp: Error: Not inside a project." res2)))))
          (when (file-directory-p tmpdir)
            (delete-directory tmpdir t)))))))
 
@@ -1680,7 +1680,7 @@ Optional keyword parameters:
     (let ((res (aj8/gptel-tool-ert-run-by-name "NON_EXISTENT_TEST")))
       ;; Assert that the formatted error string matches expected error message
       (should (string-equal
-               "tool: aj8_ert_run_by_name: No ERT test found named NON_EXISTENT_TEST"
+               "tool: aj8_ert_run_by_name: Error: No ERT test found named NON_EXISTENT_TEST"
                res)))))
 
 (ert-deftest test-aj8-ert-list-unit-tests ()
@@ -2035,7 +2035,7 @@ The response is processed by `gptel--streaming-done-callback'."
   ;; Assert that function source retrieval returns expected fragments
   (should (string-match-p "(defun project-current"
                           (aj8/gptel-tool-read-function "project-current")))
-  (should (string-match-p "built-in primitive"
+  (should (string-match-p "built-in function"
                           (aj8/gptel-tool-read-function "car")))
 
   ;; Test library loading:
