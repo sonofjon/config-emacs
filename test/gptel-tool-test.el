@@ -2040,17 +2040,22 @@ specifications with 'name' and 'arguments' fields. This function:
   "Test project tools by simulating calls from an LLM."
   :tags '(integration tools mock project)
   (with-temp-project
-   (let ((gptel-buffer (get-buffer-create "*gptel*")))
+   (let ((gptel-buffer (get-buffer-create "*gptel*"))
+         (temp-project-dir default-directory))  ; Capture the temp project directory
      (with-current-buffer gptel-buffer
        (erase-buffer)
        (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_project_get_root\", \"arguments\": {}}]}"))
-         (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
+         ;; Ensure the project context is maintained during mock execution
+         (let ((default-directory temp-project-dir))
+           (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query"))))
          ;; Assert that mock project-get-root included project dir name
          (should (string-match-p "ert-test-project" (buffer-string))))
 
        (erase-buffer)
        (let ((mock-response "{\"tool_calls\": [{\"name\": \"aj8_project_find_files_glob\", \"arguments\": {\"pattern\": \"**/*.el\"}}]}"))
-         (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query")))
+         ;; Ensure the project context is maintained during mock execution
+         (let ((default-directory temp-project-dir))
+           (test-gptel-tools--mock-response mock-response (lambda () (gptel-send "dummy query"))))
          ;; Assert that mock project-find-files listed the project file
          (should (string-match-p "src/code.el" (buffer-string))))))))
 
