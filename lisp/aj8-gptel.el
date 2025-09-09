@@ -936,7 +936,7 @@ including any unsaved changes."
        (save-excursion
          (goto-char (point-min))
          (let ((case-fold-search nil))
-           (unless (re-search-forward 
+           (unless (re-search-forward
                     (format "^(defun %s\\b" (regexp-quote function-name)) nil t)
              (error "Function '%s' not found in buffer '%s'."
                     function-name buffer-name)))
@@ -944,7 +944,7 @@ including any unsaved changes."
          (let ((start (point)))
            (forward-sexp)
            (eval-region start (point)))))
-     (format "Successfully evaluated function %s from buffer %s." 
+     (format "Successfully evaluated function %s from buffer %s."
              function-name buffer-name))))
 
 (defun aj8/gptel-tool-eval-expression (expression)
