@@ -864,12 +864,11 @@ returns the content of that Info page."
      (unwind-protect
          (with-temp-buffer
            (emacs-lisp-mode)
-           (let ((result (info-lookup-symbol (intern symbol-name))))
-             (unless result (error "Cannot find Info node for symbol '%s'." symbol-name))
-             (let ((info-buffer (get-buffer "*info*")))
-               (unless info-buffer (error "Not documented as a symbol: %s" symbol-name))
-               (with-current-buffer info-buffer
-                 (buffer-string)))))
+           (condition-case err
+               (progn
+                 (info-lookup-symbol (intern symbol-name))
+                 (buffer-string))
+             (error (signal (car err) (cdr err)))))
        ;; Cleanup: kill any new Info buffers that were created
        (dolist (buffer (buffer-list))
          (when (and (buffer-live-p buffer)
@@ -894,14 +893,14 @@ page."
                      (string-match-p "\\*info\\*\\(<[0-9]+>\\)?$" (buffer-name buf)))
                    (buffer-list)))))
      (unwind-protect
-         (with-temp-buffer
-           (emacs-lisp-mode)
-           (let ((result (Info-goto-node (format "(elisp)%s" node-name))))
-             (unless result (error "Cannot find Info node for node '%s'." node-name))
-             (let ((info-buffer (get-buffer "*info*")))
-               (unless info-buffer (error "Not documented as a node: %s" node-name))
-               (with-current-buffer info-buffer
-                 (buffer-string)))))
+         (condition-case err
+             (progn
+               (Info-goto-node (format "(elisp)%s" node-name))
+               (let ((info-buffer (current-buffer)))
+                 (unless info-buffer (error "Not documented as a node: %s" node-name))
+                 (with-current-buffer info-buffer
+                   (buffer-string))))
+           (error (signal (car err) (cdr err))))
        ;; Cleanup: kill any new Info buffers that were created
        (dolist (buffer (buffer-list))
          (when (and (buffer-live-p buffer)

@@ -1292,7 +1292,7 @@ Optional keyword parameters:
     (let ((result (aj8/gptel-tool-read-info-node "Bogus Node 123")))
       ;; Assert that the error message indicates node does not exist
       (should (string-equal
-               "tool: aj8_read_info_node: No such node or anchor: Bogus Node 123"
+               "tool: aj8_read_info_node: Error: No such node or anchor: Bogus Node 123"
                result)))))
 
 (ert-deftest test-aj8-eval-buffer ()
