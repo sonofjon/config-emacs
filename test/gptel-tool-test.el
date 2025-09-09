@@ -1851,13 +1851,11 @@ argument list `:args` is a valid list."
       (should (gptel-tool-function tool-def))
       ;; Assert that tool has a description
       (should (gptel-tool-description tool-def))
-
       ;; Assert that the args field is a list (or nil)
       (should (listp (gptel-tool-args tool-def))))))
 
 (ert-deftest test-gptel-tools-function-callable ()
   "Verify that tool functions are defined and callable.
-
 This test checks a subset of tools that require no arguments, ensuring
 their associated functions can be called without error."
   :tags '(integration tools)
