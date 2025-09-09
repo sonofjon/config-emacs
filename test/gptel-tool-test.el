@@ -1065,6 +1065,9 @@ Optional keyword parameters:
              (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits))
            ;; Assert that the ediff review function was called
            (should ediff-called)
+           ;; Assert that the temporary buffer contains the expected changes
+           (with-current-buffer "*test-review-edits*"
+             (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE.")))
            ;; Assert that the original buffer is unchanged after review setup
            (with-current-buffer "*test-review*"
              (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
@@ -1132,6 +1135,9 @@ Optional keyword parameters:
              (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits))
            ;; Assert that the ediff review function was called
            (should ediff-called)
+           ;; Assert that the temporary buffer contains the expected changes
+           (with-current-buffer "*test-review-edits*"
+             (should (string-equal (buffer-string) "Line ONE.\nLine two.")))
            ;; Assert that the original buffer is unchanged after review setup
            (with-current-buffer "*test-review*"
              (should (string-equal (buffer-string) "Line one.\nLine two."))))
