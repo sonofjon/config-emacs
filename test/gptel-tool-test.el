@@ -1152,7 +1152,7 @@ Optional keyword parameters:
         ;; Test built-in primitive function:
         (let ((result (aj8/gptel-tool-read-function "car")))
           ;; Assert that a built-in primitive returns expected message
-          (should (string-match-p "built-in primitive" result)))
+          (should (string-match-p "built-in function" result)))
 
         ;; === ERROR CASES ===
 

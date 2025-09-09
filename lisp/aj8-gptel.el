@@ -789,24 +789,16 @@ buffer only; the original buffer is not modified by this command."
    "tool: aj8_read_function"
    (list :function-name function-name)
    (let ((func-symbol (intern-soft function-name)))
-     (let ((func-def (symbol-function func-symbol)))
-       (cond
-        ;; Built-in primitive functions (C functions)
-        ((subrp func-def)
-         (format "Function '%s' is a built-in primitive (subr); it has no Lisp source code." function-name))
-        ;; All other functions
-        (t
-         (let ((location (aj8/gptel-tool--with-suppressed-messages
-                           (find-function-noselect func-symbol t))))
-           (if (cdr location)
-               ;; Found source location
-               (with-current-buffer (car location)
-                 (save-excursion
-                   (goto-char (cdr location))
-                   (let ((beg (point)))
-                     (forward-sexp 1)
-                     (buffer-substring-no-properties beg (point)))))
-             (error "Function '%s' source could not be located" function-name)))))))))
+     (unless (and func-symbol (fboundp func-symbol))
+       (error "Symbol's function definition is void: %s" function-name))
+     ;; Try to find the source location
+     (let ((location (find-function-noselect func-symbol t)))
+       (with-current-buffer (car location)
+         (save-excursion
+           (goto-char (cdr location))
+           (let ((beg (point)))
+             (forward-sexp 1)
+             (buffer-substring-no-properties beg (point)))))))))
 
 (defun aj8/gptel-tool-load-library (library-name &optional include-counts)
   "Load LIBRARY-NAME into a buffer."
