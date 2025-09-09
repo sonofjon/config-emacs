@@ -2941,7 +2941,7 @@ Elisp code explicitly in arbitrary buffers.")
   (add-to-list 'gptel-directives
                `(coder . ,(with-temp-buffer
                             (insert-file-contents
-                             (expand-file-name "data/gptel-directive.txt"
+                             (expand-file-name "data/gptel-directive.md"
                                                user-emacs-directory))
                             (string-trim (buffer-string))))
                t)
