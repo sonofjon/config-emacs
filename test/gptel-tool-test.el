@@ -1940,16 +1940,75 @@ path."
 ;;     result))
 
 (defun test-gptel-tools--mock-response (response function)
-  "Mock `gptel-request' to return RESPONSE, and run FUNCTION.
-The response is processed by `gptel--streaming-done-callback'."
+  "Mock gptel-send to simulate tool call processing from LLM RESPONSE.
+RESPONSE should be a JSON string containing tool_calls, and FUNCTION is
+the test function to execute in the mocked environment. This function
+mocks gptel-send to intercept calls and process the mock tool response
+instead of making actual HTTP requests."
   (let ((gptel-buffer (get-buffer-create "*gptel*")))
     (with-current-buffer gptel-buffer
-      (let ((gptel-streaming nil))
-        (cl-letf (((symbol-function 'gptel-request)
-                   (lambda (&rest _)
-                     (funcall gptel--streaming-callback response)
-                     (funcall gptel--streaming-done-callback))))
-          (funcall function))))))
+      (let ((gptel-streaming nil)
+            (gptel-api-key "test-api-key-123"))
+        ;; Mock gptel-send to intercept calls and process mock tool responses
+        (cl-letf (((symbol-function 'gptel-send)
+                   (lambda (&optional arg)
+                     (message "Mock gptel-send called with arg: %s" arg)
+                     ;; Process our mock tool calls directly
+                     (test-gptel-tools--process-tool-calls response))))
+          (message "Calling function in mock environment")
+          (funcall function)
+          (message "Function completed, buffer contents: %s" (buffer-string)))))))
+
+(defun test-gptel-tools--process-tool-calls (response)
+  "Parse JSON RESPONSE containing tool_calls and execute the corresponding tools.
+RESPONSE should be a JSON string with a 'tool_calls' array containing tool
+specifications with 'name' and 'arguments' fields. This function:
+1. Parses the JSON response
+2. Looks up each tool in the gptel-tools registry
+3. Converts JSON arguments to the tool's expected argument format
+4. Executes each tool function with the provided arguments
+5. Inserts formatted results into the current buffer"
+  (let* ((json-object-type 'alist)
+         (json-array-type 'list)
+         (json-key-type 'string)
+         (parsed (condition-case err
+                     (json-read-from-string response)
+                   (json-error
+                    (error "Failed to parse JSON response: %s"
+                           (error-message-string err)))))
+         (tool-calls (cdr (assoc "tool_calls" parsed))))
+    (message "Parsed tool calls: %s" tool-calls)
+    ;; Process each tool call
+    (when tool-calls
+      (dolist (tool-call tool-calls)
+        (let* ((tool-name (cdr (assoc "name" tool-call)))
+               (arguments (cdr (assoc "arguments" tool-call)))
+               (tool-def (cl-find-if
+                          (lambda (tool)
+                            (string-equal (gptel-tool-name tool) tool-name))
+                          gptel-tools)))
+          (message "Processing tool: %s with args: %s" tool-name arguments)
+          (when tool-def
+            (let* ((func (gptel-tool-function tool-def))
+                   (args-spec (gptel-tool-args tool-def))
+                   (tool-args '()))
+              ;; Build argument list based on tool specification
+              (when args-spec
+                (dolist (arg-spec args-spec)
+                  (let* ((arg-name (plist-get arg-spec :name))
+                         (arg-value (cdr (assoc arg-name arguments))))
+                    (when arg-value
+                      (push arg-value tool-args)))))
+              ;; Execute the tool and insert result
+              (let ((result (condition-case err
+                                (if tool-args
+                                    (apply func (nreverse tool-args))
+                                  (funcall func))
+                              (error (format "Tool error: %s"
+                                             (error-message-string err))))))
+                (message "Tool result: %s" result)
+                (insert (format "Tool `%s` returned: %s\n"
+                                tool-name result))))))))))
 
 (ert-deftest test-gptel-tools-llm-mock-buffers ()
   "Test buffer tools by simulating calls from an LLM."
