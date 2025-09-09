@@ -1166,8 +1166,7 @@ Optional keyword parameters:
             (should (string-equal
                      "tool: aj8_read_function: Error: Symbol's function definition is void: non-existent-function-xyz"
                      result)))))
-    (when (get-buffer "loaddefs.el.gz")
-      (kill-buffer "loaddefs.el.gz"))
+    ;; Cleanup
     (when (get-buffer "find-func.el")
       (kill-buffer "find-func.el"))
     (when (get-buffer "find-func.el.gz")
@@ -1211,6 +1210,7 @@ Optional keyword parameters:
             (should (string-equal
                      "tool: aj8_load_library: Error: Can't find library: non-existent-library-xyz"
                      result)))))
+    ;; Cleanup
     (when (get-buffer "project.el")
       (kill-buffer "project.el"))
     (when (get-buffer "project.el.gz")
@@ -1237,6 +1237,7 @@ Optional keyword parameters:
 ;;             (should (string-equal
 ;;                      "tool: aj8_read_library: Library 'non-existent-library-xyz' not found."
 ;;                      result)))))
+;;     ;; Cleanup
 ;;     (when (get-buffer "project.el")
 ;;       (kill-buffer "project.el"))
 ;;     (when (get-buffer "project.el.gz")
@@ -1531,6 +1532,7 @@ Optional keyword parameters:
                (let ((expected (format "%s: %s (%d lines)" fname rel 1)))
                  ;; Assert that the exact line count format is present in the output
                  (should (member expected lines)))))
+         ;; Cleanup
          (when (buffer-live-p buf)
            (kill-buffer buf)))))
 
@@ -1989,6 +1991,7 @@ The response is processed by `gptel--streaming-done-callback'."
            (should (member (buffer-name buffer) (aj8/gptel-tool-list-buffers)))
            (should (string-equal (aj8/gptel-tool-file-to-buffer test-file) (buffer-name buffer)))
            (should (string-equal (aj8/gptel-tool-buffer-to-file (buffer-name buffer)) (expand-file-name test-file))))
+       ;; Cleanup
        (when (buffer-live-p buffer)
          (kill-buffer buffer))))))
 
@@ -2017,6 +2020,7 @@ The response is processed by `gptel--streaming-done-callback'."
          (let ((open-buffers (aj8/gptel-tool-project-list-files)))
            (should (string-match-p "code.el" open-buffers))
            (should (string-match-p "src/code.el" open-buffers)))
+       ;; Cleanup
        (when (buffer-live-p buf)
          (kill-buffer buf))))))
 
