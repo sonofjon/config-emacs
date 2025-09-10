@@ -1617,7 +1617,9 @@ This action requires manual user review. After calling this tool, you must stop 
  :function #'aj8/gptel-tool-read-info-node
  :name "aj8_read_info_node"
  :description "Return the contents of a specific info node from the Emacs Lisp manual."
- :args (list '(:name "node-name" :type string :description "The name of the node in the Emacs Lisp manual."))
+ :args (list '(:name "node-name"
+                     :type string
+                     :description "The name of the node in the Emacs Lisp manual."))
  :category "emacs")
 
 (gptel-make-tool

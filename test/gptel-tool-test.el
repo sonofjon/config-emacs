@@ -1834,7 +1834,6 @@ in the `gptel-tools' alist."
       ;; Assert that the tool is registered in `gptel-tools'
       (should (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools)))))
 
-;; TODO: duplication?
 (ert-deftest test-gptel-tools-json-schema-validation ()
   "Validate the structure of each `gptel-tool' definition.
 Ensures that every registered tool definition has the required
