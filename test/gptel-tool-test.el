@@ -681,7 +681,7 @@ Optional keyword parameters:
                 "tool: aj8_edit_buffer_string: Error: Buffer '*non-existent-buffer*' not found."
                 result))))))
 
-(ert-deftest test-aj8-edit-buffer-line ()
+(ert-deftest test-aj8-replace-buffer-line ()
   "Test `aj8/gptel-tool-replace-buffer-line'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
@@ -729,7 +729,7 @@ Optional keyword parameters:
                "tool: aj8_replace_buffer_line: Error: Buffer '*non-existent-buffer*' not found."
                result))))))
 
-(ert-deftest test-aj8-edit-buffer-lines ()
+(ert-deftest test-aj8-replace-buffer-lines ()
   "Test `aj8/gptel-tool-replace-buffer-lines'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
