@@ -557,6 +557,8 @@ Optional keyword parameters:
    ;; Assert that the inserted content appears at the specified position
    (should (string-equal (buffer-string) "Line 1\nLine 2\nLine 3"))
 
+   ;; === ERROR CASES ===
+
    ;; Test line number validation errors:
    ;; Mode 1: tool re-signals the error for invalid line numbers
    (let ((aj8/gptel-tool-return-error nil))
@@ -578,8 +580,6 @@ Optional keyword parameters:
                         (with-current-buffer (get-buffer "*test-insert*")
                           (count-lines (point-min) (point-max))))
                 result))))
-
-   ;; === ERROR CASES ===
 
    ;; Test error handling for non-existent buffers:
    ;; Mode 1: tool re-signals the error
@@ -635,6 +635,8 @@ Optional keyword parameters:
    ;; Assert that string replacement occurs for a unique match
    (should (string-equal (buffer-string) "hello emacs\nhello universe"))
 
+   ;; === ERROR CASES ===
+
    ;; Test error handling for missing strings:
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
@@ -685,6 +687,13 @@ Optional keyword parameters:
   (with-temp-buffer-with-content
    "*test-edit-line*" "Line A\nLine B\nLine C"
 
+   ;; === SUCCESS CASES ===
+
+   ;; Test line replacement:
+   (aj8/gptel-tool-replace-buffer-line "*test-edit-line*" 2 "X")
+   ;; Assert that the specified line is replaced with new content
+   (should (string-equal (buffer-string) "Line A\nX\nLine C"))
+
    ;; === ERROR CASES ===
 
    ;; Test error handling for invalid line numbers:
@@ -707,13 +716,6 @@ Optional keyword parameters:
                 "tool: aj8_replace_buffer_line: Error: END-LINE exceeds buffer length (3)."
                 result))))
 
-   ;; === SUCCESS CASES ===
-
-   ;; Test line replacement:
-   (aj8/gptel-tool-replace-buffer-line "*test-edit-line*" 2 "X")
-   ;; Assert that the specified line is replaced with new content
-   (should (string-equal (buffer-string) "Line A\nX\nLine C")))
-
   ;; Test error handling for non-existent buffers:
   ;; Mode 1: tool re-signals the error
   (let ((aj8/gptel-tool-return-error nil))
@@ -725,13 +727,20 @@ Optional keyword parameters:
       ;; Assert that the error message describes buffer not found
       (should (string-equal
                "tool: aj8_replace_buffer_line: Error: Buffer '*non-existent-buffer*' not found."
-               result)))))
+               result))))))
 
 (ert-deftest test-aj8-edit-buffer-lines ()
   "Test `aj8/gptel-tool-replace-buffer-lines'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-edit-buffer-lines*" "Line A\nLine B\nLine C\nLine D"
+
+   ;; === SUCCESS CASES ===
+
+   ;; Test range replacement:
+   (aj8/gptel-tool-replace-buffer-lines "*test-edit-buffer-lines*" 2 3 "X\nY")
+   ;; Assert that the specified line range is replaced with new content
+   (should (string-equal (buffer-string) "Line A\nX\nY\nLine D"))
 
    ;; === ERROR CASES ===
 
@@ -762,13 +771,6 @@ Optional keyword parameters:
                 "tool: aj8_replace_buffer_lines: Error: END-LINE exceeds buffer length (4)."
                 result))))
 
-   ;; === SUCCESS CASES ===
-
-   ;; Test range replacement:
-   (aj8/gptel-tool-replace-buffer-lines "*test-edit-buffer-lines*" 2 3 "X\nY")
-   ;; Assert that the specified line range is replaced with new content
-   (should (string-equal (buffer-string) "Line A\nX\nY\nLine D"))
-
    ;; Test error handling for non-existent buffers:
    ;; Mode 1: tool re-signals the error
    (let ((aj8/gptel-tool-return-error nil))
@@ -794,6 +796,8 @@ Optional keyword parameters:
    (aj8/gptel-tool-delete-buffer-string "*test-delete*" "world")
    ;; Assert that the target string is removed from the buffer
    (should (string-equal (buffer-string) "hello \nhello universe"))
+
+   ;; === ERROR CASES ===
 
    ;; Test error handling for missing strings:
    ;; Mode 1: tool re-signals the error
@@ -847,6 +851,13 @@ Optional keyword parameters:
   (with-temp-buffer-with-content
    "*test-delete-line*" "Line A\nLine B\nLine C"
 
+   ;; === SUCCESS CASES ===
+
+   ;; Test line deletion:
+   (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 2)
+   ;; Assert that the specified line is deleted from the buffer
+   (should (string-equal (buffer-string) "Line A\n\nLine C"))
+
    ;; === ERROR CASES ===
 
    ;; Test error handling for invalid line numbers:
@@ -874,20 +885,19 @@ Optional keyword parameters:
      (let ((result (aj8/gptel-tool-delete-buffer-line "*non-existent-buffer*" 2)))
        (should (string-equal
                 "tool: aj8_delete_buffer_line: Error: Buffer '*non-existent-buffer*' not found."
-                result))))
-
-   ;; === SUCCESS CASES ===
-
-   ;; Test line deletion:
-   (aj8/gptel-tool-delete-buffer-line "*test-delete-line*" 2)
-   ;; Assert that the specified line is deleted from the buffer
-   (should (string-equal (buffer-string) "Line A\n\nLine C"))))
+                result))))))
 
 (ert-deftest test-aj8-delete-buffer-lines ()
   "Test `aj8/gptel-tool-delete-buffer-lines'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
    "*test-delete-buffer-lines*" "Line A\nLine B\nLine C\nLine D"
+
+   ;; === SUCCESS CASES ===
+
+   ;; Test line range deletion:
+   (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 2 3)
+   (should (string-equal (buffer-string) "Line A\n\nLine D"))
 
    ;; === ERROR CASES ===
 
@@ -921,13 +931,7 @@ Optional keyword parameters:
      (let ((result (aj8/gptel-tool-delete-buffer-lines "*non-existent-buffer*" 2 3)))
        (should (string-equal
                 "tool: aj8_delete_buffer_lines: Error: Buffer '*non-existent-buffer*' not found."
-                result))))
-
-   ;; === SUCCESS CASES ===
-
-   ;; Test line range deletion:
-   (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 2 3)
-   (should (string-equal (buffer-string) "Line A\n\nLine D"))))
+                result))))))
 
 (ert-deftest test-aj8-apply-buffer-string-edits ()
   "Test `aj8/gptel-tool-apply-buffer-string-edits'."
