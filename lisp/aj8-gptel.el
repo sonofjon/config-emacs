@@ -1155,7 +1155,8 @@ STATS is an ERT stats object containing test results."
 
 (defun aj8/ert-format-simple-results (stats)
   "Format ERT test results using ERT's own print function directly.
-STATS is an ERT stats object containing test results."
+Only shows unexpected results (failed tests), similar to ERT's default
+behavior.  STATS is an ERT stats object containing test results."
   (with-temp-buffer
     ;; Set up buffer-local variable that ert--print-test-for-ewoc expects
     (setq-local ert--results-stats stats)
@@ -1177,7 +1178,8 @@ STATS is an ERT stats object containing test results."
       (dotimes (i (length tests))
         (let ((test (aref tests i))
               (result (aref results i)))
-          (when result   ; only show tests that actually ran
+          ;; Only show tests with unexpected results (failed tests)
+          (when (and result (not (ert-test-result-expected-p test result)))
             ;; Create ewoc entry and use ERT's own print function
             (let ((entry (make-ert--ewoc-entry
                           :test test
