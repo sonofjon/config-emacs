@@ -925,7 +925,7 @@ Optional keyword parameters:
      (let ((result (aj8/gptel-tool-delete-buffer-lines "*test-delete-buffer-lines*" 2 5)))
        ;; Assert that the returned message is correct for end-line exceeding buffer
        (should (string-equal
-                "tool: aj8_delete_buffer_lines: Error: END-LINE exceeds buffer length (4)."
+                "tool: aj8_delete_buffer_lines: Error: END-LINE exceeds buffer length (3)."
                 result)))
      ;; Assert that the returned message is correct for missing buffer
      (let ((result (aj8/gptel-tool-delete-buffer-lines "*non-existent-buffer*" 2 3)))
