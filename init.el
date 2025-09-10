@@ -862,9 +862,7 @@
   ;; (setq-local project-ignored-files '(".venv/*"))
   ;; Outline settings
   (add-hook 'python-base-mode-hook
-            #'outline-headers-for-hash-mark-buffers)
-  ;; Other settings
-  (add-hook 'python-mode-hook 'aj8/python-mode-hook))
+            #'outline-headers-for-hash-mark-buffers))
 
 ;; recentf (recently opened files)
 (use-package recentf
