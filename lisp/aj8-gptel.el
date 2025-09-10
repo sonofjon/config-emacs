@@ -1207,9 +1207,25 @@ TEST-NAME is the string name of the ERT test symbol to run."
        ;; Format results similar to ERT buffer output
        (aj8/ert-format-simple-results stats)))))
 
+(defun aj8/gptel-tool-ert-run-unit ()
+  "Run all ERT tests tagged 'unit'."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_ert_run_unit" nil
+   (require 'ert)
+
+   ;; Run tests synchronously and capture results
+   ;;   Suppress logging during test execution to avoid cluttering the log
+   ;;   with internal tool calls made by the test code
+
+   ;; Simple output
+   (let* ((aj8/gptel-tool--suppress-logging t)
+          (stats (ert-run-tests-batch '(tag unit))))
+     ;; Format results similar to ERT buffer output
+     (aj8/ert-format-simple-results stats))))
+
      ;; Detailed output
      ;; (let* ((aj8/gptel-tool--suppress-logging t)
-     ;;        (stats (ert-run-tests-batch sym))
+     ;;        (stats (ert-run-tests-batch '(tag unit)))
      ;;        (summary (aj8/ert-parse-test-results stats))
      ;;        (detailed-info (aj8/ert-format-detailed-results stats)))
      ;;   ;; Format results for LLM consumption with both summary and details
@@ -1217,15 +1233,6 @@ TEST-NAME is the string name of the ERT test symbol to run."
      ;;           test-name
      ;;           summary
      ;;           detailed-info)))))
-
-
-(defun aj8/gptel-tool-ert-run-unit ()
-  "Run all ERT tests tagged 'unit'."
-  (aj8/gptel-tool--with-tool
-   "tool: aj8_ert_run_unit" nil
-   (require 'ert)
-   (ert '(tag unit))
-   "Ran ERT unit tests."))
 
 (defun aj8/gptel-tool-ert-list-unit-tests ()
   "List names of loaded ERT tests tagged 'unit'."
