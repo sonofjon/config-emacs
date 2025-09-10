@@ -841,9 +841,14 @@
   (project-mode-line t)
   :config
   ;; Add projects
-  (project-remember-projects-under "~/git")
-  (project-remember-projects-under "~/dotfiles")
-  (project-remember-projects-under "~/projects" t))
+  ;;   (only if projects file doesn't exist or is older than 7 days)
+  (let ((projects-file (locate-user-emacs-file "projects"))
+        (seven-days-ago (time-subtract (current-time) (days-to-time 7))))
+    (when (or (not (file-exists-p projects-file))
+              (time-less-p seven-days-ago (nth 5 (file-attributes projects-file 'integer))))
+      (project-remember-projects-under "~/git")
+      (project-remember-projects-under "~/dotfiles")
+      (project-remember-projects-under "~/projects" t))))
 
 ;; python (Python's flying circus support for Emacs)
 (use-package python
