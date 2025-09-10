@@ -1835,19 +1835,70 @@ in the `gptel-tools' alist."
       (should (cl-find-if (lambda (tool) (string-equal (gptel-tool-name tool) tool-name)) gptel-tools)))))
 
 (ert-deftest test-gptel-tools-json-schema-validation ()
-  "Validate the structure of each `gptel-tool' definition.
+  "Validate the complete schema structure of each `gptel-tool' definition.
 Ensures that every registered tool definition has the required
-properties, such as `:function` and `:description`, and that the
-argument list `:args` is a valid list."
+properties and that all argument definitions follow the expected schema."
   :tags '(integration tools)
   (dolist (tool-def gptel-tools)
-    (let ((tool-name (gptel-tool-name tool-def)))
-      ;; Assert that tool has a function field
+    (let ((tool-name (gptel-tool-name tool-def))
+          (args (gptel-tool-args tool-def)))
+
+      ;; 1. Validate required top-level tool properties
       (should (gptel-tool-function tool-def))
-      ;; Assert that tool has a description
+      (should (functionp (gptel-tool-function tool-def)))
+      (should (gptel-tool-name tool-def))
+      (should (stringp (gptel-tool-name tool-def)))
       (should (gptel-tool-description tool-def))
-      ;; Assert that the args field is a list (or nil)
-      (should (listp (gptel-tool-args tool-def))))))
+      (should (stringp (gptel-tool-description tool-def)))
+
+      ;; 2. Validate optional top-level properties
+      (when (gptel-tool-category tool-def)
+        (should (stringp (gptel-tool-category tool-def))))
+
+      ;; 3. Validate args structure
+      (should (listp args))  ; args must be a list or nil
+
+      ;; 4. If args is not nil, validate each argument plist
+      (when args
+        (dolist (arg args)
+          (should (listp arg))
+          (should (cl-evenp (length arg)))  ; Must be a plist (even number of elements)
+
+          ;; 4.1 Validate required argument properties
+          (should (plist-get arg :name))
+          (should (stringp (plist-get arg :name)))
+
+          (should (plist-get arg :type))
+          ;; Type can be a symbol or string
+          (should (or (symbolp (plist-get arg :type))
+                      (stringp (plist-get arg :type))))
+
+          (should (plist-get arg :description))
+          (should (stringp (plist-get arg :description)))
+
+          ;; 4.2 Validate optional argument properties
+          (let ((optional (plist-get arg :optional)))
+            (when optional
+              ;; If :optional is present, it should be t or nil
+              (should (or (eq optional t) (eq optional nil)))))
+
+          ;; 4.3 Validate that only known keys are used
+          (let ((valid-keys '(:name :type :description :optional :items :properties))
+                (arg-keys (cl-loop for (key value) on arg by #'cddr collect key)))
+            (dolist (key arg-keys)
+              (should (memq key valid-keys))))
+
+          ;; 4.4 If this is an array type, validate :items structure
+          (when (and (eq (plist-get arg :type) 'array) (plist-get arg :items))
+            (let ((items-spec (plist-get arg :items)))
+              (should (listp items-spec))
+              (should (cl-evenp (length items-spec)))  ; Must be a plist
+              (should (plist-get items-spec :type))
+              ;; If items has :properties, validate it's a plist
+              (when (plist-get items-spec :properties)
+                (let ((props (plist-get items-spec :properties)))
+                  (should (listp props))
+                  (should (cl-evenp (length props))))))))))))
 
 (ert-deftest test-gptel-tools-function-callable ()
   "Verify that tool functions are defined and callable.
