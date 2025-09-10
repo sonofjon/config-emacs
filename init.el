@@ -845,7 +845,7 @@
   (let ((projects-file (locate-user-emacs-file "projects"))
         (seven-days-ago (time-subtract (current-time) (days-to-time 7))))
     (when (or (not (file-exists-p projects-file))
-              (time-less-p seven-days-ago (nth 5 (file-attributes projects-file 'integer))))
+              (time-less-p (nth 5 (file-attributes projects-file 'integer)) seven-days-ago))
       (project-remember-projects-under "~/git")
       (project-remember-projects-under "~/dotfiles")
       (project-remember-projects-under "~/projects" t))))
