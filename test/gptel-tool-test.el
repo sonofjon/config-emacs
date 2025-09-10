@@ -635,6 +635,11 @@ Optional keyword parameters:
    ;; Assert that string replacement occurs for a unique match
    (should (string-equal (buffer-string) "hello emacs\nhello universe"))
 
+   ;; Test multi-line string replacement:
+   (aj8/gptel-tool-edit-buffer-string "*test-edit*" "emacs\nhello" "EMACS\nHI")
+   ;; Assert that multi-line replacement works correctly
+   (should (string-equal (buffer-string) "hello EMACS\nHI universe"))
+
    ;; === ERROR CASES ===
 
    ;; Test error handling for missing strings:
@@ -674,12 +679,7 @@ Optional keyword parameters:
        ;; Assert that the error message describes buffer not found
        (should (string-equal
                 "tool: aj8_edit_buffer_string: Error: Buffer '*non-existent-buffer*' not found."
-                result))))
-
-   ;; Test multi-line string replacement:
-   (aj8/gptel-tool-edit-buffer-string "*test-edit*" "emacs\nhello" "EMACS\nHI")
-   ;; Assert that multi-line replacement works correctly
-   (should (string-equal (buffer-string) "hello EMACS\nHI universe"))))
+                result))))))
 
 (ert-deftest test-aj8-edit-buffer-line ()
   "Test `aj8/gptel-tool-replace-buffer-line'."
@@ -797,6 +797,13 @@ Optional keyword parameters:
    ;; Assert that the target string is removed from the buffer
    (should (string-equal (buffer-string) "hello \nhello universe"))
 
+   ;; Test multi-line string deletion:
+   (with-temp-buffer-with-content
+    "*test-delete-ml*" "A\nB\nC"
+    (aj8/gptel-tool-delete-buffer-string "*test-delete-ml*" "B\n")
+    ;; Assert that multi-line deletion works correctly
+    (should (string-equal (buffer-string) "A\nC")))
+
    ;; === ERROR CASES ===
 
    ;; Test error handling for missing strings:
@@ -836,14 +843,7 @@ Optional keyword parameters:
       ;; Assert that the error message describes buffer not found
       (should (string-equal
                "tool: aj8_delete_buffer_string: Error: Buffer '*non-existent-buffer*' not found."
-               result))))
-
-  ;; Test multi-line string deletion:
-  (with-temp-buffer-with-content
-   "*test-delete-ml*" "A\nB\nC"
-   (aj8/gptel-tool-delete-buffer-string "*test-delete-ml*" "B\n")
-   ;; Assert that multi-line deletion works correctly
-   (should (string-equal (buffer-string) "A\nC"))))
+               result)))))
 
 (ert-deftest test-aj8-delete-buffer-line ()
   "Test `aj8/gptel-tool-delete-buffer-line'."
@@ -1082,6 +1082,19 @@ Optional keyword parameters:
            (with-current-buffer "*test-review*"
              (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
 
+         ;; Test edge cases:
+         (with-temp-buffer-with-content
+          "*test-empty-edits*" "Line one.\nLine two.\nLine three."
+          ;; Assert that empty edits succeed and do nothing
+          (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-empty-edits*" '())
+          ;; Assert that the buffer remains unchanged
+          (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+
+          ;; Assert that nil edits succeed and do nothing
+          (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-empty-edits*" nil)
+          ;; Assert that the buffer remains unchanged
+          (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))
+
          ;; === ERROR CASES ===
 
          ;; Test multi-line old-string rejection:
@@ -1109,20 +1122,7 @@ Optional keyword parameters:
              ;; Assert that the error message describes the missing buffer
              (should (string-equal
                       "tool: aj8_apply_buffer_string_edits_with_review: Error: Buffer '*non-existent*' not found."
-                      result)))))
-
-        ;; Test edge cases:
-        (with-temp-buffer-with-content
-         "*test-empty-edits*" "Line one.\nLine two.\nLine three."
-         ;; Assert that empty edits succeed and do nothing
-         (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-empty-edits*" '())
-         ;; Assert that the buffer remains unchanged
-         (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
-
-         ;; Assert that nil edits succeed and do nothing
-         (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-empty-edits*" nil)
-         ;; Assert that the buffer remains unchanged
-         (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
+                      result))))))
     ;; Clean up any Ediff buffers created during testing
     (aj8/ediff-cleanup-buffers)))
 
@@ -1152,6 +1152,19 @@ Optional keyword parameters:
            (with-current-buffer "*test-review*"
              (should (string-equal (buffer-string) "Line one.\nLine two."))))
 
+         ;; Test edge cases:
+         (with-temp-buffer-with-content
+          "*test-empty-edits*" "Line one.\nLine two.\nLine three."
+          ;; Assert that empty edits succeed and do nothing
+          (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" '())
+          ;; Assert that the buffer remains unchanged
+          (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+
+          ;; Assert that nil edits succeed and do nothing
+          (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" nil)
+          ;; Assert that the buffer remains unchanged
+          (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))
+
          ;; === ERROR CASES ===
 
          ;; Test multi-line old-string rejection:
@@ -1179,20 +1192,7 @@ Optional keyword parameters:
              ;; Assert that the error message describes the missing buffer
              (should (string-equal
                       "tool: aj8_apply_buffer_line_edits_with_review: Error: Buffer '*non-existent*' not found."
-                      result)))))
-
-        ;; Test edge cases:
-        (with-temp-buffer-with-content
-         "*test-empty-edits*" "Line one.\nLine two.\nLine three."
-         ;; Assert that empty edits succeed and do nothing
-         (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" '())
-         ;; Assert that the buffer remains unchanged
-         (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
-
-         ;; Assert that nil edits succeed and do nothing
-         (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" nil)
-         ;; Assert that the buffer remains unchanged
-         (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
+                      result))))))
     ;; Clean up any Ediff buffers created during testing
     (aj8/ediff-cleanup-buffers)))
 
