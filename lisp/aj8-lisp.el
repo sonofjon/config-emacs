@@ -2001,34 +2001,6 @@ Swaps the functionality of single and double prefix arguments, see
     (eww-follow-link '(4)))
    (t (user-error "Unexpected input arguments"))))
 
-(defun prot-eww--get-current-url ()
-  "Return the current-page's URL."
-  (cond ((eq major-mode 'eww-mode)
-         (plist-get eww-data :url))
-        (t (user-error "Not a eww or elpher buffer"))))
-
-;; Add completion to eww
-;;   TODO: Fix
-(defun prot-eww-browse-dwim (url &optional arg)
-  "Visit a URL, maybe from `eww-prompt-history', with completion.
-
-With optional prefix ARG (\\[universal-argument]) open URL in a new eww
-buffer.  If URL does not look like a valid link, run a web query using
-`eww-search-prefix'.
-
-When called from an eww buffer, provide the current link as
-\\<minibuffer-local-map>\\[next-history-element]."
-  (interactive
-   (let ((all-history (delete-dups
-                       (append prot-eww-visited-history
-                               eww-prompt-history)))
-         (current-url (prot-eww--get-current-url)))
-     (list
-      (completing-read "Run EWW on: " all-history
-                       nil nil current-url 'eww-prompt-history current-url)
-      (prefix-numeric-value current-prefix-arg))))
-  (prot-eww url arg))
-
 ;;;; Other
 
 ;;; Custom eval-sexp functions
