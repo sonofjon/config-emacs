@@ -1225,7 +1225,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
    "tool: aj8_ert_run_unit" nil
    (require 'ert)
    (ert '(tag unit))
-   "Ran ERT unit tests; inspect '*ert*' buffer for results."))
+   "Ran ERT unit tests."))
 
 (defun aj8/gptel-tool-ert-list-unit-tests ()
   "List names of loaded ERT tests tagged 'unit'."
@@ -1703,14 +1703,14 @@ This action requires manual user review. After calling this tool, you must stop 
 (gptel-make-tool
  :function #'aj8/gptel-tool-ert-run-unit
  :name "aj8_ert_run_unit"
- :description "Run all ERT unit tests. Returns a short status. Inspect buffer '*ert*' for results."
+ :description "Run all ERT unit tests."
  :args '()
  :category "test")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-ert-run-by-name
  :name "aj8_ert_run_by_name"
- :description "Run a single ERT unit test by name. Returns a short status. Inspect buffer '*ert*' for results."
+ :description "Run a single ERT unit test by name."
  :args '((:name "test-name"
                 :type string
                 :description "The name of the ERT test symbol to run."))
