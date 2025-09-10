@@ -1187,25 +1187,16 @@ STATS is an ERT stats object containing test results."
 
     (string-trim (buffer-substring-no-properties (point-min) (point-max)))))
 
-(defun aj8/gptel-tool-ert-run-by-name (test-name)
-  "Run a single ERT test by name and return results.
-TEST-NAME is the string name of the ERT test symbol to run."
+(defun aj8/gptel-tool-ert-list-unit-tests ()
+  "List names of loaded ERT tests tagged 'unit'."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_ert_run_by_name" (list :test-name test-name)
+   "tool: aj8_ert_list_unit_tests" nil
    (require 'ert)
-   (let ((sym (intern test-name)))
-     (unless (get sym 'ert--test)
-       (error "No ERT test found named %s" test-name))
-
-     ;; Run test synchronously and capture results
-     ;;   Suppress logging during test execution to avoid cluttering the log
-     ;;   with internal tool calls made by the test code
-
-     ;; Simple output
-     (let* ((aj8/gptel-tool--suppress-logging t)
-            (stats (ert-run-tests-batch sym)))
-       ;; Format results similar to ERT buffer output
-       (aj8/ert-format-simple-results stats)))))
+   (let* ((tests (ert-select-tests '(tag unit) t))
+          (names (mapcar #'ert-test-name tests)))
+     (if names
+         (mapconcat (lambda (sym) (symbol-name sym)) names "\n")
+       "No loaded ERT unit tests found."))))
 
 (defun aj8/gptel-tool-ert-run-unit ()
   "Run all ERT tests tagged 'unit'."
@@ -1234,16 +1225,25 @@ TEST-NAME is the string name of the ERT test symbol to run."
      ;;           summary
      ;;           detailed-info)))))
 
-(defun aj8/gptel-tool-ert-list-unit-tests ()
-  "List names of loaded ERT tests tagged 'unit'."
+(defun aj8/gptel-tool-ert-run-by-name (test-name)
+  "Run a single ERT test by name and return results.
+TEST-NAME is the string name of the ERT test symbol to run."
   (aj8/gptel-tool--with-tool
-   "tool: aj8_ert_list_unit_tests" nil
+   "tool: aj8_ert_run_by_name" (list :test-name test-name)
    (require 'ert)
-   (let* ((tests (ert-select-tests '(tag unit) t))
-          (names (mapcar #'ert-test-name tests)))
-     (if names
-         (mapconcat (lambda (sym) (symbol-name sym)) names "\n")
-       "No loaded ERT unit tests found."))))
+   (let ((sym (intern test-name)))
+     (unless (get sym 'ert--test)
+       (error "No ERT test found named %s" test-name))
+
+     ;; Run test synchronously and capture results
+     ;;   Suppress logging during test execution to avoid cluttering the log
+     ;;   with internal tool calls made by the test code
+
+     ;; Simple output
+     (let* ((aj8/gptel-tool--suppress-logging t)
+            (stats (ert-run-tests-batch sym)))
+       ;; Format results similar to ERT buffer output
+       (aj8/ert-format-simple-results stats)))))
 
 ;;; Tool Registrations
 
@@ -1708,6 +1708,13 @@ This action requires manual user review. After calling this tool, you must stop 
 ;; Test
 
 (gptel-make-tool
+ :function #'aj8/gptel-tool-ert-list-unit-tests
+ :name "aj8_ert_list_unit_tests"
+ :description "Return a newline-separated list of names for loaded ERT unit tests."
+ :args '()
+ :category "test")
+
+(gptel-make-tool
  :function #'aj8/gptel-tool-ert-run-unit
  :name "aj8_ert_run_unit"
  :description "Run all ERT unit tests."
@@ -1721,13 +1728,6 @@ This action requires manual user review. After calling this tool, you must stop 
  :args '((:name "test-name"
                 :type string
                 :description "The name of the ERT test symbol to run."))
- :category "test")
-
-(gptel-make-tool
- :function #'aj8/gptel-tool-ert-list-unit-tests
- :name "aj8_ert_list_unit_tests"
- :description "Return a newline-separated list of names for loaded ERT unit tests."
- :args '()
  :category "test")
 
 (provide 'aj8-gptel)
