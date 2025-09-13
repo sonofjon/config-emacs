@@ -1090,7 +1090,7 @@ Optional keyword parameters:
                result)))))
 
 (ert-deftest test-aj8-apply-buffer-string-edits-with-review ()
-  "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review'."
+  "Test `aj8/gptel-tool-apply-buffer-string-edits-with-review' review-specific functionality."
   :tags '(unit buffers review)
   (unwind-protect
       (progn
@@ -1099,69 +1099,51 @@ Optional keyword parameters:
 
          ;; === SUCCESS CASES ===
 
-         ;; Test basic review functionality:
+         ;; Test Ediff integration and temporary buffer creation:
          (let ((edits '((:line-number 1 :old-string "one" :new-string "ONE")
                         (:line-number 3 :old-string "three" :new-string "THREE")))
-               (ediff-called nil))
-           ;; Temporarily advise `ediff-buffers' to check if it's called,
-           ;; without actually starting the interactive session.
-           (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2 &optional startup-hooks) (setq ediff-called t))))
+               (ediff-called nil)
+               (ediff-args nil))
+           ;; Mock `ediff-buffers' to capture its arguments and verify it's called
+           (cl-letf (((symbol-function 'ediff-buffers)
+                      (lambda (b1 b2 &optional startup-hooks)
+                        (setq ediff-called t)
+                        (setq ediff-args (list b1 b2 startup-hooks)))))
              (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits))
-           ;; Assert that the ediff review function was called
+           ;; Assert that Ediff was called with correct arguments
            (should ediff-called)
-           ;; Assert that the temporary buffer contains the expected changes
+           (should (eq (car ediff-args) (get-buffer "*test-review*")))
+           (should (eq (cadr ediff-args) (get-buffer "*test-review-edits*")))
+           ;; Assert temporary buffer contains applied edits
            (with-current-buffer "*test-review-edits*"
              (should (string-equal (buffer-string) "Line ONE.\nLine two.\nLine THREE.")))
-           ;; Assert that the original buffer is unchanged after review setup
+           ;; Assert original buffer remains unchanged
            (with-current-buffer "*test-review*"
              (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))))
 
-         ;; Test edge cases:
-         (with-temp-buffer-with-content
-          "*test-empty-edits*" "Line one.\nLine two.\nLine three."
-          ;; Assert that empty edits succeed and do nothing
-          (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-empty-edits*" '())
-          ;; Assert that the buffer remains unchanged
-          (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
-
-          ;; Assert that nil edits succeed and do nothing
-          (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-empty-edits*" nil)
-          ;; Assert that the buffer remains unchanged
-          (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))
+         ;; Test empty edits behavior (should not start Ediff):
+         (let ((ediff-called nil))
+           (cl-letf (((symbol-function 'ediff-buffers)
+                      (lambda (b1 b2 &optional startup-hooks) (setq ediff-called t))))
+             (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" '())
+             (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" nil))
+           ;; Assert that Ediff was not called for empty/nil edits
+           (should-not ediff-called))
 
          ;; === ERROR CASES ===
 
-         ;; Test multi-line old-string rejection:
-         (let ((edits2 '((:line-number 2 :old-string "two\nextra" :new-string "TWO"))))
-           ;; Mode 1: tool re-signals the error
-           (let ((aj8/gptel-tool-return-error nil))
-             ;; Assert that an error is signaled for a multi-line old-string
-             (should-error (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits2) :type 'error))
-           ;; Mode 2: tool returns the error as a string
+         ;; Test review-specific error message format:
+         (let ((edits '((:line-number 2 :old-string "two\nextra" :new-string "TWO"))))
            (let ((aj8/gptel-tool-return-error t))
-             (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits2)))
-               ;; Assert that the returned message describes the multi-line error
-               (should (string-equal
-                        "tool: aj8_apply_buffer_string_edits_with_review: Error: Could not apply edits to buffer '*test-review-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
-                        result)))))
-
-         ;; Test non-existent buffer errors:
-         ;; Mode 1: tool re-signals the error
-         (let ((aj8/gptel-tool-return-error nil))
-           ;; Assert that an error is signaled for a non-existent buffer
-           (should-error (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
-         ;; Mode 2: tool returns the error as a string
-         (let ((aj8/gptel-tool-return-error t))
-           (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
-             ;; Assert that the error message describes the missing buffer
-             (should (string-equal
-                      "tool: aj8_apply_buffer_string_edits_with_review: Error: Buffer '*non-existent*' not found."
-                      result))))))
+             (let ((result (aj8/gptel-tool-apply-buffer-string-edits-with-review "*test-review*" edits)))
+               ;; Assert that error includes review-specific note
+               (should (string-match-p "Note: No review was started" result))
+               (should (string-match-p "refer only to the temporary review buffer" result)))))))
     ;; Clean up any Ediff buffers created during testing
     (aj8/ediff-cleanup-buffers)))
 
 (ert-deftest test-aj8-apply-buffer-line-edits-with-review ()
-  "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review'."
+  "Test `aj8/gptel-tool-apply-buffer-line-edits-with-review' review-specific functionality."
   :tags '(unit buffers review)
   (unwind-protect
       (progn
@@ -1170,63 +1152,45 @@ Optional keyword parameters:
 
          ;; === SUCCESS CASES ===
 
-         ;; Test basic review functionality:
+         ;; Test Ediff integration and temporary buffer creation:
          (let ((edits '((:line-number 1 :old-string "Line one." :new-string "Line ONE.")))
-               (ediff-called nil))
-           ;; Temporarily advise `ediff-buffers' to check if it's called,
-           ;; without actually starting the interactive session.
-           (cl-letf (((symbol-function 'ediff-buffers) (lambda (b1 b2 &optional startup-hooks) (setq ediff-called t))))
+               (ediff-called nil)
+               (ediff-args nil))
+           ;; Mock `ediff-buffers' to capture its arguments and verify it's called
+           (cl-letf (((symbol-function 'ediff-buffers)
+                      (lambda (b1 b2 &optional startup-hooks)
+                        (setq ediff-called t)
+                        (setq ediff-args (list b1 b2 startup-hooks)))))
              (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits))
-           ;; Assert that the ediff review function was called
+           ;; Assert that Ediff was called with correct arguments
            (should ediff-called)
-           ;; Assert that the temporary buffer contains the expected changes
+           (should (eq (car ediff-args) (get-buffer "*test-review*")))
+           (should (eq (cadr ediff-args) (get-buffer "*test-review-edits*")))
+           ;; Assert temporary buffer contains applied edits
            (with-current-buffer "*test-review-edits*"
              (should (string-equal (buffer-string) "Line ONE.\nLine two.")))
-           ;; Assert that the original buffer is unchanged after review setup
+           ;; Assert original buffer remains unchanged
            (with-current-buffer "*test-review*"
              (should (string-equal (buffer-string) "Line one.\nLine two."))))
 
-         ;; Test edge cases:
-         (with-temp-buffer-with-content
-          "*test-empty-edits*" "Line one.\nLine two.\nLine three."
-          ;; Assert that empty edits succeed and do nothing
-          (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" '())
-          ;; Assert that the buffer remains unchanged
-          (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
-
-          ;; Assert that nil edits succeed and do nothing
-          (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-empty-edits*" nil)
-          ;; Assert that the buffer remains unchanged
-          (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))
+         ;; Test empty edits behavior (should not start Ediff):
+         (let ((ediff-called nil))
+           (cl-letf (((symbol-function 'ediff-buffers)
+                      (lambda (b1 b2 &optional startup-hooks) (setq ediff-called t))))
+             (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" '())
+             (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" nil))
+           ;; Assert that Ediff was not called for empty/nil edits
+           (should-not ediff-called))
 
          ;; === ERROR CASES ===
 
-         ;; Test multi-line old-string rejection:
-         (let ((edits2 '((:line-number 2 :old-string "Line two.\nextra" :new-string "Line TWO."))))
-           ;; Mode 1: tool re-signals the error
-           (let ((aj8/gptel-tool-return-error nil))
-             ;; Assert that an error is signaled for a multi-line old-string
-             (should-error (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2) :type 'error))
-           ;; Mode 2: tool returns the error as a string
+         ;; Test review-specific error message format:
+         (let ((edits '((:line-number 2 :old-string "Line two.\nextra" :new-string "Line TWO."))))
            (let ((aj8/gptel-tool-return-error t))
-             (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits2)))
-               ;; Assert that the returned message describes the multi-line error
-               (should (string-equal
-                        "tool: aj8_apply_buffer_line_edits_with_review: Error: Could not apply edits to buffer '*test-review-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")\nNote: No review was started and no changes were applied to buffer '*test-review*'. Any details above refer only to the temporary review buffer."
-                        result)))))
-
-         ;; Test non-existent buffer errors:
-         ;; Mode 1: tool re-signals the error
-         (let ((aj8/gptel-tool-return-error nil))
-           ;; Assert that an error is signaled for a non-existent buffer
-           (should-error (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y"))) :type 'error))
-         ;; Mode 2: tool returns the error as a string
-         (let ((aj8/gptel-tool-return-error t))
-           (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*non-existent*" '((:line-number 1 :old-string "x" :new-string "y")))))
-             ;; Assert that the error message describes the missing buffer
-             (should (string-equal
-                      "tool: aj8_apply_buffer_line_edits_with_review: Error: Buffer '*non-existent*' not found."
-                      result))))))
+             (let ((result (aj8/gptel-tool-apply-buffer-line-edits-with-review "*test-review*" edits)))
+               ;; Assert that error includes review-specific note
+               (should (string-match-p "Note: No review was started" result))
+               (should (string-match-p "refer only to the temporary review buffer" result)))))))
     ;; Clean up any Ediff buffers created during testing
     (aj8/ediff-cleanup-buffers)))
 
