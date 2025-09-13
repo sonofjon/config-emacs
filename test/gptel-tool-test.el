@@ -1335,32 +1335,49 @@ Optional keyword parameters:
     (when (get-buffer "project.el.gz")
       (kill-buffer "project.el.gz"))))
 
-;; (ert-deftest test-aj8-read-library ()
-;;   "Test `aj8/gptel-tool-read-library'."
-;;   :tags '(unit emacs)
-;;   (unwind-protect
-;;       (progn
-;;         ;; Test library source reading:
-;;         ;; Assert library source contains expected filename
-;;         (should (string-match-p "project.el" (aj8/gptel-tool-read-library "project")))
+(ert-deftest test-aj8-read-library ()
+  "Test `aj8/gptel-tool-read-library'."
+  :tags '(unit emacs)
+  (unwind-protect
+      (progn
 
-;;         ;; Test missing library errors:
-;;         ;; Mode 1: tool re-signals the error
-;;         (let ((aj8/gptel-tool-return-error nil))
-;;           ;; Assert missing library raises an error
-;;           (should-error (aj8/gptel-tool-read-library "non-existent-library-xyz") :type 'error))
-;;         ;; Mode 2: tool returns the error as a string
-;;         (let ((aj8/gptel-tool-return-error t))
-;;           (let ((result (aj8/gptel-tool-read-library "non-existent-library-xyz")))
-;;             ;; Assert returned error message for missing library
-;;             (should (string-equal
-;;                      "tool: aj8_read_library: Library 'non-existent-library-xyz' not found."
-;;                      result)))))
-;;     ;; Cleanup
-;;     (when (get-buffer "project.el")
-;;       (kill-buffer "project.el"))
-;;     (when (get-buffer "project.el.gz")
-;;       (kill-buffer "project.el.gz"))))
+        ;; === SUCCESS CASES ===
+
+        ;; Test library source reading:
+        ;; Assert library source contains expected filename
+        (should (string-match-p "project.el" (aj8/gptel-tool-read-library "project")))
+
+        ;; === ERROR CASES ===
+
+        ;; Test missing library errors:
+        ;; Mode 1: tool re-signals the error
+        (let ((aj8/gptel-tool-return-error nil))
+          ;; Assert missing library raises an error
+          (should-error (aj8/gptel-tool-read-library "non-existent-library-xyz") :type 'error))
+        ;; Mode 2: tool returns the error as a string
+        (let ((aj8/gptel-tool-return-error t))
+          (let ((result (aj8/gptel-tool-read-library "non-existent-library-xyz")))
+            ;; Assert returned error message for missing library
+            (should (string-equal
+                     "tool: aj8_read_library: Error: Can't find library: non-existent-library-xyz"
+                     result))))
+
+        ;; Test byte-compiled library without source file:
+        ;; Note: This test simulates a library that exists but source cannot be found
+        ;; We use 'subr' as it's typically a byte-compiled built-in
+        (let ((result (aj8/gptel-tool-read-library "subr")))
+          ;; Assert that byte-compiled library handling works appropriately
+          ;; This might return an error message or the compiled content
+          (should (stringp result))))
+    ;; Cleanup
+    (when (get-buffer "project.el")
+      (kill-buffer "project.el"))
+    (when (get-buffer "project.el.gz")
+      (kill-buffer "project.el.gz"))
+    (when (get-buffer "subr.el")
+      (kill-buffer "subr.el"))
+    (when (get-buffer "subr.el.gz")
+      (kill-buffer "subr.el.gz"))))
 
 (ert-deftest test-aj8-read-info-symbol ()
   "Test `aj8/gptel-tool-read-info-symbol'."
