@@ -1224,7 +1224,6 @@ Optional keyword parameters:
           (should (string-match-p "(defun find-function-noselect" result)))
 
         ;; Test with a non-byte-compiled function:
-        (require 'aj8-lisp)
         (let ((result (aj8/gptel-tool-read-function "aj8/system-package-name")))
           ;; Assert that function source contains expected content
           (should (string-match-p "(defun aj8/system-package-name" result)))
