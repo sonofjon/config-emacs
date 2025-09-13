@@ -960,7 +960,21 @@ Optional keyword parameters:
    ;; Assert that nil edits succeed and do nothing
    (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" nil)
    ;; Assert that the buffer remains unchanged
-   (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))
+   (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+
+   ;; Test edit with line number beyond buffer:
+   (erase-buffer)
+   (insert "Line one.\nLine two.\nLine three.")
+   (let ((invalid-edit '((:line-number 42 :old-string "nonexistent" :new-string "new"))))
+     ;; Mode 1: tool re-signals the error
+     (let ((aj8/gptel-tool-return-error nil))
+       ;; Assert that an error is signaled for out-of-bounds line number
+       (should-error (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" invalid-edit) :type 'error))
+     ;; Mode 2: tool returns the error as a string
+     (let ((aj8/gptel-tool-return-error t))
+       (let ((result (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" invalid-edit)))
+         (should (stringp result))
+         (should (string-match-p "line number exceeds buffer length" result))))))
 
   ;; === ERROR CASES ===
 
@@ -1039,7 +1053,21 @@ Optional keyword parameters:
    ;; Assert that nil edits succeed and do nothing
    (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" nil)
    ;; Assert that the buffer remains unchanged
-   (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three.")))
+   (should (string-equal (buffer-string) "Line one.\nLine two.\nLine three."))
+
+   ;; Test edit with line number beyond buffer:
+   (erase-buffer)
+   (insert "Line one.\nLine two.\nLine three.")
+   (let ((invalid-edit '((:line-number 42 :old-string "nonexistent" :new-string "new"))))
+     ;; Mode 1: tool re-signals the error
+     (let ((aj8/gptel-tool-return-error nil))
+       ;; Assert that an error is signaled for out-of-bounds line number
+       (should-error (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" invalid-edit) :type 'error))
+     ;; Mode 2: tool returns the error as a string
+     (let ((aj8/gptel-tool-return-error t))
+       (let ((result (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" invalid-edit)))
+         (should (stringp result))
+         (should (string-match-p "line number exceeds buffer length" result))))))
 
   ;; === ERROR CASES ===
 

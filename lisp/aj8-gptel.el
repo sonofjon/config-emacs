@@ -631,30 +631,37 @@ subsequent line numbers."
                             "old-string contains newline"
                             old-string)
                       failures)
-              (save-excursion
-                (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
-                  (goto-char (point-min))
-                  (forward-line (1- line-number)))
-                (cond
-                 ((eq edit-type 'line)
-                  (let ((line-start (point)))
-                    (when (string-equal (buffer-substring-no-properties line-start (line-end-position)) old-string)
-                      (delete-region line-start (line-end-position))
-                      (insert new-string)
-                      (setq success t))))
-                 ((eq edit-type 'string)
-                  (when (search-forward old-string (line-end-position) t)
-                    (replace-match new-string nil nil)
-                    (setq success t))))
-                (when success
-                  (setq applied (1+ applied)))
-                (unless success
-                  (push (list line-number
-                              (if (eq edit-type 'line)
-                                  "entire line did not equal old-string"
-                                "old-string not found on the line")
-                              old-string)
-                        failures))))))
+              ;; Check if line number is within buffer bounds
+              (let ((buffer-line-count (count-lines (point-min) (point-max))))
+                (if (> line-number buffer-line-count)
+                    (push (list line-number
+                                (format "line number exceeds buffer length (%d)" buffer-line-count)
+                                old-string)
+                          failures)
+                  (save-excursion
+                    (let ((transient-mark-mode nil))   ; suppress "Mark set" messages
+                      (goto-char (point-min))
+                      (forward-line (1- line-number)))
+                    (cond
+                     ((eq edit-type 'line)
+                      (let ((line-start (point)))
+                        (when (string-equal (buffer-substring-no-properties line-start (line-end-position)) old-string)
+                          (delete-region line-start (line-end-position))
+                          (insert new-string)
+                          (setq success t))))
+                     ((eq edit-type 'string)
+                      (when (search-forward old-string (line-end-position) t)
+                        (replace-match new-string nil nil)
+                        (setq success t))))
+                    (when success
+                      (setq applied (1+ applied)))
+                    (unless success
+                      (push (list line-number
+                                  (if (eq edit-type 'line)
+                                      "entire line did not equal old-string"
+                                    "old-string not found on the line")
+                                  old-string)
+                            failures))))))))
         (when failures
           (let ((failed (length failures))
                 (details (mapconcat
