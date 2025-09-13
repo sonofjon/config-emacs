@@ -607,6 +607,18 @@ subsequent line numbers."
              (total 0)
              (applied 0)
              (failures nil))
+        ;; Check for duplicate line numbers
+        (let ((line-numbers (mapcar (lambda (edit) (plist-get edit :line-number)) sorted-edits))
+              (seen-lines '())
+              (duplicates '()))
+          (dolist (line-num line-numbers)
+            (if (member line-num seen-lines)
+                (unless (member line-num duplicates)
+                  (push line-num duplicates))
+              (push line-num seen-lines)))
+          (when duplicates
+            (error "Duplicate line numbers found in edits: %s"
+                   (mapconcat #'number-to-string (nreverse duplicates) ", "))))
         (dolist (edit sorted-edits)
           (setq total (1+ total))
           (let ((line-number (plist-get edit :line-number))

@@ -980,6 +980,23 @@ Optional keyword parameters:
                   "tool: aj8_apply_buffer_string_edits: Error: Could not apply edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"two\nextra\")"
                   result))))))
 
+  ;; Test duplicate line number errors:
+  (with-temp-buffer-with-content
+   "*test-apply-edits*" "Line one.\nLine two.\nLine three."
+   (let ((duplicate-edits '((:line-number 2 :old-string "two" :new-string "TWO")
+                            (:line-number 2 :old-string "Line" :new-string "LINE"))))
+     ;; Mode 1: tool re-signals the error
+     (let ((aj8/gptel-tool-return-error nil))
+       ;; Assert that an error is signaled for duplicate line numbers
+       (should-error (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" duplicate-edits) :type 'error))
+     ;; Mode 2: tool returns the error as a string
+     (let ((aj8/gptel-tool-return-error t))
+       (let ((result (aj8/gptel-tool-apply-buffer-string-edits "*test-apply-edits*" duplicate-edits)))
+         ;; Assert that the returned message describes the duplicate line number error
+         (should (string-equal
+                  "tool: aj8_apply_buffer_string_edits: Error: Duplicate line numbers found in edits: 2"
+                  result))))))
+
   ;; Test non-existent buffer errors:
   ;; Mode 1: tool re-signals the error
   (let ((aj8/gptel-tool-return-error nil))
@@ -1040,6 +1057,23 @@ Optional keyword parameters:
          ;; Assert that the error message describes the multi-line error
          (should (string-equal
                   "tool: aj8_apply_buffer_line_edits: Error: Could not apply edits to buffer '*test-apply-edits*': 1 (out of 1) failed.\n - line 2: old-string contains newline (old-string: \"Line two.\nextra\")"
+                  result))))))
+
+  ;; Test duplicate line number errors:
+  (with-temp-buffer-with-content
+   "*test-apply-edits*" "Line one.\nLine two.\nLine three."
+   (let ((duplicate-edits '((:line-number 2 :old-string "Line two." :new-string "Line TWO.")
+                            (:line-number 2 :old-string "Line two." :new-string "Line ZWEI."))))
+     ;; Mode 1: tool re-signals the error
+     (let ((aj8/gptel-tool-return-error nil))
+       ;; Assert that an error is signaled for duplicate line numbers
+       (should-error (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" duplicate-edits) :type 'error))
+     ;; Mode 2: tool returns the error as a string
+     (let ((aj8/gptel-tool-return-error t))
+       (let ((result (aj8/gptel-tool-apply-buffer-line-edits "*test-apply-edits*" duplicate-edits)))
+         ;; Assert that the returned message describes the duplicate line number error
+         (should (string-equal
+                  "tool: aj8_apply_buffer_line_edits: Error: Duplicate line numbers found in edits: 2"
                   result))))))
 
   ;; Test non-existent buffer errors:
