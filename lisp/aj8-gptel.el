@@ -237,7 +237,7 @@ line."
    (when (file-directory-p file-path)
      (error "'%s' is a directory." file-path))
    (let ((buf (aj8/gptel-tool--with-suppressed-messages
-                (find-file-noselect file-path))))
+               (find-file-noselect file-path))))
      (format "File '%s' opened in buffer '%s'." file-path (buffer-name buf)))))
 
 ;; (defun aj8/gptel-tool-read-buffer (buffer-name)
@@ -689,39 +689,39 @@ EDIT-TYPE can be 'line or 'string, as described in
   (when buffer-edits
     ;; Only proceed if we have edits to apply
     (let ((original-buffer (get-buffer buffer-name)))
-    (unless original-buffer
-      (error "Buffer '%s' not found." buffer-name))
+      (unless original-buffer
+        (error "Buffer '%s' not found." buffer-name))
 
-        (let* ((temp-buffer-name (format "*%s-edits*"
-                                         (string-trim buffer-name "*" "*")))
-               (temp-buffer (get-buffer-create temp-buffer-name)))
-          (condition-case err
-              (progn
-                ;; Prepare the edited version in a temporary buffer
-                (with-current-buffer temp-buffer
-                  (erase-buffer)
-                  (insert-buffer-substring original-buffer)
-                  (condition-case err
-                      (aj8/--apply-buffer-edits temp-buffer-name buffer-edits edit-type)
-                    (error
-                     (error "%s\nNote: No review was started and no changes were applied to buffer '%s'. Any details above refer only to the temporary review buffer."
-                            (error-message-string err) buffer-name))))
+      (let* ((temp-buffer-name (format "*%s-edits*"
+                                       (string-trim buffer-name "*" "*")))
+             (temp-buffer (get-buffer-create temp-buffer-name)))
+        (condition-case err
+            (progn
+              ;; Prepare the edited version in a temporary buffer
+              (with-current-buffer temp-buffer
+                (erase-buffer)
+                (insert-buffer-substring original-buffer)
+                (condition-case err
+                    (aj8/--apply-buffer-edits temp-buffer-name buffer-edits edit-type)
+                  (error
+                   (error "%s\nNote: No review was started and no changes were applied to buffer '%s'. Any details above refer only to the temporary review buffer."
+                          (error-message-string err) buffer-name))))
 
-                ;; Start Ediff with a startup hook that cleans up the temp buffer on quit
-                (let ((startup-hooks
-                       (list (lambda ()
-                               (let ((tb temp-buffer))
-                                 (add-hook 'ediff-quit-hook
-                                           (lambda ()
-                                             (when (buffer-live-p tb)
-                                               (kill-buffer tb)))
-                                           nil t))))))
-                  (ediff-buffers original-buffer temp-buffer startup-hooks)))
-            (error
-             ;; If anything failed before Ediff properly started, clean up the temp buffer
-             (when (buffer-live-p temp-buffer)
-               (kill-buffer temp-buffer))
-             (signal (car err) (cdr err))))))))
+              ;; Start Ediff with a startup hook that cleans up the temp buffer on quit
+              (let ((startup-hooks
+                     (list (lambda ()
+                             (let ((tb temp-buffer))
+                               (add-hook 'ediff-quit-hook
+                                         (lambda ()
+                                           (when (buffer-live-p tb)
+                                             (kill-buffer tb)))
+                                         nil t))))))
+                (ediff-buffers original-buffer temp-buffer startup-hooks)))
+          (error
+           ;; If anything failed before Ediff properly started, clean up the temp buffer
+           (when (buffer-live-p temp-buffer)
+             (kill-buffer temp-buffer))
+           (signal (car err) (cdr err))))))))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits (buffer-name buffer-edits)
   "Edit BUFFER-NAME with a list of string edits.
