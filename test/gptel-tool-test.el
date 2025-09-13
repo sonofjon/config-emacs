@@ -626,19 +626,19 @@ Optional keyword parameters:
   "Test `aj8/gptel-tool-edit-buffer-string'."
   :tags '(unit buffers)
   (with-temp-buffer-with-content
-   "*test-edit*" "hello world\nhello universe"
+   "*test-edit*" "hello world\nhello universe\nhello galaxy"
 
    ;; === SUCCESS CASES ===
 
    ;; Test basic string replacement functionality:
    (aj8/gptel-tool-edit-buffer-string "*test-edit*" "world" "emacs")
    ;; Assert that string replacement occurs for a unique match
-   (should (string-equal (buffer-string) "hello emacs\nhello universe"))
+   (should (string-equal (buffer-string) "hello emacs\nhello universe\nhello galaxy"))
 
    ;; Test multi-line string replacement:
    (aj8/gptel-tool-edit-buffer-string "*test-edit*" "emacs\nhello" "EMACS\nHI")
    ;; Assert that multi-line replacement works correctly
-   (should (string-equal (buffer-string) "hello EMACS\nHI universe"))
+   (should (string-equal (buffer-string) "hello EMACS\nHI universe\nhello galaxy"))
 
    ;; === ERROR CASES ===
 
