@@ -1233,6 +1233,16 @@ Optional keyword parameters:
           ;; Assert that a built-in primitive returns expected message
           (should (string-match-p "built-in function" result)))
 
+        ;; Test with a special form:
+        (let ((result (aj8/gptel-tool-read-function "let")))
+          ;; Assert that a special form returns error message for built-in
+          (should (string-match-p "built-in function" result)))
+
+        ;; Test with a macro:
+        (let ((result (aj8/gptel-tool-read-function "when")))
+          ;; Assert that a macro returns its definition
+          (should (string-match-p "(defmacro when" result)))
+
         ;; === ERROR CASES ===
 
         ;; Test missing function errors:
