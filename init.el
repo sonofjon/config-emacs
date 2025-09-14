@@ -2928,7 +2928,7 @@ Elisp code explicitly in arbitrary buffers.")
           "openrouter.ai" "apikey")
     :stream t
     :models '(deepseek/deepseek-chat-v3.1
-              moonshotai/kimi-k2
+              moonshotai/kimi-k2-0905
               qwen/qwen3-coder
               qwen/qwen3-coder:free))
   ;; Enable word-wrap
