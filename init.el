@@ -2892,9 +2892,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (put 'o1-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
   ;; (put 'o3-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
   ;; Use Flex processing
-  ;;   https://platform.openai.com/docs/guides/flex-processing
-  ;;   TODO: Only available for `o3-mini' and `o4-mini': perhaps apply setting to models instead of to backend, or, use :request-params in a preset!
-  ;; (setf (gptel-backend-request-params gptel--openai) '(:service_tier "flex"))
+  (put 'gpt-5 :request-params '(:service_tier "flex"))
   ;; === Claude ===
   (gptel-make-anthropic "Claude"
     :key (gptel-api-key-from-auth-source
