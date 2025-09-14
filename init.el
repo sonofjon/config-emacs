@@ -2773,6 +2773,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; sinister (split-window-left superiority) - [source package]
 (use-package sinister
+  :disabled
   :custom
   ;; Number of lines to protect from incidental scrolling
   (sinister-stillness-margin 20)   ; default 12
