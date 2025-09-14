@@ -922,8 +922,7 @@
   ;;   Not needed: use M-s G  ;; Outline settings
   ;; (setq-local project-ignored-files '(".venv/*"))
   ;; Outline settings
-  (add-hook 'python-base-mode-hook
-            #'outline-headers-for-hash-mark-buffers))
+  (add-hook 'python-base-mode-hook #'outline-headers-for-hash-mark-buffers))
 
 ;; recentf (recently opened files)
 (use-package recentf
@@ -973,15 +972,17 @@
 ;; sh-script (shell script mode)
 (use-package sh-script
   :ensure nil   ; don't install built-in packages
-  :hook ((sh-mode . outline-headers-for-hash-mark-buffers)
-         (sh-mode . (lambda ()
+  :hook ((sh-mode . (lambda ()
                       (keymap-local-unset "C-c =")
                       (keymap-local-unset "C-c <")
                       (keymap-local-unset "C-c >")
-                      (keymap-local-unset "C-c ?")))
-         (conf-xdefaults-mode . outline-headers-for-exclamation-mark-buffers)
-         (powershell-mode . outline-headers-for-hash-mark-buffers))
+                      (keymap-local-unset "C-c ?"))))
   :config
+  ;; Outline settings
+  (add-hook 'sh-base-mode-hook #'outline-headers-for-hash-mark-buffers)
+  (add-hook 'conf-xdefaults-mode-hook #'outline-headers-for-hash-mark-buffers)
+  (add-hook 'powershell-mode-hook #'outline-headers-for-hash-mark-buffers)
+  ;; Add common config files
   (add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . bash-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . bash-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.profile_.*\\'" . bash-ts-mode)))
@@ -2269,15 +2270,15 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Select devdocs window
   (devdocs-window-select t)
   :config
-  (add-hook 'yaml-ts-mode-hook
+  (add-hook 'yaml-mode-hook
             (lambda () (setq-local devdocs-current-docs '("ansible"))))
-  (add-hook 'bash-ts-mode-hook
+  (add-hook 'sh-base-mode-hook
             (lambda () (setq-local devdocs-current-docs '("bash"))))
   (add-hook 'latex-mode-hook
             (lambda () (setq-local devdocs-current-docs '("latex"))))
   (add-hook 'lua-mode-hook
             (lambda () (setq-local devdocs-current-docs '("lua~5.4"))))
-  (add-hook 'python-ts-mode-hook
+  (add-hook 'python-base-mode-hook
             (lambda () (setq-local devdocs-current-docs '("python~3.11")))))
 
 ;; devdocs-browser (browse devdocs.io documents using EWW)
