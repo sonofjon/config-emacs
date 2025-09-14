@@ -2885,8 +2885,8 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Load custom tools
   (require 'aj8-gptel)
-  ;; ChatGPT
   (setq-default gptel-model 'gpt-5-mini)
+  ;; === ChatGPT ===
   ;; Set reasoning effort
   ;;   OpenAI default: medium
   ;; (put 'o1-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
@@ -2895,7 +2895,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;;   https://platform.openai.com/docs/guides/flex-processing
   ;;   TODO: Only available for `o3-mini' and `o4-mini': perhaps apply setting to models instead of to backend, or, use :request-params in a preset!
   ;; (setf (gptel-backend-request-params gptel--openai) '(:service_tier "flex"))
-  ;; Claude
+  ;; === Claude ===
   (gptel-make-anthropic "Claude"
     :key (gptel-api-key-from-auth-source
           "api.anthropic.com" "apikey")
@@ -2905,7 +2905,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                             "api.anthropic.com" "apikey")
   ;;                       :stream t))   ; set default
   ;; (setq gptel-model 'claude-sonnet-4-20250514)
-  ;; Gemini
+  ;; === Gemini ===
   (gptel-make-gemini "Gemini"
     :key (gptel-api-key-from-auth-source
           "generativelanguage.googleapis.com" "apikey")
@@ -2915,12 +2915,12 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                             "generativelanguage.googleapis.com" "apikey")
   ;;                       :stream t))   ; set default
   ;; (setq gptel-model 'gemini-2.5-pro)
-  ;; Deepseek
+  ;; === Deepseek ===
   (gptel-make-deepseek "Deepseek"
     :key (gptel-api-key-from-auth-source
           "api.deepseek.com" "apikey")
     :stream t)
-  ;; OpenRouter offers an OpenAI compatible API
+  ;; === OpenRouter ====
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
     :endpoint "/api/v1/chat/completions"
