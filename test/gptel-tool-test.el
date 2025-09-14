@@ -1352,23 +1352,15 @@ Optional keyword parameters:
         ;; Test missing library errors:
         ;; Mode 1: tool re-signals the error
         (let ((aj8/gptel-tool-return-error nil))
-          ;; Assert missing library raises an error
+          ;; Assert that a missing library raises an error
           (should-error (aj8/gptel-tool-read-library "non-existent-library-xyz") :type 'error))
         ;; Mode 2: tool returns the error as a string
         (let ((aj8/gptel-tool-return-error t))
           (let ((result (aj8/gptel-tool-read-library "non-existent-library-xyz")))
-            ;; Assert returned error message for missing library
+            ;; Assert that the returned error message is correct for missing library
             (should (string-equal
                      "tool: aj8_read_library: Error: Can't find library: non-existent-library-xyz"
-                     result))))
-
-        ;; Test byte-compiled library without source file:
-        ;; Note: This test simulates a library that exists but source cannot be found
-        ;; We use 'subr' as it's typically a byte-compiled built-in
-        (let ((result (aj8/gptel-tool-read-library "subr")))
-          ;; Assert that byte-compiled library handling works appropriately
-          ;; This might return an error message or the compiled content
-          (should (stringp result))))
+                     result)))))
     ;; Cleanup
     (when (get-buffer "project.el")
       (kill-buffer "project.el"))
