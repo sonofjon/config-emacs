@@ -2919,11 +2919,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-make-deepseek "Deepseek"
     :key (gptel-api-key-from-auth-source
           "api.deepseek.com" "apikey")
-    ;; :request-params '(:reasoning "enabled")
     :stream t)
-  ;; Model specific parameters
-  (put 'deepseek-reasoner :request-params '(:reasoning "enabled"))
-  ;; (get 'deepseek-reasoner :request-params)
   ;; === OpenRouter ====
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
