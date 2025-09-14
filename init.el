@@ -1061,36 +1061,7 @@
   :ensure nil   ; don't install built-in packages
   :custom
   ;; Use maximum decoration detail
-  (treesit-font-lock-level 4)
-  :config
-  ;; Copy standard mode hooks to their Treesitter equivalents
-  (let ((pairs '((bash-ts-mode-hook . sh-mode-hook)
-                 (css-ts-mode-hook . css-mode-hook)
-                 (html-ts-mode-hook . html-mode-hook)
-                 (js-ts-mode-hook . js-mode-hook)
-                 (json-ts-mode-hook . json-mode-hook)
-                 (lua-ts-mode-hook . lua-mode-hook)
-                 (markdown-ts-mode-hook . markdown-mode-hook)
-                 (python-ts-mode-hook . python-mode-hook)
-                 ;; (latex-ts-mode-hook . latex-mode-hook)
-                 (yaml-ts-mode-hook . yaml-mode-hook)))
-        ;; Exceptions where the feature name differs from the mode name
-        (hook-feature-map '((sh-mode-hook . sh-script)
-                            (html-mode-hook . sgml-mode)
-                            (js-mode-hook . js)
-                            (json-mode-hook . json)
-                            (python-mode-hook . python))))
-                            ;; (latex-mode-hook . tex-mode))))
-    (dolist (pair pairs)
-      (let* ((ts-hook (car pair))
-             (orig-hook (cdr pair))
-             (feature (or (alist-get orig-hook hook-feature-map)
-                          ;; default: remove "-hook" from the hook name
-                          (intern (substring (symbol-name orig-hook) 0 -5)))))
-        (with-eval-after-load feature
-          (when (boundp orig-hook)
-            (dolist (fn (symbol-value orig-hook))
-              (add-hook ts-hook fn))))))))
+  (treesit-font-lock-level 4))
 
 ;; uniquify (make buffer names unique)
 (use-package uniquify
@@ -3138,6 +3109,35 @@ the window so that the streaming position appears near the bottom."
        (message "Late settings Linux"))
 
       (t (user-error "Unexpected system-name: %s" (system-name))))
+
+;; Copy standard mode hooks to their Treesitter equivalents
+(let ((pairs '((bash-ts-mode-hook . sh-mode-hook)
+               (css-ts-mode-hook . css-mode-hook)
+               (html-ts-mode-hook . html-mode-hook)
+               (js-ts-mode-hook . js-mode-hook)
+               (json-ts-mode-hook . json-mode-hook)
+               (lua-ts-mode-hook . lua-mode-hook)
+               (markdown-ts-mode-hook . markdown-mode-hook)
+               (python-ts-mode-hook . python-mode-hook)
+               ;; (latex-ts-mode-hook . latex-mode-hook)
+               (yaml-ts-mode-hook . yaml-mode-hook)))
+      ;; Exceptions where the feature name differs from the mode name
+      (hook-feature-map '((sh-mode-hook . sh-script)
+                          (html-mode-hook . sgml-mode)
+                          (js-mode-hook . js)
+                          (json-mode-hook . json)
+                          (python-mode-hook . python))))
+  ;; (latex-mode-hook . tex-mode))))
+  (dolist (pair pairs)
+    (let* ((ts-hook (car pair))
+           (orig-hook (cdr pair))
+           (feature (or (alist-get orig-hook hook-feature-map)
+                        ;; default: remove "-hook" from the hook name
+                        (intern (substring (symbol-name orig-hook) 0 -5)))))
+      (with-eval-after-load feature
+        (when (boundp orig-hook)
+          (dolist (fn (symbol-value orig-hook))
+            (add-hook ts-hook fn)))))))
 
 ;; Display *Messages* buffer
 (display-buffer "*Messages*")
