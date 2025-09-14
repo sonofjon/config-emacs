@@ -374,6 +374,58 @@
             ;; Use both versions with ediff
             (lambda () (keymap-set ediff-mode-map "d" #'my/ediff-copy-both-to-C))))
 
+;; eglot (client for language server protocol servers)
+(use-package eglot
+  :ensure nil   ; don't install built-in packages
+  :hook ((sh-mode . eglot-ensure)
+         (html-mode . eglot-ensure)
+         (mhtml-mode . eglot-ensure)
+         (css-mode . eglot-ensure)
+         (web-mode . eglot-ensure)       ; no linting
+         (js-mode . eglot-ensure)
+         (json-mode . eglot-ensure)      ; no linting
+         (latex-mode . eglot-ensure)
+         (lua-mode . eglot-ensure)
+         (markdown-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
+         (toml-ts-mode . eglot-ensure)
+         (yaml-mode . eglot-ensure))
+  :bind (:map eglot-mode-map
+              ("C-c l a o" . eglot-code-action-organize-imports)
+              ("C-c l a q" . eglot-code-action-quickfix)
+              ("C-c l a e" . eglot-code-action-extract)
+              ("C-c l a i" . eglot-code-action-inline)
+              ("C-c l a r" . eglot-code-action-rewrite)
+              ("C-c l f" . eglot-format)
+              ("C-c l F" . eglot-format-buffer)
+              ("C-c l d" . flymake-show-buffer-diagnostics)
+              ("C-c l D" . flymake-show-project-diagnostics)
+              ("C-c l r" . eglot-rename))
+  :init
+  (which-key-add-key-based-replacements "C-c l" "lsp")
+  (which-key-add-key-based-replacements "C-c l a" "action")
+                                        ; add label for prefix key
+  :custom
+  ;; Shutdown server after buffer kill
+  (eglot-autoshutdown t)
+  ;; Enable eglot in code external to project
+  (eglot-extend-to-xref t)
+  :config
+  ;; Add server for web-mode
+  (add-to-list 'eglot-server-programs
+               '(web-mode . ("vscode-html-language-server" "--stdio")))
+  ;; Prefer ruff-lsp for Python
+  ;; (add-to-list 'eglot-server-programs
+  ;;              '((python-mode python-ts-mode) . ("ruff" "server")))   ; No completion, as Eglot only supports one server
+  ;; Use Orderless for Eglot (default is Flex)
+  (add-to-list 'completion-category-overrides '((eglot (styles orderless)))))
+  ;; Don't manage ELDoc
+  ;; (add-to-list 'eglot-stay-out-of 'eldoc))
+  ;; Limit ELDoc to a single line
+  ;; (setq eldoc-echo-area-use-multiline-p nil))   ; doesn't work nicely
+  ;; Don't auto-show documentation
+  ;; (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1)))
+
 ;; electric (electric indentation and pairing)
 (use-package electric
   :ensure nil   ; don't install built-in packages
@@ -1436,57 +1488,6 @@
 (use-package yaml-pro
   :disabled
   :mode ("\\.yml$" . yaml-pro-ts-mode))
-
-;; eglot (client for language server protocol servers)
-(use-package eglot
-  :hook ((sh-mode . eglot-ensure)
-         (html-mode . eglot-ensure)
-         (mhtml-mode . eglot-ensure)
-         (css-mode . eglot-ensure)
-         (web-mode . eglot-ensure)       ; no linting
-         (js-mode . eglot-ensure)
-         (json-mode . eglot-ensure)      ; no linting
-         (latex-mode . eglot-ensure)
-         (lua-mode . eglot-ensure)
-         (markdown-mode . eglot-ensure)
-         (python-mode . eglot-ensure)
-         (toml-ts-mode . eglot-ensure)
-         (yaml-mode . eglot-ensure))
-  :bind (:map eglot-mode-map
-              ("C-c l a o" . eglot-code-action-organize-imports)
-              ("C-c l a q" . eglot-code-action-quickfix)
-              ("C-c l a e" . eglot-code-action-extract)
-              ("C-c l a i" . eglot-code-action-inline)
-              ("C-c l a r" . eglot-code-action-rewrite)
-              ("C-c l f" . eglot-format)
-              ("C-c l F" . eglot-format-buffer)
-              ("C-c l d" . flymake-show-buffer-diagnostics)
-              ("C-c l D" . flymake-show-project-diagnostics)
-              ("C-c l r" . eglot-rename))
-  :init
-  (which-key-add-key-based-replacements "C-c l" "lsp")
-  (which-key-add-key-based-replacements "C-c l a" "action")
-                                        ; add label for prefix key
-  :custom
-  ;; Shutdown server after buffer kill
-  (eglot-autoshutdown t)
-  ;; Enable eglot in code external to project
-  (eglot-extend-to-xref t)
-  :config
-  ;; Add server for web-mode
-  (add-to-list 'eglot-server-programs
-               '(web-mode . ("vscode-html-language-server" "--stdio")))
-  ;; Prefer ruff-lsp for Python
-  ;; (add-to-list 'eglot-server-programs
-  ;;              '((python-mode python-ts-mode) . ("ruff" "server")))   ; No completion, as Eglot only supports one server
-  ;; Use Orderless for Eglot (default is Flex)
-  (add-to-list 'completion-category-overrides '((eglot (styles orderless)))))
-  ;; Don't manage ELDoc
-  ;; (add-to-list 'eglot-stay-out-of 'eldoc))
-  ;; Limit ELDoc to a single line
-  ;; (setq eldoc-echo-area-use-multiline-p nil))   ; doesn't work nicely
-  ;; Don't auto-show documentation
-  ;; (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1)))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
