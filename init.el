@@ -2885,12 +2885,14 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Load custom tools
   (require 'aj8-gptel)
+  ;; Default model
   (setq-default gptel-model 'gpt-5-mini)
   ;; === ChatGPT ===
   ;; Set reasoning effort
-  ;;   OpenAI default: medium
-  ;; (put 'o1-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
-  ;; (put 'o3-mini :request-params '(:reasoning_effort "medium" :stream :json-false))
+  ;;   Default: medium
+  ;; (put 'o1-mini :request-params '(:reasoning_effort "medium"))
+  ;; Disable streaming
+  (setf (gptel-backend-request-params gptel--openai) '(:stream :json-false))
   ;; Use Flex processing
   (put 'gpt-5 :request-params '(:service_tier "flex"))
   ;; === Claude ===
