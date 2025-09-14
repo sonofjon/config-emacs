@@ -193,6 +193,11 @@ that string; otherwise it re-signals the original error."
 
 ;;; Tool definitions
 
+;; TODO: Add tools:
+;;         Function and variable search tools based on `apropos',
+;;         `apropos-command', `apropos-variable'? Note that the LLM can do
+;;         all this stuff already with with the eval expression tool.
+
 ;; Buffers
 
 (defun aj8/gptel-tool-buffer-search-regexp (buffer-name regexp &optional include-columns)
