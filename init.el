@@ -2981,8 +2981,12 @@ Elisp code explicitly in arbitrary buffers.")
       "create_directory")
     "A list of temporary tool names.")
   (defun aj8/gptel--get-minimal-tools ()
-    "Return a list of all known GPTel tools, excluding the redundant ones.
-This is a helper function for the GPTel presets."
+    "Return a minimal list of GPTel tools.
+This function return a list of all known GPTel tools, excluding the
+redundant, unwanted and temporary tools as set by
+`aj8/gptel-redundant-tools', `aj8/gptel-unwanted-tools' and
+`aj8/gptel-temporary-tools', respectively.  This is a helper function
+for the GPTel presets."
     (let ((all-tools (mapcan (lambda (category) (mapcar #'car (cdr category))) gptel--known-tools)))
       (seq-remove (lambda (tool)
                     (or (member tool aj8/gptel-redundant-tools)
