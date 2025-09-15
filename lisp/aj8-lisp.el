@@ -1,4 +1,11 @@
 ;;; aj8-lisp.el --- My custom lisp -*- lexical-binding: t; -*-
+;;
+;; Author: Andreas Jonsson <ajdev8@gmail.com>
+;; Maintainer: Andreas Jonsson <ajdev8@gmail.com>
+;; URL: https://github.com/sonofjon/config-emacs.el
+;; Version: 0.1
+;; Package-Requires: ((emacs "30.1"))
+;; Keywords: convenience, lisp
 
 ;;;;; FUNCTIONS
 
@@ -97,7 +104,8 @@ up-to-date."
       (message "All packages are up to date"))))
 
 (defun aj8/package-upgrade-all-advice (orig-fun &rest args)
-  "Advice to make package-upgrade-all show package names in the upgrade prompt."
+  "Advice to make package-upgrade-all show package names in the upgrade prompt.
+ORIG-FUN should be `package-upgrade-all'."
   (let ((upgradable (package--upgradeable-packages)))
     (if upgradable
         (let ((package-list (mapconcat 'symbol-name upgradable ", ")))
@@ -115,7 +123,7 @@ up-to-date."
   "Advice function for `package-autoremove to not remove VC packages'.
 This function temporarily adds packages from
 `package-vc-selected-packages' to `package-selected-packages' before
-calling `package-autoremove'. ORIG-FUN should be `package-autoremove'."
+calling `package-autoremove'.  ORIG-FUN should be `package-autoremove'."
   (let ((package-selected-packages
          (append (mapcar #'car package-vc-selected-packages)
                  package-selected-packages)))
@@ -1957,7 +1965,7 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
   "Display the gptel reasoning buffer.
 This function displays the gptel reasoning buffer and enables
 `aj8/buffer-tail-mode' (on first display only).  Use with any of gptel's
-built-in hooks. The arguments BEG and END are ignored but required by
+built-in hooks.  The arguments BEG and END are ignored but required by
 the hook."
   (when (stringp gptel-include-reasoning)
     (let ((buf (get-buffer gptel-include-reasoning)))
@@ -2280,3 +2288,5 @@ Note that the available width is slightly less than reported by
 
 
 (provide 'aj8-lisp)
+
+;;; aj8-lisp.el ends here

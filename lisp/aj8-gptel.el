@@ -1,4 +1,11 @@
 ;;; aj8-gptel.el --- Tools for gptel -*- lexical-binding: t; -*-
+;;
+;; Author: Andreas Jonsson <ajdev8@gmail.com>
+;; Maintainer: Andreas Jonsson <ajdev8@gmail.com>
+;; URL: https://github.com/sonofjon/config-emacs.el
+;; Version: 0.1
+;; Package-Requires: ((emacs "28.1"))
+;; Keywords: convenience, tools, text, files
 
 ;;; Helpers
 
@@ -6,9 +13,9 @@
 
 (defmacro aj8/gptel-tool--with-suppressed-messages (&rest body)
   "Execute BODY while suppressing all messages.
-This macro temporarily sets `inhibit-message' to t and `message-log-max'
-to nil, preventing messages from appearing in the echo area or being
-logged to the *Messages* buffer."
+This macro temporarily sets the variable `inhibit-message' to t and
+`message-log-max' to nil, preventing messages from appearing in the echo
+area or being logged to the *Messages* buffer."
   `(let ((inhibit-message t)
          (message-log-max nil))
      ,@body))
@@ -179,7 +186,7 @@ logged.")
 (defun aj8/gptel-tool--report-and-return-or-signal (tool-name args err)
   "Message and log ERR for TOOL-NAME with ARGS, then return or re-signal.
 
-ERR is the error object received by a condition-case handler.
+ERR is the error object received by a `condition-case' handler.
 
 This builds the exact minibuffer message string for ERR, messages it,
 and logs it.  If `aj8/gptel-tool-return-error' is non-nil, it returns
@@ -589,7 +596,7 @@ string."
 BUFFER-EDITS is a list of property lists describing edits.  Each edit is
 a plist with the following keys:
 - :line-number (integer) -- The line to edit.
-- :old-string (string) -- The text to replace. Must not contain newline
+- :old-string (string) -- The text to replace.  Must not contain newline
                           characters.
 - :new-string (string) -- The replacement text to insert.
 
@@ -681,9 +688,9 @@ subsequent line numbers."
 (defun aj8/--review-buffer-edits (buffer-name buffer-edits edit-type)
   "Review a list of buffer edits in Ediff.
 
-Creates a temporary buffer containing the original buffer's content with
-the proposed edits applied, then launches an Ediff session to visually
-compare the original buffer against the edited version.
+Creates a temporary buffer containing the content of the original buffer
+BUFFER-NAME, applies the proposed edits, and then launches an Ediff session
+to visually compare the original buffer against the edited version.
 
 BUFFER-EDITS is a list of property lists with the same shape as
 described for `aj8/--apply-buffer-edits': each edit should contain
@@ -827,7 +834,9 @@ buffer only; the original buffer is not modified by this command."
              (buffer-substring-no-properties beg (point)))))))))
 
 (defun aj8/gptel-tool-load-library (library-name &optional include-counts)
-  "Load LIBRARY-NAME into a buffer."
+  "Load LIBRARY-NAME into a buffer.
+If INCLUDE-COUNTS is non-nil, append the number of lines as \" (N
+lines)\"."
   (let ((raw-args (list :library-name library-name :include-counts include-counts)))
     (aj8/gptel-tool--with-normalized-bools (include-counts)
       (aj8/gptel-tool--with-tool
@@ -1028,10 +1037,10 @@ the file and PATH is the path relative to the project root."
 
 (defun aj8/gptel-tool-project-find-files-glob (pattern &optional include-counts)
   "In the current project, find files whose filenames match the glob PATTERN.
-Returns a newline-separated string where each line is of the form \"NAME: PATH\".
-NAME is the file's base name and PATH is the path relative to the
-project root.  If INCLUDE-COUNTS is non-nil append the number of lines
-as \" (N lines)\".  This function respects .gitignore."
+Returns a newline-separated string where each line is of the form
+\"NAME: PATH\".  NAME is the file's base name and PATH is the path
+relative to the project root.  If INCLUDE-COUNTS is non-nil append the
+number of lines as \" (N lines)\".  This function respects .gitignore."
   (let ((raw-args (list :pattern pattern :include-counts include-counts)))
     (aj8/gptel-tool--with-normalized-bools (include-counts)
       (aj8/gptel-tool--with-tool
@@ -1064,10 +1073,10 @@ as \" (N lines)\".  This function respects .gitignore."
 
 (defun aj8/gptel-tool-project-search-regexp (regexp &optional include-columns)
   "In the current project, recursively search for content matching REGEXP.
-Returns a newline-separated string of matching lines.  Each match is formatted as
-PATH:LINE:TEXT or, if INCLUDE-COLUMNS is non-nil, PATH:LINE:COLUMN:TEXT.
-Both line and column numbers are 1-based.  This search respects
-.gitignore."
+Returns a newline-separated string of matching lines.  Each match is
+formatted as PATH:LINE:TEXT or, if INCLUDE-COLUMNS is non-nil,
+PATH:LINE:COLUMN:TEXT.  Both line and column numbers are 1-based.  This
+search respects .gitignore."
   (let ((raw-args (list :regexp regexp :include-columns include-columns)))
     (aj8/gptel-tool--with-normalized-bools (include-columns)
       (aj8/gptel-tool--with-tool
@@ -1107,7 +1116,8 @@ Both line and column numbers are 1-based.  This search respects
 ;; Test
 
 (defun aj8/ert-parse-test-results (stats)
-  "Parse ERT stats into a human-readable summary string."
+  "Parse ERT stats into a human-readable summary string.
+STATS is an ERT stats object containing test results."
   (let ((total (ert-stats-total stats))
         (passed-expected (ert--stats-passed-expected stats))
         (failed-expected (ert--stats-failed-expected stats))
@@ -1759,3 +1769,5 @@ This action requires manual user review. After calling this tool, you must stop 
  :category "test")
 
 (provide 'aj8-gptel)
+
+;;; aj8-gptel.el ends here

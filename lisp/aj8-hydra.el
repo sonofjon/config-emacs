@@ -1,4 +1,11 @@
 ;;; aj8-hydra.el --- Definitions for hydra -*- lexical-binding: t; -*-
+;;
+;; Author: Andreas Jonsson <ajdev8@gmail.com>
+;; Maintainer: Andreas Jonsson <ajdev8@gmail.com>
+;; URL: https://github.com/sonofjon/config-emacs.el
+;; Version: 0.1
+;; Package-Requires: ((emacs "24.1"))
+;; Keywords: convenience
 
 ;; Markdown
 (defhydra hydra-markdown (:hint nil :foreign-keys run)
@@ -229,3 +236,5 @@ _p_rev       _u_pper              _=_: upper/lower       _r_esolve
 
 
 (provide 'aj8-hydra)
+
+;;; aj8-hydra.el ends here

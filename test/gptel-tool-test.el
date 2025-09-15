@@ -1,4 +1,11 @@
-;;; gptel-test.el --- Tests for GPTel tools -*- lexical-binding: t; -*-
+;;; gptel-tool-test.el --- Tests for GPTel tools -*- lexical-binding: t; -*-
+;;
+;; Author: Andreas Jonsson <ajdev8@gmail.com>
+;; Maintainer: Andreas Jonsson <ajdev8@gmail.com>
+;; URL: https://github.com/sonofjon/config-emacs.el
+;; Version: 0.1
+;; Package-Requires: ((emacs "24.4"))
+;; Keywords: internal
 
 (message "Running gptel tool tests")
 
@@ -116,7 +123,7 @@ Optional keyword parameters:
 - DETAILS-NONEMPTY: If non-nil, require that the error contains
   non-empty details after \"Error:\" in the message."
   (unless tool-name
-    (error "tool-name is required"))
+    (error "Keyword tool-name is required"))
   (let ((header (format "tool: %s:" tool-name)))
     ;; Assert basic header prefix check
     (should (string-prefix-p header result))
@@ -1830,9 +1837,9 @@ Optional keyword parameters:
 ;;;; 4. Integration Tests (ert-deftest)
 
 (ert-deftest test-gptel-tools-registration ()
-  "Verify that all GPTel tools are registered in `gptel-tools'.
+  "Verify that all GPTel tools are registered in the variable `gptel-tools'.
 This test checks that a predefined list of essential tool names exists
-in the `gptel-tools' alist."
+in the variable `gptel-tools' alist."
   :tags '(integration tools)
   (let ((expected-tools '("aj8_buffer_search_regexp"
                           "aj8_open_file_in_buffer"
@@ -2108,7 +2115,7 @@ TOOL-NAME is the name of the tool to run (e.g., 'aj8_list_buffers')."
       (message "Tool function not found for %s" tool-name))))
 
 (defun aj8/gptel-tool-validate-definitions ()
-  "Validate that all entries in `gptel-tools' are well-formed.
+  "Validate that all entries in the variable `gptel-tools' are well-formed.
 
 This function checks that each tool is a valid `gptel-tool` struct and
 includes the required fields: a `:name`, a callable `:function`, and a
@@ -2157,3 +2164,5 @@ if all tools are valid."
       nil)))
 
 (provide 'gptel-tool-test)
+
+;;; gptel-tool-test.el ends here

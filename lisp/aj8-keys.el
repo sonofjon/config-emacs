@@ -1,4 +1,11 @@
 ;;; aj8-keys.el --- My custom keys -*- lexical-binding: t; -*-
+;;
+;; Author: Andreas Jonsson <ajdev8@gmail.com>
+;; Maintainer: Andreas Jonsson <ajdev8@gmail.com>
+;; URL: https://github.com/sonofjon/config-emacs.el
+;; Version: 0.1
+;; Package-Requires: ((emacs "29.1"))
+;; Keywords: convenience
 
 ;;;;; KEYBINDINGS
 
@@ -76,3 +83,5 @@
 (keymap-set key-translation-map "C-M-<down>" "C-M-n")
 
 (provide 'aj8-keys)
+
+;;; aj8-keys.el ends here

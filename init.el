@@ -1,4 +1,11 @@
-;;; init.el -*- lexical-binding: t; -*-
+;;; init.el --- My custom config -*- lexical-binding: t; -*-
+;;
+;; Author: Andreas Jonsson <ajdev8@gmail.com>
+;; Maintainer: Andreas Jonsson <ajdev8@gmail.com>
+;; URL: https://github.com/sonofjon/config-emacs.el
+;; Version: 0.1
+;; Package-Requires: ((emacs "30.1"))
+;; Keywords: convenience
 
 ;;;;; STARTUP
 
@@ -3134,3 +3141,7 @@ This is a helper function for the GPTel presets."
 ;;       (load host-specific-files)
 ;;     (message (concat "No host specific customizations for " (system-name)))
 ;;     ))
+
+(provide 'init)
+
+;;; init.el ends here
