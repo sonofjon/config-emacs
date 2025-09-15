@@ -2978,7 +2978,7 @@ Elisp code explicitly in arbitrary buffers.")
     :temperature 0.1
     :use-context 'user
     :include-reasoning "*gptel-reasoning*"
-    :tools (aj8/gptel--get-minimal-tools)
+    :tools (aj8/gptel-tool--get-minimal-tools)
     :use-tools t))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
