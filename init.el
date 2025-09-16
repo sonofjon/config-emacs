@@ -2914,18 +2914,22 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Default model
   (setq-default gptel-model 'gpt-5-mini)
   ;; === ChatGPT ===
-  ;; Custom OpenAI backend (no streaming)
-  (gptel-make-openai "ChatGPT-NoStream"
-    :key (gptel-api-key-from-auth-source
-          "api.openai.com" "apikey")
-    :stream nil   ; Disable streaming
-    :models gptel--openai-models)   ; include all OpenAI models
+  ;; Custom OpenAI backend
+  ;; (gptel-make-openai "ChatGPT-NoStream"
+  ;;   :key (gptel-api-key-from-auth-source
+  ;;         "api.openai.com" "apikey")
+  ;;   :stream nil   ; Disable streaming
+  ;;   :models gptel--openai-models)   ; include all OpenAI models
   ;; Set as default backend
-  (setq gptel-backend (gptel-get-backend "ChatGPT-NoStream"))
+  ;; (setq gptel-backend (gptel-get-backend "ChatGPT-NoStream"))
+  ;; Disable streaming
+  ;; (put 'gpt-5 :request-params '(:stream :json-false))
+  (put 'gpt-5-mini :request-params '(:stream :json-false))
   ;; Set reasoning effort (default: medium)
   ;; (put 'o1-mini :request-params '(:reasoning_effort "medium"))
   ;; Use Flex processing
-  (put 'gpt-5 :request-params '(:service_tier "flex"))
+  ;; (put 'gpt-5 :request-params '(:service_tier "flex"))
+  (put 'gpt-5 :request-params '(:stream :json-false :service_tier "flex"))
   ;; === Claude ===
   (gptel-make-anthropic "Claude"
     :key (gptel-api-key-from-auth-source
