@@ -1229,7 +1229,60 @@ Optional keyword parameters:
     ;; Clean up any Ediff buffers created during testing
     (aj8/ediff-cleanup-buffers)))
 
-;;; 3.2. Category: Emacs
+;;; 3.2. Category: Files
+
+(ert-deftest test-aj8-create-file ()
+  "Test `aj8/gptel-tool-create-file'."
+  :tags '(unit files)
+
+  ;; === SUCCESS CASES ===
+
+  ;; Test basic file creation:
+  (let ((tmp-file (concat temporary-file-directory "aj8-test-create-" (make-temp-name ""))))
+    (unwind-protect
+        (let ((test-content "Hello, world!\nThis is a test file."))
+          (let ((result (aj8/gptel-tool-create-file tmp-file test-content)))
+            ;; Assert that the function returns success message
+            (should (string-equal result (format "Successfully created file: %s" tmp-file)))
+            ;; Assert that the file exists
+            (should (file-exists-p tmp-file))
+            ;; Assert that the file contains the expected content
+            (with-temp-buffer
+              (insert-file-contents tmp-file)
+              (should (string-equal (buffer-string) test-content)))))
+      (when (file-exists-p tmp-file)
+        (delete-file tmp-file))))
+
+  ;; === ERROR CASES ===
+
+  ;; Test error when file already exists:
+  (let ((tmp-file (make-temp-file "aj8-test-exists-")))
+    (unwind-protect
+        (progn
+          ;; Mode 1: tool re-signals the error
+          (let ((aj8/gptel-tool-return-error nil))
+            (should-error (aj8/gptel-tool-create-file tmp-file "content") :type 'error))
+          ;; Mode 2: tool returns the error as a string
+          (let ((aj8/gptel-tool-return-error t))
+            (let ((result (aj8/gptel-tool-create-file tmp-file "content")))
+              (should (string-equal result (format "tool: aj8_create_file: Error: File already exists: %s" tmp-file))))))
+      (when (file-exists-p tmp-file)
+        (delete-file tmp-file))))
+
+  ;; Test empty content:
+  (let ((tmp-file (concat temporary-file-directory "aj8-test-empty-" (make-temp-name ""))))
+    (unwind-protect
+        (let ((result (aj8/gptel-tool-create-file tmp-file "")))
+          ;; Assert that the function returns success message
+          (should (string-equal result (format "Successfully created file: %s" tmp-file)))
+          ;; Assert that the file exists
+          (should (file-exists-p tmp-file))
+          ;; Assert that the file is empty
+          (should (= 0 (nth 7 (file-attributes tmp-file)))))
+      (when (file-exists-p tmp-file)
+        (delete-file tmp-file)))))
+
+;;; 3.3. Category: Emacs
 
 (ert-deftest test-aj8-read-documentation ()
   "Test `aj8/gptel-tool-read-documentation'."
@@ -1606,7 +1659,7 @@ Optional keyword parameters:
       ;; Assert that the error message indicates arithmetic error
       (should (string-match "tool: aj8_eval_expression:" result)))))
 
-;;; 3.3. Category: Project
+;;; 3.4. Category: Project
 
 (ert-deftest test-aj8-project-get-root ()
   "Test `aj8/gptel-tool-project-get-root'."
@@ -1777,7 +1830,7 @@ Optional keyword parameters:
          (when (file-directory-p tmpdir)
            (delete-directory tmpdir t)))))))
 
-;;; 3.4. Category: Test
+;;; 3.5. Category: Test
 
 (ert-deftest test-aj8-ert-run-unit ()
   "Test `aj8/gptel-tool-ert-run-unit'."
@@ -1863,7 +1916,7 @@ in the variable `gptel-tools' alist."
                           "aj8_apply_buffer_string_edits_with_review"
                           "aj8_apply_buffer_line_edits"
                           "aj8_apply_buffer_line_edits_with_review"
-                          ;; "aj8_create_file"
+                          "aj8_create_file"
                           "aj8_read_documentation"
                           "aj8_read_function"
                           "aj8_load_library"

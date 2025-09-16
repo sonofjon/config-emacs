@@ -819,14 +819,20 @@ buffer only; the original buffer is not modified by this command."
 
 ;; Files
 
-;; (defun aj8/gptel-tool-create-file (file-path content)
-;;   "Create a new file at FILE-PATH with CONTENT."
-;;   (with-temp-message "Running tool: aj8_create_file"
-;;     (let ((full-path (expand-file-name file-path)))
-;;       (with-temp-buffer
-;;         (insert content)
-;;         (write-file full-path t)) ; The 't' arg prevents confirmation prompts
-;;       (format "Successfully created file: %s" full-path))))
+(defun aj8/gptel-tool-create-file (file-path content)
+  "Create a new file at FILE-PATH with CONTENT."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_create_file"
+   (list :file-path file-path :content content)
+   (let ((full-path (expand-file-name file-path)))
+     (when (file-exists-p full-path)
+       (error "File already exists: %s" full-path))
+     (with-temp-buffer
+       (insert content)
+       (let ((require-final-newline nil)
+             (mode-require-final-newline nil))
+         (write-file full-path)))
+     (format "Successfully created file: %s" full-path))))
 
 ;; Emacs
 
@@ -1614,16 +1620,18 @@ This action requires manual user review. After calling this tool, you must stop 
 
 ;; Files
 
-;; (gptel-make-tool
-;;  :function #'aj8/gptel-tool-create-file
-;;  :name "aj8_create_file"
-;;  :description "Create a new file with the specified content. Overwrites the file if it already exists."
-;;  :args '((:name "file-path"
-;;                 :type string
-;;                 :description "The path of the file to create.")
-;;          (:name "content"
-;;                 :type string
-;;                 :description "The content to write to the new file."))
+(gptel-make-tool
+ :function #'aj8/gptel-tool-create-file
+ :name "aj8_create_file"
+ :description "Create a new file with the specified content. Fails if the file already exists."
+ :args '((:name "file-path"
+                :type string
+                :description "The path of the file to create.")
+         (:name "content"
+                :type string
+                :description "The content to write to the new file."))
+ :confirm t
+ :category "files")
 
 ;; Emacs
 
