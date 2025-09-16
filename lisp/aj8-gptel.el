@@ -206,48 +206,38 @@ that string; otherwise it re-signals the original error."
         msg
       (signal (car err) (cdr err)))))
 
-(defcustom aj8/gptel-tool-redundant-tools
-  '("aj8_list_buffers"
+(defcustom aj8/gptel-tool-excluded-tools
+  '(;; unexcluded
+    "aj8_list_buffers"
     "aj8_insert_in_buffer"
     "aj8_replace_buffer_line"
     "aj8_delete_buffer_line"
     "aj8_delete_buffer_string"
     "aj8_apply_buffer_line_edits"
-    "aj8_apply_buffer_line_edits_with_review")
-  "A list of redundant tool names."
-  :type '(repeat string)
-  :group 'aj8-gptel)
-
-(defcustom aj8/gptel-tool-unwanted-tools
-  '("edit_buffer"
+    "aj8_apply_buffer_line_edits_with_review"
+    ;; Unwanted
+    "edit_buffer"
     "view_buffer"
     "read_file"
     "list_directory"
     "aj8_replace_buffer"
-    "aj8_ert_run_unit")
-  "A list of unwanted tool names."
-  :type '(repeat string)
-  :group 'aj8-gptel)
-
-(defcustom aj8/gptel-tool-temporary-tools
-  '("create_file"
+    "aj8_ert_run_unit"
+    ;; Temporary
+    "create_file"
     "create_directory")
-  "A list of temporary tool names."
+  "A list of tool names to exclude from the minimal tools list.
+This includes redundant, unwanted, and temporary tools."
   :type '(repeat string)
   :group 'aj8-gptel)
 
 (defun aj8/gptel-tool--get-minimal-tools ()
   "Return a minimal list of GPTel tools.
 This function return a list of all known GPTel tools, excluding the
-redundant, unwanted and temporary tools as set by
-`aj8/gptel-tool-redundant-tools', `aj8/gptel-tool-unwanted-tools' and
-`aj8/gptel-tool-temporary-tools', respectively.  This is a helper function
+tools listed in `aj8/gptel-tool-excluded-tools'.  This is a helper function
 for the GPTel presets."
   (let ((all-tools (mapcan (lambda (category) (mapcar #'car (cdr category))) gptel--known-tools)))
     (seq-remove (lambda (tool)
-                  (or (member tool aj8/gptel-tool-redundant-tools)
-                      (member tool aj8/gptel-tool-unwanted-tools)
-                      (member tool aj8/gptel-tool-temporary-tools)))
+                  (member tool aj8/gptel-tool-excluded-tools))
                 all-tools)))
 
 ;;; Tool definitions
