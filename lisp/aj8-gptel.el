@@ -194,9 +194,7 @@ error.  When nil, errors are re-signaled as standard Emacs errors."
   :group 'aj8-gptel)
 
 (defun aj8/gptel-tool--report-and-return-or-signal (tool-name args err)
-  "Message and log ERR for TOOL-NAME with ARGS, then return or re-signal.
-
-ERR is the error object received by a `condition-case' handler.
+  "Report ERR for TOOL-NAME with ARGS, then return or re-signal.
 
 This builds the exact minibuffer message string for ERR, messages it,
 and logs it.  If `aj8/gptel-tool-return-error' is non-nil, it returns
