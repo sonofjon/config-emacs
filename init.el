@@ -2914,11 +2914,16 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Default model
   (setq-default gptel-model 'gpt-5-mini)
   ;; === ChatGPT ===
-  ;; Set reasoning effort
-  ;;   Default: medium
+  ;; Custom OpenAI backend (no streaming)
+  (gptel-make-openai "ChatGPT-NoStream"
+    :key (gptel-api-key-from-auth-source
+          "api.openai.com" "apikey")
+    :stream nil   ; Disable streaming
+    :models gptel--openai-models)   ; include all OpenAI models
+  ;; Set as default backend
+  (setq gptel-backend (gptel-get-backend "ChatGPT-NoStream"))
+  ;; Set reasoning effort (default: medium)
   ;; (put 'o1-mini :request-params '(:reasoning_effort "medium"))
-  ;; Disable streaming
-  (setf (gptel-backend-request-params gptel--openai) '(:stream :json-false))
   ;; Use Flex processing
   (put 'gpt-5 :request-params '(:service_tier "flex"))
   ;; === Claude ===
@@ -2926,20 +2931,16 @@ Elisp code explicitly in arbitrary buffers.")
     :key (gptel-api-key-from-auth-source
           "api.anthropic.com" "apikey")
     :stream t)   ; make available
-  ;; (setq gptel-backend (gptel-make-anthropic "Claude"
-  ;;                       :key (gptel-api-key-from-auth-source
-  ;;                             "api.anthropic.com" "apikey")
-  ;;                       :stream t))   ; set default
+  ;; Set as default backend
+  ;; (setq gptel-backend "Claude")
   ;; (setq gptel-model 'claude-sonnet-4-20250514)
   ;; === Gemini ===
   (gptel-make-gemini "Gemini"
     :key (gptel-api-key-from-auth-source
           "generativelanguage.googleapis.com" "apikey")
     :stream t)   ; make available
-  ;; (setq gptel-backend (gptel-make-gemini "Gemini"
-  ;;                       :key (gptel-api-key-from-auth-source
-  ;;                             "generativelanguage.googleapis.com" "apikey")
-  ;;                       :stream t))   ; set default
+  ;; Set as default backend
+  ;; (setq gptel-backend "Gemini")
   ;; (setq gptel-model 'gemini-2.5-pro)
   ;; === Deepseek ===
   (gptel-make-deepseek "Deepseek"
