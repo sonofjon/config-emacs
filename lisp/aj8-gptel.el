@@ -7,6 +7,13 @@
 ;; Package-Requires: ((emacs "28.1"))
 ;; Keywords: convenience, tools, text, files
 
+;;; Customization
+
+(defgroup aj8-gptel nil
+  "Customization group for aj8 GPTel tools."
+  :group 'tools
+  :prefix "aj8/gptel-tool-")
+
 ;;; Helpers
 
 ;; Macros
@@ -153,10 +160,12 @@ Returns a new property list with only the desired pairs for display."
             (push value result))))
       (nreverse result))))
 
-(defvar aj8/gptel-tool-suppress-logging nil
+(defcustom aj8/gptel-tool-suppress-logging nil
   "When non-nil, suppress tool call logging to `*gptel-tool-log*'.
 This is useful during test execution to avoid cluttering the log with
-internal tool calls made by the test code itself.")
+internal tool calls made by the test code itself."
+  :type 'boolean
+  :group 'aj8-gptel)
 
 (defun aj8/gptel-tool--log-to-buffer (tool-name args result &optional error-p)
   "Append to `*gptel-tool-log*' recording TOOL-NAME, ARGS and RESULT.
@@ -176,12 +185,13 @@ machine-readable (prin1) and timestamped.  Does nothing if
                         (prin1-to-string (or result "<nil>"))))
         (force-window-update (get-buffer-window buf))))))
 
-(defvar aj8/gptel-tool-return-error t
+(defcustom aj8/gptel-tool-return-error t
   "When non-nil, tools return errors to the caller.
 If non-nil, tool error handlers return the same human-readable error
 text that is messaged in the minibuffer, instead of signaling an Emacs
-error.  When nil, errors are re-signaled after being messaged and
-logged.")
+error.  When nil, errors are re-signaled as standard Emacs errors."
+  :type 'boolean
+  :group 'aj8-gptel)
 
 (defun aj8/gptel-tool--report-and-return-or-signal (tool-name args err)
   "Message and log ERR for TOOL-NAME with ARGS, then return or re-signal.
@@ -198,7 +208,7 @@ that string; otherwise it re-signals the original error."
         msg
       (signal (car err) (cdr err)))))
 
-(defvar aj8/gptel-tool-redundant-tools
+(defcustom aj8/gptel-tool-redundant-tools
   '("aj8_list_buffers"
     "aj8_insert_in_buffer"
     "aj8_replace_buffer_line"
@@ -206,21 +216,27 @@ that string; otherwise it re-signals the original error."
     "aj8_delete_buffer_string"
     "aj8_apply_buffer_line_edits"
     "aj8_apply_buffer_line_edits_with_review")
-  "A list of redundant tool names.")
+  "A list of redundant tool names."
+  :type '(repeat string)
+  :group 'aj8-gptel)
 
-(defvar aj8/gptel-tool-unwanted-tools
+(defcustom aj8/gptel-tool-unwanted-tools
   '("edit_buffer"
     "view_buffer"
     "read_file"
     "list_directory"
     "aj8_replace_buffer"
     "aj8_ert_run_unit")
-  "A list of unwanted tool names.")
+  "A list of unwanted tool names."
+  :type '(repeat string)
+  :group 'aj8-gptel)
 
-(defvar aj8/gptel-tool-temporary-tools
+(defcustom aj8/gptel-tool-temporary-tools
   '("create_file"
     "create_directory")
-  "A list of temporary tool names.")
+  "A list of temporary tool names."
+  :type '(repeat string)
+  :group 'aj8-gptel)
 
 (defun aj8/gptel-tool--get-minimal-tools ()
   "Return a minimal list of GPTel tools.
@@ -300,8 +316,10 @@ line."
 ;;    (with-current-buffer buffer
 ;;      (buffer-substring-no-properties (point-min) (point-max)))))
 
-(defvar aj8/gptel-tool-max-lines 100
-  "Default maximum number of lines any read tool will return.")
+(defcustom aj8/gptel-tool-max-lines 100
+  "Default maximum number of lines any read tool will return."
+  :type 'integer
+  :group 'aj8-gptel)
 
 ;; (defun aj8/gptel-tool-read-buffer-lines (buffer-name &optional start-line end-line)
 ;;   "Read lines from BUFFER-NAME between START-LINE and END-LINE.
