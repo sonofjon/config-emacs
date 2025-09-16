@@ -1289,16 +1289,16 @@ behavior.  STATS is an ERT stats object containing test results."
      ;; Format results similar to ERT buffer output
      (aj8/gptel-tool--ert-format-simple-results stats))))
 
-     ;; Detailed output
-     ;; (let* ((aj8/gptel-tool--suppress-logging t)
-     ;;        (stats (ert-run-tests-batch '(tag unit)))
-     ;;        (summary (aj8/ert-parse-test-results stats))
-     ;;        (detailed-info (aj8/gptel-tool--ert-format-detailed-results stats)))
-     ;;   ;; Format results for LLM consumption with both summary and details
-     ;;   (format "ERT Test Results for %s:\n%s%s"
-     ;;           test-name
-     ;;           summary
-     ;;           detailed-info)))))
+   ;; Detailed output
+   ;; (let* ((aj8/gptel-tool--suppress-logging t)
+   ;;        (stats (ert-run-tests-batch '(tag unit)))
+   ;;        (summary (aj8/ert-parse-test-results stats))
+   ;;        (detailed-info (aj8/gptel-tool--ert-format-detailed-results stats)))
+   ;;   ;; Format results for LLM consumption with both summary and details
+   ;;   (format "ERT Test Results for %s:\n%s%s"
+   ;;           test-name
+   ;;           summary
+   ;;           detailed-info)))))
 
 (defun aj8/gptel-tool-ert-run-by-name (test-name)
   "Run a single ERT test by name and return results.
