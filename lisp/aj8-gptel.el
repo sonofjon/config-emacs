@@ -1405,11 +1405,11 @@ TEST-NAME is the string name of the ERT test symbol to run."
 (gptel-make-tool
  :function #'aj8/gptel-tool-list-all-buffers
  :name "aj8_list_all_buffers"
- :description "Return a newline-separated string listing all currently open buffers. Each line is of the form \"NAME: PATH\" where NAME is the buffer name and PATH is the file path relative to the current project root when the file is inside a project; otherwise PATH is the absolute file path. If the optional argument 'include-counts' is true, append the number of lines as \" (N lines)\"."
+ :description "Return a newline-separated string listing all currently open buffers. Each line is either of the form \"NAME: PATH\" for file-backed buffers or just \"NAME\" for non-file buffers.  NAME is the buffer name and PATH is the file path relative to the current project root.  When the file is outside the current project, PATH is the absolute file path.  If INCLUDE-COUNTS is true, append the number of lines as \" (N lines)\"."
  :args '((:name "include-counts"
                 :type boolean
                 :optional t
-                :description "If true, append the number of lines to each en entry as ' (N lines)'."))
+                :description "If true, append the number of lines to each entry as ' (N lines)'."))
  :category "buffers")
 
 (gptel-make-tool
