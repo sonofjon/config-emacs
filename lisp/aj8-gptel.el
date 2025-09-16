@@ -1040,9 +1040,9 @@ WARNING: This can execute arbitrary code and should be used with caution."
 
 (defun aj8/gptel-tool-project-list-files (&optional include-counts)
   "Return a newline-separated string listing all files in the current project.
-Each line is of the form \"NAME: PATH\".  If INCLUDE-COUNTS is non-nil,
-append the number of lines as \" (N lines)\".  NAME is the base name of
-the file and PATH is the path relative to the project root."
+Each line is of the form \"NAME: PATH\", where NAME is the file's base
+name and PATH is the path relative to the current project root.  If
+INCLUDE-COUNTS is non-nil, append the number of lines as \" (N lines)\"."
   (let ((raw-args (list :include-counts include-counts)))
     (aj8/gptel-tool--with-normalized-bools (include-counts)
       (aj8/gptel-tool--with-tool
@@ -1077,8 +1077,9 @@ the file and PATH is the path relative to the project root."
   "In the current project, find files whose filenames match the glob PATTERN.
 Returns a newline-separated string where each line is of the form
 \"NAME: PATH\".  NAME is the file's base name and PATH is the path
-relative to the project root.  If INCLUDE-COUNTS is non-nil append the
-number of lines as \" (N lines)\".  This function respects .gitignore."
+relative to the current project root.  If INCLUDE-COUNTS is non-nil
+append the number of lines as \" (N lines)\".  This function respects
+.gitignore."
   (let ((raw-args (list :pattern pattern :include-counts include-counts)))
     (aj8/gptel-tool--with-normalized-bools (include-counts)
       (aj8/gptel-tool--with-tool
