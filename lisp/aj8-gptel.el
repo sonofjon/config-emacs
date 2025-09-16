@@ -1736,14 +1736,14 @@ This action requires manual user review. After calling this tool, you must stop 
                 :description "If true, append the number of lines to each entry as ' (N lines)'."))
  :category "project")
 
-;;   (gptel-make-tool
-;;    :function #'aj8/gptel-tool-project-find-files
-;;    :name "aj8_project_find_files"
-;;    :description "In the current project, recursively find files whose filenames contain pattern. This search is case-sensitive. It does not find directories."
-;;    :args '((:name "pattern"
-;;                   :type string
-;;                   :description "A pattern to match against the filenames in the project."))
-;;    :category "proj
+;; (gptel-make-tool
+;;  :function #'aj8/gptel-tool-project-find-files
+;;  :name "aj8_project_find_files"
+;;  :description "In the current project, recursively find files whose filenames contain pattern. This search is case-sensitive. It does not find directories."
+;;  :args '((:name "pattern"
+;;                 :type string
+;;                 :description "A pattern to match against the filenames in the project."))
+;;  :category "proj
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-project-find-files-glob
