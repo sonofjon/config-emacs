@@ -153,7 +153,7 @@ Returns a new property list with only the desired pairs for display."
             (push value result))))
       (nreverse result))))
 
-(defvar aj8/gptel-tool--suppress-logging nil
+(defvar aj8/gptel-tool-suppress-logging nil
   "When non-nil, suppress tool call logging to `*gptel-tool-log*'.
 This is useful during test execution to avoid cluttering the log with
 internal tool calls made by the test code itself.")
@@ -162,8 +162,8 @@ internal tool calls made by the test code itself.")
   "Append to `*gptel-tool-log*' recording TOOL-NAME, ARGS and RESULT.
 If ERROR-P is non-nil record it as an error entry.  The record is
 machine-readable (prin1) and timestamped.  Does nothing if
-`aj8/gptel-tool--suppress-logging' is non-nil."
-  (unless aj8/gptel-tool--suppress-logging
+`aj8/gptel-tool-suppress-logging' is non-nil."
+  (unless aj8/gptel-tool-suppress-logging
     (let ((buf (get-buffer-create "*gptel-tool-log*"))
           (ts (format-time-string "%Y-%m-%d %T")))
       (with-current-buffer buf
@@ -1284,13 +1284,13 @@ behavior.  STATS is an ERT stats object containing test results."
    ;;   with internal tool calls made by the test code
 
    ;; Simple output
-   (let* ((aj8/gptel-tool--suppress-logging t)
+   (let* ((aj8/gptel-tool-suppress-logging t)
           (stats (ert-run-tests-batch '(tag unit))))
      ;; Format results similar to ERT buffer output
      (aj8/gptel-tool--ert-format-simple-results stats))))
 
    ;; Detailed output
-   ;; (let* ((aj8/gptel-tool--suppress-logging t)
+   ;; (let* ((aj8/gptel-tool-suppress-logging t)
    ;;        (stats (ert-run-tests-batch '(tag unit)))
    ;;        (summary (aj8/ert-parse-test-results stats))
    ;;        (detailed-info (aj8/gptel-tool--ert-format-detailed-results stats)))
@@ -1315,7 +1315,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
      ;;   with internal tool calls made by the test code
 
      ;; Simple output
-     (let* ((aj8/gptel-tool--suppress-logging t)
+     (let* ((aj8/gptel-tool-suppress-logging t)
             (stats (ert-run-tests-batch sym)))
        ;; Format results similar to ERT buffer output
        (aj8/gptel-tool--ert-format-simple-results stats)))))
