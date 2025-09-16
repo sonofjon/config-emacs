@@ -2899,15 +2899,8 @@ Elisp code explicitly in arbitrary buffers.")
                                    "aj8_apply_buffer_line_edits"
                                    "aj8_apply_buffer_line_edits_with_review"
                                    ;; Unwanted
-                                   "edit_buffer"
-                                   "view_buffer"
-                                   "read_file"
-                                   "list_directory"
                                    "aj8_replace_buffer"
-                                   "aj8_ert_run_unit"
-                                   ;; Temporary
-                                   "create_file"
-                                   "create_directory"))
+                                   "aj8_ert_run_unit"))
   :config
   ;; Load custom tools
   (require 'aj8-gptel)
@@ -3014,6 +3007,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; llm-tool-collection (a crowdsourced collection of tools to empower Large Language Models in Emacs) - [source package]
 (use-package llm-tool-collection
+  :disabled
   :after gptel
   :config
   ;; Register all tools
