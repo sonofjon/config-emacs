@@ -206,27 +206,10 @@ that string; otherwise it re-signals the original error."
         msg
       (signal (car err) (cdr err)))))
 
-(defcustom aj8/gptel-tool-excluded-tools
-  '(;; unexcluded
-    "aj8_list_buffers"
-    "aj8_insert_in_buffer"
-    "aj8_replace_buffer_line"
-    "aj8_delete_buffer_line"
-    "aj8_delete_buffer_string"
-    "aj8_apply_buffer_line_edits"
-    "aj8_apply_buffer_line_edits_with_review"
-    ;; Unwanted
-    "edit_buffer"
-    "view_buffer"
-    "read_file"
-    "list_directory"
-    "aj8_replace_buffer"
-    "aj8_ert_run_unit"
-    ;; Temporary
-    "create_file"
-    "create_directory")
-  "A list of tool names to exclude from the minimal tools list.
-This includes redundant, unwanted, and temporary tools."
+(defcustom aj8/gptel-tool-excluded-tools nil
+  "Tool names to exclude when building a filtered list of GPTel tools.
+This list is used by `aj8/gptel-tool--get-minimal-tools' to filter out
+specific tools from the complete set of available GPTel tools."
   :type '(repeat string)
   :group 'aj8-gptel)
 

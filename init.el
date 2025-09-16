@@ -2889,6 +2889,25 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-expert-commands t)
   ;; confirm tool calls with ':confirm t' in the tool registration
   (gptel-confirm-tool-calls 'auto)
+  ;; Exclude some tools
+  (aj8/gptel-tool-excluded-tools '(;; Redundant
+                                   ;; "aj8_list_buffers"
+                                   "aj8_insert_in_buffer"
+                                   "aj8_replace_buffer_line"
+                                   "aj8_delete_buffer_line"
+                                   "aj8_delete_buffer_string"
+                                   "aj8_apply_buffer_line_edits"
+                                   "aj8_apply_buffer_line_edits_with_review"
+                                   ;; Unwanted
+                                   "edit_buffer"
+                                   "view_buffer"
+                                   "read_file"
+                                   "list_directory"
+                                   "aj8_replace_buffer"
+                                   "aj8_ert_run_unit"
+                                   ;; Temporary
+                                   "create_file"
+                                   "create_directory"))
   :config
   ;; Load custom tools
   (require 'aj8-gptel)
