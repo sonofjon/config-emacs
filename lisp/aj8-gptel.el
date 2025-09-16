@@ -834,6 +834,17 @@ buffer only; the original buffer is not modified by this command."
          (write-file full-path)))
      (format "Successfully created file: %s" full-path))))
 
+(defun aj8/gptel-tool-create-directory (dir-path)
+  "Create a new directory at DIR-PATH."
+  (aj8/gptel-tool--with-tool
+   "tool: aj8_create_directory"
+   (list :dir-path dir-path)
+   (let ((full-path (expand-file-name dir-path)))
+     (when (file-exists-p full-path)
+       (error "Directory already exists: %s" full-path))
+     (make-directory full-path t)
+     (format "Successfully created directory: %s" full-path))))
+
 ;; Emacs
 
 (defun aj8/gptel-tool-read-documentation (symbol-name)
@@ -1633,6 +1644,16 @@ This action requires manual user review. After calling this tool, you must stop 
  :confirm t
  :category "files")
 
+(gptel-make-tool
+ :function #'aj8/gptel-tool-create-directory
+ :name "aj8_create_directory"
+ :description "Create a new directory at the specified path. Creates parent directories as needed."
+ :args '((:name "dir-path"
+                :type string
+                :description "The path of the directory to create."))
+ :confirm t
+ :category "files")
+
 ;; Emacs
 
 (gptel-make-tool
@@ -1699,8 +1720,8 @@ This action requires manual user review. After calling this tool, you must stop 
  :args '((:name "buffer-name"
                 :type string
                 :description "The name of the buffer to evaluate."))
- :category "emacs"
- :confirm t)
+ :confirm t
+ :category "emacs")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-eval-function
@@ -1712,8 +1733,8 @@ This action requires manual user review. After calling this tool, you must stop 
          (:name "buffer-name"
                 :type string
                 :description "The name of the buffer containing the function."))
- :category "emacs"
- :confirm t)
+ :confirm t
+ :category "emacs")
 
 (gptel-make-tool
  :function #'aj8/gptel-tool-eval-expression
@@ -1722,8 +1743,8 @@ This action requires manual user review. After calling this tool, you must stop 
  :args '((:name "expression"
                 :type string
                 :description "The Emacs Lisp expression to evaluate."))
- :category "emacs"
- :confirm t)
+ :confirm t
+ :category "emacs")
 
 ;; Project
 

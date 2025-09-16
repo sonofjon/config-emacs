@@ -1282,6 +1282,72 @@ Optional keyword parameters:
       (when (file-exists-p tmp-file)
         (delete-file tmp-file)))))
 
+(ert-deftest test-aj8-create-directory ()
+  "Test `aj8/gptel-tool-create-directory'."
+  :tags '(unit files)
+
+  ;; === SUCCESS CASES ===
+
+  ;; Test basic directory creation:
+  (let ((tmp-dir (concat temporary-file-directory "aj8-test-create-dir-" (make-temp-name ""))))
+    (unwind-protect
+        (let ((result (aj8/gptel-tool-create-directory tmp-dir)))
+          ;; Assert that the function returns success message
+          (should (string-equal result (format "Successfully created directory: %s" tmp-dir)))
+          ;; Assert that the directory exists
+          (should (file-exists-p tmp-dir))
+          ;; Assert that it is indeed a directory
+          (should (file-directory-p tmp-dir)))
+      (when (file-directory-p tmp-dir)
+        (delete-directory tmp-dir))))
+
+  ;; Test nested directory creation:
+  (let* ((base-name (concat "aj8-test-nested-" (make-temp-name "")))
+         (tmp-root (concat temporary-file-directory base-name))
+         (tmp-dir (concat tmp-root "/sub/deep")))
+    (unwind-protect
+        (let ((result (aj8/gptel-tool-create-directory tmp-dir)))
+          ;; Assert that the function returns success message
+          (should (string-equal result (format "Successfully created directory: %s" tmp-dir)))
+          ;; Assert that the directory exists
+          (should (file-exists-p tmp-dir))
+          ;; Assert that it is indeed a directory
+          (should (file-directory-p tmp-dir))
+          ;; Assert that parent directories were created
+          (should (file-directory-p (file-name-directory tmp-dir))))
+      (when (file-directory-p tmp-root)
+        (delete-directory tmp-root t))))
+
+  ;; === ERROR CASES ===
+
+  ;; Test error when directory already exists:
+  (let ((tmp-dir (make-temp-file "aj8-test-exists-dir-" t)))
+    (unwind-protect
+        (progn
+          ;; Mode 1: tool re-signals the error
+          (let ((aj8/gptel-tool-return-error nil))
+            (should-error (aj8/gptel-tool-create-directory tmp-dir) :type 'error))
+          ;; Mode 2: tool returns the error as a string
+          (let ((aj8/gptel-tool-return-error t))
+            (let ((result (aj8/gptel-tool-create-directory tmp-dir)))
+              (should (string-equal result (format "tool: aj8_create_directory: Error: Directory already exists: %s" tmp-dir))))))
+      (when (file-directory-p tmp-dir)
+        (delete-directory tmp-dir))))
+
+  ;; Test error when path conflicts with existing file:
+  (let ((tmp-file (make-temp-file "aj8-test-file-conflict-")))
+    (unwind-protect
+        (progn
+          ;; Mode 1: tool re-signals the error
+          (let ((aj8/gptel-tool-return-error nil))
+            (should-error (aj8/gptel-tool-create-directory tmp-file) :type 'error))
+          ;; Mode 2: tool returns the error as a string
+          (let ((aj8/gptel-tool-return-error t))
+            (let ((result (aj8/gptel-tool-create-directory tmp-file)))
+              (should (string-equal result (format "tool: aj8_create_directory: Error: Directory already exists: %s" tmp-file))))))
+      (when (file-exists-p tmp-file)
+        (delete-file tmp-file)))))
+
 ;;; 3.3. Category: Emacs
 
 (ert-deftest test-aj8-read-documentation ()
@@ -1917,6 +1983,7 @@ in the variable `gptel-tools' alist."
                           "aj8_apply_buffer_line_edits"
                           "aj8_apply_buffer_line_edits_with_review"
                           "aj8_create_file"
+                          "aj8_create_directory"
                           "aj8_read_documentation"
                           "aj8_read_function"
                           "aj8_load_library"
