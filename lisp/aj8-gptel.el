@@ -628,7 +628,7 @@ string."
        (format "Line range %d-%d in buffer '%s' successfully deleted."
                start-line end-line buffer-name)))))
 
-(defun aj8/--apply-buffer-edits (buffer-name buffer-edits edit-type)
+(defun aj8/gptel-tool--apply-buffer-edits (buffer-name buffer-edits edit-type)
   "Apply a list of edits to BUFFER-NAME.
 
 BUFFER-EDITS is a list of property lists describing edits.  Each edit is
@@ -723,7 +723,7 @@ subsequent line numbers."
             (error "Could not apply edits to buffer '%s': %d (out of %d) failed.\n%s"
                    buffer-name failed total details)))))))
 
-(defun aj8/--review-buffer-edits (buffer-name buffer-edits edit-type)
+(defun aj8/gptel-tool--review-buffer-edits (buffer-name buffer-edits edit-type)
   "Review a list of buffer edits in Ediff.
 
 Creates a temporary buffer containing the content of the original buffer
@@ -731,11 +731,11 @@ BUFFER-NAME, applies the proposed edits, and then launches an Ediff session
 to visually compare the original buffer against the edited version.
 
 BUFFER-EDITS is a list of property lists with the same shape as
-described for `aj8/--apply-buffer-edits': each edit should contain
+described for `aj8/gptel-tool--apply-buffer-edits': each edit should contain
 :line-number, :old-string, and :new-string.
 
 EDIT-TYPE can be 'line or 'string, as described in
-`aj8/--apply-buffer-edits'."
+`aj8/gptel-tool--apply-buffer-edits'."
   (when buffer-edits
     ;; Only proceed if we have edits to apply
     (let ((original-buffer (get-buffer buffer-name)))
@@ -752,7 +752,7 @@ EDIT-TYPE can be 'line or 'string, as described in
                 (erase-buffer)
                 (insert-buffer-substring original-buffer)
                 (condition-case err
-                    (aj8/--apply-buffer-edits temp-buffer-name buffer-edits edit-type)
+                    (aj8/gptel-tool--apply-buffer-edits temp-buffer-name buffer-edits edit-type)
                   (error
                    (error "%s\nNote: No review was started and no changes were applied to buffer '%s'. Any details above refer only to the temporary review buffer."
                           (error-message-string err) buffer-name))))
@@ -784,7 +784,7 @@ descending order of :line-number."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_string_edits"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
-   (aj8/--apply-buffer-edits buffer-name buffer-edits 'string)
+   (aj8/gptel-tool--apply-buffer-edits buffer-name buffer-edits 'string)
    (format "String edits successfully applied to buffer '%s'." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-string-edits-with-review (buffer-name buffer-edits)
@@ -798,7 +798,7 @@ buffer only; the original buffer is not modified by this command."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_string_edits_with_review"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
-   (aj8/--review-buffer-edits buffer-name buffer-edits 'string)
+   (aj8/gptel-tool--review-buffer-edits buffer-name buffer-edits 'string)
    (format "Ediff session started for %s. Please complete the review." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-line-edits (buffer-name buffer-edits)
@@ -811,7 +811,7 @@ applied in descending order of :line-number."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_line_edits"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
-   (aj8/--apply-buffer-edits buffer-name buffer-edits 'line)
+   (aj8/gptel-tool--apply-buffer-edits buffer-name buffer-edits 'line)
    (format "Line edits successfully applied to buffer '%s'." buffer-name)))
 
 (defun aj8/gptel-tool-apply-buffer-line-edits-with-review (buffer-name buffer-edits)
@@ -825,7 +825,7 @@ buffer only; the original buffer is not modified by this command."
   (aj8/gptel-tool--with-tool
    "tool: aj8_apply_buffer_line_edits_with_review"
    (list :buffer-name buffer-name :buffer-edits buffer-edits)
-   (aj8/--review-buffer-edits buffer-name buffer-edits 'line)
+   (aj8/gptel-tool--review-buffer-edits buffer-name buffer-edits 'line)
    (format "Ediff session started for %s. Please complete the review." buffer-name)))
 
 ;; Files
@@ -1153,7 +1153,7 @@ search respects .gitignore."
 
 ;; Test
 
-(defun aj8/ert-parse-test-results (stats)
+(defun aj8/gptel-tool--ert-parse-test-results (stats)
   "Parse ERT stats into a human-readable summary string.
 STATS is an ERT stats object containing test results."
   (let ((total (ert-stats-total stats))
@@ -1169,7 +1169,7 @@ STATS is an ERT stats object containing test results."
               passed failed
               (if (> skipped 0) (format ", %d skipped" skipped) "")))))
 
-(defun aj8/ert-format-detailed-results (stats)
+(defun aj8/gptel-tool--ert-format-detailed-results (stats)
   "Format detailed ERT test results for LLM consumption.
 STATS is an ERT stats object containing test results."
   (let ((total (ert-stats-total stats))
@@ -1225,7 +1225,7 @@ STATS is an ERT stats object containing test results."
                                     (format "Backtrace:\n%s" truncated-backtrace))))))))))
         detailed-info))))
 
-(defun aj8/ert-format-simple-results (stats)
+(defun aj8/gptel-tool--ert-format-simple-results (stats)
   "Format ERT test results using ERT's own print function directly.
 Only shows unexpected results (failed tests), similar to ERT's default
 behavior.  STATS is an ERT stats object containing test results."
@@ -1286,13 +1286,13 @@ behavior.  STATS is an ERT stats object containing test results."
    (let* ((aj8/gptel-tool--suppress-logging t)
           (stats (ert-run-tests-batch '(tag unit))))
      ;; Format results similar to ERT buffer output
-     (aj8/ert-format-simple-results stats))))
+     (aj8/gptel-tool--ert-format-simple-results stats))))
 
      ;; Detailed output
      ;; (let* ((aj8/gptel-tool--suppress-logging t)
      ;;        (stats (ert-run-tests-batch '(tag unit)))
      ;;        (summary (aj8/ert-parse-test-results stats))
-     ;;        (detailed-info (aj8/ert-format-detailed-results stats)))
+     ;;        (detailed-info (aj8/gptel-tool--ert-format-detailed-results stats)))
      ;;   ;; Format results for LLM consumption with both summary and details
      ;;   (format "ERT Test Results for %s:\n%s%s"
      ;;           test-name
@@ -1317,7 +1317,7 @@ TEST-NAME is the string name of the ERT test symbol to run."
      (let* ((aj8/gptel-tool--suppress-logging t)
             (stats (ert-run-tests-batch sym)))
        ;; Format results similar to ERT buffer output
-       (aj8/ert-format-simple-results stats)))))
+       (aj8/gptel-tool--ert-format-simple-results stats)))))
 
 ;;; Tool Registrations
 
