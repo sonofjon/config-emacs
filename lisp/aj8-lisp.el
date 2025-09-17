@@ -536,14 +536,20 @@ and end positions, which are required by
         (message "No other window to kill"))
       (select-window win))))
 
-;; Keep focus in side window when killing buffer
-(defun aj8/retain-side-window-focus ()
-  "Retain focus in the side window after killing its buffer."
-  (when-let* ((win (selected-window))
-              (side-window-p (window-parameter win 'window-side)))
-    (select-window win)))
+;; Keep focus in side windows after buffer kill
+(defun aj8/retain-side-window-focus (orig-fun &rest args)
+  "Advice function to retain focus in side windows after buffer kill.
+This ensures that when killing a buffer in a side window, focus remains
+in that side window rather than shifting to another window."
+  (let ((current-window (selected-window))
+        (is-side-window (window-parameter (selected-window) 'window-side)))
+    (apply orig-fun args)
+    (when (and is-side-window (window-live-p current-window))
+      (select-window current-window))))
 
-(advice-add 'kill-current-buffer :after #'aj8/retain-side-window-focus)
+;; Add the global advice
+(advice-add 'quit-window :around #'aj8/retain-side-window-focus)
+(advice-add 'kill-current-buffer :around #'aj8/retain-side-window-focus)
 
 ;;;; Coding
 
