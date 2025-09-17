@@ -446,8 +446,6 @@
   ;; Allow movement between Isearch matches by cursor motion commands
   (isearch-allow-motion t)
   (isearch-motion-changes-direction t)
-  ;; Use 'y' or 'n' questions always
-  ;; (use-short-answers t)
   ;; Use longer pulse
   (pulse-delay 0.05)   ; default is 0.03
   ;; Increase maximum file size that can be opened without a warning
@@ -472,6 +470,8 @@
   ;; Delete history duplicates
   (history-delete-duplicates nil)
   :config
+  ;; Use 'y' or 'n' questions always
+  ;; (setq use-short-answers t)
   ;; Use partial completion for files
   (setq completion-category-defaults nil)
   (add-to-list 'completion-category-overrides '((file (styles basic partial-completion))))
@@ -884,14 +884,15 @@
 ;; repeat (repeat commands)
 (use-package repeat
   :ensure nil   ; don't install built-in packages
-  :custom
+  ;; :custom
   ;; Enable repeat mode time-out
   ;; (repeat-exit-timeout 5)
-  ;; Disable buffer-navigation-repeat-map
-  (buffer-navigation-repeat-map nil)
-  ;; Disable repeat-mode for undo
-  (undo-repeat-map nil)
   :config
+  ;; Disable buffer-navigation-repeat-map
+  (setq buffer-navigation-repeat-map nil)
+  ;; Disable repeat-mode for undo
+  (setq undo-repeat-map nil)
+  ;; Enable repeat mode
   (repeat-mode 1))
 
 ;; savehist (save minibuffer history)
@@ -944,13 +945,14 @@
   :custom
   ;; Do not switch to buffers already shown
   (switch-to-prev-buffer-skip 'this)
-  ;; Do not display continuation lines
-  ;; (truncate-lines t)
   ;; Skip some buffers when switching buffers
   ;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
   ;; Skip some buffers when switching buffers
   ;; (setq switch-to-prev-buffer-skip-regexp regex)
   :config
+  ;; Do not display continuation lines
+  ;; (setq-default truncate-lines t)
+  ;; Display continuation lines with prefixes
   (global-visual-wrap-prefix-mode 1))
 
 ;; subword (subword movement)
@@ -1146,9 +1148,6 @@
   (split-height-threshold 0)
   ;; Enable horizontal window fitting
   ;; (setq fit-window-to-buffer-horizontally
-  ;; Resize window combinations proportionally
-  ;;   TODO: Message buffer grows on each Magit commit
-  ;; (window-combination-resize t)
   ;; Try to even window sizes vertically only
   (even-window-sizes 'height-only)
   ;; Allow switching to buffer in strongly dedicated windows
@@ -1270,6 +1269,10 @@
       (window-height . fit-window-to-buffer)
       (window-parameters . ((no-other-window . t)
                             (mode-line-format . none)))))))
+  ;; :config
+  ;; Resize window combinations proportionally
+  ;;   TODO: Message buffer grows on each Magit commit
+  ;; (setq window-combination-resize t))
 
 ;; xref (cross-referencing)
 (use-package xref
@@ -2339,10 +2342,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;; syntax-subword (make operations on words more fine-grained)
 (use-package syntax-subword
   :disabled
-  :custom
-  ;; Don't stop on spaces
-  (syntax-subword-skip-spaces t)
   :config
+  ;; Don't stop on spaces
+  (setq syntax-subword-skip-spaces t)
   ;; Use syntax-subword-mode everywhere
   (global-syntax-subword-mode 1))
 
@@ -2719,9 +2721,9 @@ Elisp code explicitly in arbitrary buffers.")
 ;;   MAYBE: Alternative package: diffed
 (use-package ztree
   :defer
-  :custom
+  :config
   ;; Use pretty Unicode art
-  (ztree-draw-unicode-lines t))
+  (setq ztree-draw-unicode-lines t))
   ;; Customize file filter (default is all dot-files)
   ;; (setq-default ztree-diff-filter-list
   ;;               (cons \"^.*\\.pyc\" ztree-diff-filter-list)))
@@ -2885,8 +2887,6 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Cache request content
   ;;   Only for Anthropic
   (gptel-cache t)
-  ;; Enable experimental options
-  (gptel-expert-commands t)
   ;; confirm tool calls with ':confirm t' in the tool registration
   (gptel-confirm-tool-calls 'auto)
   ;; Exclude some tools
@@ -2904,6 +2904,8 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Load custom tools
   (require 'aj8-gptel)
+  ;; Enable experimental options
+  (setq gptel-expert-commands t)
   ;; Default model
   (setq-default gptel-model 'gpt-5-mini)
   ;; === ChatGPT ===
