@@ -1683,7 +1683,7 @@
   ;; (corfu-quit-at-boundary t)     ; automatically quit at word boundary
   (corfu-quit-no-match t)        ; automatically quit if there is no match
   ;; (corfu-preview-current nil)    ; disable current candidate preview
-  ;; (corfu-preselect-first nil)    ; disable candidate preselection
+  ;; (corfu-preselect nil)          ; disable candidate preselection
   ;; (corfu-on-exact-match 'insert) ; configure handling of exact matches
   ;;   TODO: match not inserted with orderless
   (corfu-scroll-margin 1)        ; use scroll margin
