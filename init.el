@@ -2960,7 +2960,21 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
-  (add-hook 'gptel-post-stream-hook #'gptel-auto-scroll)
+  (defun aj8/gptel-auto-scroll-fixed ()
+    "Follow streaming output by moving point when stream continues off-screen.
+Runs from `gptel-post-stream-hook'. Moves point to the streaming
+insertion position (which is point while this hook runs) and recenters
+the window so that the streaming position appears near the bottom."
+    (when-let* ((win (get-buffer-window (current-buffer) 'visible))
+                (pos (point)))
+      (unless (pos-visible-in-window-p pos win)
+        (run-at-time 0 nil
+                     (lambda (w p)
+                       (with-selected-window w
+                         (goto-char p)
+                         (recenter -1)))
+                     win pos))))
+  (add-hook 'gptel-post-stream-hook #'aj8/gptel-auto-scroll-fixed)
   ;; Jump to next prompt after response
   (add-hook 'gptel-post-response-functions #'gptel-end-of-response)
   ;; Auto-save
