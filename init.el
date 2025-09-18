@@ -441,7 +441,6 @@
   ;; (mark-even-if-inactive nil)
   ;; Interpret spaces as wildcards (with M-s SPC)
   (search-whitespace-regexp ".*?")
-  ;; (isearch-invisible nil)
   ;; (isearch-lax-whitespace nil)
   ;; Allow movement between Isearch matches by cursor motion commands
   (isearch-allow-motion t)
