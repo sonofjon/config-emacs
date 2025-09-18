@@ -439,9 +439,12 @@
   ;; Don't use the mark when region is inactive
   ;;   Note: messes with ediff
   ;; (mark-even-if-inactive nil)
-  ;; Interpret spaces as wildcards (with M-s SPC)
-  (search-whitespace-regexp ".*?")
+  ;; Interpret spaces literally when searching
   ;; (isearch-lax-whitespace nil)
+  ;; Interpret spaces as wildcards when searching
+  ;; (isearch-lax-whitespace t)
+  ;; Interpret any characters as wildcards when searching
+  (search-whitespace-regexp ".*?")
   ;; Allow movement between Isearch matches by cursor motion commands
   (isearch-allow-motion t)
   (isearch-motion-changes-direction t)
