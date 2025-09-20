@@ -182,7 +182,7 @@
    (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
    (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
    (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
-   (markdown-links :url "https://github.com/sonofjon/markdown-links.el" :rev :newest)
+   (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
    (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
                         ;; :branch "dev")
    ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
