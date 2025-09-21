@@ -181,21 +181,24 @@
    (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
    (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
    (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
-   (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
+   ;; (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.git"  :rev :newest)
+   ;; (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
    (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
    (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
-                        ;; :branch "dev")
-   ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
-   ;;                                   "/projects/obsidian-yaml-tools.el"))
-   ;; (obsidian-yaml-tools :url ,(concat (expand-file-name "~")
-   ;;                                    "/projects/obsidian-yaml-tools.el")
-   ;;                      :branch "dev")))
-   (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)
-   (sinister :url "https://github.com/positron-solutions/sinister" :rev :newest)))
+   (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)))
+   ;; (sinister :url "https://github.com/positron-solutions/sinister" :rev :newest)))
 
 ;; Install selected packages
 (package-install-selected-packages)
 (package-vc-install-selected-packages)
+
+;; Install local packages
+;; (package-vc-install-from-checkout
+;;  (concat (expand-file-name "~") "/projects/obsidian-yaml-tools.el")
+;;  "obsidian-yaml-tools")
+(package-vc-install-from-checkout
+ (concat (expand-file-name "~") "/projects/gptel-toolkit")
+ "gptel-toolkit")
 
 ;;; Early packages
 
@@ -2870,21 +2873,7 @@ Elisp code explicitly in arbitrary buffers.")
   (gptel-cache t)
   ;; confirm tool calls with ':confirm t' in the tool registration
   (gptel-confirm-tool-calls 'auto)
-  ;; Exclude some tools
-  (aj8/gptel-tool-excluded-tools '(;; Redundant
-                                   ;; "aj8_list_buffers"
-                                   "aj8_insert_in_buffer"
-                                   "aj8_replace_buffer_line"
-                                   "aj8_delete_buffer_line"
-                                   "aj8_delete_buffer_string"
-                                   "aj8_apply_buffer_line_edits"
-                                   "aj8_apply_buffer_line_edits_with_review"
-                                   ;; Unwanted
-                                   "aj8_replace_buffer"
-                                   "aj8_ert_run_unit"))
   :config
-  ;; Load custom tools
-  (require 'aj8-gptel)
   ;; Enable experimental options
   (setq gptel-expert-commands t)
   ;; Default model
@@ -2992,7 +2981,8 @@ the window so that the streaming position appears near the bottom."
     :temperature 0.1
     :use-context 'user
     :include-reasoning "*gptel-reasoning*"
-    :tools (aj8/gptel-tool--get-minimal-tools)
+    ;; :tools (gptel-tk-get-tools)
+    ;; :post (gptel-tk-enable-builtin-tools)
     :use-tools t))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
@@ -3001,6 +2991,30 @@ the window so that the streaming position appears near the bottom."
   ;; :config
   ;; ;; Set approximate word count of LLM summary
   ;; (gptel-quick-word-count 12))
+
+
+(use-package gptel-toolkit
+  :after gptel
+  :custom
+  ;; Exclude some tools
+  (gptel-tk-excluded-tools '(;; Redundant
+                             ;; "list_buffers"
+                             "insert_in_buffer"
+                             "replace_buffer_line"
+                             "delete_buffer_line"
+                             "delete_buffer_string"
+                             "apply_buffer_line_edits"
+                             "apply_buffer_line_edits_with_review"
+                             ;; Unwanted
+                             "replace_buffer"
+                             "ert_run_unit"))
+  :config
+  ;; Enable built-in tools
+  ;; (gptel-tk-enable-builtin-tools)
+  ;; Enable built-in tools in preset
+  ;; (plist-put (gptel-get-preset 'coding) :post #'gptel-tk-enable-builtin-tools))
+  ;; Set built-in tools in preset
+  (plist-put (gptel-get-preset 'coding) :tools (gptel-tk-get-tool-names)))
 
 ;; llm-tool-collection (a crowdsourced collection of tools to empower Large Language Models in Emacs) - [source package]
 (use-package llm-tool-collection
