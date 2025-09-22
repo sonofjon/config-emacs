@@ -181,7 +181,7 @@
    (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
    (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
    (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
-   ;; (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.git"  :rev :newest)
+   (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
    ;; (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
    (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
    (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
@@ -196,9 +196,9 @@
 ;; (package-vc-install-from-checkout
 ;;  (concat (expand-file-name "~") "/projects/obsidian-yaml-tools.el")
 ;;  "obsidian-yaml-tools")
-(package-vc-install-from-checkout
- (concat (expand-file-name "~") "/projects/gptel-toolkit")
- "gptel-toolkit")
+;; (package-vc-install-from-checkout
+;;  (concat (expand-file-name "~") "/projects/gptel-toolkit")
+;;  "gptel-toolkit")
 
 ;;; Early packages
 
