@@ -3002,7 +3002,7 @@ the window so that the streaming position appears near the bottom."
   :custom
   ;; Exclude some tools
   (gptel-tk-excluded-tools '(;; Redundant
-                             ;; "list_buffers"
+                             "list_buffers"
                              "insert_in_buffer"
                              "replace_buffer_line"
                              "delete_buffer_line"
