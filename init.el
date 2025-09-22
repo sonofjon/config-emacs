@@ -2650,18 +2650,22 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Supress warning
   (llm-warn-on-nonfree nil)
   (magit-gptcommit-prompt "You are an expert programmer writing a Git commit message.\n- You have carefully reviewed every file diff included in this commit.\n- Keep it to a single line, no more than 50 characters\n- Use the imperative tense (e.g., 'Add logging' not 'Added logging')\n- Ensure the message reflects a clear and cohesive change\n- Do not end the summary with a period\n- Do not use backticks (`) anywhere in the response.\n- Do not refer refer to the filename of the commit.\n- Do not state where the changes were applied.\n\nTHE FILE DIFFS:\n```\n%s\n```\nNow, write the commit message")
-  (magit-gptcommit-llm-provider
-   (make-llm-openai :key (auth-info-password
-                          (car (auth-source-search
-                                :host "api.openai.com"
-                                :user "apikey")))
-                    :chat-model "gpt-4.1"))
-   ;; (make-llm-gemini :key (auth-info-password
-   ;;                        (car (auth-source-search
-   ;;                              :host "generativelanguage.googleapis.com"
-   ;;                              :user "apikey")))
-   ;;                  :chat-model "gemini-2.5-flash-preview-04-17"))
   :config
+  ;; Set up LLM provider: OpenAI
+  ;;   Use lazy setup to avoid password prompt during startup
+  (setq magit-gptcommit-llm-provider
+        (make-llm-openai :key (auth-info-password
+                               (car (auth-source-search
+                                     :host "api.openai.com"
+                                     :user "apikey")))
+                         :chat-model "gpt-4.1"))
+  ;; Set up LLM provider: Gemini
+  ;; (setq magit-gptcommit-llm-provider
+  ;;       (make-llm-gemini :key (auth-info-password
+  ;;                              (car (auth-source-search
+  ;;                                    :host "generativelanguage.googleapis.com"
+  ;;                                    :user "apikey")))
+  ;;                        :chat-model "gemini-2.5-flash-preview-04-17"))
   ;; Add gptcommit transient commands to `magit-commit'
   (magit-gptcommit-status-buffer-setup))
   ;; Generate commit message automatically in Magit status buffer
