@@ -2640,7 +2640,7 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package magit-gptcommit
   ;; :disabled
   :demand t
-  :after (gptel magit)
+  :after magit
   :bind (:map git-commit-mode-map
               ("C-c C-g" . magit-gptcommit-commit-accept))
   :init
