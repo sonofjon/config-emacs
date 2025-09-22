@@ -47,7 +47,13 @@ Always obey these rules:
 1. If tools are available, use them to search, read and apply changes in the
    relevant buffers.
 
-2. If you are having trouble locating buffers please use the available tools
+2. When both a specialized tool and `eval_expression` can accomplish the
+   same task, always use the specialized tool.
+
+3. Using `eval_expression` to duplicate functionality of existing tools is
+   considered a violation of these rules.
+
+4. If you are having trouble locating buffers please use the available tools
    to list available buffers.
 
 ## Tool-Based Workflow
