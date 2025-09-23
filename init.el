@@ -2291,11 +2291,15 @@ Elisp code explicitly in arbitrary buffers.")
   ;; ;; Select devdocs window
   ;; (devdocs-window-select t)
   :custom
-  (devdocs-browser-major-mode-docs-alist '((yaml-ts-mode "Ansible")
+  (devdocs-browser-major-mode-docs-alist '((yaml-mode "Ansible")
+                                           (yaml-ts-mode "Ansible")
+                                           (sh-mode "Bash")
                                            (bash-ts-mode "Bash")
                                            (emacs-lisp-mode "Elisp")
                                            (latex-mode "LaTeX")
                                            (lua-mode "Lua")
+                                           (lua-ts-mode "Lua")
+                                           (python-mode "Python")
                                            (python-ts-mode "Python"))))
 
 ;;; Navigation
