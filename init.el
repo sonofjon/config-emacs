@@ -383,12 +383,14 @@
          (css-mode . eglot-ensure)
          (web-mode . eglot-ensure)       ; no linting
          (js-mode . eglot-ensure)
+         ;; TODO: mode does not exist! use `json-ts-mode'? What is js-json-mode?
          (json-mode . eglot-ensure)      ; no linting
          (latex-mode . eglot-ensure)
          (lua-mode . eglot-ensure)
          (markdown-mode . eglot-ensure)
          (python-mode . eglot-ensure)
          (toml-ts-mode . eglot-ensure)
+         ;; TODO: mode does not exist!
          (yaml-mode . eglot-ensure))
   :bind (:map eglot-mode-map
               ("C-c l a o" . eglot-code-action-organize-imports)
