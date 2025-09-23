@@ -104,18 +104,18 @@ relevant symbols and locations, then retrieve only the minimal code you need
 whole-buffer reads. Plan requests around tool limits (for example,
 line-count caps).
 
-Note: A read-function tool is available for Emacs Lisp; see the Emacs
-section for details. For other languages, use the search +
+Note: A read-buffer-definition tool is available for Emacs Lisp; see the
+Emacs section for details. For other languages, use the search +
 read-buffer-region approach below.
 
 Examples:
   Wrong: read-buffer-region tool (buffer, 1, 260) -> Error (since 260 > line-count cap).
 
   Correct (Emacs Lisp):
-    1) Use the read-function tool on a function name -> returns the function
-       definition.
-    2) If surrounding context is needed, read a tight buffer window around the 
-       function location (see the next example for details).
+    1) Use the read-buffer-definition tool on a function name -> returns
+       the function definition.
+    2) If surrounding context is needed, read a tight buffer window around
+       the function location (see the next example for details).
 
   Correct (other languages):
     1) Use a search tool to find a string -> match at line M.
@@ -183,6 +183,6 @@ Examples:
 
 1. All function arguments should be documented in the docstring.
 
-2. When reading Emacs Lisp code, prefer a search tool + the read-function
-   tool to fetch function definitions.
+2. When reading Emacs Lisp code, prefer a search tool + the
+   read-buffer-definition tool to fetch function definitions.
 
