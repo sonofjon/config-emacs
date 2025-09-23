@@ -3112,7 +3112,8 @@ the window so that the streaming position appears near the bottom."
       (t (user-error "Unexpected system-name: %s" (system-name))))
 
 ;; Copy standard mode hooks to their Treesitter equivalents
-(aj8/copy-hooks-to-treesitter)
+;; (aj8/copy-hooks-to-treesitter)
+(aj8/copy-hooks-to-treesitter-now)
 
 ;; Display *Messages* buffer
 (display-buffer "*Messages*")

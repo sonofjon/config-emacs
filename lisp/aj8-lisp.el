@@ -624,6 +624,29 @@ either the legacy mode's feature or the tree-sitter feature loads."
             (dolist (fn (symbol-value orig-hook))
               (add-hook ts-hook fn))))))))
 
+(defun aj8/copy-hooks-to-treesitter-now ()
+  "Copy standard mode hooks to Treesitter equivalents immediately.
+This function copies hook functions from standard major modes to their
+tree-sitter equivalents, ensuring that customizations made to standard
+modes are also applied to tree-sitter modes."
+  (let ((pairs '((bash-ts-mode-hook . sh-mode-hook)
+                 (css-ts-mode-hook . css-mode-hook)
+                 (html-ts-mode-hook . html-mode-hook)
+                 (js-ts-mode-hook . js-mode-hook)
+                 (json-ts-mode-hook . json-mode-hook)
+                 (lua-ts-mode-hook . lua-mode-hook)
+                 (markdown-ts-mode-hook . markdown-mode-hook)
+                 (python-ts-mode-hook . python-mode-hook)
+                 ;; (latex-ts-mode-hook . latex-mode-hook)
+                 (yaml-ts-mode-hook . yaml-mode-hook))))
+    ;; (latex-mode-hook . tex-mode))))
+    (dolist (pair pairs)
+      (let ((ts-hook (car pair))
+            (orig-hook (cdr pair)))
+        (when (boundp orig-hook)
+          (dolist (fn (symbol-value orig-hook))
+            (add-hook ts-hook fn)))))))
+
 ;;;; Completion
 
 ;;; Consult git grep exclusions
