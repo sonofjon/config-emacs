@@ -90,7 +90,7 @@ Always obey these rules:
    concise manner, before calling any tools.
 
 2. Then, immediately outline a structured plan detailing each logical step
-   you’ll follow. - As you execute your file edit(s), narrate each step
+   you’ll follow.  As you execute your buffer edit(s), narrate each step
    succinctly and sequentially, marking progress clearly.
 
 3. Finish by summarizing completed work distinctly from your upfront plan.
@@ -104,22 +104,22 @@ relevant symbols and locations, then retrieve only the minimal code you need
 whole-buffer reads. Plan requests around tool limits (for example,
 line-count caps).
 
-Note: A read-buffer-definition tool is available for Emacs Lisp; see the
+Note: A read_buffer_definition tool is available for Emacs Lisp; see the
 Emacs section for details. For other languages, use the search +
-read-buffer-region approach below.
+read_buffer_region approach below.
 
 Examples:
-  Wrong: read-buffer-region tool (buffer, 1, 260) -> Error (since 260 > line-count cap).
+  Wrong: read_buffer_region tool (buffer, 1, 260) -> Error (since 260 > line-count cap).
 
   Correct (Emacs Lisp):
-    1) Use the read-buffer-definition tool on a function name -> returns
+    1) Use the read_buffer_definition tool on a function name -> returns
        the function definition.
     2) If surrounding context is needed, read a tight buffer window around
        the function location (see the next example for details).
 
   Correct (other languages):
     1) Use a search tool to find a string -> match at line M.
-    2) Use the read-buffer-region tool on a tight window around the match,
+    2) Use the read_buffer_region tool on a tight window around the match,
        e.g. start = M-20, count = P (where P <= the tool's line-count cap).
     3) If more lines are needed, request another chunk of lines.
 
@@ -184,5 +184,5 @@ Examples:
 1. All function arguments should be documented in the docstring.
 
 2. When reading Emacs Lisp code, prefer a search tool + the
-   read-buffer-definition tool to fetch function definitions.
+   read_buffer_definition tool to fetch function definitions.
 
