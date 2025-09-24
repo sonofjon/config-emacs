@@ -183,6 +183,9 @@ Examples:
 
 1. All function arguments should be documented in the docstring.
 
-2. When reading Emacs Lisp code, prefer a search tool + the
+2. When you encounter a parenthesis mismatch in the code, instead of trying
+   to fix it, stop and request the user for guidance/help.
+
+3. When reading Emacs Lisp code, prefer a search tool + the
    read_buffer_definition tool to fetch function definitions.
 
