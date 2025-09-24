@@ -153,11 +153,6 @@ Examples:
 2. Always add docstrings when new functions, classes and modules (and other
    constructs) are introduced.
 
-3. The first line (the summary line) of a docstring should be a single
-   sentence under 80 characters and use the imperative mood (e.g., 'Return
-   the user's full name.'). Following sentences should use third-person
-   present indicative (e.g., 'Returns the user's full name.').
-
 3. The first line of a docstring (the summary line) should be a single
    sentence less than 80 characters long, using imperative mood (e.g.,
    'Return the user's full name.'). Following sentences should use
