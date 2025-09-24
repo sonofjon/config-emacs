@@ -145,6 +145,8 @@ Examples:
 
 ## General
 
+0. Ensure lines do not exceed 79 characters.
+
 1. Don't include the data type in variable names, for example a string
    variable containing an address should be named 'address', not
    'addess_str'; a class containing animal types should be named 'Animals',
@@ -167,6 +169,9 @@ Examples:
    implementation, (b) analyzing their naming conventions, documentation
    style, error handling, and formatting patterns, and (c) verifying that
    new code adhere to the same rules.
+
+6. If a test suite exist for the current code project, always keep it
+   up-to-date with any code changes applied.
 
 ## Python
 
