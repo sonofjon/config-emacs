@@ -2665,7 +2665,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;;                              (car (auth-source-search
   ;;                                    :host "generativelanguage.googleapis.com"
   ;;                                    :user "apikey")))
-  ;;                        :chat-model "gemini-2.5-flash-preview-04-17"))
+  ;;                        :chat-model "gemini-flash-latest"))
   ;; Add gptcommit transient commands to `magit-commit'
   (magit-gptcommit-status-buffer-setup))
   ;; Generate commit message automatically in Magit status buffer
@@ -2914,7 +2914,7 @@ Elisp code explicitly in arbitrary buffers.")
     :stream t)   ; make available
   ;; Set as default backend
   ;; (setq gptel-backend "Gemini")
-  ;; (setq gptel-model 'gemini-2.5-pro)
+  ;; (setq gptel-model '`gemini-pro-latest')
   ;; === Deepseek ===
   (gptel-make-deepseek "Deepseek"
     :key (gptel-api-key-from-auth-source
@@ -2972,7 +2972,7 @@ the window so that the streaming position appears near the bottom."
     ;; :system (alist-get 'chat gptel-directives)
     :system 'chat
     :temperature 1.0
-    :model 'gemini-2.5-flash
+    :model 'gemini-flash-latest
     :use-context nil
     :include-reasoning 'ignore
     :use-tools nil)
