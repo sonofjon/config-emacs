@@ -3010,6 +3010,8 @@ the window so that the streaming position appears near the bottom."
                              "delete_buffer_string"
                              "apply_buffer_line_edits"
                              "apply_buffer_line_edits_with_review"
+                             "apply_buffer_string_edits"
+                             "apply_buffer_string_edits_with_review"
                              ;; Unwanted
                              "replace_buffer"
                              "ert_run_unit"))
