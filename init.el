@@ -2927,10 +2927,22 @@ Elisp code explicitly in arbitrary buffers.")
     :key (gptel-api-key-from-auth-source
           "openrouter.ai" "apikey")
     :stream t
-    :models '(deepseek/deepseek-chat-v3.1
+    :models '(deepseek/deepseek-chat-v3-0324
+              deepseek/deepseek-chat-v3.1
+              deepseek/deepseek-v3.1-terminus
+              deepseek/deepseek-v3.2-exp
+              deepseek/deepseek-r1-0528
               moonshotai/kimi-k2-0905
               qwen/qwen3-coder
-              qwen/qwen3-coder:free))
+              qwen/qwen3-coder:free
+              qwen/qwen3-coder-plus
+              qwen/qwen3-max))
+  ;; Enable reasoning
+  (dolist (provider '(deepseek/deepseek-chat-v3-0324
+                      deepseek/deepseek-chat-v3.1
+                      deepseek/deepseek-v3.1-terminus
+                      deepseek/deepseek-v3.2-exp))
+    (put provider :request-params '(:reasoning (:enabled t))))
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
