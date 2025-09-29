@@ -1489,7 +1489,7 @@
 ;;   TODO: doesn't work
 (use-package flymake-json
   :ensure-system-package jsonlint
-  :hook (json-ts-mode . flymake-json-load))
+  :hook (json-mode . flymake-json-load))
 
 ;; flymake-ruff (a Flymake plugin for python files using Ruff)
 (use-package flymake-ruff
