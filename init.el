@@ -2249,7 +2249,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; reflow (Re-flow Info and Helpful buffers)
 (use-package reflow
-  :after (helpful info)
+  :after (:any helpful info)
   :commands (reflow-info-buffer
              reflow-helpful-buffer
              reflow-info-mode
