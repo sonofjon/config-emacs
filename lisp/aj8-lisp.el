@@ -1034,7 +1034,7 @@ With a negative MOVE-POINT, keep point centered on the window."
       (if (< move-point-value 0)
           (goto-char (/ (+ (point-min) (point-max)) 2))   ; center
         (progn   ; next paragraph
-          ;;  TODO: Doesn't work when paragraphs are longer than one window height
+          ;;  MAYBE: Doesn't work when paragraphs are longer than one window height
           ;; (redisplay)   ; update buffer content in window TODO: ugly!
           ;; (force-window-update (selected-window))
           (goto-char (window-end))
@@ -1217,9 +1217,9 @@ If nil, cycle through all levels."
           (setq hidden-found t)))
       hidden-found)))
 
-;; TODO:  Review that comments are accurate
-;; MAYBE: Reverse direction with Shift-Tab
-;;        Toggle `hide/show' completely with C-u
+;; TODO: Review that comments are accurate
+;; TODO: Reverse direction with C-u prefix
+;; TODO: Toggle `hide/show' completely with C-u C-u prefix
 (defun aj8/hs-cycle ()
   "Cycle code folding, progressively revealing deeper levels.
 Each invocation reveals one more nested level up to `aj8/hs-cycle-max-depth'.
