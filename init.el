@@ -2942,6 +2942,8 @@ Elisp code explicitly in arbitrary buffers.")
                       deepseek/deepseek-v3.1-terminus
                       deepseek/deepseek-v3.2-exp))
     (put provider :request-params '(:reasoning (:enabled t))))
+  ;; === GitHub Copilot Chat ====
+  (gptel-make-gh-copilot "Copilot")
   ;; Enable word-wrap
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Scroll window automatically
