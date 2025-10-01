@@ -131,6 +131,76 @@ calling `package-autoremove'.  ORIG-FUN should be `package-autoremove'."
 
 (advice-add #'package-autoremove :around #'aj8/package-autoremove-no-vc)
 
+;;;; AI
+
+;; Save gptel buffers
+(defun aj8/gptel-write-buffer (orig-fun &rest args)
+  "Advice function to save the gptel chat buffer.
+
+This function saves the chat buffer to the current project's root
+directory.  If no project is detected, it prompts the user to choose a
+directory for saving.  It constructs a filename based on the current
+timestamp and the major mode of the buffer (with support for `org-mode'
+and `markdown-mode').
+
+This function is intended to be used as advice for the gptel
+function.  ORIG-FUN should be `gptel'."
+  (let ((chat-buf (apply orig-fun args)))
+    (with-current-buffer chat-buf
+      (unless (buffer-file-name)
+        (let* ((project (project-current))
+               (directory (if project
+                              (project-root project)
+                            (read-directory-name "No project found. Choose where to save the chat: "
+                                                 default-directory nil t)))
+               (suffix (format-time-string "%Y%m%dT%H%M" (current-time)))
+               (extension (pcase major-mode
+                            ('org-mode "org")
+                            ('markdown-mode "md")
+                            (_ (user-error "Unsupported major mode"))))
+               (filename (expand-file-name
+                          (concat "gptel-" suffix "." extension) directory)))
+          (write-file filename 'confirm))))
+    chat-buf))
+
+(advice-add 'gptel :around #'aj8/gptel-write-buffer)
+
+;; Auto-save gptel buffers
+(defun aj8/gptel-auto-save-chat-buffer (beg end)
+  "Auto-save gptel chat buffer after LLM response.
+Only saves if the current buffer is a modified gptel chat buffer with a
+file name.  This function is meant to be used with
+`gptel-post-response-functions'.  BEG and END are the response beginning
+and end positions, which are required by
+`gptel-post-response-functions'."
+  (when (and (bound-and-true-p gptel-mode)
+             (buffer-file-name)
+             (buffer-modified-p))
+        (save-buffer)
+    (message "Auto-saved gptel buffer")))
+
+;; Also see aj8/no-backup-regexp
+
+;; Display gptel reasoning buffer
+(defun aj8/gptel-display-reasoning-buffer (beg end)
+  "Display the gptel reasoning buffer.
+This function displays the gptel reasoning buffer and enables
+`aj8/buffer-tail-mode' (on first display only).  Use with any of gptel's
+built-in hooks.  The arguments BEG and END are ignored but required by
+the hook."
+  (when (stringp gptel-include-reasoning)
+    (let ((buf (get-buffer gptel-include-reasoning)))
+      (when buf
+        ;; Perform one-time setup for the reasoning buffer.
+        (with-current-buffer buf
+          (unless aj8/buffer-tail-mode-initialized
+            ;; This block runs only once for this buffer.
+            (aj8/buffer-tail-mode 1)
+            (setq aj8/buffer-tail-mode-initialized t)))
+        ;; Now, display the buffer if it's not empty.
+        (when (> (buffer-size buf) 0)
+          (display-buffer buf nil))))))
+
 ;;;; Buffers
 
 ;;; Undo for killed file buffers
@@ -470,56 +540,6 @@ buffer and scrolls its window to the end."
     (when aj8/buffer-tail-mode--timer
       (cancel-timer aj8/buffer-tail-mode--timer)
       (setq aj8/buffer-tail-mode--timer nil))))
-
-;;; Saving
-
-;; Save gptel buffers
-(defun aj8/gptel-write-buffer (orig-fun &rest args)
-  "Advice function to save the gptel chat buffer.
-
-This function saves the chat buffer to the current project's root
-directory.  If no project is detected, it prompts the user to choose a
-directory for saving.  It constructs a filename based on the current
-timestamp and the major mode of the buffer (with support for `org-mode'
-and `markdown-mode').
-
-This function is intended to be used as advice for the gptel
-function.  ORIG-FUN should be `gptel'."
-  (let ((chat-buf (apply orig-fun args)))
-    (with-current-buffer chat-buf
-      (unless (buffer-file-name)
-        (let* ((project (project-current))
-               (directory (if project
-                              (project-root project)
-                            (read-directory-name "No project found. Choose where to save the chat: "
-                                                 default-directory nil t)))
-               (suffix (format-time-string "%Y%m%dT%H%M" (current-time)))
-               (extension (pcase major-mode
-                            ('org-mode "org")
-                            ('markdown-mode "md")
-                            (_ (user-error "Unsupported major mode"))))
-               (filename (expand-file-name
-                          (concat "gptel-" suffix "." extension) directory)))
-          (write-file filename 'confirm))))
-    chat-buf))
-
-(advice-add 'gptel :around #'aj8/gptel-write-buffer)
-
-;; Auto-save gptel buffers
-(defun aj8/gptel-auto-save-chat-buffer (beg end)
-  "Auto-save gptel chat buffer after LLM response.
-Only saves if the current buffer is a modified gptel chat buffer with a
-file name.  This function is meant to be used with
-`gptel-post-response-functions'.  BEG and END are the response beginning
-and end positions, which are required by
-`gptel-post-response-functions'."
-  (when (and (bound-and-true-p gptel-mode)
-             (buffer-file-name)
-             (buffer-modified-p))
-        (save-buffer)
-    (message "Auto-saved gptel buffer")))
-
-;; Also see aj8/no-backup-regexp
 
 ;;; Misc
 
@@ -2107,26 +2127,6 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
 
 (defvar-local aj8/buffer-tail-mode-initialized nil
   "A buffer-local flag to ensure tail mode setup runs only once per buffer.")
-
-;; Display gptel reasoning buffer
-(defun aj8/gptel-display-reasoning-buffer (beg end)
-  "Display the gptel reasoning buffer.
-This function displays the gptel reasoning buffer and enables
-`aj8/buffer-tail-mode' (on first display only).  Use with any of gptel's
-built-in hooks.  The arguments BEG and END are ignored but required by
-the hook."
-  (when (stringp gptel-include-reasoning)
-    (let ((buf (get-buffer gptel-include-reasoning)))
-      (when buf
-        ;; Perform one-time setup for the reasoning buffer.
-        (with-current-buffer buf
-          (unless aj8/buffer-tail-mode-initialized
-            ;; This block runs only once for this buffer.
-            (aj8/buffer-tail-mode 1)
-            (setq aj8/buffer-tail-mode-initialized t)))
-        ;; Now, display the buffer if it's not empty.
-        (when (> (buffer-size buf) 0)
-          (display-buffer buf nil))))))
 
 ;;;; Web
 

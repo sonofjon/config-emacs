@@ -1319,6 +1319,221 @@
 
 ;;; Admin
 
+;;; AI
+
+;; gptel (a simple ChatGPT client for Emacs)
+(use-package gptel
+  :commands (gptel gptel-send)
+  :bind (("C-c t c" . gptel)
+         ("C-c t m" . gptel-menu)
+         ("C-c t q" . gptel-abort)
+         ("C-c RET" . gptel-send)
+         ("C-c C-<return>" . gptel-menu)
+         ("C-c C-g" . gptel-abort)
+         :map gptel-mode-map
+         ("C-c M-n" . gptel-end-of-response)
+         ("C-c M-p" . gptel-beginning-of-response))
+  :init
+  (which-key-add-key-based-replacements "C-c t" "gptel")
+                                        ; add label for prefix key
+  :custom
+  ;; Set mode
+  ;; (gptel-default-mode 'text-mode)   ; default: markdown-mode
+  ;; Track media
+  (gptel-track-media t)
+  ;; Don't use Curl
+  ;; (gptel-use-curl nil)
+  ;; Don't show reasoning
+  ;; (gptel-include-reasoning nil)
+  ;; Ignore reasoning in requests
+  ;; (gptel-include-reasoning 'ignore)
+  ;; Pass reasoning to buffer
+  (gptel-include-reasoning "*gptel-reasoning*")
+  ;; Automatic diff after rewrite
+  ;; (gptel-rewrite-default-action 'ediff)
+  ;; Dispatch rewrite menu
+  (gptel-rewrite-default-action 'dispatch)
+  ;; Single line separator
+  ;; (gptel-response-separator "\n")   ; default: "\n\n"
+  ;; Pass context in user prompt
+  (gptel-use-context 'user)   ; default: 'system
+  ;; Cache request content
+  ;;   Only for Anthropic
+  (gptel-cache t)
+  ;; confirm tool calls with ':confirm t' in the tool registration
+  (gptel-confirm-tool-calls 'auto)
+  :config
+  ;; Enable experimental options
+  (setq gptel-expert-commands t)
+  ;; Default model
+  (setq-default gptel-model 'gpt-5-mini)
+  ;; === ChatGPT ===
+  ;; Custom OpenAI backend
+  ;; (gptel-make-openai "ChatGPT-NoStream"
+  ;;   :key (gptel-api-key-from-auth-source
+  ;;         "api.openai.com" "apikey")
+  ;;   :stream nil   ; Disable streaming
+  ;;   :models gptel--openai-models)   ; include all OpenAI models
+  ;; Set as default backend
+  ;; (setq gptel-backend (gptel-get-backend "ChatGPT-NoStream"))
+  ;; Disable streaming
+  ;; (put 'gpt-5 :request-params '(:stream :json-false))
+  (put 'gpt-5-mini :request-params '(:stream :json-false))
+  ;; Set reasoning effort (default: medium)
+  ;; (put 'o1-mini :request-params '(:reasoning_effort "medium"))
+  ;; Use Flex processing
+  ;; (put 'gpt-5 :request-params '(:service_tier "flex"))
+  (put 'gpt-5 :request-params '(:stream :json-false :service_tier "flex"))
+  ;; === Claude ===
+  (gptel-make-anthropic "Claude"
+    :key (gptel-api-key-from-auth-source
+          "api.anthropic.com" "apikey")
+    :stream t)   ; make available
+  ;; Set as default backend
+  ;; (setq gptel-backend "Claude")
+  ;; (setq gptel-model 'claude-sonnet-4-20250514)
+  ;; === Gemini ===
+  (gptel-make-gemini "Gemini"
+    :key (gptel-api-key-from-auth-source
+          "generativelanguage.googleapis.com" "apikey")
+    :stream t)   ; make available
+  ;; Set as default backend
+  ;; (setq gptel-backend "Gemini")
+  ;; (setq gptel-model '`gemini-pro-latest')
+  ;; === Deepseek ===
+  (gptel-make-deepseek "Deepseek"
+    :key (gptel-api-key-from-auth-source
+          "api.deepseek.com" "apikey")
+    :stream t)
+  ;; === OpenRouter ====
+  (gptel-make-openai "OpenRouter"
+    :host "openrouter.ai"
+    :endpoint "/api/v1/chat/completions"
+    :key (gptel-api-key-from-auth-source
+          "openrouter.ai" "apikey")
+    :stream t
+    :models '(deepseek/deepseek-chat-v3-0324
+              deepseek/deepseek-chat-v3.1
+              deepseek/deepseek-v3.2-exp
+              deepseek/deepseek-r1-0528
+              moonshotai/kimi-k2-0905
+              qwen/qwen3-coder
+              qwen/qwen3-coder:free
+              qwen/qwen3-coder-plus
+              qwen/qwen3-max))
+  ;; Enable reasoning
+  (dolist (provider '(deepseek/deepseek-chat-v3-0324
+                      deepseek/deepseek-chat-v3.1
+                      deepseek/deepseek-v3.1-terminus
+                      deepseek/deepseek-v3.2-exp))
+    (put provider :request-params '(:reasoning (:enabled t))))
+  ;; === GitHub Copilot Chat ====
+  (gptel-make-gh-copilot "Copilot")
+  ;; Enable word-wrap
+  (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
+  ;; Scroll window automatically
+  (defun aj8/gptel-auto-scroll-fixed ()
+    "Follow streaming output by moving point when stream continues off-screen.
+Runs from `gptel-post-stream-hook'. Moves point to the streaming
+insertion position (which is point while this hook runs) and recenters
+the window so that the streaming position appears near the bottom."
+    (when-let* ((win (get-buffer-window (current-buffer) 'visible))
+                (pos (point)))
+      (unless (pos-visible-in-window-p pos win)
+        (run-at-time 0 nil
+                     (lambda (w p)
+                       (with-selected-window w
+                         (goto-char p)
+                         (recenter -1)))
+                     win pos))))
+  (add-hook 'gptel-post-stream-hook #'aj8/gptel-auto-scroll-fixed)
+  ;; Jump to next prompt after response
+  (add-hook 'gptel-post-response-functions #'gptel-end-of-response)
+  ;; Auto-save
+  (add-hook 'gptel-post-response-functions #'aj8/gptel-auto-save-chat-buffer)
+  ;; Display reasoning buffer automatically
+  (add-hook 'gptel-post-response-functions #'aj8/gptel-display-reasoning-buffer)
+  ;; Add directives
+  (add-to-list 'gptel-directives
+               `(coder . ,(with-temp-buffer
+                            (insert-file-contents
+                             (expand-file-name "data/gptel-directive.md"
+                                               user-emacs-directory))
+                            (string-trim (buffer-string))))
+               t)
+  (add-to-list 'gptel-directives
+               '(debug . "You are a large language model and a debugger. Diagnose issues and suggest fixes.")
+               t)
+  ;; Preset: chat
+  (gptel-make-preset 'chat
+    :description "Preset for chat"
+    ;; :system (alist-get 'chat gptel-directives)
+    :system 'chat
+    :temperature 1.0
+    :model 'gemini-flash-latest
+    :use-context nil
+    :include-reasoning 'ignore
+    :use-tools nil)
+  ;; Preset: coding
+  (gptel-make-preset 'coding
+    :description "Preset for coding"
+    ;; :system (alist-get 'coder gptel-directives)
+    :system 'coder
+    :model 'gpt-5-mini
+    :temperature 0.1
+    :use-context 'user
+    :include-reasoning "*gptel-reasoning*"
+    ;; :tools (gptel-tk-get-tools)
+    ;; :post (gptel-tk-enable-builtin-tools)
+    :use-tools t))
+
+;; gptel-quick (quick LLM lookups in Emacs) - [source package]
+(use-package gptel-quick
+  :bind ("C-c t h" . gptel-quick))
+  ;; :config
+  ;; ;; Set approximate word count of LLM summary
+  ;; (gptel-quick-word-count 12))
+
+(use-package gptel-toolkit
+  :after gptel
+  :custom
+  ;; Exclude some tools
+  (gptel-tk-excluded-tools '(;; Redundant
+                             "list_buffers"
+                             "read_function"
+                             "insert_in_buffer"
+                             "replace_buffer_line"
+                             "delete_buffer_line"
+                             "delete_buffer_string"
+                             "apply_buffer_line_edits"
+                             "apply_buffer_line_edits_with_review"
+                             "apply_buffer_string_edits"
+                             "apply_buffer_string_edits_with_review"
+                             ;; Unwanted
+                             "replace_buffer"
+                             "ert_run_unit"))
+  :config
+  ;; Enable built-in tools
+  ;; (gptel-tk-enable-builtin-tools)
+  ;; Enable built-in tools in preset
+  ;; (plist-put (gptel-get-preset 'coding) :post #'gptel-tk-enable-builtin-tools))
+  ;; Set built-in tools in preset
+  (plist-put (gptel-get-preset 'coding) :tools (gptel-tk-get-tool-names)))
+
+;; llm-tool-collection (a crowdsourced collection of tools to empower Large Language Models in Emacs) - [source package]
+(use-package llm-tool-collection
+  :disabled
+  :after gptel
+  :config
+  ;; Register all tools
+  (mapcar (apply-partially #'apply #'gptel-make-tool)
+          (llm-tool-collection-get-all)))
+  ;; ;; Register one tool
+  ;; (apply #'gptel-make-tool llm-tc/list-directory)
+  ;; ;; Register one category
+  ;; (mapcar (apply-partially #'apply #'gptel-make-tool)
+  ;;       (llm-tool-collection-get-category "filesystem")))
+
 ;;; Buffers
 
 ;; dimmer (visually highlight the selected buffer)
@@ -2835,220 +3050,6 @@ Elisp code explicitly in arbitrary buffers.")
   (add-hook 'auto-revert-mode-hook (lambda () (diminish 'auto-revert-mode)))
   (add-hook 'abbrev-mode-hook (lambda () (diminish 'abbrev-mode)))
   (add-hook 'visual-line-mode-hook (lambda () (diminish 'visual-line-mode))))
-
-;; gptel (a simple ChatGPT client for Emacs)
-(use-package gptel
-  :commands (gptel gptel-send)
-  :bind (("C-c t c" . gptel)
-         ("C-c t m" . gptel-menu)
-         ("C-c t q" . gptel-abort)
-         ("C-c RET" . gptel-send)
-         ("C-c C-<return>" . gptel-menu)
-         ("C-c C-g" . gptel-abort)
-         :map gptel-mode-map
-         ("C-c M-n" . gptel-end-of-response)
-         ("C-c M-p" . gptel-beginning-of-response))
-  :init
-  (which-key-add-key-based-replacements "C-c t" "gptel")
-                                        ; add label for prefix key
-  :custom
-  ;; Set mode
-  ;; (gptel-default-mode 'text-mode)   ; default: markdown-mode
-  ;; Track media
-  (gptel-track-media t)
-  ;; Don't use Curl
-  ;; (gptel-use-curl nil)
-  ;; Don't show reasoning
-  ;; (gptel-include-reasoning nil)
-  ;; Ignore reasoning in requests
-  ;; (gptel-include-reasoning 'ignore)
-  ;; Pass reasoning to buffer
-  (gptel-include-reasoning "*gptel-reasoning*")
-  ;; Automatic diff after rewrite
-  ;; (gptel-rewrite-default-action 'ediff)
-  ;; Dispatch rewrite menu
-  (gptel-rewrite-default-action 'dispatch)
-  ;; Single line separator
-  ;; (gptel-response-separator "\n")   ; default: "\n\n"
-  ;; Pass context in user prompt
-  (gptel-use-context 'user)   ; default: 'system
-  ;; Cache request content
-  ;;   Only for Anthropic
-  (gptel-cache t)
-  ;; confirm tool calls with ':confirm t' in the tool registration
-  (gptel-confirm-tool-calls 'auto)
-  :config
-  ;; Enable experimental options
-  (setq gptel-expert-commands t)
-  ;; Default model
-  (setq-default gptel-model 'gpt-5-mini)
-  ;; === ChatGPT ===
-  ;; Custom OpenAI backend
-  ;; (gptel-make-openai "ChatGPT-NoStream"
-  ;;   :key (gptel-api-key-from-auth-source
-  ;;         "api.openai.com" "apikey")
-  ;;   :stream nil   ; Disable streaming
-  ;;   :models gptel--openai-models)   ; include all OpenAI models
-  ;; Set as default backend
-  ;; (setq gptel-backend (gptel-get-backend "ChatGPT-NoStream"))
-  ;; Disable streaming
-  ;; (put 'gpt-5 :request-params '(:stream :json-false))
-  (put 'gpt-5-mini :request-params '(:stream :json-false))
-  ;; Set reasoning effort (default: medium)
-  ;; (put 'o1-mini :request-params '(:reasoning_effort "medium"))
-  ;; Use Flex processing
-  ;; (put 'gpt-5 :request-params '(:service_tier "flex"))
-  (put 'gpt-5 :request-params '(:stream :json-false :service_tier "flex"))
-  ;; === Claude ===
-  (gptel-make-anthropic "Claude"
-    :key (gptel-api-key-from-auth-source
-          "api.anthropic.com" "apikey")
-    :stream t)   ; make available
-  ;; Set as default backend
-  ;; (setq gptel-backend "Claude")
-  ;; (setq gptel-model 'claude-sonnet-4-20250514)
-  ;; === Gemini ===
-  (gptel-make-gemini "Gemini"
-    :key (gptel-api-key-from-auth-source
-          "generativelanguage.googleapis.com" "apikey")
-    :stream t)   ; make available
-  ;; Set as default backend
-  ;; (setq gptel-backend "Gemini")
-  ;; (setq gptel-model '`gemini-pro-latest')
-  ;; === Deepseek ===
-  (gptel-make-deepseek "Deepseek"
-    :key (gptel-api-key-from-auth-source
-          "api.deepseek.com" "apikey")
-    :stream t)
-  ;; === OpenRouter ====
-  (gptel-make-openai "OpenRouter"
-    :host "openrouter.ai"
-    :endpoint "/api/v1/chat/completions"
-    :key (gptel-api-key-from-auth-source
-          "openrouter.ai" "apikey")
-    :stream t
-    :models '(deepseek/deepseek-chat-v3-0324
-              deepseek/deepseek-chat-v3.1
-              deepseek/deepseek-v3.2-exp
-              deepseek/deepseek-r1-0528
-              moonshotai/kimi-k2-0905
-              qwen/qwen3-coder
-              qwen/qwen3-coder:free
-              qwen/qwen3-coder-plus
-              qwen/qwen3-max))
-  ;; Enable reasoning
-  (dolist (provider '(deepseek/deepseek-chat-v3-0324
-                      deepseek/deepseek-chat-v3.1
-                      deepseek/deepseek-v3.1-terminus
-                      deepseek/deepseek-v3.2-exp))
-    (put provider :request-params '(:reasoning (:enabled t))))
-  ;; === GitHub Copilot Chat ====
-  (gptel-make-gh-copilot "Copilot")
-  ;; Enable word-wrap
-  (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
-  ;; Scroll window automatically
-  (defun aj8/gptel-auto-scroll-fixed ()
-    "Follow streaming output by moving point when stream continues off-screen.
-Runs from `gptel-post-stream-hook'. Moves point to the streaming
-insertion position (which is point while this hook runs) and recenters
-the window so that the streaming position appears near the bottom."
-    (when-let* ((win (get-buffer-window (current-buffer) 'visible))
-                (pos (point)))
-      (unless (pos-visible-in-window-p pos win)
-        (run-at-time 0 nil
-                     (lambda (w p)
-                       (with-selected-window w
-                         (goto-char p)
-                         (recenter -1)))
-                     win pos))))
-  (add-hook 'gptel-post-stream-hook #'aj8/gptel-auto-scroll-fixed)
-  ;; Jump to next prompt after response
-  (add-hook 'gptel-post-response-functions #'gptel-end-of-response)
-  ;; Auto-save
-  (add-hook 'gptel-post-response-functions #'aj8/gptel-auto-save-chat-buffer)
-  ;; Display reasoning buffer automatically
-  (add-hook 'gptel-post-response-functions #'aj8/gptel-display-reasoning-buffer)
-  ;; Add directives
-  (add-to-list 'gptel-directives
-               `(coder . ,(with-temp-buffer
-                            (insert-file-contents
-                             (expand-file-name "data/gptel-directive.md"
-                                               user-emacs-directory))
-                            (string-trim (buffer-string))))
-               t)
-  (add-to-list 'gptel-directives
-               '(debug . "You are a large language model and a debugger. Diagnose issues and suggest fixes.")
-               t)
-  ;; Preset: chat
-  (gptel-make-preset 'chat
-    :description "Preset for chat"
-    ;; :system (alist-get 'chat gptel-directives)
-    :system 'chat
-    :temperature 1.0
-    :model 'gemini-flash-latest
-    :use-context nil
-    :include-reasoning 'ignore
-    :use-tools nil)
-  ;; Preset: coding
-  (gptel-make-preset 'coding
-    :description "Preset for coding"
-    ;; :system (alist-get 'coder gptel-directives)
-    :system 'coder
-    :model 'gpt-5-mini
-    :temperature 0.1
-    :use-context 'user
-    :include-reasoning "*gptel-reasoning*"
-    ;; :tools (gptel-tk-get-tools)
-    ;; :post (gptel-tk-enable-builtin-tools)
-    :use-tools t))
-
-;; gptel-quick (quick LLM lookups in Emacs) - [source package]
-(use-package gptel-quick
-  :bind ("C-c t h" . gptel-quick))
-  ;; :config
-  ;; ;; Set approximate word count of LLM summary
-  ;; (gptel-quick-word-count 12))
-
-
-(use-package gptel-toolkit
-  :after gptel
-  :custom
-  ;; Exclude some tools
-  (gptel-tk-excluded-tools '(;; Redundant
-                             "list_buffers"
-                             "read_function"
-                             "insert_in_buffer"
-                             "replace_buffer_line"
-                             "delete_buffer_line"
-                             "delete_buffer_string"
-                             "apply_buffer_line_edits"
-                             "apply_buffer_line_edits_with_review"
-                             "apply_buffer_string_edits"
-                             "apply_buffer_string_edits_with_review"
-                             ;; Unwanted
-                             "replace_buffer"
-                             "ert_run_unit"))
-  :config
-  ;; Enable built-in tools
-  ;; (gptel-tk-enable-builtin-tools)
-  ;; Enable built-in tools in preset
-  ;; (plist-put (gptel-get-preset 'coding) :post #'gptel-tk-enable-builtin-tools))
-  ;; Set built-in tools in preset
-  (plist-put (gptel-get-preset 'coding) :tools (gptel-tk-get-tool-names)))
-
-;; llm-tool-collection (a crowdsourced collection of tools to empower Large Language Models in Emacs) - [source package]
-(use-package llm-tool-collection
-  :disabled
-  :after gptel
-  :config
-  ;; Register all tools
-  (mapcar (apply-partially #'apply #'gptel-make-tool)
-          (llm-tool-collection-get-all)))
-  ;; ;; Register one tool
-  ;; (apply #'gptel-make-tool llm-tc/list-directory)
-  ;; ;; Register one category
-  ;; (mapcar (apply-partially #'apply #'gptel-make-tool)
-  ;;       (llm-tool-collection-get-category "filesystem")))
 
 ;; hydra (make bindings that stick around)
 (use-package hydra
