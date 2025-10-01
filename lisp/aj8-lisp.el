@@ -806,7 +806,38 @@ respectively."
                (double-quote . "\"")
                (back-quote . "`")))
 
-;; TODO: Combine both functions to reuse common code
+(defun aj8/sp--sexp-dwim-direction (for-down-p)
+  "Determine direction for sexp movement based on context.
+FOR-DOWN-P should be t for down movement, nil for up movement.  Returns
+the direction (1 for forward, -1 for backward) to pass to sp-down-sexp
+or sp-up-sexp."
+  (when-let* ((prev-paren-pos (save-excursion
+                                (search-backward-regexp "[()]" nil t)))
+              (next-paren-pos (save-excursion
+                                (search-forward-regexp "[()]" nil t)))
+              (forward-dist (- next-paren-pos (point)))
+              (backward-dist (- (point) prev-paren-pos)))
+    (let* ((prev-paren-left-p (= (char-after prev-paren-pos) ?\())
+           (next-paren-left-p (= (char-before next-paren-pos) ?\())
+           (prev-paren-right-p (= (char-after prev-paren-pos) ?\)))
+           (next-paren-right-p (= (char-before next-paren-pos) ?\)))
+           (point-eol-p (looking-at-p "[[:space:]]*$"))
+           (point-bol-p (looking-back "^[[:space:]]*")))
+      ;; Direction logic differs between down and up movement
+      (if for-down-p
+          ;; Down movement logic
+          (cond ((and prev-paren-left-p next-paren-left-p) 1)
+                ((and prev-paren-right-p next-paren-right-p) -1)
+                (point-bol-p 1)
+                (point-eol-p -1)
+                (t (if (> forward-dist backward-dist) -1 1)))
+        ;; Up movement logic
+        (cond ((and prev-paren-left-p next-paren-left-p) -1)
+              ((and prev-paren-right-p next-paren-right-p) 1)
+              (point-bol-p -1)
+              (point-eol-p 1)
+              (t (if (> forward-dist backward-dist) -1 1)))))))
+
 (defun aj8/sp-down-sexp-dwim ()
   "Move point down one level of s-expression (sexp).
 
@@ -819,27 +850,8 @@ to move down.
 Note that the logic in this function only considers parenthesis-
 delimited s-expressions."
   (interactive)
-  (when-let* ((prev-paren-pos (save-excursion
-                                (search-backward-regexp "[()]" nil t)))
-              (next-paren-pos (save-excursion
-                                (search-forward-regexp "[()]" nil t)))
-              (forward-dist (- next-paren-pos (point)))
-              (backward-dist (- (point) prev-paren-pos)))
-    (let* ((prev-paren-left-p (= (char-after prev-paren-pos) ?\())
-           (next-paren-left-p (= (char-before next-paren-pos) ?\())
-           (prev-paren-right-p (= (char-after prev-paren-pos) ?\)))
-           (next-paren-right-p (= (char-before next-paren-pos) ?\)))
-           (point-eol-p (looking-at-p "[[:space:]]*$"))
-           (point-bol-p (looking-back "^[[:space:]]*"))
-           (direction (cond ((and prev-paren-left-p next-paren-left-p) 1)
-                            ((and prev-paren-right-p next-paren-right-p) -1)
-                            (point-bol-p 1)
-                            (point-eol-p -1)
-                            (t (if (> forward-dist backward-dist) -1 1)))))
-      ;; (message "Forward distance: '%s', backward distance: '%s'"
-      ;;          forward-dist backward-dist)
-      ;; Move point in the appropriate direction
-      (sp-down-sexp direction))))
+  (when-let ((direction (aj8/sp--sexp-dwim-direction t)))
+    (sp-down-sexp direction)))
 
 (defun aj8/sp-up-sexp-dwim ()
   "Move point up one level of s-expression (sexp).
@@ -853,27 +865,8 @@ to move up.
 Note that the logic in this function only considers parenthesis-
 delimited s-expressions."
   (interactive)
-  (when-let* ((prev-paren-pos (save-excursion
-                                (search-backward-regexp "[()]" nil t)))
-              (next-paren-pos (save-excursion
-                                (search-forward-regexp "[()]" nil t)))
-              (forward-dist (- next-paren-pos (point)))
-              (backward-dist (- (point) prev-paren-pos)))
-    (let* ((prev-paren-left-p (= (char-after prev-paren-pos) ?\())
-           (next-paren-left-p (= (char-before next-paren-pos) ?\())
-           (prev-paren-right-p (= (char-after prev-paren-pos) ?\)))
-           (next-paren-right-p (= (char-before next-paren-pos) ?\)))
-           (point-eol-p (looking-at-p "[[:space:]]*$"))
-           (point-bol-p (looking-back "^[[:space:]]*"))
-           (direction (cond ((and prev-paren-left-p next-paren-left-p) -1)
-                            ((and prev-paren-right-p next-paren-right-p) 1)
-                            (point-bol-p -1)
-                            (point-eol-p 1)
-                            (t (if (> forward-dist backward-dist) -1 1)))))
-      ;; (message "Forward distance: '%s', backward distance: '%s'"
-      ;;          forward-dist backward-dist)
-      ;; Move point in the appropriate direction
-      (sp-up-sexp direction))))
+  (when-let ((direction (aj8/sp--sexp-dwim-direction nil)))
+    (sp-up-sexp direction)))
 
 ;;; Misc
 
