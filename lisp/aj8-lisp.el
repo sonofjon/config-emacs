@@ -303,7 +303,7 @@ If the current window is a side window use the regular
 ;;;   (imported from projectile and adapted for project.el)
 
 ;; Find next/previous project buffer
-;;   TODO: switches to other project buffers if there is only one project buffer
+;;   TODO: Don't switch non-project buffer if there is only one project buffer
 (defun my/project--repeat-until-project-buffer (orig-fun &rest args)
   "Repeat ORIG-FUN with ARGS until the current buffer is a project buffer."
   (if (project-current)
