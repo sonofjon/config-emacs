@@ -2929,7 +2929,6 @@ Elisp code explicitly in arbitrary buffers.")
     :stream t
     :models '(deepseek/deepseek-chat-v3-0324
               deepseek/deepseek-chat-v3.1
-              deepseek/deepseek-v3.1-terminus
               deepseek/deepseek-v3.2-exp
               deepseek/deepseek-r1-0528
               moonshotai/kimi-k2-0905
