@@ -303,7 +303,6 @@ If the current window is a side window use the regular
 ;;;   (imported from projectile and adapted for project.el)
 
 ;; Find next/previous project buffer
-;;   TODO: Don't switch non-project buffer if there is only one project buffer
 (defun my/project--repeat-until-project-buffer (orig-fun &rest args)
   "Repeat ORIG-FUN with ARGS until the current buffer is a project buffer."
   (if (project-current)
@@ -314,7 +313,9 @@ If the current window is a side window use the regular
         (dolist (buffer project-buffers)
           (unless (eq buffer (current-buffer))
             (puthash buffer t other-project-buffers)))
-        (when (cdr-safe project-buffers)
+        ;; Only switch if there are other project buffers to switch to
+        (when (and (cdr-safe project-buffers)
+                   (> (hash-table-count other-project-buffers) 0))
           (while (and (< counter max-iterations)
                       (not (gethash (current-buffer) other-project-buffers)))
             (apply orig-fun args)
