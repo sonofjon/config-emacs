@@ -1412,7 +1412,11 @@
     :key (gptel-api-key-from-auth-source
           "openrouter.ai" "apikey")
     :stream t
-    :models '(deepseek/deepseek-chat-v3-0324
+    :models '(anthropic/claude-sonnet-4.5
+              google/gemini-2.5-pro
+              openai/gpt-5
+              openai/gpt-5-codex
+              deepseek/deepseek-chat-v3-0324
               deepseek/deepseek-chat-v3.1
               deepseek/deepseek-v3.2-exp
               deepseek/deepseek-r1-0528
