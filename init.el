@@ -1324,9 +1324,9 @@
 ;;; AI
 
 ;; aidermacs (AI pair programming with Aider)
-;; TODO: Add `visual-line-mode' to aidermacs buffers
 (use-package aidermacs
   :bind (("C-c a" . aidermacs-transient-menu))
+  :hook (aidermacs-mode . visual-line-mode)
   ;; :custom
   ;; Use aider config file instead of Emacs variables
   ;; (aidermacs-config-file (concat (expand-file-name "~") "/.aider.conf.yml"))
