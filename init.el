@@ -88,6 +88,7 @@
 ;;;   `use-package' is used for configuration only
 (customize-set-variable 'package-selected-packages
                         '(ahk-mode
+                          aidermacs
                           all-the-icons
                           all-the-icons-dired
                           ansible
@@ -1265,7 +1266,7 @@
       (side . right)
       (slot . -1)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
+     ("\\*\\(aidermacs:.*\\|Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
@@ -1320,6 +1321,36 @@
 ;;; Admin
 
 ;;; AI
+
+;; aidermacs (AI pair programming with Aider)
+(use-package aidermacs
+  :bind (("C-c a" . aidermacs-transient-menu))
+  ;; :custom
+  ;; Use aider config file instead of Emacs variables
+  ;; (aidermacs-config-file (concat (expand-file-name "~") "/.aider.conf.yml"))
+  ;; Set default chat mode
+  ;; (aidermacs-default-chat-mode 'architect)   ; default: code
+  ;; Set default model (used for all modes unless overridden)
+  ;; (setq aidermacs-default-model "sonnet")   ; default: sonnet
+  ;; Optional: Set weak model
+  ;; (setq aidermacs-weak-model "haiku")   ; default: nil
+  ;; Optional: Set architect model
+  ;; (setq aidermacs-architect-model "deepseek/deepseek-reasoner")   ; default: nil
+  ;; Optional: Set editor model
+  ;; (setq aidermacs-editor-model "deepseek/deepseek-chat")   ; default: nil
+  ;; Set teminal backend
+  ;; (aidermacs-backend 'vterm)   ; default: comint
+  :config
+  (setenv "ANTHROPIC_API_KEY" (gptel-api-key-from-auth-source
+                               "api.anthropic.com" "apikey"))
+  (setenv "DEEPSEEK_API_KEY" (gptel-api-key-from-auth-source
+                               "api.deepseek.com" "apikey"))
+  (setenv "GEMINI_API_KEY" (gptel-api-key-from-auth-source
+                               "generativelanguage.googleapis.com" "apikey"))
+  (setenv "OPENAI_API_KEY" (gptel-api-key-from-auth-source
+                               "api.openai.com" "apikey"))
+  (setenv "OPENROUTER_API_KEY" (gptel-api-key-from-auth-source
+                               "openrouter.ai" "apikey")))
 
 ;; gptel (a simple ChatGPT client for Emacs)
 (use-package gptel
