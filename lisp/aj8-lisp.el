@@ -1332,7 +1332,7 @@ With prefix argument, reverse the cycling direction.  With double prefix
 argument (C-u C-u), toggle between fully hidden and fully shown."
   (interactive "P")
   (let ((hs-functions '(hs-hide-all hs-show-all hs-hide-level))
-        (max-depth (or aj8/hs-cycle-max-depth 3))  ; fallback to 3 if nil
+        (max-depth (or aj8/hs-cycle-max-depth 3))   ; fallback to 3 if nil
         (reverse-p (equal arg '(4)))
         (toggle-p (equal arg '(16))))
     (aj8/add-suppress-messages-advice hs-functions)
@@ -1341,11 +1341,7 @@ argument (C-u C-u), toggle between fully hidden and fully shown."
           (cond
            ;; Double prefix: toggle between fully hidden and fully shown
            (toggle-p
-            (if (save-excursion
-                  ;; Find hidden blocks globally
-                  (goto-char (point-min))
-                  (hs-find-next-block hs-block-start-regexp (point-max) nil)
-                  (hs-already-hidden-p))
+            (if aj8/hs-global-cycle--depth
                 (progn
                   (hs-show-all)
                   (setq aj8/hs-global-cycle--depth nil)
@@ -1356,43 +1352,56 @@ argument (C-u C-u), toggle between fully hidden and fully shown."
            ;; Single prefix: reverse direction
            (reverse-p
             (cond
-             ;; Currently at some hidden level; decrease depth or show all
-             ((and aj8/hs-global-cycle--depth (> aj8/hs-global-cycle--depth 0))
-              (setq aj8/hs-global-cycle--depth (1- aj8/hs-global-cycle--depth))
-              (if (= aj8/hs-global-cycle--depth 0)
-                  (progn
-                    (hs-hide-all)
-                    (message "Global hs-cycle depth: 0"))
-                (save-excursion
-                  (goto-char (point-min))
-                  (hs-hide-level aj8/hs-global-cycle--depth))
-                (message "Global hs-cycle depth: %s" aj8/hs-global-cycle--depth)))
-             ;; At minimum depth; show all
+             ;; Currently hidden level
+             (aj8/hs-global-cycle--depth
+              (cond
+               ;; Not at min depth: decrease depth
+               ((> aj8/hs-global-cycle--depth 0)
+                (setq aj8/hs-global-cycle--depth (1- aj8/hs-global-cycle--depth))
+                (if (= aj8/hs-global-cycle--depth 0)
+                    (progn
+                      (hs-hide-all)
+                      (message "Global hs-cycle depth: 0"))
+                  (save-excursion
+                    (goto-char (point-min))
+                    (hs-hide-level aj8/hs-global-cycle--depth))
+                  (message "Global hs-cycle depth: %s" aj8/hs-global-cycle--depth)))
+               ;; At min depth: show all
+               (t
+                (hs-show-all)
+                (setq aj8/hs-global-cycle--depth nil)
+                (message "Global hs-cycle depth: all"))))
+             ;; Currently no hidden level: hide from max depth
              (t
-              (setq aj8/hs-global-cycle--depth nil)
-              (hs-show-all)
-              (message "Global hs-cycle depth: all"))))
-           ;; No prefix: normal forward cycling
-           (t
-            (cond
-             ;; Initial call: hide all blocks
-             ((not (eq last-command 'aj8/hs-global-cycle))
-              (hs-hide-all)
-              (setq aj8/hs-global-cycle--depth 0)
-              (message "Global hs-cycle depth: 0"))
-             ;; Subsequent calls: show next level globally
-             ((< aj8/hs-global-cycle--depth max-depth)
-              (setq aj8/hs-global-cycle--depth (1+ aj8/hs-global-cycle--depth))
+              (setq aj8/hs-global-cycle--depth max-depth)
               (save-excursion
                 (goto-char (point-min))
                 (hs-hide-level aj8/hs-global-cycle--depth))
-              (message "Global hs-cycle depth: %s" aj8/hs-global-cycle--depth))
-             ;; Last call: show all blocks
+              (message "Global hs-cycle depth: %s" aj8/hs-global-cycle--depth))))
+           ;; No prefix: normal forward cycling
+           (t
+            (cond
+             ;; Currently hidden level
+             (aj8/hs-global-cycle--depth
+              (cond
+               ;; Not at max depth: increase depth
+               ((< aj8/hs-global-cycle--depth max-depth)
+                (setq aj8/hs-global-cycle--depth (1+ aj8/hs-global-cycle--depth))
+                (save-excursion
+                  (goto-char (point-min))
+                  (hs-hide-level aj8/hs-global-cycle--depth))
+                (message "Global hs-cycle depth: %s" aj8/hs-global-cycle--depth))
+               ;; At max depth: show all blocks
+               (t
+                (hs-show-all)
+                (setq this-command nil)
+                (setq aj8/hs-global-cycle--depth nil)
+                (message "Global hs-cycle depth: all"))))
+             ;; Currently no hidden level: hide all blocks
              (t
-              (hs-show-all)
-              (setq this-command nil)
-              (setq aj8/hs-global-cycle--depth nil)
-              (message "Global hs-cycle depth: all"))))))
+              (hs-hide-all)
+              (setq aj8/hs-global-cycle--depth 0)
+              (message "Global hs-cycle depth: 0"))))))
       (aj8/remove-suppress-messages-advice hs-functions))))
 
 ;; Reference: dotemacs-karthink
