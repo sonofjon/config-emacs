@@ -1268,10 +1268,10 @@ argument (C-u C-u), toggle between fully hidden and fully shown."
            ;; Single prefix: reverse direction
            (reverse-p
             (cond
-             ;; Currently hidden; decrease depth or hide completely
+             ;; Currently hidden level
              ((aj8/hs-already-hidden-any-p)
               (cond
-               ;; Can decrease depth
+               ;; Not at min depth: decrease depth
                ((and aj8/hs-cycle--depth (> aj8/hs-cycle--depth 0))
                 (setq aj8/hs-cycle--depth (1- aj8/hs-cycle--depth))
                 (if (= aj8/hs-cycle--depth 0)
@@ -1280,12 +1280,12 @@ argument (C-u C-u), toggle between fully hidden and fully shown."
                       (message "hs-cycle depth: 0"))
                   (hs-hide-level aj8/hs-cycle--depth)
                   (message "hs-cycle depth: %s" aj8/hs-cycle--depth)))
-               ;; At minimum depth; show all
+               ;; At min depth: show entire block
                (t
                 (hs-show-block)
                 (setq aj8/hs-cycle--depth nil)
                 (message "hs-cycle depth: all"))))
-             ;; Currently shown; start hiding from max depth
+             ;; Currently no hidden level: hide from max depth
              (t
               (setq aj8/hs-cycle--depth max-depth)
               (hs-hide-level aj8/hs-cycle--depth)
@@ -1293,10 +1293,10 @@ argument (C-u C-u), toggle between fully hidden and fully shown."
            ;; No prefix: normal forward cycling
            (t
             (cond
-             ;; A block is already hidden; show one more level
+             ;; Currently hidden level
              ((aj8/hs-already-hidden-any-p)
               (cond
-               ;; Can show more levels
+               ;; Not at max depth: increase depth
                ((or (not aj8/hs-cycle--depth)
                     (< aj8/hs-cycle--depth max-depth))
                 (setq aj8/hs-cycle--depth (if aj8/hs-cycle--depth
@@ -1304,13 +1304,13 @@ argument (C-u C-u), toggle between fully hidden and fully shown."
                                            1))
                 (hs-hide-level aj8/hs-cycle--depth)
                 (message "hs-cycle depth: %s" aj8/hs-cycle--depth))
-               ;; Max depth reached; show entire block
+               ;; At max depth: show entire block
                (t
                 (hs-show-block)
                 (setq this-command nil)
                 (setq aj8/hs-cycle--depth nil)
                 (message "hs-cycle depth: all"))))
-             ;; No block is hidden; hide entire block
+             ;; Currently no hidden level: hide entire block
              (t
               (hs-hide-block)
               (setq aj8/hs-cycle--depth 0)
