@@ -1325,7 +1325,6 @@
 
 ;; aidermacs (AI pair programming with Aider)
 ;; TODO: Add `visual-line-mode' to aidermacs buffers
-;; TODO: Replace `gptel-api-key-from-auth-source'
 (use-package aidermacs
   :bind (("C-c a" . aidermacs-transient-menu))
   ;; :custom
@@ -1344,16 +1343,19 @@
   ;; Set teminal backend
   ;; (aidermacs-backend 'vterm)   ; default: comint
   :config
-  (setenv "ANTHROPIC_API_KEY" (gptel-api-key-from-auth-source
-                               "api.anthropic.com" "apikey"))
-  (setenv "DEEPSEEK_API_KEY" (gptel-api-key-from-auth-source
-                               "api.deepseek.com" "apikey"))
-  (setenv "GEMINI_API_KEY" (gptel-api-key-from-auth-source
-                               "generativelanguage.googleapis.com" "apikey"))
-  (setenv "OPENAI_API_KEY" (gptel-api-key-from-auth-source
-                               "api.openai.com" "apikey"))
-  (setenv "OPENROUTER_API_KEY" (gptel-api-key-from-auth-source
-                               "openrouter.ai" "apikey")))
+  (require 'gptel)
+  (add-hook 'aidermacs-before-run-backend-hook
+            (lambda ()
+              (setenv "ANTHROPIC_API_KEY" (gptel-api-key-from-auth-source
+                                           "api.anthropic.com" "apikey"))
+              (setenv "DEEPSEEK_API_KEY" (gptel-api-key-from-auth-source
+                                          "api.deepseek.com" "apikey"))
+              (setenv "GEMINI_API_KEY" (gptel-api-key-from-auth-source
+                                        "generativelanguage.googleapis.com" "apikey"))
+              (setenv "OPENAI_API_KEY" (gptel-api-key-from-auth-source
+                                        "api.openai.com" "apikey"))
+              (setenv "OPENROUTER_API_KEY" (gptel-api-key-from-auth-source
+                                            "openrouter.ai" "apikey")))))
 
 ;; gptel (a simple ChatGPT client for Emacs)
 (use-package gptel
