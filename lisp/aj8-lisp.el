@@ -2425,7 +2425,7 @@ Note that the available width is slightly less than reported by
       26)
      ((= width 160)   ; brain10-windows (reduced font)
       24)
-     ((= width 172)   ; macOS
+     ((= width 154)   ; macOS
       26)
      (t
       27)))   ; default value
