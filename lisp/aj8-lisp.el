@@ -2412,23 +2412,33 @@ will be applied."
   (message "%s" (iter mode)))
 
 ;; Set up description widths for which-key
-(defun aj8/which-key-description-length (width)
-  "Return `which-key' description width based on the given frame WIDTH.
-Note that the available width is slightly less than reported by
-`frame-width'.  See `which-key--side-window-max-dimensions'"
-    ;; (message "%s" width)
-    (cond
-     ((= width 142)   ; brain10-windows
-      ;; 0.15)   ; TODO: floats don't work
-      21)
-     ((= width 138)   ; 98-28514
-      26)
-     ((= width 160)   ; brain10-windows (reduced font)
-      24)
-     ((= width 154)   ; macOS
-      26)
-     (t
-      27)))   ; default value
+(defcustom aj8/which-key-columns 5
+  "Number of columns to display in which-key popup."
+  :type 'integer
+  :group 'aj8-lisp)
+
+(defun aj8/which-key-description-length ()
+  "Calculate `which-key' description width based on available space and columns.
+Uses `which-key--side-window-max-dimensions' and `aj8/which-key-columns'
+to calculate the appropriate description width, and returns it as a
+whole number.  Note that the available width is slightly less than
+reported by `frame-width'.  See `which-key--side-window-max-dimensions'."
+  (let* ((max-dims (which-key--side-window-max-dimensions))
+         (available-width (cdr max-dims))
+         ;; Account for key column and column padding
+         (key-column-width 7)   ; generally >= 3
+                                ; values that work well:
+                                ; 4 cols : 8
+                                ; 5 cols : 7
+                                ; 6 cols : 7
+                                ; 7 cols : 7
+                                ; 8 cols : 7
+         (usable-width (- available-width
+                         (* aj8/which-key-columns key-column-width)
+                         (* (1+ aj8/which-key-columns) which-key-add-column-padding)))
+         (desc-width-per-column (/ usable-width aj8/which-key-columns)))
+    ;; Ensure we return a positive whole number
+    (max 10 (floor desc-width-per-column))))
 
 ;; Add indicator for Treesitter modes in the modeline
 (defun aj8/treesit-mode-name ()
