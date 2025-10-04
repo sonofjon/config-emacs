@@ -1324,6 +1324,8 @@
 ;;; AI
 
 ;; aidermacs (AI pair programming with Aider)
+;; TODO: Add `visual-line-mode' to aidermacs buffers
+;; TODO: Replace `gptel-api-key-from-auth-source'
 (use-package aidermacs
   :bind (("C-c a" . aidermacs-transient-menu))
   ;; :custom
