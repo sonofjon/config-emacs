@@ -1102,8 +1102,7 @@
   ;;   (default is 0.25)
   (which-key-side-window-max-height 0.5)
   ;; Max description length
-  ;;   (default is 27)
-  (which-key-max-description-length #'aj8/which-key-description-length)
+  ;;   (see :config section)
   ;; Min description length
   ;;   (see :config section)
   ;; Column padding
@@ -1119,12 +1118,14 @@
   ;; Don't show which-key buffer on C-h
   (which-key-use-C-h-commands nil)
   :config
+  ;; Max description length
+  ;;   (default is 27)
+  (setq which-key-max-description-length
+        (aj8/which-key-description-length))
   ;; Min description length
-  ;;   (same as max length; default is 0)
-  (customize-set-variable
-   'which-key-min-column-description-width
-   (eval (aj8/which-key-description-length
-          (cdr (which-key--side-window-max-dimensions)))))
+  ;;   (default is 0)
+  (setq which-key-min-column-description-width
+        (aj8/which-key-description-length))
   (which-key-mode 1))
 
 ;; windmove (move between windows)
