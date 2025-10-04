@@ -228,28 +228,28 @@
 
 ;; TODO: check package descriptions
 
-;; abbrev (dynamic abbreviations)
+;; abbrev (abbrev mode commands for Emacs)
 (use-package abbrev
   :ensure nil   ; don't install built-in packages
   :diminish
   ;; Expand abbreviations
   :hook (text-mode . abbrev-mode))
 
-;; apropos (find commands, functions, and variables by name)
+;; apropos (apropos commands for users and programmers)
 (use-package apropos
   :ensure nil   ; don't install built-in packages
   :custom
   ;; More extensive apropos commands
   (apropos-do-all t))
 
-;; bookmark (record positions in files)
+;; bookmark (set bookmarks, maybe annotate them, jump to them later)
 (use-package bookmark
   :ensure nil   ; don't install built-in packages
   :custom
   ;; Auto-save bookmarks
   (bookmark-save-flag 1))
 
-;; browse-url (interface to web browsers)
+;; browse-url (pass a URL to a web browser)
 (use-package browse-url
   :ensure nil   ; don't install built-in packages
   :bind (("C-c b" . browse-url-at-point))
@@ -263,7 +263,7 @@
    '(("\\.md$" . eww-browse-url)
      ("." . browse-url-default-browser))))
 
-;; custom (customize Emacs settings)
+;; custom (tools for declaring and initializing options)
 (use-package custom
   :ensure nil   ; don't install built-in packages
   :custom
@@ -274,7 +274,7 @@
   ;; Custom interface: don't convert symbols to words (menu)
   (custom-unlispify-menu-entries t))
 
-;; dabbrev (dynamic abbreviation expansion)
+;; dabbrev (dynamic abbreviation package)
 (use-package dabbrev
   :ensure nil   ; don't install built-in packages
   :custom
@@ -285,7 +285,7 @@
   (with-eval-after-load 'dabbrev
     (add-to-list 'dabbrev-ignored-buffer-modes 'authinfo-mode)))
 
-;; desktop (save and restore Emacs state)
+;; desktop (save partial status of Emacs when killed)
 (use-package desktop
   :ensure nil   ; don't install built-in packages
   :custom
@@ -296,14 +296,14 @@
   ;;   TODO: doesn't restore side-windows
   (desktop-save-mode 1))
 
-;; diff-mode (major mode for viewing diffs)
+;; diff-mode (a mode for viewing/editing context diffs)
 (use-package diff-mode
   :ensure nil   ; don't install built-in packages
   :custom
   ;; No context for diff output
   (diff-switches "--unified=0"))
 
-;; dired (directory editor)
+;; dired (directory-browsing commands)
 (use-package dired
   :ensure nil   ; don't install built-in packages
   :bind (:map dired-mode-map
@@ -334,7 +334,7 @@
   ;; Hide omitted files
   (add-hook 'dired-mode-hook #'dired-omit-mode))
 
-;; display-line-numbers (display line numbers in the margin)
+;; display-line-numbers (interface for display-line-numbers)
 (use-package display-line-numbers
   :ensure nil   ; don't install built-in packages
   :hook (prog-mode . display-line-numbers-mode)
@@ -342,7 +342,7 @@
   ;; Set display-line-number-width automatically
   (display-line-numbers-width-start t))
 
-;; ediff (interactive interface to diff and patch)
+;; ediff (a comprehensive visual interface to diff & patch)
 (use-package ediff
   :ensure nil   ; don't install built-in packages
   :bind (("C-c e b" . ediff-buffers)
@@ -378,7 +378,7 @@
             ;; Use both versions with ediff
             (lambda () (keymap-set ediff-mode-map "d" #'my/ediff-copy-both-to-C))))
 
-;; eglot (client for language server protocol servers)
+;; eglot (the Emacs client for LSP servers)
 (use-package eglot
   :ensure nil   ; don't install built-in packages
   :hook ((sh-mode . eglot-ensure)
@@ -432,7 +432,7 @@
   ;; Don't auto-show documentation
   ;; (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1)))
 
-;; electric (electric indentation and pairing)
+;; electric (window maker and command loop for 'electric' modes)
 (use-package electric
   :ensure nil   ; don't install built-in packages
   :config
@@ -553,7 +553,7 @@
   (add-hook 'kill-buffer-hook #'aj8/reopen-killed-buffer-save)
   (keymap-set isearch-mode-map "TAB" #'isearch-complete))
 
-;; epg (Emacs Privacy Guard)
+;; epg (the EasyPG library)
 (use-package epg
   :ensure nil   ; don't install built-in packages
   :custom
@@ -563,7 +563,7 @@
   (epa-keys-select-method 'minibuffer))
 
 
-;; erc (an Emacs internet relay chat client)
+;; erc (an Emacs Internet relay chat client)
 (use-package erc
   :disabled
   :ensure nil   ; don't install built-in packages
@@ -603,7 +603,7 @@
   (with-eval-after-load "eshell"
     (add-to-list 'eshell-modules-list 'eshell-tramp)))
 
-;; EWW (the Emacs Web Wowser)
+;; EWW (Emacs Web Wowser)
 (use-package eww
   :ensure nil   ; don't install built-in packages
   :custom
@@ -638,14 +638,14 @@
     (define-key eww-mode-map
                 [remap eww-follow-link] #'aj8/eww-follow-link)))
 
-;; find-func (find source code for functions and variables)
+;; find-func (find the definition of the Emacs Lisp function near point)
 (use-package find-func
   :ensure nil   ; don't install built-in packages
   :config
   ;; Set keybindings for find-function and relatives
   (find-function-setup-keys))
 
-;; flymake (minor mode for on-the-fly syntax checking)
+;; flymake (a universal on-the-fly syntax checker)
 (use-package flymake
   :bind (:map flymake-diagnostics-buffer-mode-map
               ("h" . #'aj8/flymake-ruff-goto-doc)
@@ -662,7 +662,7 @@
   ;; Enable flyspell in web-mode
   (put 'web-mode 'flyspell-mode-predicate #'my/web-mode-flyspell-verify))
 
-;; goto-addr (go to URL at point)
+;; goto-addr (click to browse URL or to send to e-mail address)
 (use-package goto-addr
   :ensure nil   ; don't install built-in packages
   :diminish
@@ -670,7 +670,7 @@
   ;; Buttonize URLs and e-mail addresses
   (global-goto-address-mode 1))
 
-;; help (help commands)
+;; help (help commands for Emacs)
 (use-package help
   :ensure nil   ; don't install built-in packages
   :bind (("C-c H e" . aj8/toggle-eldoc-buffer)
@@ -694,7 +694,7 @@
   ;; ;; Hide the comments too
   ;; (setq hs-hide-comments-when-hiding-all nil))
 
-;; hippie-exp (versatile completion)
+;; hippie-exp (expand text trying various ways to find its expansion)
 (use-package hippie-exp
   :ensure nil   ; don't install built-in packages
   :bind (("<remap> <dabbrev-expand>" . hippie-expand))
@@ -708,14 +708,14 @@
     (add-to-list 'hippie-expand-ignore-buffers "magit:.*")
     (add-to-list 'hippie-expand-ignore-buffers aj8/buffer-skip-regexp)))
 
-;; hl-line (highlight current line)
+;; hl-line (highlight the current line)
 (use-package hl-line
   :ensure nil   ; don't install built-in packages
   :config
   ;; Highlight current line
   (global-hl-line-mode 1))
 
-;; ibuffer (list and manage buffers)
+;; ibuffer (operate on buffers like dired)
 (use-package ibuffer
   :ensure nil   ; don't install built-in packages
   :config
@@ -724,7 +724,7 @@
                         ; https://lists.gnu.org/archive/html/help-gnu-emacs/2008-11/msg00694.html
   (setq-default ibuffer-default-sorting-mode 'filename/process))
 
-;; info (Info documentation reader)
+;; info (Info package for Emacs)
 (use-package info
   :ensure nil   ; don't install built-in packages
   :hook ((Info-mode . rename-uniquely)
@@ -734,7 +734,7 @@
   ;; Open *info* buffers in same window
   (info-lookup-other-window-flag nil))
 
-;; ispell (spell checking)
+;; ispell (interface to spell checkers)
 (use-package ispell
   :ensure nil   ; don't install built-in packages
   :custom
@@ -748,13 +748,13 @@
   ;; (setq ispell-extra-args '("--sug-mode=fast")))
   ;; (setq ispell-extra-args '("--sug-mode=normal")))
 
-;; lisp-mode (modes for Lisp dialects)
+;; lisp-mode (Lisp mode, and its idiosyncratic commands)
 (use-package lisp-mode
   :ensure nil   ; don't install built-in packages
   ;; Outline settings
   :hook (emacs-lisp-mode . outline-headers-for-semicolon-buffers))
 
-;; minibuffer (minibuffer commands)
+;; minibuffer (minibuffer and completion functions)
 (use-package minibuffer
   :ensure nil   ; don't install built-in packages
   :bind ("M-o" . aj8/orderless-matching-style-cycle)
@@ -857,7 +857,7 @@
       (load-theme 'modus-operandi)
     (load-theme 'modus-vivendi)))
 
-;; org (Org mode)
+;; org (outline-based notes management and organizer)
 (use-package org
   :ensure nil   ; don't install built-in packages
   :custom
@@ -870,7 +870,7 @@
   ;; (org-support-shift-select t)
   )
 
-;; outline (outline mode)
+;; outline (outline mode commands for Emacs)
 (use-package outline
   :ensure nil   ; don't install built-in packages
   :hook (outline-mode . (lambda () (setq outline-regexp "[*]+")))
@@ -884,7 +884,7 @@
   ;; (outline-minor-mode-highlight t)
   )
 
-;; paren (parenthesis matching)
+;; paren (highlight matching paren)
 (use-package paren
   :ensure nil   ; don't install built-in packages
   :custom
@@ -892,7 +892,7 @@
   ;;   MAYBE: Make the text in the echo area persist until key press
   (show-paren-context-when-offscreen t))
 
-;; project (manage projects in Emacs)
+;; project (operations on the current project)
 (use-package project
   :ensure nil   ; don't install built-in packages
   :bind (("C-x C-<right>" . my/project-next-buffer)
@@ -930,7 +930,7 @@
   ;; Outline settings
   (add-hook 'python-base-mode-hook #'outline-headers-for-hash-mark-buffers))
 
-;; recentf (recently opened files)
+;; recentf (keep track of recently opened files)
 (use-package recentf
   :ensure nil   ; don't install built-in packages
   :custom
@@ -940,7 +940,7 @@
   ;; Keeping track of opened files
   (recentf-mode 1))
 
-;; repeat (repeat commands)
+;; repeat (convenient way to repeat the previous command)
 (use-package repeat
   :ensure nil   ; don't install built-in packages
   ;; :custom
@@ -964,18 +964,18 @@
   (add-to-list 'savehist-additional-variables 'kill-ring)
   (add-to-list 'savehist-additional-variables 'global-mark-ring))
 
-;; saveplace (save cursor position in files)
+;; saveplace (automatically save place in files)
 (use-package saveplace
   :ensure nil   ; don't install built-in packages
   :config
   (save-place-mode 1))
 
-;; scroll-lock (disallow scrolling)
+;; scroll-lock (scroll lock scrolling)
 (use-package scroll-lock
   :ensure nil   ; don't install built-in packages
   :bind ("C-c L" . scroll-lock-mode))
 
-;; sh-script (shell script mode)
+;; sh-script (shell-script editing commands for Emacs)
 (use-package sh-script
   :ensure nil   ; don't install built-in packages
   :hook ((sh-mode . (lambda ()
@@ -993,7 +993,7 @@
   (add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . bash-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.profile_.*\\'" . bash-ts-mode)))
 
-;; simple (basic editing commands)
+;; simple (basic editing commands for Emacs)
 (use-package simple
   :ensure nil   ; don't install built-in packages
   :hook ((help-mode . visual-line-mode)
@@ -1016,7 +1016,7 @@
   ;; Display continuation lines with prefixes
   (global-visual-wrap-prefix-mode 1))
 
-;; subword (subword movement)
+;; subword (handling capitalized subwords in a nomenclature)
 ;;   Subword movement and editing: camelCase
 ;;     Cannot be enabled at the same time as superword-mode
 (use-package subword
@@ -1024,7 +1024,7 @@
   :ensure nil   ; don't install built-in packages
   :hook ((prog-mode . (lambda () (subword-mode 1)))))
 
-;; superword (superword movement)
+;; superword (handling capitalized superwords in a nomenclature)
 ;;   Superword movement and editing: snake_case and kebab-case
 ;;     Cannot be enabled at the same time as subword-mode
 (use-package superword
@@ -1032,7 +1032,7 @@
   :ensure nil   ; don't install built-in packages
   :hook ((prog-mode . (lambda () (superword-mode 1)))))
 
-;; term (terminal-emulator)
+;; term (general command interpreter in a window stuff)
 (use-package term
   :disabled
   :commands term)
@@ -1040,7 +1040,7 @@
   ;; Match the default Bash shell prompt
   ;; (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
 
-;; tex-mode (LaTeX mode)
+;; tex-mode (TeX, LaTeX, and SliTeX mode commands)
 (use-package tex-mode
   :ensure nil   ; don't install built-in packages
   :hook ((latex-mode . outline-headers-for-percentage-buffers)
@@ -1063,21 +1063,21 @@
   ;; Add mode line indicator
   (add-to-list 'global-mode-string '(:eval (aj8/tramp-indicator)) t))
 
-;; treesit (tree-sitter integration)
+;; treesit (tree-sitter utilities)
 (use-package treesit
   :ensure nil   ; don't install built-in packages
   :custom
   ;; Use maximum decoration detail
   (treesit-font-lock-level 4))
 
-;; uniquify (make buffer names unique)
+;; uniquify (unique buffer names dependent on file name)
 (use-package uniquify
   :ensure nil   ; don't install built-in packages
   :custom
   ;; Uniquify buffer name using project
   (uniquify-dirname-transform 'project-uniquify-dirname-transform))
 
-;; vc (version control)
+;; vc (drive a version-control system from within Emacs)
 (use-package vc
   :ensure nil   ; don't install built-in packages
   :bind (("C-x v -" . vc-ediff))
@@ -1157,7 +1157,7 @@
   (keymap-set winner-mode-map "C-c w >" #'winner-redo)
   (winner-mode 1))
 
-;; window (window management)
+;; window (GNU Emacs window commands aside from those written in C)
 (use-package window
   :ensure nil   ; don't install built-in packages
   :bind (("C-x {" . my/move-splitter-up)
@@ -1307,7 +1307,7 @@
   ;;   TODO: Message buffer grows on each Magit commit
   ;; (setq window-combination-resize t))
 
-;; xref (cross-referencing)
+;; xref (cross-referencing commands)
 (use-package xref
   :ensure nil   ; don't install built-in packages
   :bind (("M-?" . xref-find-references)
