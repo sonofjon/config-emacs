@@ -179,6 +179,7 @@
  'package-vc-selected-packages
  `(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
+   (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
    (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
    (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
    (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
@@ -1323,8 +1324,19 @@
 
 ;;; AI
 
+;; ai-code-interface (unified emacs interface supporting LLM clients)
+(use-package ai-code-interface
+  :bind (("C-c a" . ai-code-menu))
+  :config
+  ;; Set backend
+  (ai-code-set-backend 'claude-code)
+  ;; Optional: Set up Magit integration for AI commands in Magit popups
+  (with-eval-after-load 'magit
+    (ai-code-magit-setup-transients)))
+
 ;; aidermacs (AI pair programming with Aider)
 (use-package aidermacs
+  :disabled
   :bind (("C-c a" . aidermacs-transient-menu))
   :hook (aidermacs-mode . visual-line-mode)
   ;; :custom
