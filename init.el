@@ -180,6 +180,7 @@
  `(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
    (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
+   (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
    (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
    (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
    (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
@@ -1368,6 +1369,31 @@
                                         "api.openai.com" "apikey"))
               (setenv "OPENROUTER_API_KEY" (gptel-api-key-from-auth-source
                                             "openrouter.ai" "apikey")))))
+
+;; claude-code (Claude Code Emacs integration)
+(use-package claude-code
+  :bind-keymap ("C-c a" . claude-code-command-map)
+  :custom
+  ;; Set terminal backend
+  (claude-code-terminal-backend 'vterm)   ; default: eat
+  ;; Customize Return key
+  ;; (claude-code-newline-keybinding-style 'shift-return-to-send)
+  ;; Prevent Claude Code windows from being deleted
+  ;; (claude-code-no-delete-other-windows t)
+  ;; Automatically select the Claude buffer after opening it
+  (claude-code-toggle-auto-select t)
+  :config
+  ;; Revert buffers on file change
+  ;;   Claude edits files directly on disk, not in Emacs buffers
+  ;; TODO: Implement revert with more control: see https://github.com/stevemolitor/claude-code.el?tab=readme-ov-file#tips-and-tricks
+  ;; (global-auto-revert-mode 1)
+  ;; Increase vterm scrollback limit
+  (add-hook 'claude-code-start-hook
+          (lambda ()
+            (when (eq claude-code-terminal-backend 'vterm)
+              (setq-local vterm-max-scrollback 10000))))
+  ;; Enable mode
+  (claude-code-mode))
 
 ;; gptel (a simple ChatGPT client for Emacs)
 (use-package gptel
