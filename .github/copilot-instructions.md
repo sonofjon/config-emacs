@@ -55,6 +55,11 @@ modules in `lisp/`
 - Reference functions in `init.el` configurations within the matching
   category
 
+## Important Notes
+
+- Custom file is separate: `custom-file.el` (loaded if exists)
+- Desktop mode enabled
+
 
 When working with this codebase, respect the `aj8/` namespace, declarative
 package management approach, and categorical organization between files.
