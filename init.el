@@ -1627,9 +1627,9 @@ the window so that the streaming position appears near the bottom."
      ("serena" . (:command "uv" :args ("run" "--directory" ,(expand-file-name "~/git/serena") "serena" "start-mcp-server" "--context" "ide-assistant")))
      ("serena-remote" . (:command "uvx" :args ("--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server", "--context", "ide-assistant")))))
   :config
-  (require 'mcp-hub)
-  ;; Start servers
-  :hook (after-init . mcp-hub-start-all-server))
+  (require 'mcp-hub))
+  ;; ;; Start servers
+  ;; :hook (after-init . mcp-hub-start-all-server))
 
 ;;; Buffers
 
