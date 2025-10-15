@@ -139,6 +139,7 @@
 			  magit-todos
                           marginalia
                           markdown-mode
+                          mcp
                           mosey
                           move-dup
                           multiple-cursors
@@ -1563,7 +1564,9 @@ the window so that the streaming position appears near the bottom."
     :include-reasoning "*gptel-reasoning*"
     ;; :tools (gptel-tk-get-tools)
     ;; :post (gptel-tk-enable-builtin-tools)
-    :use-tools t))
+    :use-tools t)
+  ;; Enable MCP
+  (require 'gptel-integrations))
 
 ;; gptel-quick (quick LLM lookups in Emacs) - [source package]
 (use-package gptel-quick
@@ -1611,6 +1614,19 @@ the window so that the streaming position appears near the bottom."
   ;; ;; Register one category
   ;; (mapcar (apply-partially #'apply #'gptel-make-tool)
   ;;       (llm-tool-collection-get-category "filesystem")))
+
+;; mcp (Model Context Protocol)
+(use-package mcp
+  :after gptel
+  :custom
+  ;; Define servers
+  (mcp-hub-servers
+   `(("filesystem" . (:command "npx" :args ("-y" "@modelcontextprotocol/server-filesystem" "/home/andeas/dotfiles/" "/home/andeas/projects/")))
+     ("fetch" . (:command "uvx" :args ("mcp-server-fetch")))))
+  :config
+  (require 'mcp-hub)
+  ;; Start servers
+  :hook (after-init . mcp-hub-start-all-server))
 
 ;;; Buffers
 
