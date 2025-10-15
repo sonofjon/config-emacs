@@ -1622,7 +1622,9 @@ the window so that the streaming position appears near the bottom."
   ;; Define servers
   (mcp-hub-servers
    `(("filesystem" . (:command "npx" :args ("-y" "@modelcontextprotocol/server-filesystem" "/home/andeas/dotfiles/" "/home/andeas/projects/")))
-     ("fetch" . (:command "uvx" :args ("mcp-server-fetch")))))
+     ("fetch" . (:command "uvx" :args ("mcp-server-fetch")))
+     ("serena" . (:command "uv" :args ("run" "--directory" ,(expand-file-name "~/git/serena") "serena" "start-mcp-server" "--context" "ide-assistant")))
+     ("serena-remote" . (:command "uvx" :args ("--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server", "--context", "ide-assistant")))))
   :config
   (require 'mcp-hub)
   ;; Start servers
