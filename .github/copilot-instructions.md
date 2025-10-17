@@ -1,30 +1,34 @@
 # Copilot Instructions for config-emacs
 
-This is a cross-platform Emacs configuration with custom utilities and
-modular architecture.
+This file provides guidance to GitHub Copilot when working with code in this
+repository.
+
+## Repository Overview
+
+This is a personalized cross-platform Emacs configuration. The configuration
+is written in Emacs Lisp and features `use-package` declarative
+configuration of built-in and third party packages, as well as many custom
+utility functions.
 
 ## Architecture Overview
 
-**Multi-file startup sequence**: `early-init.el` → `init.el` → custom
+Multi-file startup sequence: `early-init.el` → `init.el` → custom
 modules in `lisp/`
-- `early-init.el`: OS detection, performance optimizations, package sources
-  setup
-- `init.el`: Main configuration with `package-selected-packages` and
-  `use-package` declarations
-- `lisp/aj8-*.el`: Custom utility modules loaded via `require`
 
-## Key Conventions
+### File Structure
 
-**Namespace**: All custom functions/variables use `aj8/` prefix (e.g.,
-`aj8/package-list-upgrades`, `aj8/my-os`)
+- **`early-init.el`**: Pre-initialization settings including package archive
+  configuration, GUI settings and OS detection
+- **`init.el`** (3000+ lines): Main configuration file with organized
+  sections for packages and settings
+- **`lisp/`**: This directory contains custom Emacs Lisp files, separating
+    custom logic from the main `init.el` file
+  - **`aj8-lisp.el`** (2000+ lines): Custom utility functions (100+
+  function definitions)
+  - **`aj8-keys.el`**: Terminal escape codes and key translations
+  - **`aj8-hydra.el`**: Hydra menus for common workflows
 
-**Package management**:
-- `package-selected-packages` defines all packages for installation
-- `use-package` is strictly for configuration (never uses `:ensure`)
-- Install packages with `package-install-selected-packages`
-- VC packages installed with `package-vc-install` and managed separately
-
-## Modular Structure
+### Modular Structure
 
 **init.el**: Main configuration organized in sections:
 - STARTUP: Performance monitoring and startup time display
@@ -43,8 +47,20 @@ modules in `lisp/`
   `init.el` configurations are found in the corresponding category in this
   file.
 
-**lisp/aj8-keys.el**: Terminal escape codes and key translations
-**lisp/aj8-hydra.el**: Hydra menus for common workflows
+## Key Conventions
+
+**Namespace**: All custom functions/variables use `aj8/` prefix (e.g.,
+`aj8/package-list-upgrades`, `aj8/my-os`)
+
+**Packages Management:** Packages are managed via two mechanisms:
+1. **`package-selected-packages`**: Standard ELPA/MELPA packages installed
+   with `package-install-selected-packages`
+2. **`package-vc-selected-packages`**: Git-based packages installed with
+   `package-vc-install-selected-packages`
+
+**Important**: Use `use-package` ONLY for configuration. Packages are
+installed via the selected packages lists, NOT via `:ensure` in
+`use-package` declarations. Built-in packages explicitly use `:ensure nil`.
 
 ## Development Workflows
 
@@ -59,7 +75,6 @@ modules in `lisp/`
 
 - Custom file is separate: `custom-file.el` (loaded if exists)
 - Desktop mode enabled
-
 
 When working with this codebase, respect the `aj8/` namespace, declarative
 package management approach, and categorical organization between files.
