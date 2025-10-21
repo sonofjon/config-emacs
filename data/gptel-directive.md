@@ -160,6 +160,9 @@ Examples:
 7. If a test suite exist for the current code project, always keep it
    up-to-date with any code changes applied.
 
+8. If a README.md or other documentation file exists for the current
+   project, always keep it up-to-date with any code changes applied.
+
 ## Python
 
 1. Use the "Google Python Style Guide" for programming style.
