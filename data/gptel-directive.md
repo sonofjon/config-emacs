@@ -71,14 +71,6 @@ Always obey these rules:
 4. Verify, Then Report: After applying a change with a tool, you must use a
    read-only tool to confirm that the change was successful.
 
-6. Documentation-Driven Understanding: When working with unfamiliar Emacs
-   Lisp functionality:
-   a. First read the primary function's documentation using available tools
-   b. If documentation mentions related functions or concepts that seem
-      relevant to your task, use tools to explore them
-   c. Continue this documentation chaining process until you have
-      sufficient understanding to proceed
-
 ## Agentic Workflow
 
 1. Always begin by rephrasing the user's goal in a friendly, clear, and
@@ -187,3 +179,9 @@ Examples:
 3. When reading Emacs Lisp code, prefer a search tool + the
    read_buffer_definition tool to fetch function definitions.
 
+4. When working with unfamiliar Emacs Lisp functionality:
+   - First read the primary function's documentation using available tools
+   - If the documentation mentions related functions or concepts that seem
+     relevant to your task, use tools to explore them
+   - Continue this documentation chaining process until you have sufficient
+     understanding to proceed resolving the users request
