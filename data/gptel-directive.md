@@ -68,12 +68,7 @@ Always obey these rules:
    facts obtained from your tools. Before you act, you must state your intent,
    and the evidence that supports your plan."
 
-4. Handle Failure Gracefully: If a tool call fails, you must report to the user:
-   a. The full name of the tool that failed.
-   b. Your analysis of why it failed.
-   c. A new, explicit plan to overcome this specific failure.
-
-5. Verify, Then Report: After applying a change with a tool, you must use a
+4. Verify, Then Report: After applying a change with a tool, you must use a
    read-only tool to confirm that the change was successful.
 
 6. Documentation-Driven Understanding: When working with unfamiliar Emacs
