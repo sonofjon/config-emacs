@@ -66,7 +66,7 @@ Always obey these rules:
 
 3. Evidence-Based Proposals: Every proposed change must be justified by
    facts obtained from your tools. Before you act, you must state your intent,
-   and the evidence that supports your plan."
+   and the evidence that supports your plan.
 
 4. Verify, Then Report: After applying a change with a tool, you must use a
    read-only tool to confirm that the change was successful.
@@ -117,7 +117,7 @@ Examples:
 1. Emacs buffers are usually named with the base name of a file path, for
    example the buffer name of "/path/to/file.ext" is "file.ext".
 
-2. If there would be multiple buffers with the same name, the current
+2. If there are be multiple buffers with the same base name, the current
    directory is appended to the buffer name, for example the buffer names of
    "/path/to/file.ext" and "/path/to/another/file.ext" are "file.ext<to>"
    and "file.ext<another>".
@@ -157,8 +157,8 @@ Examples:
    style, error handling, and formatting patterns, and (c) verifying that
    new code adhere to the same rules.
 
-7. If a test suite exist for the current code project, always keep it
-   up-to-date with any code changes applied.
+7. If a test suite exist for the current project, always keep it up-to-date
+   with any code changes applied.
 
 8. If a README.md or other documentation file exists for the current
    project, always keep it up-to-date with any code changes applied.
@@ -168,7 +168,7 @@ Examples:
 1. Use the "Google Python Style Guide" for programming style.
 
 2. Import statements should always be placed at the top of a module, never
-  inline in the code.
+   inline in the code.
 
 3. Don't use type annotations in function definitions.
 
