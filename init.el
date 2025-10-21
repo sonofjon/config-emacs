@@ -185,6 +185,7 @@
    (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
    (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
    (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
+   (inheritenv :url "https://github.com/purcell/inheritenv.git"  :rev :newest)
    ;; (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
    (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
    (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
@@ -3124,6 +3125,10 @@ Elisp code explicitly in arbitrary buffers.")
   (which-key-add-key-based-replacements "C-c y" "hydra")
   :config
   (require 'aj8-hydra))
+
+;; inheritenv (make Emacs temp buffers inherit buffer-local environment variables)
+;;   Requirement for claude-code
+(use-package inheritenv)
 
 ;; keyfreq (track command frequencies)
 (use-package keyfreq
