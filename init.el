@@ -307,35 +307,36 @@
   (diff-switches "--unified=0"))
 
 ;; dired (directory-browsing commands)
-(use-package dired
-  :ensure nil   ; don't install built-in packages
-  :bind (:map dired-mode-map
-              ("." . dired-omit-mode)
-         :map dired-mode-map
-              ("C-c C-a d" . markdown-links-insert-from-dired))
-  :init
-  ;; Enable Dired-X
-  (with-eval-after-load 'dired (require 'dired-x))
-  :custom
-  ;; Set custom listing style
-  ;; (dired-listing-switches "-agho --group-directories-first")
-  (dired-listing-switches "-agho")   ; macOS version
-  ;; Guess target directory
-  (dired-dwim-target t)
-  ;; Don't display free disk space
-  (dired-free-space nil)
-  ;; Reuse Dired buffers
-  (dired-kill-when-opening-new-dired-buffer t)
-  ;; Omit hidden (dot-) files
-  (dired-omit-files "^\\.[a-zA-Z0-9]+")   ; with dired-omit-mode
-  :config
-  ;; Tag Dired buffer names
-  ;;   TODO: fails sometimes with TRAMP
-  (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
-  ;; Hide details by default
-  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-  ;; Hide omitted files
-  (add-hook 'dired-mode-hook #'dired-omit-mode))
+(eval `(use-package dired
+         :ensure nil   ; don't install built-in packages
+         :ensure-system-package ,(aj8/system-package-name 'ls)
+         :bind (:map dired-mode-map
+                     ("." . dired-omit-mode)
+                     :map dired-mode-map
+                     ("C-c C-a d" . markdown-links-insert-from-dired))
+         :init
+         ;; Enable Dired-X
+         (with-eval-after-load 'dired (require 'dired-x))
+         :custom
+         ;; Set custom listing style
+         ;;   --group-directories-first requires 'gls' on macOS
+         (dired-listing-switches "-agho --group-directories-first")
+         ;; Guess target directory
+         (dired-dwim-target t)
+         ;; Don't display free disk space
+         (dired-free-space nil)
+         ;; Reuse Dired buffers
+         (dired-kill-when-opening-new-dired-buffer t)
+         ;; Omit hidden (dot-) files
+         (dired-omit-files "^\\.[a-zA-Z0-9]+")   ; with dired-omit-mode
+         :config
+         ;; Tag Dired buffer names
+         ;;   TODO: fails sometimes with TRAMP
+         (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
+         ;; Hide details by default
+         (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+         ;; Hide omitted files
+         (add-hook 'dired-mode-hook #'dired-omit-mode)))
 
 ;; display-line-numbers (interface for display-line-numbers)
 (use-package display-line-numbers
