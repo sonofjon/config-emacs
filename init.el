@@ -1468,6 +1468,9 @@
     :key (gptel-api-key-from-auth-source
           "api.deepseek.com" "apikey")
     :stream t)
+  ;; Use max tokens
+  (put 'deepseek-reasoner :request-params '(:max_tokens 65536))
+  (put 'deepseek-chat :request-params '(:max_tokens 8192))
   ;; === OpenRouter ====
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
