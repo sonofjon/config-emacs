@@ -931,6 +931,15 @@
   ;; Exclude virtual environment directories from project
   ;;   Not needed: use M-s G  ;; Outline settings
   ;; (setq-local project-ignored-files '(".venv/*"))
+  ;; Use ruff as the Flymake linter
+  ;;   Note, this is not to be needed with Eglot
+  ;; (setq python-flymake-command
+  ;;       '("ruff" "--quiet" "--stdin-filename=stdin" "-"))
+  ;; Silence warnings about missing linters
+  ;;   This remove python-flymake from flymake-diagnostic-functions
+  (add-hook 'python-base-mode-hook
+            (lambda ()
+              (remove-hook 'flymake-diagnostic-functions #'python-flymake t)))
   ;; Outline settings
   (add-hook 'python-base-mode-hook #'outline-headers-for-hash-mark-buffers))
 
