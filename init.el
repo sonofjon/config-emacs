@@ -535,6 +535,8 @@
   (history-length 10000)
   ;; Delete history duplicates
   (history-delete-duplicates nil)
+  ;; Use the system's trash can
+  (delete-by-moving-to-trash t)
   :config
   ;; Use 'y' or 'n' questions always
   ;; (setq use-short-answers t)
@@ -2527,8 +2529,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; osx-trash (system trash for OS X)
 (use-package osx-trash
   :if (eq aj8/my-os 'macos)   ; macOS
-  :custom
-  (delete-by-moving-to-trash t)   ; TODO: add this to all systems
   :config
   (osx-trash-setup))
 
