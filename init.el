@@ -1548,7 +1548,7 @@ the window so that the streaming position appears near the bottom."
     :description "Preset for coding"
     ;; :system (alist-get 'coder gptel-directives)
     :system 'coder
-    :model 'gpt-5-mini
+    :model 'deepseek-reasoner
     :temperature 0.1
     :use-context 'user
     :include-reasoning "*gptel-reasoning*"
