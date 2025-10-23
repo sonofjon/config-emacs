@@ -1450,7 +1450,14 @@
   ;; Set as default backend
   ;; (setq gptel-backend "Gemini")
   ;; (setq gptel-model '`gemini-pro-latest')
-  ;; === Deepseek ===
+  ;; === Moonshot ===
+  (gptel-make-openai "Moonshot"
+    :host "api.moonshot.ai"   ; or "api.moonshot.cn" for the Chinese site
+    :key (gptel-api-key-from-auth-source
+          "api.moonshot.ai" "apikey")
+    :stream t   ; make available
+    :models '(kimi-k2-0905-preview))
+;; === Deepseek ===
   (gptel-make-deepseek "Deepseek"
     :key (gptel-api-key-from-auth-source
           "api.deepseek.com" "apikey")
