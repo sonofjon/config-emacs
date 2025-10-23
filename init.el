@@ -1471,6 +1471,7 @@
               deepseek/deepseek-v3.2-exp
               deepseek/deepseek-r1-0528
               moonshotai/kimi-k2-0905
+              moonshotai/kimi-k2-0905:exacto
               qwen/qwen3-coder
               qwen/qwen3-coder:free
               qwen/qwen3-coder-plus
