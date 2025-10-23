@@ -496,6 +496,8 @@
   (scroll-preserve-screen-position t)
   ;; Smooth horizontal scrolling
   (hscroll-step 1)
+  ;; Enable `scroll-left'
+  (put 'scroll-left 'disabled nil)
   ;; Use "repeat-mode" for "pop-mark"
   (set-mark-command-repeat-pop t)
   ;; Don't use the mark when region is inactive
