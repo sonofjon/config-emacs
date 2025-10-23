@@ -1368,6 +1368,10 @@
           (lambda ()
             (when (eq claude-code-terminal-backend 'vterm)
               (setq-local vterm-max-scrollback 10000))))
+  ;; optional IDE integration with Monet
+  ;; (add-hook 'claude-code-process-environment-functions
+  ;;           #'monet-start-server-function)
+  ;; (monet-mode 1)
   ;; Enable mode
   (claude-code-mode))
 
