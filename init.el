@@ -1209,6 +1209,8 @@
   ;; Obey display actions when switching buffers
   (switch-to-buffer-obey-display-actions t)
   ;; Window rules
+  ;;   TODO: Modify window usage dynamically:
+  ;;           divide side-window in top and bottom only for large screens
   (display-buffer-alist
    `(;;
      ;; Example using mp-make-display-buffer-matcher-function
@@ -1538,7 +1540,6 @@ the window so that the streaming position appears near the bottom."
   ;; Preset: chat
   (gptel-make-preset 'chat
     :description "Preset for chat"
-    ;; :system (alist-get 'chat gptel-directives)
     :system 'chat
     :temperature 1.0
     :model 'gemini-flash-latest
@@ -1548,12 +1549,12 @@ the window so that the streaming position appears near the bottom."
   ;; Preset: coding
   (gptel-make-preset 'coding
     :description "Preset for coding"
-    ;; :system (alist-get 'coder gptel-directives)
     :system 'coder
     :model 'deepseek-reasoner
     :temperature 0.1
     :use-context 'user
     :include-reasoning "*gptel-reasoning*"
+    ;; TODO: Use :eval or :function to evaluate expressions or functions
     ;; :tools (gptel-tk-get-tools)
     ;; :post (gptel-tk-enable-builtin-tools)
     :use-tools t)
@@ -2550,6 +2551,7 @@ Elisp code explicitly in arbitrary buffers.")
   (helpful-max-buffers nil))
 
 ;; reflow (Re-flow Info and Helpful buffers)
+;;   TODO: This mode doe not seem to be enabled anymore?
 (use-package reflow
   :after (:any helpful info)
   :commands (reflow-info-buffer
