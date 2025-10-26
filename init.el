@@ -1343,6 +1343,7 @@
 
 ;; ai-code-interface (unified emacs interface supporting LLM clients)
 (use-package ai-code-interface
+  :disabled
   :bind (("C-c a" . ai-code-menu))
   :config
   ;; Set backend
