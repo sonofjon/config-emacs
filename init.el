@@ -1661,8 +1661,7 @@ the window so that the streaming position appears near the bottom."
   ;;   applies the mode to the current *Messages* buffer.
   ;; (add-hook 'messages-buffer-mode-hook
   ;;           (lambda () (buffer-tail-mode 1)))
-  (with-current-buffer "*Messages*"
-    (buffer-tail-mode 1)))
+  (with-current-buffer "*Messages*" (buffer-tail-mode 1)))
 
 ;;; Coding
 
