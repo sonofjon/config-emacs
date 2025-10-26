@@ -329,6 +329,8 @@
          (dired-kill-when-opening-new-dired-buffer t)
          ;; Omit hidden (dot-) files
          (dired-omit-files "^\\.[a-zA-Z0-9]+")   ; with dired-omit-mode
+         ;; Register file renames in VC system
+         (dired-vc-rename-file t)
          :config
          ;; Tag Dired buffer names
          ;;   TODO: fails sometimes with TRAMP
