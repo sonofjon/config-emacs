@@ -179,7 +179,7 @@
  'package-vc-selected-packages
  `(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
-   (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
+   ;; (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
    (buffer-tail-mode :url "https://github.com/sonofjon/buffer-tail-mode.el.git" :rev :newest)
    (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
    (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
