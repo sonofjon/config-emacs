@@ -1554,6 +1554,7 @@ the window so that the streaming position appears near the bottom."
     :include-reasoning 'ignore
     :use-tools nil)
   ;; Preset: coding
+  ;;   TODO: Make this the default setting
   (gptel-make-preset 'coding
     :description "Preset for coding"
     :system 'coder
@@ -1808,6 +1809,7 @@ the window so that the streaming position appears near the bottom."
   :disabled   ; already included with pylsp
   :ensure-system-package ruff
   ;; :hook (python-base-mode . flymake-ruff-load)   ; without eglot
+  ;; TODO: Why use ruff in any Eglot buffer, not just Python?
   :hook (eglot-managed-mode . flymake-ruff-load))   ; with eglot
 
 ;; ruff-format (Ruff format Python source)
