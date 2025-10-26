@@ -1446,8 +1446,7 @@
   (put 'gpt-5 :request-params '(:stream :json-false :service_tier "flex"))
   ;; === Claude ===
   (gptel-make-anthropic "Claude"
-    :key (gptel-api-key-from-auth-source
-          "api.anthropic.com" "apikey")
+    :key (gptel-api-key-from-auth-source "api.anthropic.com" "apikey")
     :stream t)   ; make available
   ;; Set as default backend
   ;; (setq gptel-backend "Claude")
@@ -1460,10 +1459,18 @@
   ;; Set as default backend
   ;; (setq gptel-backend "Gemini")
   ;; (setq gptel-model '`gemini-pro-latest')
+  ;; === Alibaba ===
+  (gptel-make-openai "Alibaba"
+    ;; :host "dashscope-intl.aliyuncs.com"
+    :host "dashscope-intl.aliyuncs.com"
+    :endpoint "/compatible-mode/v1"
+    :key (gptel-api-key-from-auth-source
+          "dashscope-intl.aliyuncs.com" "apikey")
+    :stream t   ; make available
+    :models '(qwen3-coder-plus))
 ;; === Deepseek ===
   (gptel-make-deepseek "Deepseek"
-    :key (gptel-api-key-from-auth-source
-          "api.deepseek.com" "apikey")
+    :key (gptel-api-key-from-auth-source "api.deepseek.com" "apikey")
     :stream t)
   ;; Use max tokens
   (put 'deepseek-reasoner :request-params '(:max_tokens 65536))
@@ -1471,16 +1478,14 @@
   ;; === Moonshot ===
   (gptel-make-openai "Moonshot"
     :host "api.moonshot.ai"   ; or "api.moonshot.cn" for the Chinese site
-    :key (gptel-api-key-from-auth-source
-          "api.moonshot.ai" "apikey")
+    :key (gptel-api-key-from-auth-source "api.moonshot.ai" "apikey")
     :stream t   ; make available
     :models '(kimi-k2-0905-preview))
   ;; === OpenRouter ====
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
     :endpoint "/api/v1/chat/completions"
-    :key (gptel-api-key-from-auth-source
-          "openrouter.ai" "apikey")
+    :key (gptel-api-key-from-auth-source "openrouter.ai" "apikey")
     :stream t
     :models '(anthropic/claude-sonnet-4.5
               google/gemini-2.5-pro
