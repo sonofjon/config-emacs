@@ -1944,6 +1944,22 @@ characters."
   :type 'integer
   :group 'aj8-lisp)
 
+(defcustom aj8/side-window-slot-top
+  (if (>= (frame-width) 160) -1 0)
+  "Slot for top section of right side window.
+On large screens, use slot -1 to create top section. On small screens,
+use slot 0 to share undivided space."
+  :type 'integer
+  :group 'aj8-lisp)
+
+(defcustom aj8/side-window-slot-bottom
+  (if (>= (frame-width) 160) 1 0)
+  "Slot for bottom section of right side window.
+On large screens, use slot 1 to create bottom section. On small screens,
+use slot 0 to share undivided space."
+  :type 'integer
+  :group 'aj8-lisp)
+
 (defun aj8/make-not-side-window ()
   "Move the current buffer to a regular window if it's in a side window."
   (interactive)

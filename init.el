@@ -1196,8 +1196,6 @@
   ;; Obey display actions when switching buffers
   (switch-to-buffer-obey-display-actions t)
   ;; Window rules
-  ;;   TODO: Modify window usage dynamically:
-  ;;           divide side-window in top and bottom only for large screens
   (display-buffer-alist
    `(;;
      ;; Example using mp-make-display-buffer-matcher-function
@@ -1245,13 +1243,13 @@
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
-      (slot . -1)
+      (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
      ("\\(magit-diff:\\|magit-revision:\\|magit-stash:\\).*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
-      (slot . 1)
+      (slot . ,aj8/side-window-slot-bottom)
       (window-parameters . ((no-delete-other-windows . t))))
      ;;
      ;;   Help
@@ -1260,7 +1258,7 @@
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
-      (slot . 1)
+      (slot . ,aj8/side-window-slot-bottom)
       (window-parameters . ((no-delete-other-windows . t))))
      ;;
      ;;   Other
@@ -1271,26 +1269,26 @@
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
-      (slot . -1)
+      (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
      ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
-      (slot . -1)
+      (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
      ("\\(gptel-.*\\.\\(org\\|md\\)\\)"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
-      (slot . -1)
+      (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
      ;; MAYBE: eww doesn't work initially
      ("\\*\\(eww:.*\\|gptel-reasoning\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
-      (slot . 1)
+      (slot . ,aj8/side-window-slot-bottom)
       (window-parameters . ((no-delete-other-windows . t))))
      ;;
      ;; Bottom side window
