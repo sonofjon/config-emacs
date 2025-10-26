@@ -1057,9 +1057,6 @@
   ;; (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-ts-mode)))
 
 ;; tramp (Transparent Remote (file) Access, Multiple Protocol)
-;; TODO: Prevent TRAMP commands from appearing in bash history
-;;       (e.g. "exec env TERM dumb INSIDE_EMACS ENV HISTFILE ~/.tramp_history bash history")
-;;       https://mail.gnu.org/archive/html/tramp-devel/2024-11/msg00002.html
 ;; TODO: Disable tramp debug buffer
 (use-package tramp
   :ensure nil   ; don't install built-in packages
