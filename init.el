@@ -1511,6 +1511,8 @@
   (add-hook 'gptel-mode-hook (lambda () (visual-line-mode 1)))
   ;; Highlight LLM response regions
   (add-hook 'gptel-mode-hook #'gptel-highlight-mode)
+  ;; Disable Eglot
+  (add-hook 'gptel-mode-hook (lambda () (eglot--managed-mode -1)))
   ;; Scroll window automatically
   (defun aj8/gptel-auto-scroll-fixed ()
     "Follow streaming output by moving point when stream continues off-screen.
