@@ -230,8 +230,6 @@
 
 ;;; Built-in packages
 
-;; TODO: check package descriptions
-
 ;; abbrev (abbrev mode commands for Emacs)
 (use-package abbrev
   :ensure nil   ; don't install built-in packages
