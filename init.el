@@ -2699,7 +2699,9 @@ Elisp code explicitly in arbitrary buffers.")
                      ("C-c ." . jinx-next)
                 :map jinx-correct-map
                      ("C-," . aj8/jinx-correct-previous)
-                     ("C-." . aj8/jinx-correct-next))))
+                     ("C-." . aj8/jinx-correct-next))
+         :custom
+         (jinx-languages "en_US")))
          ;; :config
          ;; ;; Better display with Vertico
          ;; ;;   TODO: must run this after Vertico is loaded
