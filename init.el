@@ -180,6 +180,7 @@
  `(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
    (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
+   (buffer-tail-mode :url "https://github.com/sonofjon/buffer-tail-mode.el.git" :rev :newest)
    (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
    (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
    (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
@@ -542,14 +543,6 @@
   ;; Use partial completion for files
   (setq completion-category-defaults nil)
   (add-to-list 'completion-category-overrides '((file (styles basic partial-completion))))
-  ;; Enable auto-scrolling for the *Messages* buffer
-  ;;   Note that the *Messages* buffer is created early during startup (before
-  ;;   this hook is set), so this hook only applies to newly created
-  ;;   *Messages* buffers.  The `with-current-buffer' statement applies the
-  ;;   mode to the current *Messages* buffer.
-  ;; (add-hook 'messages-buffer-mode-hook (lambda () (aj8/buffer-tail-mode 1)))
-  (with-current-buffer "*Messages*"
-    (aj8/buffer-tail-mode 1))
   ;; Deactivate highlight mode when selecting text
   (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
   (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
@@ -1656,6 +1649,20 @@ the window so that the streaming position appears near the bottom."
   (dimmer-configure-which-key)
   ;; Enable dimmer-mode
   (dimmer-mode 1))
+
+;; buffer-tail-mode (auto-scroll buffers to end)
+(use-package buffer-tail-mode
+  :commands (buffer-tail-mode)
+  :config
+  ;; Enable auto-scrolling for the *Messages* buffer
+  ;;   Note that the *Messages* buffer is created early during startup
+  ;;   (before this hook is set), so this hook only applies to newly
+  ;;   created *Messages* buffers.  The `with-current-buffer' statement
+  ;;   applies the mode to the current *Messages* buffer.
+  ;; (add-hook 'messages-buffer-mode-hook
+  ;;           (lambda () (buffer-tail-mode 1)))
+  (with-current-buffer "*Messages*"
+    (buffer-tail-mode 1)))
 
 ;;; Coding
 

@@ -189,19 +189,16 @@ and end positions, which are required by
 (defun aj8/gptel-display-reasoning-buffer (beg end)
   "Display the gptel reasoning buffer.
 This function displays the gptel reasoning buffer and enables
-`aj8/buffer-tail-mode' (on first display only).  Use with any of gptel's
+`buffer-tail-mode' (on first display only).  Use with any of gptel's
 built-in hooks.  The arguments BEG and END are ignored but required by
 the hook."
   (when (stringp gptel-include-reasoning)
     (let ((buf (get-buffer gptel-include-reasoning)))
       (when buf
-        ;; Perform one-time setup for the reasoning buffer.
+        ;; Enable buffer-tail-mode if not already active
         (with-current-buffer buf
-          (unless aj8/buffer-tail-mode-initialized
-            ;; This block runs only once for this buffer.
-            (aj8/buffer-tail-mode 1)
-            (setq aj8/buffer-tail-mode-initialized t)))
-        ;; Now, display the buffer if it's not empty.
+          (unless buffer-tail-mode (buffer-tail-mode 1)))
+        ;; Now, display the buffer if it's not empty
         (when (> (buffer-size buf) 0)
           (display-buffer buf nil))))))
 
@@ -500,50 +497,6 @@ See `aj8/magit-buffer-cleanup-timer' and
   (when aj8/magit-buffer-cleanup-timer
     (cancel-timer aj8/magit-buffer-cleanup-timer)
     (setq aj8/magit-buffer-cleanup-timer nil)))
-
-;;; Buffer auto scroll
-
-;; TODO: Convert this to a package
-(defvar-local aj8/buffer-tail-mode--timer nil
-  "Buffer-local timer object used by `aj8/buffer-tail-mode'.")
-
-(defvar-local aj8/buffer-tail-mode--last-tick nil
-  "Buffer-local variable to store the last known modification tick.")
-
-(defun aj8/buffer-tail-mode--check-and-scroll (buffer)
-  "If BUFFER has changed, scroll its window to the end.
-This function is intended to be run from an idle timer."
-  (when (buffer-live-p buffer)   ; make sure the buffer has not been killed
-    (with-current-buffer buffer
-      (let ((current-tick (buffer-modified-tick)))
-        (unless (equal current-tick aj8/buffer-tail-mode--last-tick)
-          ;; Buffer has changed, so scroll it.
-          (let ((win (get-buffer-window buffer 'visible)))
-            (when win
-              (with-selected-window win
-                (goto-char (point-max)))))
-          ;; Update the tick to the new value.
-          (setq aj8/buffer-tail-mode--last-tick current-tick))))))
-
-(define-minor-mode aj8/buffer-tail-mode
-  "A buffer-local minor mode to make the current buffer auto-scroll.
-When enabled in a buffer, a timer periodically checks for changes in that
-buffer and scrolls its window to the end."
-  :init-value nil
-  :lighter " Tail"
-  (if aj8/buffer-tail-mode
-      ;; --- Code to run when TURNING ON ---
-      (unless aj8/buffer-tail-mode--timer
-        ;; Initialize the tick value to the current state.
-        (setq aj8/buffer-tail-mode--last-tick (buffer-modified-tick))
-        (setq aj8/buffer-tail-mode--timer
-              (run-with-idle-timer 0.2 'repeat
-                                   #'aj8/buffer-tail-mode--check-and-scroll
-                                   (current-buffer))))
-    ;; --- Code to run when TURNING OFF ---
-    (when aj8/buffer-tail-mode--timer
-      (cancel-timer aj8/buffer-tail-mode--timer)
-      (setq aj8/buffer-tail-mode--timer nil))))
 
 ;;; Misc
 
@@ -2137,9 +2090,6 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
       (split-window-vertically))   ; makes a split with the other window twice
     (switch-to-buffer nil)))   ; restore the original window
                                ; in this part of the window
-
-(defvar-local aj8/buffer-tail-mode-initialized nil
-  "A buffer-local flag to ensure tail mode setup runs only once per buffer.")
 
 ;;;; Web
 
