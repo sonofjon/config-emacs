@@ -1643,7 +1643,7 @@ the window so that the streaming position appears near the bottom."
 
 ;; buffer-tail-mode (auto-scroll buffers to end)
 (use-package buffer-tail-mode
-  :commands (buffer-tail-mode)
+  :demand t
   :config
   ;; Enable auto-scrolling for the *Messages* buffer
   ;;   Note that the *Messages* buffer is created early during startup
