@@ -898,6 +898,63 @@ matching `aj8/no-backup-regexp`."
 
 (setq backup-enable-predicate #'aj8/backup-enable-predicate)
 
+;;; Misc
+
+;; Keep CSV fields
+(defun aj8/csv-keep-fields (fields beg end)
+  "Keep specified fields of each line in the region, removing others.
+If not set, the region defaults to the CSV records around point.  Fields
+are separated by `csv-separators' and null fields are allowed anywhere.
+Field indices increase from 1 on the left or decrease from -1 on the
+right.  The removed fields are stored for use by `csv-yank-fields'.
+Fields can be specified in any order but are saved in increasing index
+order.  Ignore blank and comment lines.
+
+When called interactively, a prefix argument specifies a single field,
+otherwise prompt for a field list, which may include ranges in the form
+m-n, where m < n and n defaults to the last field index if omitted.
+
+When called non-interactively, FIELDS is a single field index or a list
+of field indices, with ranges specified as (m.n) or (m), and BEG and END
+specify the region to process."
+  ;; (interactive "*P\nr")
+  (interactive (csv-interactive-args 'multiple))
+  (barf-if-buffer-read-only)
+  ;; Invert fields: keep specified, kill the rest
+  (let ((fields-to-kill
+         (save-excursion
+           (goto-char beg)
+           (when (eolp) (error "First record is empty"))
+           ;; Count total fields (same as csv-kill-many-columns)
+           (let ((last 1))
+             (csv-end-of-field)
+             (while (not (eolp))
+               (forward-char)
+               (csv-end-of-field)
+               (setq last (1+ last)))
+             ;; Expand fields using csv-mode's logic
+             (let ((f fields))
+               (while f
+                 (cond ((consp (car f))
+                        ;; Expand range (m.n) -> m m+1 ... n
+                        (let* ((range (car f)) (cdrf (cdr f))
+                               (m (car range)) (n (cdr range)))
+                          (if (< m 0) (setq m (+ m last 1)))
+                          (if n
+                              (if (< n 0) (setq n (+ n last 1)))
+                            (setq n last))
+                          (setq range (list n))
+                          (while (> n m) (push (setq n (1- n)) range))
+                          (setcar f (car range))
+                          (setcdr f (cdr range))
+                          (setcdr (setq f (last range)) cdrf)))
+                       ((zerop (car f)) (setcar f 1))
+                       ((< (car f) 0) (setcar f (+ last (car f) 1))))
+                 (setq f (cdr f))))
+             ;; Return fields not in keep list
+             (seq-difference (number-sequence 1 last) fields)))))
+    (csv-kill-fields fields-to-kill beg end)))
+
 ;;;; Help
 
 ;;;; Navigation
