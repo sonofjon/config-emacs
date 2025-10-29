@@ -47,7 +47,6 @@ Tables:         _a_: align          _s_: sort           _t_: transpose
   ("s" markdown-table-sort-lines)
   ("t" markdown-table-transpose)
   ("n" markdown-table-next-row)
-  ("p" aj8/markdown-table-prev-row)
   ("f" markdown-table-forward-cell)
   ("b" markdown-table-backward-cell)
   ("_" markdown-table-insert-row)
