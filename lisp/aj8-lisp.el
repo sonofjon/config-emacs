@@ -719,6 +719,7 @@ respectively."
                (double-quote . "\"")
                (back-quote . "`")))
 
+;; Move point up and down s-expressions
 (defun aj8/sp--sexp-dwim-direction (for-down-p)
   "Determine direction for sexp movement based on context.
 FOR-DOWN-P should be t for down movement, nil for up movement.  Returns
