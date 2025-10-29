@@ -219,7 +219,7 @@ the hook."
 
 (defun my/reopen-killed-file-save ()
   "Save the content of the current buffer to `my/reopen-killed-bufer-content'.
-+Only save content if the buffer is not associated with a filename."
++Only save content if the buffer is associated with a filename."
   (when buffer-file-name
     (push buffer-file-name my/reopen-killed-file-list)
     (when (> (length my/reopen-killed-file-list) my/reopen-killed-file-max)
@@ -250,32 +250,66 @@ the hook."
 ;;; Undo for killed non-file buffers
 
 (defvar aj8/reopen-killed-buffer-content nil
-  "Name and contents of the last killed non-file buffer.")
+  "List of recently killed non-file buffers.
+Each element is a cons cell (buffer-name . buffer-contents).")
 
 (defcustom aj8/reopen-killed-buffer-max-size 50000
   "Maximum size of non-file buffer (in characters) to store."
   :type 'integer
   :group 'aj8-lisp)
 
+(defcustom aj8/reopen-killed-buffer-max 20
+  "Maximum number of killed non-file buffers to store."
+  :type 'integer
+  :group 'aj8-lisp)
+
 (defun aj8/reopen-killed-buffer-save ()
-  "Save the content of the current buffer to `my/reopen-killed-bufer-content'.
+  "Save buffer name and content to `aj8/reopen-killed-buffer-content'.
 Only save content if the buffer is not associated with a filename."
   (unless buffer-file-name
     (when (<= (buffer-size) aj8/reopen-killed-buffer-max-size)
-      (setq aj8/reopen-killed-buffer-content
-            (cons (buffer-name) (buffer-string))))))
+      (push (cons (buffer-name) (buffer-string))
+            aj8/reopen-killed-buffer-content)
+      (when (> (length aj8/reopen-killed-buffer-content)
+               aj8/reopen-killed-buffer-max)
+        (setq aj8/reopen-killed-buffer-content
+              (cl-subseq aj8/reopen-killed-buffer-content
+                         0 aj8/reopen-killed-buffer-max))))))
 
 (defun aj8/reopen-killed-buffer ()
-  "Reopen the last killed non-file buffer, restoring its contents.
+  "Reopen the most recently killed non-file buffer, if one exists.
 Note, this does not include window properties etc."
   (interactive)
   (if (null aj8/reopen-killed-buffer-content)
       (user-error "No recently killed non-file buffer to reopen")
-    (let ((buffername (car aj8/reopen-killed-buffer-content))
-          (contents (cdr aj8/reopen-killed-buffer-content)))
+    (let* ((buffer-entry (pop aj8/reopen-killed-buffer-content))
+           (buffername (car buffer-entry))
+           (contents (cdr buffer-entry)))
       (switch-to-buffer (get-buffer-create buffername))
-      (insert contents)
-      (setq aj8/reopen-killed-buffer-content nil))))
+      (insert contents))))
+
+(defun aj8/reopen-killed-buffer-fancy ()
+  "Pick a buffer to revisit from non-file buffers killed during this
+session."
+  (interactive)
+  (if aj8/reopen-killed-buffer-content
+      (let* ((buffer-names (mapcar #'car
+                                   aj8/reopen-killed-buffer-content))
+             (buffername (completing-read "Reopen killed buffer: "
+                                          buffer-names
+                                          nil nil nil nil
+                                          (car buffer-names))))
+        (when buffername
+          (let ((buffer-entry (assoc buffername
+                                     aj8/reopen-killed-buffer-content)))
+            (when buffer-entry
+              (setq aj8/reopen-killed-buffer-content
+                    (cl-delete buffer-entry
+                               aj8/reopen-killed-buffer-content
+                               :test #'equal))
+              (switch-to-buffer (get-buffer-create (car buffer-entry)))
+              (insert (cdr buffer-entry))))))
+    (user-error "No recently-killed non-file buffers to reopen")))
 
 ;;; Buffer switching
 
