@@ -2366,7 +2366,7 @@ will be applied."
   (message "%s" (iter mode)))
 
 ;; Set up description widths for which-key
-(defcustom aj8/which-key-columns 5
+(defcustom aj8/which-key-columns 4
   "Number of columns to display in which-key popup."
   :type 'integer
   :group 'aj8-lisp)
@@ -2380,7 +2380,7 @@ reported by `frame-width'.  See `which-key--side-window-max-dimensions'."
   (let* ((max-dims (which-key--side-window-max-dimensions))
          (available-width (cdr max-dims))
          ;; Account for key column and column padding
-         (key-column-width 7)   ; generally >= 3
+         (key-column-width 8)   ; generally >= 3
                                 ; values that work well:
                                 ; 4 cols : 8
                                 ; 5 cols : 7
