@@ -233,7 +233,7 @@ Only save content if the buffer is associated with a filename."
     (find-file (pop restore-killed-file-list))))
 
 ;; Fancy undo for killed buffers
-(defun restore-killed-file-fancy ()
+(defun restore-killed-file-select ()
   "Pick a file to revisit from files killed during this session."
   (interactive)
   (if restore-killed-file-list
@@ -288,7 +288,7 @@ Note, this does not include window properties etc."
       (switch-to-buffer (get-buffer-create buffername))
       (insert contents))))
 
-(defun restore-killed-buffer-fancy ()
+(defun restore-killed-buffer-select ()
   "Pick a buffer to revisit from non-file buffers killed during this
 session."
   (interactive)
