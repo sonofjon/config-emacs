@@ -933,62 +933,6 @@ specify the region to process."
 
 ;;;; Navigation
 
-;;; Scrolling
-
-(defun aj8/scroll-up-paragraph (&optional move-point)
-  "Scroll the selected window up one paragraph.
-MOVE-POINT determines whether the point should adjust position.  With a
-numeric MOVE-POINT > 0, move point to the start of the next paragraph.
-With a negative MOVE-POINT, keep point centered on the window."
-(interactive "P")
-  (let ((move-point-value (prefix-numeric-value move-point)))
-    (save-excursion
-      (goto-char (window-end))
-      (while (looking-at-p "^[ \t]*$")   ; scroll past empty lines
-        (scroll-up-line)
-        (forward-line))
-      (while (not (looking-at-p "^[ \t]*$"))   ; scroll past paragraph
-        (scroll-up-line)
-        (forward-line))
-      (scroll-up-line)   ; needed to show one empty line at the end of the window
-      (forward-line -1))
-    ;; Optionally, move point
-    (when move-point
-      (if (< move-point-value 0)
-          (goto-char (/ (+ (point-min) (point-max)) 2))   ; center
-        (progn   ; next paragraph
-          ;;  MAYBE: Doesn't work when paragraphs are longer than one window height
-          ;; (redisplay)   ; update buffer content in window TODO: ugly!
-          ;; (force-window-update (selected-window))
-          (goto-char (window-end))
-          (re-search-backward "^[ \t]*$" nil t)
-          (forward-line))))))
-
-;; Scroll down one paragraph
-(defun aj8/scroll-down-paragraph (&optional move-point)
-  "Scroll the selected window down one paragraph.
-MOVE-POINT determines whether the point should adjust position.  With a
-numeric MOVE-POINT > 0, move point to the start of the next paragraph.
-With a negative MOVE-POINT, keep point centered on the window."
-(interactive "P")
-  (let ((move-point-value (prefix-numeric-value move-point)))
-    (save-excursion
-      (goto-char (window-start))
-      (while (looking-at-p "^[ \t]*$")   ; scroll past empty lines
-        (scroll-down-line)
-        (forward-line -1))
-      (while (not (looking-at-p "^[ \t]*$"))   ; scroll past paragraph
-        (scroll-down-line)
-        (forward-line -1)))
-    ;; Optionally, move point
-    (when move-point
-      (if (< move-point-value 0)
-          (goto-char (/ (+ (point-min) (point-max)) 2))   ; center
-        (progn   ; next paragraph
-          (goto-char (window-start))
-          (re-search-forward "^[ \t]*$" nil t)
-          (forward-line))))))
-
 ;;; Movement by lines or comments
 
 ;; Move up a line, skipping comments and empty lines
