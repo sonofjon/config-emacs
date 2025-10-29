@@ -465,36 +465,6 @@ in that side window rather than shifting to another window."
 
 ;;;; Coding
 
-;; Format XML buffers
-;;   Requires: xmllint
-(defun aj8/xml-format-buffer ()
-  "Format current buffer using xmllint.
-Much faster than `sgml-pretty-print'."
-  (interactive)
-  (shell-command-on-region 1 (point-max)
-                           "xmllint --format -"
-                           (current-buffer) t))
-
-;; Open Ruff docs from Flymake
-(defun aj8/flymake-ruff-goto-doc ()
-  "Browse to the documentation for the Ruff rule on a Flymake diagnostic line.
-Scans the Flymake diagnostic at point for a \"[RULE123]\"-style code and
-browses to its documentation at https://docs.astral.sh/ruff/rules."
-(interactive)
-(unless (or (derived-mode-p 'flymake-diagnostics-buffer-mode)
-            (derived-mode-p 'flymake-project-diagnostics-mode))
-    (user-error "Not in a Flymake diagnostics buffer"))
-  (let* ((id (tabulated-list-get-id))
-         (diag (or (plist-get id :diagnostic)
-                   (user-error "Bad Flymake ID: %S" id)))
-         (msg (flymake-diagnostic-text diag)))
-    (unless (string-match (rx "[" (group (1+ upper-case) (1+ digit)) "]")
-                          msg)
-      (user-error "No Ruff rule (like [RULE123]) in diagnostic: %s" msg))
-    (browse-url
-     (format "https://docs.astral.sh/ruff/rules/%s"
-             (match-string 1 msg)))))
-
 ;;; Copy hooks to Treesitter modes
 (defun aj8/copy-hooks-to-treesitter ()
   "Copy standard mode hooks to their Treesitter equivalents.
@@ -558,6 +528,38 @@ modes are also applied to tree-sitter modes."
         (when (boundp orig-hook)
           (dolist (fn (symbol-value orig-hook))
             (add-hook ts-hook fn)))))))
+
+;;; Misc
+
+;; Format XML buffers
+;;   Requires: xmllint
+(defun aj8/xml-format-buffer ()
+  "Format current buffer using xmllint.
+Much faster than `sgml-pretty-print'."
+  (interactive)
+  (shell-command-on-region 1 (point-max)
+                           "xmllint --format -"
+                           (current-buffer) t))
+
+;; Open Ruff docs from Flymake
+(defun aj8/flymake-ruff-goto-doc ()
+  "Browse to the documentation for the Ruff rule on a Flymake diagnostic line.
+Scans the Flymake diagnostic at point for a \"[RULE123]\"-style code and
+browses to its documentation at https://docs.astral.sh/ruff/rules."
+(interactive)
+(unless (or (derived-mode-p 'flymake-diagnostics-buffer-mode)
+            (derived-mode-p 'flymake-project-diagnostics-mode))
+    (user-error "Not in a Flymake diagnostics buffer"))
+  (let* ((id (tabulated-list-get-id))
+         (diag (or (plist-get id :diagnostic)
+                   (user-error "Bad Flymake ID: %S" id)))
+         (msg (flymake-diagnostic-text diag)))
+    (unless (string-match (rx "[" (group (1+ upper-case) (1+ digit)) "]")
+                          msg)
+      (user-error "No Ruff rule (like [RULE123]) in diagnostic: %s" msg))
+    (browse-url
+     (format "https://docs.astral.sh/ruff/rules/%s"
+             (match-string 1 msg)))))
 
 ;;;; Completion
 
