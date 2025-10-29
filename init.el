@@ -190,7 +190,8 @@
    ;; (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
    (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
    (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
-   (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)))
+   (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)
+   (restore-killed :url "https://github.com/sonofjon/restore-killed.el" :rev :newest)))
    ;; (sinister :url "https://github.com/positron-solutions/sinister" :rev :newest)))
 
 ;; Install selected packages
@@ -546,9 +547,6 @@
   (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
   ;; Add Treesitter indicator in the modeline
   (add-hook 'after-change-major-mode-hook #'aj8/treesit-mode-name)
-  ;; Collect list of killed file and non-file buffers
-  (add-hook 'kill-buffer-hook #'restore-killed--file-save)
-  (add-hook 'kill-buffer-hook #'restore-killed--buffer-save)
   (keymap-set isearch-mode-map "TAB" #'isearch-complete))
 
 ;; epg (the EasyPG library)
@@ -1655,6 +1653,21 @@ the window so that the streaming position appears near the bottom."
   ;; (add-hook 'messages-buffer-mode-hook
   ;;           (lambda () (buffer-tail-mode 1)))
   (with-current-buffer "*Messages*" (buffer-tail-mode 1)))
+
+;; restore-killed (restore killed buffers and files)
+(use-package restore-killed
+  :demand t
+  :custom
+  ;; Maximum number of killed files to store
+  (restore-killed-file-max 20)
+  ;; Maximum number of killed buffers to store
+  (restore-killed-buffer-max 5)
+  ;; Maximum buffer-size to store
+  (restore-killed-buffer-max-size 50000)
+  :config
+  ;; Add hooks to track killed buffers
+  (add-hook 'kill-buffer-hook #'restore-killed--file-save)
+  (add-hook 'kill-buffer-hook #'restore-killed--buffer-save))
 
 ;;; Coding
 
