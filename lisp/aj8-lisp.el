@@ -933,7 +933,7 @@ specify the region to process."
 
 ;;;; Navigation
 
-;;; Movement by lines or comments
+;;; Movement by comments
 
 ;; Move up a line, skipping comments and empty lines
 (defun aj8/previous-line ()
