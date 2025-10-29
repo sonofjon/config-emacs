@@ -547,8 +547,8 @@
   ;; Add Treesitter indicator in the modeline
   (add-hook 'after-change-major-mode-hook #'aj8/treesit-mode-name)
   ;; Collect list of killed file and non-file buffers
-  (add-hook 'kill-buffer-hook #'restore-killed-file-save)
-  (add-hook 'kill-buffer-hook #'restore-killed-buffer-save)
+  (add-hook 'kill-buffer-hook #'restore-killed--file-save)
+  (add-hook 'kill-buffer-hook #'restore-killed--buffer-save)
   (keymap-set isearch-mode-map "TAB" #'isearch-complete))
 
 ;; epg (the EasyPG library)

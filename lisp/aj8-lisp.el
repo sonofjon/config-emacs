@@ -217,7 +217,7 @@ the hook."
   :type 'integer
   :group 'aj8-lisp)
 
-(defun restore-killed-file-save ()
+(defun restore-killed--file-save ()
   "Save the file path of the current buffer to `restore-killed-file-list'.
 Only save content if the buffer is associated with a filename."
   (when buffer-file-name
@@ -249,7 +249,7 @@ Only save content if the buffer is associated with a filename."
 
 ;;; Undo for killed non-file buffers
 
-(defvar restore-killed-buffer-content nil
+(defvar restore-killed-buffer-list nil
   "List of recently killed non-file buffers.
 Each element is a cons cell (buffer-name . buffer-contents).")
 
@@ -263,26 +263,26 @@ Each element is a cons cell (buffer-name . buffer-contents).")
   :type 'integer
   :group 'aj8-lisp)
 
-(defun restore-killed-buffer-save ()
-  "Save buffer name and content to `restore-killed-buffer-content'.
+(defun restore-killed--buffer-save ()
+  "Save buffer name and content to `restore-killed-buffer-list'.
 Only save content if the buffer is not associated with a filename."
   (unless buffer-file-name
     (when (<= (buffer-size) restore-killed-buffer-max-size)
       (push (cons (buffer-name) (buffer-string))
-            restore-killed-buffer-content)
-      (when (> (length restore-killed-buffer-content)
+            restore-killed-buffer-list)
+      (when (> (length restore-killed-buffer-list)
                restore-killed-buffer-max)
-        (setq restore-killed-buffer-content
-              (cl-subseq restore-killed-buffer-content
+        (setq restore-killed-buffer-list
+              (cl-subseq restore-killed-buffer-list
                          0 restore-killed-buffer-max))))))
 
 (defun restore-killed-buffer ()
   "Reopen the most recently killed non-file buffer, if one exists.
 Note, this does not include window properties etc."
   (interactive)
-  (if (null restore-killed-buffer-content)
+  (if (null restore-killed-buffer-list)
       (user-error "No recently killed non-file buffer to reopen")
-    (let* ((buffer-entry (pop restore-killed-buffer-content))
+    (let* ((buffer-entry (pop restore-killed-buffer-list))
            (buffername (car buffer-entry))
            (contents (cdr buffer-entry)))
       (switch-to-buffer (get-buffer-create buffername))
@@ -292,20 +292,20 @@ Note, this does not include window properties etc."
   "Pick a buffer to revisit from non-file buffers killed during this
 session."
   (interactive)
-  (if restore-killed-buffer-content
+  (if restore-killed-buffer-list
       (let* ((buffer-names (mapcar #'car
-                                   restore-killed-buffer-content))
+                                   restore-killed-buffer-list))
              (buffername (completing-read "Reopen killed buffer: "
                                           buffer-names
                                           nil nil nil nil
                                           (car buffer-names))))
         (when buffername
           (let ((buffer-entry (assoc buffername
-                                     restore-killed-buffer-content)))
+                                     restore-killed-buffer-list)))
             (when buffer-entry
-              (setq restore-killed-buffer-content
+              (setq restore-killed-buffer-list
                     (cl-delete buffer-entry
-                               restore-killed-buffer-content
+                               restore-killed-buffer-list
                                :test #'equal))
               (switch-to-buffer (get-buffer-create (car buffer-entry)))
               (insert (cdr buffer-entry))))))
