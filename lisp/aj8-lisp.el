@@ -966,25 +966,6 @@ matching `aj8/no-backup-regexp`."
 
 ;;;; Help
 
-;;; Misc
-
-;; Toggle Eldoc buffer
-;;   TODO: does not work
-(defun aj8/toggle-eldoc-buffer ()
-  "Toggle the Eldoc buffer on and off."
-  (interactive)
-  (let ((eldoc-buffer nil)
-        (found nil))
-    (dolist (buf (buffer-list))
-      (when (and (not found) (string-prefix-p "eldoc" (buffer-name buf)))
-        (setq eldoc-buffer buf)
-        (setq found t)))
-    (if (and eldoc-buffer (get-buffer-window eldoc-buffer))
-        ;; If the Eldoc buffer is visible, delete its window.
-        (delete-window (get-buffer-window eldoc-buffer))
-      ;; Otherwise, call `eldoc-doc-buffer' to show the Eldoc buffer.
-      (eldoc))))
-
 ;;;; Navigation
 
 ;;; Scrolling
