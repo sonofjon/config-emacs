@@ -43,7 +43,7 @@
           (error "Package '%s' not found for system type '%s'"
                  package system-type)))))
 
-;; List available package upgrades
+;; List available package upgrades (excludes vc packages)
 (defun aj8/package-list-upgrades (&optional verbose)
   "List all packages that have upgrades available.
 With prefix argument (C-u), or if VERBOSE is non-nil, show detailed
@@ -82,7 +82,7 @@ upgradeable even when up-to-date."
                    (mapconcat 'symbol-name upgradable ", ")))
       (message "All packages are up to date"))))
 
-;; Upgrade packages verbosily
+;; Upgrade packages verbosily (excludes vc packages)
 (defun aj8/package-upgrade-all-verbose ()
   "Upgrade all packages with detailed information about what will be upgraded.
 Excludes VC packages since they show as upgradeable even when
@@ -108,6 +108,7 @@ up-to-date."
                 (package-upgrade name)))))
       (message "All packages are up to date"))))
 
+;; Make built-in package upgrade function verbose
 (defun aj8/package-upgrade-all-advice (orig-fun &rest args)
   "Advice to make package-upgrade-all show package names in the upgrade prompt.
 ORIG-FUN should be `package-upgrade-all'."
@@ -124,6 +125,7 @@ ORIG-FUN should be `package-upgrade-all'."
 
 (advice-add 'package-upgrade-all :around #'aj8/package-upgrade-all-advice)
 
+;; Don't auto-remove vc packages
 (defun aj8/package-autoremove-no-vc (orig-fun &rest args)
   "Advice function for `package-autoremove to not remove VC packages'.
 This function temporarily adds packages from
