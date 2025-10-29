@@ -40,7 +40,8 @@
                              (t (error "Unknown OS type: %s" aj8/my-os))))
           (package-alist (cdr (assoc package system-package-alist))))
       (or (cdr (assoc system-type package-alist))
-          (error "Package '%s' not found for system type '%s'" package system-type)))))
+          (error "Package '%s' not found for system type '%s'"
+                 package system-type)))))
 
 ;; List available package upgrades
 (defun aj8/package-list-upgrades (&optional verbose)
