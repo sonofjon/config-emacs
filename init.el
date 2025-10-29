@@ -186,6 +186,7 @@
    (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
    (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
    (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
+   (hideshow-cycle :url "https://github.com/sonofjon/hideshow-cycle.el" :rev :newest)
    (inheritenv :url "https://github.com/purcell/inheritenv.git"  :rev :newest)
    ;; (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
    (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
@@ -679,16 +680,6 @@
   (help-window-keep-selected t)
   ;; Always select help window
   (help-window-select t))
-
-;; hideshow (minor mode cmds to selectively display code/comment blocks)
-(use-package hideshow
-  :commands (hs-cycle hs-global-cycle)
-  :bind (:map hs-minor-mode-map
-              ("TAB" . aj8/hs-cycle)
-              ("<backtab>" . aj8/hs-global-cycle)))
-  ;; :custom
-  ;; ;; Hide the comments too
-  ;; (setq hs-hide-comments-when-hiding-all nil))
 
 ;; hippie-exp (expand text trying various ways to find its expansion)
 (use-package hippie-exp
@@ -2305,6 +2296,14 @@ Elisp code explicitly in arbitrary buffers.")
   (combobulate-key-prefix "C-c o"))
   ;; Disable display of syntax tree
   ;; (combobulate-flash-node nil))
+
+;; hideshow-cycle (cycle code folding with hideshow)
+(use-package hideshow-cycle
+  :bind (:map hs-minor-mode-map
+              ("TAB" . hs-cycle)
+              ("<backtab>" . hs-cycle-global))
+  :custom
+  (hs-cycle-max-depth nil))
 
 ;; lingva (access Google Translate without tracking via lingva.ml)
 (use-package lingva
