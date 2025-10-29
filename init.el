@@ -1665,9 +1665,8 @@ the window so that the streaming position appears near the bottom."
   ;; Maximum buffer-size to store
   (restore-killed-buffer-max-size 50000)
   :config
-  ;; Add hooks to track killed buffers
-  (add-hook 'kill-buffer-hook #'restore-killed--file-save)
-  (add-hook 'kill-buffer-hook #'restore-killed--buffer-save))
+  ;; Track killed files and buffers
+  (restore-killed-mode 1))
 
 ;;; Coding
 
