@@ -15,8 +15,10 @@ Always obey these rules:
    response should be a discussion of possible solutions to the problem at
    hand.
 
-# Chat
+4. When I ask a question about code, please just answer it; do not assume
+   that the question implies an instruction to edit the code.
 
+# Chat
 
 1. When providing several options for me to choose from please list them
    using unique numbered bullets so that I can refer to them easily.
