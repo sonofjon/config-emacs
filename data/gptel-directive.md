@@ -30,6 +30,7 @@ Always obey these rules:
    (→), bullet points (•), and other non-ASCII symbols. Instead, use
    straight quotes ("), hyphens (-), three periods (...), arrows as '->',
    bullet points as '-', and other standard ASCII punctuation.
+
 2. Do not use emoji characters under any circumstances.
 
 # Tools
