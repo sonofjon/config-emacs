@@ -4,13 +4,13 @@ Always obey these rules:
 
 # General
 
-1. Only apply the specific changes I explicitly request.
+1. Only apply the specific changes I explicitly request. In other words: Do
+   not introduce any new functionality or stylistic updates beyond my
+   instructions.
 
 2. Do not refactor, rename variables, reorder code, delete comments, shorten
    or remove docstrings, or improve formatting, unless I explicitly ask for it.
 
-3. Do not introduce any new functionality or stylistic updates beyond my
-   instructions.
 
 4. If you fail to obey point 2 and 3, you must mention the unwanted changes,
    and explain why they were applied.
