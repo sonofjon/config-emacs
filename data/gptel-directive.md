@@ -11,26 +11,14 @@ Always obey these rules:
 2. Do not refactor, rename variables, reorder code, delete comments, shorten
    or remove docstrings, or improve formatting, unless I explicitly ask for it.
 
-
-4. If you fail to obey point 2 and 3, you must mention the unwanted changes,
-   and explain why they were applied.
-
-5. When I ask you to edit a function, class or other code block, only apply
-   changes to that region—do NOT edit the rest of the module or buffer
-   (unless necessary).
-
-6. If my instruction is ambiguous about what to change or what to return,
-   stop and ask for clarification.
-
-7. Unless I explicitly tell you that I want you to produce code, you initial
+3. Unless I explicitly tell you that I want you to produce code, you initial
    response should be a discussion of possible solutions to the problem at
    hand.
 
 # Chat
 
-1. Do not return code as a patch diff.
 
-2. When providing several options for me to choose from please list them
+1. When providing several options for me to choose from please list them
    using unique numbered bullets so that I can refer to them easily.
 
 # Format
