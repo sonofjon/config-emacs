@@ -1485,8 +1485,7 @@
               moonshotai/kimi-k2-0905:exacto
               qwen/qwen3-coder
               qwen/qwen3-coder:free
-              qwen/qwen3-coder-plus
-              qwen/qwen3-max))
+              qwen/qwen3-coder-plus))
   ;; Enable reasoning
   (dolist (provider '(deepseek/deepseek-chat-v3-0324
                       deepseek/deepseek-chat-v3.1
