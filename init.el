@@ -1450,10 +1450,11 @@
   (gptel-make-openai "Alibaba"
     ;; :host "dashscope-intl.aliyuncs.com"
     :host "dashscope-intl.aliyuncs.com"
-    :endpoint "/compatible-mode/v1"
+    :protocol "https"
+    :endpoint "/compatible-mode/v1/chat/completions"
     :key (gptel-api-key-from-auth-source
           "dashscope-intl.aliyuncs.com" "apikey")
-    :stream t   ; make available
+    :stream t
     :models '(qwen3-coder-plus))
 ;; === Deepseek ===
   (gptel-make-deepseek "Deepseek"
@@ -1466,7 +1467,7 @@
   (gptel-make-openai "Moonshot"
     :host "api.moonshot.ai"   ; or "api.moonshot.cn" for the Chinese site
     :key (gptel-api-key-from-auth-source "api.moonshot.ai" "apikey")
-    :stream t   ; make available
+    :stream t
     :models '(kimi-k2-0905-preview))
   ;; === OpenRouter ====
   (gptel-make-openai "OpenRouter"
