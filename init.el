@@ -155,6 +155,7 @@
                           rotate
                           ruff-format
                           smartparens
+                          shell-maker
                           ssh-agency
                           standard-themes
                           string-inflection
@@ -179,6 +180,8 @@
  'package-vc-selected-packages
  `(;; (foo . "0f39eb3fd9")   ; specific revision
    ;; (bar . nil)            ; any revision
+   (acp :url "https://github.com/xenodium/acp.el.git" :rev :newest)
+   (agent-shell :url "https://github.com/xenodium/agent-shell" :rev :newest)
    ;; (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
    (buffer-tail-mode :url "https://github.com/sonofjon/buffer-tail-mode.el.git" :rev :newest)
    (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
@@ -1315,6 +1318,15 @@
 ;;; Admin
 
 ;;; AI
+
+;; shell-maker (interaction mode for making comint shells)
+(use-package shell-maker)
+
+;; acp (an ACP (Agent Client Protocol) implementation)
+(use-package acp)
+
+;; agent-shell (an agent shell powered by ACP)
+(use-package agent-shell)
 
 ;; ai-code-interface (unified emacs interface supporting LLM clients)
 (use-package ai-code-interface
