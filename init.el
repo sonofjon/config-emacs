@@ -1455,7 +1455,7 @@
     :key (gptel-api-key-from-auth-source
           "dashscope-intl.aliyuncs.com" "apikey")
     :stream t
-    :models '(qwen3-coder-plus))
+    :models '(qwen3-coder-plus-2025-09-23))
 ;; === Deepseek ===
   (gptel-make-deepseek "Deepseek"
     :key (gptel-api-key-from-auth-source "api.deepseek.com" "apikey")
