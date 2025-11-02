@@ -1333,6 +1333,9 @@
 (use-package ai-code-interface
   :disabled
   :bind (("C-c a" . ai-code-menu))
+  :init
+  (which-key-add-key-based-replacements "C-c a" "ai")
+                                        ; add label for prefix key
   :config
   ;; Set backend
   (ai-code-set-backend 'claude-code)
