@@ -185,6 +185,7 @@
    ;; (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
    (buffer-tail-mode :url "https://github.com/sonofjon/buffer-tail-mode.el.git" :rev :newest)
    (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
+   (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el.git" :rev :newest)
    (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
    (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
    (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
@@ -1264,7 +1265,7 @@
       (side . right)
       (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
+     ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|claude-code.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
@@ -1345,6 +1346,7 @@
 
 ;; monet (Claude Code MCP over websockets)
 (use-package monet
+  :disabled
   :custom
   ;; Disable prefix key
   (monet-prefix-key nil))
@@ -1352,6 +1354,7 @@
 
 ;; claude-code (Claude Code Emacs integration)
 (use-package claude-code
+  :disabled
   :bind-keymap ("C-c a" . claude-code-command-map)
   :init
   (which-key-add-key-based-replacements "C-c a" "ai")
@@ -1381,6 +1384,21 @@
   (monet-mode 1)
   ;; Enable mode
   (claude-code-mode))
+
+;; claude-code-ide (Claude Code integration for Emacs)
+(use-package claude-code-ide
+  :bind ("C-c a" . claude-code-ide-menu)
+  :init
+  (which-key-add-key-based-replacements "C-c a" "ai")
+                                        ; add label for prefix key
+  :custom
+  ;; Use regular buffer
+  (claude-code-ide-use-side-window nil)
+  ;; Hide Claude window during Ediff
+  (claude-code-ide-show-claude-window-in-ediff nil)
+  :config
+  ; Optionally enable Emacs MCP tools
+  (claude-code-ide-emacs-tools-setup))
 
 ;; gptel (a simple ChatGPT client for Emacs)
 (use-package gptel
