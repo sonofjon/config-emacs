@@ -193,6 +193,7 @@
    (inheritenv :url "https://github.com/purcell/inheritenv.git"  :rev :newest)
    ;; (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
    (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
+   (monet :url "https://github.com/stevemolitor/monet.git" :rev :newest)
    (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
    (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)
    (restore-killed :url "https://github.com/sonofjon/restore-killed.el" :rev :newest)))
@@ -1339,9 +1340,19 @@
   (with-eval-after-load 'magit
     (ai-code-magit-setup-transients)))
 
+;; monet (Claude Code MCP over websockets)
+(use-package monet
+  :custom
+  ;; Disable prefix key
+  (monet-prefix-key nil))
+  ;; (monet-prefix-key "C-c a C-m"))
+
 ;; claude-code (Claude Code Emacs integration)
 (use-package claude-code
   :bind-keymap ("C-c a" . claude-code-command-map)
+  :init
+  (which-key-add-key-based-replacements "C-c a" "ai")
+                                        ; add label for prefix key
   :custom
   ;; Set terminal backend
   (claude-code-terminal-backend 'vterm)   ; default: eat
@@ -1361,10 +1372,10 @@
           (lambda ()
             (when (eq claude-code-terminal-backend 'vterm)
               (setq-local vterm-max-scrollback 10000))))
-  ;; optional IDE integration with Monet
-  ;; (add-hook 'claude-code-process-environment-functions
-  ;;           #'monet-start-server-function)
-  ;; (monet-mode 1)
+  ;; Optional IDE integration with Monet
+  (add-hook 'claude-code-process-environment-functions
+            #'monet-start-server-function)
+  (monet-mode 1)
   ;; Enable mode
   (claude-code-mode))
 
