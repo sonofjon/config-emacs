@@ -190,6 +190,7 @@
         (inheritenv :url "https://github.com/purcell/inheritenv.git"  :rev :newest)
         ;; (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
         (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
+        (mcp-server :url "https://github.com/rhblind/emacs-mcp-server.git" :rev :newest)
         (monet :url "https://github.com/stevemolitor/monet.git" :rev :newest)
         (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
         (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)
@@ -1659,6 +1660,12 @@ the window so that the streaming position appears near the bottom."
   (require 'mcp-hub))
   ;; ;; Start servers
   ;; :hook (after-init . mcp-hub-start-all-server))
+
+
+;; mcp-server (pure Elisp MCP Server)
+(use-package mcp-server
+  :config
+  (add-hook 'emacs-startup-hook #'mcp-server-start-unix))
 
 ;;; Buffers
 
