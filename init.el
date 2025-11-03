@@ -178,6 +178,7 @@
 (setq package-vc-selected-packages
       `(;; (foo . "0f39eb3fd9")   ; specific revision
         ;; (bar . nil)            ; any revision
+        (agent-shell-manager :url "https://github.com/jethrokuan/agent-shell-manager.git" :rev :newest)
         ;; (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
         (buffer-tail-mode :url "https://github.com/sonofjon/buffer-tail-mode.el.git" :rev :newest)
         (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
@@ -1333,6 +1334,9 @@
 
 ;; agent-shell (an agent shell powered by ACP)
 (use-package agent-shell)
+
+;; agent-shell-manager (buffer manager for agent-shell)
+(use-package agent-shell-manager)
 
 ;; ai-code-interface (unified emacs interface supporting LLM clients)
 (use-package ai-code-interface
