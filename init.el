@@ -1233,13 +1233,25 @@
      ;;
      ;;   Magit
      ;;
+     ;; ("\\(COMMIT_EDITMSG\\).*"
+     ;;  (display-buffer-in-side-window)
+     ;;  (window-width . ,aj8/side-window-width-dynamic)
+     ;;  (side . right)
+     ;;  (slot . -1)
+     ;;  (window-parameters . ((no-delete-other-windows . t))))
+     ("\\(magit-diff:\\).*"
+      (display-buffer-in-side-window)
+      (window-width . ,aj8/side-window-width-dynamic)
+      (side . right)
+      (slot . 1)
+      (window-parameters . ((no-delete-other-windows . t))))
      ("\\(COMMIT_EDITMSG\\|magit:\\|magit-log.*:\\|magit-reflog:\\|magit-log-select:\\).*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
       (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("\\(magit-diff:\\|magit-revision:\\|magit-stash:\\).*"
+     ("\\(magit-revision:\\|magit-stash:\\).*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
