@@ -86,119 +86,119 @@
 ;;;   Install packages with `package-install-selected-packages'
 ;;;   Remove packages with `package-autoremove'
 ;;;   `use-package' is used for configuration only
-(customize-set-variable 'package-selected-packages
-                        '(ahk-mode
-                          all-the-icons
-                          all-the-icons-dired
-                          ansible
-                          benchmark-init
-                          cape
-                          circadian
-                          consult
-                          consult-eglot
-                          consult-project-extra
-                          corfu
-                          corfu-terminal
-                          csv-mode
-                          dashboard
-                          devdocs
-                          devdocs-browser
-                          dired-sidebar
-                          diff-hl
-                          diminish
-                          dimmer
-                          ef-themes
-                          elfeed
-                          embark
-                          embark-consult
-                          erc-hl-nicks
-                          eshell-git-prompt
-                          esup
-                          exec-path-from-shell
-                          expreg
-                          flymake-aspell
-                          flymake-eslint
-                          flymake-json
-                          flymake-ruff
-                          flyspell-correct
-                          google-this
-                          gptel
-                          gptel-magit
-                          helpful
-                          hydra
-                          jinx
-                          keychain-environment
-                          keyfreq
-                          lingva
-                          lorem-ipsum
-                          lua-mode
-                          magit
-                          magit-delta
-			  magit-gptcommit
-			  magit-todos
-                          marginalia
-                          markdown-mode
-                          mcp
-                          mosey
-                          move-dup
-                          multiple-cursors
-                          multi-line
-                          obsidian
-                          orderless
-                          osx-trash
-                          outline-minor-faces
-                          package-lint
-                          pet
-                          popper
-                          powershell
-                          repeat-help
-                          rotate
-                          ruff-format
-                          smartparens
-                          shell-maker
-                          ssh-agency
-                          standard-themes
-                          string-inflection
-                          syntax-subword
-                          system-packages   ; for use-package-ensure-system-package
-                          transpose-frame
-                          treesit-auto
-                          undo-fu
-                          unfill
-                          vertico
-                          vterm
-                          vundo
-                          web-mode
-                          whole-line-or-region
-                          xclip
-                          yaml-pro
-                          ztree))
+(setq package-selected-packages
+      '(ahk-mode
+        all-the-icons
+        all-the-icons-dired
+        ansible
+        benchmark-init
+        cape
+        circadian
+        consult
+        consult-eglot
+        consult-project-extra
+        corfu
+        corfu-terminal
+        csv-mode
+        dashboard
+        devdocs
+        devdocs-browser
+        dired-sidebar
+        diff-hl
+        diminish
+        dimmer
+        ef-themes
+        elfeed
+        embark
+        embark-consult
+        erc-hl-nicks
+        eshell-git-prompt
+        esup
+        exec-path-from-shell
+        expreg
+        flymake-aspell
+        flymake-eslint
+        flymake-json
+        flymake-ruff
+        flyspell-correct
+        google-this
+        gptel
+        gptel-magit
+        helpful
+        hydra
+        jinx
+        keychain-environment
+        keyfreq
+        lingva
+        lorem-ipsum
+        lua-mode
+        magit
+        magit-delta
+	magit-gptcommit
+	magit-todos
+        marginalia
+        markdown-mode
+        mcp
+        mosey
+        move-dup
+        multiple-cursors
+        multi-line
+        obsidian
+        orderless
+        osx-trash
+        outline-minor-faces
+        package-lint
+        pet
+        popper
+        powershell
+        repeat-help
+        rotate
+        ruff-format
+        smartparens
+        shell-maker
+        ssh-agency
+        standard-themes
+        string-inflection
+        syntax-subword
+        system-packages   ; for use-package-ensure-system-package
+        transpose-frame
+        treesit-auto
+        undo-fu
+        unfill
+        vertico
+        vterm
+        vundo
+        web-mode
+        whole-line-or-region
+        xclip
+        yaml-pro
+        ztree))
 
 ;;; Selected packages sources
 ;;;   Install packages with (package-vc-install-selected-packages)
-(customize-set-variable
- 'package-vc-selected-packages
- `(;; (foo . "0f39eb3fd9")   ; specific revision
-   ;; (bar . nil)            ; any revision
-   (acp :url "https://github.com/xenodium/acp.el.git" :rev :newest)
-   (agent-shell :url "https://github.com/xenodium/agent-shell" :rev :newest)
-   ;; (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
-   (buffer-tail-mode :url "https://github.com/sonofjon/buffer-tail-mode.el.git" :rev :newest)
-   (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
-   (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el.git" :rev :newest)
-   (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
-   (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
-   (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
-   (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
-   (hideshow-cycle :url "https://github.com/sonofjon/hideshow-cycle.el" :rev :newest)
-   (inheritenv :url "https://github.com/purcell/inheritenv.git"  :rev :newest)
-   ;; (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
-   (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
-   (monet :url "https://github.com/stevemolitor/monet.git" :rev :newest)
-   (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
-   (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)
-   (restore-killed :url "https://github.com/sonofjon/restore-killed.el" :rev :newest)))
-   ;; (sinister :url "https://github.com/positron-solutions/sinister" :rev :newest)))
+(setq package-vc-selected-packages
+      `(;; (foo . "0f39eb3fd9")   ; specific revision
+        ;; (bar . nil)            ; any revision
+        (acp :url "https://github.com/xenodium/acp.el.git" :rev :newest)
+        (agent-shell :url "https://github.com/xenodium/agent-shell" :rev :newest)
+        ;; (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
+        (buffer-tail-mode :url "https://github.com/sonofjon/buffer-tail-mode.el.git" :rev :newest)
+        (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
+        (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el.git" :rev :newest)
+        (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
+        (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
+        (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
+        (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
+        (hideshow-cycle :url "https://github.com/sonofjon/hideshow-cycle.el" :rev :newest)
+        (inheritenv :url "https://github.com/purcell/inheritenv.git"  :rev :newest)
+        ;; (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
+        (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
+        (monet :url "https://github.com/stevemolitor/monet.git" :rev :newest)
+        (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
+        (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)
+        (restore-killed :url "https://github.com/sonofjon/restore-killed.el" :rev :newest)
+        ;; (sinister :url "https://github.com/positron-solutions/sinister" :rev :newest)
+        ))
 
 ;; Install selected packages
 (package-install-selected-packages)
@@ -2915,15 +2915,15 @@ Elisp code explicitly in arbitrary buffers.")
   :after (:any modus-themes ef-themes standard-themes)
   :config
   (cond ((eq aj8/my-os 'macos)   ; macOS
-         (customize-set-variable 'circadian-themes '((:sunrise . ef-duo-light)
-                                                     (:sunset  . ef-duo-dark))))
+         (setq circadian-themes '((:sunrise . ef-duo-light)
+                                  (:sunset  . ef-duo-dark))))
         ((eq aj8/my-os 'wsl)     ; WSL
-         (customize-set-variable 'circadian-themes '((:sunrise . standard-light)
-                                                     (:sunset  . standard-dark))))
+         (setq circadian-themes '((:sunrise . standard-light)
+                                  (:sunset  . standard-dark))))
         ((eq aj8/my-os 'linux)   ; Linux
 
-         (customize-set-variable 'circadian-themes '((:sunrise . modus-operandi)
-                                                     (:sunset  . modus-vivendi))))
+         (setq circadian-themes '((:sunrise . modus-operandi)
+                                  (:sunset  . modus-vivendi))))
         (t (user-error "Unexpected system-name: %s" (system-name))))
   (circadian-setup))
 
