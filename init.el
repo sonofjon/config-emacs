@@ -1699,7 +1699,7 @@ the window so that the streaming position appears near the bottom."
 ;; restore-killed (restore killed buffers and files)
 (use-package restore-killed
   :demand t
-  :diminish
+  :diminish restore-killed-mode
   :custom
   ;; Maximum number of killed files to store
   (restore-killed-file-max 20)
