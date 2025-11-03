@@ -1350,7 +1350,7 @@
 
 ;; monet (Claude Code MCP over websockets)
 (use-package monet
-  :disabled
+  ;; :disabled
   :diminish
   :custom
   ;; Disable prefix key
@@ -1362,7 +1362,7 @@
 
 ;; claude-code (Claude Code Emacs integration)
 (use-package claude-code
-  :disabled
+  ;; :disabled
   :bind-keymap ("C-c a" . claude-code-command-map)
   :init
   (which-key-add-key-based-replacements "C-c a" "ai")
@@ -1395,6 +1395,7 @@
 
 ;; claude-code-ide (Claude Code integration for Emacs)
 (use-package claude-code-ide
+  :disabled
   :bind ("C-c a" . claude-code-ide-menu)
   :init
   (which-key-add-key-based-replacements "C-c a" "ai")
