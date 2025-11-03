@@ -1210,17 +1210,17 @@
       (window-height . ,aj8/side-window-height)
       (side . top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(Messages\\|Warnings\\|Native-compile-Log\\|Async-native-compile-log\\)\\*"
+     ("^\\*\\(Messages\\|Warnings\\|Native-compile-Log\\|Async-native-compile-log\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("magit-process:.*"
+     ("^magit-process:.*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
+     ("^\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . top)
@@ -1236,19 +1236,19 @@
      ;;  (side . right)
      ;;  (slot . -1)
      ;;  (window-parameters . ((no-delete-other-windows . t))))
-     ("\\(magit-diff:\\).*"
+     ("^\\(magit-diff:\\).*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
       (slot . 1)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("\\(COMMIT_EDITMSG\\|magit:\\|magit-log.*:\\|magit-reflog:\\|magit-log-select:\\).*"
+     ("^\\(COMMIT_EDITMSG\\|magit:\\|magit-log.*:\\|magit-reflog:\\|magit-log-select:\\).*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
       (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("\\(magit-revision:\\|magit-stash:\\).*"
+     ("^\\(magit-revision:\\|magit-stash:\\).*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
@@ -1257,7 +1257,7 @@
      ;;
      ;;   Help
      ;;
-     ("\\*\\(Apropos\\|Help\\|helpful.*\\|info.*\\|Man.*\\|WoMan.*\\)\\*"
+     ("^\\*\\(Apropos\\|Help\\|helpful.*\\|info.*\\|Man.*\\|WoMan.*\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
@@ -1274,20 +1274,20 @@
       (side . right)
       (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|claude-code.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
+     ("^\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|claude-code.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
       (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("\\(Claude.*\\|Codex.*\\|Gemini.*\\|gptel-.*\\.\\(org\\|md\\)\\)"
+     ("^\\(Claude.*\\|Codex.*\\|Gemini.*\\|gptel-.*\\.\\(org\\|md\\)\\)"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
       (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
      ;; MAYBE: eww doesn't work initially
-     ("\\*\\(eww:.*\\|gptel-reasoning\\)\\*"
+     ("^\\*\\(eww:.*\\|gptel-reasoning\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
@@ -1296,7 +1296,7 @@
      ;;
      ;; Bottom side window
      ;;
-     ("\\*\\(e?shell\\|v?term\\)\\*"
+     ("^\\*\\(e?shell\\|v?term\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . bottom)
@@ -1304,7 +1304,7 @@
      ;;
      ;; Bottom buffer (not side window)
      ;;
-     ("\\*Embark Actions\\*"
+     ("^\\*Embark Actions\\*"
       (display-buffer-reuse-mode-window display-buffer-at-bottom)
       (window-height . fit-window-to-buffer)
       (window-parameters . ((no-other-window . t)
