@@ -1220,7 +1220,7 @@
       (window-height . ,aj8/side-window-height)
       (side . top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("^\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|.*-ls\\(::.*\\)?\\)\\*"
+     ("^\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|vc-git.*\\|.*-ls\\(::.*\\)?\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . top)
