@@ -150,7 +150,6 @@
         outline-minor-faces
         package-lint
         pet
-        popper
         powershell
         repeat-help
         rotate
@@ -3097,48 +3096,6 @@ Elisp code explicitly in arbitrary buffers.")
   ;;               (cons \"^.*\\.pyc\" ztree-diff-filter-list)))
 
 ;;; Windows
-
-;; popper (summon and dismiss buffers as popups)
-;;   TODO: popper commands don't work well
-(use-package popper
-  :demand t  ; note that :demand and :after can be combined
-             ; (ensures popper is required, not auto-loaded, after project)
-  :after project   ; needed for popper-group-by-project
-  :bind (("C-`"   . popper-toggle)
-         ;; ("M-`"   . popper-cycle)   ; TODO: conflicts with consult
-         ("C-M-`" . popper-toggle-type))
-  :custom
-  (popper-reference-buffers
-   '("\\*\\(Messages\\|Warnings\\)\\*"
-     "\\*\\(Async-native-compile-log\\|.*ls.*\\)\\*"
-     "\\*\\(Bookmark List\\|Embark Collect:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|package update results\\)\\*"
-     "magit.*"
-     backtrace-mode
-     compilation-mode
-     dired-mode
-     help-mode
-     helpful-mode
-     Info-mode
-     tabulated-list-mode
-     "\\*eww.*\\*"
-     "\\*Apropos\\*"
-     "\\*\\(Man\\|WoMan\\).*\\*"
-     "^\\*eshell.*\\*$" eshell-mode
-     "^\\*shell.*\\*$" shell-mode
-     "^\\*term.*\\*$" term-mode
-     "\\*tex-shell\\*"))
-     ;; (completion-list-mode . hide)))
-  ;; Group by project
-  (popper-group-function #'popper-group-by-project)
-  ;; No display control (use display-buffer-alist)
-  (popper-display-control nil)
-  ;; Disable mode-line
-  ;; (popper-mode-line nil)
-  :config
-  ;; Enable popper
-  (popper-mode 1)
-  ;; Show echo area hints
-  (popper-echo-mode 1))
 
 ;; rotate (rotate the layout of Emacs)
 (use-package rotate
