@@ -1566,7 +1566,7 @@ the window so that the streaming position appears near the bottom."
   (add-to-list 'gptel-directives
                `(coder . ,(with-temp-buffer
                             (insert-file-contents
-                             (expand-file-name "data/gptel-directive.md"
+                             (expand-file-name "data/directive.md"
                                                user-emacs-directory))
                             (string-trim (buffer-string))))
                t)
