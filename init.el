@@ -1347,6 +1347,7 @@
 ;; monet (Claude Code MCP over websockets)
 (use-package monet
   :disabled
+  :diminish
   :custom
   ;; Disable prefix key
   (monet-prefix-key nil)
@@ -1695,6 +1696,7 @@ the window so that the streaming position appears near the bottom."
 ;; restore-killed (restore killed buffers and files)
 (use-package restore-killed
   :demand t
+  :diminish
   :custom
   ;; Maximum number of killed files to store
   (restore-killed-file-max 20)
