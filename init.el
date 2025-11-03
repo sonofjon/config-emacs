@@ -1668,9 +1668,10 @@ the window so that the streaming position appears near the bottom."
 
 
 ;; mcp-server (pure Elisp MCP Server)
-(use-package mcp-server
-  :config
-  (add-hook 'emacs-startup-hook #'mcp-server-start-unix))
+(use-package mcp-server)
+  ;; :config
+  ;; Start server
+  ;; (add-hook 'emacs-startup-hook #'mcp-server-start-unix))
 
 ;;; Buffers
 
