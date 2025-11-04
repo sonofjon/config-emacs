@@ -319,6 +319,7 @@ If the current window is a side window use the regular
           (unless (eq buffer (current-buffer))
             (puthash buffer t other-project-buffers)))
         ;; Only switch if there are other project buffers to switch to
+        ;;   TODO: This does not work
         (when (and (cdr-safe project-buffers)
                    (> (hash-table-count other-project-buffers) 0))
           (while (and (< counter max-iterations)
@@ -328,6 +329,7 @@ If the current window is a side window use the regular
     (apply orig-fun args)))
 
 ;; Switch to next project buffer
+;;   TODO: If not in a project, switch to buffers in the same dir
 (defun my/project-next-buffer ()
   "Switch to the next project buffer, and skip irrelevant buffers.
 If the current window is a side window don't skip buffers."

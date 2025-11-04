@@ -1189,6 +1189,7 @@
   ;; Obey display actions when switching buffers
   (switch-to-buffer-obey-display-actions t)
   ;; Window rules
+  ;;   TODO: gptel-.* buffer open in both regular window and side window
   (display-buffer-alist
    `(;;
      ;; Example using mp-make-display-buffer-matcher-function
