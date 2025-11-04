@@ -1361,8 +1361,11 @@
   (monet-prefix-key nil)
   ;; (monet-prefix-key "C-c a C-m"))
   ;; Use Ediff
-  (monet-diff-tool #'monet-ediff-tool)   ; nil for disable
-  (monet-diff-cleanup-tool #'monet-ediff-cleanup-tool))
+  ;;   Requires proper auto-revert, see claude-code section
+  ;; (monet-diff-tool #'monet-ediff-tool)
+  ;; (monet-diff-cleanup-tool #'monet-ediff-cleanup-tool)
+  ;; Disable diff tool
+  (monet-diff-tool nil))
 
 ;; claude-code (Claude Code Emacs integration)
 (use-package claude-code
