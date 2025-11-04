@@ -1190,6 +1190,7 @@
   (switch-to-buffer-obey-display-actions t)
   ;; Window rules
   ;;   TODO: gptel-.* buffer open in both regular window and side window
+  ;;   TODO: patterns should match case sensitively
   (display-buffer-alist
    `(;;
      ;; Example using mp-make-display-buffer-matcher-function
