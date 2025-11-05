@@ -1372,6 +1372,7 @@
 ;; claude-code (Claude Code Emacs integration)
 (use-package claude-code
   ;; :disabled
+  :diminish
   :bind-keymap ("C-c a" . claude-code-command-map)
   :init
   (which-key-add-key-based-replacements "C-c a" "ai")
