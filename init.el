@@ -1504,7 +1504,7 @@
           "dashscope-intl.aliyuncs.com" "apikey")
     :stream t
     :models '(qwen3-coder-plus-2025-09-23))
-;; === Deepseek ===
+  ;; === Deepseek ===
   (gptel-make-deepseek "Deepseek"
     :key (gptel-api-key-from-auth-source "api.deepseek.com" "apikey")
     :stream t)
@@ -1606,7 +1606,7 @@ the window so that the streaming position appears near the bottom."
   ;; Enable MCP
   (require 'gptel-integrations))
 
-;; gptel-quick (quick LLM lookups in Emacs) - [source package]
+;; gptel-quick (quick LLM lookups in Emacs)
 (use-package gptel-quick
   :bind ("C-c t h" . gptel-quick))
   ;; :config
@@ -1763,7 +1763,7 @@ the window so that the streaming position appears near the bottom."
               ("C-c C-M-<right>" . markdown-demote)
               ("C-c C-M-<left>" . markdown-promote)))
 
-;; markdown-links (insert Markdown links from various sources) - [source package]
+;; markdown-links (insert Markdown links from various sources)
 (use-package markdown-links
   :after markdown-mode
   :commands (markdown-links-insert-from-files
@@ -2274,7 +2274,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Editing
 
-;; combobulate (structured editing and navigation in Emacs with Tree-Sitter) - [source package]
+;; combobulate (structured editing and navigation in Emacs with Tree-Sitter)
 ;;   Missing functionality: barf, slurp, forward/backward sexp (navigate
 ;;   by parens), ...
 ;;
@@ -3062,7 +3062,7 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package transpose-frame
   :defer)
 
-;; sinister (split-window-left superiority) - [source package]
+;; sinister (split-window-left superiority)
 (use-package sinister
   :disabled
   :custom

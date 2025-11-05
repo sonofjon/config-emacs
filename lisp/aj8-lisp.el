@@ -173,6 +173,7 @@ function.  ORIG-FUN should be `gptel'."
 (advice-add 'gptel :around #'aj8/gptel-write-buffer)
 
 ;; Auto-save gptel buffers
+;;   Also see aj8/no-backup-regexp
 (defun aj8/gptel-auto-save-chat-buffer (beg end)
   "Auto-save gptel chat buffer after LLM response.
 Only saves if the current buffer is a modified gptel chat buffer with a
@@ -185,8 +186,6 @@ and end positions, which are required by
              (buffer-modified-p))
         (save-buffer)
     (message "Auto-saved gptel buffer")))
-
-;; Also see aj8/no-backup-regexp
 
 ;; Display gptel reasoning buffer
 (defun aj8/gptel-display-reasoning-buffer (beg end)
@@ -570,7 +569,7 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
 (defcustom aj8/consult-git-grep-excludes
   '("**/archive/**"       ;; exclude any archive/ tree
     "**/build/**")        ;; exclude any build/ tree
-  "List of Git pathspec globs to exclude from `consult-git-grep'."
+  "List of Git path globs to exclude from `consult-git-grep'."
   :type '(repeat string)
   :group 'aj8-lisp)
 
