@@ -89,8 +89,6 @@
 (setq package-selected-packages
       '(agent-shell
         ahk-mode
-        all-the-icons
-        all-the-icons-dired
         ansible
         benchmark-init
         cape
@@ -2714,16 +2712,6 @@ Elisp code explicitly in arbitrary buffers.")
           (expand-file-name "dashboard-banner.txt" user-emacs-directory)))
   ;; Add startup hook
   (dashboard-setup-startup-hook))
-
-;; all-the-icons (a library for inserting developer icons)
-;;   Usage: M-x all-the-icons-install-fonts
-(use-package all-the-icons
-  :if (display-graphic-p))
-
-;; all-the-icons-dired (shows icons for each file in dired mode)
-(use-package all-the-icons-dired
-  :if (display-graphic-p)
-  :hook (dired-mode . all-the-icons-dired-mode))
 
 ;; ef-themes (colorful and legible themes)
 (use-package ef-themes
