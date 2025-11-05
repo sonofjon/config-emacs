@@ -140,7 +140,6 @@
         mosey
         move-dup
         multiple-cursors
-        multi-line
         obsidian
         orderless
         osx-trash
@@ -2352,13 +2351,6 @@ Elisp code explicitly in arbitrary buffers.")
                      ("m" . mc/mark-more-like-this-extended)
                      ;; ("" . mc/mark-all-dwim)
                      ("e" . mc/edit-lines)))
-
-;; multi-line (multi-line statements)
-(use-package multi-line
-  ;; Demand multi-line to avoid failure to load mode specific strategies
-  ;;   (https://github.com/IvanMalison/multi-line/issues/8)
-  :demand t
-  :bind ("C-c n" . multi-line))
 
 ;; repeat-help (display keybindings for repeat-mode)
 (use-package repeat-help
