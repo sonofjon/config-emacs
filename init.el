@@ -188,7 +188,6 @@
         (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
         (hideshow-cycle :url "https://github.com/sonofjon/hideshow-cycle.el" :rev :newest)
         (inheritenv :url "https://github.com/purcell/inheritenv.git"  :rev :newest)
-        ;; (llm-tool-collection :url "https://github.com/skissue/llm-tool-collection.git" :rev :newest)
         (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
         (mcp-server :url "https://github.com/rhblind/emacs-mcp-server.git" :rev :newest)
         (monet :url "https://github.com/stevemolitor/monet.git" :rev :newest)
@@ -1640,20 +1639,6 @@ the window so that the streaming position appears near the bottom."
   ;; (plist-put (gptel-get-preset 'coding) :post #'gptel-tk-enable-builtin-tools))
   ;; Set built-in tools in preset
   (plist-put (gptel-get-preset 'coding) :tools (gptel-tk-get-tool-names)))
-
-;; llm-tool-collection (a crowdsourced collection of tools to empower Large Language Models in Emacs) - [source package]
-(use-package llm-tool-collection
-  :disabled
-  :after gptel
-  :config
-  ;; Register all tools
-  (mapcar (apply-partially #'apply #'gptel-make-tool)
-          (llm-tool-collection-get-all)))
-  ;; ;; Register one tool
-  ;; (apply #'gptel-make-tool llm-tc/list-directory)
-  ;; ;; Register one category
-  ;; (mapcar (apply-partially #'apply #'gptel-make-tool)
-  ;;       (llm-tool-collection-get-category "filesystem")))
 
 ;; mcp (Model Context Protocol)
 (use-package mcp
