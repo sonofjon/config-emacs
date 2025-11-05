@@ -2875,7 +2875,7 @@ Elisp code explicitly in arbitrary buffers.")
                                (car (auth-source-search
                                      :host "api.openai.com"
                                      :user "apikey")))
-                         :chat-model "gpt-5-mini"))
+                         :chat-model "gpt-4.1"))
   ;; Set up LLM provider: Gemini
   ;; (setq magit-gptcommit-llm-provider
   ;;       (make-llm-gemini :key (auth-info-password
