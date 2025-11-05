@@ -183,7 +183,6 @@
         (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
         (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el.git" :rev :newest)
         (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
-        (copilot :url "https://github.com/copilot-emacs/copilot.el.git" :rev :newest)
         (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
         (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
         (hideshow-cycle :url "https://github.com/sonofjon/hideshow-cycle.el" :rev :newest)
@@ -1222,7 +1221,7 @@
       (window-height . ,aj8/side-window-height)
       (side . top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("^\\*\\(copilot events\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|vc-git.*\\|.*-ls\\(::.*\\)?\\)\\*"
+     ("^\\*\\(EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|vc-git.*\\|.*-ls\\(::.*\\)?\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . top)
@@ -1725,33 +1724,6 @@ the window so that the streaming position appears near the bottom."
   :defer)
   ;; :mode "\\.yml$"
   ;; :hook (yaml-mode . (lambda () (ansible 1))))
-
-;; copilot (an unofficial Copilot plugin for Emacs) - [source package]
-(use-package copilot
-  ;; :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-mode-map
-              ("TAB" . copilot-complete)
-              ("<backtab>" . 'copilot-accept-completion)
-              ("M-<right>" . 'copilot-accept-completion-by-word)
-              ("M-<left>" . 'copilot-accept-completion-by-line)
-              ("M-p" . 'copilot-previous-completion)
-              ("M-n" . 'copilot-next-completion)
-         :map copilot-completion-map
-              ("C-g" . 'copilot-clear-overlay))
-  :custom
-  ;; Show completions automatically
-  (copilot-enable-predicates '(copilot--buffer-changed))
-  ;; Don't show completions when Corfu is active
-  (copilot-disable-predicates '(corfu-popup-active-p))
-  :config
-  (defun corfu-popup-active-p ()
-    "Return non-nil if a Corfu popup is active in terminal."
-    (when (boundp 'corfu-terminal--popup)
-      corfu-terminal--popup))
-  ;; Clear overlay
-  (add-hook 'post-command-hook #'copilot-clear-overlay))
-  ;; Enable Copilot globally
-  ;; (global-copilot-mode 1))
 
 ;; lua-mode (major-mode for editing Lua scripts)
 (use-package lua-mode
