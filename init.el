@@ -1037,13 +1037,39 @@
   ;; (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-ts-mode)))
 
 ;; tramp (Transparent Remote (file) Access, Multiple Protocol)
-;; TODO: Disable tramp debug buffer
+;;   References: https://www.gnu.org/software/tramp/#Frequently-Asked-Questions-1
+;;               https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./
 (use-package tramp
   :ensure nil   ; don't install built-in packages
   :custom
   ;; Override the HISTFILE
   (tramp-histfile-override t)
+  ;; Only use Git
+  (vc-handled-backends '(Git))
+  ;; Disable file lock
+  (remote-file-name-inhibit-locks t)
+  ;; Don't auto save
+  (remote-file-name-inhibit-auto-save t)
+  (remote-file-name-inhibit-auto-save-visited t)
+  ;; Reduce message verbosity
+  (tramp-verbose 2)
+  ;; Use rsync for local-remote copying
+  (tramp-default-method "rsync")   ; default is "scp"
+  ;; Use scp for remote-remote copying
+  (tramp-use-scp-direct-remote-copying t)
+  ;; Optimize copy method
+  (tramp-copy-size-limit (* 1024 1024))   ; 1MB
   :config
+  ;; Use direct async method
+  ;;   May cause problems with files that use DOS line endings:
+  ;;   https://github.com/magit/magit/issues/5220
+  ;; (connection-local-set-profile-variables
+  ;;  'remote-direct-async-process
+  ;;  '((tramp-direct-async-process . t)))
+  ;; (connection-local-set-profiles
+  ;;  '(:application tramp :protocol "scp")
+  ;;  'remote-direct-async-process)
+  ;; (setq magit-tramp-pipe-stty-settings 'pty)
   ;; Add mode line indicator
   (add-to-list 'global-mode-string '(:eval (aj8/tramp-indicator)) t))
 
