@@ -179,9 +179,7 @@
         (monet :url "https://github.com/stevemolitor/monet.git" :rev :newest)
         (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
         (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)
-        (restore-killed :url "https://github.com/sonofjon/restore-killed.el" :rev :newest)
-        ;; (sinister :url "https://github.com/positron-solutions/sinister" :rev :newest)
-        ))
+        (restore-killed :url "https://github.com/sonofjon/restore-killed.el" :rev :newest)))
 
 ;; Install selected packages
 (package-install-selected-packages)
@@ -2925,18 +2923,6 @@ Elisp code explicitly in arbitrary buffers.")
   ;;               (cons \"^.*\\.pyc\" ztree-diff-filter-list)))
 
 ;;; Windows
-
-;; sinister (split-window-left superiority)
-(use-package sinister
-  :disabled
-  :custom
-  ;; Number of lines to protect from incidental scrolling
-  (sinister-stillness-margin 20)   ; default 12
-  :config
-  ;; Disable automatic scrolling with minibuffer use
-  (sinister-stillness-mode 1))
-  ;; Split window defaults
-  ;; (sinister-misc-settings))
 
 ;;; Web
 
