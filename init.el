@@ -141,14 +141,12 @@
         package-lint
         powershell
         repeat-help
-        rotate
         ruff-format
         smartparens
         ssh-agency
         standard-themes
         string-inflection
         system-packages   ; for use-package-ensure-system-package
-        transpose-frame
         treesit-auto
         undo-fu
         unfill
@@ -2927,14 +2925,6 @@ Elisp code explicitly in arbitrary buffers.")
   ;;               (cons \"^.*\\.pyc\" ztree-diff-filter-list)))
 
 ;;; Windows
-
-;; rotate (rotate the layout of Emacs)
-(use-package rotate
-  :disabled)
-
-;; transpose-frame (transpose window arrangement in a frame)
-(use-package transpose-frame
-  :defer)
 
 ;; sinister (split-window-left superiority)
 (use-package sinister
