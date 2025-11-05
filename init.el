@@ -130,7 +130,6 @@
         jinx
         keychain-environment
         keyfreq
-        lingva
         lorem-ipsum
         lua-mode
         magit
@@ -2331,10 +2330,6 @@ Elisp code explicitly in arbitrary buffers.")
               ("<backtab>" . hs-cycle-global))
   :custom
   (hs-cycle-max-depth nil))
-
-;; lingva (access Google Translate without tracking via lingva.ml)
-(use-package lingva
-  :bind ("C-c x t" . lingva-translate))
 
 ;; lorem-ipsum (insert dummy pseudo latin text)
 (use-package lorem-ipsum
