@@ -1647,6 +1647,19 @@ the window so that the streaming position appears near the bottom."
 
 ;;; Buffers
 
+;; buffer-tail-mode (auto-scroll buffers to end)
+(use-package buffer-tail-mode
+  :demand t
+  :config
+  ;; Enable auto-scrolling for the *Messages* buffer
+  ;;   Note that the *Messages* buffer is created early during startup
+  ;;   (before this hook is set), so this hook only applies to newly
+  ;;   created *Messages* buffers.  The `with-current-buffer' statement
+  ;;   applies the mode to the current *Messages* buffer.
+  ;; (add-hook 'messages-buffer-mode-hook
+  ;;           (lambda () (buffer-tail-mode 1)))
+  (with-current-buffer "*Messages*" (buffer-tail-mode 1)))
+
 ;; dimmer (visually highlight the selected buffer)
 (use-package dimmer
   :custom
@@ -1667,19 +1680,6 @@ the window so that the streaming position appears near the bottom."
   (dimmer-configure-which-key)
   ;; Enable dimmer-mode
   (dimmer-mode 1))
-
-;; buffer-tail-mode (auto-scroll buffers to end)
-(use-package buffer-tail-mode
-  :demand t
-  :config
-  ;; Enable auto-scrolling for the *Messages* buffer
-  ;;   Note that the *Messages* buffer is created early during startup
-  ;;   (before this hook is set), so this hook only applies to newly
-  ;;   created *Messages* buffers.  The `with-current-buffer' statement
-  ;;   applies the mode to the current *Messages* buffer.
-  ;; (add-hook 'messages-buffer-mode-hook
-  ;;           (lambda () (buffer-tail-mode 1)))
-  (with-current-buffer "*Messages*" (buffer-tail-mode 1)))
 
 ;; restore-killed (restore killed buffers and files)
 (use-package restore-killed
@@ -1708,10 +1708,6 @@ the window so that the streaming position appears near the bottom."
   ;; :mode "\\.yml$"
   ;; :hook (yaml-mode . (lambda () (ansible 1))))
 
-;; lua-mode (major-mode for editing Lua scripts)
-(use-package lua-mode
-  :mode ("\\.lua$"))
-
 ;; csv-mode (major mode for editing comma/char separated values)
 (use-package csv-mode
   :mode ("\\.csv$")
@@ -1727,6 +1723,10 @@ the window so that the streaming position appears near the bottom."
     "Align visible fields."
     (interactive "P")
     (csv-align-fields nil (window-start) (window-end))))
+
+;; lua-mode (major-mode for editing Lua scripts)
+(use-package lua-mode
+  :mode ("\\.lua$"))
 
 ;; markdown-mode (major-mode for editing Markdown files)
 (use-package markdown-mode
@@ -1822,6 +1822,10 @@ the window so that the streaming position appears near the bottom."
   ;; TODO: Why use ruff in any Eglot buffer, not just Python?
   :hook (eglot-managed-mode . flymake-ruff-load))   ; with eglot
 
+;; package-lint (a linting library for elisp package authors)
+(use-package package-lint
+  :defer)
+
 ;; ruff-format (Ruff format Python source)
 (use-package ruff-format
   :disabled
@@ -1839,10 +1843,6 @@ the window so that the streaming position appears near the bottom."
   (treesit-auto-add-to-auto-mode-alist 'all)
   ;; Enable globally
   (global-treesit-auto-mode))
-
-;; package-lint (a linting library for elisp package authors)
-(use-package package-lint
-  :defer)
 
 ;;; Completion
 
@@ -2457,6 +2457,11 @@ Elisp code explicitly in arbitrary buffers.")
   (which-key-add-key-based-replacements "C-c i" "inflection"))
                                         ; add label for prefix key
 
+;; unfill (do the opposite of fill-paragraph or fill-region)
+(use-package unfill
+  :bind (("M-S-q" . 'unfill-paragraph)
+         ("C-M-S-q" . 'unfill-region)))
+
 ;; whole-line-or-region (operate on current line if region undefined)
 (use-package whole-line-or-region
   :defer 1
@@ -2464,11 +2469,6 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Use whole-line-or-region-mode everywhere
   (whole-line-or-region-global-mode 1))
-
-;; unfill (do the opposite of fill-paragraph or fill-region)
-(use-package unfill
-  :bind (("M-S-q" . 'unfill-paragraph)
-         ("C-M-S-q" . 'unfill-region)))
 
 ;; undo-fu (undo helper with redo)
 ;;   Note that undo-in-region is disabled by default
@@ -2676,6 +2676,25 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Theme
 
+;; circadian (theme-switching based on daytime)
+(use-package circadian
+  ;; :disabled  ; 0.3s startup time
+  :defer 60
+  :after (:any modus-themes ef-themes standard-themes)
+  :config
+  (cond ((eq aj8/my-os 'macos)   ; macOS
+         (setq circadian-themes '((:sunrise . ef-duo-light)
+                                  (:sunset  . ef-duo-dark))))
+        ((eq aj8/my-os 'wsl)     ; WSL
+         (setq circadian-themes '((:sunrise . standard-light)
+                                  (:sunset  . standard-dark))))
+        ((eq aj8/my-os 'linux)   ; Linux
+
+         (setq circadian-themes '((:sunrise . modus-operandi)
+                                  (:sunset  . modus-vivendi))))
+        (t (user-error "Unexpected system-name: %s" (system-name))))
+  (circadian-setup))
+
 ;; ef-themes (colorful and legible themes)
 (use-package ef-themes
   ;; Themes:
@@ -2756,26 +2775,20 @@ Elisp code explicitly in arbitrary buffers.")
       (load-theme 'standard-light :no-confirm)
     (load-theme 'standard-dark :no-confirm)))
 
-;; circadian (theme-switching based on daytime)
-(use-package circadian
-  ;; :disabled  ; 0.3s startup time
-  :defer 60
-  :after (:any modus-themes ef-themes standard-themes)
-  :config
-  (cond ((eq aj8/my-os 'macos)   ; macOS
-         (setq circadian-themes '((:sunrise . ef-duo-light)
-                                  (:sunset  . ef-duo-dark))))
-        ((eq aj8/my-os 'wsl)     ; WSL
-         (setq circadian-themes '((:sunrise . standard-light)
-                                  (:sunset  . standard-dark))))
-        ((eq aj8/my-os 'linux)   ; Linux
-
-         (setq circadian-themes '((:sunrise . modus-operandi)
-                                  (:sunset  . modus-vivendi))))
-        (t (user-error "Unexpected system-name: %s" (system-name))))
-  (circadian-setup))
-
 ;;; Version control
+
+;; diff-hl (highlight uncommitted changes using VC)
+(use-package diff-hl
+  ;; :disabled
+  :config
+  ;; Integration with Magit
+  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
+  ;; Put highlights in the margin in terminal
+  (when (display-graphic-p)
+    (setq diff-hl-margin-mode t))
+  ;; Use diff-hl-mode everywhere
+  (global-diff-hl-mode 1))
 
 ;; magit (a Git porcelain inside Emacs)
 (use-package magit
@@ -2895,19 +2908,6 @@ Elisp code explicitly in arbitrary buffers.")
   :config
   ;; Exclude some dirs from search
   (add-to-list 'magit-todos-exclude-globs "**/archive/*"))
-
-;; diff-hl (highlight uncommitted changes using VC)
-(use-package diff-hl
-  :disabled
-  :config
-  ;; Integration with Magit
-  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
-  ;; Put highlights in the margin in terminal
-  (when (display-graphic-p)
-    (setq diff-hl-margin-mode t))
-  ;; Use diff-hl-mode everywhere
-  (global-diff-hl-mode 1))
 
 ;; ztree (text mode directory tree)
 ;;   MAYBE: Alternative package: diffed
