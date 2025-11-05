@@ -102,8 +102,6 @@
         corfu-terminal
         csv-mode
         dashboard
-        devdocs
-        devdocs-browser
         dired-sidebar
         diff-hl
         diminish
@@ -2600,44 +2598,6 @@ Elisp code explicitly in arbitrary buffers.")
   :bind (:map minibuffer-local-map ("M-m" . marginalia-cycle))
   :config
   (marginalia-mode 1))
-
-;; devdocs (Emacs viewer for DevDocs)
-;;   Usage: M-x devdocs-install
-(use-package devdocs
-  :bind ("C-c H d" . devdocs-lookup)
-  :custom
-  ;; Select devdocs window
-  (devdocs-window-select t)
-  :config
-  (add-hook 'yaml-mode-hook
-            (lambda () (setq-local devdocs-current-docs '("ansible"))))
-  (add-hook 'sh-base-mode-hook
-            (lambda () (setq-local devdocs-current-docs '("bash"))))
-  (add-hook 'latex-mode-hook
-            (lambda () (setq-local devdocs-current-docs '("latex"))))
-  (add-hook 'lua-mode-hook
-            (lambda () (setq-local devdocs-current-docs '("lua~5.4"))))
-  (add-hook 'python-base-mode-hook
-            (lambda () (setq-local devdocs-current-docs '("python~3.11")))))
-
-;; devdocs-browser (browse devdocs.io documents using EWW)
-;;   Usage: M-x devdocs-browser-install-doc
-(use-package devdocs-browser
-  :bind ("C-c H D" . devdocs-browser-open)
-  ;; :custom
-  ;; ;; Select devdocs window
-  ;; (devdocs-window-select t)
-  :custom
-  (devdocs-browser-major-mode-docs-alist '((yaml-mode "Ansible")
-                                           (yaml-ts-mode "Ansible")
-                                           (sh-mode "Bash")
-                                           (bash-ts-mode "Bash")
-                                           (emacs-lisp-mode "Elisp")
-                                           (latex-mode "LaTeX")
-                                           (lua-mode "Lua")
-                                           (lua-ts-mode "Lua")
-                                           (python-mode "Python")
-                                           (python-ts-mode "Python"))))
 
 ;;; Navigation
 
