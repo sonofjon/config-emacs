@@ -1810,10 +1810,6 @@ the window so that the streaming position appears near the bottom."
   :disabled
   :mode ("\\.yml$" . yaml-pro-ts-mode))
 
-;; consult-eglot (query workspace symbol from eglot using consult)
-(use-package consult-eglot
-  :after (consult eglot))
-
 ;; flymake-aspell (Aspell checker for Flymake)
 (use-package flymake-aspell
   :disabled
@@ -1979,6 +1975,10 @@ the window so that the streaming position appears near the bottom."
   ;; Exclude some dirs from consult-git-grep
   (advice-add 'consult--git-grep-make-builder :around
               #'aj8/consult-git-grep-advice))
+
+;; consult-eglot (query workspace symbol from eglot using consult)
+(use-package consult-eglot
+  :after (consult eglot))
 
 ;; consult-project-extra (consult integration for project.el)
 (use-package consult-project-extra
