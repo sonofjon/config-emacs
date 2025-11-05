@@ -619,6 +619,13 @@
     (define-key eww-mode-map
                 [remap eww-follow-link] #'aj8/eww-follow-link)))
 
+;; files (file input and output commands)
+(use-package files
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Revert without querying
+  (revert-without-query '(".*")))
+
 ;; find-func (find the definition of the Emacs Lisp function near point)
 (use-package find-func
   :ensure nil   ; don't install built-in packages
