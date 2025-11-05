@@ -2300,14 +2300,6 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Disable display of syntax tree
   ;; (combobulate-flash-node nil))
 
-;; hideshow-cycle (cycle code folding with hideshow)
-(use-package hideshow-cycle
-  :bind (:map hs-minor-mode-map
-              ("TAB" . hs-cycle)
-              ("<backtab>" . hs-cycle-global))
-  :custom
-  (hs-cycle-max-depth nil))
-
 ;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
 (use-package move-dup
   :bind (("C-c <up>" . move-dup-move-lines-up)
@@ -2603,6 +2595,14 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Org
 
 ;;; Outline
+
+;; hideshow-cycle (cycle code folding with hideshow)
+(use-package hideshow-cycle
+  :bind (:map hs-minor-mode-map
+              ("TAB" . hs-cycle)
+              ("<backtab>" . hs-cycle-global))
+  :custom
+  (hs-cycle-max-depth nil))
 
 ;; outline-minor-faces (headings faces for outline-minor-mode)
 ;;   See also outline-minor-mode-highlight.
