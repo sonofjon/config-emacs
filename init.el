@@ -2563,11 +2563,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;; reflow (Re-flow Info and Helpful buffers)
 ;;   TODO: This mode doe not seem to be enabled anymore?
 (use-package reflow
-  :after (:any helpful info)
-  :commands (reflow-info-buffer
-             reflow-helpful-buffer
-             reflow-info-mode
-             reflow-helpful-mode)
   :config
   ;; Re-flow Info buffers
   (reflow-info-mode 1)
