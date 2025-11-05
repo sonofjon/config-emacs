@@ -106,7 +106,6 @@
         ef-themes
         embark
         embark-consult
-        erc-hl-nicks
         esup
         exec-path-from-shell
         expreg
@@ -2924,15 +2923,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Windows
 
 ;;; Web
-
-;; erc-hl-nicks (ERC nick highlighter)
-(use-package erc-hl-nicks
-  :disabled
-  :defer
-  :after erc
-  :config
-  (add-to-list 'erc-modules 'hl-nicks)
-  (erc-update-modules))
 
 ;; google-this (a set of functions and bindings to google under point)
 (use-package google-this
