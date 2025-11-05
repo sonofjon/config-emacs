@@ -2484,6 +2484,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; undo-fu (undo helper with redo)
 ;;   Note that undo-in-region is disabled by default
 (use-package undo-fu
+  :disabled
   :bind (("C-c z u" . undo-fu-only-undo)
          ("C-c z r" . undo-fu-only-redo)
          ("C-c z d" . undo-fu-disable-checkpoint))
@@ -2495,6 +2496,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; vundo (visual undo tree)
 (use-package vundo
+  :disabled
   :commands (vundo)
   :bind ("C-c v" . vundo)
   :custom
