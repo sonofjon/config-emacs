@@ -2485,7 +2485,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; vundo (visual undo tree)
 (use-package vundo
   :disabled
-  :commands (vundo)
+  :commands vundo
   :bind ("C-c v" . vundo)
   :custom
   ;; Use compact layout
