@@ -104,7 +104,6 @@
         diminish
         dimmer
         ef-themes
-        elfeed
         embark
         embark-consult
         erc-hl-nicks
@@ -2925,29 +2924,6 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Windows
 
 ;;; Web
-
-;; elfeed (an Emacs Atom/RSS feed reader)
-(use-package elfeed
-  :commands elfeed
-  :bind (:map elfeed-search-mode-map
-              ("g" . elfeed-search-fetch)
-              ("G" . elfeed-search-update--force))
-  :custom
-  ;; Subscriptions
-  (elfeed-feeds '("https://www.reddit.com/r/emacs/.rss"
-                  "https://sachachua.com/blog/category/emacs-news/feed/"))
-  ;; Download folder
-  (elfeed-enclosure-default-dir "~/Downloads/")
-  ;; Default filter
-  ;; (elfeed-search-filter "@6-months-ago +unread")
-  ;; Sort order
-  ;; (elfeed-sort-order 'descending)
-  ;; Use unique buffer names
-  (elfeed-show-unique-buffers t)
-  ;; Layout
-  (elfeed-search-title-max-width 50)    ; default is 70
-  (elfeed-search-title-min-width 16)    ; default is 16
-  (elfeed-search-trailing-width 30))    ; default is 30
 
 ;; erc-hl-nicks (ERC nick highlighter)
 (use-package erc-hl-nicks
