@@ -143,7 +143,6 @@
         osx-trash
         outline-minor-faces
         package-lint
-        pet
         powershell
         repeat-help
         rotate
@@ -1839,13 +1838,6 @@ the window so that the streaming position appears near the bottom."
   :disabled
   :ensure-system-package ruff)
   ;; :hook (python-base-mode . ruff-format-on-save-mode))
-
-;; pet (executable and virtualenv tracker for python-mode)
-(use-package pet
-  :disabled
-  :ensure-system-package dasel
-  :config
-  (add-hook 'python-base-mode-hook (lambda () (pet-mode -1))))
 
 ;; treesit-auto (automatically use tree-sitter enhanced major modes)
 (use-package treesit-auto
