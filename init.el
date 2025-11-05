@@ -111,7 +111,6 @@
         embark
         embark-consult
         erc-hl-nicks
-        eshell-git-prompt
         esup
         exec-path-from-shell
         expreg
@@ -2693,14 +2692,6 @@ Elisp code explicitly in arbitrary buffers.")
          :config
          ;; Match the default Bash shell prompt
          (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")))
-
-;; eshell-git-prompt (some Eshell prompt for Git users)
-(use-package eshell-git-prompt
-  :if (display-graphic-p)
-  :after eshell
-  :config
-  (when (display-graphic-p)
-    (eshell-git-prompt-use-theme 'powerline)))
 
 ;;; Theme
 
