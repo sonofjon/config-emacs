@@ -134,7 +134,6 @@
         lorem-ipsum
         lua-mode
         magit
-        magit-delta
 	magit-gptcommit
 	magit-todos
         marginalia
@@ -3015,24 +3014,6 @@ Elisp code explicitly in arbitrary buffers.")
   (setq aj8/magit-cleanup-buffers t)
   ;; Hook for buffer cleanup
   (add-hook 'magit-mode-hook #'aj8/magit-start-buffer-cleanup-timer))
-
-;; magit-delta (use Delta when displaying diffs in Magit)
-(use-package magit-delta
-  :disabled
-  :hook (magit-mode . magit-delta-mode)
-  :custom
-  ;; Default options
-  (magit-delta-delta-args '("--max-line-distance" "0.6" "--color-only"))
-  ;; Disable +/- markers
-  ;; (magit-delta-hide-plus-minus-markers nil)
-  ;; Dark syntax theme
-  ;;   Options: Monokai Extended, OneHalfDark, Solarized (dark),
-  ;;            gruvbox-light
-  (magit-delta-default-dark-theme "OneHalfDark")
-  ;; Light syntax theme
-  ;;   Options: Monokai Extended Light, OneHalfLight, Solarized (light),
-  ;;            gruvbox-light
-  (magit-delta-default-light-theme "OneHalfLight"))
 
 ;; magit-gptcommit (Git commit with help of GPT)
 (use-package magit-gptcommit
