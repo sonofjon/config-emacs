@@ -130,7 +130,6 @@
         jinx
         keychain-environment
         keyfreq
-        lorem-ipsum
         lua-mode
         magit
 	magit-gptcommit
@@ -2330,10 +2329,6 @@ Elisp code explicitly in arbitrary buffers.")
               ("<backtab>" . hs-cycle-global))
   :custom
   (hs-cycle-max-depth nil))
-
-;; lorem-ipsum (insert dummy pseudo latin text)
-(use-package lorem-ipsum
-  :defer)
 
 ;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
 (use-package move-dup
