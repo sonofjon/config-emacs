@@ -150,7 +150,6 @@
         ssh-agency
         standard-themes
         string-inflection
-        syntax-subword
         system-packages   ; for use-package-ensure-system-package
         transpose-frame
         treesit-auto
@@ -2609,15 +2608,6 @@ Elisp code explicitly in arbitrary buffers.")
               mosey-goto-beginning-of-comment-text
               end-of-line)
     :prefix "eol"))
-
-;; syntax-subword (make operations on words more fine-grained)
-(use-package syntax-subword
-  :disabled
-  :config
-  ;; Don't stop on spaces
-  (setq syntax-subword-skip-spaces t)
-  ;; Use syntax-subword-mode everywhere
-  (global-syntax-subword-mode 1))
 
 ;;; Org
 
