@@ -466,6 +466,12 @@ in that side window rather than shifting to another window."
 
 ;;;; Coding
 
+;; Enable Eglot selectively
+(defun aj8/eglot-ensure-non-remote ()
+  "Enable Eglot only if the buffer is not visiting a remote file."
+  (unless (file-remote-p default-directory)
+    (eglot-ensure)))
+
 ;;; Copy hooks to Treesitter modes
 (defun aj8/copy-hooks-to-treesitter ()
   "Copy standard mode hooks to their Treesitter equivalents.
