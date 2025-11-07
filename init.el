@@ -1866,6 +1866,7 @@ the window so that the streaming position appears near the bottom."
   ;; :hook (python-base-mode . ruff-format-on-save-mode))
 
 ;; treesit-auto (automatically use tree-sitter enhanced major modes)
+;;   TODO: Add LaTeX: https://github.com/latex-lsp/tree-sitter-latex
 (use-package treesit-auto
   :demand t
   :custom
