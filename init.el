@@ -1532,7 +1532,7 @@
     :host "api.moonshot.ai"   ; or "api.moonshot.cn" for the Chinese site
     :key (gptel-api-key-from-auth-source "api.moonshot.ai" "apikey")
     :stream t
-    :models '(kimi-k2-0905-preview))
+    :models '(kimi-k2-0905-thinking))
   ;; === OpenRouter ====
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
@@ -1545,8 +1545,7 @@
               openai/gpt-5-codex
               deepseek/deepseek-chat-v3-0324
               deepseek/deepseek-r1-0528
-              moonshotai/kimi-k2-0905
-              moonshotai/kimi-k2-0905:exacto
+              moonshotai/kimi-k2-thinking
               qwen/qwen3-coder
               qwen/qwen3-coder:free
               qwen/qwen3-coder-plus))
