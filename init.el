@@ -1532,7 +1532,7 @@
     :host "api.moonshot.ai"   ; or "api.moonshot.cn" for the Chinese site
     :key (gptel-api-key-from-auth-source "api.moonshot.ai" "apikey")
     :stream t
-    :models '(kimi-k2-0905-thinking))
+    :models '(kimi-k2-thinking))
   ;; === OpenRouter ====
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
