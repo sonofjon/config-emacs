@@ -747,7 +747,7 @@
 
 ;; modus-themes (elegant, highly legible and customizable themes)
 (use-package modus-themes
-  :if (eq aj8/my-os 'linux)   ; Linux
+  ;; :if (eq aj8/my-os 'linux)   ; Linux
   :ensure nil   ; don't install built-in packages
   ;; :no-require   ; silence use-package-lint warning
   :bind ("<f5>" . modus-themes-toggle)
@@ -2710,17 +2710,18 @@ Elisp code explicitly in arbitrary buffers.")
   :defer 60
   :after (:any modus-themes ef-themes standard-themes)
   :config
-  (cond ((eq aj8/my-os 'macos)   ; macOS
-         (setq circadian-themes '((:sunrise . ef-duo-light)
-                                  (:sunset  . ef-duo-dark))))
-        ((eq aj8/my-os 'wsl)     ; WSL
-         (setq circadian-themes '((:sunrise . standard-light)
-                                  (:sunset  . standard-dark))))
-        ((eq aj8/my-os 'linux)   ; Linux
-
-         (setq circadian-themes '((:sunrise . modus-operandi)
-                                  (:sunset  . modus-vivendi))))
-        (t (user-error "Unexpected system-name: %s" (system-name))))
+  ;; (cond ((eq aj8/my-os 'macos)   ; macOS
+  ;;        (setq circadian-themes '((:sunrise . ef-duo-light)
+  ;;                                 (:sunset  . ef-duo-dark))))
+  ;;       ((eq aj8/my-os 'wsl)     ; WSL
+  ;;        (setq circadian-themes '((:sunrise . standard-light)
+  ;;                                 (:sunset  . standard-dark))))
+  ;;       ((eq aj8/my-os 'linux)   ; Linux
+  ;;        (setq circadian-themes '((:sunrise . modus-operandi)
+  ;;                                 (:sunset  . modus-vivendi))))
+  ;;       (t (user-error "Unexpected system-name: %s" (system-name))))
+  (setq circadian-themes '((:sunrise . modus-operandi)
+                           (:sunset  . modus-vivendi)))
   (circadian-setup))
 
 ;; ef-themes (colorful and legible themes)
@@ -2740,6 +2741,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;;   `ef-themes-load-random'
   ;;   `ef-themes-preview-colors'
   ;;   `ef-themes-preview-colors-current'
+  :disabled
   :if (eq aj8/my-os 'macos)   ; macOS
   :bind ("<f5>" . ef-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
@@ -2767,6 +2769,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; standard-themes (like the default theme but more consistent)
 (use-package standard-themes
+  :disabled
   :if (eq aj8/my-os 'wsl)   ; WSL
   :bind ("<f5>" . standard-themes-toggle)
   ;; Make customizations that affect Emacs faces before loading a theme
