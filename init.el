@@ -1351,7 +1351,10 @@
 (use-package agent-shell)
 
 ;; agent-shell-manager (buffer manager for agent-shell)
-(use-package agent-shell-manager)
+(use-package agent-shell-manager
+  :custom
+  ;; Disable side-window placement
+  (agent-shell-manager-side nil))
 
 ;; ai-code-interface (unified emacs interface supporting LLM clients)
 (use-package ai-code-interface
