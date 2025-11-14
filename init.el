@@ -103,6 +103,7 @@
         diff-hl
         diminish
         dimmer
+        eat
         ef-themes
         embark
         embark-consult
@@ -1313,7 +1314,7 @@
      ;;
      ;; Bottom side window
      ;;
-     ("^\\*\\(e?shell\\|v?term\\)\\*"
+     ("^\\*\\(eat\\|e?shell\\|v?term\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . bottom)
@@ -1395,7 +1396,7 @@
                                         ; add label for prefix key
   :custom
   ;; Set terminal backend
-  (claude-code-terminal-backend 'vterm)   ; default: eat
+  ;; (claude-code-terminal-backend 'vterm)   ; default: eat
   ;; Customize Return key
   ;; (claude-code-newline-keybinding-style 'shift-return-to-send)
   ;; Prevent Claude Code windows from being deleted
@@ -2695,6 +2696,9 @@ Elisp code explicitly in arbitrary buffers.")
          ;;   (vertico-multiform-mode 1))))
 
 ;;; Terminal
+
+;; eat (Emulate A Terminal, in a region, in a buffer and in Eshell)
+(use-package eat)
 
 ;; vterm (fully-featured terminal emulator)
 (eval `(use-package vterm
