@@ -1400,7 +1400,7 @@
   ;; Customize Return key
   ;; (claude-code-newline-keybinding-style 'shift-return-to-send)
   ;; Prevent Claude Code windows from being deleted
-  ;; (claude-code-no-delete-other-windows t)
+  (claude-code-no-delete-other-windows t)
   ;; Automatically select the Claude buffer after opening it
   (claude-code-toggle-auto-select t)
   :config
