@@ -591,7 +591,7 @@
   :ensure nil   ; don't install built-in packages
   :custom
   ;; Default search engine
-  (eww-search-prefix "https://google.com/search?q=")   ; default is duckduckgo
+  ;; (eww-search-prefix "https://kagi.com/search?q=")   ; default is duckduckgo
   ;; Restore Eww buffers
   (eww-restore-desktop t)
   ;; Don't remove duplicates in browsing history
