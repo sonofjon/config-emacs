@@ -117,6 +117,7 @@
         flyspell-correct
         google-this
         gptel
+        gptel-agent
         gptel-magit
         helpful
         hydra
@@ -1635,7 +1636,16 @@ the window so that the streaming position appears near the bottom."
   ;; ;; Set approximate word count of LLM summary
   ;; (gptel-quick-word-count 12))
 
+;; gptel-agent (agentic LLM use for gptel)
+(use-package gptel-agent
+  :disabled
+  :after gptel
+  :config
+  ;; Read files from agents directories
+  (gptel-agent-update))
+
 (use-package gptel-toolkit
+  ;; :disabled
   :after gptel
   :custom
   ;; Exclude some tools
