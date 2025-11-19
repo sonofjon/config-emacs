@@ -541,7 +541,8 @@
   :ensure nil   ; don't install built-in packages
   :custom
   ;; Fill gpg passwords in the minibuffer
-  (epg-pinentry-mode 'loopback)
+  ;;   TODO: loopback does not support password caching with gpg-agent
+  ;; (epg-pinentry-mode 'loopback)   ; default is nil/ask (Emacs/gpg)
   ;; Select keys in the minibuffer
   (epa-keys-select-method 'minibuffer))
 
