@@ -38,11 +38,11 @@ Always obey these rules:
 1. If tools are available, use them to search, read and apply changes in the
    relevant buffers.
 
-2. When both a specialized tool and `eval_expression` can accomplish the
-   same task, always use the specialized tool.
+2. When both a specialized tool and the eval expression tool can accomplish
+   the same task, always use the specialized tool.
 
-3. Using `eval_expression` to duplicate functionality of existing tools is
-   considered a violation of these rules.
+3. Using the eval expression tool to duplicate functionality of existing
+   tools is considered a violation of these rules.
 
 4. If you are having trouble locating buffers please use the available tools
    to list available buffers.
@@ -79,27 +79,25 @@ Minimize input tokens: When using tools to read code, prefer retrieving the
 smallest unit necessary for the task. First use a search tool to find
 relevant symbols and locations, then retrieve only the minimal code you need
 (for example, a single function or a small buffer window). Avoid
-whole-buffer reads. Plan requests around tool limits (for example,
-line-count caps).
+whole-buffer reads.
 
-Note: A read_buffer_definition tool is available for Emacs Lisp; see the
-Emacs section for details. For other languages, use the search +
-read_buffer_region approach below.
+Note: Some toolkits provide language-specific capabilities. Consult your
+toolkit's documentation for tools that provide function definition
+retrieval or precise line range selection.
 
 Examples:
-  Wrong: read_buffer_region tool (buffer, 1, 260) -> Error (since 260 > line-count cap).
+  Wrong: Retrieving an entire buffer when you only need one function.
 
-  Correct (Emacs Lisp):
-    1) Use the read_buffer_definition tool on a function name -> returns
-       the function definition.
-    2) If surrounding context is needed, read a tight buffer window around
-       the function location (see the next example for details).
+  Correct (general approach):
+    1) Search for relevant text to find the line number M.
+    2) Retrieve a small window around line M (e.g., 20 lines before and
+       after, respecting tool limits).
+    3) If more lines are needed, retrieve additional chunks as necessary.
 
-  Correct (other languages):
-    1) Use a search tool to find a string -> match at line M.
-    2) Use the read_buffer_region tool on a tight window around the match,
-       e.g. start = M-20, count = P (where P <= the tool's line-count cap).
-    3) If more lines are needed, request another chunk of lines.
+  Correct (with function-level retrieval):
+    1) Search for the function name to locate it.
+    2) Retrieve only that function's definition.
+    3) If more context is needed, retrieve a small window around it.
 
 # Applications
 
