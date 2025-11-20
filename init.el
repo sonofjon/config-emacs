@@ -309,7 +309,9 @@
          ;;   --group-directories-first requires 'gls' on macOS
          (dired-listing-switches "-agho --group-directories-first")
          ;; Guess target directory
-         (dired-dwim-target t)
+         ;; (dired-dwim-target t)
+         ;; Guess target directory (unless prefix)
+         (dired-dwim-target #'aj8/dired-dwim-target-unless-prefix)
          ;; Don't display free disk space
          (dired-free-space nil)
          ;; Reuse Dired buffers

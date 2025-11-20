@@ -863,6 +863,30 @@ a line below."
 
 ;;;; Files
 
+;; Disable dired-dwim-target with prefix argument
+
+(defun aj8/dired-do-rename-dwim (&optional arg)
+  "Rename files with DWIM target behavior unless called with prefix ARG.
+When called without a prefix argument, temporarily sets
+`dired-dwim-target' to t, making the rename operation suggest the
+directory from another visible Dired buffer as the target.  When called
+with a prefix argument (C-u), temporarily sets `dired-dwim-target' to
+nil, disabling the DWIM behavior and prompting for the target directory
+without a default suggestion."
+  (interactive "P")
+  (let ((dired-dwim-target (if arg nil t)))
+    (call-interactively #'dired-do-rename)))
+
+(defun aj8/dired-dwim-target-unless-prefix ()
+  "Return DWIM target directories unless last command used prefix arg.
+This function is designed to be used as the value of
+`dired-dwim-target'. It returns a list of target directories from other
+visible Dired buffers (DWIM behavior) by default, but returns
+nil (disabling DWIM) when the command was invoked with a prefix
+argument (C-u)."
+    (unless current-prefix-arg
+      (dired-dwim-target-next)))
+
 ;;; Selective backup inibition
 
 (defconst aj8/no-backup-regexp
