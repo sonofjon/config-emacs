@@ -1647,6 +1647,14 @@ the window so that the streaming position appears near the bottom."
   ;; Read files from agents directories
   (gptel-agent-update))
 
+;; gptel-agent-tools-introspection (Emacs introspection tools for gptel-agent)
+(use-package gptel-agent-tools-introspection
+  :defer
+  :config
+  ;; Allow variable value tool
+  (setf (gptel-tool-confirm (gptel-get-tool "variable_value"))
+        nil))
+
 (use-package gptel-toolkit
   :disabled
   :after gptel
