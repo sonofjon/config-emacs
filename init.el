@@ -1641,14 +1641,14 @@ the window so that the streaming position appears near the bottom."
 
 ;; gptel-agent (agentic LLM use for gptel)
 (use-package gptel-agent
-  :disabled
+  ;; :disabled
   :after gptel
   :config
   ;; Read files from agents directories
   (gptel-agent-update))
 
 (use-package gptel-toolkit
-  ;; :disabled
+  :disabled
   :after gptel
   :custom
   ;; Exclude some tools
