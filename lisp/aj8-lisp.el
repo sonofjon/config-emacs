@@ -1075,7 +1075,7 @@ ARG specifies the number of times to move backward."
 ;;; Set outline header format
 
 ;; Elisp files
-(defun outline-headers-for-semicolon-buffers ()
+(defun aj8/outline-headers-for-semicolon-buffers ()
   "Set outline header format for buffers with ';' comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(;;+ \\)\\([^( ]\\)")
@@ -1088,7 +1088,7 @@ ARG specifies the number of times to move backward."
   (setq-local outline-level 'aj8/outline-level))
 
 ;; Shell-script files
-(defun outline-headers-for-hash-mark-buffers ()
+(defun aj8/outline-headers-for-hash-mark-buffers ()
   "Set outline header format for buffers with '#' comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(##+ \\)\\([^( ]\\)")
@@ -1102,7 +1102,7 @@ ARG specifies the number of times to move backward."
 
 ;; LaTeX files
 ;;   TODO: outline-cycle shows all sub-headings, not just one level down
-(defun outline-headers-for-percentage-buffers ()
+(defun aj8/outline-headers-for-percentage-buffers ()
   "Set outline header format for buffers with '%' comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(%+ \\)\\([^(\\ ]\\)")
@@ -1116,7 +1116,7 @@ ARG specifies the number of times to move backward."
   (setq-local outline-level 'aj8/outline-level))
 
 ;; Xresources files
-(defun outline-headers-for-exclamation-mark-buffers ()
+(defun aj8/outline-headers-for-exclamation-mark-buffers ()
   "Set outline header format for buffers with '!' comments."
   ;; Set custom outline heading format
   (setq-local outline-regexp "\\(!!+ \\)\\([^( ]\\)")
@@ -1148,7 +1148,7 @@ characters matched by `outline-regexp'."
 
 ;;; Keybindings for outline-(minor-)mode
 
-(defun outline--body-p ()
+(defun aj8/outline--body-p ()
   "Check if there is a body."
   (save-excursion
     (outline-back-to-heading)
@@ -1157,14 +1157,14 @@ characters matched by `outline-regexp'."
          (progn (forward-char 1)
                 (not (outline-on-heading-p))))))
 
-(defun outline--body-visible-p ()
+(defun aj8/outline--body-visible-p ()
   "Check if there is a visible body."
   (save-excursion
     (outline-back-to-heading)
     (outline-end-of-heading)
     (not (outline-invisible-p))))
 
-(defun outline--subheadings-p ()
+(defun aj8/outline--subheadings-p ()
   "Check if there is a sub-heading."
   (save-excursion
     (outline-back-to-heading)
@@ -1183,8 +1183,8 @@ characters matched by `outline-regexp'."
 (defun my/outline-hide-more ()
   (interactive)
   (when (outline-on-heading-p)
-    (cond ((and (outline--body-p)
-                (outline--body-visible-p))
+    (cond ((and (aj8/outline--body-p)
+                (aj8/outline--body-visible-p))
            (outline-hide-entry)
            (outline-hide-leaves))
           (t
@@ -1194,14 +1194,14 @@ characters matched by `outline-regexp'."
 (defun my/outline-show-more ()
   (interactive)
   (when (outline-on-heading-p)
-    (cond ((and (outline--subheadings-p)
+    (cond ((and (aj8/outline--subheadings-p)
                 (not (outline--subheadings-visible-p)))
            (outline-show-children))
-          ((and (not (outline--subheadings-p))
-                (not (outline--body-visible-p)))
+          ((and (not (aj8/outline--subheadings-p))
+                (not (aj8/outline--body-visible-p)))
            (outline-show-subtree))
-          ((and (outline--body-p)
-                (not (outline--body-visible-p)))
+          ((and (aj8/outline--body-p)
+                (not (aj8/outline--body-visible-p)))
            (outline-show-entry))
           (t
            (outline-show-subtree)))))

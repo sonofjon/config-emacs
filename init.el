@@ -735,7 +735,7 @@
 (use-package lisp-mode
   :ensure nil   ; don't install built-in packages
   ;; Outline settings
-  :hook (emacs-lisp-mode . outline-headers-for-semicolon-buffers))
+  :hook (emacs-lisp-mode . aj8/outline-headers-for-semicolon-buffers))
 
 ;; minibuffer (minibuffer and completion functions)
 (use-package minibuffer
@@ -920,7 +920,7 @@
             (lambda ()
               (remove-hook 'flymake-diagnostic-functions #'python-flymake t)))
   ;; Outline settings
-  (add-hook 'python-base-mode-hook #'outline-headers-for-hash-mark-buffers))
+  (add-hook 'python-base-mode-hook #'aj8/outline-headers-for-hash-mark-buffers))
 
 ;; recentf (keep track of recently opened files)
 (use-package recentf
@@ -1035,7 +1035,7 @@
 ;; tex-mode (TeX, LaTeX, and SliTeX mode commands)
 (use-package tex-mode
   :ensure nil   ; don't install built-in packages
-  :hook ((latex-mode . outline-headers-for-percentage-buffers)
+  :hook ((latex-mode . aj8/outline-headers-for-percentage-buffers)
          (latex-mode . (lambda () (setq comment-add 0))))
   :config
   (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode)))
