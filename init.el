@@ -1296,13 +1296,13 @@
       (side . right)
       (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("^\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|claude-code.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|gptel-agent:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
+     ("^\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|claude:.*\\|claude-code.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|gptel-agent:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
       (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("^\\(Claude.*\\|Codex.*\\|Gemini.*\\|gptel-.*\\.\\(org\\|md\\)\\)"
+     ("^\\(Claude Code Agent.*\\|Codex.*\\|Gemini.*\\|gptel-.*\\.\\(org\\|md\\)\\)"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
