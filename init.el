@@ -977,9 +977,9 @@
                       (keymap-local-unset "C-c ?"))))
   :config
   ;; Outline settings
-  (add-hook 'sh-base-mode-hook #'outline-headers-for-hash-mark-buffers)
-  (add-hook 'conf-xdefaults-mode-hook #'outline-headers-for-hash-mark-buffers)
-  (add-hook 'powershell-mode-hook #'outline-headers-for-hash-mark-buffers)
+  (add-hook 'sh-base-mode-hook #'aj8/outline-headers-for-hash-mark-buffers)
+  (add-hook 'conf-xdefaults-mode-hook #'aj8/outline-headers-for-hash-mark-buffers)
+  (add-hook 'powershell-mode-hook #'aj8/outline-headers-for-hash-mark-buffers)
   ;; Add common config files
   (add-to-list 'auto-mode-alist '("\\.bash_.*\\'" . bash-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.bashrc_.*\\'" . bash-ts-mode))
