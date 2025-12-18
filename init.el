@@ -373,8 +373,8 @@
             ;; Use both versions with ediff
             (lambda ()
               (keymap-set ediff-mode-map "c" #'aj8/ediff-copy-both-to-C)
-              (keymap-set ediff-mode-map "A" #'aj8/ediff-copy-B-to-A)
-              (keymap-set ediff-mode-map "B" #'aj8/ediff-copy-A-to-B))))
+              (keymap-set ediff-mode-map "A" #'aj8/ediff-copy-A-to-B)
+              (keymap-set ediff-mode-map "B" #'aj8/ediff-copy-B-to-A))))
 
 ;; eglot (the Emacs client for LSP servers)
 (use-package eglot
