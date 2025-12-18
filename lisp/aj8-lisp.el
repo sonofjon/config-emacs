@@ -1480,10 +1480,30 @@ position."
 
 ;; Enable concatenation in ediff
 ;;   (when merging, use both variants A and B, one after the other)
-(defun my/ediff-copy-both-to-C ()
+(defun aj8/ediff-copy-both-to-C ()
   "Add both variants to merge file."
   (interactive)
   (ediff-copy-diff ediff-current-difference nil 'C nil
+                   (concat
+                    (ediff-get-region-contents ediff-current-difference
+                                               'A ediff-control-buffer)
+                    (ediff-get-region-contents ediff-current-difference
+                                               'B ediff-control-buffer))))
+
+(defun aj8/ediff-copy-B-to-A ()
+  "Copy B's diff region to A, preserving A's content."
+  (interactive)
+  (ediff-copy-diff ediff-current-difference nil 'A nil
+                   (concat
+                    (ediff-get-region-contents ediff-current-difference
+                                               'A ediff-control-buffer)
+                    (ediff-get-region-contents ediff-current-difference
+                                               'B ediff-control-buffer))))
+
+(defun aj8/ediff-copy-A-to-B ()
+  "Copy A's diff region to B, preserving B's content."
+  (interactive)
+  (ediff-copy-diff ediff-current-difference nil 'B nil
                    (concat
                     (ediff-get-region-contents ediff-current-difference
                                                'A ediff-control-buffer)
