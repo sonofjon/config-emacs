@@ -1773,18 +1773,49 @@ Used by `aj8/auto-window-width-mode'."
   :type 'integer
   :group 'aj8-lisp)
 
+(defcustom aj8/auto-window-width-exclude-modes nil
+  "A list of symbols or strings naming major modes.
+Switching to a buffer whose major mode is a member of this list
+will not cause the window to be resized."
+  :type '(repeat (choice symbol string))
+  :group 'aj8-lisp)
+
+(defcustom aj8/auto-window-width-exclude-buffer-regexp nil
+  "A list of regexp's used to match buffer names.
+Switching to a buffer whose name matches one of these regexps
+will prevent the window from being resized."
+  :type '(repeat string)
+  :group 'aj8-lisp)
+
 (defvar aj8/auto-window-width-mode nil)
 
 (defvar aj8/auto-window-width--inhibit nil
   "Non-nil while `aj8/auto-window-width-mode' is resizing a window.")
 
+(defun aj8/auto-window-width--exclude-major-mode-p ()
+  "Return non-nil if current `major-mode' should not be resized."
+  (or (memq major-mode aj8/auto-window-width-exclude-modes)
+      (member (symbol-name major-mode) aj8/auto-window-width-exclude-modes)))
+
+(defun aj8/auto-window-width--exclude-buffer-name-p ()
+  "Return non-nil if current buffer name should not be resized."
+  (and aj8/auto-window-width-exclude-buffer-regexp
+       (cl-loop for regexp in aj8/auto-window-width-exclude-buffer-regexp
+                thereis (string-match regexp (buffer-name)))))
+
 (defun aj8/auto-window-width--eligible-window-p (window)
   "Return non-nil when WINDOW should be auto-resized."
   (and (window-live-p window)
-  (not (window-minibuffer-p window))
-  ;; Exclude strongly dedicated windows (value t)
-  ;; - Note that side windows are often "side-dedicated" (value 'side).
-  (not (eq (window-dedicated-p window) t))))
+       (not (window-minibuffer-p window))
+       ;; Exclude strongly dedicated windows (value t)
+       ;; - Note that side windows are often "side-dedicated" (value 'side).
+       (not (eq (window-dedicated-p window) t))
+       ;; Exclude by major mode
+       (with-current-buffer (window-buffer window)
+         (not (aj8/auto-window-width--exclude-major-mode-p)))
+       ;; Exclude by buffer name regexp
+       (with-current-buffer (window-buffer window)
+         (not (aj8/auto-window-width--exclude-buffer-name-p)))))
 
 (defun aj8/auto-window-width--apply (&optional window)
   "Resize selected WINDOW to `aj8/auto-window-width-target-width' columns.
