@@ -2909,10 +2909,14 @@ Elisp code explicitly in arbitrary buffers.")
   (add-to-list 'magit-section-initial-visibility-alist '(diffstat . hide))
   ;; Add Git user to header
   (add-to-list 'magit-status-headers-hook 'magit-insert-user-header t)
-  ;; Reduce log margin
-  (setf (nth 4 magit-log-margin) 15)
+  ;; Hide log margin
+  ;; (setf (nth 0 magit-log-margin) nil)
   ;; Use abbreviated ages in log margin
   (setf (nth 1 magit-log-margin) 'age-abbreviated)
+  ;; Hide log margin author
+  ;; (setf (nth 3 magit-log-margin) nil)
+  ;; Reduce log margin author width
+  (setf (nth 4 magit-log-margin) 15)
   ;; Clean up process buffers automatically
   (setq aj8/magit-cleanup-buffers t)
   ;; Hook for buffer cleanup
