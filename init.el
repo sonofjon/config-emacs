@@ -165,6 +165,7 @@
       `(;; (foo . "0f39eb3fd9")   ; specific revision
         ;; (bar . nil)            ; any revision
         (agent-shell-manager :url "https://github.com/jethrokuan/agent-shell-manager.git" :rev :newest)
+        (auto-width-mode :url "https://github.com/sonofjon/auto-width-mode.el.git" :rev :newest)
         ;; (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
         (buffer-tail-mode :url "https://github.com/sonofjon/buffer-tail-mode.el.git" :rev :newest)
         (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
@@ -2990,6 +2991,11 @@ Elisp code explicitly in arbitrary buffers.")
   ;;               (cons \"^.*\\.pyc\" ztree-diff-filter-list)))
 
 ;;; Windows
+
+;; auto-width-mode (automatically resize the width of focused windows)
+(use-package auto-width-mode
+  :config
+  (auto-width-mode 1))
 
 ;;; Web
 
