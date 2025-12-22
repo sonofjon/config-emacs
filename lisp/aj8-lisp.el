@@ -1764,6 +1764,66 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
       (shrink-window arg)
     (enlarge-window arg)))
 
+;;; Auto-select window width mode
+
+(defcustom aj8/auto-window-width-target-width 80
+  "Target width, in columns, for the selected window.
+
+Used by `aj8/auto-window-width-mode'."
+  :type 'integer
+  :group 'aj8-lisp)
+
+(defvar aj8/auto-window-width-mode nil)
+
+(defvar aj8/auto-window-width--inhibit nil
+  "Non-nil while `aj8/auto-window-width-mode' is resizing a window.")
+
+(defun aj8/auto-window-width--eligible-window-p (window)
+  "Return non-nil when WINDOW should be auto-resized."
+  (and (window-live-p window)
+  (not (window-minibuffer-p window))
+  ;; Exclude strongly dedicated windows (value t)
+  ;; - Note that side windows are often "side-dedicated" (value 'side).
+  (not (eq (window-dedicated-p window) t))))
+
+(defun aj8/auto-window-width--apply (&optional window)
+  "Resize selected WINDOW to `aj8/auto-window-width-target-width' columns.
+
+Does nothing when resizing is impossible (e.g. due to frame constraints)."
+  (when (and aj8/auto-window-width-mode
+             (not aj8/auto-window-width--inhibit))
+    (let* ((win (or window (selected-window)))
+           (target (max 1 aj8/auto-window-width-target-width))
+           (delta (- target (window-body-width win))))
+      (when (and (aj8/auto-window-width--eligible-window-p win)
+                 (not (zerop delta)))
+        (let ((aj8/auto-window-width--inhibit t))
+          (condition-case _err
+              (window-resize win delta t)
+            (error nil)))))))
+
+(defun aj8/auto-window-width--on-selection-change (&rest _args)
+  "Apply the configured width when a new window becomes selected."
+  (aj8/auto-window-width--apply (selected-window)))
+
+(define-minor-mode aj8/auto-window-width-mode
+  "Auto-apply `aj8/auto-window-width-target-width' when selecting a window.
+
+This global minor mode reacts to window selection changes and resizes
+the newly selected window once. It does not continuously maintain the
+width, so manual resizing is not overridden unless you switch away and
+back again."
+  :global t
+  :lighter " w:auto"
+  :group 'aj8-lisp
+  (if aj8/auto-window-width-mode
+      (progn
+        (add-hook 'window-selection-change-functions
+                  #'aj8/auto-window-width--on-selection-change)
+        (aj8/auto-window-width--apply (selected-window)))
+    (remove-hook 'window-selection-change-functions
+                 #'aj8/auto-window-width--on-selection-change)))
+
 ;;; Misc
 
 ;; Toggle window split
