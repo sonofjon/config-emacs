@@ -104,7 +104,7 @@
         diminish
         dimmer
         eat
-        ef-themes
+        ;; ef-themes
         embark
         embark-consult
         esup
@@ -144,7 +144,7 @@
         ruff-format
         smartparens
         ssh-agency
-        standard-themes
+        ;; standard-themes
         string-inflection
         system-packages   ; for use-package-ensure-system-package
         treesit-auto
