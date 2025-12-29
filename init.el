@@ -767,41 +767,41 @@
   ;; Use bold text in more code constructs
   (setq modus-themes-bold-constructs t)
   ;; Use more subtle style for line numbers
-  (setq modus-themes-subtle-line-numbers t)
+  ;; (setq modus-themes-subtle-line-numbers t)
   ;; Define the visibility of fringes
   ;;   Options: `nil',`subtle', `intense'
-  (setq modus-themes-fringes nil)
+  ;; (setq modus-themes-fringes nil)
   ;; Control the style of spelling and code checkers/linters
   ;;   Options: `straight-underline', `text-also', `background',
   ;;            `intense', `faint'
-  (setq modus-themes-lang-checkers '(straight-underline text-also))
+  ;; (setq modus-themes-lang-checkers '(straight-underline text-also))
   ;; Control the style of the mode line
   ;;   Options: `3d' OR `moody', `borderless', `accented'
-  (setq modus-themes-mode-line '(borderless))
+  ;; (setq modus-themes-mode-line '(borderless))
   ;(setq modus-themes-mode-line nil)
   ;; Control the style of code syntax highlighting
   ;;   Options: `faint', `yellow-comments', `green-strings',
   ;;            `alt-syntax'
-  (setq modus-themes-syntax '(faint green-strings alt-syntax))
+  ;; (setq modus-themes-syntax '(faint green-strings alt-syntax))
   ;; Style markup in Org, markdown, and others
   ;;   Options: `bold', `italic', `background', `intense'
   ;; (setq modus-themes-markup '(background italic))
-  (setq modus-themes-markup nil)
+  ;; (setq modus-themes-markup nil)
   ;; Control the current line highlight of HL-line mode
   ;;   Options: `accented', `underline', `intense'
-  (setq modus-themes-hl-line nil)
+  ;; (setq modus-themes-hl-line nil)
   ;; Control the style of matching parentheses or delimiters
   ;;   Options: `bold', `intense', `underline'
-  (setq modus-themes-paren-match '(intense))
+  ;; (setq modus-themes-paren-match '(intense))
   ;; Set the style of links
   ;;   Options: `neutral-underline' OR `no-underline', `faint' OR
   ;;            `no-color', `bold', `italic', `background'
-  (setq modus-themes-links nil)
+  ;; (setq modus-themes-links nil)
   ;; Control the style of buttons in the Custom UI and related
   ;;   Options: `flat', `accented', `faint', `variable-pitch',
   ;;            `underline'
   ;; (setq modus-themes-box-buttons '(variable-pitch flat faint 0.9))
-  (setq modus-themes-box-buttons nil)
+  ;; (setq modus-themes-box-buttons nil)
   ;; Set the style for minibuffer and REPL prompts
   ;;   Options: `background', `bold', `gray', `intense', `italic'
   (setq modus-themes-prompts nil)
@@ -813,13 +813,13 @@
   ;; (setq modus-themes-completions nil)
   ;; Control the style of the active region
   ;;   Options: `no-extend', `bg-only', `accented'
-  (setq modus-themes-region nil)
+  ;; (setq modus-themes-region nil)
   ;; Adjust the style of diffs
   ;;   Options: `desaturated', `bg-only'
-  (setq modus-themes-diffs nil)
+  ;; (setq modus-themes-diffs nil)
   ;; Set the style of Org code blocks, quotes, and the like
   ;;   Options: `gray-background', `tinted-background'
-  (setq modus-themes-org-blocks 'gray-background)
+  ;; (setq modus-themes-org-blocks 'gray-background)
   ;; Org styles
   ;;   Options: see manual
   ;; (setq modus-themes-org-agenda
@@ -828,7 +828,7 @@
   ;;         (event . (accented varied))
   ;;         (scheduled . uniform)
   ;;         (habit . traffic-light)))
-  (setq modus-themes-org-agenda nil)
+  ;; (setq modus-themes-org-agenda nil)
   ;; Heading styles
   ;;   Options: `rainbow', `overline', `background', `monochrome'
   ;; (setq modus-themes-headings
