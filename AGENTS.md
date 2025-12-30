@@ -1,6 +1,6 @@
-# Copilot Instructions for config-emacs
+# Emacs Configuration - AI Coding Agent Instructions
 
-This file provides guidance to GitHub Copilot when working with code in this
+This file provides guidance to Claude Code when working with code in this
 repository.
 
 ## Repository Overview
