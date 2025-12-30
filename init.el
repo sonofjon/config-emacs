@@ -871,6 +871,15 @@
   ;; (outline-minor-mode-highlight t)
   )
 
+;; package (simple package system for Emacs)
+(use-package package
+  :ensure nil   ; don't install built-in packages
+  :init
+  ;; Show package names in upgrade prompt
+  (advice-add 'package-upgrade-all :around #'aj8/package-upgrade-all-advice)
+  ;; Prevent autoremove from removing VC packages
+  (advice-add #'package-autoremove :around #'aj8/package-autoremove-no-vc))
+
 ;; paren (highlight matching paren)
 (use-package paren
   :ensure nil   ; don't install built-in packages
@@ -1189,6 +1198,16 @@
          ("C-x +" . balance-windows-area)
          ("C-x _" . fit-window-to-buffer)
          ("C-x 9" . my/toggle-window-split))
+  :init
+  ;; Keep focus in side windows after quit-window
+  (advice-add 'quit-window :around #'aj8/retain-side-window-focus)
+  ;; Keep focus in side windows after kill-current-buffer
+  (advice-add 'kill-current-buffer :around #'aj8/retain-side-window-focus)
+  ;; Make quit-window kill buffer by default (inverse behavior)
+  (advice-add 'quit-window :filter-args #'my/advice--quit-window)
+  ;; Enable better quit-window behavior
+  ;; (advice-add 'display-buffer :filter-return #'my/better-quit-window-save)
+  ;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)
   :custom
   ;; Set minimum window height
   ;; (setq window-min-height 16)
@@ -1466,6 +1485,8 @@
          ("C-c M-n" . gptel-end-of-response)
          ("C-c M-p" . gptel-beginning-of-response))
   :init
+  ;; Auto-save gptel buffers with timestamped filenames
+  (advice-add 'gptel :around #'aj8/gptel-write-buffer)
   (which-key-add-key-based-replacements "C-c t" "gptel")
                                         ; add label for prefix key
   :custom

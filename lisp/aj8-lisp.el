@@ -123,8 +123,6 @@ ORIG-FUN should be `package-upgrade-all'."
               (apply orig-fun args))))
       (message "All packages are up to date"))))
 
-(advice-add 'package-upgrade-all :around #'aj8/package-upgrade-all-advice)
-
 ;; Don't auto-remove vc packages
 (defun aj8/package-autoremove-no-vc (orig-fun &rest args)
   "Advice function for `package-autoremove to not remove VC packages'.
@@ -135,8 +133,6 @@ calling `package-autoremove'.  ORIG-FUN should be `package-autoremove'."
          (append (mapcar #'car package-vc-selected-packages)
                  package-selected-packages)))
     (apply orig-fun args)))
-
-(advice-add #'package-autoremove :around #'aj8/package-autoremove-no-vc)
 
 ;;;; AI
 
@@ -169,8 +165,6 @@ function.  ORIG-FUN should be `gptel'."
                           (concat "gptel-" suffix "." extension) directory)))
           (write-file filename 'confirm))))
     chat-buf))
-
-(advice-add 'gptel :around #'aj8/gptel-write-buffer)
 
 ;; Auto-save gptel buffers
 ;;   Also see aj8/no-backup-regexp
@@ -459,10 +453,6 @@ in that side window rather than shifting to another window."
     (apply orig-fun args)
     (when (and is-side-window (window-live-p current-window))
       (select-window current-window))))
-
-;; Add the global advice
-(advice-add 'quit-window :around #'aj8/retain-side-window-focus)
-(advice-add 'kill-current-buffer :around #'aj8/retain-side-window-focus)
 
 ;;;; Coding
 
@@ -1713,8 +1703,6 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
     (setf (car args) (not current-prefix-arg)))
   args)
 
-(advice-add 'quit-window :filter-args #'my/advice--quit-window)
-
 ;; Better focus handling with quit-windows
 ;;   Adds winner-mode style behavior to quit-window
 ;;   Reference: dotemacs-karthink/init.el
@@ -1731,10 +1719,6 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
       (pop (window-parameter nil 'quit-restore-stack))
       (setf (window-parameter nil 'quit-restore)
             (car (window-parameter nil 'quit-restore-stack))))))
-
-;; Uncomment to enable
-;; (advice-add 'display-buffer :filter-return #'my/better-quit-window-save)
-;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)
 
 (define-minor-mode my/better-quit-window-mode
   "Toggle improved `quit-window' behavior similar to `winner-mode'."
