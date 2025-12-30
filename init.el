@@ -2732,7 +2732,14 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Terminal
 
 ;; eat (Emulate A Terminal, in a region, in a buffer and in Eshell)
-(use-package eat)
+(use-package eat
+  :config
+  (add-hook 'eat-mode-hook
+            (lambda ()
+              (keymap-set eat-mode-map "M-<prior>" #'scroll-down-command)
+                                        ; overwrites scroll-other-window-down
+              (keymap-set eat-mode-map "M-<next>" #'scroll-up-command))))
+                                        ; overwrites scroll-other-window
 
 ;; vterm (fully-featured terminal emulator)
 (eval `(use-package vterm
