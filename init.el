@@ -105,6 +105,7 @@
         dimmer
         eat
         ;; ef-themes
+        elisp-dev-mcp
         embark
         embark-consult
         esup
@@ -1735,6 +1736,15 @@ the window so that the streaming position appears near the bottom."
   ;; :config
   ;; Start server
   ;; (add-hook 'emacs-startup-hook #'mcp-server-start-unix))
+
+;; elisp-dev-mcp (MCP server for agentic Elisp development)
+;;   Usage:
+;;   - Install script: M-x mcp-server-lib-install
+;;   - Registration: claude mcp add -s user -t stdio elisp-dev -- \
+;;       ~/.emacs.d/emacs-mcp-stdio.sh --init-function=elisp-dev-mcp-enable \
+;;       --stop-function=elisp-dev-mcp-disable --server-id=elisp-dev-mcp
+;;   - Start server: M-x mcp-server-lib-start
+(use-package elisp-dev-mcp)
 
 ;;; Buffers
 
