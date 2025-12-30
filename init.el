@@ -1406,7 +1406,7 @@
   ;; Set terminal backend
   ;; (claude-code-terminal-backend 'vterm)   ; default: eat
   ;; Customize Return key
-  ;; (claude-code-newline-keybinding-style 'shift-return-to-send)
+  (claude-code-newline-keybinding-style 'newline-on-alt-return)
   ;; Prevent Claude Code windows from being deleted
   (claude-code-no-delete-other-windows t)
   ;; Automatically select the Claude buffer after opening it
