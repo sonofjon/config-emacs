@@ -1416,6 +1416,12 @@
   ;;   Claude edits files directly on disk, not in Emacs buffers
   ;; TODO: Implement revert with more control: see https://github.com/stevemolitor/claude-code.el?tab=readme-ov-file#tips-and-tricks
   ;; (global-auto-revert-mode 1)
+  ;; Adapt eat settings
+  (add-hook 'claude-code-start-hook
+          (lambda ()
+            (when (eq claude-code-terminal-backend 'eat)
+              ;; Increase scrollback limit
+              (setq-local eat-term-scrollback-size 500000))))
   ;; Adapt vterm settings
   (add-hook 'claude-code-start-hook
           (lambda ()
