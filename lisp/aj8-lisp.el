@@ -1659,6 +1659,27 @@ use slot 0 to share undivided space."
     (when found-side-window
       (window-toggle-side-windows))))
 
+;;; Auto width Mode
+
+(defun aj8/auto-width-calculate-target (window)
+  "Calculate target width for auto-width-mode in WINDOW.
+Accounts for line number display width when active in the window's buffer."
+  (let ((base-width auto-width-target-width))
+    (with-current-buffer (window-buffer window)
+      (if (bound-and-true-p display-line-numbers-mode)
+          (let* ((line-count (line-number-at-pos (point-max) t))
+                 (num-digits (length (number-to-string line-count)))
+                 (line-num-width (+ num-digits 2)))  ; digits + 2 spaces
+            (+ base-width line-num-width))
+        base-width))))
+
+(defun aj8/auto-width-apply-advice (orig-fun window)
+  "Advice for auto-width--apply to use dynamic target width.
+Temporarily binds auto-width-target-width to calculated value based
+on the target window's buffer."
+  (let ((auto-width-target-width (aj8/auto-width-calculate-target window)))
+    (funcall orig-fun window)))
+
 ;;; Kill windows
 
 ;; Kill buffers by defult with quit-window
