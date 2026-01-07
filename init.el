@@ -439,10 +439,7 @@
 ;; emacs (core Emacs settings)
 (use-package emacs
   :ensure nil   ; don't install built-in packages
-  :bind (("C-o" . my/open-line)
-         ("C-<backspace>" . (lambda () (interactive) (kill-line 0)))
-         ("M-u" . upcase-dwim)
-         ("M-l" . downcase-dwim)
+  :bind (("C-<backspace>" . (lambda () (interactive) (kill-line 0)))
          ("M-c" . aj8/capitalize-word-at-point)
          ("C-c q" . fill-individual-paragraphs)
          ("C-c x c" . my/copy-symbol-at-point)
@@ -453,9 +450,6 @@
          ("C-c <right>" . scroll-left)
          ("M-p" . backward-paragraph)
          ("M-n" . forward-paragraph)
-         ("M-a" . back-to-indentation)
-         ("C-c N" . column-number-mode)
-         ("C-c x r" . aj8/reload-init-file)
          ("C-x M-e" . my/eval-next-sexp)
          ("C-x C-M-e" . my/eval-sexp-at-point))
   :init
@@ -464,14 +458,8 @@
   ;; Personal settings
   (user-full-name "Andreas Jonsson")
   (user-mail-address "ajdev8@gmail.com")
-  ;; Use spaces, not tabs
-  (indent-tabs-mode nil)
-  ;; Delete trailing newline character with kill-line
-  (kill-whole-line t)
   ;; Set fill column
   (fill-column 76)   ; default is 70
-  ;; Save clipboard text into kill ring before kill
-  ;; (save-interprogram-paste-before-kill t)
   ;; Yank at point, not at pointer
   (mouse-yank-at-point t)
   ;; Reduce delay for echoing multi-character keys
@@ -491,39 +479,15 @@
   (hscroll-step 1)
   ;; Enable `scroll-left'
   (put 'scroll-left 'disabled nil)
-  ;; Use "repeat-mode" for "pop-mark"
-  (set-mark-command-repeat-pop t)
   ;; Don't use the mark when region is inactive
   ;;   Note: messes with ediff
   ;; (mark-even-if-inactive nil)
-  ;; Interpret spaces literally when searching
-  ;; (isearch-lax-whitespace nil)
-  ;; Interpret spaces as wildcards when searching
-  ;; (isearch-lax-whitespace t)
-  ;; Interpret any characters as wildcards when searching
-  (search-whitespace-regexp ".*?")
-  ;; Allow movement between Isearch matches by cursor motion commands
-  (isearch-allow-motion t)
-  (isearch-motion-changes-direction t)
   ;; Use longer pulse
   (pulse-delay 0.05)   ; default is 0.03
-  ;; Increase maximum file size that can be opened without a warning
-  (large-file-warning-threshold 50000000)
-  ;; Show mode headers in describe-bindings buffer
-  (describe-bindings-outline t)
   ;; Delete selection on edit
   (delete-selection-mode 1)
-  ;; Select completion styles
-  ;;   substring: needed for partial completion
-  ;;   orderless: space-separated components
-  ;;   basic: fallback
-  (completion-styles '(orderless basic))
-  ;; (completion-styles '(substring orderless basic))
   ;; Use TAB for symbol completion (after indentation)
   (tab-always-indent 'complete)
-  ;; Show more details for completions
-  (completions-detailed t)
-  ;; (read-extended-command-predicate #'command-completion-default-include-p)
   ;; Increase history length
   (history-length 10000)
   ;; Delete history duplicates
@@ -533,15 +497,8 @@
   :config
   ;; Use 'y' or 'n' questions always
   ;; (setq use-short-answers t)
-  ;; Use partial completion for files
-  (setq completion-category-defaults nil)
-  (add-to-list 'completion-category-overrides '((file (styles basic partial-completion))))
-  ;; Deactivate highlight mode when selecting text
-  (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
-  (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1)))
   ;; Add Treesitter indicator in the modeline
-  (add-hook 'after-change-major-mode-hook #'aj8/treesit-mode-name)
-  (keymap-set isearch-mode-map "TAB" #'isearch-complete))
+  (add-hook 'after-change-major-mode-hook #'aj8/treesit-mode-name))
 
 ;; epg (the EasyPG library)
 (use-package epg
@@ -632,9 +589,12 @@
 ;; files (file input and output commands)
 (use-package files
   :ensure nil   ; don't install built-in packages
+  :bind (("C-c x r" . aj8/reload-init-file))
   :custom
   ;; Revert without querying
-  (revert-without-query '(".*")))
+  (revert-without-query '(".*"))
+  ;; Increase maximum file size that can be opened without a warning
+  (large-file-warning-threshold 50000000))
 
 ;; find-func (find the definition of the Emacs Lisp function near point)
 (use-package find-func
@@ -680,7 +640,9 @@
   ;; Reuse windows for *Help* buffers
   (help-window-keep-selected t)
   ;; Always select help window
-  (help-window-select t))
+  (help-window-select t)
+  ;; Show mode headers in describe-bindings buffer
+  (describe-bindings-outline t))
 
 ;; hippie-exp (expand text trying various ways to find its expansion)
 (use-package hippie-exp
@@ -701,7 +663,10 @@
   :ensure nil   ; don't install built-in packages
   :config
   ;; Highlight current line
-  (global-hl-line-mode 1))
+  (global-hl-line-mode 1)
+  ;; Deactivate highlight mode when selecting text
+  (add-hook 'activate-mark-hook (lambda () (global-hl-line-mode -1)))
+  (add-hook 'deactivate-mark-hook (lambda () (global-hl-line-mode 1))))
 
 ;; ibuffer (operate on buffers like dired)
 (use-package ibuffer
@@ -721,6 +686,22 @@
   :custom
   ;; Open *info* buffers in same window
   (info-lookup-other-window-flag nil))
+
+;; isearch (incremental search minor mode)
+(use-package isearch
+  :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Interpret spaces literally when searching
+  ;; (isearch-lax-whitespace nil)
+  ;; Interpret spaces as wildcards when searching
+  ;; (isearch-lax-whitespace t)
+  ;; Interpret any characters as wildcards when searching
+  (search-whitespace-regexp ".*?")
+  ;; Allow movement between Isearch matches by cursor motion commands
+  (isearch-allow-motion t)
+  (isearch-motion-changes-direction t)
+  :config
+  (keymap-set isearch-mode-map "TAB" #'isearch-complete))
 
 ;; ispell (interface to spell checkers)
 (use-package ispell
@@ -751,9 +732,20 @@
   (enable-recursive-minibuffers t)
   ;; Timeout for messages in active minibuffer
   (minibuffer-message-clear-timeout 1)
+  ;; Select completion styles
+  ;;   substring: needed for partial completion
+  ;;   orderless: space-separated components
+  ;;   basic: fallback
+  (completion-styles '(orderless basic))
+  ;; (completion-styles '(substring orderless basic))
+  ;; Show more details for completions
+  (completions-detailed t)
   :config
   ;; Show recursion depth in the minibuffer prompt
-  (minibuffer-depth-indicate-mode 1))
+  (minibuffer-depth-indicate-mode 1)
+  ;; Use partial completion for files
+  (setq completion-category-defaults nil)
+  (add-to-list 'completion-category-overrides '((file (styles basic partial-completion)))))
 
 ;; modus-themes (elegant, highly legible and customizable themes)
 (use-package modus-themes
@@ -1005,10 +997,15 @@
   :hook ((help-mode . visual-line-mode)
          (helpful-mode . visual-line-mode)
          (Info-mode . visual-line-mode))
-  :bind (("C-x <right>" . aj8/next-buffer)
+  :bind (("C-o" . my/open-line)
+         ("C-x <right>" . aj8/next-buffer)
          ("C-x <left>" . aj8/previous-buffer)
          ("C-x k" . kill-current-buffer)
-         ("C-c k" . my/kill-buffer-other-window))
+         ("C-c k" . my/kill-buffer-other-window)
+         ("M-u" . upcase-dwim)
+         ("M-l" . downcase-dwim)
+         ("M-a" . back-to-indentation)
+         ("C-c N" . column-number-mode))
   :custom
   ;; Do not switch to buffers already shown
   (switch-to-prev-buffer-skip 'this)
@@ -1016,6 +1013,16 @@
   ;; (setq switch-to-prev-buffer-skip 'aj8/buffer-skip-p)
   ;; Skip some buffers when switching buffers
   ;; (setq switch-to-prev-buffer-skip-regexp regex)
+  ;; Use spaces, not tabs
+  (indent-tabs-mode nil)
+  ;; Delete trailing newline character with kill-line
+  (kill-whole-line t)
+  ;; Use "repeat-mode" for "pop-mark"
+  (set-mark-command-repeat-pop t)
+  ;; Save clipboard text into kill ring before kill
+  ;; (save-interprogram-paste-before-kill t)
+  ;; Exclude mode-specific commands from M-x completion
+  ;; (read-extended-command-predicate #'command-completion-default-include-p)
   :config
   ;; Do not display continuation lines
   ;; (setq-default truncate-lines t)
