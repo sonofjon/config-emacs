@@ -3045,9 +3045,6 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; auto-width-mode (automatically resize the width of focused windows)
 (use-package auto-width-mode
-  :init
-  ;; Calculate dynamic target width accounting for line numbers and margins
-  (advice-add 'auto-width--apply :around #'aj8/auto-width-apply-advice)
   :config
   (auto-width-mode 1))
 
