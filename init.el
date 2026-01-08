@@ -1384,7 +1384,10 @@
 ;;; AI
 
 ;; agent-shell (an agent shell powered by ACP)
-(use-package agent-shell)
+(use-package agent-shell
+  :bind (:map agent-shell-mode-map
+              ("C-c C-v" . nil)   ; unbind agent-shell-set-session-model
+              ("C-c M" . agent-shell-set-session-model)))
 
 ;; agent-shell-manager (buffer manager for agent-shell)
 (use-package agent-shell-manager
