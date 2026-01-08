@@ -52,12 +52,14 @@ upgradeable even when up-to-date."
   (interactive "P")
   (package-refresh-contents)
   (let* ((all-upgradable (package--upgradeable-packages))
-         (upgradable (cl-remove-if
-                      (lambda (pkg-name)
-                        (let ((pkg-desc (cadr (assq pkg-name package-alist))))
-                          (and pkg-desc
-                               (eq (package-desc-kind pkg-desc) 'vc))))
-                      all-upgradable)))
+         (upgradable (sort
+                      (cl-remove-if
+                       (lambda (pkg-name)
+                         (let ((pkg-desc (cadr (assq pkg-name package-alist))))
+                           (and pkg-desc
+                                (eq (package-desc-kind pkg-desc) 'vc))))
+                       all-upgradable)
+                      #'string<)))
     (if upgradable
         (if verbose
             ;; Verbose version with version details on one line
@@ -90,12 +92,14 @@ up-to-date."
   (interactive)
   (package-refresh-contents)
   (let* ((all-upgradable (package--upgradeable-packages))
-         (upgradable (cl-remove-if
-                      (lambda (pkg-name)
-                        (let ((pkg-desc (cadr (assq pkg-name package-alist))))
-                          (and pkg-desc
-                               (eq (package-desc-kind pkg-desc) 'vc))))
-                      all-upgradable)))
+         (upgradable (sort
+                      (cl-remove-if
+                       (lambda (pkg-name)
+                         (let ((pkg-desc (cadr (assq pkg-name package-alist))))
+                           (and pkg-desc
+                                (eq (package-desc-kind pkg-desc) 'vc))))
+                       all-upgradable)
+                      #'string<)))
     (if upgradable
         (let ((package-list (mapconcat 'symbol-name upgradable ", ")))
           (when (yes-or-no-p (format "Upgrade %d packages (%s)? "
@@ -112,7 +116,7 @@ up-to-date."
 (defun aj8/package-upgrade-all-advice (orig-fun &rest args)
   "Advice to make package-upgrade-all show package names in the upgrade prompt.
 ORIG-FUN should be `package-upgrade-all'."
-  (let ((upgradable (package--upgradeable-packages)))
+  (let ((upgradable (sort (package--upgradeable-packages) #'string<)))
     (if upgradable
         (let ((package-list (mapconcat 'symbol-name upgradable ", ")))
           (when (yes-or-no-p (format "Upgrade %d packages (%s)? "
