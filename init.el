@@ -1753,7 +1753,8 @@ the window so that the streaming position appears near the bottom."
 ;;         socat - UNIX-CONNECT:$HOME/.emacs.d/emacs-mcp-server.sock
 ;;   - Start server: M-x mcp-server-start-unix
 ;;   - Requires: socat (sudo apt-get install socat)
-(use-package mcp-server)
+(use-package mcp-server
+  :ensure-system-package socat)
   ;; :config
   ;; Start server
   ;; (add-hook 'emacs-startup-hook #'mcp-server-start-unix))
