@@ -1744,9 +1744,13 @@ the window so that the streaming position appears near the bottom."
 
 ;; mcp-server (pure Elisp MCP Server)
 ;;   Usage:
-;;   - Registration: claude mcp add -s user mcp-server -- \
-;;       ~/.emacs.d/elpa/mcp-server/mcp-wrapper.sh \
-;;       ~/.emacs.d/emacs-mcp-server.sock
+;;   - Registration (wrapper script):
+;;       claude mcp add -s user mcp-server -- \
+;;         ~/.emacs.d/elpa/mcp-server/mcp-wrapper.sh \
+;;         ~/.emacs.d/emacs-mcp-server.sock
+;;   - Registration (direct socat):
+;;       claude mcp add -s user mcp-server-direct -- \
+;;         socat - UNIX-CONNECT:$HOME/.emacs.d/emacs-mcp-server.sock
 ;;   - Start server: M-x mcp-server-start-unix
 ;;   - Requires: socat (sudo apt-get install socat)
 (use-package mcp-server)
