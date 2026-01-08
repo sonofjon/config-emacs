@@ -706,9 +706,9 @@
 ;; ispell (interface to spell checkers)
 (use-package ispell
   :ensure nil   ; don't install built-in packages
+  :ensure-system-package aspell
   :custom
   ;; Use aspell
-  ;;   Requires: aspell
   (ispell-program-name "aspell")   ; this is already the default
   ;; Set language
   (ispell-dictionary "en_US")
