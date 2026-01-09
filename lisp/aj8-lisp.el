@@ -138,6 +138,39 @@ calling `package-autoremove'.  ORIG-FUN should be `package-autoremove'."
                  package-selected-packages)))
     (apply orig-fun args)))
 
+;; Upgrade VC packages only when remote changes exist
+(defun aj8/package-vc-upgrade-all-smart ()
+  "Upgrade all installed VC packages that have remote changes.
+Unlike `package-vc-upgrade-all', this checks for remote changes first
+and only upgrades packages that need it."
+  (interactive)
+  (let ((upgraded 0)
+        (checked 0)
+        (total (cl-loop for package in package-alist
+                        sum (cl-count-if #'package-vc-p (cdr package)))))
+    (dolist (package package-alist)
+      (dolist (pkg-desc (cdr package))
+        (when (package-vc-p pkg-desc)
+          (setq checked (1+ checked))
+          (let* ((pkg-name (package-desc-name pkg-desc))
+                 (pkg-dir (package-desc-dir pkg-desc))
+                 (default-directory pkg-dir))
+            (message "Checking %d/%d: %s..." checked total pkg-name)
+            (require 'vc-git)
+            (vc-git-command nil 0 nil "fetch")
+            (let ((local (string-trim
+                         (shell-command-to-string "git rev-parse HEAD 2>/dev/null")))
+                  (remote (string-trim
+                          (shell-command-to-string
+                           "git rev-parse @{upstream} 2>/dev/null"))))
+              (when (and (not (string-empty-p local))
+                        (not (string-empty-p remote))
+                        (not (string= local remote)))
+                (message "Upgrading %s..." pkg-name)
+                (package-vc-upgrade pkg-desc)
+                (setq upgraded (1+ upgraded))))))))
+    (message "Upgraded %d VC packages." upgraded)))
+
 ;;;; AI
 
 ;; Save gptel buffers
