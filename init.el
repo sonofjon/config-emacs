@@ -1387,6 +1387,7 @@
 (use-package agent-shell
   :bind (("C-c C-a" . agent-shell)
          :map agent-shell-mode-map
+         ("TAB" . agent-shell-next-item)   ; fix for terminal
          ("C-c C-v" . nil)   ; unbind agent-shell-set-session-model
          ("C-c M" . agent-shell-set-session-model)))
 
