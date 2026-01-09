@@ -3016,7 +3016,7 @@ clear commit message that summarizes the changes in the file diffs.
 The commit message should be structured as follows:
 
 ```
-<filename>[, ...]: <description>
+{<filename> | <filename>, <filename> | <filename>, ...}: <description>
 
 [<body>]
 ```
@@ -3024,10 +3024,18 @@ The commit message should be structured as follows:
 RULES:
 
 Summary line:
-  - MUST be prefixed with a filename (basename); if multiple files are
-    affected, use the most important file and add a comma and three dots
+  - MUST be prefixed with filename(s):
+    - Single file: use the filename
+    - Exactly two files: when space permits, list both separated by a
+      comma; otherwise treat as three or more files
+    - Three or more files: use the most important file and add a comma
+      and three dots
+  - Count files by counting \"diff --git\" lines in the diff below
+  - Write a SINGLE commit message that covers all file changes together,
+    not separate messages for each file
+  - Use basename only (not full path)
   - Capitalize the first word in the <description>
-  - Do not refer to the filename(s) in the <description>
+  - Do NOT refer to the filename(s) in the <description>
   - Include location context in the description when space permits
     (e.g., section, function name, class, or module)
   - Use imperative mood
