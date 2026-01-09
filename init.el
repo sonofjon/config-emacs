@@ -105,7 +105,7 @@
         dimmer
         eat
         ;; ef-themes
-        ;; elisp-dev-mcp  ; Using local version from ~/git/elisp-dev-mcp
+        elisp-dev-mcp
         embark
         embark-consult
         esup
@@ -1766,8 +1766,7 @@ the window so that the streaming position appears near the bottom."
 ;;       ~/.emacs.d/emacs-mcp-stdio.sh --init-function=elisp-dev-mcp-enable \
 ;;       --stop-function=elisp-dev-mcp-disable --server-id=elisp-dev-mcp
 ;;   - Start server: M-x mcp-server-lib-start
-(use-package elisp-dev-mcp
-  :load-path "~/git/elisp-dev-mcp")
+(use-package elisp-dev-mcp)
 
 ;;; Buffers
 
