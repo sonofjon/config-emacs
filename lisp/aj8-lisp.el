@@ -158,18 +158,14 @@ and only upgrades packages that need it."
             (message "Checking %d/%d: %s..." checked total pkg-name)
             (require 'vc-git)
             (vc-git-command nil 0 nil "fetch")
-            (let ((local (string-trim
-                         (shell-command-to-string "git rev-parse HEAD 2>/dev/null")))
-                  (remote (string-trim
-                          (shell-command-to-string
-                           "git rev-parse @{upstream} 2>/dev/null"))))
-              (when (and (not (string-empty-p local))
-                        (not (string-empty-p remote))
-                        (not (string= local remote)))
-                (message "Upgrading %s..." pkg-name)
-                (package-vc-upgrade pkg-desc)
-                (setq upgraded (1+ upgraded))))))))
-    (message "Upgraded %d VC packages." upgraded)))
+            (with-temp-buffer
+              (when (zerop (vc-git-command t 0 nil "status" "--porcelain=v1" "--branch"))
+                (goto-char (point-min))
+                (when (re-search-forward "\\[behind [0-9]+\\]" nil t)
+                  (message "Upgrading %s..." pkg-name)
+                  (package-vc-upgrade pkg-desc)
+                  (setq upgraded (1+ upgraded))))))))))
+    (message "Upgraded %d VC packages." upgraded))
 
 ;;;; AI
 
