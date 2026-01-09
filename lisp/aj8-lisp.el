@@ -1615,6 +1615,24 @@ Regions (i.e., point and mark) must be set in advance."
       (open-line 1)))
   ;; )
 
+;; Add full file contents for magit-gptcommit
+(defun aj8/magit-gptcommit-add-file-context-advice (diff)
+  "Advice function to augment DIFF with full file contents for context.
+DIFF should be the return value from `magit-gptcommit--staged-diff'."
+  (let* ((files (magit-staged-files))
+         (file-contents
+          (mapconcat
+           (lambda (file)
+             (condition-case nil
+                 (let ((content (magit-git-output "show" (concat ":0:" file))))
+                   (if (< (length content) 50000)  ; limit to ~50KB per file
+                       (format "=== File: %s ===\n%s\n" file content)
+                     (format "=== File: %s ===\n[Too large]\n" file)))
+               (error "")))
+           files
+           "\n")))
+    (concat file-contents "\n\n=== DIFF ===\n" diff)))
+
 ;;;; Windows
 
 ;;; Side windows
