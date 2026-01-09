@@ -3003,7 +3003,32 @@ Elisp code explicitly in arbitrary buffers.")
   :custom
   ;; Supress warning
   (llm-warn-on-nonfree nil)
-  (magit-gptcommit-prompt "You are an expert programmer writing a Git commit message.\n- You have carefully reviewed every file diff included in this commit.\n- Keep it to a single line, no more than 50 characters\n- Use the imperative tense (e.g., 'Add logging' not 'Added logging')\n- Ensure the message reflects a clear and cohesive change\n- Do not end the summary with a period\n- Do not use backticks (`) anywhere in the response.\n- Do not refer refer to the filename of the commit.\n- Do not state where the changes were applied.\n\nTHE FILE DIFFS:\n```\n%s\n```\nNow, write the commit message")
+  (magit-gptcommit-prompt "INSTRUCTIONS:
+You are an expert at writing Git commits. Your job is to write a short
+clear commit message that summarizes the changes in the file diffs.
+
+The commit message should be structured as follows:
+
+```
+<filename> [, ...]: <description>
+
+[body]
+```
+
+RULES:
+- The summary line MUST be prefixed with a filename (basename), and
+  a comma and three dots if multiple files are affected
+- The summary line MUST be less than 80 characters wide in total
+- Capitalize the description
+- Use imperative mood in the description
+- Do not refer refer to the filename(s) in the description
+- The body is optional, and may be listed as bullets if appropriate
+- Keep the body short and concise (omit it entirely if not useful)
+- Wrap all body lines at 72 characters
+- Bullets should use third-person present (indicative)
+
+FILE DIFFS:
+```\n%s\n```")
   :config
   ;; Set up LLM provider: OpenAI
   ;;   Use lazy setup to avoid password prompt during startup
