@@ -1528,6 +1528,12 @@
   (gptel-cache t)
   ;; confirm tool calls with ':confirm t' in the tool registration
   (gptel-confirm-tool-calls 'auto)
+  ;; Highlight LLM responses
+  ;;   Note: 'margin calls set-window-buffer in gptel-highlight-mode (via
+  ;;   gptel-mode-hook) before display-buffer runs in gptel, causing the
+  ;;   buffer to appear in the current window prematurely, resulting in
+  ;;   duplicate windows (one regular, and one side-window).
+  (gptel-highlight-methods '(face))   ; default is '(margin)
   :config
   ;; Enable experimental options
   (setq gptel-expert-commands t)
