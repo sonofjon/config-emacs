@@ -3003,30 +3003,45 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Supress warning
   (llm-warn-on-nonfree nil)
   (magit-gptcommit-prompt "INSTRUCTIONS:
+
 You are an expert at writing Git commits. Your job is to write a short
 clear commit message that summarizes the changes in the file diffs.
 
 The commit message should be structured as follows:
 
 ```
-<filename> [, ...]: <description>
+<filename>[, ...]: <description>
 
-[body]
+[<body>]
 ```
 
 RULES:
-- The summary line MUST be prefixed with a filename (basename), and
-  a comma and three dots if multiple files are affected
-- The summary line MUST be less than 80 characters wide in total
-- Capitalize the description
-- Use imperative mood in the description
-- Do not refer refer to the filename(s) in the description
-- The body is optional, and may be listed as bullets if appropriate
-- Keep the body short and concise (omit it entirely if not useful)
-- Wrap all body lines at 72 characters
-- Bullets should use third-person present (indicative)
+
+Summary line:
+  - MUST be prefixed with a filename (basename); if multiple files are
+    affected, use the most important file and add a comma and three dots
+  - Capitalize the first word in the <description>
+  - Do not refer to the filename(s) in the <description>
+  - Include location context in the description when space permits
+    (e.g., section, function name, class, or module)
+  - Use imperative mood
+  - MUST be less than 80 characters wide in total
+
+Body:
+  - Optional - only add when it provides significant additional
+    information beyond what is stated in the summary line
+  - Omit entirely if the summary line is sufficient
+  - If included, do NOT repeat information from the summary line
+  - May be written as a paragraph or as bullets, whichever is more
+    appropriate for the content
+  - Keep it short and concise
+  - Avoid generic justifications like \"improves clarity\" or \"ensures
+    maintainability\" - focus on specific information about what changed or why
+  - Use third-person present (indicative) (e.g., \"Adds feature X\")
+  - Wrap all body lines at 72 characters
 
 FILE DIFFS:
+
 ```\n%s\n```")
   :config
   ;; Set up LLM provider: OpenAI
