@@ -1615,6 +1615,12 @@ Regions (i.e., point and mark) must be set in advance."
       (open-line 1)))
   ;; )
 
+;; Increase diff context for magit-gptcommit
+(defun aj8/magit-gptcommit-extended-context-advice ()
+  "Advice function to get staged diff with extended context lines.
+Replaces `magit-gptcommit--staged-diff' to provide 50 lines of context."
+  (magit-git-output "diff" "--staged" "-w" "-U50"))
+
 ;; Add full file contents for magit-gptcommit
 (defun aj8/magit-gptcommit-add-file-context-advice (diff)
   "Advice function to augment DIFF with full file contents for context.

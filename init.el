@@ -2999,9 +2999,12 @@ Elisp code explicitly in arbitrary buffers.")
   :init
   ;; (require 'llm-gemini)
   (require 'llm-openai)
-  ;; Use full file contents (more tokens but complete context)
+  ;; Add extended context to help LLM identify locations
   (advice-add 'magit-gptcommit--staged-diff
-              :filter-return #'aj8/magit-gptcommit-add-file-context-advice)
+              :override #'aj8/magit-gptcommit-extended-context-advice)
+  ;; Use full file contents (more tokens but complete context)
+  ;; (advice-add 'magit-gptcommit--staged-diff
+  ;;             :filter-return #'aj8/magit-gptcommit-add-file-context-advice)
   :custom
   ;; Supress warning
   (llm-warn-on-nonfree nil)
@@ -3043,7 +3046,7 @@ Body:
   - Use third-person present (indicative) (e.g., \"Adds feature X\")
   - Wrap all body lines at 72 characters
 
-FILE CONTENTS AND DIFFS:
+FILE DIFFS:
 
 ```\n%s\n```")
   :config
