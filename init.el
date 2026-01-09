@@ -1594,21 +1594,14 @@
     :endpoint "/api/v1/chat/completions"
     :key (gptel-api-key-from-auth-source "openrouter.ai" "apikey")
     :stream t
-    :models '(anthropic/claude-sonnet-4.5
-              google/gemini-2.5-pro
-              openai/gpt-5
-              openai/gpt-5-codex
-              deepseek/deepseek-chat-v3-0324
-              deepseek/deepseek-r1-0528
+    :models '(deepseek/deepseek-chat-v3-0324
+              deepseek/deepseek-v3.2
               moonshotai/kimi-k2-thinking
-              qwen/qwen3-coder
               qwen/qwen3-coder:free
+              qwen/qwen3-coder-flash
               qwen/qwen3-coder-plus))
   ;; Enable reasoning
-  (dolist (provider '(deepseek/deepseek-chat-v3-0324
-                      deepseek/deepseek-chat-v3.1
-                      deepseek/deepseek-v3.1-terminus
-                      deepseek/deepseek-v3.2-exp))
+  (dolist (provider '(deepseek/deepseek-v3.2))
     (put provider :request-params '(:reasoning (:enabled t))))
   ;; === GitHub Copilot Chat ====
   (gptel-make-gh-copilot "Copilot")
