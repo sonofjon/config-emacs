@@ -3032,7 +3032,7 @@ Summary line:
   - Use basename only (not full path)
   - Capitalize the first word in the <description>
   - Do NOT refer to the filename(s) in the <description>
-  - Include location context in the description when space permits
+  - Include location context in the <description> when space permits
     (e.g., section, function name, class, or module)
   - Use imperative mood
   - MUST be less than 80 characters wide in total
