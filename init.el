@@ -3010,8 +3010,8 @@ Elisp code explicitly in arbitrary buffers.")
   (llm-warn-on-nonfree nil)
   (magit-gptcommit-prompt "INSTRUCTIONS:
 
-You are an expert at writing Git commits. Your job is to write a short
-clear commit message that summarizes the changes in the file diffs.
+You are an expert at writing Git commits. Your job is to summarize all
+file changes in a SINGLE commit message.
 
 The commit message should be structured as follows:
 
@@ -3031,8 +3031,6 @@ Summary line:
     - Three or more files: use the most important file and add a comma
       and three dots
   - Count files by counting \"diff --git\" lines in the diff below
-  - Write a SINGLE commit message that covers all file changes together,
-    not separate messages for each file
   - Use basename only (not full path)
   - Capitalize the first word in the <description>
   - Do NOT refer to the filename(s) in the <description>
