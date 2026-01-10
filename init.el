@@ -2993,7 +2993,7 @@ Elisp code explicitly in arbitrary buffers.")
   :bind (:map git-commit-mode-map
               ("C-c C-g" . magit-gptcommit-commit-accept))
   :init
-  ;; (require 'llm-gemini)
+  (require 'llm-gemini)
   (require 'llm-openai)
   ;; Add extended context to help LLM identify locations
   (advice-add 'magit-gptcommit--staged-diff
@@ -3052,19 +3052,19 @@ FILE DIFFS:
   :config
   ;; Set up LLM provider: OpenAI
   ;;   Use lazy setup to avoid password prompt during startup
-  (setq magit-gptcommit-llm-provider
-        (make-llm-openai :key (auth-info-password
-                               (car (auth-source-search
-                                     :host "api.openai.com"
-                                     :user "apikey")))
-                         :chat-model "gpt-4.1"))
-  ;; Set up LLM provider: Gemini
   ;; (setq magit-gptcommit-llm-provider
-  ;;       (make-llm-gemini :key (auth-info-password
+  ;;       (make-llm-openai :key (auth-info-password
   ;;                              (car (auth-source-search
-  ;;                                    :host "generativelanguage.googleapis.com"
+  ;;                                    :host "api.openai.com"
   ;;                                    :user "apikey")))
-  ;;                        :chat-model "gemini-flash-latest"))
+  ;;                        :chat-model "gpt-4.1"))
+  ;; Set up LLM provider: Gemini
+  (setq magit-gptcommit-llm-provider
+        (make-llm-gemini :key (auth-info-password
+                               (car (auth-source-search
+                                     :host "generativelanguage.googleapis.com"
+                                     :user "apikey")))
+                         :chat-model "gemini-flash-latest"))
   ;; Add gptcommit transient commands to `magit-commit'
   (magit-gptcommit-status-buffer-setup))
   ;; Generate commit message automatically in Magit status buffer
