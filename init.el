@@ -3022,6 +3022,11 @@ The commit message should be structured as follows:
 RULES:
 
 Summary line:
+  - MUST describe the most important change with concrete specifics
+    about what was added, removed, fixed, or changed - avoid vague
+    descriptions that could apply to any change
+  - MUST be specific enough to understand the change without reading the
+    body
   - MUST be prefixed with filename(s):
     - Single file: use the filename
     - Exactly two files: when space permits, list both separated by a
