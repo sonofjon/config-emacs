@@ -3015,11 +3015,9 @@ file changes in a SINGLE commit message.
 
 The commit message should be structured as follows:
 
-```
 {<filename> | <filename>, <filename> | <filename>, ...}: <description>
 
 [<body>]
-```
 
 RULES:
 
