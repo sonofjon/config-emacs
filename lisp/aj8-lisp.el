@@ -1619,7 +1619,20 @@ Regions (i.e., point and mark) must be set in advance."
 (defun aj8/magit-gptcommit-extended-context-advice ()
   "Advice function to get staged diff with extended context lines.
 Replaces `magit-gptcommit--staged-diff' to provide 50 lines of context."
-  (magit-git-output "diff" "--staged" "-w" "-U50"))
+  (let* ((files (magit-staged-files))
+         (diff (magit-git-output "diff" "--staged" "-w" "-U50"))
+         ;; Split diff by file and add headers
+         (diff-parts (split-string diff "^diff --git" t))
+         (annotated-diff
+          (mapconcat
+           (lambda (part)
+             (if (string-match "a/\\([^ ]+\\) b/" part)
+                 (let ((filename (match-string 1 part)))
+                   (format "=== File: %s ===\ndiff --git%s" filename part))
+               part))
+           diff-parts
+           "")))
+    annotated-diff))
 
 ;; Add full file contents for magit-gptcommit
 (defun aj8/magit-gptcommit-add-file-context-advice (diff)

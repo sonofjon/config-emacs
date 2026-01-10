@@ -3033,7 +3033,6 @@ Summary line:
       comma; otherwise treat as three or more files
     - Three or more files: use the most important file and add a comma
       and three dots
-  - Count files by counting \"diff --git\" lines in the diff below
   - Use basename only (not full path)
   - Capitalize the first word in the <description>
   - Do NOT refer to the filename(s) in the <description>
