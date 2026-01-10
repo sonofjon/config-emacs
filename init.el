@@ -1349,7 +1349,7 @@
      ;;
      ;; Bottom side window
      ;;
-     ("^\\*\\(eat\\|e?shell\\|v?term\\)\\*"
+     ("^\\*\\(eat\\|e?shell\\|v?term\\|Agent-Shell Buffers\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . bottom)
