@@ -3027,12 +3027,10 @@ Summary line:
     descriptions that could apply to any change
   - MUST be specific enough to understand the change without reading the
     body
-  - MUST be prefixed with filename(s):
-    - Single file: use the filename
-    - Exactly two files: when space permits, list both separated by a
-      comma; otherwise treat as three or more files
-    - Three or more files: use the most important file and add a comma
-      and three dots
+  - MUST be prefixed with filename(s) based on how many files are changed:
+    - If one file is changed: use \"filename\"
+    - If exactly two files are changed: when space permits, use \"filename, filename\"; otherwise use \"filename, ...\"
+    - If three or more files are changed: use \"filename, ...\"
   - Use basename only (not full path)
   - Capitalize the first word in the <description>
   - Do NOT refer to the filename(s) in the <description>
