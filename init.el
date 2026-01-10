@@ -3044,8 +3044,6 @@ Body:
     information beyond what is stated in the summary line
   - Omit entirely if the summary line is sufficient
   - If included, do NOT repeat information from the summary line
-  - May be written as a paragraph or as bullets, whichever is more
-    appropriate for the content
   - Keep it short and concise
   - Avoid generic justifications like \"improves clarity\" or \"ensures
     maintainability\" - focus on specific information about what changed or why
