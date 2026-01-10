@@ -93,6 +93,7 @@
         benchmark-init
         cape
         circadian
+        claude-code
         consult
         consult-eglot
         consult-project-extra
@@ -122,6 +123,7 @@
         gptel-magit
         helpful
         hydra
+        inheritenv
         jinx
         keychain-environment
         keyfreq
@@ -169,13 +171,11 @@
         (auto-width-mode :url "https://github.com/sonofjon/auto-width-mode.el.git" :rev :newest)
         ;; (ai-code-interface :url "https://github.com/tninja/ai-code-interface.el.git" :rev :newest)
         (buffer-tail-mode :url "https://github.com/sonofjon/buffer-tail-mode.el.git" :rev :newest)
-        (claude-code :url "https://github.com/stevemolitor/claude-code.el.git" :rev :newest)
         (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el.git" :rev :newest)
         (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
         (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
         (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
         (hideshow-cycle :url "https://github.com/sonofjon/hideshow-cycle.el" :rev :newest)
-        (inheritenv :url "https://github.com/purcell/inheritenv.git"  :rev :newest)
         (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
         (mcp-server :url "https://github.com/rhblind/emacs-mcp-server.git" :rev :newest)
         (monet :url "https://github.com/stevemolitor/monet.git" :rev :newest)
