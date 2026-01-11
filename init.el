@@ -1122,18 +1122,19 @@
   (vc-follow-symlinks t))
 
 ;; which-key (display available keybindings in popup)
-;;   MAYBE: which-key buffer overlaps with bottom side-window buffer
-;;          (which might be OK?)
-;;          When doing so, which-key fails to
-;;            1) grow window to respect the height defined below
-;;            2) display a complete list of commands
 (use-package which-key
   :diminish
+  :init
+  ;; Save/restore window configuration before/after popup
+  ;;   Allows which-key to resize bottom side-window
+  (advice-add 'which-key--show-buffer-side-window :before #'aj8/which-key--save-config)
+  (advice-add 'which-key--hide-buffer-side-window :after #'aj8/which-key--restore-config)
   :custom
   ;; Use minibuffer
   ;; (which-key-popup-type 'minibuffer)   ; default is side-window
   ;; Preserve window configuration
-  (which-key-preserve-window-configuration t)
+  ;;   Set to nil to allow which-key to resize bottom side-window
+  (which-key-preserve-window-configuration nil)
   ;; Max window height
   ;;   (default is 0.25)
   (which-key-side-window-max-height 0.5)
@@ -1353,15 +1354,7 @@
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . bottom)
-      (window-parameters . ((no-delete-other-windows . t))))
-     ;;
-     ;; Bottom buffer (not side window)
-     ;;
-     ("^\\*Embark Actions\\*"
-      (display-buffer-reuse-mode-window display-buffer-at-bottom)
-      (window-height . fit-window-to-buffer)
-      (window-parameters . ((no-other-window . t)
-                            (mode-line-format . none)))))))
+      (window-parameters . ((no-delete-other-windows . t)))))))
   ;; :config
   ;; Resize window combinations proportionally
   ;;   TODO: Message buffer grows on each Magit commit
@@ -2324,7 +2317,16 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Hide some actions
   (embark-verbose-indicator-excluded-actions
    '("\\(local\\|global\\)-set-key" ".*debug-.*" "elp-.*" ".*trace-.*"
-     embark-history-remove)))
+     embark-history-remove))
+  ;; Display Embark Actions buffer in bottom side-window with auto-sizing
+  (embark-verbose-indicator-display-action
+   '(display-buffer-in-side-window
+     (side . bottom)
+     (window-height . (lambda (window)
+                       (fit-window-to-buffer window
+                                            (floor (* 0.5 (frame-height))))))
+     (window-parameters . ((no-other-window . t)
+                           (mode-line-format . none))))))
 
 ;; embark-consult (Consult integration for Embark)
 (use-package embark-consult
@@ -2367,7 +2369,18 @@ Elisp code explicitly in arbitrary buffers.")
   :custom
   ;; Enable cycling
   (vertico-cycle t)
+  ;; Hide minibuffer prompt
+  ;;   ... unnecessary since vertico-buffer-mode already does this
+  ;; (vertico-buffer-hide-prompt t)
   :config
+  ;; Enable vertico-buffer-mode for bottom side-window display
+  (vertico-buffer-mode 1)
+  ;; Configure vertico to display in bottom side-window
+  (setq vertico-buffer-display-action
+        `(display-buffer-in-side-window
+          (side . bottom)
+          (window-height . ,aj8/side-window-height)
+          (window-parameters . ((mode-line-format . none)))))
   ;; Save repeat history across sessions
   (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
   ;; Enable M-x minibuffer-hide-completions (make function interactive)

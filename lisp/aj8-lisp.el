@@ -1719,6 +1719,30 @@ use slot 0 to share undivided space."
     (when found-side-window
       (window-toggle-side-windows))))
 
+;;; Save window configuration for which-key
+
+(defvar aj8/which-key--saved-config nil
+  "Saved window configuration before which-key popup.")
+
+(defun aj8/which-key--save-config (&rest _args)
+  "Advice function that saves window configuration before which-key shows.
+
+This allows which-key to freely resize the bottom side-window to display
+all available options, while preserving the ability to restore the original
+window configuration afterward."
+  (unless aj8/which-key--saved-config
+    (setq aj8/which-key--saved-config (current-window-configuration))))
+
+(defun aj8/which-key--restore-config (&rest _args)
+  "Advice function that restores window configuration after which-key hides.
+
+Restores the window configuration that was saved by
+`aj8/which-key--save-config', ensuring the bottom side-window returns to
+its original size after which-key is dismissed."
+  (when aj8/which-key--saved-config
+    (set-window-configuration aj8/which-key--saved-config)
+    (setq aj8/which-key--saved-config nil)))
+
 ;;; Kill windows
 
 ;; Kill buffers by defult with quit-window
