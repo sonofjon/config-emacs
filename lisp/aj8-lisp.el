@@ -715,6 +715,26 @@ ORIG-FUN should be the original `consult--git-grep-make-builder' function."
   (when (string-suffix-p "!" pattern)
     `(orderless-without-literal . ,(substring pattern 0 -1))))
 
+;;; Vertico on the fly sort toggle
+
+(defun aj8/vertico-sort-toggle ()
+  "Cycle through sorting modes: history-length-alpha -> length-alpha -> alpha."
+  (interactive)
+  (cond
+   ((eq vertico-sort-override-function 'vertico-sort-length-alpha)
+    (setq-local vertico-sort-override-function #'vertico-sort-alpha)
+    (minibuffer-message "Sorting by alpha"))
+   ((eq vertico-sort-override-function 'vertico-sort-alpha)
+    (setq-local vertico-sort-override-function nil)
+    (minibuffer-message "Sorting by history-length-alpha"))
+   (t
+    (setq-local vertico-sort-override-function #'vertico-sort-length-alpha)
+    (minibuffer-message "Sorting by length-alpha")))
+  ;; Invalidate cached input to force candidate recomputation
+  (setq vertico--input t)
+  ;; Update the Vertico display with new sort order
+  (vertico--exhibit))
+
 ;;;; Editing
 
 ;;; Smartparens

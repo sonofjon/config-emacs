@@ -2367,7 +2367,8 @@ Elisp code explicitly in arbitrary buffers.")
          ("C-p" . vertico-previous-group)
          ("C-n" . vertico-next-group)
          ("M-P" . #'vertico-repeat-previous)   ; TODO: overlaps with S-M-p
-         ("M-N" . #'vertico-repeat-next))      ; TODO: overlaps with S-M-n
+         ("M-N" . #'vertico-repeat-next)       ; TODO: overlaps with S-M-n
+         ("M-/" . aj8/vertico-sort-toggle))
   :init
   (vertico-mode)
   :custom
