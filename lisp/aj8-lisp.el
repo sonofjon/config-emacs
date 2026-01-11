@@ -1718,36 +1718,46 @@ use slot 0 to share undivided space."
     (when found-side-window
       (window-toggle-side-windows))))
 
-;;; Save window configuration for which-key
+;;; Minibuffer side-window mode
 
-(defvar aj8/which-key--saved-config nil
+;; TODO: The minibuffer prompt remains visible at the bottom of the frame
+;;       when displaying in the side-window. Investigate how to hide it
+;;       completely.
+
+(defvar aj8/minibuffer-side-window--vertico-display-action-saved nil
+  "Saved value of `vertico-buffer-display-action'.")
+
+(defvar aj8/minibuffer-side-window--embark-display-action-saved nil
+  "Saved value of `embark-verbose-indicator-display-action'.")
+
+(defvar aj8/minibuffer-side-window--which-key-saved-config nil
   "Saved window configuration before which-key popup.")
 
-(defun aj8/which-key--save-config (&rest _args)
+(defun aj8/minibuffer-side-window--which-key-save-config (&rest _args)
   "Advice function that saves window configuration before which-key shows.
 
 This allows which-key to freely resize the bottom side-window to display
 all available options, while preserving the ability to restore the original
 window configuration afterward."
-  (unless aj8/which-key--saved-config
-    (setq aj8/which-key--saved-config (current-window-configuration))))
+  (unless aj8/minibuffer-side-window--which-key-saved-config
+    (setq aj8/minibuffer-side-window--which-key-saved-config
+          (current-window-configuration))))
 
-(defun aj8/which-key--restore-config (&rest _args)
+(defun aj8/minibuffer-side-window--which-key-restore-config (&rest _args)
   "Advice function that restores window configuration after which-key hides.
 
 Restores the window configuration that was saved by
-`aj8/which-key--save-config', ensuring the bottom side-window returns to
-its original size after which-key is dismissed."
-  (when aj8/which-key--saved-config
-    (set-window-configuration aj8/which-key--saved-config)
-    (setq aj8/which-key--saved-config nil)))
+`aj8/minibuffer-side-window--which-key-save-config', ensuring the bottom
+side-window returns to its original size after which-key is dismissed."
+  (when aj8/minibuffer-side-window--which-key-saved-config
+    (set-window-configuration aj8/minibuffer-side-window--which-key-saved-config)
+    (setq aj8/minibuffer-side-window--which-key-saved-config nil)))
 
-;;; Resize bottom side-window on reuse
-
-(defun aj8/bottom-side-window-resize-on-reuse (buffer alist)
+(defun aj8/minibuffer-side-window--resize-on-reuse (buffer alist)
   "Advice function that resizes bottom side-window even when reused.
 
-This ensures that the `window-height' parameter in ALIST is honored when
+This function is used to advice `display-buffer-in-side-window' to
+ensure that the `window-height' parameter in ALIST is honored when
 `display-buffer-in-side-window' reuses an existing window.  BUFFER is
 the buffer being displayed."
   (when-let* ((side (alist-get 'side alist))
@@ -1765,6 +1775,74 @@ the buffer being displayed."
         (when (and (not (zerop delta))
                    (window-resizable-p window delta))
           (window-resize window delta)))))))
+
+(defun aj8/minibuffer-side-window--enable ()
+  "Enable side-window display for vertico, embark, and which-key."
+  ;; General
+  ;;   - display-buffer-in-side-window doesn't apply window-height when
+  ;;     reusing an existing window; solved by advice that forces resize
+  (advice-add 'display-buffer-in-side-window :after
+              #'aj8/minibuffer-side-window--resize-on-reuse)
+  ;; Vertico
+  (setq aj8/minibuffer-side-window--vertico-display-action-saved
+        vertico-buffer-display-action)
+  (vertico-buffer-mode 1)
+  (setq vertico-buffer-display-action
+        `(display-buffer-in-side-window
+          (side . bottom)
+          (window-height . ,aj8/side-window-height)
+          (window-parameters . ((mode-line-format . none)))))
+  ;; Embark
+  (setq aj8/minibuffer-side-window--embark-display-action-saved
+        embark-verbose-indicator-display-action)
+  (setq embark-verbose-indicator-display-action
+        '(display-buffer-in-side-window
+          (side . bottom)
+          (window-height . (lambda (window)
+                             (fit-window-to-buffer
+                              window
+                              (floor (* 0.5 (frame-height))))))
+          (window-parameters . ((no-other-window . t)
+                                (mode-line-format . none)))))
+  ;; Which-key
+  ;;   - which-key resizes the side-window but doesn't restore it afterward;
+  ;;     solved by saving/restoring window configuration around popup
+  ;;     display
+  (setq which-key-preserve-window-configuration nil)
+  (advice-add 'which-key--show-buffer-side-window :before
+              #'aj8/minibuffer-side-window--which-key-save-config)
+  (advice-add 'which-key--hide-buffer-side-window :after
+              #'aj8/minibuffer-side-window--which-key-restore-config))
+
+(defun aj8/minibuffer-side-window--disable ()
+  "Disable side-window display for vertico, embark, and which-key."
+  ;; General
+  (advice-remove 'display-buffer-in-side-window
+                 #'aj8/minibuffer-side-window--resize-on-reuse)
+  ;; Vertico
+  (vertico-buffer-mode -1)
+  (setq vertico-buffer-display-action
+        aj8/minibuffer-side-window--vertico-display-action-saved)
+  ;; Embark
+  (setq embark-verbose-indicator-display-action
+        aj8/minibuffer-side-window--embark-display-action-saved)
+  ;; Which-key
+  (setq which-key-preserve-window-configuration t)
+  (advice-remove 'which-key--show-buffer-side-window
+                 #'aj8/minibuffer-side-window--which-key-save-config)
+  (advice-remove 'which-key--hide-buffer-side-window
+                 #'aj8/minibuffer-side-window--which-key-restore-config))
+
+(define-minor-mode aj8/minibuffer-side-window-mode
+  "Toggle side-window display for vertico, embark, and which-key.
+
+When enabled, these packages display in the bottom side-window.
+When disabled, they use standard minibuffer display."
+  :global t
+  :group 'aj8-lisp
+  (if aj8/minibuffer-side-window-mode
+      (aj8/minibuffer-side-window--enable)
+    (aj8/minibuffer-side-window--disable)))
 
 ;;; Kill windows
 
