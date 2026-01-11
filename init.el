@@ -1214,6 +1214,9 @@
   (advice-add 'kill-current-buffer :around #'aj8/retain-side-window-focus)
   ;; Make quit-window kill buffer by default (inverse behavior)
   (advice-add 'quit-window :filter-args #'my/advice--quit-window)
+  ;; Resize bottom side-window even when reusing existing window
+  (advice-add 'display-buffer-in-side-window :after
+              #'aj8/bottom-side-window-resize-on-reuse)
   ;; Enable better quit-window behavior
   ;; (advice-add 'display-buffer :filter-return #'my/better-quit-window-save)
   ;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)

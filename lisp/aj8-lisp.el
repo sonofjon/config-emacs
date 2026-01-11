@@ -1743,6 +1743,30 @@ its original size after which-key is dismissed."
     (set-window-configuration aj8/which-key--saved-config)
     (setq aj8/which-key--saved-config nil)))
 
+;;; Resize bottom side-window on reuse
+
+(defun aj8/bottom-side-window-resize-on-reuse (buffer alist)
+  "Advice function that resizes bottom side-window even when reused.
+
+This ensures that the `window-height' parameter in ALIST is honored when
+`display-buffer-in-side-window' reuses an existing window.  BUFFER is
+the buffer being displayed."
+  (when-let* ((side (alist-get 'side alist))
+              ((eq side 'bottom))
+              (height (alist-get 'window-height alist))
+              (window (get-buffer-window buffer)))
+    (cond
+     ((functionp height)
+      (funcall height window))
+     ((numberp height)
+      (let* ((new-height (if (integerp height)
+                             height
+                           (round (* (frame-height) height))))
+             (delta (- new-height (window-total-height window))))
+        (when (and (not (zerop delta))
+                   (window-resizable-p window delta))
+          (window-resize window delta)))))))
+
 ;;; Kill windows
 
 ;; Kill buffers by defult with quit-window
