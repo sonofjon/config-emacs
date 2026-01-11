@@ -1740,15 +1740,17 @@ the window so that the streaming position appears near the bottom."
 
 ;; mcp-server (pure Elisp MCP Server)
 ;;   Usage:
-;;   - Registration (wrapper script):
-;;         {claude | gemini} mcp add -s user mcp-server -- \
-;;           ~/.emacs.d/elpa/mcp-server/mcp-wrapper.sh \
-;;           ~/.emacs.d/emacs-mcp-server.sock
-;;   - Registration (direct socat):
-;;       {claude | gemini} mcp add -s user mcp-server-direct -- \
-;;         socat - UNIX-CONNECT:$HOME/.emacs.d/emacs-mcp-server.sock
-;;   - Start server: M-x mcp-server-start-unix
-;;   - Requires: socat (sudo apt-get install socat)
+;;   - One-time setup:
+;;       - Register with Claude/Gemini (wrapper script):
+;;           {claude | gemini} mcp add -s user mcp-server -- \
+;;             ~/.emacs.d/elpa/mcp-server/mcp-wrapper.sh \
+;;             ~/.emacs.d/emacs-mcp-server.sock
+;;       - Or register with Claude/Gemini (direct socat):
+;;           {claude | gemini} mcp add -s user mcp-server-direct -- \
+;;             socat - UNIX-CONNECT:$HOME/.emacs.d/emacs-mcp-server.sock
+;;           Requires: socat (sudo apt-get install socat)
+;;   - Every session:
+;;       - Start server: M-x mcp-server-start-unix
 (use-package mcp-server
   :ensure-system-package socat)
   ;; :config
@@ -1757,11 +1759,14 @@ the window so that the streaming position appears near the bottom."
 
 ;; elisp-dev-mcp (MCP server for agentic Elisp development)
 ;;   Usage:
-;;   - Get install script: M-x mcp-server-lib-install
-;;   - Registration: {claude | gemini} mcp add -s user -t stdio elisp-dev -- \
-;;       ~/.emacs.d/emacs-mcp-stdio.sh --init-function=elisp-dev-mcp-enable \
-;;       --stop-function=elisp-dev-mcp-disable --server-id=elisp-dev-mcp
-;;   - Start server: M-x mcp-server-lib-start
+;;   - One-time setup:
+;;       - Get install script: M-x mcp-server-lib-install
+;;       - Register with Claude/Gemini:
+;;           {claude | gemini} mcp add -s user -t stdio elisp-dev -- \
+;;             ~/.emacs.d/emacs-mcp-stdio.sh --init-function=elisp-dev-mcp-enable \
+;;             --stop-function=elisp-dev-mcp-disable --server-id=elisp-dev-mcp
+;;   - Every session:
+;;       - Start server: M-x mcp-server-lib-start
 (use-package elisp-dev-mcp)
 
 ;;; Buffers
