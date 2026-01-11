@@ -1742,11 +1742,11 @@ the window so that the streaming position appears near the bottom."
 ;;   Usage:
 ;;   - One-time setup:
 ;;       - Register with Claude/Gemini (wrapper script):
-;;           {claude | gemini} mcp add -s user mcp-server -- \
+;;           {claude | gemini} mcp add -s user mcp-server \
 ;;             ~/.emacs.d/elpa/mcp-server/mcp-wrapper.sh \
 ;;             ~/.emacs.d/emacs-mcp-server.sock
 ;;       - Or register with Claude/Gemini (direct socat):
-;;           {claude | gemini} mcp add -s user mcp-server-direct -- \
+;;           {claude | gemini} mcp add -s user mcp-server-direct \
 ;;             socat - UNIX-CONNECT:$HOME/.emacs.d/emacs-mcp-server.sock
 ;;           Requires: socat (sudo apt-get install socat)
 ;;   - Every session:
@@ -1762,7 +1762,7 @@ the window so that the streaming position appears near the bottom."
 ;;   - One-time setup:
 ;;       - Get install script: M-x mcp-server-lib-install
 ;;       - Register with Claude/Gemini:
-;;           {claude | gemini} mcp add -s user -t stdio elisp-dev -- \
+;;           {claude | gemini} mcp add -s user -t stdio elisp-dev \
 ;;             ~/.emacs.d/emacs-mcp-stdio.sh --init-function=elisp-dev-mcp-enable \
 ;;             --stop-function=elisp-dev-mcp-disable --server-id=elisp-dev-mcp
 ;;   - Every session:
