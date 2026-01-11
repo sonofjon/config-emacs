@@ -1746,7 +1746,7 @@ the window so that the streaming position appears near the bottom."
 ;;             socat - UNIX-CONNECT:$HOME/.emacs.d/emacs-mcp-server.sock
 ;;           Requires: socat (sudo apt-get install socat)
 ;;   - Every session:
-;;       - Start server: M-x mcp-server-start-unix
+;;       - Start MCP server: M-x mcp-server-start-unix
 (use-package mcp-server
   :ensure-system-package socat)
   ;; :config
@@ -1762,7 +1762,8 @@ the window so that the streaming position appears near the bottom."
 ;;             ~/.emacs.d/emacs-mcp-stdio.sh --init-function=elisp-dev-mcp-enable \
 ;;             --stop-function=elisp-dev-mcp-disable --server-id=elisp-dev-mcp
 ;;   - Every session:
-;;       - Start server: M-x mcp-server-lib-start
+;;       - Start Emacs server: M-x server-start (required for emacsclient)
+;;       - Start MCP server: M-x mcp-server-lib-start
 (use-package elisp-dev-mcp)
 
 ;;; Buffers
