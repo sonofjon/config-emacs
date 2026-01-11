@@ -641,52 +641,31 @@ ORIG-FUN should be the original `consult--git-grep-make-builder' function."
   (corfu--goto -1)
   (goto-char (cadr completion-in-region--data)))
 
-;;; Orderless matching styles
+;;; Orderless on the fly matching styles toggle
 
-;; Cycle through orderless matching styles
-;;   TODO: does not work
 (defun aj8/orderless-matching-style-cycle ()
   "Cycle through orderless matching styles."
   (interactive)
   (cond
    ((eq (car orderless-matching-styles) 'orderless-literal)
-    (aj8/orderless-matching-style--prefixes))
+    (setq-local orderless-matching-styles '(orderless-prefixes))
+    (minibuffer-message "Matching: prefixes"))
    ((eq (car orderless-matching-styles) 'orderless-prefixes)
-    (aj8/orderless-matching-style--regexp))
+    (setq-local orderless-matching-styles '(orderless-regexp))
+    (minibuffer-message "Matching: regexp"))
    ((eq (car orderless-matching-styles) 'orderless-regexp)
-    (aj8/orderless-matching-style--flex))
+    (setq-local orderless-matching-styles '(orderless-flex))
+    (minibuffer-message "Matching: flex"))
    ((eq (car orderless-matching-styles) 'orderless-flex)
-    (aj8/orderless-matching-style--literal))
+    (setq-local orderless-matching-styles '(orderless-literal))
+    (minibuffer-message "Matching: literal"))
    (t
-    (error "Unknown matching style"))))
-
-;; Flex
-(defun aj8/orderless-matching-style--flex ()
-  "Components match flexy for the rest of the session."
-  (setq-local orderless-matching-styles '(orderless-flex))
-  (minibuffer-message "[flex]"))
-  ;; (vertico--update 'interruptible))   ; TODO: What is this?
-
-;; Literal
-(defun aj8/orderless-matching-style--literal ()
-  "Components match literally for the rest of the session."
-  (setq-local orderless-matching-styles '(orderless-literal))
-  (minibuffer-message "[literal]"))
-  ;; (vertico--update 'interruptible))
-
-;; Prefixes
-(defun aj8/orderless-matching-style--prefixes ()
-  "Components match prefixes for the rest of the session."
-  (setq-local orderless-matching-styles '(orderless-prefixes))
-  (minibuffer-message "[prefixes]"))
-  ;; (vertico--update 'interruptible))
-
-;; Regexp
-(defun aj8/orderless-matching-style--regexp ()
-  "Components match regexp for the rest of the session."
-  (setq-local orderless-matching-styles '(orderless-regexp))
-  (minibuffer-message "[regexp]"))
-  ;; (vertico--update 'interruptible))
+    (setq-local orderless-matching-styles '(orderless-literal))
+    (minibuffer-message "Matching: literal")))
+  ;; Invalidate cached input to force candidate recomputation
+  (setq vertico--input t)
+  ;; Update the Vertico display with new matching style
+  (vertico--exhibit))
 
 ;;; Orderless style dispatchers
 
