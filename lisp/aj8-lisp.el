@@ -1784,35 +1784,38 @@ the buffer being displayed."
   (advice-add 'display-buffer-in-side-window :after
               #'aj8/minibuffer-side-window--resize-on-reuse)
   ;; Vertico
-  (vertico-buffer-mode 1)
-  (setq aj8/minibuffer-side-window--vertico-display-action-saved
-        vertico-buffer-display-action)
-  (setq vertico-buffer-display-action
-        `(display-buffer-in-side-window
-          (side . bottom)
-          (window-height . ,aj8/side-window-height)
-          (window-parameters . ((mode-line-format . none)))))
+  (with-eval-after-load 'vertico
+    (vertico-buffer-mode 1)
+    (setq aj8/minibuffer-side-window--vertico-display-action-saved
+          vertico-buffer-display-action)
+    (setq vertico-buffer-display-action
+          `(display-buffer-in-side-window
+            (side . bottom)
+            (window-height . ,aj8/side-window-height)
+            (window-parameters . ((mode-line-format . none))))))
   ;; Embark
-  (setq aj8/minibuffer-side-window--embark-display-action-saved
-        embark-verbose-indicator-display-action)
-  (setq embark-verbose-indicator-display-action
-        '(display-buffer-in-side-window
-          (side . bottom)
-          (window-height . (lambda (window)
-                             (fit-window-to-buffer
-                              window
-                              (floor (* 0.5 (frame-height))))))
-          (window-parameters . ((no-other-window . t)
-                                (mode-line-format . none)))))
+  (with-eval-after-load 'embark
+    (setq aj8/minibuffer-side-window--embark-display-action-saved
+          embark-verbose-indicator-display-action)
+    (setq embark-verbose-indicator-display-action
+          '(display-buffer-in-side-window
+            (side . bottom)
+            (window-height . (lambda (window)
+                               (fit-window-to-buffer
+                                window
+                                (floor (* 0.5 (frame-height))))))
+            (window-parameters . ((no-other-window . t)
+                                  (mode-line-format . none))))))
   ;; Which-key
   ;;   - which-key resizes the side-window but doesn't restore it afterward;
   ;;     solved by saving/restoring window configuration around popup
   ;;     display
-  (setq which-key-preserve-window-configuration nil)
-  (advice-add 'which-key--show-buffer-side-window :before
-              #'aj8/minibuffer-side-window--which-key-save-config)
-  (advice-add 'which-key--hide-buffer-side-window :after
-              #'aj8/minibuffer-side-window--which-key-restore-config))
+  (with-eval-after-load 'which-key
+    (setq which-key-preserve-window-configuration nil)
+    (advice-add 'which-key--show-buffer-side-window :before
+                #'aj8/minibuffer-side-window--which-key-save-config)
+    (advice-add 'which-key--hide-buffer-side-window :after
+                #'aj8/minibuffer-side-window--which-key-restore-config)))
 
 (defun aj8/minibuffer-side-window--disable ()
   "Disable side-window display for vertico, embark, and which-key."
@@ -1820,18 +1823,21 @@ the buffer being displayed."
   (advice-remove 'display-buffer-in-side-window
                  #'aj8/minibuffer-side-window--resize-on-reuse)
   ;; Vertico
-  (vertico-buffer-mode -1)
-  (setq vertico-buffer-display-action
-        aj8/minibuffer-side-window--vertico-display-action-saved)
+  (when (featurep 'vertico)
+    (vertico-buffer-mode -1)
+    (setq vertico-buffer-display-action
+          aj8/minibuffer-side-window--vertico-display-action-saved))
   ;; Embark
-  (setq embark-verbose-indicator-display-action
-        aj8/minibuffer-side-window--embark-display-action-saved)
+  (when (featurep 'embark)
+    (setq embark-verbose-indicator-display-action
+          aj8/minibuffer-side-window--embark-display-action-saved))
   ;; Which-key
-  (setq which-key-preserve-window-configuration t)
-  (advice-remove 'which-key--show-buffer-side-window
-                 #'aj8/minibuffer-side-window--which-key-save-config)
-  (advice-remove 'which-key--hide-buffer-side-window
-                 #'aj8/minibuffer-side-window--which-key-restore-config))
+  (when (featurep 'which-key)
+    (setq which-key-preserve-window-configuration t)
+    (advice-remove 'which-key--show-buffer-side-window
+                   #'aj8/minibuffer-side-window--which-key-save-config)
+    (advice-remove 'which-key--hide-buffer-side-window
+                   #'aj8/minibuffer-side-window--which-key-restore-config)))
 
 (define-minor-mode aj8/minibuffer-side-window-mode
   "Toggle side-window display for vertico, embark, and which-key.
