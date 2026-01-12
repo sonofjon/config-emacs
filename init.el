@@ -745,7 +745,8 @@
   (minibuffer-depth-indicate-mode 1)
   ;; Use partial completion for files
   (setq completion-category-defaults nil)
-  (add-to-list 'completion-category-overrides '((file (styles basic partial-completion)))))
+  (add-to-list 'completion-category-overrides
+               '((file (styles basic partial-completion)))))
 
 ;; modus-themes (elegant, highly legible and customizable themes)
 (use-package modus-themes
