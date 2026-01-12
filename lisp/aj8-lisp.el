@@ -1784,9 +1784,9 @@ the buffer being displayed."
   (advice-add 'display-buffer-in-side-window :after
               #'aj8/minibuffer-side-window--resize-on-reuse)
   ;; Vertico
+  (vertico-buffer-mode 1)
   (setq aj8/minibuffer-side-window--vertico-display-action-saved
         vertico-buffer-display-action)
-  (vertico-buffer-mode 1)
   (setq vertico-buffer-display-action
         `(display-buffer-in-side-window
           (side . bottom)
