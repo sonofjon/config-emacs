@@ -1,1 +1,0 @@
-- Source instructions for Emacs and VSCode AI usage from the same source.
