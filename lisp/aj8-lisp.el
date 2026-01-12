@@ -1832,6 +1832,7 @@ the buffer being displayed."
   ;;     solved by saving/restoring window configuration around popup
   ;;     display
   (with-eval-after-load 'which-key
+    (setq which-key-popup-type 'side-window)
     (setq which-key-preserve-window-configuration nil)
     (advice-add 'which-key--show-buffer-side-window :before
                 #'aj8/minibuffer-side-window--which-key-save-config)
@@ -1863,6 +1864,7 @@ the buffer being displayed."
           aj8/minibuffer-side-window--embark-display-action-saved))
   ;; Which-key
   (when (featurep 'which-key)
+    (setq which-key-popup-type 'minibuffer)
     (setq which-key-preserve-window-configuration t)
     (advice-remove 'which-key--show-buffer-side-window
                    #'aj8/minibuffer-side-window--which-key-save-config)
