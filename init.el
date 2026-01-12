@@ -1743,7 +1743,7 @@ the window so that the streaming position appears near the bottom."
   :config
   ;; Apply the default security settings
   (setq mcp-server-security-prompt-for-permissions t)
-  (setq mcp-server-security-allowed-dangerous-functions nil))
+  (setq mcp-server-security-allowed-dangerous-functions nil)
   ;; Add sensitive file patterns
   ;; (dolist (pattern '("~/my-secrets/" "*.key"))
   ;;   (add-to-list 'mcp-server-security-sensitive-file-patterns pattern))
@@ -1757,8 +1757,8 @@ the window so that the streaming position appears near the bottom."
   ;; (setq mcp-server-emacs-tools-enabled 'all)
   ;; Enable only specific tools (disable eval-elisp for security)
   ;; (setq mcp-server-emacs-tools-enabled '(get-diagnostics))
-  ;; Start server
-  ;; (add-hook 'emacs-startup-hook #'mcp-server-start-unix))
+  ;; Start MCP server
+  (add-hook 'emacs-startup-hook #'mcp-server-start-unix))
 
 ;; elisp-dev-mcp (MCP server for agentic Elisp development)
 ;;   Usage:
@@ -1769,7 +1769,7 @@ the window so that the streaming position appears near the bottom."
 ;;             ~/.emacs.d/emacs-mcp-stdio.sh --init-function=elisp-dev-mcp-enable \
 ;;             --stop-function=elisp-dev-mcp-disable --server-id=elisp-dev-mcp
 ;;   - Every session:
-;;       - Start Emacs server: M-x server-start (required for emacsclient)
+;;       - Start Emacs server: M-x server-start
 ;;       - Start MCP server: M-x mcp-server-lib-start
 (use-package elisp-dev-mcp
   :config
@@ -1778,7 +1778,11 @@ the window so that the streaming position appears near the bottom."
         '("~/.emacs.d/"
           "~/git/"
           "~/dotfiles/"
-          "~/projects/")))
+          "~/projects/"))
+  ;; Start Emacs server (required for emacsclient)
+  (add-hook 'emacs-startup-hook #'server-start)
+  ;; Start MCP server
+  (add-hook 'emacs-startup-hook #'mcp-server-lib-start))
 
 ;;; Buffers
 
