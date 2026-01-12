@@ -1730,30 +1730,8 @@ use slot 0 to share undivided space."
 (defvar aj8/minibuffer-side-window--embark-display-action-saved nil
   "Saved value of `embark-verbose-indicator-display-action'.")
 
-(defvar aj8/minibuffer-side-window--which-key-saved-config nil
-  "Saved window configuration before which-key popup.")
-
 (defvar aj8/minibuffer-side-window--transient-saved-config nil
   "Saved window configuration before transient popup.")
-
-(defun aj8/minibuffer-side-window--which-key-save-config (&rest _args)
-  "Advice function that saves window configuration before which-key shows.
-
-Which-key resizes the bottom side-window but doesn't restore it afterward.
-This function saves the configuration so it can be restored."
-  (unless aj8/minibuffer-side-window--which-key-saved-config
-    (setq aj8/minibuffer-side-window--which-key-saved-config
-          (current-window-configuration))))
-
-(defun aj8/minibuffer-side-window--which-key-restore-config (&rest _args)
-  "Advice function that restores window configuration after which-key hides.
-
-Restores the window configuration that was saved by
-`aj8/minibuffer-side-window--which-key-save-config', ensuring the bottom
-side-window returns to its original size after which-key is dismissed."
-  (when aj8/minibuffer-side-window--which-key-saved-config
-    (set-window-configuration aj8/minibuffer-side-window--which-key-saved-config)
-    (setq aj8/minibuffer-side-window--which-key-saved-config nil)))
 
 (defun aj8/minibuffer-side-window--transient-save-config (&rest _args)
   "Advice function that saves window configuration before transient shows.
@@ -1828,16 +1806,8 @@ the buffer being displayed."
             (window-parameters . ((no-other-window . t)
                                   (mode-line-format . none))))))
   ;; Which-key
-  ;;   - which-key resizes the side-window but doesn't restore it afterward;
-  ;;     solved by saving/restoring window configuration around popup
-  ;;     display
   (with-eval-after-load 'which-key
-    (setq which-key-popup-type 'side-window)
-    (setq which-key-preserve-window-configuration nil)
-    (advice-add 'which-key--show-buffer-side-window :before
-                #'aj8/minibuffer-side-window--which-key-save-config)
-    (advice-add 'which-key--hide-buffer-side-window :after
-                #'aj8/minibuffer-side-window--which-key-restore-config))
+    (setq which-key-popup-type 'side-window))
   ;; Transient
   ;;   - transient resizes the side-window but doesn't restore it afterward;
   ;;     solved by saving/restoring window configuration around popup
@@ -1864,12 +1834,7 @@ the buffer being displayed."
           aj8/minibuffer-side-window--embark-display-action-saved))
   ;; Which-key
   (when (featurep 'which-key)
-    (setq which-key-popup-type 'minibuffer)
-    (setq which-key-preserve-window-configuration t)
-    (advice-remove 'which-key--show-buffer-side-window
-                   #'aj8/minibuffer-side-window--which-key-save-config)
-    (advice-remove 'which-key--hide-buffer-side-window
-                   #'aj8/minibuffer-side-window--which-key-restore-config))
+    (setq which-key-popup-type 'minibuffer))
   ;; Transient
   (when (featurep 'transient)
     (advice-remove 'transient--show
