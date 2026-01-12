@@ -1771,6 +1771,7 @@ the window so that the streaming position appears near the bottom."
   ;; Don't query on exit for MCP server listener process
   (defun aj8/mcp-server-no-query-on-exit ()
     "Set query-on-exit-flag to nil for MCP server listener process."
+    ;; TODO: Does not work
     (when-let ((proc (get-process "emacs-mcp-unix-server")))
       (set-process-query-on-exit-flag proc nil)))
   ;; Start MCP server
