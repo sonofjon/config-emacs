@@ -2386,6 +2386,11 @@ Elisp code explicitly in arbitrary buffers.")
          ("M-P" . #'vertico-repeat-previous)   ; TODO: overlaps with S-M-p
          ("M-N" . #'vertico-repeat-next)       ; TODO: overlaps with S-M-n
          ("M-/" . aj8/vertico-sort-toggle))
+  :custom
+  ;; Reduce the popularity bonus (prioritizes recent commands)
+  (vertico-sort-history-duplicate 1.0)   ; default is 10
+  ;; Decay the popularity bonus faster (prioritizes recent commands)
+  (vertico-sort-history-decay 1.0)   ; default is 10
   :init
   (vertico-mode)
   :custom
