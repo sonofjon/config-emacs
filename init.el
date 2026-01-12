@@ -1771,7 +1771,14 @@ the window so that the streaming position appears near the bottom."
 ;;   - Every session:
 ;;       - Start Emacs server: M-x server-start (required for emacsclient)
 ;;       - Start MCP server: M-x mcp-server-lib-start
-(use-package elisp-dev-mcp)
+(use-package elisp-dev-mcp
+  :config
+  ;; Allow additional directories
+  (setq elisp-dev-mcp-additional-allowed-dirs
+        '("~/.emacs.d/"
+          "~/git/"
+          "~/dotfiles/"
+          "~/projects/")))
 
 ;;; Buffers
 
