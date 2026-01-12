@@ -1101,6 +1101,9 @@
   (add-to-list 'global-mode-string '(:eval (aj8/tramp-indicator)) t))
 
 ;; transient (transient commands)
+;;   TODO: The advice works fine, however, after enabling mini buffer side
+;;   window mode and disabling it, transient again does not restore the
+;;   bottom side window size
 (use-package transient
   :ensure nil   ; don't install built-in packages
   :config
