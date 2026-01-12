@@ -1739,8 +1739,24 @@ the window so that the streaming position appears near the bottom."
 ;;   - Every session:
 ;;       - Start MCP server: M-x mcp-server-start-unix
 (use-package mcp-server
-  :ensure-system-package socat)
-  ;; :config
+  :ensure-system-package socat
+  :config
+  ;; Apply the default security settings
+  (setq mcp-server-security-prompt-for-permissions t)
+  (setq mcp-server-security-allowed-dangerous-functions nil))
+  ;; Add sensitive file patterns
+  ;; (dolist (pattern '("~/my-secrets/" "*.key"))
+  ;;   (add-to-list 'mcp-server-security-sensitive-file-patterns pattern))
+  ;; Add sensitive buffer patterns
+  ;; (dolist (pattern '("*my-secure-buffer*" "*top secret*"))
+  ;;   (add-to-list 'mcp-server-security-sensitive-buffer-patterns pattern))
+  ;; Add functions that require permission
+  ;; (dolist (func '(some-secure-command super-secret-command))
+  ;;   (add-to-list 'mcp-server-security-dangerous-functions func))
+  ;; Enable all tools (default)
+  ;; (setq mcp-server-emacs-tools-enabled 'all)
+  ;; Enable only specific tools (disable eval-elisp for security)
+  ;; (setq mcp-server-emacs-tools-enabled '(get-diagnostics))
   ;; Start server
   ;; (add-hook 'emacs-startup-hook #'mcp-server-start-unix))
 
