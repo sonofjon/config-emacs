@@ -45,6 +45,8 @@
     (define-key input-decode-map "\e[8;5u" (kbd "C-<backspace>"))
     (define-key input-decode-map "\e[8;6u" (kbd "C-S-<backspace>"))
     (define-key input-decode-map "\e[8;7u" (kbd "C-M-<backspace>"))
+    ;; (define-key input-decode-map "\e[13;2u" (kbd "S-RET"))   ; fails in Konsole, WSL
+    (define-key input-decode-map "\e[13;2u" (kbd "M-j"))   ; fails in Konsole, WSL
     (define-key input-decode-map "\e[32;2u" (kbd "S-SPC"))   ; fails in Konsole, WSL
     (define-key input-decode-map "\e[44;5u" (kbd "C-,"))
     (define-key input-decode-map "\e[44;7u" (kbd "C-M-,"))
