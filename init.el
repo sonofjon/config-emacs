@@ -1758,8 +1758,15 @@ the window so that the streaming position appears near the bottom."
   ;; (setq mcp-server-emacs-tools-enabled 'all)
   ;; Enable only specific tools (disable eval-elisp for security)
   ;; (setq mcp-server-emacs-tools-enabled '(get-diagnostics))
+  ;; Don't query on exit for MCP server listener process
+  (defun aj8/mcp-server-no-query-on-exit ()
+    "Set query-on-exit-flag to nil for MCP server listener process."
+    (when-let ((proc (get-process "emacs-mcp-unix-server")))
+      (set-process-query-on-exit-flag proc nil)))
   ;; Start MCP server
-  (add-hook 'emacs-startup-hook #'mcp-server-start-unix))
+  (add-hook 'emacs-startup-hook #'mcp-server-start-unix)
+  ;; Disable query on exit
+  (add-hook 'emacs-startup-hook #'aj8/mcp-server-no-query-on-exit))
 
 ;; elisp-dev-mcp (MCP server for agentic Elisp development)
 ;;   Usage:
