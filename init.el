@@ -2146,7 +2146,7 @@ the window so that the streaming position appears near the bottom."
   ;; (corfu-max-width 100)          ; popup maximum width in characters."
   ;; (corfu-cycle t)                ; enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ; enable auto completion
-  ;; (corfu-auto-prefix 3)          ; min. length of prefix for auto completion."
+  ;; (corfu-auto-prefix 3)          ; min. length of prefix for auto completion.
   ;; (corfu-separator ?\s)          ; orderless field separator
   ;; (corfu-quit-at-boundary t)     ; automatically quit at word boundary
   (corfu-quit-no-match t)        ; automatically quit if there is no match
