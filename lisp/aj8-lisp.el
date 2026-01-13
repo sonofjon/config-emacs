@@ -1779,12 +1779,13 @@ BUFFER is the buffer being displayed."
 (defun aj8/minibuffer-side-window--enable ()
   "Enable side-window display for vertico, embark, which-key, and transient.
 
-Configures all packages to display in the bottom side-window.
+Configures all four packages to display in the bottom side-window.
 
-Both `display-buffer-in-side-window' and `display-buffer-reuse-window'
-honor the window-height parameter when creating a new window, but ignore
-it when reusing an existing window.  This is solved by advice that
-forces resize when reusing.
+The function `display-buffer-in-side-window' can both create new windows
+and reuse existing side-windows, but only honors window-height when
+creating.  The function `display-buffer-reuse-window' only reuses windows
+and always ignores window-height.  This is solved by advice that forces
+resize when reusing.
 
 Package-specific requirements:
   - Vertico: needs advice for display-buffer-in-side-window
