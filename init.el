@@ -2011,8 +2011,8 @@ the window so that the streaming position appears near the bottom."
 ;; consult (consulting completing-read)
 (use-package consult
   :bind (;; C-c bindings (mode-specific-map)
+         ("C-c c M-x" . consult-mode-command)
          ("C-c c h" . consult-history)
-         ("C-c c c" . consult-mode-command)
          ("C-c c k" . consult-kmacro)
          ("C-c c M" . consult-minor-mode-menu)
          ("C-c c m" . consult-man)
@@ -2042,7 +2042,7 @@ the window so that the streaming position appears near the bottom."
          ;; M-s bindings (search-map)
          ("M-s d" . consult-find)
          ("M-s R" . consult-recent-file)
-         ("M-s D" . consult-locate)
+         ("M-s c" . consult-locate)
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
          ("M-s r" . consult-ripgrep)
