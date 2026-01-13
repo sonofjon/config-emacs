@@ -1755,10 +1755,11 @@ side-window returns to its original size after transient is dismissed."
 (defun aj8/minibuffer-side-window--resize-on-reuse (buffer alist)
   "Advice function that resizes bottom side-window even when reused.
 
-This function is used to advice `display-buffer-in-side-window' to
-ensure that the `window-height' parameter in ALIST is honored when
-`display-buffer-in-side-window' reuses an existing window.  BUFFER is
-the buffer being displayed."
+This function advises `display-buffer-in-side-window' and
+`display-buffer-reuse-window' to ensure that the `window-height'
+parameter in ALIST is honored when reusing an existing window.
+
+BUFFER is the buffer being displayed."
   (when-let* ((side (alist-get 'side alist))
               ((eq side 'bottom))
               (height (alist-get 'window-height alist))
@@ -1776,11 +1777,22 @@ the buffer being displayed."
           (window-resize window delta)))))))
 
 (defun aj8/minibuffer-side-window--enable ()
-  "Enable side-window display for vertico, embark, and which-key."
+  "Enable side-window display for vertico, embark, which-key, and transient.
+
+Display-buffer-in-side-window and display-buffer-reuse-window don't
+apply window-height when reusing an existing window.  This is solved by
+advice that forces resize.
+
+Package-specific requirements:
+  - Vertico: needs advice for display-buffer-in-side-window
+  - Embark: needs advice for display-buffer-in-side-window
+  - which-key: needs advice for both display-buffer-in-side-window and
+    display-buffer-reuse-window
+  - Transient: does not need advice (handles resizing itself)"
   ;; General
-  ;;   - display-buffer-in-side-window doesn't apply window-height when
-  ;;     reusing an existing window; solved by advice that forces resize
   (advice-add 'display-buffer-in-side-window :after
+              #'aj8/minibuffer-side-window--resize-on-reuse)
+  (advice-add 'display-buffer-reuse-window :after
               #'aj8/minibuffer-side-window--resize-on-reuse)
   ;; Vertico
   (with-eval-after-load 'vertico
@@ -1822,6 +1834,8 @@ the buffer being displayed."
   "Disable side-window display for vertico, embark, and which-key."
   ;; General
   (advice-remove 'display-buffer-in-side-window
+                 #'aj8/minibuffer-side-window--resize-on-reuse)
+  (advice-remove 'display-buffer-reuse-window
                  #'aj8/minibuffer-side-window--resize-on-reuse)
   ;; Vertico
   (when (featurep 'vertico)
