@@ -1753,11 +1753,11 @@ side-window returns to its original size after transient is dismissed."
     (setq aj8/minibuffer-side-window--transient-saved-config nil)))
 
 (defun aj8/minibuffer-side-window--resize-on-reuse (buffer alist)
-  "Advice function that resizes bottom side-window even when reused.
+  "Advice function that resizes bottom side-window when reused.
 
-This function advises `display-buffer-in-side-window' and
-`display-buffer-reuse-window' to ensure that the `window-height'
-parameter in ALIST is honored when reusing an existing window.
+Advises `display-buffer-in-side-window' and
+`display-buffer-reuse-window' to honor the window-height parameter in
+ALIST when reusing an existing window.
 
 BUFFER is the buffer being displayed."
   (when-let* ((side (alist-get 'side alist))
@@ -1781,9 +1781,10 @@ BUFFER is the buffer being displayed."
 
 Configures all packages to display in the bottom side-window.
 
-Display-buffer-in-side-window and display-buffer-reuse-window don't
-apply window-height when reusing an existing window.  This is solved by
-advice that forces resize.
+Both `display-buffer-in-side-window' and `display-buffer-reuse-window'
+honor the window-height parameter when creating a new window, but ignore
+it when reusing an existing window.  This is solved by advice that forces
+resize when reusing.
 
 Package-specific requirements:
   - Vertico: needs advice for display-buffer-in-side-window
