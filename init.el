@@ -2120,7 +2120,11 @@ the window so that the streaming position appears near the bottom."
 
 ;; consult-project-extra (consult integration for project.el)
 (use-package consult-project-extra
-  :bind ("C-c p" . consult-project-extra-find))
+  :bind ("C-c p" . consult-project-extra-find)
+  :init
+  ;; Workaround for consult-project-extra compatibility issue
+  (defvaralias 'consult--source-project-buffer
+    'consult-source-project-buffer))
 
 ;; corfu (Completion Overlay Region FUnction)
 ;;   TODO: Use separate matching-style for Corfu and Vertico,
