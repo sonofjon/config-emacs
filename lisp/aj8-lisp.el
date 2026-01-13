@@ -1736,8 +1736,8 @@ use slot 0 to share undivided space."
 (defun aj8/minibuffer-side-window--transient-save-config (&rest _args)
   "Advice function that saves window configuration before transient shows.
 
-Transient resizes the bottom side-window but doesn't restore it afterward.
-This function saves the configuration so it can be restored."
+Transient resizes the bottom side-window but doesn't restore it
+afterward.  This function saves the configuration so it can be restored."
   (unless aj8/minibuffer-side-window--transient-saved-config
     (setq aj8/minibuffer-side-window--transient-saved-config
           (current-window-configuration))))
@@ -1783,8 +1783,8 @@ Configures all packages to display in the bottom side-window.
 
 Both `display-buffer-in-side-window' and `display-buffer-reuse-window'
 honor the window-height parameter when creating a new window, but ignore
-it when reusing an existing window.  This is solved by advice that forces
-resize when reusing.
+it when reusing an existing window.  This is solved by advice that
+forces resize when reusing.
 
 Package-specific requirements:
   - Vertico: needs advice for display-buffer-in-side-window
@@ -1862,8 +1862,8 @@ Package-specific requirements:
 (define-minor-mode aj8/minibuffer-side-window-mode
   "Toggle side-window display for vertico, embark, which-key, and transient.
 
-When enabled, these packages display in the bottom side-window.
-When disabled, they use standard minibuffer display."
+When enabled, these packages display in the bottom side-window.  When
+disabled, they use standard minibuffer display."
   :global t
   :group 'aj8-lisp
   (if aj8/minibuffer-side-window-mode
