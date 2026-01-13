@@ -2014,7 +2014,10 @@ the window so that the streaming position appears near the bottom."
          ("C-c c h" . consult-history)
          ("C-c c c" . consult-mode-command)
          ("C-c c k" . consult-kmacro)
-         ("C-c c m" . consult-minor-mode-menu)
+         ("C-c c M" . consult-minor-mode-menu)
+         ("C-c c m" . consult-man)
+         ("C-c c i" . consult-info)
+         ([remap Info-search] . consult-info)
          ;; C-x bindings (ctl-x-map)
          ("C-x M-:" . consult-complex-command)   ; orig. repeat-complex-command
          ("C-x b" . consult-buffer)              ; orig. switch-to-buffer
