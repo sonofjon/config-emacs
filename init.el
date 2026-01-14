@@ -1247,7 +1247,15 @@
   ;; Obey display actions when switching buffers
   (switch-to-buffer-obey-display-actions t)
   ;; Window rules
-  ;;   TODO: patterns should match case sensitively
+  ;;   Note: Patterns match case-insensitively by default.  To make patterns
+  ;;   match case-sensitively, define a helper function:
+  ;;     (defun aj8/case-sensitive-matcher (regexp)
+  ;;       "Return a case-sensitive string matcher for REGEXP."
+  ;;       (lambda (str _alist)
+  ;;         (let ((case-fold-search nil))
+  ;;           (string-match-p regexp str))))
+  ;;   Then use: (,(aj8/case-sensitive-matcher "^\\*Messages\\*") ...)
+  ;;   instead of: ("^\\*Messages\\*" ...)
   (display-buffer-alist
    `(;;
      ;; Example using mp-make-display-buffer-matcher-function
