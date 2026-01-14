@@ -2001,7 +2001,7 @@ the window so that the streaming position appears near the bottom."
          ;; C-x bindings (ctl-x-map)
          ("C-x M-:" . consult-complex-command)   ; orig. repeat-complex-command
          ("C-x b" . consult-buffer)              ; orig. switch-to-buffer
-         ("C-x B" . consult-project-buffer)
+         ("C-x p b" . consult-project-buffer)    ; orig. project-switch-to-buffer
          ("C-x r b" . consult-bookmark)          ; orig. bookmark-jump
          ;; Custom M-# bindings for fast register access
          ("M-#" . consult-register-load)
