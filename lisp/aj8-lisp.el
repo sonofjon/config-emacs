@@ -231,6 +231,12 @@ the hook."
         (when (> (buffer-size buf) 0)
           (display-buffer buf nil))))))
 
+;; Don't query on exit for MCP server listener process
+(defun aj8/mcp-server-no-query-on-exit ()
+  "Set query-on-exit-flag to nil for MCP server listener process."
+  (when-let ((proc (get-process "emacs-mcp-unix-server")))
+    (set-process-query-on-exit-flag proc nil)))
+
 ;;;; Buffers
 
 ;;; Buffer switching
