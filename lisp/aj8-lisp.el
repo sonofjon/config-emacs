@@ -1724,6 +1724,29 @@ use slot 0 to share undivided space."
     (when found-side-window
       (window-toggle-side-windows))))
 
+;;; Transient window restoration
+
+(defvar aj8/transient--saved-config nil
+  "Saved window configuration before transient popup.")
+
+(defun aj8/transient--save-config (&rest _args)
+  "Save window configuration before transient shows.
+
+Transient resizes the bottom side-window but doesn't restore it
+afterward.  This function saves the configuration so it can be restored."
+  (unless aj8/transient--saved-config
+    (setq aj8/transient--saved-config (current-window-configuration))))
+
+(defun aj8/transient--restore-config (&rest _args)
+  "Restore window configuration after transient hides.
+
+Restores the window configuration that was saved by
+`aj8/transient--save-config', ensuring the bottom side-window returns to
+its original size after transient is dismissed."
+  (when aj8/transient--saved-config
+    (set-window-configuration aj8/transient--saved-config)
+    (setq aj8/transient--saved-config nil)))
+
 ;;; Minibuffer side-window mode
 
 ;; TODO: The minibuffer prompt remains visible at the bottom of the frame
@@ -1735,28 +1758,6 @@ use slot 0 to share undivided space."
 
 (defvar aj8/minibuffer-side-window--embark-display-action-saved nil
   "Saved value of `embark-verbose-indicator-display-action'.")
-
-(defvar aj8/minibuffer-side-window--transient-saved-config nil
-  "Saved window configuration before transient popup.")
-
-(defun aj8/minibuffer-side-window--transient-save-config (&rest _args)
-  "Advice function that saves window configuration before transient shows.
-
-Transient resizes the bottom side-window but doesn't restore it
-afterward.  This function saves the configuration so it can be restored."
-  (unless aj8/minibuffer-side-window--transient-saved-config
-    (setq aj8/minibuffer-side-window--transient-saved-config
-          (current-window-configuration))))
-
-(defun aj8/minibuffer-side-window--transient-restore-config (&rest _args)
-  "Advice function that restores window configuration after transient hides.
-
-Restores the window configuration that was saved by
-`aj8/minibuffer-side-window--transient-save-config', ensuring the bottom
-side-window returns to its original size after transient is dismissed."
-  (when aj8/minibuffer-side-window--transient-saved-config
-    (set-window-configuration aj8/minibuffer-side-window--transient-saved-config)
-    (setq aj8/minibuffer-side-window--transient-saved-config nil)))
 
 (defun aj8/minibuffer-side-window--resize-on-reuse (buffer alist)
   "Advice function that resizes bottom side-window when reused.
@@ -1783,7 +1784,7 @@ BUFFER is the buffer being displayed."
           (window-resize window delta)))))))
 
 (defun aj8/minibuffer-side-window--enable ()
-  "Enable side-window display for vertico, embark, which-key, and transient.
+  "Enable side-window display for vertico, embark, and which-key.
 
 Configures all four packages to display in the bottom side-window.
 
@@ -1797,8 +1798,7 @@ Package-specific requirements:
   - Vertico: needs advice for display-buffer-in-side-window
   - Embark: needs advice for display-buffer-in-side-window
   - which-key: needs advice for both display-buffer-in-side-window and
-    display-buffer-reuse-window
-  - Transient: does not need advice (handles resizing itself)"
+    display-buffer-reuse-window"
   ;; General
   (advice-add 'display-buffer-in-side-window :after
               #'aj8/minibuffer-side-window--resize-on-reuse)
@@ -1829,16 +1829,7 @@ Package-specific requirements:
                                   (mode-line-format . none))))))
   ;; Which-key
   (with-eval-after-load 'which-key
-    (setq which-key-popup-type 'side-window))
-  ;; Transient
-  ;;   - transient resizes the side-window but doesn't restore it afterward;
-  ;;     solved by saving/restoring window configuration around popup
-  ;;     display
-  (with-eval-after-load 'transient
-    (advice-add 'transient--show :before
-                #'aj8/minibuffer-side-window--transient-save-config)
-    (advice-add 'transient--delete-window :after
-                #'aj8/minibuffer-side-window--transient-restore-config)))
+    (setq which-key-popup-type 'side-window)))
 
 (defun aj8/minibuffer-side-window--disable ()
   "Disable side-window display for vertico, embark, and which-key."
@@ -1858,16 +1849,11 @@ Package-specific requirements:
           aj8/minibuffer-side-window--embark-display-action-saved))
   ;; Which-key
   (when (featurep 'which-key)
-    (setq which-key-popup-type 'minibuffer))
-  ;; Transient
-  (when (featurep 'transient)
-    (advice-remove 'transient--show
-                   #'aj8/minibuffer-side-window--transient-save-config)
-    (advice-remove 'transient--delete-window
-                   #'aj8/minibuffer-side-window--transient-restore-config)))
+    (setq which-key-popup-type 'minibuffer)))
+
 
 (define-minor-mode aj8/minibuffer-side-window-mode
-  "Toggle side-window display for vertico, embark, which-key, and transient.
+  "Toggle side-window display for vertico, embark, and which-key.
 
 When enabled, these packages display in the bottom side-window.  When
 disabled, they use standard minibuffer display."

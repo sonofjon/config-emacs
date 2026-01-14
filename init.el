@@ -1101,17 +1101,14 @@
   (add-to-list 'global-mode-string '(:eval (aj8/tramp-indicator)) t))
 
 ;; transient (transient commands)
-;;   TODO: The advice works fine, however, after enabling mini buffer side
-;;   window mode and disabling it, transient again does not restore the
-;;   bottom side window size
 (use-package transient
   :ensure nil   ; don't install built-in packages
   :config
   ;; Restore side-window config after transient
   (advice-add 'transient--show :before
-              #'aj8/minibuffer-side-window--transient-save-config)
+              #'aj8/transient--save-config)
   (advice-add 'transient--delete-window :after
-              #'aj8/minibuffer-side-window--transient-restore-config))
+              #'aj8/transient--restore-config))
 
 ;; treesit (tree-sitter utilities)
 (use-package treesit
