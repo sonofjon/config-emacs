@@ -1962,7 +1962,7 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
       (shrink-window arg)
     (enlarge-window arg)))
 
-;;; Misc
+;;; Window splitting
 
 ;; Toggle window split
 (defun my/toggle-window-split ()
@@ -1977,6 +1977,23 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
       (split-window-vertically))   ; makes a split with the other window twice
     (switch-to-buffer nil)))   ; restore the original window
                                ; in this part of the window
+
+;; Respect split-height-threshold always
+(defun aj8/split-window-sensibly-respect-threshold (orig-fun &optional window)
+  "Advise `split-window-sensibly' to respect split-height-threshold.
+Prevents the fallback behavior that splits vertically ignoring
+split-height-threshold when window is the only usable window."
+  (let ((window (or window (selected-window))))
+    (or (and (window-splittable-p window)
+             (with-selected-window window
+               (split-window-below)))
+        (and (window-splittable-p window t)
+             (with-selected-window window
+               (split-window-right)))
+        ;; Return nil instead of forcing vertical split
+        nil)))
+
+;;; Misc
 
 ;;;; Web
 

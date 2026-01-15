@@ -1219,6 +1219,9 @@
   (advice-add 'kill-current-buffer :around #'aj8/retain-side-window-focus)
   ;; Make quit-window kill buffer by default (inverse behavior)
   (advice-add 'quit-window :filter-args #'my/advice--quit-window)
+  ;; Always respect split-height-threshold
+  (advice-add 'split-window-sensibly :around
+              #'aj8/split-window-sensibly-respect-threshold)
   ;; Enable better quit-window behavior
   ;; (advice-add 'display-buffer :filter-return #'my/better-quit-window-save)
   ;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)
