@@ -1224,13 +1224,13 @@
   ;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)
   :custom
   ;; Set minimum window height
-  ;; (setq window-min-height 16)
+  ;; (window-min-height 16)
   ;; Prefer horizontal (side-by-side) window splitting
   ;;   Note: the thresholds need to be twice as big as the smallest
   ;;   window allowed, because the new windows each use half of the
   ;;   former window size
   (split-width-threshold nil)
-  (split-height-threshold 0)
+  (split-height-threshold 32)
   ;; Enable horizontal window fitting
   ;; (setq fit-window-to-buffer-horizontally
   ;; Try to even window sizes vertically only
