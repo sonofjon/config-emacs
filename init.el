@@ -178,6 +178,7 @@
         (hideshow-cycle :url "https://github.com/sonofjon/hideshow-cycle.el" :rev :newest)
         (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
         (mcp-server :url "https://github.com/rhblind/emacs-mcp-server.git" :rev :newest)
+        (minibuffer-side-window :url "https://github.com/sonofjon/minibuffer-side-window.el.git" :rev :newest)
         (monet :url "https://github.com/stevemolitor/monet.git" :rev :newest)
         (obsidian-yaml-tools :url "https://github.com/sonofjon/obsidian-yaml-tools.el.git")
         (reflow :url "https://github.com/sonofjon/reflow.el" :rev :newest)
@@ -2403,6 +2404,12 @@ Elisp code explicitly in arbitrary buffers.")
   (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
   ;; Enable M-x minibuffer-hide-completions (make function interactive)
   (put 'minibuffer-hide-completions 'interactive-form '(interactive)))
+
+;; minibuffer-side-window (side-window display for minibuffer packages)
+(use-package minibuffer-side-window
+  :after (vertico embark which-key)
+  :config
+  (minibuffer-side-window-mode 1))
 
 ;;; Editing
 
