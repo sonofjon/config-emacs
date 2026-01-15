@@ -2111,7 +2111,26 @@ the window so that the streaming position appears near the bottom."
   :init
   ;; Workaround for consult-project-extra compatibility issue
   (defvaralias 'consult--source-project-buffer
-    'consult-source-project-buffer))
+    'consult-source-project-buffer)
+  :config
+  ;; Add source to open Magit status for a project
+  (add-to-list 'consult-project-extra-sources
+               '(:name "Project Magit"
+                 :narrow (109 . "Magit")
+                 :category project
+                 :face consult-project-extra-projects
+                 :history consult-project-extra--project-history
+                 :action (lambda (root) (magit-status root))
+                 :items project-known-project-roots) t)
+  ;; Add source to open Dired in a project root
+  (add-to-list 'consult-project-extra-sources
+               '(:name "Project Dir"
+                 :narrow (100 . "Dir")
+                 :category project
+                 :face consult-project-extra-projects
+                 :history consult-project-extra--project-history
+                 :action (lambda (root) (dired root))
+                 :items project-known-project-roots) t))
 
 ;; corfu (Completion Overlay Region FUnction)
 ;;   TODO: Use separate matching-style for Corfu and Vertico,
