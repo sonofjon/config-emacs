@@ -870,7 +870,7 @@
   :ensure nil   ; don't install built-in packages
   :init
   ;; Show package names in upgrade prompt
-  (advice-add 'package-upgrade-all :around #'aj8/package-upgrade-all-advice)
+  (advice-add 'package-upgrade-all :around #'aj8/package-upgrade-all)
   ;; Prevent autoremove from removing VC packages
   (advice-add #'package-autoremove :around #'aj8/package-autoremove-no-vc))
 
@@ -1218,7 +1218,7 @@
   ;; Keep focus in side windows after kill-current-buffer
   (advice-add 'kill-current-buffer :around #'aj8/retain-side-window-focus)
   ;; Make quit-window kill buffer by default (inverse behavior)
-  (advice-add 'quit-window :filter-args #'my/advice--quit-window)
+  (advice-add 'quit-window :filter-args #'my/quit-window)
   ;; Always respect split-height-threshold
   (advice-add 'split-window-sensibly :around
               #'aj8/split-window-sensibly-respect-threshold)
@@ -2096,7 +2096,7 @@ the window so that the streaming position appears near the bottom."
 
   ;; Exclude some dirs from consult-git-grep
   (advice-add 'consult--git-grep-make-builder :around
-              #'aj8/consult-git-grep-advice))
+              #'aj8/consult-git-grep))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
@@ -3033,10 +3033,10 @@ Elisp code explicitly in arbitrary buffers.")
   (require 'llm-openai)
   ;; Add extended context to help LLM identify locations
   (advice-add 'magit-gptcommit--staged-diff
-              :override #'aj8/magit-gptcommit-extended-context-advice)
+              :override #'aj8/magit-gptcommit-extended-context)
   ;; Use full file contents (more tokens but complete context)
   ;; (advice-add 'magit-gptcommit--staged-diff
-  ;;             :filter-return #'aj8/magit-gptcommit-add-file-context-advice)
+  ;;             :filter-return #'aj8/magit-gptcommit-add-file-context)
   :custom
   ;; Supress warning
   (llm-warn-on-nonfree nil)

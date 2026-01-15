@@ -113,9 +113,10 @@ up-to-date."
       (message "All packages are up to date"))))
 
 ;; Make built-in package upgrade function verbose
-(defun aj8/package-upgrade-all-advice (orig-fun &rest args)
-  "Advice to make package-upgrade-all show package names in the upgrade prompt.
-ORIG-FUN should be `package-upgrade-all'."
+(defun aj8/package-upgrade-all (orig-fun &rest args)
+  "Advise `package-upgrade-all' to show package names in the upgrade prompt.
+ORIG-FUN is the original function being advised.
+ARGS are passed to ORIG-FUN."
   (let ((upgradable (sort (package--upgradeable-packages) #'string<)))
     (if upgradable
         (let ((package-list (mapconcat 'symbol-name upgradable ", ")))
@@ -129,10 +130,12 @@ ORIG-FUN should be `package-upgrade-all'."
 
 ;; Don't auto-remove vc packages
 (defun aj8/package-autoremove-no-vc (orig-fun &rest args)
-  "Advice function for `package-autoremove to not remove VC packages'.
+  "Advise `package-autoremove' to not remove VC packages.
 This function temporarily adds packages from
 `package-vc-selected-packages' to `package-selected-packages' before
-calling `package-autoremove'.  ORIG-FUN should be `package-autoremove'."
+calling `package-autoremove'.
+ORIG-FUN is the original function being advised.
+ARGS are passed to ORIG-FUN."
   (let ((package-selected-packages
          (append (mapcar #'car package-vc-selected-packages)
                  package-selected-packages)))
@@ -171,7 +174,7 @@ and only upgrades packages that need it."
 
 ;; Save gptel buffers
 (defun aj8/gptel-write-buffer (orig-fun &rest args)
-  "Advice function to save the gptel chat buffer.
+  "Advise `gptel' to save the gptel chat buffer.
 
 This function saves the chat buffer to the current project's root
 directory.  If no project is detected, it prompts the user to choose a
@@ -179,8 +182,8 @@ directory for saving.  It constructs a filename based on the current
 timestamp and the major mode of the buffer (with support for `org-mode'
 and `markdown-mode').
 
-This function is intended to be used as advice for the gptel
-function.  ORIG-FUN should be `gptel'."
+ORIG-FUN is the original function being advised.
+ARGS are passed to ORIG-FUN."
   (let ((chat-buf (apply orig-fun args)))
     (with-current-buffer chat-buf
       (unless (buffer-file-name)
@@ -484,9 +487,11 @@ See `aj8/magit-buffer-cleanup-timer' and
 
 ;; Keep focus in side windows after buffer kill
 (defun aj8/retain-side-window-focus (orig-fun &rest args)
-  "Advice function to retain focus in side windows after buffer kill.
+  "Advise `quit-window' and `kill-current-buffer' to retain side window focus.
 This ensures that when killing a buffer in a side window, focus remains
-in that side window rather than shifting to another window."
+in that side window rather than shifting to another window.
+ORIG-FUN is the original function being advised.
+ARGS are passed to ORIG-FUN."
   (let ((current-window (selected-window))
         (is-side-window (window-parameter (selected-window) 'window-side)))
     (apply orig-fun args)
@@ -613,9 +618,9 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
 ;;   produces: (COMMAND-LIST . HIGHLIGHT-FN), where COMMAND-LIST is the list
 ;;   of args to call git grep with and HIGHLIGHT-FN is the function Consult
 ;;   will use to fontify matches.
-(defun aj8/consult-git-grep-advice (orig-fun paths)
-  "Advice function to exclude directories from `consult-git-grep'.
-ORIG-FUN should be the original `consult--git-grep-make-builder' function."
+(defun aj8/consult-git-grep (orig-fun paths)
+  "Advise `consult--git-grep-make-builder' to exclude directories.
+ORIG-FUN is the original function being advised."
   ;; Call the original function to get its builder
   (let ((orig-builder (funcall orig-fun paths)))
     ;; Return a new builder that wraps the old one:
@@ -1621,8 +1626,8 @@ Regions (i.e., point and mark) must be set in advance."
   ;; )
 
 ;; Increase diff context for magit-gptcommit
-(defun aj8/magit-gptcommit-extended-context-advice ()
-  "Advice function to get staged diff with extended context lines.
+(defun aj8/magit-gptcommit-extended-context ()
+  "Advise `magit-gptcommit--staged-diff' to provide extended context lines.
 Replaces `magit-gptcommit--staged-diff' to provide 50 lines of context."
   (let* ((files (magit-staged-files))
          (diff (magit-git-output "diff" "--staged" "-w" "-U50"))
@@ -1640,9 +1645,9 @@ Replaces `magit-gptcommit--staged-diff' to provide 50 lines of context."
     annotated-diff))
 
 ;; Add full file contents for magit-gptcommit
-(defun aj8/magit-gptcommit-add-file-context-advice (diff)
-  "Advice function to augment DIFF with full file contents for context.
-DIFF should be the return value from `magit-gptcommit--staged-diff'."
+(defun aj8/magit-gptcommit-add-file-context (diff)
+  "Advise `magit-gptcommit--staged-diff' to augment DIFF with file contents.
+DIFF is the return value from `magit-gptcommit--staged-diff'."
   (let* ((files (magit-staged-files))
          (file-contents
           (mapconcat
@@ -1730,7 +1735,7 @@ use slot 0 to share undivided space."
   "Saved window configuration before transient popup.")
 
 (defun aj8/transient--save-config (&rest _args)
-  "Save window configuration before transient shows.
+  "Advise `transient--show' to save window configuration before display.
 
 Transient resizes the bottom side-window but doesn't restore it
 afterward.  This function saves the configuration so it can be restored."
@@ -1738,7 +1743,7 @@ afterward.  This function saves the configuration so it can be restored."
     (setq aj8/transient--saved-config (current-window-configuration))))
 
 (defun aj8/transient--restore-config (&rest _args)
-  "Restore window configuration after transient hides.
+  "Advise `transient--delete-window' to restore window configuration.
 
 Restores the window configuration that was saved by
 `aj8/transient--save-config', ensuring the bottom side-window returns to
@@ -1879,15 +1884,17 @@ disabled, they use standard minibuffer display."
   :type 'sexp
   :group 'aj8-lisp)
 
-(defun my/advice--quit-window (args)
-  "Advice function that makes `quit-window' quit window and kill its buffer.
+(defun my/quit-window (args)
+  "Advise `quit-window' to kill buffer by default.
 
 With a prefix argument, the buffer is buried instead.  This is the
 inverse of the default behavior `quit-window'.
 
 This affects all calls to `quit-window' except in buffers matching
 `my/quit-window-exceptions-regex'.  Calls to `quit-window' from wrapper
-functions defined by `my/quit-window-known-wrappers' are also affected."
+functions defined by `my/quit-window-known-wrappers' are also affected.
+
+ARGS are the arguments to `quit-window', modified and returned."
   (when (and (or (eq this-command 'quit-window)
                  (member this-command my/quit-window-known-wrappers))
              (not (string-match-p my/quit-window-exceptions-regex (buffer-name))))
@@ -1982,7 +1989,8 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
 (defun aj8/split-window-sensibly-respect-threshold (orig-fun &optional window)
   "Advise `split-window-sensibly' to respect split-height-threshold.
 Prevents the fallback behavior that splits vertically ignoring
-split-height-threshold when window is the only usable window."
+split-height-threshold when window is the only usable window.
+ORIG-FUN is the original function being advised."
   (let ((window (or window (selected-window))))
     ;; Only call original function if window meets threshold criteria
     (when (or (window-splittable-p window)
@@ -2161,25 +2169,26 @@ repeatedly press `b', `s', `u', etc. to execute `switch-to-buffer',
 
 (setq prefix-help-command #'repeated-prefix-help-command)
 
-;;; Suppress messages with `advice'
+;;; Suppress messages with advice
 
-(defun aj8/add-suppress-messages-advice (functions)
-  "Add advice to suppress messages for the provided FUNCTIONS.
+(defun aj8/add-suppress-messages (functions)
+  "Add advice to FUNCTIONS to suppress messages.
 FUNCTIONS can be a symbol or a list of symbols representing function names."
   (let ((func-list (if (listp functions) functions (list functions))))
     (dolist (fn func-list)
       (advice-add fn :around #'aj8/suppress-messages))))
 
-(defun aj8/remove-suppress-messages-advice (functions)
-  "Remove advice that suppresses messages for the provided FUNCTIONS.
+(defun aj8/remove-suppress-messages (functions)
+  "Remove advice from FUNCTIONS that suppresses messages.
 FUNCTIONS can be a symbol or a list of symbols representing function names."
   (let ((func-list (if (listp functions) functions (list functions))))
     (dolist (fn func-list)
       (advice-remove fn #'aj8/suppress-messages))))
 
 (defun aj8/suppress-messages (orig-fun &rest args)
-  "Suppress messages during call to function ORIG-FUN.
-ARGS are the arguments to be passed to ORIG-FUN."
+  "Advise ORIG-FUN to suppress messages during execution.
+ORIG-FUN is the original function being advised.
+ARGS are passed to ORIG-FUN."
   (let ((inhibit-message t)   ; disable messages in Echo area
         (message-log-max nil))   ; disable messages in Messages buffer
     (apply orig-fun args)))
@@ -2222,10 +2231,9 @@ is mapped to the respective xterm key sequence."
 ;;   (using advice)
 (defun my/toggle-prefix-arg (fun)
   "Toggle universal prefix argument for the function FUN.
-If called with a prefix argument, the prefix argument will be
-removed.  If called without a prefix argument, a prefix argument
-will be applied.  This only works for interactive \"P\"
-functions."
+If called with a prefix argument, the prefix argument will be removed.
+If called without a prefix argument, a prefix argument will be applied.
+This only works for interactive \"P\" functions."
   (if (not (equal (interactive-form fun) '(interactive "P")))
       (error "Unexpected: must be interactive \"P\" function")
     (advice-add fun :around (lambda (x &rest args)

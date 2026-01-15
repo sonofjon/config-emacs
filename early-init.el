@@ -106,7 +106,8 @@
 
 ;; Refresh packages database (on first install)
 (defun my/package-install-refresh-contents (&rest args)
-  "Refresh package database on first install."
+  "Advise `package-install' to refresh package database on first install.
+ARGS are the arguments to `package-install'."
   (package-refresh-contents)
   (advice-remove 'package-install #'my/package-install-refresh-contents))
 
