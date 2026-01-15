@@ -2113,24 +2113,30 @@ the window so that the streaming position appears near the bottom."
   (defvaralias 'consult--source-project-buffer
     'consult-source-project-buffer)
   :config
-  ;; Add source to open Magit status for a project
-  (add-to-list 'consult-project-extra-sources
-               '(:name "Project Magit"
-                 :narrow (109 . "Magit")
-                 :category project
-                 :face consult-project-extra-projects
-                 :history consult-project-extra--project-history
-                 :action (lambda (root) (magit-status root))
-                 :items project-known-project-roots) t)
-  ;; Add source to open Dired in a project root
+  ;; Add sources to open Dired and Magit for a project
+  ;;   These sources are hidden by default. After selecting a project from
+  ;;   "Known Project", press 'd' to open the project root in Dired or 'm'
+  ;;   to open Magit status for that project.
   (add-to-list 'consult-project-extra-sources
                '(:name "Project Dir"
                  :narrow (100 . "Dir")
+                 :hidden t
                  :category project
                  :face consult-project-extra-projects
                  :history consult-project-extra--project-history
                  :action (lambda (root) (dired root))
-                 :items project-known-project-roots) t))
+                 :items (lambda () (when-let ((root (consult--project-root)))
+                                     (list root)))) t)
+  (add-to-list 'consult-project-extra-sources
+               '(:name "Project Magit"
+                 :narrow (109 . "Magit")
+                 :hidden t
+                 :category project
+                 :face consult-project-extra-projects
+                 :history consult-project-extra--project-history
+                 :action (lambda (root) (magit-status root))
+                 :items (lambda () (when-let ((root (consult--project-root)))
+                                     (list root)))) t))
 
 ;; corfu (Completion Overlay Region FUnction)
 ;;   TODO: Use separate matching-style for Corfu and Vertico,
