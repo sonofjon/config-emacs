@@ -1404,7 +1404,9 @@
 (use-package agent-shell-manager
   :custom
   ;; Disable side-window placement
-  (agent-shell-manager-side nil))
+  (agent-shell-manager-side nil)
+  :config
+  (agent-shell-manager-toggle))
 
 ;; ai-code-interface (unified emacs interface supporting LLM clients)
 (use-package ai-code-interface
