@@ -1984,14 +1984,10 @@ functions defined by `my/quit-window-known-wrappers' are also affected."
 Prevents the fallback behavior that splits vertically ignoring
 split-height-threshold when window is the only usable window."
   (let ((window (or window (selected-window))))
-    (or (and (window-splittable-p window)
-             (with-selected-window window
-               (split-window-below)))
-        (and (window-splittable-p window t)
-             (with-selected-window window
-               (split-window-right)))
-        ;; Return nil instead of forcing vertical split
-        nil)))
+    ;; Only call original function if window meets threshold criteria
+    (when (or (window-splittable-p window)
+              (window-splittable-p window t))
+      (funcall orig-fun window))))
 
 ;;; Misc
 
