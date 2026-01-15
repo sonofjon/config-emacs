@@ -1285,7 +1285,7 @@
       (window-height . ,aj8/side-window-height)
       (side . top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("^magit-process:.*"
+     ("^\\(magit-process:.*\\|acp-client-stderr.*\\)"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . top)
