@@ -2421,8 +2421,8 @@ Elisp code explicitly in arbitrary buffers.")
          ;; ("<backtab>" . minibuffer-force-complete)
          ("C-p" . vertico-previous-group)
          ("C-n" . vertico-next-group)
-         ("M-P" . #'vertico-repeat-previous)   ; TODO: overlaps with S-M-p
-         ("M-N" . #'vertico-repeat-next)       ; TODO: overlaps with S-M-n
+         ("M-P" . #'vertico-repeat-previous)
+         ("M-N" . #'vertico-repeat-next)
          ("M-/" . aj8/vertico-sort-toggle))
   :custom
   ;; Reduce the popularity bonus (prioritizes recent commands)
