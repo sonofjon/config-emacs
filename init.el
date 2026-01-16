@@ -2449,10 +2449,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;;; Editing
 
 ;; combobulate (structured editing and navigation in Emacs with Tree-Sitter)
-;;   Missing functionality: barf, slurp, forward/backward sexp (navigate
+;;   Note: Missing functionality: barf, slurp, forward/backward sexp (navigate
 ;;   by parens), ...
-;;
-;;   TODO: Don't dump tree into *Messages*
 (use-package combobulate
   :after treesit
   ;; :load-path ("path-to-git-checkout-of-combobulate"))
@@ -2494,9 +2492,9 @@ Elisp code explicitly in arbitrary buffers.")
                                         ; add label for prefix
   :custom
   ;; Custom prefix key
-  (combobulate-key-prefix "C-c o"))
+  (combobulate-key-prefix "C-c o")
   ;; Disable display of syntax tree
-  ;; (combobulate-flash-node nil))
+  (combobulate-flash-node nil))
 
 ;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
 (use-package move-dup
