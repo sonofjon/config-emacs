@@ -292,7 +292,7 @@
   (desktop-globals-to-clear nil)
   :config
   ;; Restore desktop between sessions
-  ;;   TODO: doesn't restore side-windows
+  ;;   Note: doesn't restore side-windows
   (desktop-save-mode 1))
 
 ;; diff-mode (a mode for viewing/editing context diffs)
