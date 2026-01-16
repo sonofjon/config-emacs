@@ -2818,7 +2818,7 @@ Elisp code explicitly in arbitrary buffers.")
          :diminish
          :hook (emacs-startup . global-jinx-mode)
          :bind (:map jinx-mode-map
-                     ("M-$" . jinx-correct)
+                     ("M-$" . jinx-correct-all)
                      ("C-M-$" . jinx-languages)
                      ("C-," . aj8/jinx-correct-previous)
                      ("C-." . aj8/jinx-correct-next)
