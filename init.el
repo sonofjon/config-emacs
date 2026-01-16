@@ -116,7 +116,6 @@
         flymake-eslint
         flymake-json
         flymake-ruff
-        flyspell-correct
         google-this
         gptel
         gptel-agent
@@ -2811,23 +2810,8 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;;; Spelling
 
-;; flyspell-correct (correcting words with Flyspell via custom interface)
-;;   TODO: Uninstall?
-(use-package flyspell-correct
-  :disabled
-  :after flyspell
-  :bind (:map flyspell-mode-map
-              ;; ("C-;" . flyspell-auto-correct-word)
-              ("C-;" . flyspell-correct-wrapper)
-              ("C-," . flyspell-correct-previous)
-              ("C-." . flyspell-correct-next)
-              ("C-c ," . my/flyspell-goto-previous-error)
-              ("C-c ." . flyspell-goto-next-error)
-              ("C-c ;" . flyspell-auto-correct-word)))
-
 ;; jinx (enchanted spell checker)
 (eval `(use-package jinx
-         ;; :disabled
          ;; :after vertico
          :ensure-system-package ,(aj8/system-package-name 'enchant)
          :ensure-system-package pkgconf
