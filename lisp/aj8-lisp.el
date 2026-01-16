@@ -271,7 +271,8 @@ window."
   ;; (rx bos (or "*scratch*") eos)   ; match a particular buffer
   ;; (rx bos "*")                    ; match buffers starting with '*'
   (rx bos (or (seq "*" (zero-or-more anything))
-              (seq "magit-process" (zero-or-more anything)))
+              (seq "magit-process" (zero-or-more anything))
+              (seq "acp-client-stderr" (zero-or-more anything)))
       eos)
   "Regular expression matching ignored buffers.
 
