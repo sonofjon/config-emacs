@@ -179,6 +179,7 @@
         (buffer-tail-mode :url "https://github.com/sonofjon/buffer-tail-mode.el.git" :rev :newest)
         (claude-code-ide :url "https://github.com/manzaltu/claude-code-ide.el.git" :rev :newest)
         (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
+        (flymake-jsonlint :url "https://github.com/sonofjon/flymake-jsonlint.el.git" :rev :newest)
         (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
         (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
         (hideshow-cycle :url "https://github.com/sonofjon/hideshow-cycle.el" :rev :newest)
@@ -1962,11 +1963,13 @@ the window so that the streaming position appears near the bottom."
   :ensure-system-package eslint
   :hook (js-base-mode . flymake-eslint-enable))
 
-;; flymake-json (a Flymake handler for json using jsonlint)
-;;   TODO: doesn't work
-(use-package flymake-json
+;; flymake-jsonlint (custom Flymake backend for jsonlint)
+(use-package flymake-jsonlint
+  :ensure nil
+  :after flymake
   :ensure-system-package jsonlint
-  :hook (json-mode . flymake-json-load))
+  ;; :hook ((js-json-mode json-ts-mode) . flymake-jsonlint-load)   ; without eglot
+  :hook (eglot-managed-mode . flymake-jsonlint-load))   ; with eglot
 
 ;; flymake-ruff (a Flymake plugin for python files using Ruff)
 (use-package flymake-ruff
