@@ -331,8 +331,8 @@
          (dired-vc-rename-file t)
          :config
          ;; Tag Dired buffer names
-         ;;   TODO: fails sometimes with TRAMP
-         (add-hook 'dired-mode-hook (lambda () (aj8/prefix-buffer-name "dired")))
+         ;;   Use idle timer to avoid renaming while Dired is processing the buffer
+         (add-hook 'dired-mode-hook (lambda () (run-with-idle-timer 0 nil #'aj8/prefix-buffer-name "dired")))
          ;; Hide details by default
          (add-hook 'dired-mode-hook #'dired-hide-details-mode)
          ;; Hide omitted files
