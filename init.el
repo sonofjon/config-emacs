@@ -2434,7 +2434,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; minibuffer-side-window-mode (side-window display for minibuffer packages)
 (use-package minibuffer-side-window-mode
-  :after (vertico embark which-key)
+  :after (:any vertico embark which-key)
   :config
   (minibuffer-side-window-mode 1))
 
