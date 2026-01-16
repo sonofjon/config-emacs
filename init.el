@@ -2116,9 +2116,6 @@ the window so that the streaming position appears near the bottom."
 (use-package consult-project-extra
   :bind ("C-c p" . consult-project-extra-find)
   :init
-  ;; Workaround for consult-project-extra compatibility issue
-  (defvaralias 'consult--source-project-buffer
-    'consult-source-project-buffer)
   :config
   ;; Add sources to open Dired and Magit for a project
   ;;   These sources are hidden by default. After selecting a project from
