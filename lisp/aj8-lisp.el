@@ -1416,28 +1416,6 @@ If current program is `aspell', switch to `hunspell', and vice versa."
             (message "No more miss-spelled word!")
             (setq arg 0))))))
 
-;; Jinx
-
-(defun aj8/jinx-correct-previous ()
-  "Correct the previous visible spelling error.
-The function repeatedly jumps to each previous error, corrects it, and
-continues checking.  When done, the point is restored to its original
-position."
-  (interactive)
-  (save-excursion
-    (while (ignore-errors (jinx-previous 1) t)
-      (jinx-correct))))
-
-(defun aj8/jinx-correct-next ()
-  "Correct next visible spelling error.
-The function repeatedly jumps to each next error, corrects it, and
-continues checking.  When done, the point is restored to its original
-position."
-  (interactive)
-  (save-excursion
-    (while (ignore-errors (jinx-next 1) t)
-      (jinx-correct))))
-
 ;;;; Terminal
 
 ;; Setup for Eshell
