@@ -388,21 +388,23 @@
 ;; eglot (the Emacs client for LSP servers)
 (use-package eglot
   :ensure nil   ; don't install built-in packages
+  ;; Apply hooks to legacy modes (even for non-existing modes, for
+  ;; consistency reasons). The function `aj8/copy-hooks-to-treesitter-now'
+  ;; (called at the end of this file) automatically copies these hooks to
+  ;; their modern `*-ts-mode' equivalents.
   :hook ((sh-mode . aj8/eglot-ensure-non-remote)
          (html-mode . aj8/eglot-ensure-non-remote)
          (mhtml-mode . aj8/eglot-ensure-non-remote)
          (css-mode . aj8/eglot-ensure-non-remote)
          (web-mode . aj8/eglot-ensure-non-remote)   ; no linting
          (js-mode . aj8/eglot-ensure-non-remote)
-         ;; TODO: mode does not exist! use `json-ts-mode'? What is js-json-mode?
-         (json-mode . aj8/eglot-ensure-non-remote)   ; no linting
+         (json-mode . aj8/eglot-ensure-non-remote)   ; non-existing mode
          (latex-mode . aj8/eglot-ensure-non-remote)
          (lua-mode . aj8/eglot-ensure-non-remote)
          (markdown-mode . aj8/eglot-ensure-non-remote)
          (python-mode . aj8/eglot-ensure-non-remote)
          (toml-ts-mode . aj8/eglot-ensure-non-remote)
-         ;; TODO: mode does not exist!
-         (yaml-mode . aj8/eglot-ensure-non-remote))
+         (yaml-mode . aj8/eglot-ensure-non-remote))   ; non-existing mode
   :bind (:map eglot-mode-map
               ("C-c l a o" . eglot-code-action-organize-imports)
               ("C-c l a q" . eglot-code-action-quickfix)
