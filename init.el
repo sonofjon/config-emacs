@@ -2830,11 +2830,11 @@ Elisp code explicitly in arbitrary buffers.")
          :custom
          (jinx-languages "en_US")))
          ;; :config
-         ;; ;; Better display with Vertico
-         ;; ;;   TODO: must run this after Vertico is loaded
+         ;; Multi-column display with Vertico
+         ;; (require 'vertico-multiform)
          ;; (when (featurep 'vertico)
          ;;   (add-to-list 'vertico-multiform-categories
-         ;;                '(jinx grid (vertico-grid-annotate . 20)))
+         ;;                '(jinx grid (vertico-grid-separator . "  ")))
          ;;   (vertico-multiform-mode 1))))
 
 ;;; Terminal
