@@ -2820,7 +2820,8 @@ Elisp code explicitly in arbitrary buffers.")
          :bind (:map jinx-mode-map
                      ("M-$" . jinx-correct-all)
                      ("C-M-$" . jinx-languages)
-                     ("C-," . jinx-correct-all)   ; starts at previous word
+                     ("C-," . aj8/jinx-correct-backward)
+                     ("C-." . aj8/jinx-correct-forward)
                      ("C-c ," . jinx-previous)
                      ("C-c ." . jinx-next)
                 :map jinx-correct-map

@@ -1416,6 +1416,23 @@ If current program is `aspell', switch to `hunspell', and vice versa."
             (message "No more miss-spelled word!")
             (setq arg 0))))))
 
+;; Jinx
+
+(defun aj8/jinx-correct-backward ()
+  "Start correcting misspelled words in the backward direction.
+This is a wrapper for `jinx-correct-all' for consistency with
+`aj8/jinx-correct-forward'."
+  (interactive)
+  (jinx-correct-all))
+
+(defun aj8/jinx-correct-forward ()
+  "Start correcting misspelled words in the forward direction.
+Jumps to the next misspelled word after point, then starts the
+correction UI."
+  (interactive)
+  (jinx-next 1)
+  (jinx-correct-all))
+
 ;;;; Terminal
 
 ;; Setup for Eshell
