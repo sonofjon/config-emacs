@@ -2750,7 +2750,6 @@ Elisp code explicitly in arbitrary buffers.")
   (helpful-max-buffers nil))
 
 ;; reflow (Re-flow Info and Helpful buffers)
-;;   TODO: This mode doe not seem to be enabled anymore?
 (use-package reflow
   :config
   ;; Re-flow Info buffers
