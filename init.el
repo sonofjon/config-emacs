@@ -1289,7 +1289,7 @@
       (window-height . ,aj8/side-window-height)
       (side . top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("^\\*\\(EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|vc-git.*\\|.*-ls\\(::.*\\)?\\)\\*"
+     ("^\\*\\(acp error\\|EGLOT.*events\\|Flymake diagnostics.*\\|texlab\\(::stderr\\)?\\|tramp.*\\|vc-git.*\\|.*-ls\\(::.*\\)?\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . top)
