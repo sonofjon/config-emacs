@@ -1271,15 +1271,6 @@
      ;;
      ;; Top side window
      ;;
-     ;; ((or . ((derived-mode-p . backtrace-mode)
-     ;;         (derived-mode-p . compilation-mode)
-     ((lambda (buffer _alist)
-        (with-current-buffer buffer (or (derived-mode-p 'backtrace-mode)
-                                        (derived-mode-p 'compilation-mode))))
-      (display-buffer-in-side-window)
-      (window-height . ,aj8/side-window-height)
-      (side . top)
-      (window-parameters . ((no-delete-other-windows . t))))
      ("^\\*\\(Messages\\|Warnings\\|Native-compile-Log\\|Async-native-compile-log\\)\\*"
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
@@ -1336,14 +1327,6 @@
      ;;
      ;;   Other
      ;;
-     ((lambda (buffer _alist)
-        (with-current-buffer buffer (or (derived-mode-p 'git-rebase-mode)
-                                        (derived-mode-p 'tabulated-list-mode))))
-      (display-buffer-in-side-window)
-      (window-width . ,aj8/side-window-width-dynamic)
-      (side . right)
-      (slot . ,aj8/side-window-slot-top)
-      (window-parameters . ((no-delete-other-windows . t))))
      ("^\\*\\(Bookmark List\\|Benchmark Init Results.*\\|ChatGPT.*\\|Claude.*\\|claude:.*\\|claude-code.*\\|Deepseek.*\\|Embark Collect:.*\\|Gemini.*\\|gptel-agent:.*\\|Occur\\|.*Output\\|Semantic SymRef\\|devdocs\\|eldoc\\|package update results\\|tex-shell\\)\\*"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
@@ -1370,6 +1353,24 @@
       (display-buffer-in-side-window)
       (window-height . ,aj8/side-window-height)
       (side . bottom)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ;;
+     ;; Catch-all rules based on derived modes (lowest priority)
+     ;;
+     ((lambda (buffer _alist)
+        (with-current-buffer buffer (or (derived-mode-p 'backtrace-mode)
+                                        (derived-mode-p 'compilation-mode))))
+      (display-buffer-in-side-window)
+      (window-height . ,aj8/side-window-height)
+      (side . top)
+      (window-parameters . ((no-delete-other-windows . t))))
+     ((lambda (buffer _alist)
+        (with-current-buffer buffer (or (derived-mode-p 'git-rebase-mode)
+                                        (derived-mode-p 'tabulated-list-mode))))
+      (display-buffer-in-side-window)
+      (window-width . ,aj8/side-window-width-dynamic)
+      (side . right)
+      (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t)))))))
   ;; :config
   ;; Resize window combinations proportionally
