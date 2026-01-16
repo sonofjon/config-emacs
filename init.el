@@ -1382,7 +1382,7 @@
       (window-parameters . ((no-delete-other-windows . t)))))))
   ;; :config
   ;; Resize window combinations proportionally
-  ;;   TODO: Message buffer grows on each Magit commit
+  ;;   MAYBE: Makes *Messages* buffer grow on each Magit commit
   ;; (setq window-combination-resize t))
 
 ;; xref (cross-referencing commands)
@@ -1466,7 +1466,7 @@
   :config
   ;; Revert buffers on file change
   ;;   Claude edits files directly on disk, not in Emacs buffers
-  ;; TODO: Implement revert with more control: see https://github.com/stevemolitor/claude-code.el?tab=readme-ov-file#tips-and-tricks
+  ;; MAYBE: Implement revert with more control: see https://github.com/stevemolitor/claude-code.el?tab=readme-ov-file#tips-and-tricks
   ;; (global-auto-revert-mode 1)
   ;; Adapt eat settings
   (add-hook 'claude-code-start-hook
@@ -1676,7 +1676,7 @@ the window so that the streaming position appears near the bottom."
     :include-reasoning 'ignore
     :use-tools nil)
   ;; Preset: coding
-  ;;   TODO: Make this the default setting
+  ;;   MAYBE: Make this the default setting
   (gptel-make-preset 'coding
     :description "Preset for coding"
     :system 'coder
@@ -2407,7 +2407,7 @@ Elisp code explicitly in arbitrary buffers.")
      aj8/orderless-dispatch-without-if-bang)))
 
 ;; vertico (VERTical Interactive COmpletion)
-;;   TODO: Set up vertico-grid-mode (with vertico-multiform-mode?)?
+;;   MAYBE: Set up vertico-grid-mode (with vertico-multiform-mode)
 (use-package vertico
   :bind (("M-R" . #'vertico-repeat)
          :map vertico-map
