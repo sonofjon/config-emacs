@@ -742,11 +742,13 @@
   ;; Timeout for messages in active minibuffer
   (minibuffer-message-clear-timeout 1)
   ;; Select completion styles
-  ;;   substring: needed for partial completion
   ;;   orderless: space-separated components
+  ;;   substring: needed for partial completion
   ;;   basic: fallback
-  (completion-styles '(orderless basic))
-  ;; (completion-styles '(substring orderless basic))
+  ;; Order from most specific to least specific
+  ;; (completion-styles '(orderless substring  basic))
+  ;; (completion-styles '(orderless basic))
+  (completion-styles '(orderless))
   ;; Show more details for completions
   (completions-detailed t)
   :config
