@@ -2364,6 +2364,18 @@ Elisp code explicitly in arbitrary buffers.")
                         (list #'cape-dabbrev+dict t))))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
 
+  ;; Completion at point function for terminal/shell modes
+  (defun aj8/terminal-mode-capf ()
+    "Add text-oriented completion for terminal/shell modes."
+    (setq-local completion-at-point-functions
+                (append (remove t (buffer-local-value
+                                   'completion-at-point-functions
+                                   (current-buffer)))
+                        (list #'cape-dabbrev+dict t))))
+  (add-hook 'comint-mode-hook #'aj8/terminal-mode-capf)
+  (add-hook 'eat-mode-hook #'aj8/terminal-mode-capf)
+  (add-hook 'vterm-mode-hook #'aj8/terminal-mode-capf)
+
   (which-key-add-key-based-replacements "C-c u" "corfu/cape")
                                         ; add label for prefix
 
