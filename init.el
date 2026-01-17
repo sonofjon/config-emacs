@@ -2366,17 +2366,17 @@ Elisp code explicitly in arbitrary buffers.")
                         (list #'cape-dabbrev+dict t))))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
 
-  ;; Completion at point function for terminal/shell modes
-  (defun aj8/terminal-mode-capf ()
-    "Add text-oriented completion for terminal/shell modes."
+  ;; Completion at point function for LLM chat modes
+  (defun aj8/llm-chat-mode-capf ()
+    "Add text-oriented completion for LLM chat modes."
     (setq-local completion-at-point-functions
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
                                    (current-buffer)))
                         (list #'cape-dabbrev+dict t))))
-  (add-hook 'comint-mode-hook #'aj8/terminal-mode-capf)
-  (add-hook 'eat-mode-hook #'aj8/terminal-mode-capf)
-  (add-hook 'vterm-mode-hook #'aj8/terminal-mode-capf)
+  (add-hook 'agent-shell-mode-hook #'aj8/llm-chat-mode-capf)
+  (add-hook 'gptel-mode-hook #'aj8/llm-chat-mode-capf)
+  (add-hook 'claude-code-start-hook #'aj8/llm-chat-mode-capf)
 
   (which-key-add-key-based-replacements "C-c u" "corfu/cape")
                                         ; add label for prefix
