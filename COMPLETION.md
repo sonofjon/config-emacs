@@ -9,10 +9,10 @@ configured in this repository.
 2. [Configuration Scopes](#configuration-scopes)
 3. [Completion Styles](#completion-styles)
 4. [Completion Sources by Context](#completion-sources-by-context)
-5. [Interactive Controls](#interactive-controls)
-6. [Quick Reference](#quick-reference)
-7. [Related Files](#related-files)
-8. [To Do](#to-do)
+5. [Customization Strategy](#customization-strategy)
+6. [Interactive Controls](#interactive-controls)
+7. [Quick Reference](#quick-reference)
+8. [Related Files](#related-files)
 
 ## 1. Architecture
 
@@ -159,12 +159,13 @@ irrelevant candidates.
 **Location**: init.el: orderless section
 
 ```elisp
-(orderless-matching-styles '(orderless-literal orderless-regexp))
+(orderless-matching-styles '(orderless-literal orderless-prefixes))
 ```
 - Current configuration:
-  - Uses default matching styles for orderless
   - Each space-separated component in the input is matched as a literal
-    substring, or, a regexp pattern
+    substring, or, a prefix
+  - **Note**: This global default is upgraded to include `orderless-regexp`
+    in the Minibuffer (see [Section 5](#customization-strategy)).
 
 ## 4. Completion Sources by Context
 
@@ -248,12 +249,55 @@ Frontend: Vertico vertical list
 | **Mode-dependent?** | Yes (prog-mode vs text-mode) | No (depends on command) |
 | **Typical sources** | eglot, cape-*, LSP | commands, files, buffers |
 
-## 5. Interactive Controls
+## 5. Customization Strategy
+
+This configuration employs a "Global Simple + Minibuffer Upgrade" strategy to
+ensure simple completion behavior in buffers while retaining full power in the
+minibuffer.
+
+**Global Default (Simple)**
+
+The global default for `orderless-matching-styles` is set to:
+```elisp
+(orderless-literal orderless-prefixes)
+```
+
+**Rationale**:
+- **Safety**: Typing punctuation (e.g., `*`, `.`) in a code buffer is usually
+  intended as syntax, not regex patterns.
+- **Predictability**: Matches are literal or prefix-based, which feels more
+  natural for in-buffer completion (Corfu).
+
+**Minibuffer Upgrade (Power)**
+
+A hook on `minibuffer-setup-hook` locally upgrades the style to:
+```elisp
+(orderless-literal orderless-regexp)
+```
+
+**Rationale**:
+- **Power**: When using the minibuffer (M-x, Find File, etc.), regex is a
+  powerful filtering tool.
+- **Context**: The Minibuffer is an interactive query interface where regex
+  is expected and useful.
+
+**Implementation Details**:
+```elisp
+;; init.el: orderless section
+(orderless-matching-styles '(orderless-literal orderless-prefixes))
+
+;; init.el: orderless section (:config)
+(defun aj8/minibuffer-enable-orderless-regexp ()
+  (setq-local orderless-matching-styles '(orderless-literal orderless-regexp)))
+(add-hook 'minibuffer-setup-hook #'aj8/minibuffer-enable-orderless-regexp)
+```
+
+## 6. Interactive Controls
 
 This section describes interactive commands that dynamically modify completion
 behavior during a completion session.
 
-### 5.1. Orderless Style Dispatchers
+### 6.1. Orderless Style Dispatchers
 
 Suffix-based overrides that apply to individual search terms, allowing
 per-term control over matching behavior.
@@ -275,7 +319,7 @@ per-term control over matching behavior.
 
 **Location**: lisp/aj8-lisp.el: completion section
 
-### 5.2. Orderless Matching Style Cycling
+### 6.2. Orderless Matching Style Cycling
 
 Cycles through orderless matching styles on the fly, temporarily changing
 how pattern matching works during completion without modifying the
@@ -285,7 +329,7 @@ configuration: literal -> prefixes -> regexp -> flex -> literal.
 
 **Location**: lisp/aj8-lisp.el: completion section
 
-### 5.3. Vertico Sort Order Toggling
+### 6.3. Vertico Sort Order Toggling
 
 Cycles through different sort orders for completion candidates in the
 minibuffer: history-length-alpha (default) -> length-alpha -> alpha ->
@@ -295,11 +339,11 @@ history-length-alpha.
 
 **Location**: lisp/aj8-lisp.el: completion section
 
-## 6. Quick Reference
+## 7. Quick Reference
 
-### 6.1. Matching Style Decision Flow
+### 7.1. Matching Style Decision Flow
 
-#### 6.1.1. Corfu Context (In-Buffer Completion)
+#### 7.1.1. Corfu Context (In-Buffer Completion)
 
 ```
 User presses TAB or triggers completion-at-point
@@ -321,7 +365,7 @@ Is there a category override for this category?
     +---> NO: Use global completion-styles
 ```
 
-#### 6.1.2. Vertico Context (Minibuffer Completion)
+#### 7.1.2. Vertico Context (Minibuffer Completion)
 
 ```
 User invokes command (M-x, C-x C-f, C-x b, etc.)
@@ -340,7 +384,7 @@ Is there a category override for this category?
     +---> NO: Use global completion-styles
 ```
 
-### 6.2. Example Scenarios
+### 7.2. Example Scenarios
 
 **Scenario 1**: Typing in a Python file (prog-mode)
 
@@ -369,7 +413,7 @@ Is there a category override for this category?
 4. Input matched as prefix/partial (NOT orderless)
 5. Vertico displays matching file paths
 
-## 7. Related Files
+## 8. Related Files
 
 - `init.el: minibuffer section` - Global completion configuration
 - `init.el: eglot section` - eglot configuration
@@ -378,28 +422,3 @@ Is there a category override for this category?
 - `init.el: orderless section` - orderless configuration
 - `init.el: vertico section` - Vertico configuration
 - `lisp/aj8-lisp.el: completion section` - orderless and Vertico custom functions
-
-## 8. To Do
-
-(init.el: corfu section)
-
-```elisp
-;;   TODO: Use separate matching-style for Corfu and Vertico,
-;;         e.g. I don't want regexp in Corfu
-```
-
-**Two possible approaches**:
-
-1. **Different completion-styles**:
-   - Corfu: `(basic)` only
-   - Vertico: `(orderless)`
-   - Requires setting buffer-local `completion-styles`
-
-2. **Different orderless-matching-styles**:
-   - Corfu: `(orderless-literal orderless-prefixes)` - no regexp
-   - Vertico: `(orderless-literal orderless-regexp)` - full power
-   - Requires setting buffer-local `orderless-matching-styles`
-
-**Note**: Currently commented out. Both Corfu and Vertico use the same
-global orderless configuration.
-
