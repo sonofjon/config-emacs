@@ -332,7 +332,15 @@
          :config
          ;; Tag Dired buffer names
          ;;   Use idle timer to avoid renaming while Dired is processing the buffer
-         (add-hook 'dired-mode-hook (lambda () (run-with-idle-timer 0 nil #'aj8/prefix-buffer-name "dired")))
+         (add-hook 'dired-mode-hook
+                   (lambda ()
+                     (let ((buf (current-buffer)))
+                       (run-with-idle-timer
+                        0 nil
+                        (lambda ()
+                          (when (buffer-live-p buf)
+                            (with-current-buffer buf
+                              (aj8/prefix-buffer-name "dired"))))))))
          ;; Hide details by default
          (add-hook 'dired-mode-hook #'dired-hide-details-mode)
          ;; Hide omitted files
