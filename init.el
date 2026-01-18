@@ -438,7 +438,20 @@
   (add-to-list 'eglot-server-programs
                '(web-mode . ("vscode-html-language-server" "--stdio")))
   ;; Use Orderless for Eglot (default is Flex)
-  (add-to-list 'completion-category-overrides '((eglot (styles orderless)))))
+  (add-to-list 'completion-category-overrides '((eglot (styles orderless))))
+  ;; Move eglot-completion-at-point after other capfs
+  ;;   Eglot prepends its capf to the front of
+  ;;   completion-at-point-functions. This function reorders the list so
+  ;;   eglot runs after other capfs, allowing non-LSP completions to appear
+  ;;   when LSP has no candidates.
+  (defun aj8/reorder-eglot-capf ()
+    "Move eglot-completion-at-point after other capfs."
+    (when (memq #'eglot-completion-at-point completion-at-point-functions)
+      (setq-local completion-at-point-functions
+                  (append (remove #'eglot-completion-at-point
+                                  (remove t completion-at-point-functions))
+                          (list #'eglot-completion-at-point t)))))
+  (add-hook 'eglot-managed-mode-hook #'aj8/reorder-eglot-capf))
   ;; Don't manage ELDoc
   ;; (add-to-list 'eglot-stay-out-of 'eldoc))
   ;; Limit ELDoc to a single line
