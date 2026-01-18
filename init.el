@@ -934,7 +934,7 @@
               ("C-c <" . nil))   ; unbind python-indent-shift-left
   :config
   ;; Exclude virtual environment directories from project
-  ;;   Not needed: use M-s G  ;; Outline settings
+  ;;   Not needed: use M-s G
   ;; (setq-local project-ignored-files '(".venv/*"))
   ;; Use ruff as the Flymake linter
   ;;   Note, this is not to be needed with Eglot
