@@ -2171,19 +2171,11 @@ the window so that the streaming position appears near the bottom."
   ;; (corfu-on-exact-match 'insert) ; configure handling of exact matches
   ;;   TODO: match not inserted with orderless
   (corfu-scroll-margin 1)        ; use scroll margin
+  ;; (global-corfu-minibuffer nil)  ; disable Corfu in the minibuffer
   :init
   ;; Enable Corfu globally
   ;;   (this is useful since dabbrev can be used in all buffers)
-  (global-corfu-mode)
-  ;; Enable Corfu in the minibuffer
-  (defun corfu-enable-always-in-minibuffer ()
-    "Enable Corfu in the minibuffer if Vertico is not active."
-    (unless (bound-and-true-p vertico--input)
-      ;; (setq-local corfu-auto nil)   ; enable/disable auto completion
-      (setq-local corfu-echo-delay nil) ; disable automatic echo and popup
-                  ;; corfu-popupinfo-delay nil)
-      (corfu-mode 1)))
-  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1))   ; TODO: remove 1?
+  (global-corfu-mode))
   ;; :config
   ;; Sort candidates by history
   ;; (corfu-history-mode 1)   ; requires savehist-mode
