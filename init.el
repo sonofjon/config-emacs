@@ -442,7 +442,7 @@
   ;; Don't manage ELDoc
   ;; (add-to-list 'eglot-stay-out-of 'eldoc))
   ;; Limit ELDoc to a single line
-  ;; (setq eldoc-echo-area-use-multiline-p nil))   ; doesn't work nicely
+  ;; (setq eldoc-echo-area-use-multiline-p nil))   ; TODO: doesn't work nicely
   ;; Don't auto-show documentation
   ;; (add-hook 'eglot-managed-mode-hook (lambda () (eldoc-mode -1)))
 
@@ -942,6 +942,7 @@
   ;;       '("ruff" "--quiet" "--stdin-filename=stdin" "-"))
   ;; Silence warnings about missing linters
   ;;   This remove python-flymake from flymake-diagnostic-functions
+  ;;   TODO: Why is this needed?
   (add-hook 'python-base-mode-hook
             (lambda ()
               (remove-hook 'flymake-diagnostic-functions #'python-flymake t)))
@@ -2108,6 +2109,7 @@ the window so that the streaming position appears near the bottom."
    consult-source-project-recent-file
    :preview-key "C-c M-p")
 
+  ;; TODO: What is this about?
   ;; Completion
   ;; (consult-customize
   ;;  consult-completion-in-region
@@ -2185,6 +2187,7 @@ the window so that the streaming position appears near the bottom."
   ;;   (this is useful since dabbrev can be used in all buffers)
   (global-corfu-mode))
   ;; :config
+  ;; TODO: Reasearch and enable/remove?
   ;; Sort candidates by history
   ;; (corfu-history-mode 1)   ; requires savehist-mode
   ;; (savehist-mode 1)
@@ -2262,6 +2265,7 @@ from dictionary, symbol and keyword.")
                                                 #'cape-dabbrev)
     "Completion at point function for Cape, combining completions
 from dictionary and Dabbrev.")
+  ;; TODO: Remove duplicate?
   (defalias 'cape-dabbrev+dict (cape-capf-super #'cape-dabbrev
                                                 #'cape-dict)
     "Completion at point function for Cape, combining completions
