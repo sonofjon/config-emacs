@@ -2330,7 +2330,7 @@ Elisp code explicitly in arbitrary buffers.")
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
                                    (current-buffer)))
-                        (list #'cape-symbol+keyword+dict t))))
+                        (list #'cape-dabbrev+dict t))))
   (add-hook 'prog-mode-hook #'aj8/prog-mode-capf)
   ;; (add-hook 'emacs-lisp-mode-hook #'aj8/prog-mode-capf)
 
