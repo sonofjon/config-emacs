@@ -2319,12 +2319,6 @@ Elisp code explicitly in arbitrary buffers.")
 
   ;; Completion at point function for prog-mode
   (defun aj8/prog-mode-capf ()
-    ;; (add-hook 'completion-at-point-functions
-    ;;            #'cape-symbol+keyword+dict nil t))
-    ;; (add-to-list 'completion-at-point-functions
-    ;;              #'cape-symbol+keyword+dict))
-    ;; (setq-local completion-at-point-functions
-    ;;             (list #'cape-symbol+keyword+dict t)))
     ;; Insert custom capf before `t' in buffer-local value
     (setq-local completion-at-point-functions
                 (append (remove t (buffer-local-value
@@ -2336,12 +2330,6 @@ Elisp code explicitly in arbitrary buffers.")
 
   ;; Completion at point function for text-mode
   (defun aj8/text-mode-capf ()
-    ;; (add-hook 'completion-at-point-functions
-    ;;            #'cape-dict+symbol+keyword nil t))
-    ;; (add-to-list 'completion-at-point-functions
-    ;;               #'cape-dict+symbol+keyword))
-    ;; (setq-local completion-at-point-functions
-    ;;             (list#'cape-dict+symbol+keyword t)))
     ;; Insert custom capf before `t' in buffer-local value
     (setq-local completion-at-point-functions
                 (append (remove t (buffer-local-value
