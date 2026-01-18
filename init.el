@@ -2396,8 +2396,8 @@ Elisp code explicitly in arbitrary buffers.")
 (use-package orderless
   :custom
   ;; Matching styles
-  ;;   Use simple matching (literal + prefixes) globally
-  (orderless-matching-styles '(orderless-literal orderless-prefixes))
+  ;;   Use prefix matching globally for predictable in-buffer completion
+  (orderless-matching-styles '(orderless-literal-prefix))
   ;; Style dispatchers
   (orderless-style-dispatchers
    '(aj8/orderless-dispatch-flex-if-twiddle

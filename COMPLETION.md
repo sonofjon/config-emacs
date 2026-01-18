@@ -159,13 +159,13 @@ irrelevant candidates.
 **Location**: init.el: orderless section
 
 ```elisp
-(orderless-matching-styles '(orderless-literal orderless-prefixes))
+(orderless-matching-styles '(orderless-literal-prefix))
 ```
 - Current configuration:
-  - Each space-separated component in the input is matched as a literal
-    substring, or, a prefix
-  - **Note**: This global default is upgraded to include `orderless-regexp`
-    in the Minibuffer (see [Section 5](#customization-strategy)).
+  - Each space-separated component in the input is matched as a prefix
+    (component must appear at start of candidate)
+  - **Note**: This global default is upgraded to `orderless-literal` +
+    `orderless-regexp` in the Minibuffer (see [Section 5](#customization-strategy)).
 
 ## 4. Completion Sources by Context
 
@@ -259,14 +259,15 @@ minibuffer.
 
 The global default for `orderless-matching-styles` is set to:
 ```elisp
-(orderless-literal orderless-prefixes)
+(orderless-literal-prefix)
 ```
 
 **Rationale**:
-- **Safety**: Typing punctuation (e.g., `*`, `.`) in a code buffer is usually
+- **Predictability**: Prefix-only matching is how most editors handle
+  in-buffer completion. You type the beginning of a word and see completions
+  starting with that prefix.
+- **Safety**: Typing punctuation (e.g., `*`, `.`) in a code buffer is
   intended as syntax, not regex patterns.
-- **Predictability**: Matches are literal or prefix-based, which feels more
-  natural for in-buffer completion (Corfu).
 
 **Minibuffer Upgrade (Power)**
 
@@ -284,7 +285,7 @@ A hook on `minibuffer-setup-hook` locally upgrades the style to:
 **Implementation Details**:
 ```elisp
 ;; init.el: orderless section
-(orderless-matching-styles '(orderless-literal orderless-prefixes))
+(orderless-matching-styles '(orderless-literal-prefix))
 
 ;; init.el: orderless section (:config)
 (defun aj8/minibuffer-enable-orderless-regexp ()
