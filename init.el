@@ -1438,7 +1438,12 @@
          ("C-c C-<down>" . comint-next-prompt))
   :custom
   ;; Don't add line as context
-  (agent-shell-context-sources '(files region error)))
+  (agent-shell-context-sources '(files region error))
+  ;; Gemini CLI command and allowed tools
+  (agent-shell-google-gemini-command
+   '("gemini" "--experimental-acp" "--allowed-tools" "glob" "list_directory"
+     "read_file" "read_many_files" "search_file_content" "google_web_search"
+     "web_fetch" "save_memory" "write_todos")))
   ;; Enable viewport mode
   ;; (agent-shell-prefer-viewport-interaction t))
 
@@ -3119,7 +3124,7 @@ Body:
 
 FILE DIFFS:
 
-```\n%s\n```")
+\n%s\n")
   :config
   ;; Set up LLM provider: OpenAI
   ;;   Use lazy setup to avoid password prompt during startup
@@ -3152,6 +3157,7 @@ FILE DIFFS:
 ;;   Available keywords: "HOLD", "TODO", NEXT","THEM", "PROG", "OKAY",
 ;;   "DONT", "FAIL", "DONE", "NOTE", "MAYBE" "KLUDGE, "HACK", "TEMP",
 ;;   "FIXME" "XXXX*"
+;;   MAYBE: Add MAYBE
 (use-package magit-todos
   :after magit
   :hook (magit-mode . magit-todos-mode)
