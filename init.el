@@ -1431,7 +1431,11 @@
          :map agent-shell-mode-map
          ("TAB" . agent-shell-next-item)   ; fix for terminal
          ("C-c C-v" . nil)   ; unbind agent-shell-set-session-model
-         ("C-c M" . agent-shell-set-session-model)))
+         ("C-c M" . agent-shell-set-session-model))
+  :custom
+  ;; Enable viewport mode
+  ;; (agent-shell-prefer-viewport-interaction t)
+  )
 
 ;; agent-shell-manager (buffer manager for agent-shell)
 (use-package agent-shell-manager
