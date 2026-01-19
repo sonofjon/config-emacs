@@ -3158,7 +3158,7 @@ FILE DIFFS:
   (add-to-list 'magit-todos-exclude-globs "**/archive/*"))
 
 ;; ztree (text mode directory tree)
-;;   MAYBE: Alternative package: diffed
+;;   MAYBE: Alternative packages: diffed, ediff-directories (built-in)
 (use-package ztree
   :defer
   :config
