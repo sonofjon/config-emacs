@@ -1429,13 +1429,16 @@
 (use-package agent-shell
   :bind (("C-c C-a" . agent-shell)
          :map agent-shell-mode-map
-         ("TAB" . agent-shell-next-item)   ; fix for terminal
+         ;; ("TAB" . agent-shell-next-item)   ; fix for terminal
          ("C-c C-v" . nil)   ; unbind agent-shell-set-session-model
-         ("C-c M" . agent-shell-set-session-model))
-  :custom
+         ("C-c M" . agent-shell-set-session-model)
+         ("C-c <up>" . agent-shell-previous-item)
+         ("C-c <down>" . agent-shell-next-item)
+         ("C-c C-<up>" . comint-previous-prompt)
+         ("C-c C-<down>" . comint-next-prompt)))
+  ;; :custom
   ;; Enable viewport mode
-  ;; (agent-shell-prefer-viewport-interaction t)
-  )
+  ;; (agent-shell-prefer-viewport-interaction t))
 
 ;; agent-shell-manager (buffer manager for agent-shell)
 (use-package agent-shell-manager
