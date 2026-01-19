@@ -2278,11 +2278,6 @@ from dictionary, symbol and keyword.")
                                                 #'cape-dabbrev)
     "Completion at point function for Cape, combining completions
 from dictionary and Dabbrev.")
-  ;; TODO: Remove duplicate?
-  (defalias 'cape-dabbrev+dict (cape-capf-super #'cape-dabbrev
-                                                #'cape-dict)
-    "Completion at point function for Cape, combining completions
-from Dabbrev and dictionary.")
   (defalias 'cape-dabbrev+dict (cape-capf-super #'cape-dabbrev
                                                 #'cape-dict)
     "Completion at point function for Cape, combining completions
