@@ -1435,8 +1435,10 @@
          ("C-c <up>" . agent-shell-previous-item)
          ("C-c <down>" . agent-shell-next-item)
          ("C-c C-<up>" . comint-previous-prompt)
-         ("C-c C-<down>" . comint-next-prompt)))
-  ;; :custom
+         ("C-c C-<down>" . comint-next-prompt))
+  :custom
+  ;; Don't add line as context
+  (agent-shell-context-sources '(files region error)))
   ;; Enable viewport mode
   ;; (agent-shell-prefer-viewport-interaction t))
 
