@@ -917,8 +917,8 @@
 ;; project (operations on the current project)
 (use-package project
   :ensure nil   ; don't install built-in packages
-  :bind (("C-x C-<right>" . my/project-next-buffer)
-         ("C-x C-<left>" . my/project-previous-buffer)
+  :bind (("C-x C-<left>" . my/project-previous-buffer)
+         ("C-x C-<right>" . my/project-next-buffer)
          ("C-x p t" . project-forget-project))
   :custom
   ;; Share file history between projects
@@ -1032,8 +1032,8 @@
          (helpful-mode . visual-line-mode)
          (Info-mode . visual-line-mode))
   :bind (("C-o" . my/open-line)
-         ("C-x <right>" . aj8/next-buffer)
          ("C-x <left>" . aj8/previous-buffer)
+         ("C-x <right>" . aj8/next-buffer)
          ("C-x k" . kill-current-buffer)
          ("C-c k" . my/kill-buffer-other-window)
          ("M-u" . upcase-dwim)
@@ -1895,8 +1895,8 @@ the window so that the streaming position appears near the bottom."
   :mode ("\\.csv$")
   :bind (:map csv-mode-map
               ("C-c M-a" . my/csv-align-visible)
-              ("C-M-<right>" . csv-forward-field)
-              ("C-M-<left>" . csv-backward-field))
+              ("C-M-<left>" . csv-backward-field)
+              ("C-M-<right>" . csv-forward-field))
   ;; Enable modeline linenumber for wide files
   :custom
   (line-number-display-limit-width 500)   ; default is 200
@@ -1919,14 +1919,14 @@ the window so that the streaming position appears near the bottom."
               ("M-n" . nil)         ; unbind markdown-next-link
               ("C-c <left>" . nil)     ; unbind markdown-promote
               ("C-c <right>" . nil)     ; unbind markdown-demote
-              ("C-c C-<down>" . markdown-outline-next-same-level)
-              ("C-c <down>" . markdown-outline-next)
               ("C-c C-<up>" . markdown-outline-previous-same-level)
+              ("C-c C-<down>" . markdown-outline-next-same-level)
               ("C-c <up>" . markdown-outline-previous)
+              ("C-c <down>" . markdown-outline-next)
               ("C-c C-M-n" . markdown-move-down)
               ("C-c C-M-p" . markdown-move-up)
-              ("C-c C-M-<right>" . markdown-demote)
-              ("C-c C-M-<left>" . markdown-promote)))
+              ("C-c C-M-<left>" . markdown-promote)
+              ("C-c C-M-<right>" . markdown-demote)))
 
 ;; markdown-links (insert Markdown links from various sources)
 (use-package markdown-links
@@ -2472,8 +2472,8 @@ Elisp code explicitly in arbitrary buffers.")
          (yaml-ts-mode . combobulate-mode))
   :bind (:map combobulate-key-map
               ("C-M-n" . combobulate-navigate-down)   ; forward-list
-              ("C-M-<right>" . combobulate-navigate-next)   ; forward-sexp
               ("C-M-<left>" . combobulate-navigate-previous)   ; backward-sexp
+              ("C-M-<right>" . combobulate-navigate-next)   ; forward-sexp
               ("C-M-p" . combobulate-navigate-up)   ; backward-list
               ("M-a" . combobulate-navigate-logical-previous)
               ("M-e" . combobulate-navigate-logical-next)
@@ -2505,8 +2505,8 @@ Elisp code explicitly in arbitrary buffers.")
 ;; move-dup (Eclipse-like moving and duplicating lines or rectangles)
 (use-package move-dup
   :bind (("C-c <up>" . move-dup-move-lines-up)
-         ("C-c C-<up>" . move-dup-duplicate-up)
          ("C-c <down>" . move-dup-move-lines-down)
+         ("C-c C-<up>" . move-dup-duplicate-up)
          ("C-c C-<down>" . move-dup-duplicate-down)))
 
 ;; multiple-cursors (multiple cursors for Emacs)
