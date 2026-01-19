@@ -2146,9 +2146,9 @@ the window so that the streaming position appears near the bottom."
   :init
   :config
   ;; Add sources to open Dired and Magit for a project
-  ;;   These sources are hidden by default. After selecting a project from
-  ;;   "Known Project", press 'd' to open the project root in Dired or 'm'
-  ;;   to open Magit status for that project.
+  ;;   These sources are hidden. After selecting a project from "Known
+  ;;   Project", press 'd' to open the project root in Dired or 'm' to open
+  ;;   Magit status for that project.
   (add-to-list 'consult-project-extra-sources
                '(:name "Project Dir"
                  :narrow (100 . "Dir")
