@@ -1439,11 +1439,22 @@
   :custom
   ;; Don't add line as context
   (agent-shell-context-sources '(files region error))
-  ;; Gemini CLI command and allowed tools
+  ;; Anthropic Claude command and allowed tools
+  ;;   Default: Not documented
+  ;;   Note: Has no command-line tool selection options
+  ;; (agent-shell-anthropic-claude-command '("claude-code-acp"))
+  ;; GitHub Copilot command and allowed tools
+  ;;   Default: Denies modification/execution tools
+  ;;   https://docs.github.com/copilot/concepts/agents/about-copilot-cli
+  ;; (agent-shell-github-command '("copilot" "--acp"))
+  ;; Google Gemini CLI command and allowed tools
+  ;;   Default: Not documented
+  ;; (agent-shell-google-gemini-command
+  ;;  '("gemini" "--experimental-acp" "--allowed-tools" "glob" "list_directory"
+  ;;    "read_file" "read_many_files" "search_file_content" "google_web_search"
+  ;;    "web_fetch" "save_memory" "write_todos"))
   (agent-shell-google-gemini-command
-   '("gemini" "--experimental-acp" "--allowed-tools" "glob" "list_directory"
-     "read_file" "read_many_files" "search_file_content" "google_web_search"
-     "web_fetch" "save_memory" "write_todos")))
+   '("gemini" "--experimental-acp")))
   ;; Enable viewport mode
   ;; (agent-shell-prefer-viewport-interaction t))
 
