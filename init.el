@@ -1454,9 +1454,13 @@
   ;;    "read_file" "read_many_files" "search_file_content" "google_web_search"
   ;;    "web_fetch" "save_memory" "write_todos"))
   (agent-shell-google-gemini-command
-   '("gemini" "--experimental-acp")))
+   '("gemini" "--experimental-acp"))
   ;; Enable viewport mode
   ;; (agent-shell-prefer-viewport-interaction t))
+  :config
+  ;; Disable comint completion in agent-shell
+  (add-hook 'agent-shell-mode-hook
+            (lambda () (setq-local comint-dynamic-complete-functions nil))))
 
 ;; agent-shell-manager (buffer manager for agent-shell)
 (use-package agent-shell-manager
