@@ -141,6 +141,7 @@
         osx-trash
         outline-minor-faces
         package-lint
+        pinentry
         powershell
         repeat-help
         ruff-format
@@ -540,6 +541,12 @@
   ;; Select keys in the minibuffer
   (epa-keys-select-method 'minibuffer))
 
+;; pinentry (GnuPG Pinentry server implementation)
+(use-package pinentry
+  :ensure t
+  :init
+  (load (expand-file-name "lisp/aj8-pinentry" user-emacs-directory))
+  (pinentry-start))
 
 ;; erc (an Emacs Internet relay chat client)
 (use-package erc
