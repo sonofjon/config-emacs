@@ -1,0 +1,1 @@
+- C-x <left> and <right> should go to previous and next buffer based on decency
