@@ -543,6 +543,7 @@
 
 ;; pinentry (GnuPG Pinentry server implementation)
 (use-package pinentry
+  :if (eq aj8/my-os 'wsl)
   :ensure t
   :init
   (load (expand-file-name "lisp/aj8-pinentry" user-emacs-directory))
