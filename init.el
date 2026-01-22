@@ -2350,8 +2350,12 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (add-hook 'completion-at-point-functions #'cape-line)
 
   ;; Completion at point function for prog-mode
+  ;;   Note: LSP (eglot) handles language-specific completions including
+  ;;   keywords, so cape-keyword is not needed. cape-elisp-symbol is also
+  ;;   not needed since elisp-mode already has elisp-completion-at-point.
   (defun aj8/prog-mode-capf ()
-    ;; Insert custom capf before `t' in buffer-local value
+    "Add dabbrev and dict completions for programming modes.
+Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
     (setq-local completion-at-point-functions
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
@@ -2362,7 +2366,8 @@ Elisp code explicitly in arbitrary buffers.")
 
   ;; Completion at point function for text-mode
   (defun aj8/text-mode-capf ()
-    ;; Insert custom capf before `t' in buffer-local value
+    "Add dabbrev and dict completions for text modes.
+Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
     (setq-local completion-at-point-functions
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
@@ -2372,7 +2377,8 @@ Elisp code explicitly in arbitrary buffers.")
 
   ;; Completion at point function for LLM chat modes
   (defun aj8/llm-chat-mode-capf ()
-    "Add text-oriented completion for LLM chat modes."
+    "Add dabbrev and dict completions for LLM chat modes.
+Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
     (setq-local completion-at-point-functions
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
