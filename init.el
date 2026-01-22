@@ -440,19 +440,39 @@
                '(web-mode . ("vscode-html-language-server" "--stdio")))
   ;; Use Orderless for Eglot (default is Flex)
   (add-to-list 'completion-category-overrides '((eglot (styles orderless))))
-  ;; Move eglot-completion-at-point after other capfs
+  ;; Eglot completion-at-point-functions workarounds
   ;;   Eglot prepends its capf to the front of
-  ;;   completion-at-point-functions. This function reorders the list so
-  ;;   eglot runs after other capfs, allowing non-LSP completions to appear
-  ;;   when LSP has no candidates.
+  ;;   completion-at-point-functions. Since eglot returns an empty list
+  ;;   when LSP has no candidates (rather than nil), it blocks subsequent
+  ;;   capfs from running. The functions below provide different solutions
+  ;;   to this problem.
+  ;; Solution 1: Reorder capfs so eglot runs last
+  ;;   This allows other capfs (dabbrev, dict) to provide completions when
+  ;;   LSP has none.
   (defun aj8/reorder-eglot-capf ()
-    "Move eglot-completion-at-point after other capfs."
+    "Move eglot-completion-at-point after other capfs.
+Removes both eglot and `t' from buffer-local capf list, then appends
+eglot followed by `t' at the end."
     (when (memq #'eglot-completion-at-point completion-at-point-functions)
       (setq-local completion-at-point-functions
                   (append (remove #'eglot-completion-at-point
                                   (remove t completion-at-point-functions))
                           (list #'eglot-completion-at-point t)))))
-  (add-hook 'eglot-managed-mode-hook #'aj8/reorder-eglot-capf))
+  ;; (add-hook 'eglot-managed-mode-hook #'aj8/reorder-eglot-capf)
+  ;; Solution 2: Merge eglot with other capfs
+  ;;   Uses cape-capf-super to merge LSP completions with other capfs
+  ;;   (dabbrev, dict), so all candidates appear together regardless of
+  ;;   whether LSP has results.
+  (defun aj8/combine-eglot-capf ()
+    "Merge eglot-completion-at-point with other capfs.
+Replaces buffer-local capf list with a merged capf using cape-capf-super,
+followed by `t'."
+    (setq-local completion-at-point-functions
+                (list (cape-capf-super #'eglot-completion-at-point
+                                       #'cape-dabbrev
+                                       #'cape-dict)
+                      t)))
+  (add-hook 'eglot-managed-mode-hook #'aj8/combine-eglot-capf))
   ;; Don't manage ELDoc
   ;; (add-to-list 'eglot-stay-out-of 'eldoc))
   ;; Limit ELDoc to a single line
