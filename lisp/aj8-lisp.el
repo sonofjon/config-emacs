@@ -393,8 +393,11 @@ If the current window is a side window don't skip buffers."
 
 ;; Tag buffer name
 (defun aj8/tag-buffer-name (tag)
-  "Add TAG to buffer name."
-  (rename-buffer (format "%s # %s" (buffer-name) tag) t))
+  "Add TAG to buffer name.
+Renames only if the tag is missing."
+  (let ((suffix-string (format " # %s" tag)))
+    (unless (string-suffix-p suffix-string (buffer-name))
+      (rename-buffer (concat (buffer-name) suffix-string) t))))
 
 ;; Prefix buffer name
 (defun aj8/prefix-buffer-name (prefix)
