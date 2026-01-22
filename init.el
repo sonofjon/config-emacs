@@ -1458,11 +1458,7 @@
   ;; Google Gemini CLI command and allowed tools
   ;;   Default: Not documented
   ;; (agent-shell-google-gemini-command
-  ;;  '("gemini" "--experimental-acp" "--allowed-tools" "glob" "list_directory"
-  ;;    "read_file" "read_many_files" "search_file_content" "google_web_search"
-  ;;    "web_fetch" "save_memory" "write_todos"))
-  (agent-shell-google-gemini-command
-   '("gemini" "--experimental-acp"))
+  ;;  '("gemini" "--experimental-acp"))
   ;; Enable viewport mode
   ;; (agent-shell-prefer-viewport-interaction t))
   :config
