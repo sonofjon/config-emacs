@@ -472,7 +472,11 @@ followed by `t'."
                                        #'cape-dabbrev
                                        #'cape-dict)
                       t)))
-  (add-hook 'eglot-managed-mode-hook #'aj8/combine-eglot-capf))
+  ;; (add-hook 'eglot-managed-mode-hook #'aj8/combine-eglot-capf)
+  ;; Solution 3: Wrap eglot with cape-wrap-nonexclusive
+  ;;   Uses advice to make eglot return nil when it has no candidates,
+  ;;   allowing fallback to subsequent capfs (dabbrev, dict).
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-nonexclusive))
   ;; Don't manage ELDoc
   ;; (add-to-list 'eglot-stay-out-of 'eldoc))
   ;; Limit ELDoc to a single line
