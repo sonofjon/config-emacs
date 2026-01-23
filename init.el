@@ -2384,7 +2384,10 @@ Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
                                    (current-buffer)))
-                        (list #'cape-dabbrev+dict t))))
+                        (list #'cape-dabbrev+dict t)))
+    ;; Clear hook depth information to prevent re-sorting
+    ;;   See aj8/text-mode-capf for detailed explanation.
+    (put 'completion-at-point-functions 'hook--depth-alist nil))
   (add-hook 'prog-mode-hook #'aj8/prog-mode-capf)
   ;; (add-hook 'emacs-lisp-mode-hook #'aj8/prog-mode-capf)
 
@@ -2396,7 +2399,23 @@ Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
                                    (current-buffer)))
-                        (list #'cape-dabbrev+dict t))))
+                        (list #'cape-dabbrev+dict t)))
+    ;; Clear hook depth information to prevent re-sorting
+    ;;   Emacs' add-hook maintains depth information that causes the list to
+    ;;   be re-sorted when subsequent add-hook calls occur (e.g., when eglot
+    ;;   connects). Clearing this prevents ispell-completion-at-point from
+    ;;   being moved to after `t' where it would be unreachable.
+    (put 'completion-at-point-functions 'hook--depth-alist nil))
+  ;; Alternative implementation using add-hook
+  ;;   This works with Emacs' hook depth system rather than bypassing it
+  ;;   with setq-local, ensuring correct ordering is maintained when
+  ;;   packages add capfs dynamically after this function runs.
+  ;; (defun aj8/text-mode-capf ()
+  ;;   "Add dabbrev and dict completions for text modes.
+  ;; Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
+  ;;   (remove-hook 'completion-at-point-functions t t)
+  ;;   (add-hook 'completion-at-point-functions #'cape-dabbrev+dict 5 t)
+  ;;   (add-hook 'completion-at-point-functions t 15 t))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
 
   ;; Completion at point function for LLM chat modes
@@ -2407,7 +2426,10 @@ Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
                 (append (remove t (buffer-local-value
                                    'completion-at-point-functions
                                    (current-buffer)))
-                        (list #'cape-dabbrev+dict t))))
+                        (list #'cape-dabbrev+dict t)))
+    ;; Clear hook depth information to prevent re-sorting
+    ;;   See aj8/text-mode-capf for detailed explanation.
+    (put 'completion-at-point-functions 'hook--depth-alist nil))
   (add-hook 'agent-shell-mode-hook #'aj8/llm-chat-mode-capf)
   (add-hook 'gptel-mode-hook #'aj8/llm-chat-mode-capf)
   (add-hook 'claude-code-start-hook #'aj8/llm-chat-mode-capf)
