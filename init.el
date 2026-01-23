@@ -457,7 +457,10 @@ eglot followed by `t' at the end."
       (setq-local completion-at-point-functions
                   (append (remove #'eglot-completion-at-point
                                   (remove t completion-at-point-functions))
-                          (list #'eglot-completion-at-point t)))))
+                          (list #'eglot-completion-at-point t)))
+      ;; Clear hook depth information to prevent re-sorting
+      ;;   See aj8/text-mode-capf for detailed explanation.
+      (put 'completion-at-point-functions 'hook--depth-alist nil)))
   ;; (add-hook 'eglot-managed-mode-hook #'aj8/reorder-eglot-capf)
   ;; Solution 2: Merge eglot with other capfs
   ;;   Uses cape-capf-super to merge LSP completions with other capfs
@@ -471,7 +474,10 @@ followed by `t'."
                 (list (cape-capf-super #'eglot-completion-at-point
                                        #'cape-dabbrev
                                        #'cape-dict)
-                      t)))
+                      t))
+    ;; Clear hook depth information to prevent re-sorting
+    ;;   See aj8/text-mode-capf for detailed explanation.
+    (put 'completion-at-point-functions 'hook--depth-alist nil))
   ;; (add-hook 'eglot-managed-mode-hook #'aj8/combine-eglot-capf)
   ;; Solution 3: Wrap eglot with cape-wrap-nonexclusive
   ;;   Uses advice to make eglot return nil when it has no candidates,
