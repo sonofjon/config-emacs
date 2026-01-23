@@ -429,6 +429,25 @@
   (which-key-add-key-based-replacements "C-c l" "lsp")
   (which-key-add-key-based-replacements "C-c l a" "action")
                                         ; add label for prefix key
+  ;; Eglot completion-at-point-functions workarounds
+  ;;   Eglot prepends its capf to the front of
+  ;;   completion-at-point-functions. Since eglot returns an empty list when
+  ;;   LSP has no candidates (rather than nil), it blocks subsequent capfs
+  ;;   from running. Select one of the solutions below.  See aj8-lisp.el for
+  ;;   function definitions.
+  ;; Solution 1: Reorder capfs so eglot runs last
+  ;;   This allows other capfs (dabbrev, dict) to provide completions when
+  ;;   LSP has none.
+  ;; (add-hook 'eglot-managed-mode-hook #'aj8/eglot-reorder-capf)
+  ;; Solution 2: Merge eglot with other capfs
+  ;;   Uses cape-capf-super to merge LSP completions with other capfs
+  ;;   (dabbrev, dict), so all candidates appear together regardless of
+  ;;   whether LSP has results.
+  ;; (add-hook 'eglot-managed-mode-hook #'aj8/eglot-combine-capf)
+  ;; Solution 3: Wrap eglot with cape-wrap-nonexclusive
+  ;;   Uses advice to make eglot return nil when it has no candidates,
+  ;;   allowing fallback to subsequent capfs (dabbrev, dict).
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-nonexclusive)
   :custom
   ;; Shutdown server after buffer kill
   (eglot-autoshutdown t)
@@ -439,111 +458,7 @@
   (add-to-list 'eglot-server-programs
                '(web-mode . ("vscode-html-language-server" "--stdio")))
   ;; Use Orderless for Eglot (default is Flex)
-  (add-to-list 'completion-category-overrides '((eglot (styles orderless))))
-  ;; Eglot completion-at-point-functions workarounds
-  ;;   Eglot prepends its capf to the front of
-  ;;   completion-at-point-functions. Since eglot returns an empty list
-  ;;   when LSP has no candidates (rather than nil), it blocks subsequent
-  ;;   capfs from running. The functions below provide different solutions
-  ;;   to this problem.
-  ;; Solution 1: Reorder capfs so eglot runs last
-  ;;   This allows other capfs (dabbrev, dict) to provide completions when
-  ;;   LSP has none.
-  (defun aj8/reorder-eglot-capf ()
-    "Move eglot-completion-at-point after other capfs.
-Removes both eglot and `t' from buffer-local capf list, then appends
-eglot followed by `t' at the end."
-    (when (memq #'eglot-completion-at-point completion-at-point-functions)
-      (setq-local completion-at-point-functions
-                  (append (remove #'eglot-completion-at-point
-                                  (remove t completion-at-point-functions))
-                          (list #'eglot-completion-at-point t)))
-      ;; Clear hook depth information to prevent re-sorting
-      ;;   See aj8/text-mode-capf for detailed explanation.
-      (put 'completion-at-point-functions 'hook--depth-alist nil)))
-  ;; Alternative implementation using add-hook
-  ;;   This works with Emacs' hook depth system rather than bypassing it
-  ;;   with setq-local, ensuring correct ordering is maintained when
-  ;;   packages add capfs dynamically after this function runs.
-  ;; (defun aj8/reorder-eglot-capf ()
-  ;;   "Move eglot-completion-at-point after other capfs.
-  ;; Removes both eglot and `t' from buffer-local capf list, then appends
-  ;; eglot followed by `t' at the end."
-  ;;   (when (memq #'eglot-completion-at-point completion-at-point-functions)
-  ;;     (remove-hook 'completion-at-point-functions #'eglot-completion-at-point t)
-  ;;     (remove-hook 'completion-at-point-functions t t)
-  ;;     (add-hook 'completion-at-point-functions #'eglot-completion-at-point 20 t)
-  ;;     (add-hook 'completion-at-point-functions t 25 t)))
-  ;; (add-hook 'eglot-managed-mode-hook #'aj8/reorder-eglot-capf)
-  ;; Solution 2: Merge eglot with other capfs
-  ;;   Uses cape-capf-super to merge LSP completions with other capfs
-  ;;   (dabbrev, dict), so all candidates appear together regardless of
-  ;;   whether LSP has results.
-  (defun aj8/combine-eglot-capf ()
-    "Merge eglot-completion-at-point with other capfs.
-Shows all candidates together by merging all sources, including unknown
-capfs (e.g., language-specific). Order: eglot --> unknown capfs -->
-cape-dabbrev+dict --> ispell (if present)."
-    (let* ((current-capfs (buffer-local-value 'completion-at-point-functions
-                                              (current-buffer)))
-           ;; Extract unknown capfs (e.g., lang-specific)
-           (unknown-capfs (seq-remove (lambda (f)
-                                        (memq f '(eglot-completion-at-point
-                                                 cape-dabbrev+dict
-                                                 ispell-completion-at-point
-                                                 t)))
-                                      current-capfs))
-           ;; Keep only cape-dabbrev+dict and ispell (if present)
-           (other-capfs (seq-filter (lambda (f)
-                                      (memq f '(cape-dabbrev+dict
-                                               ispell-completion-at-point)))
-                                    current-capfs))
-           ;; Build merge: eglot, unknown capfs, other capfs
-           (merge-list (append (list #'eglot-completion-at-point)
-                               unknown-capfs
-                               other-capfs)))
-      (setq-local completion-at-point-functions
-                  (list (apply #'cape-capf-super merge-list) t))
-      ;; Clear hook depth information to prevent re-sorting
-      ;;   See aj8/text-mode-capf for detailed explanation.
-      (put 'completion-at-point-functions 'hook--depth-alist nil)))
-  ;; Alternative implementation using add-hook
-  ;;   This works with Emacs' hook depth system rather than bypassing it
-  ;;   with setq-local, ensuring correct ordering is maintained when
-  ;;   packages add capfs dynamically after this function runs.
-  ;; (defun aj8/combine-eglot-capf ()
-  ;;   "Merge eglot-completion-at-point with other capfs.
-  ;; Shows all candidates together by merging all sources, including
-  ;; unknown capfs (e.g., language-specific). Order: eglot --> unknown
-  ;; capfs --> cape-dabbrev+dict --> ispell (if present)."
-  ;;   (let* ((current-capfs (buffer-local-value 'completion-at-point-functions
-  ;;                                             (current-buffer)))
-  ;;          ;; Extract unknown capfs (e.g., lang-specific)
-  ;;          (unknown-capfs (seq-remove (lambda (f)
-  ;;                                       (memq f '(eglot-completion-at-point
-  ;;                                                cape-dabbrev+dict
-  ;;                                                ispell-completion-at-point
-  ;;                                                t)))
-  ;;                                     current-capfs))
-  ;;          ;; Keep only cape-dabbrev+dict and ispell (if present)
-  ;;          (other-capfs (seq-filter (lambda (f)
-  ;;                                     (memq f '(cape-dabbrev+dict
-  ;;                                              ispell-completion-at-point)))
-  ;;                                   current-capfs))
-  ;;          ;; Build merge: eglot, unknown capfs, other capfs
-  ;;          (merge-list (append (list #'eglot-completion-at-point)
-  ;;                              unknown-capfs
-  ;;                              other-capfs)))
-  ;;     (setq-local completion-at-point-functions nil)
-  ;;     (add-hook 'completion-at-point-functions
-  ;;               (apply #'cape-capf-super merge-list)
-  ;;               0 t)
-  ;;     (add-hook 'completion-at-point-functions t 15 t)))
-  ;; (add-hook 'eglot-managed-mode-hook #'aj8/combine-eglot-capf)
-  ;; Solution 3: Wrap eglot with cape-wrap-nonexclusive
-  ;;   Uses advice to make eglot return nil when it has no candidates,
-  ;;   allowing fallback to subsequent capfs (dabbrev, dict).
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-nonexclusive))
+  (add-to-list 'completion-category-overrides '((eglot (styles orderless)))))
   ;; Don't manage ELDoc
   ;; (add-to-list 'eglot-stay-out-of 'eldoc))
   ;; Limit ELDoc to a single line
@@ -2441,81 +2356,11 @@ Elisp code explicitly in arbitrary buffers.")
   ;; (add-hook 'completion-at-point-functions #'cape-elisp-symbol)
   ;; (add-hook 'completion-at-point-functions #'cape-line)
 
-  ;; Completion at point function for prog-mode
-  ;;   Note: LSP (eglot) handles language-specific completions including
-  ;;   keywords, so cape-keyword is not needed. cape-elisp-symbol is also
-  ;;   not needed since elisp-mode already has elisp-completion-at-point.
-  (defun aj8/prog-mode-capf ()
-    "Add dabbrev and dict completions for programming modes.
-Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
-    (setq-local completion-at-point-functions
-                (append (remove t (buffer-local-value
-                                   'completion-at-point-functions
-                                   (current-buffer)))
-                        (list #'cape-dabbrev+dict t)))
-    ;; Clear hook depth information to prevent re-sorting
-    ;;   See aj8/text-mode-capf for detailed explanation.
-    (put 'completion-at-point-functions 'hook--depth-alist nil))
-  ;; Alternative implementation using add-hook
-  ;;   This works with Emacs' hook depth system rather than bypassing it
-  ;;   with setq-local, ensuring correct ordering is maintained when
-  ;;   packages add capfs dynamically after this function runs.
-  ;; (defun aj8/prog-mode-capf ()
-  ;;   "Add dabbrev and dict completions for programming modes.
-  ;; Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
-  ;;   (remove-hook 'completion-at-point-functions t t)
-  ;;   (add-hook 'completion-at-point-functions #'cape-dabbrev+dict 5 t)
-  ;;   (add-hook 'completion-at-point-functions t 15 t))
+  ;; Completion at point functions for various modes
+  ;;   See aj8-lisp.el for function definitions.
   (add-hook 'prog-mode-hook #'aj8/prog-mode-capf)
   ;; (add-hook 'emacs-lisp-mode-hook #'aj8/prog-mode-capf)
-
-  ;; Completion at point function for text-mode
-  (defun aj8/text-mode-capf ()
-    "Add dabbrev and dict completions for text modes.
-Inserts cape-dabbrev+dict before ispell and `t' in buffer-local capf list."
-    (let* ((current-capfs (buffer-local-value 'completion-at-point-functions
-                                              (current-buffer)))
-           (has-ispell (memq 'ispell-completion-at-point current-capfs)))
-      (setq-local completion-at-point-functions
-                  (append (remove #'ispell-completion-at-point
-                                  (remove t current-capfs))
-                          (list #'cape-dabbrev+dict)
-                          (when has-ispell (list #'ispell-completion-at-point))
-                          (list t)))
-      ;; Clear hook depth information to prevent re-sorting
-      ;;   Emacs' add-hook maintains depth information that causes the list to
-      ;;   be re-sorted when subsequent add-hook calls occur (e.g., when eglot
-      ;;   connects). Clearing this prevents ispell-completion-at-point from
-      ;;   being moved to after `t' where it would be unreachable.
-      (put 'completion-at-point-functions 'hook--depth-alist nil)))
-  ;; Alternative implementation using add-hook
-  ;;   This works with Emacs' hook depth system rather than bypassing it
-  ;;   with setq-local, ensuring correct ordering is maintained when
-  ;;   packages add capfs dynamically after this function runs.
-  ;; (defun aj8/text-mode-capf ()
-  ;;   "Add dabbrev and dict completions for text modes.
-  ;; Inserts cape-dabbrev+dict before ispell and `t' in buffer-local capf list."
-  ;;   (let ((has-ispell (memq 'ispell-completion-at-point
-  ;;                          completion-at-point-functions)))
-  ;;     (remove-hook 'completion-at-point-functions t t)
-  ;;     (add-hook 'completion-at-point-functions #'cape-dabbrev+dict 5 t)
-  ;;     (when has-ispell
-  ;;       (add-hook 'completion-at-point-functions #'ispell-completion-at-point 10 t))
-  ;;     (add-hook 'completion-at-point-functions t 15 t)))
   (add-hook 'text-mode-hook #'aj8/text-mode-capf)
-
-  ;; Completion at point function for LLM chat modes
-  (defun aj8/llm-chat-mode-capf ()
-    "Add dabbrev and dict completions for LLM chat modes.
-Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
-    (setq-local completion-at-point-functions
-                (append (remove t (buffer-local-value
-                                   'completion-at-point-functions
-                                   (current-buffer)))
-                        (list #'cape-dabbrev+dict t)))
-    ;; Clear hook depth information to prevent re-sorting
-    ;;   See aj8/text-mode-capf for detailed explanation.
-    (put 'completion-at-point-functions 'hook--depth-alist nil))
   (add-hook 'agent-shell-mode-hook #'aj8/llm-chat-mode-capf)
   (add-hook 'gptel-mode-hook #'aj8/llm-chat-mode-capf)
   (add-hook 'claude-code-start-hook #'aj8/llm-chat-mode-capf)
