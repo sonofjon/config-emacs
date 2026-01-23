@@ -481,16 +481,32 @@ eglot followed by `t' at the end."
   ;;   whether LSP has results.
   (defun aj8/combine-eglot-capf ()
     "Merge eglot-completion-at-point with other capfs.
-Replaces buffer-local capf list with a merged capf using cape-capf-super,
-followed by `t'."
-    (setq-local completion-at-point-functions
-                (list (cape-capf-super #'eglot-completion-at-point
-                                       #'cape-dabbrev
-                                       #'cape-dict)
-                      t))
-    ;; Clear hook depth information to prevent re-sorting
-    ;;   See aj8/text-mode-capf for detailed explanation.
-    (put 'completion-at-point-functions 'hook--depth-alist nil))
+Shows all candidates together by merging all sources, including unknown
+capfs (e.g., language-specific). Order: eglot --> unknown capfs -->
+cape-dabbrev+dict --> ispell (if present)."
+    (let* ((current-capfs (buffer-local-value 'completion-at-point-functions
+                                              (current-buffer)))
+           ;; Extract unknown capfs (e.g., lang-specific)
+           (unknown-capfs (seq-remove (lambda (f)
+                                        (memq f '(eglot-completion-at-point
+                                                 cape-dabbrev+dict
+                                                 ispell-completion-at-point
+                                                 t)))
+                                      current-capfs))
+           ;; Keep only cape-dabbrev+dict and ispell (if present)
+           (other-capfs (seq-filter (lambda (f)
+                                      (memq f '(cape-dabbrev+dict
+                                               ispell-completion-at-point)))
+                                    current-capfs))
+           ;; Build merge: eglot, unknown capfs, other capfs
+           (merge-list (append (list #'eglot-completion-at-point)
+                               unknown-capfs
+                               other-capfs)))
+      (setq-local completion-at-point-functions
+                  (list (apply #'cape-capf-super merge-list) t))
+      ;; Clear hook depth information to prevent re-sorting
+      ;;   See aj8/text-mode-capf for detailed explanation.
+      (put 'completion-at-point-functions 'hook--depth-alist nil)))
   ;; Alternative implementation using add-hook
   ;;   This works with Emacs' hook depth system rather than bypassing it
   ;;   with setq-local, ensuring correct ordering is maintained when
