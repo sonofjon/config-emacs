@@ -1486,6 +1486,7 @@ followed by `t'."
 
 ;; agent-shell-manager (buffer manager for agent-shell)
 (use-package agent-shell-manager
+  :after agent-shell
   :custom
   ;; Disable side-window placement
   (agent-shell-manager-side nil)
