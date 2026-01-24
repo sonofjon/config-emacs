@@ -866,19 +866,19 @@ ORIG-FUN is the original function being advised."
   (when (string-suffix-p "~" pattern)
     `(orderless-flex . ,(substring pattern 0 -1))))
 
-;; Literal
+;; Literal / Exact
 (defun aj8/orderless-dispatch-literal-if-equal (pattern _index _total)
-   (when (string-suffix-p "=" pattern)
-    `(orderless-literal . ,(substring pattern 0 -1))))
+  (when (string-suffix-p "=" pattern)
+    `(orderless-regexp . ,(concat "^" (regexp-quote (substring pattern 0 -1)) "$"))))
 
 ;; Prefixes
 (defun aj8/orderless-dispatch-prefixes-if-less (pattern _index _total)
-   (when (string-suffix-p "<" pattern)
-    `(orderless-prefixes . ,(substring pattern 0 -1))))
+  (when (string-suffix-p "<" pattern)
+    `(orderless-literal-prefix . ,(substring pattern 0 -1))))
 
 ;; Regexp
 (defun aj8/orderless-dispatch-regexp-if-star (pattern _index _total)
-   (when (string-suffix-p "*" pattern)
+  (when (string-suffix-p "*" pattern)
     `(orderless-regexp . ,(substring pattern 0 -1))))
 
 ;; Exclude
