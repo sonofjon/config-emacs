@@ -169,6 +169,57 @@ address the fallback issue.
 
 Then restart Emacs to use the ELPA version instead of the built-in one.
 
+## Solution Comparison
+
+### Solution 1: Reorder capf list
+
+Pros:
+- Simple implementation
+
+Cons:
+- Defeats the purpose of having an LSP server - LSP completions never
+  appear when other sources have matches
+- Not a fallback mechanism - it's a priority reversal that sidelines LSP
+
+### Solution 2: Merge with cape-capf-super
+
+Pros:
+- All completion sources contribute candidates simultaneously (this can also
+  be a con)
+- No priority conflicts - everything appears together
+- Works for users who want to see all available completions at once
+
+Cons:
+- Creates noise - mixes high-quality LSP completions with matches from less
+  relevant sources
+- Not a true fallback - runs all capfs regardless of whether LSP has
+  candidates
+
+### Solution 3: Wrap with cape-wrap-nonexclusive
+
+Pros:
+- True fallback behavior - LSP runs first, other capfs only when LSP has
+  nothing
+- LSP completions get priority (correct behavior)
+
+Cons: Hook-based approach (3A):
+- Requires eglot-managed-mode-hook setup
+
+Cons: Global advice approach (3B):
+- Uses advice (some consider this less clean than direct configuration)
+
+Why global advice (3B) is better than hook-based (3A):
+- Single configuration point (one line)
+- Clean separation of concerns - wraps function behavior without touching
+  completion-at-point-functions
+
+### Recommendation
+
+Solution 3B (global advice) is the best approach:
+- LSP completions get priority
+- Automatic fallback to other capfs when LSP has no candidates
+- Minimal configuration
+
 ---
 
 ## Alternative: Using add-hook Throughout
@@ -203,3 +254,31 @@ bypassing it:
 
 This approach ensures correct ordering is maintained when packages add capfs
 dynamically later.
+
+### Comparison: setq-local vs add-hook
+
+**setq-local approach** (used in main solutions):
+
+Pros:
+- Simpler to read and understand - shows the exact list being set
+
+Cons:
+- Bypasses Emacs' hook depth system rather than working with it
+- Requires manual clearing of hook--depth-alist to prevent re-sorting
+- Less robust when other packages modify capfs dynamically later
+
+**add-hook approach** (shown in alternatives):
+
+Pros:
+- Works with Emacs' native hook system
+- More robust when packages add capfs dynamically after initialization
+- Explicit depth numbers make ordering intent clear
+
+Cons:
+- Slightly more code to and maintain (multiple remove-hook/add-hook calls)
+- Requires tracking depth levels across multiple configuration points
+
+Recommendation: The add-hook approach provides maximum robustness,
+especially when working with packages that dynamically modify
+completion-at-point-functions. The setq-local approach is preferable when
+simplicity is the priority.
