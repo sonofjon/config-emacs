@@ -648,29 +648,35 @@ eglot followed by `t' at the end."
 ;; Solution 2: Merge eglot with other capfs
 (defun aj8/eglot-combine-capf ()
   "Merge eglot-completion-at-point with other capfs.
-Shows all candidates together by merging all sources, including unknown
-capfs (e.g., language-specific). Order: eglot --> unknown capfs -->
-cape-dabbrev+dict --> ispell (if present)."
+Shows all candidates together by merging: eglot, unknown capfs (e.g.,
+language-specific), cape-dabbrev+dict, and ispell (if present).
+
+cape-file is not merged; it is kept separate at the front because its
+completion boundaries (file paths) differ from the word-based boundaries
+of the other sources."
   (let* ((current-capfs (buffer-local-value 'completion-at-point-functions
                                             (current-buffer)))
          ;; Extract unknown capfs (e.g., lang-specific)
          (unknown-capfs (seq-remove (lambda (f)
                                       (memq f '(eglot-completion-at-point
-                                               cape-dabbrev+dict
-                                               ispell-completion-at-point
-                                               t)))
+                                                cape-dabbrev+dict
+                                                ispell-completion-at-point
+                                                cape-file
+                                                t)))
                                     current-capfs))
          ;; Keep only cape-dabbrev+dict and ispell (if present)
          (other-capfs (seq-filter (lambda (f)
                                     (memq f '(cape-dabbrev+dict
-                                             ispell-completion-at-point)))
+                                              ispell-completion-at-point)))
                                   current-capfs))
          ;; Build merge: eglot, unknown capfs, other capfs
          (merge-list (append (list #'eglot-completion-at-point)
                              unknown-capfs
                              other-capfs)))
     (setq-local completion-at-point-functions
-                (list (apply #'cape-capf-super merge-list) t))
+                (append (when (memq #'cape-file current-capfs)
+                          (list #'cape-file))
+                        (list (apply #'cape-capf-super merge-list) t)))
     ;; Clear hook depth information to prevent re-sorting
     ;;   See aj8/text-mode-capf for detailed explanation.
     (put 'completion-at-point-functions 'hook--depth-alist nil)))
@@ -681,9 +687,12 @@ cape-dabbrev+dict --> ispell (if present)."
 ;;   packages add capfs dynamically after this function runs.
 ;; (defun aj8/eglot-combine-capf ()
 ;;   "Merge eglot-completion-at-point with other capfs.
-;; Shows all candidates together by merging all sources, including
-;; unknown capfs (e.g., language-specific). Order: eglot --> unknown
-;; capfs --> cape-dabbrev+dict --> ispell (if present)."
+;; Shows all candidates together by merging: eglot, unknown capfs (e.g.,
+;; language-specific), cape-dabbrev+dict, and ispell (if present).
+;;
+;; cape-file is not merged; it is kept separate at the front because its
+;; completion boundaries (file paths) differ from the word-based boundaries
+;; of the other sources."
 ;;   (let* ((current-capfs (buffer-local-value 'completion-at-point-functions
 ;;                                             (current-buffer)))
 ;;          ;; Extract unknown capfs (e.g., lang-specific)
@@ -691,6 +700,7 @@ cape-dabbrev+dict --> ispell (if present)."
 ;;                                       (memq f '(eglot-completion-at-point
 ;;                                                cape-dabbrev+dict
 ;;                                                ispell-completion-at-point
+;;                                                cape-file
 ;;                                                t)))
 ;;                                     current-capfs))
 ;;          ;; Keep only cape-dabbrev+dict and ispell (if present)
@@ -703,6 +713,8 @@ cape-dabbrev+dict --> ispell (if present)."
 ;;                              unknown-capfs
 ;;                              other-capfs)))
 ;;     (setq-local completion-at-point-functions nil)
+;;     (when (memq #'cape-file current-capfs)
+;;       (add-hook 'completion-at-point-functions #'cape-file -10 t))
 ;;     (add-hook 'completion-at-point-functions
 ;;               (apply #'cape-capf-super merge-list)
 ;;               0 t)

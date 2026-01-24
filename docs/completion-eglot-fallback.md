@@ -4,9 +4,9 @@
 
 When `eglot-completion-at-point` is the first item in
 `completion-at-point-functions`, it returns a valid capf result even when
-the LSP has no completions. This blocks other capfs (cape-dabbrev,
-cape-dict, etc.) from running because the completion system uses eglot's
-empty result instead of trying the next capf.
+the LSP has no completions. This blocks other capfs (cape-file,
+cape-dabbrev, cape-dict, etc.) from running because the completion system
+uses eglot's empty result instead of trying the next capf.
 
 The `:exclusive nil` property doesn't help because it only triggers fallback
 when the capf returns `nil` entirely, not when it returns an empty
@@ -29,7 +29,7 @@ The sequence for a markdown buffer:
 3. Eglot connects to LSP server
 4. `eglot--managed-mode` runs -> prepends `eglot-completion-at-point`
 
-Result: `(eglot-completion-at-point cape-dabbrev+dict t)`
+Result: `(eglot-completion-at-point cape-file cape-dabbrev+dict t)`
 
 Eglot uses `add-hook` without a depth argument, which prepends to the front.
 So eglot always ends up first, regardless of what was already in the list.
@@ -74,12 +74,12 @@ to move unexpectedly.
 
 Example: `text-mode-hook` uses `add-hook` with depth 10 to add
 `ispell-completion-at-point`. Our capf function then uses `setq-local` to
-set up the list as `(cape-dabbrev ispell-completion-at-point t)`. Later,
-eglot connects and calls `add-hook` with depth 0 to add its capf. This
-triggers re-sorting: eglot (depth 0) goes first, then items without depths
-(cape-dabbrev, t), then ispell (depth 10) - resulting in
-`(eglot-completion-at-point cape-dabbrev t ispell-completion-at-point)`.
-Now ispell is after `t` and unreachable.
+set up the list as `(cape-file cape-dabbrev+dict ispell-completion-at-point
+t)`.  Later, eglot connects and calls `add-hook` with depth 0 to add its
+capf.  This triggers re-sorting: eglot (depth 0) goes first, then items
+without depths (cape-file, cape-dabbrev+dict, t), then ispell (depth 10) -
+resulting in `(eglot-completion-at-point cape-file cape-dabbrev+dict t
+ispell-completion-at-point)`. Now ispell is after `t` and unreachable.
 
 The fix is to clear the depth information after `setq-local`:
 
@@ -115,20 +115,25 @@ Downside: eglot completions won't appear when cape sources have matches.
 
 Combines candidates from multiple sources into one list.
 
+Note: `cape-file` should Not be merged with other sources as it does not
+behave well in a super-capf. It is kept separate and placed at the front.
+
 ```elisp
 (defun aj8/eglot-combine-capf ()
   "Combine eglot-completion-at-point with cape-dabbrev+dict."
   (setq-local completion-at-point-functions
-              (list (cape-capf-super #'eglot-completion-at-point
-                                     #'cape-dabbrev
-                                     #'cape-dict)
-                    t))
+              (append (when (memq #'cape-file completion-at-point-functions)
+                        (list #'cape-file))
+                      (list (cape-capf-super #'eglot-completion-at-point
+                                             #'cape-dabbrev+dict)
+                            t)))
   (put 'completion-at-point-functions 'hook--depth-alist nil))
 (add-hook 'eglot-managed-mode-hook #'aj8/eglot-combine-capf)
 ```
 
 Note: This is not a true fallback - it runs all capfs and merges results.
 All candidates from eglot, dabbrev, and dict appear together in the popup.
+(`cape-file` remains separate and takes precedence when a path is detected.)
 
 ### Solution 3. Use `cape-wrap-nonexclusive` to wrap eglot's capf
 
@@ -241,12 +246,15 @@ it:
 
 ;; Example: combine using add-hook with depths
 (defun aj8/eglot-combine-capf ()
-  "Combine eglot-completion-at-point with cape-dabbrev and cape-dict."
+  "Combine eglot-completion-at-point with cape-dabbrev+dict.
+cape-file is not merged; it is kept separate at the front."
   (setq-local completion-at-point-functions nil)
+  (when (memq #'cape-file (buffer-local-value 'completion-at-point-functions
+                                             (current-buffer)))
+    (add-hook 'completion-at-point-functions #'cape-file -10 t))
   (add-hook 'completion-at-point-functions
             (cape-capf-super #'eglot-completion-at-point
-                             #'cape-dabbrev
-                             #'cape-dict)
+                             #'cape-dabbrev+dict)
             0 t)
   (add-hook 'completion-at-point-functions t 25 t))
 (add-hook 'eglot-managed-mode-hook #'aj8/eglot-combine-capf)

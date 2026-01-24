@@ -184,11 +184,11 @@ become available in the minibuffer.
 **In prog-mode buffers** (init.el: cape section):
 ```elisp
 completion-at-point-functions:
-1. cape-dabbrev+dict (orderless)
+1. cape-file (basic + partial-completion)
+2. eglot (orderless) - if LSP server active
+3. cape-dabbrev+dict (orderless)
    - cape-dabbrev
    - cape-dict
-2. cape-file (basic + partial-completion)
-3. eglot (orderless) - if LSP server active
 ```
 
 Note: LSP (eglot) handles language-specific completions including
@@ -201,21 +201,19 @@ candidates. See completion-eglot-fallback.md for details and solutions.
 
 **In text-mode buffers** (init.el: cape section):
 ```elisp
-completion-at-point-functions:
-1. cape-dabbrev+dict (orderless)
-   - cape-dabbrev
-   - cape-dict
-2. cape-file (basic + partial-completion)
-```
+    completion-at-point-functions:
+    1. cape-file (basic + partial-completion)
+    2. cape-dabbrev+dict (orderless)
+       - cape-dabbrev
+       - cape-dict```
 
 **In LLM chat modes** (init.el: cape section):
 ```elisp
-completion-at-point-functions:
-1. cape-dabbrev+dict (orderless)
-   - cape-dabbrev
-   - cape-dict
-2. cape-file (basic + partial-completion)
-```
+    completion-at-point-functions:
+    1. cape-file (basic + partial-completion)
+    2. cape-dabbrev+dict (orderless)
+       - cape-dabbrev
+       - cape-dict```
 
 Applies to:
 - agent-shell-mode (Agent Shell)
