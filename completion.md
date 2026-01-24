@@ -174,7 +174,7 @@ irrelevant candidates.
 Triggered by: TAB or completion-at-point in a buffer
 Frontend: Corfu popup overlay
 
-**Note**: Corfu displays completion-at-point candidates, which means it uses
+Note: Corfu displays completion-at-point candidates, which means it uses
 Cape sources and other completion-at-point-functions. Corfu primarily works
 in regular buffers, but can also be enabled in the minibuffer when Vertico
 is not active (via corfu-enable-always-in-minibuffer in init.el: corfu
@@ -184,13 +184,20 @@ become available in the minibuffer.
 **In prog-mode buffers** (init.el: cape section):
 ```elisp
 completion-at-point-functions:
-1. cape-symbol+keyword+dict (orderless)
-   - cape-elisp-symbol
-   - cape-keyword
+1. cape-dabbrev+dict (orderless)
+   - cape-dabbrev
    - cape-dict
 2. cape-file (basic + partial-completion)
 3. eglot (orderless) - if LSP server active
 ```
+
+Note: LSP (eglot) handles language-specific completions including
+keywords, so cape-keyword is not needed. cape-elisp-symbol is also not
+needed since elisp-mode already has elisp-completion-at-point.
+
+Note: Eglot completion fallback issue: When eglot is active, it may block
+fallback to other capfs (like cape-dabbrev+dict) even when the LSP has no
+candidates. See completion-eglot-fallback.md for details and solutions.
 
 **In text-mode buffers** (init.el: cape section):
 ```elisp
