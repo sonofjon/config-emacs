@@ -34,12 +34,12 @@ Result: `(eglot-completion-at-point cape-dabbrev+dict t)`
 Eglot uses `add-hook` without a depth argument, which prepends to the front.
 So eglot always ends up first, regardless of what was already in the list.
 
-This means you cannot reference `eglot-completion-at-point` in static capf
+This means `eglot-completion-at-point` cannot be referenced in static capf
 definitions at init time (e.g., in a `defalias` with `cape-capf-super`).
-Instead, you must either use global advice (which intercepts
-`eglot-completion-at-point` wherever it is called) or use
-`eglot-managed-mode-hook` to modify the capf list after eglot has added its
-entry (see Solutions 3A and 3B).
+The solutions require either global advice (which intercepts
+`eglot-completion-at-point` wherever it is called) or
+`eglot-managed-mode-hook` (to modify the capf list after eglot has added its
+entry). See Solutions 3A and 3B.
 
 ## Background: Hook Management
 
@@ -57,7 +57,7 @@ The solutions in this document use `setq-local` for simplicity.
 ### The Hook Depth System
 
 Emacs maintains ordering information in `hook--depth-alist`. When using
-`add-hook`, you can specify a numeric depth - lower values run first. Emacs
+`add-hook`, a numeric depth can be specified - lower values run first. Emacs
 uses this to maintain consistent ordering across hook modifications.
 
 Items added via `setq-local` have no depth information. This becomes
@@ -93,7 +93,7 @@ disrupting the existing order.
 
 ## Possible Solutions
 
-### 1. Reorder capf list: put eglot after cape sources
+### Solution 1. Reorder capf list: put eglot after cape sources
 
 Cape sources run first, eglot runs after.
 
@@ -111,7 +111,7 @@ Cape sources run first, eglot runs after.
 
 Downside: eglot completions won't appear when cape sources have matches.
 
-### 2. Use `cape-capf-super` to merge eglot with other capfs
+### Solution 2. Use `cape-capf-super` to merge eglot with other capfs
 
 Combines candidates from multiple sources into one list.
 
@@ -130,7 +130,7 @@ Combines candidates from multiple sources into one list.
 Note: This is not a true fallback - it runs all capfs and merges results.
 All candidates from eglot, dabbrev, and dict appear together in the popup.
 
-### 3. Use `cape-wrap-nonexclusive` to wrap eglot's capf
+### Solution 3. Use `cape-wrap-nonexclusive` to wrap eglot's capf
 
 Makes eglot fall back to next capf when LSP returns no candidates.
 
@@ -224,9 +224,9 @@ Solution 3B (global advice) is the best approach:
 
 ## Alternative: Using add-hook Throughout
 
-Instead of `setq-local` with depth-alist clearing, you can use `add-hook`
-with explicit depths. This works with Emacs' hook system rather than
-bypassing it:
+Instead of `setq-local` with depth-alist clearing, `add-hook` with explicit
+depths can be used. This works with Emacs' hook system rather than bypassing
+it:
 
 ```elisp
 ;; Example: reorder using add-hook with depths
