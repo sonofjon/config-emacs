@@ -13,6 +13,7 @@ configured in this repository.
 6. [Interactive Controls](#interactive-controls)
 7. [Quick Reference](#quick-reference)
 8. [Related Files](#related-files)
+9. [Appendix: Merging CAPFs with Cape](#appendix-merging-capfs-with-cape)
 
 ## 1. Architecture
 
@@ -428,3 +429,35 @@ Is there a category override for this category?
 - `init.el: orderless section` - orderless configuration
 - `init.el: vertico section` - Vertico configuration
 - `lisp/aj8-lisp.el: completion section` - orderless and Vertico custom functions
+
+## 9. Appendix: Merging CAPFs with Cape
+
+When using `cape-capf-super` to combine multiple completion sources, the
+order of the arguments is important due to how Emacs and Cape handle
+completion metadata.
+
+### 9.1. Boundary Definition
+
+Emacs completion requires a start and end position in the buffer (the
+boundaries). `cape-capf-super` uses the boundaries defined by the **first**
+source in the merge list that returns candidates. All other sources in that
+merge are forced to use those same boundaries.
+
+**Why this matters**: If boundaries differ (e.g., `cape-elisp-symbol`
+treating a hyphen as part of the symbol name vs. `cape-dict` treating the
+hyphen as a word separator), merging them may lead to missing candidates
+or unexpected behavior during insertion. This is why `cape-file` (which
+uses path-based boundaries) is kept separate from merged super-capfs.
+
+### 9.2. Metadata and Category
+
+The merged CAPF inherits metadata, specifically the `category`, from the
+first source in the list. This category determines which completion style
+(e.g., `orderless` vs `basic`) is applied via
+`completion-category-overrides`.
+
+### 9.3. Candidate Precedence
+
+The order in the `super` call determines the initial ranking of candidates
+in the display popup. Candidates from sources listed earlier appear higher
+in the list before any user-defined sorting is applied.
