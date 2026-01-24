@@ -706,7 +706,7 @@ cape-dabbrev+dict --> ispell (if present)."
 ;;     (add-hook 'completion-at-point-functions
 ;;               (apply #'cape-capf-super merge-list)
 ;;               0 t)
-;;     (add-hook 'completion-at-point-functions t 15 t)))
+;;     (add-hook 'completion-at-point-functions t 25 t)))
 
 ;;; Cape capf functions
 
@@ -735,7 +735,7 @@ Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
 ;; Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
 ;;   (remove-hook 'completion-at-point-functions t t)
 ;;   (add-hook 'completion-at-point-functions #'cape-dabbrev+dict 5 t)
-;;   (add-hook 'completion-at-point-functions t 15 t))
+;;   (add-hook 'completion-at-point-functions t 25 t))
 
 ;; Completion at point function for text-mode
 (defun aj8/text-mode-capf ()
@@ -770,7 +770,7 @@ Inserts cape-dabbrev+dict before ispell and `t' in buffer-local capf list."
 ;;     (add-hook 'completion-at-point-functions #'cape-dabbrev+dict 5 t)
 ;;     (when has-ispell
 ;;       (add-hook 'completion-at-point-functions #'ispell-completion-at-point 10 t))
-;;     (add-hook 'completion-at-point-functions t 15 t)))
+;;     (add-hook 'completion-at-point-functions t 25 t)))
 
 ;; Completion at point function for LLM chat modes
 (defun aj8/llm-chat-mode-capf ()
