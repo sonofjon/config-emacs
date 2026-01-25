@@ -2257,10 +2257,6 @@ the window so that the streaming position appears near the bottom."
   (corfu-terminal-mode 1))
 
 ;; cape (Completion At Point Extensions)
-;;   TODO: Make ispell available in comments (sh-mode, and others?)
-;;         (note that it works in elisp mode) (see cape-capf-inside-string
-;;         and cape-capf-inside-comment and commit:
-;;         https://github.com/minad/cape/commit/9b97dbbc7624415ee25f79de9ea357feb1e2e547)
 (use-package cape
   :ensure-system-package "/usr/share/dict/words"
   :after corfu
