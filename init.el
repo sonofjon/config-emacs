@@ -2156,12 +2156,9 @@ the window so that the streaming position appears near the bottom."
    consult-source-project-recent-file
    :preview-key "C-c M-p")
 
-  ;; TODO: What is this about?
-  ;; Completion
-  ;; (consult-customize
-  ;;  consult-completion-in-region
-  ;;  :completion-styles '(basic))   ; disable orderless
-  ;;  ;; :require-match t)
+  ;; Set completion style for Consult completion
+  ;; (consult-customize consult-completion-in-region :completion-styles '(basic))
+  ;; :require-match t))
 
   ;; Narrowing key
   (setq consult-narrow-key "<")
