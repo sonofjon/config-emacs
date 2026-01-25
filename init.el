@@ -2284,31 +2284,14 @@ the window so that the streaming position appears near the bottom."
                                                                #'cape-dict)
     "Completion at point function for Cape, combining completions
 from Dabbrev, symbol, keyword and dictionary.")
-  (defalias 'cape-dict+dabbrev+symbol+keyword (cape-capf-super #'cape-dict
-    ;; TODO: symbol completion fails on hyphen when dict precedes symbol
-                                                               #'cape-dabbrev
-                                                               #'cape-elisp-symbol
-                                                               #'cape-keyword)
-    "Completion at point function for Cape, combining completions
-from dictionary, Dabbrev, symbol and keyword.")
-  (defalias 'cape-symbol+keyword+dict (cape-capf-super #'cape-elisp-symbol
-                                                       #'cape-keyword
-                                                       #'cape-dict)
-    "Completion at point function for Cape, combining completions
-from symbol, keyword and dictionary.")
-  (defalias 'cape-dict+symbol+keyword (cape-capf-super #'cape-dict
-                                                       #'cape-elisp-symbol
-                                                       #'cape-keyword)
-    "Completion at point function for Cape, combining completions
-from dictionary, symbol and keyword.")
-  (defalias 'cape-dict+dabbrev (cape-capf-super #'cape-dict
-                                                #'cape-dabbrev)
-    "Completion at point function for Cape, combining completions
-from dictionary and Dabbrev.")
   (defalias 'cape-dabbrev+dict (cape-capf-super #'cape-dabbrev
                                                 #'cape-dict)
     "Completion at point function for Cape, combining completions
 from Dabbrev and dictionary.")
+  (defalias 'cape-dict+dabbrev (cape-capf-super #'cape-dict
+                                                #'cape-dabbrev)
+    "Completion at point function for Cape, combining completions
+from dictionary and Dabbrev.")
   (defalias 'my/cape-elisp (cape-capf-interactive #'elisp-completion-at-point)
     "Completion at point function for Cape, allowing for completion of
 Elisp code explicitly in arbitrary buffers.")
