@@ -714,7 +714,7 @@ of the other sources."
 ;;                              other-capfs)))
 ;;     (setq-local completion-at-point-functions nil)
 ;;     (when (memq #'cape-file current-capfs)
-;;       (add-hook 'completion-at-point-functions #'cape-file -10 t))
+;;       (add-hook 'completion-at-point-functions #'cape-file -5 t))
 ;;     (add-hook 'completion-at-point-functions
 ;;               (apply #'cape-capf-super merge-list)
 ;;               0 t)
@@ -727,10 +727,12 @@ of the other sources."
 ;;   keywords, so cape-keyword is not needed. cape-elisp-symbol is also
 ;;   not needed since elisp-mode already has elisp-completion-at-point.
 (defun aj8/prog-mode-capf ()
-  "Add dabbrev and dict completions for programming modes.
-Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
+  "Add file, dabbrev and dict completions for programming modes.
+Inserts cape-file first, and cape-dabbrev+dict before `t' in
+buffer-local capf list."
   (setq-local completion-at-point-functions
-              (append (remove t (buffer-local-value
+              (append (list #'cape-file)
+                      (remove t (buffer-local-value
                                  'completion-at-point-functions
                                  (current-buffer)))
                       (list #'cape-dabbrev+dict t)))
@@ -743,21 +745,25 @@ Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
 ;;   with setq-local, ensuring correct ordering is maintained when
 ;;   packages add capfs dynamically after this function runs.
 ;; (defun aj8/prog-mode-capf ()
-;;   "Add dabbrev and dict completions for programming modes.
-;; Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
+;;   "Add file, dabbrev and dict completions for programming modes.
+;; Inserts cape-file first, and cape-dabbrev+dict before `t' in
+;; buffer-local capf list."
 ;;   (remove-hook 'completion-at-point-functions t t)
+;;   (add-hook 'completion-at-point-functions #'cape-file -5 t)
 ;;   (add-hook 'completion-at-point-functions #'cape-dabbrev+dict 5 t)
 ;;   (add-hook 'completion-at-point-functions t 25 t))
 
 ;; Completion at point function for text-mode
 (defun aj8/text-mode-capf ()
-  "Add dabbrev and dict completions for text modes.
-Inserts cape-dabbrev+dict before ispell and `t' in buffer-local capf list."
+  "Add file, dabbrev and dict completions for text modes.
+Inserts cape-file first, cape-dabbrev+dict before ispell and `t' in
+buffer-local capf list."
   (let* ((current-capfs (buffer-local-value 'completion-at-point-functions
                                             (current-buffer)))
          (has-ispell (memq 'ispell-completion-at-point current-capfs)))
     (setq-local completion-at-point-functions
-                (append (remove #'ispell-completion-at-point
+                (append (list #'cape-file)
+                        (remove #'ispell-completion-at-point
                                 (remove t current-capfs))
                         (list #'cape-dabbrev+dict)
                         (when has-ispell (list #'ispell-completion-at-point))
@@ -774,11 +780,13 @@ Inserts cape-dabbrev+dict before ispell and `t' in buffer-local capf list."
 ;;   with setq-local, ensuring correct ordering is maintained when
 ;;   packages add capfs dynamically after this function runs.
 ;; (defun aj8/text-mode-capf ()
-;;   "Add dabbrev and dict completions for text modes.
-;; Inserts cape-dabbrev+dict before ispell and `t' in buffer-local capf list."
+;;   "Add file, dabbrev and dict completions for text modes.
+;; Inserts cape-file first, cape-dabbrev+dict before ispell and `t' in
+;; buffer-local capf list."
 ;;   (let ((has-ispell (memq 'ispell-completion-at-point
 ;;                          completion-at-point-functions)))
 ;;     (remove-hook 'completion-at-point-functions t t)
+;;     (add-hook 'completion-at-point-functions #'cape-file -5 t)
 ;;     (add-hook 'completion-at-point-functions #'cape-dabbrev+dict 5 t)
 ;;     (when has-ispell
 ;;       (add-hook 'completion-at-point-functions #'ispell-completion-at-point 10 t))
@@ -786,10 +794,12 @@ Inserts cape-dabbrev+dict before ispell and `t' in buffer-local capf list."
 
 ;; Completion at point function for LLM chat modes
 (defun aj8/llm-chat-mode-capf ()
-  "Add dabbrev and dict completions for LLM chat modes.
-Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
+  "Add file, dabbrev and dict completions for LLM chat modes.
+Inserts cape-file first, and cape-dabbrev+dict before `t' in
+buffer-local capf list."
   (setq-local completion-at-point-functions
-              (append (remove t (buffer-local-value
+              (append (list #'cape-file)
+                      (remove t (buffer-local-value
                                  'completion-at-point-functions
                                  (current-buffer)))
                       (list #'cape-dabbrev+dict t)))
