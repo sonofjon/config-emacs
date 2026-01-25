@@ -115,12 +115,12 @@ Downside: eglot completions won't appear when cape sources have matches.
 
 Combines candidates from multiple sources into one list.
 
-Note: `cape-file` should Not be merged with other sources as it does not
+Note: `cape-file` should not be merged with other sources as it does not
 behave well in a super-capf. It is kept separate and placed at the front.
 
 ```elisp
 (defun aj8/eglot-combine-capf ()
-  "Combine eglot-completion-at-point with cape-dabbrev+dict."
+  "Combine eglot-completion-at-point with cape-file and cape-dabbrev+dict."
   (setq-local completion-at-point-functions
               (append (when (memq #'cape-file completion-at-point-functions)
                         (list #'cape-file))
@@ -130,6 +130,12 @@ behave well in a super-capf. It is kept separate and placed at the front.
   (put 'completion-at-point-functions 'hook--depth-alist nil))
 (add-hook 'eglot-managed-mode-hook #'aj8/eglot-combine-capf)
 ```
+
+Note: This is a simplified example. A real implementation should not
+hardcode specific capfs like cape-dabbrev+dict. Instead, it should
+dynamically extract and preserve unknown capfs (e.g., language-specific
+ones) from the current capf list. See the actual implementation in
+aj8-lisp.el for a complete solution.
 
 Note: This is not a true fallback - it runs all capfs and merges results.
 All candidates from eglot, dabbrev, and dict appear together in the popup.
@@ -246,12 +252,10 @@ it:
 
 ;; Example: combine using add-hook with depths
 (defun aj8/eglot-combine-capf ()
-  "Combine eglot-completion-at-point with cape-dabbrev+dict.
+  "Combine eglot-completion-at-point with cape-file and cape-dabbrev+dict.
 cape-file is not merged; it is kept separate at the front."
   (setq-local completion-at-point-functions nil)
-  (when (memq #'cape-file (buffer-local-value 'completion-at-point-functions
-                                             (current-buffer)))
-    (add-hook 'completion-at-point-functions #'cape-file -10 t))
+  (add-hook 'completion-at-point-functions #'cape-file -5 t)
   (add-hook 'completion-at-point-functions
             (cape-capf-super #'eglot-completion-at-point
                              #'cape-dabbrev+dict)
@@ -259,6 +263,9 @@ cape-file is not merged; it is kept separate at the front."
   (add-hook 'completion-at-point-functions t 25 t))
 (add-hook 'eglot-managed-mode-hook #'aj8/eglot-combine-capf)
 ```
+
+Note: Simplified example - see note after corresponding set-local example
+above.
 
 This approach ensures correct ordering is maintained when packages add capfs
 dynamically later.
