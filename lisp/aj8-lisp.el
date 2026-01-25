@@ -804,12 +804,10 @@ buffer-local capf list."
 
 ;; Completion at point function for LLM chat modes
 (defun aj8/llm-chat-mode-capf ()
-  "Add file, dabbrev and dict completions for LLM chat modes.
-Inserts cape-file first, and cape-dabbrev+dict before `t' in
-buffer-local capf list."
+  "Add dabbrev and dict completions for LLM chat modes.
+Inserts cape-dabbrev+dict before `t' in buffer-local capf list."
   (setq-local completion-at-point-functions
-              (append (list #'cape-file)
-                      (remove t (buffer-local-value
+              (append (remove t (buffer-local-value
                                  'completion-at-point-functions
                                  (current-buffer)))
                       (list #'cape-dabbrev+dict t)))
