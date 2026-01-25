@@ -617,6 +617,16 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
 ;; LSP has no candidates (rather than nil), it blocks subsequent capfs from
 ;; running. The functions below provide different solutions to this problem.
 
+;; Separate solution: Ensure cape-file runs first
+(defun aj8/eglot-ensure-cape-file-first ()
+  "Ensure cape-file runs before eglot-completion-at-point.
+This ensures file path completion works correctly when eglot is active."
+  (when (and (memq #'eglot-completion-at-point completion-at-point-functions)
+             (memq #'cape-file completion-at-point-functions))
+    (setq-local completion-at-point-functions
+                (cons #'cape-file
+                      (remove #'cape-file completion-at-point-functions)))))
+
 ;; Solution 1: Reorder capfs so eglot runs last
 (defun aj8/eglot-reorder-capf ()
   "Move eglot-completion-at-point after other capfs.

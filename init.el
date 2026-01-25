@@ -447,7 +447,13 @@
   ;; Solution 3: Wrap eglot with cape-wrap-nonexclusive
   ;;   Uses advice to make eglot return nil when it has no candidates,
   ;;   allowing fallback to subsequent capfs (dabbrev, dict).
+  ;;   Note: This does not address cape-file ordering (see separate solution
+  ;;   below).
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-nonexclusive)
+  ;; Separate solution: Ensure cape-file runs before eglot
+  ;;   Ensures file path completion works correctly by running cape-file
+  ;;   before eglot-completion-at-point.
+  (add-hook 'eglot-managed-mode-hook #'aj8/eglot-ensure-cape-file-first)
   :custom
   ;; Shutdown server after buffer kill
   (eglot-autoshutdown t)
