@@ -2231,7 +2231,7 @@ the window so that the streaming position appears near the bottom."
   ;;   (this is useful since dabbrev can be used in all buffers)
   (global-corfu-mode))
   ;; :config
-  ;; TODO: Reasearch and enable/remove?
+  ;; TODO: Research and enable/remove?
   ;; Sort candidates by history
   ;; (corfu-history-mode 1)   ; requires savehist-mode
   ;; (savehist-mode 1)
