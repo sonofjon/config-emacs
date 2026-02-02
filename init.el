@@ -2351,6 +2351,8 @@ Elisp code explicitly in arbitrary buffers.")
                                         ; add label for prefix
 
   :custom
+  ;; Collect dabbrev candidates from project buffers
+  (cape-dabbrev-buffer-function #'aj8/cape-project-buffers)
   ;; Sort candidates by length and alphabetically
   ;;   Also see https://github.com/minad/cape/issues/44
   (corfu-sort-override-function 'corfu-sort-length-alpha))

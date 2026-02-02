@@ -611,6 +611,15 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
 
 ;;;; Completion
 
+;;; Cape buffer functions
+
+(defun aj8/cape-project-buffers ()
+  "Return buffers belonging to the current project.
+If no project is found, return only the current buffer."
+  (if-let ((project (project-current)))
+      (project-buffers project)
+    (list (current-buffer))))
+
 ;;; Eglot capf workarounds
 
 ;; Because eglot-completion-at-point returns a valid completion table when
