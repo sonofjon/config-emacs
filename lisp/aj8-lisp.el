@@ -505,6 +505,21 @@ ARGS are passed to ORIG-FUN."
     (when (and is-side-window (window-live-p current-window))
       (select-window current-window))))
 
+(defun aj8/switch-to-minibuffer (&optional level)
+  "Switch to the currently active recursive minibuffer.
+With optional LEVEL argument, switch to that specific minibuffer level.
+LEVEL should be 1 for Minibuf-0, 2 for Minibuf-1, etc.  Without LEVEL,
+switches to the current depth's minibuffer."
+  (interactive "P")
+  (let* ((depth (if level
+                    (prefix-numeric-value level)
+                  (minibuffer-depth)))
+         (minibuf-name (format " *Minibuf-%d*" (1- depth))))
+    (when (> depth 0)
+      (select-window (minibuffer-window))
+      (set-window-buffer (minibuffer-window) minibuf-name)
+      (message "Switched to minibuffer depth %d (%s)" depth minibuf-name))))
+
 ;;;; Coding
 
 ;; Enable Eglot selectively
