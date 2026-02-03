@@ -1977,10 +1977,24 @@ afterward.  This function saves the configuration so it can be restored."
 
 Restores the window configuration that was saved by
 `aj8/transient--save-config', ensuring the bottom side-window returns to
-its original size after transient is dismissed."
+its original size after transient is dismissed.
+
+Preserves active minibuffer state to avoid hiding recursive prompts."
   (when aj8/transient--saved-config
-    (set-window-configuration aj8/transient--saved-config)
-    (setq aj8/transient--saved-config nil)))
+    (let ((minibuf-depth (minibuffer-depth))
+          (minibuf-window (minibuffer-window))
+          (minibuf-buffer (when (> (minibuffer-depth) 0)
+                           (window-buffer (minibuffer-window)))))
+      (set-window-configuration aj8/transient--saved-config)
+      ;; If a minibuffer prompt is active, restore its buffer and focus
+      ;;   This happens when transient starts a minibuffer before closing
+      ;;   (e.g., magit log -S search). Without this, restoring the saved
+      ;;   config would hide the prompt by reverting the minibuffer window
+      ;;   to its old buffer.
+      (when (> minibuf-depth 0)
+        (set-window-buffer minibuf-window minibuf-buffer)
+        (select-window minibuf-window))
+      (setq aj8/transient--saved-config nil))))
 
 ;;; Kill windows
 
