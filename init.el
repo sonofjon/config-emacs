@@ -1457,6 +1457,8 @@
          ("C-c C-<up>" . comint-previous-prompt)
          ("C-c C-<down>" . comint-next-prompt))
   :custom
+  ;; Set default agent
+  ;; (agent-shell-preferred-agent-config 'claude-code)
   ;; Don't add line as context
   (agent-shell-context-sources '(files region error))
   ;; Enable viewport mode
