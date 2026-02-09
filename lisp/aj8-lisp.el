@@ -1961,40 +1961,35 @@ use slot 0 to share undivided space."
 
 ;;; Transient window restoration
 
-(defvar aj8/transient--saved-config nil
-  "Saved window configuration before transient popup.")
+(defvar aj8/transient--saved-side-window-height nil
+  "Saved height of bottom side-window before transient popup.")
 
 (defun aj8/transient--save-config (&rest _args)
-  "Advise `transient--show' to save window configuration before display.
+  "Advise `transient--show' to save bottom side-window height.
 
 Transient resizes the bottom side-window but doesn't restore it
-afterward.  This function saves the configuration so it can be restored."
-  (unless aj8/transient--saved-config
-    (setq aj8/transient--saved-config (current-window-configuration))))
+afterward.  This function saves the height so it can be restored."
+  (unless aj8/transient--saved-side-window-height
+    (when-let ((side-window (window-with-parameter 'window-side 'bottom)))
+      (setq aj8/transient--saved-side-window-height
+            (window-total-height side-window)))))
 
 (defun aj8/transient--restore-config (&rest _args)
-  "Advise `transient--delete-window' to restore window configuration.
+  "Advise `transient--post-exit' to restore bottom side-window height.
 
-Restores the window configuration that was saved by
-`aj8/transient--save-config', ensuring the bottom side-window returns to
-its original size after transient is dismissed.
+Restores the height that was saved by `aj8/transient--save-config',
+ensuring the bottom side-window returns to its original size after
+transient is dismissed.
 
-Preserves active minibuffer state to avoid hiding recursive prompts."
-  (when aj8/transient--saved-config
-    (let ((minibuf-depth (minibuffer-depth))
-          (minibuf-window (minibuffer-window))
-          (minibuf-buffer (when (> (minibuffer-depth) 0)
-                           (window-buffer (minibuffer-window)))))
-      (set-window-configuration aj8/transient--saved-config)
-      ;; If a minibuffer prompt is active, restore its buffer and focus
-      ;;   This happens when transient starts a minibuffer before closing
-      ;;   (e.g., magit log -S search). Without this, restoring the saved
-      ;;   config would hide the prompt by reverting the minibuffer window
-      ;;   to its old buffer.
-      (when (> minibuf-depth 0)
-        (set-window-buffer minibuf-window minibuf-buffer)
-        (select-window minibuf-window))
-      (setq aj8/transient--saved-config nil))))
+Restores immediately without using an idle timer."
+  (when aj8/transient--saved-side-window-height
+    (let ((saved-height aj8/transient--saved-side-window-height))
+      (setq aj8/transient--saved-side-window-height nil)
+      (when-let ((side-window (window-with-parameter 'window-side 'bottom)))
+        (let ((delta (- saved-height (window-total-height side-window))))
+          (when (and (not (zerop delta))
+                     (window-resizable-p side-window delta))
+            (window-resize side-window delta)))))))
 
 ;;; Kill windows
 
