@@ -1156,6 +1156,13 @@
 ;; transient (transient commands)
 (use-package transient
   :ensure nil   ; don't install built-in packages
+  :custom
+  ;; Keep transient visible during minibuffer input
+  ;;   TODO: When nil (default), transient has a bug where it fails to
+  ;;   redisplay after suspend/resume if another buffer occupies a bottom
+  ;;   side-window. Setting to t keeps transient visible, avoiding the bug.
+  ;;   This can be removed once the upstream bug is fixed.
+  (transient-show-during-minibuffer-read t)
   :config
   ;; Restore side-window config after transient
   (advice-add 'transient--show :before
