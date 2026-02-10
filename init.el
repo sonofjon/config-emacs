@@ -1482,7 +1482,14 @@
   ;; Disable side-window placement
   (agent-shell-manager-side nil)
   :config
-  (agent-shell-manager-toggle))
+  ;; Open manager when first agent-shell buffer is created
+  (add-hook 'agent-shell-mode-hook
+            (lambda ()
+              (run-with-idle-timer 0.1 nil
+                                   (lambda ()
+                                     (save-selected-window
+                                       (agent-shell-manager-toggle)))))
+            90))
 
 ;; ai-code-interface (unified emacs interface supporting LLM clients)
 (use-package ai-code-interface
