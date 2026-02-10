@@ -2072,7 +2072,14 @@ the window so that the streaming position appears near the bottom."
   ;; Add tree-sitter modes to auto-mode-alist
   (treesit-auto-add-to-auto-mode-alist 'all)
   ;; Enable globally
-  (global-treesit-auto-mode))
+  (global-treesit-auto-mode)
+  ;; Remove broken auto-mode-alist entries with nil patterns
+  ;;   TODO: Workaround for treesit-auto bug where it adds entries like (nil
+  ;;   . php-ts-mode) to auto-mode-alist, causing "File mode specification
+  ;;   error: (wrong-type-argument stringp nil)" when Emacs tries to match
+  ;;   files against the broken pattern.  Remove when fix available.  See:
+  ;;   https://github.com/renzmann/treesit-auto/issues/144
+  (setq auto-mode-alist (seq-filter (lambda (entry) (car entry)) auto-mode-alist)))
 
 ;;; Completion
 
