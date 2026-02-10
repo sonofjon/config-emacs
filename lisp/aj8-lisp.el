@@ -1892,6 +1892,27 @@ DIFF is the return value from `magit-gptcommit--staged-diff'."
            "\n")))
     (concat file-contents "\n\n=== DIFF ===\n" diff)))
 
+
+;;; Project
+
+;; Filter which projects get remembered
+(defcustom aj8/project-remember-predicates nil
+  "List of predicates that determine if a project should be remembered.
+Each predicate is called with the project root and should return non-nil
+if the project should be remembered."
+  :type 'list
+  :group 'aj8-lisp)
+
+(defun aj8/project-remember-project-filter (orig-fn pr &optional no-write)
+  "Advise `project-remember-project' to filter which projects get remembered.
+Only adds project if all predicates in `aj8/project-remember-predicates'
+return non-nil for the project root.  ORIG-FN is the original function
+being advised.  PR and NO-WRITE are passed to ORIG-FN."
+  (let ((root (project-root pr)))
+    (when (seq-every-p (lambda (pred) (funcall pred root))
+                       aj8/project-remember-predicates)
+      (funcall orig-fn pr no-write))))
+
 ;;;; Windows
 
 ;;; Side windows

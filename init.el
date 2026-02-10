@@ -948,7 +948,15 @@
   ;; (add-to-list 'project-vc-ignores "archive/")
   ;; Show current project name on the mode line
   (project-mode-line t)
+  ;; Predicates for filtering projects
+  (aj8/project-remember-predicates
+   (list (lambda (root) (not (file-remote-p root)))   ; Exclude remote projects
+         (lambda (root) (not (string-match-p "/\\.emacs\\.d/elpa/" root)))))
+                                                      ; Exclude elpa packages
   :config
+  ;; Filter which projects get remembered
+  (advice-add 'project-remember-project :around
+              #'aj8/project-remember-project-filter)
   ;; Add projects
   ;;   (only if projects file doesn't exist or is older than 7 days)
   (let ((projects-file (locate-user-emacs-file "projects"))
