@@ -2143,6 +2143,22 @@ ORIG-FUN is the original function being advised."
 
 ;;; Misc
 
+;; Restrict windmove swap states
+(defun aj8/windmove-swap-states-inhibit-side-window (orig-fun direction)
+  "Advise `windmove-swap-states-in-direction' to prevent regular/side swaps.
+This prevents buffer swapping when one window is a side window and the
+other is a regular window.  ORIG-FUN is the original function being
+advised.  DIRECTION is passed to ORIG-FUN."
+  (let* ((current-window (selected-window))
+         (current-is-side (window-parameter current-window 'window-side))
+         (target-window (windmove-find-other-window direction))
+         (target-is-side (and target-window
+                              (window-parameter target-window 'window-side))))
+    (if (and target-window
+             (not (eq (not current-is-side) (not target-is-side))))
+        (message "Cannot swap between regular and side windows")
+      (funcall orig-fun direction))))
+
 ;;;; Web
 
 ;;; eww

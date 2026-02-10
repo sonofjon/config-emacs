@@ -1242,6 +1242,9 @@
 (use-package windmove
   :ensure nil   ; don't install built-in packages
   :init
+  ;; Prevent swapping buffers between regular and side windows
+  (advice-add 'windmove-swap-states-in-direction :around
+              #'aj8/windmove-swap-states-inhibit-side-window)
   (which-key-add-key-based-replacements "C-c w" "windows")
   :config
   (windmove-default-keybindings 'ctrl)
