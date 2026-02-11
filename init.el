@@ -2545,15 +2545,18 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; repeat-help (display keybindings for repeat-mode)
 (use-package repeat-help
-  :hook (repeat-mode . repeat-help-mode))
-  ;; :custom
+  :demand t
+  ;; :hook (repeat-mode . repeat-help-mode)
+  :custom
   ;; Custom repeat help key
-  ;;   Default value interferes with access to the standard "C-h" map
-  ;; (repeat-help-key "C-c H r"))   ; default: "C-h'"
+  ;;   Note: default value interferes with access to the standard "C-h" map
+  (repeat-help-key "C-c H r")   ; default: "C-h"
   ;; Show repeat-help automatically
   ;; (repeat-help-auto t)   ; default: nil
   ;; Popup type
   ;; (repeat-help-popup-type 'embark))   ; default: which-key
+  :config
+  (repeat-help-mode 1))
 
 ;; smartparens (automatic insertion, wrapping and paredit-like navigation)
 (use-package smartparens
