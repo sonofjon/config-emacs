@@ -167,8 +167,8 @@ and only upgrades packages that need it."
                 (when (re-search-forward "\\[behind [0-9]+\\]" nil t)
                   (message "Upgrading %s..." pkg-name)
                   (package-vc-upgrade pkg-desc)
-                  (setq upgraded (1+ upgraded))))))))))
-    (message "Upgraded %d VC packages." upgraded))
+                  (setq upgraded (1+ upgraded)))))))))
+    (message "Upgraded %d VC packages." upgraded)))
 
 ;;;; AI
 
