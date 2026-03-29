@@ -1403,7 +1403,7 @@
       (side . right)
       (slot . ,aj8/side-window-slot-top)
       (window-parameters . ((no-delete-other-windows . t))))
-     ("^\\(Claude Code Agent.*\\|Copilot Agent.*\\|Gemini CLI Agent.*\\|gptel-.*\\.\\(org\\|md\\)\\)"
+     ("^\\(Claude Agent.*\\|Copilot Agent.*\\|Gemini Agent.*\\|gptel-.*\\.\\(org\\|md\\)\\)"
       (display-buffer-in-side-window)
       (window-width . ,aj8/side-window-width-dynamic)
       (side . right)
