@@ -1957,9 +1957,9 @@ the window so that the streaming position appears near the bottom."
               ("C-c M-a" . my/csv-align-visible)
               ("C-M-<left>" . csv-backward-field)
               ("C-M-<right>" . csv-forward-field))
-  ;; Enable modeline linenumber for wide files
-  :custom
-  (line-number-display-limit-width 1000)   ; default is 200
+  ;; Show line number in mode line for wide lines (default is 200)
+  :hook (csv-mode . (lambda ()
+                      (setq-local line-number-display-limit-width 1000)))
   :config
   (defun my/csv-align-visible (&optional arg)
     "Align visible fields."
