@@ -1681,7 +1681,7 @@
     :key (gptel-api-key-from-auth-source
           "dashscope-intl.aliyuncs.com" "apikey")
     :stream t
-    :models '(qwen3-coder-plus-2025-09-23))
+    :models '(qwen3-coder-plus-2025-09-23 qwen3-coder-next))
   ;; === Deepseek ===
   (gptel-make-deepseek "Deepseek"
     :key (gptel-api-key-from-auth-source "api.deepseek.com" "apikey")
@@ -1694,7 +1694,8 @@
     :host "api.moonshot.ai"   ; or "api.moonshot.cn" for the Chinese site
     :key (gptel-api-key-from-auth-source "api.moonshot.ai" "apikey")
     :stream t
-    :models '(kimi-k2-thinking))
+    :models '(kimi-k2.5))
+    ;; :models '(kimi-k2-thinking))
   ;; === OpenRouter ====
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
@@ -1704,9 +1705,11 @@
     :models '(deepseek/deepseek-chat-v3-0324
               deepseek/deepseek-v3.2
               moonshotai/kimi-k2-thinking
+              moonshotai/kimi-k2.5
               qwen/qwen3-coder:free
               qwen/qwen3-coder-flash
-              qwen/qwen3-coder-plus))
+              qwen/qwen3-coder-plus
+              qwen/qwen3-coder-next))
   ;; Enable reasoning
   (dolist (provider '(deepseek/deepseek-v3.2))
     (put provider :request-params '(:reasoning (:enabled t))))
