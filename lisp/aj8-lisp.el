@@ -1330,6 +1330,19 @@ See also `mosey-goto-beginning-of-comment-text'."
 
 ;;; Misc
 
+;; Preserve point's column around an arbitrary function call
+(defun aj8/preserve-column (fn &rest args)
+  "Preserve point's column when calling FN with ARGS.
+Prevents point from jumping to a fixed position near the right
+edge of the visible window when scrolling vertically in buffers
+where lines exceed the window width.  The C scroll primitives
+treat the buffer column as a display column when repositioning
+point, causing horizontal drift when the window has a non-zero
+hscroll."
+  (let ((col (current-column)))
+    (apply fn args)
+    (move-to-column col)))
+
 ;; Backward movement by whitespace
 ;;   (complements the built-in forward-whitespace)
 (defun my/backward-whitespace (arg)

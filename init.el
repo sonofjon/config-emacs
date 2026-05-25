@@ -1293,6 +1293,9 @@
   ;; Always respect split-height-threshold
   (advice-add 'split-window-sensibly :around
               #'aj8/split-window-sensibly-respect-threshold)
+  ;; Preserve point's column across vertical scroll commands
+  (advice-add 'scroll-up-command :around #'aj8/preserve-column)
+  (advice-add 'scroll-down-command :around #'aj8/preserve-column)
   ;; Enable better quit-window behavior
   ;; (advice-add 'display-buffer :filter-return #'my/better-quit-window-save)
   ;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)
