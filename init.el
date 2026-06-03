@@ -162,11 +162,13 @@
         yaml-pro
         ztree))
 
-;; Workaround: Prevent `package.el' from saving this list to `custom-file'.
-;; This avoids repeated problems with `package-selected-packages' being
+;; Workaround: Prevent `package.el' from saving these lists to
+;; `custom-file'.  This avoids repeated problems with
+;; `package-selected-packages' and `package-vc-selected-packages' being
 ;; saved incorrectly, causing `package-autoremove' to delete too many
 ;; packages.
 (put 'package-selected-packages 'saved-value nil)
+(put 'package-vc-selected-packages 'saved-value nil)
 
 ;;; Selected packages sources
 ;;;   Install packages with (package-vc-install-selected-packages)
