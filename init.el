@@ -3316,8 +3316,7 @@ FILE DIFFS:
 
       ((eq aj8/my-os 'wsl)     ; WSL
        ;; Enable (default) web browser
-       ;;   Requires: wslu
-       (setq browse-url-generic-program "wslview")
+       (setq browse-url-generic-program "explorer.exe")
        (setq browse-url-browser-function #'browse-url-generic)
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
        (message "Late settings WSL"))
