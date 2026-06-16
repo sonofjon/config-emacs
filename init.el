@@ -656,9 +656,9 @@
 ;; flymake (a universal on-the-fly syntax checker)
 (use-package flymake
   :bind (:map flymake-diagnostics-buffer-mode-map
-              ("h" . #'aj8/flymake-ruff-goto-doc)
+              ("h" . #'aj8/flymake-goto-ruff-doc)
          :map flymake-project-diagnostics-mode-map
-              ("h" . #'aj8/flymake-ruff-goto-doc)))
+              ("h" . #'aj8/flymake-goto-ruff-doc)))
 
 ;; flyspell (on-the-fly spell checker)
 (use-package flyspell
