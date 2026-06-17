@@ -331,6 +331,10 @@
          ;; Register file renames in VC system
          (dired-vc-rename-file t)
          :config
+         ;; Remove --group-directories-first on WSL
+         ;;   (Ubuntu 26.04 uutils coreutils bug)
+         (when (eq aj8/my-os 'wsl)
+           (setq dired-listing-switches "-agho"))
          ;; Tag Dired buffer names
          ;;   Use idle timer to avoid renaming while Dired is processing the buffer
          (add-hook 'dired-mode-hook
