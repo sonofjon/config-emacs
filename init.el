@@ -309,6 +309,7 @@
          :ensure-system-package ,(aj8/system-package-name 'ls)
          :bind (:map dired-mode-map
                      ("." . dired-omit-mode)
+                     ("r" . aj8/dired-sort-reverse-toggle)
                      :map dired-mode-map
                      ("C-c C-a d" . markdown-links-insert-from-dired))
          :init

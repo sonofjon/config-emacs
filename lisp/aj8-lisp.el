@@ -1134,6 +1134,8 @@ a line below."
 
 ;;;; Files
 
+;;; dired
+
 ;; Disable dired-dwim-target with prefix argument
 
 (defun aj8/dired-do-rename-dwim (&optional arg)
@@ -1157,6 +1159,38 @@ nil (disabling DWIM) when the command was invoked with a prefix
 argument (C-u)."
     (unless current-prefix-arg
       (dired-dwim-target-next)))
+
+;; Toggle sort order
+(defun aj8/dired-sort-reverse-toggle ()
+  "Toggle reverse sort order in the current Dired buffer."
+  (interactive)
+  ;; Toggle between reversed/non-reversed sort.  Reverts the buffer.
+  (let* (;; Regexp for finding (possibly embedded) -r switches.
+         (switch-regexp "\\(\\`\\| \\)-\\([a-qs-zA-Z]*\\)\\(r\\)\\([^ ]*\\)")
+         (reversing (string-match-p switch-regexp dired-actual-switches))
+         case-fold-search)
+    ;; Remove the -r switch.
+    (while (string-match switch-regexp dired-actual-switches)
+      (if (and (equal (match-string 2 dired-actual-switches) "")
+               (equal (match-string 4 dired-actual-switches) ""))
+          ;; Remove a stand-alone -r switch.
+          (setq dired-actual-switches
+                (replace-match "" t t dired-actual-switches))
+        ;; Remove a switch of the form -XrY for some X and Y.
+        (setq dired-actual-switches
+              (replace-match "" t t dired-actual-switches 3))))
+    ;; Now, if we weren't reversing before, add the -r switch.
+    ;; Some simple-minded ls implementations (eg ftp servers) only
+    ;; allow a single option string, so try not to add " -r" if possible.
+    (unless reversing
+      (setq dired-actual-switches
+            (concat dired-actual-switches
+                    (if (string-match-p "\\`-[[:alnum:]]+\\'"
+                                        dired-actual-switches)
+                        "r"
+                      " -r")))))
+  (dired-sort-set-mode-line)
+  (revert-buffer))
 
 ;;; Selective backup inibition
 
