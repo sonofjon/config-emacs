@@ -876,6 +876,19 @@ ORIG-FUN is the original function being advised."
                               paths)))
         (cons new-cmd hl-fn)))))
 
+;;; consult-project-extra non-project handling
+
+(defun aj8/consult-project-extra-find (orig-fun &rest args)
+  "Advise `consult-project-extra-find' to handle non-project buffers.
+When called outside a project without an explicit root, opens the
+Known Project source directly instead of a `completing-read' prompt.
+ORIG-FUN is the original function.  ARGS are passed to ORIG-FUN."
+  (if (or (car args) (consult--project-root))
+      (apply orig-fun args)
+    (consult--multi (list consult-project-extra--source-project)
+                    :sort nil
+                    :require-match nil)))
+
 ;;; Corfu navigation
 
 (defun my/corfu-beginning-of-prompt ()

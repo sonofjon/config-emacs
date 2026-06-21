@@ -2219,6 +2219,9 @@ the window so that the streaming position appears near the bottom."
 (use-package consult-project-extra
   :bind ("C-c p" . consult-project-extra-find)
   :init
+  ;; Open known projects source directly when outside a project
+  (advice-add 'consult-project-extra-find :around
+              #'aj8/consult-project-extra-find)
   :config
   ;; Add sources to open Dired and Magit for a project
   ;;   These sources are hidden. After selecting a project from "Known
