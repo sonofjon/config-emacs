@@ -957,10 +957,11 @@
    (list (lambda (root) (not (file-remote-p root)))   ; Exclude remote projects
          (lambda (root) (not (string-match-p "/\\.emacs\\.d/elpa/" root)))))
                                                       ; Exclude elpa packages
-  :config
+  :init
   ;; Filter which projects get remembered
   (advice-add 'project-remember-project :around
               #'aj8/project-remember-project-filter)
+  :config
   ;; Add projects
   ;;   (only if projects file doesn't exist or is older than 7 days)
   (let ((projects-file (locate-user-emacs-file "projects"))
@@ -1175,7 +1176,7 @@
   ;;   side-window. Setting to t keeps transient visible, avoiding the bug.
   ;;   This can be removed once the upstream bug is fixed.
   (transient-show-during-minibuffer-read t)
-  :config
+  :init
   ;; Restore side-window config after transient
   (advice-add 'transient--show :before
               #'aj8/transient--save-config)
@@ -2183,6 +2184,9 @@ the window so that the streaming position appears near the bottom."
 
   (which-key-add-key-based-replacements "C-c c" "consult")
                                         ; add label for prefix key
+  ;; Exclude some dirs from consult-git-grep
+  (advice-add 'consult--git-grep-make-builder :around
+              #'aj8/consult-git-grep)
 
   :config
   ;; Preview key
@@ -2205,11 +2209,7 @@ the window so that the streaming position appears near the bottom."
   ;; :require-match t))
 
   ;; Narrowing key
-  (setq consult-narrow-key "<")
-
-  ;; Exclude some dirs from consult-git-grep
-  (advice-add 'consult--git-grep-make-builder :around
-              #'aj8/consult-git-grep))
+  (setq consult-narrow-key "<"))
 
 ;; consult-eglot (query workspace symbol from eglot using consult)
 (use-package consult-eglot
