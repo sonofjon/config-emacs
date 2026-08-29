@@ -98,7 +98,6 @@
         consult-eglot
         consult-project-extra
         corfu
-        corfu-terminal
         csv-mode
         dired-sidebar
         diff-hl
@@ -2295,13 +2294,6 @@ the window so that the streaming position appears near the bottom."
 ;;   Note, this is an extension included in the Corfu package
 (use-package corfu-info
   :after corfu)
-
-;; corfu-terminal (Corfu popup on terminal)
-(use-package corfu-terminal
-  :if (not (display-graphic-p))
-  :after corfu
-  :config
-  (corfu-terminal-mode 1))
 
 ;; cape (Completion At Point Extensions)
 (use-package cape
