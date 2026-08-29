@@ -2733,6 +2733,7 @@ Elisp code explicitly in arbitrary buffers.")
   :commands (dired-sidebar-toggle-sidebar)
   :bind ("C-c d" . dired-sidebar-toggle-sidebar)
   :init
+  ;; Auto-revert sidebar buffer, except over TRAMP
   (add-hook 'dired-sidebar-mode-hook
             (lambda ()
               (unless (file-remote-p default-directory)
@@ -2755,7 +2756,10 @@ Elisp code explicitly in arbitrary buffers.")
   ;; The tree style to display
   (dired-sidebar-theme 'ascii)   ; none, ascii, icons (all-the-icons) (default)
   :config
+  ;; Hide sidebar while toggling window split
   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'my/toggle-window-split dired-sidebar-toggle-hidden-commands)
+  ;; Hide sidebar while rotating windows
   (push 'rotate-windows dired-sidebar-toggle-hidden-commands))
 
 ;; osx-trash (system trash for OS X)
