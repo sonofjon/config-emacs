@@ -1292,8 +1292,14 @@
   (advice-add 'quit-window :around #'aj8/retain-side-window-focus)
   ;; Keep focus in side windows after kill-current-buffer
   (advice-add 'kill-current-buffer :around #'aj8/retain-side-window-focus)
-  ;; Make quit-window kill buffer by default (inverse behavior)
-  (advice-add 'quit-window :filter-args #'my/quit-window)
+  ;; Bury (rather than kill) the Messages buffer when quitting its window
+  ;;   This is the exception to `quit-window-kill-buffer' (see :custom
+  ;;   below).  See the `buffer-tail-mode' package below for why
+  ;;   `with-current-buffer' is preferred over the hook.
+  ;; (add-hook 'messages-buffer-mode-hook
+  ;;           (lambda () (setq-local quit-window-kill-buffer nil)))
+  (with-current-buffer "*Messages*"
+    (setq-local quit-window-kill-buffer nil))
   ;; Always respect split-height-threshold
   (advice-add 'split-window-sensibly :around
               #'aj8/split-window-sensibly-respect-threshold)
@@ -1304,6 +1310,8 @@
   ;; (advice-add 'display-buffer :filter-return #'my/better-quit-window-save)
   ;; (advice-add 'quit-restore-window :around #'my/better-quit-window-restore)
   :custom
+  ;; Kill buffer by default when quitting its window
+  (quit-window-kill-buffer t)
   ;; Set minimum window height
   ;; (window-min-height 16)
   ;; Prefer horizontal (side-by-side) window splitting

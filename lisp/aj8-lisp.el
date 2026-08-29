@@ -2075,50 +2075,17 @@ Restores immediately without using an idle timer."
                      (window-resizable-p side-window delta))
             (window-resize side-window delta)))))))
 
-;;; Kill windows
+;;; Better quit-window behavior
+;;;   Adds winner-mode style behavior to quit-window
+;;;   Reference: dotemacs-karthink/init.el
 
-;; Kill buffers by defult with quit-window
-
-(defcustom my/quit-window-exceptions-regex "^\\*\\(Messages\\)"
-  "Regexp matching buffer names for which prefix argument should not be inverted."
-  :type 'regexp
-  :group 'aj8-lisp)
-
-(defcustom my/quit-window-known-wrappers '(magit-mode-bury-buffer
-                                           magit-log-bury-buffer
-                                           Info-exit)
-  "List of commands that call `quit-window'."
-  :type 'sexp
-  :group 'aj8-lisp)
-
-(defun my/quit-window (args)
-  "Advise `quit-window' to kill buffer by default.
-
-With a prefix argument, the buffer is buried instead.  This is the
-inverse of the default behavior `quit-window'.
-
-This affects all calls to `quit-window' except in buffers matching
-`my/quit-window-exceptions-regex'.  Calls to `quit-window' from wrapper
-functions defined by `my/quit-window-known-wrappers' are also affected.
-
-ARGS are the arguments to `quit-window', modified and returned."
-  (when (and (or (eq this-command 'quit-window)
-                 (member this-command my/quit-window-known-wrappers))
-             (not (string-match-p my/quit-window-exceptions-regex (buffer-name))))
-    (unless (consp args)
-      (setq args (list nil)))
-    (setf (car args) (not current-prefix-arg)))
-  args)
-
-;; Better focus handling with quit-windows
-;;   Adds winner-mode style behavior to quit-window
-;;   Reference: dotemacs-karthink/init.el
-
+;; Save window's quit-restore state onto the stack
 (defun my/better-quit-window-save (window)
   (push (window-parameter window 'quit-restore)
         (window-parameter window 'quit-restore-stack))
   window)
 
+;; Restore window's quit-restore state from the stack
 (defun my/better-quit-window-restore (origfn &optional window bury-or-kill)
   (let ((sw (or window (selected-window))))
     (funcall origfn window bury-or-kill)
@@ -2127,6 +2094,7 @@ ARGS are the arguments to `quit-window', modified and returned."
       (setf (window-parameter nil 'quit-restore)
             (car (window-parameter nil 'quit-restore-stack))))))
 
+;; Toggle better quit-window behavior
 (define-minor-mode my/better-quit-window-mode
   "Toggle improved `quit-window' behavior similar to `winner-mode'."
   :global t
