@@ -237,7 +237,7 @@ the hook."
 ;; Don't query on exit for MCP server listener process
 (defun aj8/mcp-server-no-query-on-exit ()
   "Set query-on-exit-flag to nil for MCP server listener process."
-  (when-let ((proc (get-process "emacs-mcp-unix-server")))
+  (when-let* ((proc (get-process "emacs-mcp-unix-server")))
     (set-process-query-on-exit-flag proc nil)))
 
 ;;;; Buffers
@@ -634,7 +634,7 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
 (defun aj8/cape-project-buffers ()
   "Return buffers belonging to the current project.
 If no project is found, return only the current buffer."
-  (if-let ((project (project-current)))
+  (if-let* ((project (project-current)))
       (project-buffers project)
     (list (current-buffer))))
 
@@ -1055,7 +1055,7 @@ to move down.
 Note that the logic in this function only considers parenthesis-
 delimited s-expressions."
   (interactive)
-  (when-let ((direction (aj8/sp--sexp-dwim-direction t)))
+  (when-let* ((direction (aj8/sp--sexp-dwim-direction t)))
     (sp-down-sexp direction)))
 
 (defun aj8/sp-up-sexp-dwim ()
@@ -1070,7 +1070,7 @@ to move up.
 Note that the logic in this function only considers parenthesis-
 delimited s-expressions."
   (interactive)
-  (when-let ((direction (aj8/sp--sexp-dwim-direction nil)))
+  (when-let* ((direction (aj8/sp--sexp-dwim-direction nil)))
     (sp-up-sexp direction)))
 
 ;;; Misc
@@ -2054,7 +2054,7 @@ use slot 0 to share undivided space."
 Transient resizes the bottom side-window but doesn't restore it
 afterward.  This function saves the height so it can be restored."
   (unless aj8/transient--saved-side-window-height
-    (when-let ((side-window (window-with-parameter 'window-side 'bottom)))
+    (when-let* ((side-window (window-with-parameter 'window-side 'bottom)))
       (setq aj8/transient--saved-side-window-height
             (window-total-height side-window)))))
 
@@ -2069,7 +2069,7 @@ Restores immediately without using an idle timer."
   (when aj8/transient--saved-side-window-height
     (let ((saved-height aj8/transient--saved-side-window-height))
       (setq aj8/transient--saved-side-window-height nil)
-      (when-let ((side-window (window-with-parameter 'window-side 'bottom)))
+      (when-let* ((side-window (window-with-parameter 'window-side 'bottom)))
         (let ((delta (- saved-height (window-total-height side-window))))
           (when (and (not (zerop delta))
                      (window-resizable-p side-window delta))
