@@ -2337,6 +2337,7 @@ the window so that the streaming position appears near the bottom."
 (use-package completion-preview
   :ensure nil   ; don't install built-in packages
   :demand t
+  :diminish
   ;; :bind
   ;; ( :map completion-preview-active-mode-map
   ;;   ("M-i" . completion-preview-insert-word)
@@ -3312,6 +3313,7 @@ FILE DIFFS:
 
 ;; auto-width-mode (automatically resize the width of focused windows)
 (use-package auto-width-mode
+  :diminish
   :config
   (auto-width-mode 1))
 
