@@ -1551,6 +1551,16 @@
   (with-eval-after-load "xref"
     (add-to-list 'xref-prompt-for-identifier 'xref-find-references t)))
 
+;; xt-mouse (support the mouse when Emacs is run in an xterm)
+(use-package xt-mouse
+  :ensure nil   ; don't install built-in packages
+  :if (not (display-graphic-p))
+  :config
+  ;; Disable automatic mouse support
+  ;;   TODO: Note: this is a fix for a startup race in xterm.el that raises
+  ;;   "No catch for tag: result"
+  (xterm-mouse-mode -1))
+
 ;;; Admin
 
 ;;; AI
