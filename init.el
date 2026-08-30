@@ -317,6 +317,8 @@
          ;; Set custom listing style
          ;;   --group-directories-first requires 'gls' on macOS
          (dired-listing-switches "-agho --group-directories-first")
+         ;; Revert Dired buffers when revisiting a changed directory
+         (dired-auto-revert-buffer t)
          ;; Guess target directory
          ;; (dired-dwim-target t)
          ;; Guess target directory (unless prefix)
@@ -530,6 +532,8 @@
   ;; (mark-even-if-inactive nil)
   ;; Use longer pulse
   (pulse-delay 0.05)   ; default is 0.03
+  ;; Compact the mode line only when wider than the window
+  (mode-line-compact 'long)
   ;; Use TAB for symbol completion (after indentation)
   (tab-always-indent 'complete)
   ;; Increase history length
@@ -927,7 +931,10 @@
   ;; Show package names in upgrade prompt
   (advice-add 'package-upgrade-all :around #'aj8/package-upgrade-all)
   ;; Prevent autoremove from removing VC packages
-  (advice-add #'package-autoremove :around #'aj8/package-autoremove-no-vc))
+  (advice-add #'package-autoremove :around #'aj8/package-autoremove-no-vc)
+  :config
+  ;; Suggest ELPA packages when a better major mode is available
+  (package-autosuggest-mode 1))
 
 ;; paren (highlight matching paren)
 (use-package paren
@@ -1086,7 +1093,7 @@
   ;; Use "repeat-mode" for "pop-mark"
   (set-mark-command-repeat-pop t)
   ;; Save clipboard text into kill ring before kill
-  ;; (save-interprogram-paste-before-kill t)
+  (save-interprogram-paste-before-kill t)
   ;; Exclude mode-specific commands from M-x completion
   ;; (read-extended-command-predicate #'command-completion-default-include-p)
   :config
