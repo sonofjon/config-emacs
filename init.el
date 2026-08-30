@@ -853,6 +853,8 @@
   (completion-eager-display t)
   ;; Update the *Completions* buffer as you type
   (completion-eager-update t)
+  ;; Group completion candidates by category
+  (completions-group t)
   :config
   ;; Show recursion depth in the minibuffer prompt
   (minibuffer-depth-indicate-mode 1)
