@@ -2318,8 +2318,27 @@ the window so that the streaming position appears near the bottom."
                  :items (lambda () (when-let ((root (consult--project-root)))
                                      (list root)))) t))
 
+;; completion-preview (preview completion with inline overlay)
+;;   Reference: https://protesilaos.com/codelog/2026-08-29-emacs-completion-preview-mode/
+(use-package completion-preview
+  :ensure nil   ; don't install built-in packages
+  :demand t
+  ;; :bind
+  ;; ( :map completion-preview-active-mode-map
+  ;;   ("M-i" . completion-preview-insert-word)
+  ;;   ("M-n" . completion-preview-next-candidate)
+  ;;   ("M-p" . completion-preview-prev-candidate)
+  ;;   ("M-<return>" . completion-preview-insert)
+  ;;   ;; With TAB we effectively defer to the *Completions* buffer to
+  ;;   ;; show more completion candidates at once.
+  ;;   ("<tab>" . completion-preview-complete))
+  :config
+  (setq completion-preview-minimum-symbol-length 2)
+  (global-completion-preview-mode 1))
+
 ;; corfu (Completion Overlay Region FUnction)
 (use-package corfu
+  :disabled
   ;; :hook (prog-mode . corfu-mode)   ; not needed with corfu-global-mode
   ;; :hook (corfu-mode . my/corfu-comp-style)
   :bind (:map corfu-map
@@ -2357,6 +2376,7 @@ the window so that the streaming position appears near the bottom."
 ;; corfu-echo (show Corfu candidate documentation in echo area)
 ;;   Note, this is an extension included in the Corfu package
 (use-package corfu-echo
+  :disabled
   :after corfu
   :config
   (corfu-echo-mode 1))
@@ -2364,12 +2384,13 @@ the window so that the streaming position appears near the bottom."
 ;; corfu-info (show Corfu candidate information in a separate buffer)
 ;;   Note, this is an extension included in the Corfu package
 (use-package corfu-info
+  :disabled
   :after corfu)
 
 ;; cape (Completion At Point Extensions)
 (use-package cape
   :ensure-system-package "/usr/share/dict/words"
-  :after corfu
+  :after (:any corfu completion-preview)
   :bind (("C-c u p" . completion-at-point)   ; capf
          ("C-c u a" . cape-abbrev)
          ("C-c u d" . cape-dabbrev)          ; or dabbrev-completion
@@ -2464,6 +2485,7 @@ Elisp code explicitly in arbitrary buffers.")
   ;; Collect dabbrev candidates from project buffers
   (cape-dabbrev-buffer-function #'aj8/cape-project-buffers)
   ;; Sort candidates by length and alphabetically
+  ;;   Only affects Corfu, not completion-preview
   ;;   Also see https://github.com/minad/cape/issues/44
   (corfu-sort-override-function 'corfu-sort-length-alpha))
 
