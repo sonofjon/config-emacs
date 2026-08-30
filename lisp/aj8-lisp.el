@@ -2493,7 +2493,7 @@ reported by `frame-width'.  See `which-key--side-window-max-dimensions'."
     ;; Ensure we return a positive whole number
     (max 10 (floor desc-width-per-column))))
 
-;; Add indicator for Treesitter modes in the modeline
+;; Add indicator for Treesitter modes in the mode line
 (defun aj8/treesit-mode-name ()
   "Set `mode-name' to 'Mode[TS]' if the current major mode has 'ts' in its name."
   (when (string-match-p "ts" (symbol-name major-mode))

@@ -543,7 +543,7 @@
   :config
   ;; Use 'y' or 'n' questions always
   ;; (setq use-short-answers t)
-  ;; Add Treesitter indicator in the modeline
+  ;; Add Treesitter indicator in the mode line
   (add-hook 'after-change-major-mode-hook #'aj8/treesit-mode-name))
 
 ;; epg (the EasyPG library)
