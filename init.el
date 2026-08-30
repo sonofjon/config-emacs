@@ -662,6 +662,8 @@
 
 ;; flymake (a universal on-the-fly syntax checker)
 (use-package flymake
+  ;; Other modes get Flymake via Eglot instead
+  :hook (emacs-lisp-mode . flymake-mode)
   :bind (:map flymake-diagnostics-buffer-mode-map
               ("h" . #'aj8/flymake-goto-ruff-doc)
          :map flymake-project-diagnostics-mode-map
