@@ -530,8 +530,6 @@
   ;; (mark-even-if-inactive nil)
   ;; Use longer pulse
   (pulse-delay 0.05)   ; default is 0.03
-  ;; Delete selection on edit
-  (delete-selection-mode 1)
   ;; Use TAB for symbol completion (after indentation)
   (tab-always-indent 'complete)
   ;; Increase history length
@@ -541,6 +539,8 @@
   ;; Use the system's trash can
   (delete-by-moving-to-trash t)
   :config
+  ;; Delete selection on edit
+  (delete-selection-mode 1)
   ;; Use 'y' or 'n' questions always
   ;; (setq use-short-answers t)
   ;; Add Treesitter indicator in the mode line
