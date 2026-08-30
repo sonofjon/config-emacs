@@ -15,6 +15,10 @@
 
 ;;;; Escape codes
 
+;; Provide a fallback so Flymake can load this file in isolation;
+;; early-init.el sets the real value before this file loads
+(defvar aj8/my-terminal-emulator nil)
+
 ;; Add some escape codes for different terminal emulators
 (when (not (display-graphic-p))   ; if using terminal
   (cond

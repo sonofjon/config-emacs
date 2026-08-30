@@ -7,6 +7,18 @@
 ;; Package-Requires: ((emacs "30.1"))
 ;; Keywords: convenience
 
+;;;;; COMPILER DECLARATIONS
+
+;; Forward declarations to silence Flymake's byte-compiler "free
+;; variable" warnings; each variable is defined in a different file,
+;; see the trailing comment on each line below for its source
+(defvar aj8/my-os)                          ; defined in early-init.el
+(defvar package-selected-packages)          ; defined in package
+(defvar package-vc-selected-packages)       ; defined in package
+(defvar use-package-minimum-reported-time)  ; defined in use-package
+(defvar use-package-enable-imenu-support)   ; defined in use-package
+
+
 ;;;;; STARTUP
 
 ;; Check startup time
