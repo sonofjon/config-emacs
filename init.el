@@ -868,6 +868,16 @@
   ;; Group completion candidates by category
   (completions-group t)
   :config
+  ;; Bind M-p/M-n to completion navigation
+  ;;   M-<up>/M-<down> arrive as M-p/M-n, see key-translation-map in
+  ;;   aj8-keys.el
+  (dolist (map (list minibuffer-local-completion-map
+                      minibuffer-local-must-match-map
+                      minibuffer-local-shell-command-map
+                      crm-local-completion-map
+                      crm-local-must-match-map))
+    (keymap-set map "M-p" #'minibuffer-previous-completion)
+    (keymap-set map "M-n" #'minibuffer-next-completion))
   ;; Show recursion depth in the minibuffer prompt
   (minibuffer-depth-indicate-mode 1)
   ;; Don't print helpful inline messages during completion
