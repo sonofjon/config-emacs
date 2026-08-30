@@ -2637,10 +2637,10 @@ Elisp code explicitly in arbitrary buffers.")
               ("C-c o <down>" . combobulate-splice-down)
               ("C-c o <right>" . combobulate-splice-self)
               ("C-c o <left>" . combobulate-splice-parent)
-              ("M-<left>" . nil)
-              ("M-<right>" . nil)
-              ("M-p" . nil)
-              ("M-n" . nil))
+              ("M-<left>" . nil)     ; unbind combobulate-splice-self
+              ("M-<right>" . nil)     ; unbind combobulate-splice-parent
+              ("M-p" . nil)     ; unbind combobulate-navigate-sequence-previous
+              ("M-n" . nil))     ; unbind combobulate-navigate-sequence-next
   :init
   (which-key-add-key-based-replacements "C-c o" "combobulate")
   (which-key-add-key-based-replacements "C-c o B" "builder")
