@@ -782,13 +782,47 @@
   ;; Outline settings
   :hook (emacs-lisp-mode . aj8/outline-headers-for-semicolon-buffers))
 
+;; ;; minibuffer (minibuffer and completion functions)
+;; (use-package minibuffer
+;;   :ensure nil   ; don't install built-in packages
+;;   :bind ("M-o" . aj8/orderless-matching-style-cycle)
+;;   :custom
+;;   ;; Allow minibuffer commands while in the minibuffer
+;;   (enable-recursive-minibuffers t)
+;;   ;; Timeout for messages in active minibuffer
+;;   (minibuffer-message-clear-timeout 1)
+;;   ;; Select completion styles
+;;   ;;   orderless: space-separated components
+;;   ;;   substring: needed for partial completion
+;;   ;;   basic: fallback
+;;   ;; Order from most specific to least specific
+;;   ;; (completion-styles '(orderless substring  basic))
+;;   ;; (completion-styles '(orderless basic))
+;;   (completion-styles '(orderless))
+;;   ;; Show more details for completions
+;;   (completions-detailed t)
+;;   :config
+;;   ;; Show recursion depth in the minibuffer prompt
+;;   (minibuffer-depth-indicate-mode 1)
+;;   ;; Use partial completion for files
+;;   (setq completion-category-defaults nil)
+;;   (add-to-list 'completion-category-overrides
+;;                '((file (styles basic partial-completion)))))
+
 ;; minibuffer (minibuffer and completion functions)
+;;   Reference: https://protesilaos.com/codelog/2026-07-29-emacs-default-minibuffer-completion-overview/
 (use-package minibuffer
   :ensure nil   ; don't install built-in packages
-  :bind ("M-o" . aj8/orderless-matching-style-cycle)
+  ;; :bind
+  ;; ( :map completion-in-region-mode-map
+  ;;   ("M-i" . minibuffer-choose-completion)
+  ;;   ("M-n" . minibuffer-next-completion)
+  ;;   ("M-p" . minibuffer-previous-completion))
   :custom
   ;; Allow minibuffer commands while in the minibuffer
   (enable-recursive-minibuffers t)
+  ;; Don't restore window configurations on exit from minibuffer
+  ;; (read-minibuffer-restore-windows nil)
   ;; Timeout for messages in active minibuffer
   (minibuffer-message-clear-timeout 1)
   ;; Select completion styles
@@ -799,11 +833,31 @@
   ;; (completion-styles '(orderless substring  basic))
   ;; (completion-styles '(orderless basic))
   (completion-styles '(orderless))
-  ;; Show more details for completions
+  ;; Don't show help message in *Completions* buffer
+  (completion-show-help nil)
+  ;; Display completions with details added as prefix/suffix
   (completions-detailed t)
+  ;; Display completions down the screen in one column
+  (completions-format 'one-column)
+  ;; Limit the height of the *Completions* buffer window
+  (completions-max-height 12)
+  ;; Sort candidates by minibuffer-sort-by-history
+  (completions-sort 'historical)
+  ;; Display the *Completions* buffer when completion cannot be done
+  (completion-auto-help t)
+  ;; Don't automatically select the window showing the *Completions* buffer
+  (completion-auto-select nil)
+  ;; Enable navigation of candidates in *Completions* from minibuffer
+  (minibuffer-visible-completions t)
+  ;; Display *Completions* buffer eagerly
+  (completion-eager-display t)
+  ;; Update the *Completions* buffer as you type
+  (completion-eager-update t)
   :config
   ;; Show recursion depth in the minibuffer prompt
   (minibuffer-depth-indicate-mode 1)
+  ;; Don't print helpful inline messages during completion
+  (setq completion-show-inline-help nil)
   ;; Use partial completion for files
   (setq completion-category-defaults nil)
   (add-to-list 'completion-category-overrides
@@ -2457,6 +2511,7 @@ Elisp code explicitly in arbitrary buffers.")
 ;; vertico (VERTical Interactive COmpletion)
 ;;   MAYBE: Set up vertico-grid-mode (with vertico-multiform-mode)
 (use-package vertico
+  :disabled
   :bind (("M-R" . #'vertico-repeat)
          :map vertico-map
          ("?" . minibuffer-completion-help)
@@ -2488,6 +2543,7 @@ Elisp code explicitly in arbitrary buffers.")
 
 ;; minibuffer-side-window-mode (side-window display for minibuffer packages)
 (use-package minibuffer-side-window-mode
+  :disabled
   :after (:any vertico embark which-key)
   :config
   (minibuffer-side-window-mode 1))
