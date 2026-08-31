@@ -825,11 +825,11 @@
 ;;   Reference: https://protesilaos.com/codelog/2026-07-29-emacs-default-minibuffer-completion-overview/
 (use-package minibuffer
   :ensure nil   ; don't install built-in packages
-  ;; :bind
-  ;; ( :map completion-in-region-mode-map
-  ;;   ("M-i" . minibuffer-choose-completion)
-  ;;   ("M-n" . minibuffer-next-completion)
-  ;;   ("M-p" . minibuffer-previous-completion))
+  :bind
+  ( :map completion-in-region-mode-map
+    ;; ("M-i" . minibuffer-choose-completion)
+    ("M-n" . minibuffer-next-completion)
+    ("M-p" . minibuffer-previous-completion))
   :custom
   ;; Allow minibuffer commands while in the minibuffer
   (enable-recursive-minibuffers t)
@@ -868,16 +868,20 @@
   ;; Group completion candidates by category
   (completions-group t)
   :config
-  ;; Bind M-p/M-n to completion navigation
-  ;;   M-<up>/M-<down> arrive as M-p/M-n, see key-translation-map in
-  ;;   aj8-keys.el
+  ;; Bind M-i/M-p/M-n to completion choose/navigation
+  ;;   Mirrors completion-in-region-mode-map
   (dolist (map (list minibuffer-local-completion-map
                       minibuffer-local-must-match-map
-                      minibuffer-local-shell-command-map
-                      crm-local-completion-map
-                      crm-local-must-match-map))
+                      minibuffer-local-shell-command-map))
+    (keymap-set map "M-i" #'minibuffer-choose-completion)
     (keymap-set map "M-p" #'minibuffer-previous-completion)
     (keymap-set map "M-n" #'minibuffer-next-completion))
+  (with-eval-after-load 'crm
+    (dolist (map (list crm-local-completion-map
+                        crm-local-must-match-map))
+      (keymap-set map "M-i" #'minibuffer-choose-completion)
+      (keymap-set map "M-p" #'minibuffer-previous-completion)
+      (keymap-set map "M-n" #'minibuffer-next-completion)))
   ;; Show recursion depth in the minibuffer prompt
   (minibuffer-depth-indicate-mode 1)
   ;; Don't print helpful inline messages during completion
@@ -2358,15 +2362,16 @@ the window so that the streaming position appears near the bottom."
   :ensure nil   ; don't install built-in packages
   :demand t
   :diminish
-  ;; :bind
-  ;; ( :map completion-preview-active-mode-map
-  ;;   ("M-i" . completion-preview-insert-word)
-  ;;   ("M-n" . completion-preview-next-candidate)
-  ;;   ("M-p" . completion-preview-prev-candidate)
-  ;;   ("M-<return>" . completion-preview-insert)
-  ;;   ;; With TAB we effectively defer to the *Completions* buffer to
-  ;;   ;; show more completion candidates at once.
-  ;;   ("<tab>" . completion-preview-complete))
+  :bind
+  ( :map completion-preview-active-mode-map
+    ("M-i" . nil)   ; unbind completion-preview-complete (moved to M-RET)
+    ("TAB" . completion-preview-insert-word)
+    ("<backtab>" . completion-preview-insert)
+    ("M-n" . completion-preview-next-candidate)
+    ("M-p" . completion-preview-prev-candidate)
+    ;; With M-RET we effectively defer to the *Completions* buffer to
+    ;; show more completion candidates at once.
+    ("M-RET" . completion-preview-complete))
   :config
   (setq completion-preview-minimum-symbol-length 2)
   (global-completion-preview-mode 1))
