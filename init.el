@@ -1713,7 +1713,7 @@
          ("C-c t m" . gptel-menu)
          ("C-c t q" . gptel-abort)
          ("C-c RET" . gptel-send)
-         ("C-c C-<return>" . gptel-menu)
+         ("C-c C-RET" . gptel-menu)
          ("C-c C-g" . gptel-abort)
          :map gptel-mode-map
          ("C-c M-n" . gptel-end-of-response)
