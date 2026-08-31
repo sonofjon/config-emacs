@@ -1598,6 +1598,10 @@
   ;; Enable viewport mode
   ;; (agent-shell-prefer-viewport-interaction t))
   :config
+  ;; Disable sleep blocking on WSL
+  ;;   (no interactive dbus/logind auth available)
+  (when (eq aj8/my-os 'wsl)
+    (setq agent-shell-inhibit-system-sleep nil))
   ;; Disable comint completion in agent-shell
   (add-hook 'agent-shell-mode-hook
             (lambda () (setq-local comint-dynamic-complete-functions nil))))
