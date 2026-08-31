@@ -18,7 +18,7 @@ Lists:          _m_: new item
 Outline:        _k_: move up        _j_: move down
                 _h_: promote        _l_: demote
 Tables:         _a_: align          _s_: sort           _t_: transpose
-  Navigation    _n_: next row       _p_: previous row
+  Navigation    _n_: next row
                 _f_: forward cell   _b_: backward cell
   Rows          ___: insert         _-_: delete
   Columns       _|_: insert         _\\_: delete
