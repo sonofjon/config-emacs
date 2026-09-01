@@ -1632,48 +1632,39 @@ If current program is `aspell', switch to `hunspell', and vice versa."
 ;; Setup for web-mode
 (defun my/web-mode-flyspell-verify ()
   "Flyspell predicate of `web-mode'."
-  (let* ((font-face-at-point (get-text-property (- (point) 1) 'face))
+  (let* ((f (get-text-property (- (point) 1) 'face))
          rlt)
     ;; If rlt is t, the word at point is POSSIBLY a typo, continue checking.
-    (setq rlt t)
     ;; if rlt is nil, the word at point is definitely NOT a typo.
-    ;; (setq rlt nil)
+    (cond
+     ;; Check the words with these font faces, possibly.
+     ;; this *blacklist* will be tweaked in next condition
+     ((not (memq f '(web-mode-html-attr-value-face
+                     web-mode-html-tag-face
+                     web-mode-html-attr-name-face
+                     web-mode-constant-face
+                     web-mode-doctype-face
+                     web-mode-keyword-face
+                     web-mode-comment-face ;; focus on get html label right
+                     web-mode-function-name-face
+                     web-mode-variable-name-face
+                     web-mode-css-property-name-face
+                     web-mode-css-selector-face
+                     web-mode-css-color-face
+                     web-mode-type-face
+                     web-mode-block-control-face)))
+      (setq rlt t))
+     ;; check attribute value under certain conditions
+     ((memq f '(web-mode-html-attr-value-face))
+      (save-excursion
+        (search-backward-regexp "=['\"]" (line-beginning-position) t)
+        (backward-char)
+        (setq rlt (string-match "^\\(value\\|class\\|ng[A-Za-z0-9-]*\\)$"
+                                (thing-at-point 'symbol)))))
+     ;; finalize the blacklist
+     (t
+      (setq rlt nil)))
     rlt))
-
-;; Setup for web-mode (with blacklist)
-;; (defun my/web-mode-flyspell-verify ()
-;;   "Flyspell predicate of `web-mode'."
-;;   (let* ((f (get-text-property (- (point) 1) 'face))
-;;          rlt)
-;;     (cond
-;;      ;; Check the words with these font faces, possibly.
-;;      ;; this *blacklist* will be tweaked in next condition
-;;      ((not (memq f '(web-mode-html-attr-value-face
-;;                      web-mode-html-tag-face
-;;                      web-mode-html-attr-name-face
-;;                      web-mode-constant-face
-;;                      web-mode-doctype-face
-;;                      web-mode-keyword-face
-;;                      web-mode-comment-face ;; focus on get html label right
-;;                      web-mode-function-name-face
-;;                      web-mode-variable-name-face
-;;                      web-mode-css-property-name-face
-;;                      web-mode-css-selector-face
-;;                      web-mode-css-color-face
-;;                      web-mode-type-face
-;;                      web-mode-block-control-face)))
-;;       (setq rlt t))
-;;      ;; check attribute value under certain conditions
-;;      ((memq f '(web-mode-html-attr-value-face))
-;;       (save-excursion
-;;         (search-backward-regexp "=['\"]" (line-beginning-position) t)
-;;         (backward-char)
-;;         (setq rlt (string-match "^\\(value\\|class\\|ng[A-Za-z0-9-]*\\)$"
-;;                                 (thing-at-point 'symbol)))))
-;;      ;; finalize the blacklist
-;;      (t
-;;       (setq rlt nil)))
-;;     rlt))
 
 ;; Goto previous flyspell error
 (defun my/flyspell-goto-previous-error (arg)
