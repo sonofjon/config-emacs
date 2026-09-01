@@ -240,6 +240,15 @@ the hook."
   (when-let* ((proc (get-process "emacs-mcp-unix-server")))
     (set-process-query-on-exit-flag proc nil)))
 
+;; Show agent-shell manager
+(defun aj8/agent-shell-manager-show ()
+  "Display the `agent-shell' manager unless it is already visible.
+Unlike `agent-shell-manager-toggle' this never hides the manager, so it
+is safe to call from `agent-shell-mode-hook'."
+  (unless (get-buffer-window "*Agent-Shell Buffers*")
+    (save-selected-window
+      (agent-shell-manager-toggle))))
+
 ;;;; Buffers
 
 ;;; Buffer switching
