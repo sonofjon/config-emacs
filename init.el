@@ -683,6 +683,7 @@
 
 ;; flyspell (on-the-fly spell checker)
 (use-package flyspell
+  :disabled
   :ensure nil   ; don't install built-in packages
   :diminish
   :hook ((text-mode . flyspell-mode)
