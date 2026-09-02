@@ -14,3 +14,10 @@
       visible, so creating a second agent shell closes it. Show the manager
       only when it is not displayed instead. The comment above the hook also
       says first agent-shell buffer, while the hook runs for every one.
+- [ ] Quote code identifiers with backticks in the Markdown files, following
+      the convention applied in the `tdm.anonymization.python` project
+      (commit b6eb225, "TODO.md: Quote code identifiers with backticks",
+      with its `TODO.md` as the worked example). Filenames, paths,
+      functions, classes, variables and constants are quoted; field and
+      column names stay unquoted in any case style. `docs/completion.md`
+      and `data/directive.md` carry most of the unquoted identifiers.
