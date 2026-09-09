@@ -2093,6 +2093,12 @@ the window so that the streaming position appears near the bottom."
 (use-package markdown-mode
   :mode "\\.md$"
   ;; :mode ("\\.md$" . markdown-view-mode)
+  ;; Defer fontification with idle timer
+  ;;   markdown-mode rescans the whole blank-line delimited block per inline
+  ;;   marker, so scrolling or searching a large file with few blank lines
+  ;;   stalls on every keystroke; deferring keeps editing responsive and
+  ;;   fontifies once Emacs pauses (performance fix)
+  ;; :hook (markdown-mode . (lambda () (setq-local jit-lock-defer-time 0.05)))
   :bind (:map markdown-mode-map
               ("M-p" . nil)     ; unbind markdown-previous-link
               ("M-n" . nil)         ; unbind markdown-next-link
