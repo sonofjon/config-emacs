@@ -2208,6 +2208,10 @@ the window so that the streaming position appears near the bottom."
   ;; Prompt for install
   (treesit-auto-install 'prompt)
   :config
+  ;; Autoload markdown-ts-mode
+  ;;   markdown-ts-mode is not autoloaded; treesit-auto needs it defined
+  ;;   before it can remap markdown-mode to it
+  (autoload 'markdown-ts-mode "markdown-ts-mode" nil t)
   ;; Add tree-sitter modes to auto-mode-alist
   (treesit-auto-add-to-auto-mode-alist 'all)
   ;; Enable globally
