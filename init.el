@@ -194,7 +194,7 @@
         (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
         (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
         (hideshow-cycle :url "https://github.com/sonofjon/hideshow-cycle.el" :rev :newest)
-        (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)
+        ;; (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)   ; disabled with markdown-mode
         (mcp-server :url "https://github.com/rhblind/emacs-mcp-server.git" :rev :newest)
         (minibuffer-side-window-mode :url "https://github.com/sonofjon/minibuffer-side-window-mode.el.git" :rev :newest)
         (monet :url "https://github.com/stevemolitor/monet.git" :rev :newest)
@@ -320,8 +320,9 @@
          :ensure-system-package ,(aj8/system-package-name 'ls)
          :bind (:map dired-mode-map
                      ("." . dired-omit-mode)
-                     ("r" . aj8/dired-sort-reverse-toggle)
-                     ("C-c C-a d" . markdown-links-insert-from-dired))
+                     ("r" . aj8/dired-sort-reverse-toggle))
+                     ;; ("C-c C-a d" . markdown-links-insert-from-dired))
+                                                ; disabled with markdown-links
          :init
          ;; Enable Dired-X
          (with-eval-after-load 'dired (require 'dired-x))
@@ -2115,6 +2116,7 @@ the window so that the streaming position appears near the bottom."
 
 ;; markdown-links (insert Markdown links from various sources)
 (use-package markdown-links
+  :disabled
   :after markdown-mode
   :commands (markdown-links-insert-from-files
              markdown-links-insert-from-buffers
@@ -3381,7 +3383,7 @@ FILE DIFFS:
 
 ;; hydra (make bindings that stick around)
 (use-package hydra
-  :bind (("C-c y m" . hydra-markdown/body)
+  :bind (;; ("C-c y m" . hydra-markdown/body)   ; disabled with markdown-mode
          ("C-c y w" . hydra-window/body)
          ("C-c y s" . hydra-scroll/body)
          ("C-c y n" . hydra-navigation/body)
@@ -3420,6 +3422,7 @@ FILE DIFFS:
 
 ;; obsidian (Obsidian notes interface)
 (use-package obsidian
+  :disabled
   :bind (:map obsidian-mode-map
               ("C-c C-o" . obsidian-follow-link-at-point))   ; default: markdown-follow-thing-at-point
               ;; ("C-c C-b" . obsidian-backlink-jump)
