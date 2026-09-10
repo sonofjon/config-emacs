@@ -663,7 +663,10 @@
   ;; Revert without querying
   (revert-without-query '(".*"))
   ;; Increase maximum file size that can be opened without a warning
-  (large-file-warning-threshold 50000000))
+  (large-file-warning-threshold 50000000)
+  :config
+  ;; Trust own config files so Flymake can byte-compile them
+  (add-to-list 'trusted-content "~/dotfiles/config-emacs/"))
 
 ;; find-func (find the definition of the Emacs Lisp function near point)
 (use-package find-func
