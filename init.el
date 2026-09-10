@@ -1790,7 +1790,7 @@
     :key (gptel-api-key-from-auth-source "api.anthropic.com" "apikey")
     :stream t)   ; make available
   ;; Set as default backend
-  ;; (setq gptel-backend "Claude")
+  ;; (setq gptel-backend (gptel-get-backend "Claude"))
   ;; (setq gptel-model 'claude-sonnet-4-20250514)
   ;; === Gemini ===
   (gptel-make-gemini "Gemini"
@@ -1798,7 +1798,7 @@
           "generativelanguage.googleapis.com" "apikey")
     :stream t)   ; make available
   ;; Set as default backend
-  ;; (setq gptel-backend "Gemini")
+  ;; (setq gptel-backend (gptel-get-backend "Gemini"))
   ;; (setq gptel-model '`gemini-pro-latest')
   ;; === Alibaba ===
   (gptel-make-openai "Alibaba"
