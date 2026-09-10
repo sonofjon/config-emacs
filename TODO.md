@@ -27,3 +27,14 @@
       major-mode ...)`, and `gptel--parse-media-links` dispatches on
       `(eql 'markdown-mode)`, so neither reaches `markdown-ts-mode`. Also
       update the `pcase` in `aj8/gptel-write-buffer`.
+- [ ] Conform all hook registration to the convention: `:hook` only when
+      hooking a package onto its own mode; `add-hook` in `:config` (or
+      `:init`) when hooking onto any other mode. Many blocks currently use
+      `:hook` for a foreign mode -- `abbrev` (text-mode),
+      `display-line-numbers` (prog-mode), `flymake` and `smartparens`
+      (emacs-lisp-mode), `flyspell`, `gptel-magit` and `magit-todos`
+      (magit-mode), the `flymake-*` linters, the Eglot `:hook` list, and
+      more. Exception: `add-hook` is also required where a non-default
+      depth/append or a buffer-local hook is needed, which `:hook` cannot
+      express.
+
