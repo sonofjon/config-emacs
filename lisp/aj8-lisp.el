@@ -1404,6 +1404,26 @@ ARG specifies the number of times to move backward."
   ;; Don't use 'conf-outline-level (doesn't use outline-heading-alist)
   (setq-local outline-level 'aj8/outline-level))
 
+;; Markdown list items
+;;   Commented out pending research into a cleaner fix (see the
+;;   markdown-ts-mode use-package block).  markdown-ts-mode has no
+;;   list-item navigation; this widens treesit-outline-predicate so
+;;   list items count as outline nodes for navigation and folding.
+;; (defun aj8/markdown-ts-outline-list-items ()
+;;   "Include Markdown list items as outline nodes in `markdown-ts-mode'.
+;; Widens the buffer-local `treesit-outline-predicate' so list items
+;; count as outline nodes for navigation and folding, which
+;; `markdown-ts-mode' otherwise leaves invisible to outline."
+;;   ;; Match heading sections (the default) plus list_item nodes
+;;   (setq-local treesit-outline-predicate
+;;               (lambda (node)
+;;                 (let ((type (treesit-node-type node)))
+;;                   (or (equal type "list_item")
+;;                       (and (equal type "section")
+;;                            (equal (treesit-node-type
+;;                                    (treesit-node-child node 0))
+;;                                   "atx_heading")))))))
+
 ;; Return outline heading level
 (defun aj8/outline-level ()
   "Return the depth to which a statement is nested in the outline.

@@ -1001,17 +1001,10 @@
   :hook (outline-mode . (lambda () (setq outline-regexp "[*]+")))
   :bind (("C-c O" . outline-minor-mode)
          :map outline-minor-mode-map
-         ;; Heading navigation and restructuring for outline-minor-mode
-         ;; works in any buffer that enables the mode, markdown-ts-mode
-         ;; included; shadows the global move-dup bindings on these keys
          ("C-c <up>" . outline-previous-visible-heading)
          ("C-c <down>" . outline-next-visible-heading)
          ("C-c C-<up>" . outline-backward-same-level)
-         ("C-c C-<down>" . outline-forward-same-level)
-         ("C-c C-M-p" . outline-move-subtree-up)
-         ("C-c C-M-n" . outline-move-subtree-down)
-         ("C-c C-M-<left>" . outline-promote)
-         ("C-c C-M-<right>" . outline-demote))
+         ("C-c C-<down>" . outline-forward-same-level))
   :init
   (which-key-add-key-based-replacements "C-c @" "outline")
   :custom
@@ -2101,6 +2094,19 @@ the window so that the streaming position appears near the bottom."
 ;; lua-mode (major-mode for editing Lua scripts)
 (use-package lua-mode
   :mode ("\\.lua$"))
+
+;; markdown-ts-mode (tree sitter support for Markdown)
+(use-package markdown-ts-mode
+  :ensure nil   ; don't install built-in packages
+  ;; TODO: markdown-ts-mode has no list-item navigation; research a
+  ;;   cleaner fix than aj8/markdown-ts-outline-list-items, which widens
+  ;;   treesit-outline-predicate and is commented out for now
+  ;; :hook (markdown-ts-mode . aj8/markdown-ts-outline-list-items)
+  :bind (:map markdown-ts-mode-map
+              ("C-c C-M-<left>" . markdown-ts-promote)
+              ("C-c C-M-<right>" . markdown-ts-demote)
+              ("C-c C-M-p" . markdown-ts-move-subtree-up)
+              ("C-c C-M-n" . markdown-ts-move-subtree-down)))
 
 ;; markdown-links (insert Markdown links from various sources)
 ;;   TODO: port markdown-links to markdown-ts-mode, then re-enable
