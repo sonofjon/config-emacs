@@ -199,7 +199,11 @@ ARGS are passed to ORIG-FUN."
                             (_ (user-error "Unsupported major mode"))))
                (filename (expand-file-name
                           (concat "gptel-" suffix "." extension) directory)))
-          (write-file filename 'confirm))))
+          ;; Keep the major mode
+          ;;   write-file would otherwise re-apply auto-mode from the new
+          ;;   file name and disable gptel-mode
+          (let ((change-major-mode-with-file-name nil))
+            (write-file filename 'confirm)))))
     chat-buf))
 
 ;; Auto-save gptel buffers
