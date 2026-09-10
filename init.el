@@ -1000,7 +1000,19 @@
 (use-package outline
   :ensure nil   ; don't install built-in packages
   :hook (outline-mode . (lambda () (setq outline-regexp "[*]+")))
-  :bind (("C-c O" . outline-minor-mode))
+  :bind (("C-c O" . outline-minor-mode)
+         :map outline-minor-mode-map
+         ;; Heading navigation and restructuring for outline-minor-mode
+         ;; works in any buffer that enables the mode, markdown-ts-mode
+         ;; included; shadows the global move-dup bindings on these keys
+         ("C-c <up>" . outline-previous-visible-heading)
+         ("C-c <down>" . outline-next-visible-heading)
+         ("C-c C-<up>" . outline-backward-same-level)
+         ("C-c C-<down>" . outline-forward-same-level)
+         ("C-c C-M-p" . outline-move-subtree-up)
+         ("C-c C-M-n" . outline-move-subtree-down)
+         ("C-c C-M-<left>" . outline-promote)
+         ("C-c C-M-<right>" . outline-demote))
   :init
   (which-key-add-key-based-replacements "C-c @" "outline")
   :custom
@@ -2089,30 +2101,6 @@ the window so that the streaming position appears near the bottom."
 ;; lua-mode (major-mode for editing Lua scripts)
 (use-package lua-mode
   :mode ("\\.lua$"))
-
-;; markdown-mode (major-mode for editing Markdown files)
-(use-package markdown-mode
-  :mode "\\.md$"
-  ;; :mode ("\\.md$" . markdown-view-mode)
-  ;; Defer fontification with idle timer
-  ;;   markdown-mode rescans the whole blank-line delimited block per inline
-  ;;   marker, so scrolling or searching a large file with few blank lines
-  ;;   stalls on every keystroke; deferring keeps editing responsive and
-  ;;   fontifies once Emacs pauses (performance fix)
-  ;; :hook (markdown-mode . (lambda () (setq-local jit-lock-defer-time 0.05)))
-  :bind (:map markdown-mode-map
-              ("M-p" . nil)     ; unbind markdown-previous-link
-              ("M-n" . nil)         ; unbind markdown-next-link
-              ("C-c <left>" . nil)     ; unbind markdown-promote
-              ("C-c <right>" . nil)     ; unbind markdown-demote
-              ("C-c C-<up>" . markdown-outline-previous-same-level)
-              ("C-c C-<down>" . markdown-outline-next-same-level)
-              ("C-c <up>" . markdown-outline-previous)
-              ("C-c <down>" . markdown-outline-next)
-              ("C-c C-M-n" . markdown-move-down)
-              ("C-c C-M-p" . markdown-move-up)
-              ("C-c C-M-<left>" . markdown-promote)
-              ("C-c C-M-<right>" . markdown-demote)))
 
 ;; markdown-links (insert Markdown links from various sources)
 (use-package markdown-links
