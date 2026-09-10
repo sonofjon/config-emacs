@@ -3371,7 +3371,7 @@ FILE DIFFS:
 
 ;; hydra (make bindings that stick around)
 (use-package hydra
-  :bind (;; ("C-c y m" . hydra-markdown/body)   ; disabled with markdown-mode
+  :bind (("C-c y m" . hydra-markdown/body)
          ("C-c y w" . hydra-window/body)
          ("C-c y s" . hydra-scroll/body)
          ("C-c y n" . hydra-navigation/body)

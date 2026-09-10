@@ -10,51 +10,45 @@
 ;; Markdown
 (defhydra hydra-markdown (:hint nil :foreign-keys run)
   "
-Format:         _B_: bold           _I_: italic
-                _Q_: quote          _C_: code           _P_: pre-formatted
-Headings:       _H_: automatic
-                _1_: h1       _2_: h2       _3_: h3       _4_: h4
-Lists:          _m_: new item
+Format:         _B_: bold           _I_: italic         _S_: strikethrough
+                _C_: code           _P_: pre-formatted  _Q_: quote
+Lists:          _m_: new item       _x_: toggle check
 Outline:        _k_: move up        _j_: move down
-                _h_: promote        _l_: demote
-Tables:         _a_: align          _s_: sort           _t_: transpose
+                _h_: promote        _l_: demote         _TAB_: fold
+Tables:         _a_: align          _t_: transpose
   Navigation    _n_: next row
                 _f_: forward cell   _b_: backward cell
   Rows          ___: insert         _-_: delete
   Columns       _|_: insert         _\\_: delete
                 _<_: move left      _>_: move right
 "
-  ("B" markdown-insert-bold)
-  ("I" markdown-insert-italic)
-  ("Q" markdown-insert-blockquote :color gray)
-  ("C" markdown-insert-code :color gray)
-  ("P" markdown-insert-pre :color gray)
+  ("B" (markdown-ts-emphasize ?b))
+  ("I" (markdown-ts-emphasize ?i))
+  ("S" (markdown-ts-emphasize ?s))
+  ("C" (markdown-ts-emphasize ?c) :color gray)
+  ("P" (markdown-ts-insert-structure ?`) :color gray)
+  ("Q" (markdown-ts-insert-structure ?q) :color gray)
 
-  ("H" markdown-insert-header-dwim)
-  ("1" markdown-insert-header-atx-1)
-  ("2" markdown-insert-header-atx-2)
-  ("3" markdown-insert-header-atx-3)
-  ("4" markdown-insert-header-atx-4)
+  ("m" markdown-ts-insert-list-item)
+  ("x" markdown-ts-toggle-checkbox :color gray)
 
-  ("m" markdown-insert-list-item)
+  ("h" markdown-ts-promote)
+  ("l" markdown-ts-demote)
+  ("k" markdown-ts-move-subtree-up)
+  ("j" markdown-ts-move-subtree-down)
+  ("TAB" markdown-ts-outline-cycle :color gray)
 
-  ("h" markdown-promote)
-  ("l" markdown-demote)
-  ("k" markdown-move-up)
-  ("j" markdown-move-down)
-
-  ("a" markdown-table-align)
-  ("s" markdown-table-sort-lines)
-  ("t" markdown-table-transpose)
-  ("n" markdown-table-next-row)
-  ("f" markdown-table-forward-cell)
-  ("b" markdown-table-backward-cell)
-  ("_" markdown-table-insert-row)
-  ("-" markdown-table-delete-row)
-  ("|" markdown-table-insert-column)
-  ("\\" markdown-table-delete-column)
-  ("<" markdown-table-move-column-left)
-  (">" markdown-table-move-column-right)
+  ("a" markdown-ts-table-align-table)
+  ("t" markdown-ts-table-transpose-table)
+  ("n" markdown-ts-table-next-row)
+  ("f" markdown-ts-table-next-cell)
+  ("b" markdown-ts-table-previous-cell)
+  ("_" markdown-ts-table-insert-row)
+  ("-" markdown-ts-table-delete-row)
+  ("|" markdown-ts-table-insert-column)
+  ("\\" markdown-ts-table-delete-column)
+  ("<" markdown-ts-table-move-column-left)
+  (">" markdown-ts-table-move-column-right)
 
   ("q" nil "quit"))
 
