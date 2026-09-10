@@ -2078,13 +2078,13 @@ the window so that the streaming position appears near the bottom."
 ;; csv-mode (major mode for editing comma/char separated values)
 (use-package csv-mode
   :mode ("\\.csv$")
+  ;; Show line number in mode line for wide lines (default is 200)
+  :hook (csv-mode . (lambda ()
+                      (setq-local line-number-display-limit-width 1000)))
   :bind (:map csv-mode-map
               ("C-c M-a" . my/csv-align-visible)
               ("C-M-<left>" . csv-backward-field)
               ("C-M-<right>" . csv-forward-field))
-  ;; Show line number in mode line for wide lines (default is 200)
-  :hook (csv-mode . (lambda ()
-                      (setq-local line-number-display-limit-width 1000)))
   :config
   (defun my/csv-align-visible (&optional arg)
     "Align visible fields."
