@@ -180,7 +180,7 @@ This function saves the chat buffer to the current project's root
 directory.  If no project is detected, it prompts the user to choose a
 directory for saving.  It constructs a filename based on the current
 timestamp and the major mode of the buffer (with support for `org-mode'
-and `markdown-mode').
+and `text-mode').
 
 ORIG-FUN is the original function being advised.
 ARGS are passed to ORIG-FUN."
@@ -195,7 +195,7 @@ ARGS are passed to ORIG-FUN."
                (suffix (format-time-string "%Y%m%dT%H%M" (current-time)))
                (extension (pcase major-mode
                             ('org-mode "org")
-                            ('markdown-mode "md")
+                            ('text-mode "md")
                             (_ (user-error "Unsupported major mode"))))
                (filename (expand-file-name
                           (concat "gptel-" suffix "." extension) directory)))

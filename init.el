@@ -142,7 +142,6 @@
 	magit-gptcommit
 	magit-todos
         marginalia
-        markdown-mode
         mcp
         mosey
         move-dup
@@ -428,7 +427,7 @@
          ((json-mode js-json-mode json-ts-mode) . aj8/eglot-ensure-non-remote)
          (latex-mode . aj8/eglot-ensure-non-remote)
          ((lua-mode lua-ts-mode) . aj8/eglot-ensure-non-remote)
-         ((markdown-mode markdown-ts-mode) . aj8/eglot-ensure-non-remote)
+         (markdown-ts-mode . aj8/eglot-ensure-non-remote)
          (python-base-mode . aj8/eglot-ensure-non-remote)
          (toml-ts-mode . aj8/eglot-ensure-non-remote)   ; no toml-mode
          ((yaml-mode yaml-ts-mode) . aj8/eglot-ensure-non-remote))
@@ -1741,7 +1740,8 @@
                                         ; add label for prefix key
   :custom
   ;; Set mode
-  ;; (gptel-default-mode 'text-mode)   ; default: markdown-mode
+  ;;   markdown-ts-mode once gptel supports it (see TODO.md)
+  (gptel-default-mode 'text-mode)
   ;; Track media
   (gptel-track-media t)
   ;; Don't use Curl
@@ -2103,6 +2103,7 @@ the window so that the streaming position appears near the bottom."
   :mode ("\\.lua$"))
 
 ;; markdown-links (insert Markdown links from various sources)
+;;   TODO: port markdown-links to markdown-ts-mode, then re-enable
 (use-package markdown-links
   :disabled
   :after markdown-mode
@@ -2199,8 +2200,8 @@ the window so that the streaming position appears near the bottom."
   (treesit-auto-install 'prompt)
   :config
   ;; Autoload markdown-ts-mode
-  ;;   markdown-ts-mode is not autoloaded; treesit-auto needs it defined
-  ;;   before it can remap markdown-mode to it
+  ;;   It is not autoloaded, so treesit-auto would skip it when
+  ;;   registering .md in the calls below
   (autoload 'markdown-ts-mode "markdown-ts-mode" nil t)
   ;; Add tree-sitter modes to auto-mode-alist
   (treesit-auto-add-to-auto-mode-alist 'all)
@@ -3402,13 +3403,14 @@ FILE DIFFS:
                                     vertico-next
                                     isearch-printing-char
                                     backward-delete-char-untabify
-                                    markdown-outdent-or-delete
                                     mwheel-scroll))
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
 ;; obsidian (Obsidian notes interface)
+;;   TODO: requires markdown-mode (removed); remove obsidian, or wait for
+;;   markdown-ts-mode support
 (use-package obsidian
   :disabled
   :bind (:map obsidian-mode-map

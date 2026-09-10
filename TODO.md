@@ -21,3 +21,9 @@
       functions, classes, variables and constants are quoted; field and
       column names stay unquoted in any case style. `docs/completion.md`
       and `data/directive.md` carry most of the unquoted identifiers.
+- [ ] Switch gptel chat buffers from `text-mode` to `markdown-ts-mode`
+      once gptel supports it. `gptel-prompt-prefix-alist` and
+      `gptel-response-prefix-alist` are looked up with `(alist-get
+      major-mode ...)`, and `gptel--parse-media-links` dispatches on
+      `(eql 'markdown-mode)`, so neither reaches `markdown-ts-mode`. Also
+      update the `pcase` in `aj8/gptel-write-buffer`.
