@@ -2109,7 +2109,9 @@ the window so that the streaming position appears near the bottom."
               ("C-c C-M-<left>" . markdown-ts-promote)
               ("C-c C-M-<right>" . markdown-ts-demote)
               ("C-c C-M-p" . markdown-ts-move-subtree-up)
-              ("C-c C-M-n" . markdown-ts-move-subtree-down)))
+              ("C-c C-M-n" . markdown-ts-move-subtree-down)
+              ("M-<left>" . nil)   ; unbind markdown-ts-promote
+              ("M-<right>" . nil)))   ; unbind markdown-ts-demote
 
 ;; markdown-links (insert Markdown links from various sources)
 ;;   TODO: port markdown-links to markdown-ts-mode, then re-enable
