@@ -1769,6 +1769,11 @@
   ;; Default model
   (setq-default gptel-model 'gpt-5-mini)
   ;; === ChatGPT ===
+  (gptel-make-openai "ChatGPT"
+    :key (gptel-api-key-from-auth-source "api.openai.com" "apikey")
+    :stream t)   ; make available
+  ;; Set as default backend
+  (setq gptel-backend (gptel-get-backend "ChatGPT"))
   ;; Custom OpenAI backend
   ;; (gptel-make-openai "ChatGPT-NoStream"
   ;;   :key (gptel-api-key-from-auth-source
