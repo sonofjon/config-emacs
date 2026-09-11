@@ -238,6 +238,24 @@ the hook."
         (when (> (buffer-size buf) 0)
           (display-buffer buf nil))))))
 
+;; Check if a file is a gptel chat file
+(defun aj8/gptel-chat-file-p ()
+  "Return non-nil if the visited file is a saved gptel chat file.
+Meant to be used as a `magic-mode-alist' match function."
+  (and buffer-file-name
+       (string-match-p "/gptel-.*\\.md\\'" buffer-file-name)))
+
+;; Load gptel and set the major mode
+(defun aj8/gptel-chat-file-mode ()
+  "Load gptel and set the major mode for a saved gptel chat file.
+Local Variables in a saved gptel chat file (e.g. `gptel-system-prompt')
+are not recognized as safe until gptel has been loaded, which can
+otherwise cause an error when the file is visited before gptel.  This
+function is meant to be used as the major mode function for gptel chat
+files in `magic-mode-alist', ensuring gptel is loaded first."
+  (require 'gptel)
+  (funcall gptel-default-mode))
+
 ;; Don't query on exit for MCP server listener process
 (defun aj8/mcp-server-no-query-on-exit ()
   "Set query-on-exit-flag to nil for MCP server listener process."

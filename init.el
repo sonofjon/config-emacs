@@ -1734,6 +1734,15 @@
   (advice-add 'gptel :around #'aj8/gptel-write-buffer)
   (which-key-add-key-based-replacements "C-c t" "gptel")
                                         ; add label for prefix key
+  ;; Load gptel before opening a saved chat file
+  ;;   Avoids an error from unrecognized Local Variables when a chat file is
+  ;;   visited before gptel is loaded (see NEWS for gptel 0.9.9.6).  Uses
+  ;;   magic-mode-alist rather than auto-mode-alist, since the latter is
+  ;;   reordered by treesit-auto (see treesit-auto-add-to-auto-mode-alist),
+  ;;   which would otherwise still route ".md" files to markdown-ts-mode
+  ;;   first.
+  (add-to-list 'magic-mode-alist
+               '(aj8/gptel-chat-file-p . aj8/gptel-chat-file-mode))
   :custom
   ;; Set mode
   ;;   markdown-ts-mode once gptel supports it (see TODO.md)
