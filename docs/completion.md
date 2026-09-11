@@ -206,7 +206,8 @@ candidates. See `completion-eglot-fallback.md` for details and solutions.
     1. cape-file (basic + partial-completion)
     2. cape-dabbrev+dict (orderless)
        - cape-dabbrev
-       - cape-dict```
+       - cape-dict
+```
 
 **In LLM chat modes** (`init.el`: cape section):
 ```elisp
@@ -214,7 +215,8 @@ candidates. See `completion-eglot-fallback.md` for details and solutions.
     1. cape-file (basic + partial-completion)
     2. cape-dabbrev+dict (orderless)
        - cape-dabbrev
-       - cape-dict```
+       - cape-dict
+```
 
 Applies to:
 - `agent-shell-mode` (Agent Shell)
