@@ -4,9 +4,9 @@
 
 When `eglot-completion-at-point` is the first item in
 `completion-at-point-functions`, it returns a valid capf result even when
-the LSP has no completions. This blocks other capfs (cape-file,
-cape-dabbrev, cape-dict, etc.) from running because the completion system
-uses eglot's empty result instead of trying the next capf.
+the LSP has no completions. This blocks other capfs (`cape-file`,
+`cape-dabbrev`, `cape-dict`, etc.) from running because the completion
+system uses eglot's empty result instead of trying the next capf.
 
 The `:exclusive nil` property doesn't help because it only triggers fallback
 when the capf returns `nil` entirely, not when it returns an empty
@@ -24,7 +24,7 @@ Capfs are added at different times:
 The sequence for a markdown buffer:
 
 1. Buffer created, `markdown-mode` activated
-2. `text-mode-hook` runs (markdown derives from text-mode) ->
+2. `text-mode-hook` runs (markdown derives from `text-mode`) ->
    `aj8/text-mode-capf` adds `cape-dabbrev+dict`
 3. Eglot connects to LSP server
 4. `eglot--managed-mode` runs -> prepends `eglot-completion-at-point`
@@ -77,8 +77,8 @@ Example: `text-mode-hook` uses `add-hook` with depth 10 to add
 set up the list as `(cape-file cape-dabbrev+dict ispell-completion-at-point
 t)`.  Later, eglot connects and calls `add-hook` with depth 0 to add its
 capf.  This triggers re-sorting: eglot (depth 0) goes first, then items
-without depths (cape-file, cape-dabbrev+dict, t), then ispell (depth 10) -
-resulting in `(eglot-completion-at-point cape-file cape-dabbrev+dict t
+without depths (`cape-file`, `cape-dabbrev+dict`, `t`), then ispell (depth
+10) - resulting in `(eglot-completion-at-point cape-file cape-dabbrev+dict t
 ispell-completion-at-point)`. Now ispell is after `t` and unreachable.
 
 The fix is to clear the depth information after `setq-local`:
@@ -132,10 +132,10 @@ behave well in a super-capf. It is kept separate and placed at the front.
 ```
 
 Note: This is a simplified example. A real implementation should not
-hardcode specific capfs like cape-dabbrev+dict. Instead, it should
+hardcode specific capfs like `cape-dabbrev+dict`. Instead, it should
 dynamically extract and preserve unknown capfs (e.g., language-specific
 ones) from the current capf list. See the actual implementation in
-aj8-lisp.el for a complete solution.
+`aj8-lisp.el` for a complete solution.
 
 Note: This is not a true fallback - it runs all capfs and merges results.
 All candidates from eglot, dabbrev, and dict appear together in the popup.
@@ -192,7 +192,7 @@ Cons:
   appear when other sources have matches
 - Not a fallback mechanism - it's a priority reversal that sidelines LSP
 
-### Solution 2: Merge with cape-capf-super
+### Solution 2: Merge with `cape-capf-super`
 
 Pros:
 - All completion sources contribute candidates simultaneously (this can also
@@ -206,7 +206,7 @@ Cons:
 - Not a true fallback - runs all capfs regardless of whether LSP has
   candidates
 
-### Solution 3: Wrap with cape-wrap-nonexclusive
+### Solution 3: Wrap with `cape-wrap-nonexclusive`
 
 Pros:
 - True fallback behavior - LSP runs first, other capfs only when LSP has
@@ -214,7 +214,7 @@ Pros:
 - LSP completions get priority (correct behavior)
 
 Cons: Hook-based approach (3A):
-- Requires eglot-managed-mode-hook setup
+- Requires `eglot-managed-mode-hook` setup
 
 Cons: Global advice approach (3B):
 - Uses advice (some consider this less clean than direct configuration)
@@ -222,7 +222,7 @@ Cons: Global advice approach (3B):
 Why global advice (3B) is better than hook-based (3A):
 - Single configuration point (one line)
 - Clean separation of concerns - wraps function behavior without touching
-  completion-at-point-functions
+  `completion-at-point-functions`
 
 ### Recommendation
 
@@ -233,7 +233,7 @@ Solution 3B (global advice) is the best approach:
 
 ---
 
-## Alternative: Using add-hook Throughout
+## Alternative: Using `add-hook` Throughout
 
 Instead of `setq-local` with depth-alist clearing, `add-hook` with explicit
 depths can be used. This works with Emacs' hook system rather than bypassing
@@ -264,25 +264,25 @@ cape-file is not merged; it is kept separate at the front."
 (add-hook 'eglot-managed-mode-hook #'aj8/eglot-combine-capf)
 ```
 
-Note: Simplified example - see note after corresponding set-local example
+Note: Simplified example - see note after corresponding `set-local` example
 above.
 
 This approach ensures correct ordering is maintained when packages add capfs
 dynamically later.
 
-### Comparison: setq-local vs add-hook
+### Comparison: `setq-local` vs `add-hook`
 
-**setq-local approach** (used in main solutions):
+**`setq-local` approach** (used in main solutions):
 
 Pros:
 - Simpler to read and understand - shows the exact list being set
 
 Cons:
 - Bypasses Emacs' hook depth system rather than working with it
-- Requires manual clearing of hook--depth-alist to prevent re-sorting
+- Requires manual clearing of `hook--depth-alist` to prevent re-sorting
 - Less robust when other packages modify capfs dynamically later
 
-**add-hook approach** (shown in alternatives):
+**`add-hook` approach** (shown in alternatives):
 
 Pros:
 - Works with Emacs' native hook system
@@ -290,10 +290,10 @@ Pros:
 - Explicit depth numbers make ordering intent clear
 
 Cons:
-- Slightly more code to and maintain (multiple remove-hook/add-hook calls)
+- Slightly more code to and maintain (multiple `remove-hook`/`add-hook` calls)
 - Requires tracking depth levels across multiple configuration points
 
-Recommendation: The add-hook approach provides maximum robustness,
+Recommendation: The `add-hook` approach provides maximum robustness,
 especially when working with packages that dynamically modify
-completion-at-point-functions. The setq-local approach is preferable when
+`completion-at-point-functions`. The `setq-local` approach is preferable when
 simplicity is the priority.

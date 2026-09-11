@@ -33,28 +33,28 @@ Completion sources provide the raw candidate lists. Each source typically
 tags its candidates with a category.
 
 **Buffer completion sources** (via `completion-at-point-functions`):
-- **elisp-completion-at-point**: Emacs Lisp symbols (built-in, only in
-  emacs-lisp-mode, no category)
-- **eglot**: LSP completions (category: eglot)
-- **cape-file**: File paths (category: file)
-- **cape-dabbrev**: Dynamic abbreviations from buffers (no category)
-- **cape-dict**: Dictionary words (no category)
-- **cape-elisp-symbol**: Emacs Lisp symbols (no category)
-- **cape-keyword**: Programming keywords (no category)
-- **cape-abbrev, cape-history, cape-line, cape-tex**: Available via
+- **`elisp-completion-at-point`**: Emacs Lisp symbols (built-in, only in
+  `emacs-lisp-mode`, no category)
+- **`eglot`**: LSP completions (category: eglot)
+- **`cape-file`**: File paths (category: file)
+- **`cape-dabbrev`**: Dynamic abbreviations from buffers (no category)
+- **`cape-dict`**: Dictionary words (no category)
+- **`cape-elisp-symbol`**: Emacs Lisp symbols (no category)
+- **`cape-keyword`**: Programming keywords (no category)
+- **`cape-abbrev`, `cape-history`, `cape-line`, `cape-tex`**: Available via
   keybindings but not automatically active
 
 **Minibuffer completion sources** (command-specific):
-- **Commands**: M-x (category: command)
-- **Buffers**: C-x b (category: buffer)
-- **Files**: C-x C-f (category: file)
-- **Variables**: C-h v (category: variable)
-- **Functions**: C-h f (category: function)
-- **Consult commands**: consult-line, consult-grep, etc.
+- **Commands**: `M-x` (category: command)
+- **Buffers**: `C-x b` (category: buffer)
+- **Files**: `C-x C-f` (category: file)
+- **Variables**: `C-h v` (category: variable)
+- **Functions**: `C-h f` (category: function)
+- **Consult commands**: `consult-line`, `consult-grep`, etc.
 
 **Other sources**:
-- **dabbrev**: Dynamic abbreviations (accessed via hippie-expand, uses its
-  own matching, not part of standard completion)
+- **`dabbrev`**: Dynamic abbreviations (accessed via `hippie-expand`, uses
+  its own matching, not part of standard completion)
 
 ### 1.2. Level 2: Completion Styles (Filtering)
 
@@ -77,7 +77,7 @@ Frontends display the filtered candidates. They do not control matching or
 filtering.
 
 **Frontends used in this configuration**:
-- **Corfu**: In-buffer popup overlay (displays completion-at-point results)
+- **Corfu**: In-buffer popup overlay (displays `completion-at-point` results)
 - **Vertico**: Minibuffer vertical list (displays minibuffer completion
   results)
 
@@ -128,36 +128,36 @@ This section details the completion style settings (Level 2 from Section 1).
 ```elisp
 (completion-styles '(orderless))
 ```
-This applies orderless filtering to all completion sources unless overridden
+This applies `orderless` filtering to all completion sources unless overridden
 by category-specific settings.
 
 Note: No fallback style (like `basic`) is included. Empty results provide
 clear feedback to refine the pattern, unlike fallback styles that show
 irrelevant candidates.
 
-**Location**: init.el: minibuffer section
+**Location**: `init.el`: minibuffer section
 
 ### 3.2. Category-Specific Overrides
 
-**eglot category** (init.el: eglot section):
+**eglot category** (`init.el`: eglot section):
 ```elisp
 (completion-category-overrides '((eglot (styles orderless))))
 ```
-- Current configuration: uses orderless only
+- Current configuration: uses `orderless` only
 - Note: Redundant with current global setting, but kept defensively
 
-**file category** (init.el: minibuffer section):
+**file category** (`init.el`: minibuffer section):
 ```elisp
 (completion-category-overrides '((file (styles basic partial-completion))))
 ```
 - Current configuration:
-  - Uses basic (prefix matching) + partial-completion
-  - Does not use orderless
+  - Uses `basic` (prefix matching) + `partial-completion`
+  - Does not use `orderless`
 - Rationale: File paths benefit from simple prefix and partial matching
 
 ### 3.3. Orderless Configuration
 
-**Location**: init.el: orderless section
+**Location**: `init.el`: orderless section
 
 ```elisp
 (orderless-matching-styles '(orderless-literal-prefix))
@@ -172,17 +172,17 @@ irrelevant candidates.
 
 ### 4.1. Corfu Context (In-Buffer Completion)
 
-Triggered by: TAB or completion-at-point in a buffer
+Triggered by: `TAB` or `completion-at-point` in a buffer
 Frontend: Corfu popup overlay
 
-Note: Corfu displays completion-at-point candidates, which means it uses
-Cape sources and other completion-at-point-functions. Corfu primarily works
+Note: Corfu displays `completion-at-point` candidates, which means it uses
+Cape sources and other `completion-at-point-functions`. Corfu primarily works
 in regular buffers, but can also be enabled in the minibuffer when Vertico
-is not active (via corfu-enable-always-in-minibuffer in init.el: corfu
-section). In those cases (like eval-expression), completion-at-point sources
-become available in the minibuffer.
+is not active (via `corfu-enable-always-in-minibuffer` in
+`init.el`: corfu section). In those cases (like `eval-expression`),
+`completion-at-point` sources become available in the minibuffer.
 
-**In prog-mode buffers** (init.el: cape section):
+**In `prog-mode` buffers** (`init.el`: cape section):
 ```elisp
 completion-at-point-functions:
 1. cape-file (basic + partial-completion)
@@ -193,14 +193,14 @@ completion-at-point-functions:
 ```
 
 Note: LSP (eglot) handles language-specific completions including
-keywords, so cape-keyword is not needed. cape-elisp-symbol is also not
-needed since elisp-mode already has elisp-completion-at-point.
+keywords, so `cape-keyword` is not needed. `cape-elisp-symbol` is also not
+needed since `elisp-mode` already has `elisp-completion-at-point`.
 
 Note: Eglot completion fallback issue: When eglot is active, it may block
-fallback to other capfs (like cape-dabbrev+dict) even when the LSP has no
-candidates. See completion-eglot-fallback.md for details and solutions.
+fallback to other capfs (like `cape-dabbrev+dict`) even when the LSP has no
+candidates. See `completion-eglot-fallback.md` for details and solutions.
 
-**In text-mode buffers** (init.el: cape section):
+**In `text-mode` buffers** (`init.el`: cape section):
 ```elisp
     completion-at-point-functions:
     1. cape-file (basic + partial-completion)
@@ -208,7 +208,7 @@ candidates. See completion-eglot-fallback.md for details and solutions.
        - cape-dabbrev
        - cape-dict```
 
-**In LLM chat modes** (init.el: cape section):
+**In LLM chat modes** (`init.el`: cape section):
 ```elisp
     completion-at-point-functions:
     1. cape-file (basic + partial-completion)
@@ -217,32 +217,32 @@ candidates. See completion-eglot-fallback.md for details and solutions.
        - cape-dict```
 
 Applies to:
-- agent-shell-mode (Agent Shell)
-- gptel-mode (GPTel and gptel-agent)
-- claude-code-start-hook (Claude Code - uses eat-mode or vterm-mode)
+- `agent-shell-mode` (Agent Shell)
+- `gptel-mode` (GPTel and `gptel-agent`)
+- `claude-code-start-hook` (Claude Code - uses `eat-mode` or `vterm-mode`)
 
 Note: Regular terminal buffers (comint, eat, vterm) that are NOT LLM chat
-sessions only get cape-file completion.
+sessions only get `cape-file` completion.
 
-**Global (all other buffers)** (init.el: cape section):
+**Global (all other buffers)** (`init.el`: cape section):
 ```elisp
 completion-at-point-functions includes:
 - cape-file (basic + partial-completion)
 ```
 
-This applies to buffers not covered above, such as help-mode, dired-mode,
-compilation-mode, and regular terminal sessions.
+This applies to buffers not covered above, such as `help-mode`,
+`dired-mode`, `compilation-mode`, and regular terminal sessions.
 
 ### 4.2. Vertico Context (Minibuffer Completion)
 
-Triggered by: M-x, C-x C-f, C-x b, consult commands, etc.
+Triggered by: `M-x`, `C-x C-f`, `C-x b`, consult commands, etc.
 Frontend: Vertico vertical list
 
 **Sources depend on command**, not on major mode:
-- M-x -> command category (orderless)
-- C-x C-f -> file category (basic + partial-completion)
-- C-x b -> buffer category (orderless)
-- consult-line -> consult-location category (orderless)
+- `M-x` -> command category (`orderless`)
+- `C-x C-f` -> file category (`basic` + `partial-completion`)
+- `C-x b` -> buffer category (`orderless`)
+- `consult-line` -> consult-location category (`orderless`)
 - etc.
 
 ### 4.3. Key Differences
@@ -250,9 +250,9 @@ Frontend: Vertico vertical list
 | Aspect | Corfu | Vertico |
 |--------|-------|---------|
 | **Location** | In-buffer popup | Minibuffer |
-| **Trigger** | TAB, completion-at-point | M-x, C-x C-f, C-x b, etc. |
+| **Trigger** | `TAB`, `completion-at-point` | `M-x`, `C-x C-f`, `C-x b`, etc. |
 | **Sources configured via** | Mode hooks (`completion-at-point-functions`) | Command invoked |
-| **Mode-dependent?** | Yes (prog-mode vs text-mode) | No (depends on command) |
+| **Mode-dependent?** | Yes (`prog-mode` vs `text-mode`) | No (depends on command) |
 | **Typical sources** | eglot, cape-*, LSP | commands, files, buffers |
 
 ## 5. Customization Strategy
@@ -283,7 +283,7 @@ A hook on `minibuffer-setup-hook` locally upgrades the style to:
 ```
 
 **Rationale**:
-- **Power**: When using the minibuffer (M-x, Find File, etc.), regex is a
+- **Power**: When using the minibuffer (`M-x`, Find File, etc.), regex is a
   powerful filtering tool.
 - **Context**: The Minibuffer is an interactive query interface where regex
   is expected and useful.
@@ -311,10 +311,10 @@ per-term control over matching behavior.
 
 | Suffix | Style | Example | Behavior |
 |--------|-------|---------|----------|
-| `~` | flex | `foo~` | Matches f-o-o with characters in order |
-| `=` | literal | `foo=` | Forces exact substring "foo" |
-| `<` | prefixes | `foo<` | Matches items starting with "foo" |
-| `*` | regexp | `f.*o*` | Forces regexp interpretation |
+| `~` | `flex` | `foo~` | Matches f-o-o with characters in order |
+| `=` | `literal` | `foo=` | Forces exact substring "foo" |
+| `<` | `prefixes` | `foo<` | Matches items starting with "foo" |
+| `*` | `regexp` | `f.*o*` | Forces regexp interpretation |
 | `!` | exclude | `test!` | Excludes items containing "test" |
 
 **Functions**:
@@ -324,17 +324,17 @@ per-term control over matching behavior.
 - `aj8/orderless-dispatch-regexp-if-star`
 - `aj8/orderless-dispatch-without-if-bang`
 
-**Location**: lisp/aj8-lisp.el: completion section
+**Location**: `lisp/aj8-lisp.el`: completion section
 
 ### 6.2. Orderless Matching Style Cycling
 
-Cycles through orderless matching styles on the fly, temporarily changing
+Cycles through `orderless` matching styles on the fly, temporarily changing
 how pattern matching works during completion without modifying the
-configuration: literal -> prefixes -> regexp -> flex -> literal.
+configuration: `literal` -> `prefixes` -> `regexp` -> `flex` -> `literal`.
 
-**Function**: `aj8/orderless-matching-style-cycle` (keybinding: M-o)
+**Function**: `aj8/orderless-matching-style-cycle` (keybinding: `M-o`)
 
-**Location**: lisp/aj8-lisp.el: completion section
+**Location**: `lisp/aj8-lisp.el`: completion section
 
 ### 6.3. Vertico Sort Order Toggling
 
@@ -342,9 +342,9 @@ Cycles through different sort orders for completion candidates in the
 minibuffer: history-length-alpha (default) -> length-alpha -> alpha ->
 history-length-alpha.
 
-**Function**: `aj8/vertico-sort-toggle` (keybinding: M-/)
+**Function**: `aj8/vertico-sort-toggle` (keybinding: `M-/`)
 
-**Location**: lisp/aj8-lisp.el: completion section
+**Location**: `lisp/aj8-lisp.el`: completion section
 
 ## 7. Quick Reference
 
@@ -393,42 +393,43 @@ Is there a category override for this category?
 
 ### 7.2. Example Scenarios
 
-**Scenario 1**: Typing in a Python file (prog-mode)
+**Scenario 1**: Typing in a Python file (`prog-mode`)
 
-1. Press TAB
-2. Corfu triggers completion-at-point
+1. Press `TAB`
+2. Corfu triggers `completion-at-point`
 3. Sources consulted:
-   - eglot (provides Python symbols) -> eglot category -> orderless
-   - cape-symbol+keyword+dict -> no category -> orderless
-   - cape-file (if path detected) -> file category -> basic + partial-completion
+   - eglot (provides Python symbols) -> eglot category -> `orderless`
+   - `cape-symbol+keyword+dict` -> no category -> `orderless`
+   - `cape-file` (if path detected) -> file category -> `basic` +
+     `partial-completion`
 4. Candidates filtered by appropriate styles
 5. Corfu displays results
 
-**Scenario 2**: Pressing M-x
+**Scenario 2**: Pressing `M-x`
 
-1. M-x invoked
+1. `M-x` invoked
 2. Vertico shows minibuffer
-3. Source: command completion -> command category -> orderless (global)
+3. Source: command completion -> command category -> `orderless` (global)
 4. Type input with space-separated components
 5. Vertico displays filtered commands
 
-**Scenario 3**: Finding a file (C-x C-f)
+**Scenario 3**: Finding a file (`C-x C-f`)
 
-1. C-x C-f invoked
+1. `C-x C-f` invoked
 2. Vertico shows minibuffer
-3. Source: file completion -> file category -> basic + partial-completion
-4. Input matched as prefix/partial (NOT orderless)
+3. Source: file completion -> file category -> `basic` + `partial-completion`
+4. Input matched as prefix/partial (NOT `orderless`)
 5. Vertico displays matching file paths
 
 ## 8. Related Files
 
-- `init.el: minibuffer section` - Global completion configuration
-- `init.el: eglot section` - eglot configuration
-- `init.el: corfu section` - Corfu configuration
-- `init.el: cape section` - Cape configuration
-- `init.el: orderless section` - orderless configuration
-- `init.el: vertico section` - Vertico configuration
-- `lisp/aj8-lisp.el: completion section` - orderless and Vertico custom functions
+- `init.el`: minibuffer section - Global completion configuration
+- `init.el`: eglot section - eglot configuration
+- `init.el`: corfu section - Corfu configuration
+- `init.el`: cape section - Cape configuration
+- `init.el`: orderless section - orderless configuration
+- `init.el`: vertico section - Vertico configuration
+- `lisp/aj8-lisp.el`: completion section - orderless and Vertico custom functions
 
 ## 9. Appendix: Merging CAPFs with Cape
 

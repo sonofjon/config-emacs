@@ -104,18 +104,18 @@ Examples:
 ## Emacs
 
 1. Emacs buffers are usually named with the base name of a file path, for
-   example the buffer name of "/path/to/file.ext" is "file.ext".
+   example the buffer name of `/path/to/file.ext` is `file.ext`.
 
 2. If there are be multiple buffers with the same base name, the current
    directory is appended to the buffer name, for example the buffer names of
-   "/path/to/file.ext" and "/path/to/another/file.ext" are "file.ext<to>"
-   and "file.ext<another>".
+   `/path/to/file.ext` and `/path/to/another/file.ext` are `file.ext<to>`
+   and `file.ext<another>`.
 
 3. If files with the same base name belong to different projects, the
    current project name is appended to the buffer name instead, for example
-   the buffer names of "/path/to/file.ext" in "project_1" and
-   "/path/to/another/file.ext" in "project_2" are "file.ext<project_1>" and
-   "file.ext<project_2>".
+   the buffer names of `/path/to/file.ext` in `project_1` and
+   `/path/to/another/file.ext` in `project_2` are `file.ext<project_1>` and
+   `file.ext<project_2>`.
 
 # Programming
 
@@ -124,9 +124,9 @@ Examples:
 1. Ensure lines do not exceed 79 characters.
 
 2. Don't include the data type in variable names, for example a string
-   variable containing an address should be named 'address', not
-   'addess_str'; a class containing animal types should be named 'Animals',
-   not 'AnimalsClass'.
+   variable containing an address should be named `address`, not
+   `addess_str`; a class containing animal types should be named `Animals`,
+   not `AnimalsClass`.
 
 3. Always add docstrings when new functions, classes and modules (and other
    constructs) are introduced.
@@ -150,7 +150,7 @@ Examples:
 
 ## Documentation
 
-1. If a README.md or other documentation file exists for the current
+1. If a `README.md` or other documentation file exists for the current
    project, always keep it up-to-date with any code changes applied.
 
 ## Tests
@@ -160,8 +160,8 @@ Examples:
 
 ## AI
 
-1. If an instructions, context or memory file (e.g. AGENTS.md, CLAUDE.md,
-   GEMINI.md, copilot-instructions.md or similar) exists for the current
+1. If an instructions, context or memory file (e.g. `AGENTS.md`, `CLAUDE.md`,
+   `GEMINI.md`, `copilot-instructions.md` or similar) exists for the current
    project, always keep it up-to-date with any code changes applied.
 
 ## Languages
@@ -183,7 +183,7 @@ Examples:
    to fix it, stop and request the user for guidance/help.
 
 3. When reading Emacs Lisp code, prefer a search tool + the
-   read_buffer_definition tool to fetch function definitions.
+   `read_buffer_definition` tool to fetch function definitions.
 
 4. When working with unfamiliar Emacs Lisp functionality:
    - First read the primary function's documentation using available tools
