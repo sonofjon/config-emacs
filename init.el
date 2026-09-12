@@ -2986,10 +2986,19 @@ Elisp code explicitly in arbitrary buffers.")
   (hs-cycle-max-depth nil))
 
 ;; outline-minor-faces (headings faces for outline-minor-mode)
-;;   See also outline-minor-mode-highlight.
+;;   See also outline-minor-mode-highlight
 (use-package outline-minor-faces
   :after outline
-  :config (add-hook 'outline-minor-mode-hook #'outline-minor-faces-mode))
+  :config (add-hook 'outline-minor-mode-hook
+                     (lambda ()
+                       ;; Skip markdown-ts-mode: it already supplies its own
+                       ;; per-level heading faces, and enabling
+                       ;; outline-minor-faces-mode there trips a font-lock
+                       ;; bug where `font-lock-set-defaults' runs before
+                       ;; `treesit-major-mode-setup', permanently disabling
+                       ;; tree-sitter fontification for the buffer
+                       (unless (derived-mode-p 'markdown-ts-mode)
+                         (outline-minor-faces-mode)))))
 
 ;;; Search
 
