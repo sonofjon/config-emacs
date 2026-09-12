@@ -2043,35 +2043,46 @@ use slot 0 to share undivided space."
 
 ;;; Transient window restoration
 
+(defvar aj8/transient--saved-side-window-buffer nil
+  "Saved buffer of bottom side-window before transient popup.")
+
 (defvar aj8/transient--saved-side-window-height nil
   "Saved height of bottom side-window before transient popup.")
 
 (defun aj8/transient--save-config (&rest _args)
-  "Advise `transient--show' to save bottom side-window height.
+  "Advise `transient--show' to save bottom side-window state.
 
-Transient resizes the bottom side-window but doesn't restore it
-afterward.  This function saves the height so it can be restored."
+Transient may reuse a pre-existing bottom side-window and then
+delete it instead of restoring its buffer.  This function saves the
+window's buffer and height so both can be restored."
   (unless aj8/transient--saved-side-window-height
     (when-let* ((side-window (window-with-parameter 'window-side 'bottom)))
+      (setq aj8/transient--saved-side-window-buffer
+            (window-buffer side-window))
       (setq aj8/transient--saved-side-window-height
             (window-total-height side-window)))))
 
 (defun aj8/transient--restore-config (&rest _args)
-  "Advise `transient--post-exit' to restore bottom side-window height.
+  "Advise `transient--delete-window' to restore the bottom side-window.
 
-Restores the height that was saved by `aj8/transient--save-config',
-ensuring the bottom side-window returns to its original size after
-transient is dismissed.
+Redisplays the buffer saved by `aj8/transient--save-config' if
+transient deleted its window instead of restoring it, then resizes
+the resulting window back to its original height.
 
 Restores immediately without using an idle timer."
-  (when aj8/transient--saved-side-window-height
-    (let ((saved-height aj8/transient--saved-side-window-height))
-      (setq aj8/transient--saved-side-window-height nil)
-      (when-let* ((side-window (window-with-parameter 'window-side 'bottom)))
-        (let ((delta (- saved-height (window-total-height side-window))))
-          (when (and (not (zerop delta))
-                     (window-resizable-p side-window delta))
-            (window-resize side-window delta)))))))
+  (when-let* ((height aj8/transient--saved-side-window-height)
+              (buffer aj8/transient--saved-side-window-buffer))
+    (setq aj8/transient--saved-side-window-height nil)
+    (setq aj8/transient--saved-side-window-buffer nil)
+    (when (buffer-live-p buffer)
+      (unless (get-buffer-window buffer t)
+        (display-buffer buffer))
+      (when-let* ((side-window (window-with-parameter
+                                 'window-side 'bottom))
+                  (delta (- height (window-total-height side-window))))
+        (when (and (not (zerop delta))
+                   (window-resizable-p side-window delta))
+          (window-resize side-window delta))))))
 
 ;;; Better quit-window behavior
 ;;;   Adds winner-mode style behavior to quit-window

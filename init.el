@@ -1280,7 +1280,7 @@
   ;; Restore side-window config after transient
   (advice-add 'transient--show :before
               #'aj8/transient--save-config)
-  (advice-add 'transient--post-exit :after
+  (advice-add 'transient--delete-window :after
               #'aj8/transient--restore-config))
 
 ;; treesit (tree-sitter utilities)
