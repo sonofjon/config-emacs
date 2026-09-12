@@ -1776,7 +1776,7 @@
   ;; Enable experimental options
   (setq gptel-expert-commands t)
   ;; Default model
-  (setq-default gptel-model 'gpt-5-mini)
+  (setq-default gptel-model 'gpt-5.6-luna)
   ;; === ChatGPT ===
   (gptel-make-openai "ChatGPT"
     :key (gptel-api-key-from-auth-source "api.openai.com" "apikey")
@@ -1791,21 +1791,21 @@
   ;;   :models gptel--openai-models)   ; include all OpenAI models
   ;; Set as default backend
   ;; (setq gptel-backend (gptel-get-backend "ChatGPT-NoStream"))
-  ;; Disable streaming
-  ;; (put 'gpt-5 :request-params '(:stream :json-false))
-  (put 'gpt-5-mini :request-params '(:stream :json-false))
+  ;; Disable streaming (unverified orgs cannot stream these models)
+  (put 'gpt-5.6-luna :request-params '(:stream :json-false))
   ;; Set reasoning effort (default: medium)
-  ;; (put 'o1-mini :request-params '(:reasoning_effort "medium"))
+  ;; (put 'gpt-5.6-luna :request-params '(:reasoning_effort "medium"))
   ;; Use Flex processing
-  ;; (put 'gpt-5 :request-params '(:service_tier "flex"))
-  (put 'gpt-5 :request-params '(:stream :json-false :service_tier "flex"))
+  ;; (put 'gpt-5.6-sol :request-params '(:service_tier "flex"))
+  (put 'gpt-5.6-sol :request-params '(:stream :json-false :service_tier "flex"))
+  (put 'gpt-5.6-terra :request-params '(:stream :json-false :service_tier "flex"))
   ;; === Claude ===
   (gptel-make-anthropic "Claude"
     :key (gptel-api-key-from-auth-source "api.anthropic.com" "apikey")
     :stream t)   ; make available
   ;; Set as default backend
   ;; (setq gptel-backend (gptel-get-backend "Claude"))
-  ;; (setq gptel-model 'claude-sonnet-4-20250514)
+  ;; (setq gptel-model 'claude-sonnet-5)
   ;; === Gemini ===
   (gptel-make-gemini "Gemini"
     :key (gptel-api-key-from-auth-source
@@ -1813,7 +1813,7 @@
     :stream t)   ; make available
   ;; Set as default backend
   ;; (setq gptel-backend (gptel-get-backend "Gemini"))
-  ;; (setq gptel-model '`gemini-pro-latest')
+  ;; (setq gptel-model 'gemini-pro-latest)
   ;; === Alibaba ===
   (gptel-make-openai "Alibaba"
     ;; :host "dashscope-intl.aliyuncs.com"
@@ -1823,38 +1823,31 @@
     :key (gptel-api-key-from-auth-source
           "dashscope-intl.aliyuncs.com" "apikey")
     :stream t
-    :models '(qwen3-coder-plus-2025-09-23 qwen3-coder-next))
+    :models '(qwen3-coder-plus qwen3-coder-next))
   ;; === Deepseek ===
   (gptel-make-deepseek "Deepseek"
     :key (gptel-api-key-from-auth-source "api.deepseek.com" "apikey")
     :stream t)
-  ;; Use max tokens
-  (put 'deepseek-reasoner :request-params '(:max_tokens 65536))
-  (put 'deepseek-chat :request-params '(:max_tokens 8192))
   ;; === Moonshot ===
   (gptel-make-openai "Moonshot"
     :host "api.moonshot.ai"   ; or "api.moonshot.cn" for the Chinese site
     :key (gptel-api-key-from-auth-source "api.moonshot.ai" "apikey")
     :stream t
-    :models '(kimi-k2.5))
-    ;; :models '(kimi-k2-thinking))
+    :models '(kimi-k3 kimi-k2.7-code))
   ;; === OpenRouter ====
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
     :endpoint "/api/v1/chat/completions"
     :key (gptel-api-key-from-auth-source "openrouter.ai" "apikey")
     :stream t
-    :models '(deepseek/deepseek-chat-v3-0324
-              deepseek/deepseek-v3.2
-              moonshotai/kimi-k2-thinking
-              moonshotai/kimi-k2.5
+    :models '(deepseek/deepseek-v4.1-flash
+              deepseek/deepseek-v4-pro
+              moonshotai/kimi-k2.7-code
+              moonshotai/kimi-k3
               qwen/qwen3-coder:free
               qwen/qwen3-coder-flash
               qwen/qwen3-coder-plus
               qwen/qwen3-coder-next))
-  ;; Enable reasoning
-  (dolist (provider '(deepseek/deepseek-v3.2))
-    (put provider :request-params '(:reasoning (:enabled t))))
   ;; === GitHub Copilot Chat ====
   (gptel-make-gh-copilot "Copilot")
   ;; Enable word-wrap
@@ -1900,7 +1893,6 @@ the window so that the streaming position appears near the bottom."
   (gptel-make-preset 'chat
     :description "Preset for chat"
     :system 'chat
-    :temperature 1.0
     :model 'gemini-flash-latest
     :use-context nil
     :include-reasoning 'ignore
@@ -1910,8 +1902,7 @@ the window so that the streaming position appears near the bottom."
   (gptel-make-preset 'coding
     :description "Preset for coding"
     :system 'coder
-    :model 'deepseek-reasoner
-    :temperature 0.1
+    :model 'kimi-k2.7-code
     :use-context 'user
     :include-reasoning "*gptel-reasoning*"
     ;; TODO: Use :eval or :function to evaluate expressions or functions
