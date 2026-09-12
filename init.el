@@ -1012,10 +1012,11 @@
   (which-key-add-key-based-replacements "C-c @" "outline")
   :custom
   ;; Use TAB and S-TAB for cycling
-  ;;   See also outline-minor-faces.
-  (outline-minor-mode-cycle t)   ; alternatives: 'override and 'append
-  ;; (outline-minor-mode-highlight t)
-  )
+  (outline-minor-mode-cycle t))   ; alternatives: 'override and 'append
+  ;; Highlight headings
+  ;;   In lisp modes, this also marks every top-level form as a
+  ;;   "heading".  See also outline-minor-faces.
+  ;; (outline-minor-mode-highlight t))
 
 ;; package (simple package system for Emacs)
 (use-package package
