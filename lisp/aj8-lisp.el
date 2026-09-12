@@ -172,6 +172,8 @@ and only upgrades packages that need it."
 
 ;;;; AI
 
+;;; gptel
+
 ;; Save gptel buffers
 (defun aj8/gptel-write-buffer (orig-fun &rest args)
   "Advise `gptel' to save the gptel chat buffer.
@@ -255,6 +257,8 @@ function is meant to be used as the major mode function for gptel chat
 files in `magic-mode-alist', ensuring gptel is loaded first."
   (require 'gptel)
   (funcall gptel-default-mode))
+
+;;; Misc
 
 ;; Don't query on exit for MCP server listener process
 (defun aj8/mcp-server-no-query-on-exit ()
