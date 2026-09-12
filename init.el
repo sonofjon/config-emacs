@@ -1595,8 +1595,8 @@
          ;; ("TAB" . agent-shell-next-item)   ; fix for terminal
          ("C-c C-v" . nil)   ; unbind agent-shell-set-session-model
          ("C-c M" . agent-shell-set-session-model)
-         ("C-c <up>" . agent-shell-previous-item)
-         ("C-c <down>" . agent-shell-next-item)
+         ("C-c <up>" . aj8/agent-shell-previous-response)
+         ("C-c <down>" . aj8/agent-shell-next-response)
          ("C-c C-<up>" . comint-previous-prompt)
          ("C-c C-<down>" . comint-next-prompt))
   :custom

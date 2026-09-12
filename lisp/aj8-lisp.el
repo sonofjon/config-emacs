@@ -275,6 +275,22 @@ is safe to call from `agent-shell-mode-hook'."
     (save-selected-window
       (agent-shell-manager-toggle))))
 
+;; Move to next LLM response in agent-shell
+(defun aj8/agent-shell-next-response ()
+  "Move point to the start of the next LLM response in `agent-shell-mode'."
+  (interactive)
+  (when-let* ((match (text-property-search-forward
+                       'shell-maker--marker t t)))
+    (goto-char (prop-match-end match))))
+
+;; Move to previous LLM response in agent-shell
+(defun aj8/agent-shell-previous-response ()
+  "Move point to the start of the previous LLM response in `agent-shell-mode'."
+  (interactive)
+  (when-let* ((match (text-property-search-backward
+                       'shell-maker--marker t t)))
+    (goto-char (prop-match-end match))))
+
 ;;;; Buffers
 
 ;;; Buffer switching
