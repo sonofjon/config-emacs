@@ -191,7 +191,6 @@
         (combobulate :url "https://github.com/mickeynp/combobulate.git" :rev :newest)
         (flymake-jsonlint :url "https://github.com/sonofjon/flymake-jsonlint.el.git" :rev :newest)
         (gptel-quick :url "https://github.com/karthink/gptel-quick.git" :rev :newest)
-        (gptel-toolkit :url "https://github.com/sonofjon/gptel-toolkit.el.git"  :rev :newest)
         (hideshow-cycle :url "https://github.com/sonofjon/hideshow-cycle.el" :rev :newest)
         ;; (markdown-links :url "https://github.com/sonofjon/markdown-links.el.git" :rev :newest)   ; disabled with markdown-mode
         (mcp-server :url "https://github.com/rhblind/emacs-mcp-server.git" :rev :newest)
@@ -209,9 +208,6 @@
 ;; (package-vc-install-from-checkout
 ;;  (concat (expand-file-name "~") "/projects/obsidian-yaml-tools.el")
 ;;  "obsidian-yaml-tools")
-;; (package-vc-install-from-checkout
-;;  (concat (expand-file-name "~") "/projects/gptel-toolkit")
-;;  "gptel-toolkit")
 
 ;;; Early packages
 
@@ -1935,33 +1931,6 @@ the window so that the streaming position appears near the bottom."
   ;; Allow variable value tool
   (setf (gptel-tool-confirm (gptel-get-tool "variable_value"))
         nil))
-
-(use-package gptel-toolkit
-  :disabled
-  :after gptel
-  :custom
-  ;; Exclude some tools
-  (gptel-tk-excluded-tools '(;; Redundant
-                             "list_buffers"
-                             "read_function"
-                             "insert_in_buffer"
-                             "replace_buffer_line"
-                             "delete_buffer_line"
-                             "delete_buffer_string"
-                             "apply_buffer_line_edits"
-                             "apply_buffer_line_edits_with_review"
-                             "apply_buffer_string_edits"
-                             "apply_buffer_string_edits_with_review"
-                             ;; Unwanted
-                             "replace_buffer"
-                             "ert_run_unit"))
-  :config
-  ;; Enable built-in tools
-  ;; (gptel-tk-enable-builtin-tools)
-  ;; Enable built-in tools in preset
-  ;; (plist-put (gptel-get-preset 'coding) :post #'gptel-tk-enable-builtin-tools))
-  ;; Set built-in tools in preset
-  (plist-put (gptel-get-preset 'coding) :tools (gptel-tk-get-tool-names)))
 
 ;; mcp (Model Context Protocol)
 (use-package mcp
