@@ -289,7 +289,7 @@ is safe to call from `agent-shell-mode-hook'."
   (interactive)
   (when-let* ((match (text-property-search-backward
                        'shell-maker--marker t t)))
-    (goto-char (prop-match-end match))))
+    (goto-char (prop-match-beginning match))))
 
 ;;;; Buffers
 
