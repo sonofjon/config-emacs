@@ -1905,9 +1905,6 @@ the window so that the streaming position appears near the bottom."
     :model 'kimi-k2.7-code
     :use-context 'user
     :include-reasoning "*gptel-reasoning*"
-    ;; TODO: Use :eval or :function to evaluate expressions or functions
-    ;; :tools (gptel-tk-get-tools)
-    ;; :post (gptel-tk-enable-builtin-tools)
     :use-tools t)
   ;; Enable MCP
   (require 'gptel-integrations))
