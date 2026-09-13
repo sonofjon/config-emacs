@@ -177,6 +177,7 @@
 ;; saved incorrectly, causing `package-autoremove' to delete too many
 ;; packages.
 (put 'package-selected-packages 'saved-value nil)
+;; (put 'package-vc-selected-packages 'saved-value nil)
 
 ;;; Selected packages sources
 ;;;   Install packages with (package-vc-install-selected-packages)
