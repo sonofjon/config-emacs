@@ -287,9 +287,20 @@ is safe to call from `agent-shell-mode-hook'."
 (defun aj8/agent-shell-previous-response ()
   "Move point to the start of the previous LLM response in `agent-shell-mode'."
   (interactive)
-  (when-let* ((match (text-property-search-backward
-                       'shell-maker--marker t t)))
-    (goto-char (prop-match-beginning match))))
+  (let ((start (point)))
+    (when-let* ((match (text-property-search-backward
+                        'shell-maker--marker t t)))
+      ;; Redo the search if point is at the marker's end
+      ;;   Both `aj8/agent-shell-previous-response' and
+      ;;   `aj8/agent-shell-next-response' leave point at a marker's end.  A
+      ;;   backward search that starts there just returns that same marker
+      ;;   again.  Therefore, when that happens, search again to reach the
+      ;;   true previous marker instead.
+      (when (= (prop-match-end match) start)
+        (setq match (text-property-search-backward
+                     'shell-maker--marker t t)))
+      (when match
+        (goto-char (prop-match-end match))))))
 
 ;;;; Buffers
 
