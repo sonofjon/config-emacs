@@ -1844,7 +1844,9 @@
               qwen/qwen3-coder:free
               qwen/qwen3-coder-flash
               qwen/qwen3-coder-plus
-              qwen/qwen3-coder-next))
+              qwen/qwen3-coder-next
+              z-ai/glm-5.3
+              z-ai/glm-5.3-flash))
   ;; === GitHub Copilot Chat ====
   (gptel-make-gh-copilot "Copilot")
   ;; Enable word-wrap
