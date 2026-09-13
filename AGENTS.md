@@ -62,6 +62,18 @@ modules in `lisp/`
 installed via the selected packages lists, NOT via `:ensure` in
 `use-package` declarations. Built-in packages explicitly use `:ensure nil`.
 
+**Hook Registration**: Use `:hook` in either of two cases: hooking this
+block's own function onto a foreign mode (`abbrev` puts `abbrev-mode`
+on `text-mode`), or hooking any function onto this block's own mode
+(`info` puts `rename-uniquely` on its own `Info-mode`). Use `add-hook`
+in `:config` (or `:init`) for everything else, and always for a
+non-default depth/append or a buffer-local hook, which `:hook` cannot
+express.
+
+**Hook Functions**: Keep `:hook` pointed at a single named function;
+extract a multi-statement lambda into a defun in `aj8-lisp.el` instead
+of inlining it. A one-line lambda is fine either way.
+
 ## Development Workflows
 
 **Adding custom functions**:
