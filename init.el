@@ -1841,7 +1841,7 @@
               deepseek/deepseek-v4-pro
               moonshotai/kimi-k2.7-code
               moonshotai/kimi-k3
-              qwen/qwen3-coder:free
+              qwen/qwen3-coder
               qwen/qwen3-coder-flash
               qwen/qwen3-coder-plus
               qwen/qwen3-coder-next
