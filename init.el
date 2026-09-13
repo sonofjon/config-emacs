@@ -2079,6 +2079,7 @@ the window so that the streaming position appears near the bottom."
 ;; markdown-ts-mode (tree sitter support for Markdown)
 (use-package markdown-ts-mode
   :ensure nil   ; don't install built-in packages
+  :mode ("\\.md$" "\\.mdx$" "\\.markdown$")
   ;; TODO: markdown-ts-mode has no list-item navigation; research a
   ;;   cleaner fix than aj8/markdown-ts-outline-list-items, which widens
   ;;   treesit-outline-predicate and is commented out for now
@@ -2188,10 +2189,6 @@ the window so that the streaming position appears near the bottom."
   ;; Prompt for install
   (treesit-auto-install 'prompt)
   :config
-  ;; Autoload markdown-ts-mode
-  ;;   It is not autoloaded, so treesit-auto would skip it when
-  ;;   registering .md in the calls below
-  (autoload 'markdown-ts-mode "markdown-ts-mode" nil t)
   ;; Add tree-sitter modes to auto-mode-alist
   (treesit-auto-add-to-auto-mode-alist 'all)
   ;; Enable globally
