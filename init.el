@@ -3157,13 +3157,13 @@ Elisp code explicitly in arbitrary buffers.")
   :bind (("C-c g" . magit-file-dispatch)
          :map magit-mode-map
          ("TAB" . magit-section-cycle)
-         ("<backtab>" . magit-section-cycle-global)
+         ("<backtab>" . magit-section-cycle-global))
          ;; Open files in other window
          ;;   Also keeps the visited file out of the side window
          ;;   when that window has lost its dedication, see
          ;;   `aj8/restore-side-window-dedication'
-         :map magit-file-section-map
-         ("RET" . magit-diff-visit-file-other-window))
+         ;; :map magit-file-section-map
+         ;; ("RET" . magit-diff-visit-file-other-window))
          ;; Open hunks in other window
          ;; :map magit-hunk-section-map
          ;; ("RET" . magit-diff-visit-file-other-window))
