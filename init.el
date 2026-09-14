@@ -3455,6 +3455,9 @@ FILE DIFFS:
        (setq browse-url-generic-program "explorer.exe")
        (setq browse-url-browser-function #'browse-url-generic)
        (advice-add #'browse-url-default-browser :override #'browse-url-generic)
+       ;; Ask whether to use internal or the external browser
+       (keymap-global-set "C-c b" #'browse-url-with-browser-kind)
+                                  ; overwrites binding from browse-url block
        (message "Late settings WSL"))
 
       ((eq aj8/my-os 'linux)   ; Linux
