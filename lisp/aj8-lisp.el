@@ -2052,6 +2052,23 @@ use slot 0 to share undivided space."
     (when found-side-window
       (window-toggle-side-windows))))
 
+;; Restore side window dedication
+(defun aj8/restore-side-window-dedication ()
+  "Re-dedicate side windows that have lost their dedication.
+`display-buffer-in-side-window' marks a side window as weakly dedicated
+to its buffer, which is what keeps `display-buffer' from using it for
+unrelated buffers.  Packages that bypass `display-buffer' and call
+`set-window-buffer' directly clear that flag, leaving a window that
+still looks like a side window but accepts any buffer.  Restores the
+flag for every window that still carries a `window-side' parameter.
+Meant for `post-command-hook', which unlike
+`window-buffer-change-functions' also catches a buffer that is changed
+and restored again within a single command."
+  (dolist (window (window-list nil 'no-mini))
+    (when (and (window-parameter window 'window-side)
+               (not (window-dedicated-p window)))
+      (set-window-dedicated-p window 'side))))
+
 ;;; Transient window restoration
 
 (defvar aj8/transient--saved-side-window-buffer nil

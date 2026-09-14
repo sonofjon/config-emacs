@@ -1390,6 +1390,14 @@
   (advice-add 'quit-window :around #'aj8/retain-side-window-focus)
   ;; Keep focus in side windows after kill-current-buffer
   (advice-add 'kill-current-buffer :around #'aj8/retain-side-window-focus)
+  ;; Restore side window dedication cleared by direct buffer changes
+  ;;   Works around packages that bypass display-buffer and call
+  ;;   `set-window-buffer' directly, notably agent-shell and
+  ;;   agent-shell-manager
+  ;; TODO: Remove this hook once agent-shell and agent-shell-manager stop
+  ;;       clearing side window dedication via direct `set-window-buffer'
+  ;;       calls
+  (add-hook 'post-command-hook #'aj8/restore-side-window-dedication)
   ;; Bury (rather than kill) the Messages buffer when quitting its window
   ;;   This is the exception to `quit-window-kill-buffer' (see :custom
   ;;   below).  See the `buffer-tail-mode' package below for why
@@ -3149,10 +3157,13 @@ Elisp code explicitly in arbitrary buffers.")
   :bind (("C-c g" . magit-file-dispatch)
          :map magit-mode-map
          ("TAB" . magit-section-cycle)
-         ("<backtab>" . magit-section-cycle-global))
+         ("<backtab>" . magit-section-cycle-global)
          ;; Open files in other window
-         ;; :map magit-file-section-map
-         ;; ("RET" . magit-diff-visit-file-other-window)
+         ;;   Also keeps the visited file out of the side window
+         ;;   when that window has lost its dedication, see
+         ;;   `aj8/restore-side-window-dedication'
+         :map magit-file-section-map
+         ("RET" . magit-diff-visit-file-other-window))
          ;; Open hunks in other window
          ;; :map magit-hunk-section-map
          ;; ("RET" . magit-diff-visit-file-other-window))
