@@ -869,20 +869,22 @@
   ;; Group completion candidates by category
   (completions-group t)
   :config
-  ;; Bind M-i/M-p/M-n to completion choose/navigation
-  ;;   Mirrors completion-in-region-mode-map
+  ;; Bind minibuffer completion keys
+  ;;   M-i/M-p/M-n mirror completion-in-region-mode-map
   (dolist (map (list minibuffer-local-completion-map
                       minibuffer-local-must-match-map
                       minibuffer-local-shell-command-map))
     (keymap-set map "M-i" #'minibuffer-choose-completion)
     (keymap-set map "M-p" #'minibuffer-previous-completion)
-    (keymap-set map "M-n" #'minibuffer-next-completion))
+    (keymap-set map "M-n" #'minibuffer-next-completion)
+    (keymap-unset map "SPC" t))   ; unbinds minibuffer-complete-word
   (with-eval-after-load 'crm
     (dolist (map (list crm-local-completion-map
                         crm-local-must-match-map))
       (keymap-set map "M-i" #'minibuffer-choose-completion)
       (keymap-set map "M-p" #'minibuffer-previous-completion)
-      (keymap-set map "M-n" #'minibuffer-next-completion)))
+      (keymap-set map "M-n" #'minibuffer-next-completion)
+      (keymap-unset map "SPC" t)))   ; unbinds minibuffer-complete-word
   ;; Show recursion depth in the minibuffer prompt
   (minibuffer-depth-indicate-mode 1)
   ;; Don't print helpful inline messages during completion
