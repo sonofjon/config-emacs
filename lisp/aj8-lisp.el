@@ -584,13 +584,13 @@ switches to the current depth's minibuffer."
 
 ;;;; Coding
 
+;;; Misc
+
 ;; Enable Eglot selectively
 (defun aj8/eglot-ensure-non-remote ()
   "Enable Eglot only if the buffer is not visiting a remote file."
   (unless (file-remote-p default-directory)
     (eglot-ensure)))
-
-;;; Misc
 
 ;; Format XML buffers
 ;;   Requires: xmllint
