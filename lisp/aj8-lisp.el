@@ -625,6 +625,32 @@ browses to its documentation at https://docs.astral.sh/ruff/rules."
      (format "https://docs.astral.sh/ruff/rules/%s"
              (match-string 1 msg)))))
 
+;; Plain paragraph filling for Markdown
+;;   Works around bugs in the markdown-ts-mode filler (Emacs 31.1):
+;;   fill-paragraph does nothing on any paragraph after the first one in a
+;;   list item, and fill-region merges all paragraphs of a list item into
+;;   one and drops their indentation.  Known issues: filling is no longer
+;;   refused inside code blocks and tables, wrapped block quote lines get
+;;   no "> " prefix, and a heading is merged into a paragraph that
+;;   directly follows it without a blank line.
+;;   TODO: Remove once Markdown fill support in Emacs has improved
+(defun aj8/markdown-ts-fill-setup ()
+  "Use plain paragraph filling in `markdown-ts-mode'.
+Resets the fill functions to the `text-mode' defaults, and sets
+`paragraph-start' and `adaptive-fill-regexp' so that adjacent list items
+are filled as separate paragraphs and continuation lines stay aligned
+with the list item text."
+  (setq-local fill-paragraph-function nil
+              fill-forward-paragraph-function #'forward-paragraph
+              adaptive-fill-function nil
+              ;; Start a new paragraph at each list item
+              paragraph-start
+              "\f\\|[ \t]*$\\|[ \t]*\\(?:[-*+]\\|[0-9]+\\.\\)[ \t]"
+              ;; Align continuation lines with the item text
+              adaptive-fill-regexp
+              (concat "[ \t]*\\(?:\\(?:[-*+]\\|[0-9]+\\.\\)[ \t]+"
+                      "\\(?:\\[[ xX]\\][ \t]*\\)?\\)?")))
+
 ;;;; Completion
 
 ;;; Cape buffer functions

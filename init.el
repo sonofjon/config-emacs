@@ -2090,6 +2090,7 @@ the window so that the streaming position appears near the bottom."
   ;;   cleaner fix than aj8/markdown-ts-outline-list-items, which widens
   ;;   treesit-outline-predicate and is commented out for now
   ;; :hook (markdown-ts-mode . aj8/markdown-ts-outline-list-items)
+  :hook (markdown-ts-mode . aj8/markdown-ts-fill-setup)
   :bind (:map markdown-ts-mode-map
               ("C-c C-M-<left>" . markdown-ts-promote)
               ("C-c C-M-<right>" . markdown-ts-demote)
