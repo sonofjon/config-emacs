@@ -41,6 +41,14 @@
        (when (display-graphic-p)
          ;; Import path from shell
          (exec-path-from-shell-initialize))
+       ;; Work around invalid -mmacosx-version-min on macOS 27
+       ;;   The libgccjit bundled with the emacsformacosx build derives
+       ;;   18.0 from the Darwin version. Remove once a build with a
+       ;;   patched libgccjit is installed
+       ;;   (https://github.com/caldwell/build-emacs/issues/158)
+       (require 'comp)
+       (setq native-comp-driver-options
+             (cons "-mmacosx-version-min=11" native-comp-driver-options))
        (message "Early settings for macOS"))
 
       ((eq aj8/my-os 'wsl)     ; WSL
